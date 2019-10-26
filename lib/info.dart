@@ -13,7 +13,7 @@ class InfoPage extends StatelessWidget {
     return Scaffold(
       drawer: HomeDrawer(page: Page.info),
       appBar: AppBar(
-        title: Text("Knowledge-Wiki - Information"),
+        title: Text("MinigamesParty - Information"),
       ),
       body: Center(
         child: Column(
@@ -39,7 +39,7 @@ class InfoPage extends StatelessWidget {
                 ),
               ),
               onTap: () {
-                launch("https://gitlab.com/minigamesparty");
+                launch("https://gitlab.com/codedoctorde/minigamesparty");
               },
             ),
           ],
