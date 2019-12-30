@@ -4,12 +4,13 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:minigamesparty/create.dart';
 import 'package:minigamesparty/info.dart';
 
-enum Page { home, info, settings, create, connect }
+enum GamePage { game, chat, players }
 
-class HomeDrawer extends StatelessWidget {
-  final Page page;
+class GameDrawer extends StatelessWidget {
+  final GamePage page;
+  final Widget game;
 
-  HomeDrawer({this.page});
+  GameDrawer({this.page, @required this.game});
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +21,7 @@ class HomeDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           Container(
+            child: Text('Game'),
             decoration: BoxDecoration(
                 image: DecorationImage(
               image: ExactAssetImage('assets/logo.png'),
@@ -28,9 +30,22 @@ class HomeDrawer extends StatelessWidget {
             height: 200,
           ),
           ListTile(
-            title: Text('Connect'),
-            leading: Icon(MdiIcons.transitConnection),
-            selected: page == Page.connect,
+            title: Text('Game'),
+            leading: Icon(MdiIcons.gamepad),
+            selected: page == GamePage.game,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => game),
+              );
+            },
+          ),
+          ListTile(
+            title: Text('Chat'),
+            subtitle: Text("Coming soon..."),
+            enabled: false,
+            leading: Icon(MdiIcons.chatOutline),
+            selected: page == GamePage.chat,
             onTap: () {
               Navigator.push(
                 context,
@@ -39,32 +54,9 @@ class HomeDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: Text('Create'),
-            leading: Icon(MdiIcons.plus),
-            selected: page == Page.create,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => CreatePage()),
-              );
-            },
-          ),
-          Divider(),
-          ListTile(
-            title: Text('Info'),
-            leading: Icon(MdiIcons.informationOutline),
-            selected: page == Page.info,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => InfoPage()),
-              );
-            },
-          ),
-          ListTile(
-            title: Text('Settings'),
-            leading: Icon(MdiIcons.settingsOutline),
-            selected: page == Page.settings,
+            title: Text('Players'),
+            leading: Icon(MdiIcons.accountMultipleOutline),
+            selected: page == GamePage.players,
             onTap: () {
               Navigator.push(
                 context,
