@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blue/flutter_blue.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:minigamesparty/game/gamemode.dart';
 
@@ -20,7 +21,6 @@ class CreatePage extends StatefulWidget {
 }
 
 class _CreatePageState extends State<CreatePage> {
-
   var _selectedGamemode;
   var gameModes = ["Memory"];
 
@@ -34,38 +34,31 @@ class _CreatePageState extends State<CreatePage> {
         floatingActionButton: Builder(builder: (BuildContext context) {
           return new FloatingActionButton(
             child: Icon(MdiIcons.check),
-            onPressed: () {
-              create();
+            onPressed: () async {
+              bool isOn = await FlutterBlue.instance.isOn;
+              if (!isOn) {
+                Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                        "You need to activate bluetooth for this.")
+                  ),
+                );
+                return;
+              }
+              GameModeManager gameModeManager = GameModeManager();
+              Scaffold.of(context).showSnackBar(SnackBar(
+                content: Column(children: <Widget>[
+                  Icon(MdiIcons.bluetooth),
+                  Text("Successfully started game!")
+                ]),
+              ));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => gameModeManager.currentGameMode),
+              );
             },
           );
         }));
-  }
-
-  void create() {
-    bool isOn = false;
-    if (!isOn) {
-      Scaffold.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-              "You need bluetooth for this. Do you want to activate bluetooth?"),
-          action: SnackBarAction(
-            label: "Yes",
-            onPressed: () {},
-          ),
-        ),
-      );
-      return;
-    }
-    GameModeManager gameModeManager = GameModeManager();
-    Scaffold.of(context).showSnackBar(SnackBar(
-      content: Column(children: <Widget>[
-        Icon(MdiIcons.bluetooth),
-        Text("Successfully started game!")
-      ]),
-    ));
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => gameModeManager.currentGameMode),
-    );
   }
 }

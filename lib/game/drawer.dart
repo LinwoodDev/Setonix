@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:minigamesparty/create.dart';
 import 'package:minigamesparty/game/gamemode.dart';
+import 'package:minigamesparty/game/players.dart';
 import 'package:minigamesparty/info.dart';
 
 enum GamePage { game, chat, players }
@@ -15,8 +16,6 @@ class GameDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO
-
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -61,7 +60,7 @@ class GameDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => InfoPage()),
+                MaterialPageRoute(builder: (context) => PlayersPage()),
               );
             },
           ),

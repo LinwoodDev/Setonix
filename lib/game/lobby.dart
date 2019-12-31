@@ -27,9 +27,8 @@ class LobbyPage extends GameMode {
     return false;
   }
 }
-enum GameModes{
-  memory
-}
+
+enum GameModes { memory }
 
 class _LobbyPageState extends State<LobbyPage> {
   GameModes _gameModes;
@@ -40,33 +39,29 @@ class _LobbyPageState extends State<LobbyPage> {
         appBar: AppBar(
           title: Text("Lobby"),
         ),
-        drawer: GameDrawer(manager: widget.manager,page: GamePage.game),
+        drawer: GameDrawer(manager: widget.manager, page: GamePage.game),
         body: Center(
-          child: Column(
+            child: Column(children: <Widget>[
+          Text("Please choose a game!"),
+          ListView(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
             children: <Widget>[
-              Text(
-                  "Please choose a game!"
+              ListTile(
+                title: Text('Memory card game'),
+                trailing: Icon(MdiIcons.memory),
+                leading: Radio(
+                  value: GameModes.memory,
+                  groupValue: _gameModes,
+                  onChanged: (GameModes value) {
+                    setState(() {
+                      _gameModes = value;
+                    });
+                  },
+                ),
               ),
-              ListView(
-                children: <Widget>[
-                  ListTile(
-                    title: Text('Memory'),
-                    trailing: Icon(
-                      MdiIcons.memory
-                    ),
-                    leading: Radio(
-                      value: GameModes.memory,
-                      groupValue: _gameModes,
-                      onChanged: (GameModes value) {
-                        setState(() { _gameModes = value; });
-                      },
-                    ),
-                  ),
-                ],
-              )
-            ]
+            ],
           )
-        )
-    );
+        ])));
   }
 }

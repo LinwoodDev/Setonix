@@ -13,8 +13,6 @@ class HomeDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO
-
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
