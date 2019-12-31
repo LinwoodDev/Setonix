@@ -2,15 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:minigamesparty/create.dart';
+import 'package:minigamesparty/game/gamemode.dart';
 import 'package:minigamesparty/info.dart';
 
 enum GamePage { game, chat, players }
 
 class GameDrawer extends StatelessWidget {
+  final GameModeManager manager;
   final GamePage page;
-  final Widget game;
 
-  GameDrawer({this.page, @required this.game});
+  GameDrawer({this.page, @required this.manager});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,7 @@ class GameDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => game),
+                MaterialPageRoute(builder: (context) => manager.currentGameMode),
               );
             },
           ),

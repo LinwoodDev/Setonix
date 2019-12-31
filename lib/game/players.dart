@@ -33,12 +33,50 @@ class _PlayersPageState extends State<PlayersPage> {
 
       ),
       drawer: GameDrawer(
-        page: GamePage.players, game: widget.manager.currentGameMode,),
-      body: ListView.builder(
-          itemCount: widget.manager.players.length,
-          itemBuilder: (context, i) {
-            return widget.manager
-            .
+        manager: widget.manager,page: GamePage.players,),
+      body: FutureBuilder(
+          future: widget.manager.flutterBlue.connectedDevices,
+          builder:  (BuildContext context, AsyncSnapshot snapshot) {
+            List<Widget> children;
+            if (snapshot.hasData) {
+              children = <Widget>[
+                ListView.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int index) => ListTile(title: Text(snapshot.data[index].name), subtitle: Text(snapshot.data[index].id.id),)
+                )
+              ];
+            } else if (snapshot.hasError) {
+              children = <Widget>[
+                Icon(
+                  Icons.error_outline,
+                  color: Colors.red,
+                  size: 60,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Text('Error: ${snapshot.error}'),
+                )
+              ];
+            } else {
+              children = <Widget>[
+                SizedBox(
+                  child: CircularProgressIndicator(),
+                  width: 60,
+                  height: 60,
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 16),
+                  child: Text('Awaiting result...'),
+                )
+              ];
+            }
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: children,
+              ),
+            );
           }
       ),
     );
