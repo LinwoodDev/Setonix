@@ -20,10 +20,9 @@ class CreatePage extends StatefulWidget {
 }
 
 class _CreatePageState extends State<CreatePage> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
 
   var _selectedGamemode;
+  var gameModes = ["Memory"];
 
   @override
   Widget build(BuildContext context) {
@@ -31,63 +30,42 @@ class _CreatePageState extends State<CreatePage> {
         appBar: AppBar(
           title: Text("Create"),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              TextFormField(
-                controller: nameController,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(labelText: 'Enter a name'),
-              ),
-              TextFormField(
-                controller: descriptionController,
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                decoration: InputDecoration(labelText: 'Enter the description'),
-              ),
-              DropdownButtonFormField<GameMode>(
-                items: GameMode.values.map((GameMode value) {
-                  return new DropdownMenuItem<GameMode>(
-                      value: value,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Padding(
-                            child: Icon(MdiIcons.gamepad),
-                            padding: EdgeInsets.all(5),
-                          ),
-                          Text(value.toString())
-                        ],
-                      ));
-                }).toList(),
-                value: _selectedGamemode,
-                onChanged: (newValue) {
-                  setState(() {
-                    _selectedGamemode = newValue;
-                  });
-                },
-                decoration: InputDecoration(labelText: "Select a gamemode"),
-              )
-            ],
-          ),
-        ),
-        floatingActionButton: new Builder(builder: (BuildContext context) {
+        body: SingleChildScrollView(child: Column(children: <Widget>[])),
+        floatingActionButton: Builder(builder: (BuildContext context) {
           return new FloatingActionButton(
             child: Icon(MdiIcons.check),
             onPressed: () {
-              if (nameController.text.isNotEmpty &&
-                  descriptionController.text.isNotEmpty &&
-                  _selectedGamemode != null)
-                create();
-              else
-                Scaffold.of(context).showSnackBar(SnackBar(
-                  content: Text("Please fill the input fields!"),
-                  duration: Duration(seconds: 5),
-                ));
+              create();
             },
           );
         }));
   }
 
-  void create() {}
+  void create() {
+    bool isOn = false;
+    if (!isOn) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+              "You need bluetooth for this. Do you want to activate bluetooth?"),
+          action: SnackBarAction(
+            label: "Yes",
+            onPressed: () {},
+          ),
+        ),
+      );
+      return;
+    }
+    GameModeManager gameModeManager = GameModeManager();
+    Scaffold.of(context).showSnackBar(SnackBar(
+      content: Column(children: <Widget>[
+        Icon(MdiIcons.bluetooth),
+        Text("Successfully started game!")
+      ]),
+    ));
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => gameModeManager.currentGameMode),
+    );
+  }
 }
