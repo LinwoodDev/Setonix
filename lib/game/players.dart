@@ -30,12 +30,11 @@ class _PlayersPageState extends State<PlayersPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Players"),
-
       ),
       drawer: GameDrawer(
         manager: widget.manager,page: GamePage.players,),
       body: FutureBuilder(
-          future: widget.manager.flutterBlue.connectedDevices,
+          future: widget.manager?.flutterBlue?.connectedDevices,
           builder:  (BuildContext context, AsyncSnapshot snapshot) {
             List<Widget> children;
             if (snapshot.hasData) {

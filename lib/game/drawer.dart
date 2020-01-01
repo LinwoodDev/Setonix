@@ -21,7 +21,7 @@ class GameDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           Container(
-            child: Text('Game'),
+            child: Text('Minigames Party - Ingame'),
             decoration: BoxDecoration(
                 image: DecorationImage(
               image: ExactAssetImage('assets/logo.png'),
@@ -34,9 +34,10 @@ class GameDrawer extends StatelessWidget {
             leading: Icon(MdiIcons.gamepad),
             selected: page == GamePage.game,
             onTap: () {
-              Navigator.push(
+              Navigator.pop(context);
+              Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => manager.currentGameMode),
+                MaterialPageRoute(builder: (context) => manager?.currentGameMode),
               );
             },
           ),
@@ -47,10 +48,11 @@ class GameDrawer extends StatelessWidget {
             leading: Icon(MdiIcons.chatOutline),
             selected: page == GamePage.chat,
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => CreatePage()),
-              );
+              // Navigator.pop(context);
+              // Navigator.pushReplacement(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => CreatePage()),
+              // );
             },
           ),
           ListTile(
@@ -58,9 +60,10 @@ class GameDrawer extends StatelessWidget {
             leading: Icon(MdiIcons.accountMultipleOutline),
             selected: page == GamePage.players,
             onTap: () {
-              Navigator.push(
+              Navigator.pop(context);
+              Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => PlayersPage()),
+                MaterialPageRoute(builder: (context) => PlayersPage(manager: manager,)),
               );
             },
           ),

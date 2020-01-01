@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -32,7 +32,17 @@ enum GameModes { memory }
 
 class _LobbyPageState extends State<LobbyPage> {
   GameModes _gameModes;
+  Timer _timer;
 
+  var _start;
+
+
+@override
+void dispose() {
+  if(_timer != null)
+    _timer.cancel();
+  super.dispose();
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,26 +52,62 @@ class _LobbyPageState extends State<LobbyPage> {
         drawer: GameDrawer(manager: widget.manager, page: GamePage.game),
         body: Center(
             child: Column(children: <Widget>[
-          Text("Please choose a game!"),
+          Text(
+            (_start != null) ? "Game starts in " + (_start).toString() +" seconds!" : "Please choose a game!",
+            style: Theme.of(context).textTheme.title,
+          ),
           ListView(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
             children: <Widget>[
               ListTile(
                 title: Text('Memory card game'),
-                trailing: Icon(MdiIcons.memory),
+                trailing: Icon(MdiIcons.puzzleOutline),
                 leading: Radio(
                   value: GameModes.memory,
                   groupValue: _gameModes,
                   onChanged: (GameModes value) {
+                    print("change");
                     setState(() {
-                      _gameModes = value;
+                      _gameModes = (_gameModes != value) ? value : null;
                     });
                   },
                 ),
               ),
             ],
           )
-        ])));
+        ])),
+        floatingActionButton: FloatingActionButton.extended(
+          label: Text("Start game"),
+          icon: Icon(MdiIcons.play),
+          tooltip: "Start game",
+          backgroundColor: (_gameModes == null || _start != null) ? Colors.grey : null,
+          onPressed: (_gameModes == null || _start != null)
+              ? null
+              : () {
+                  startTimer();
+                },
+        ));
+  }
+
+  void startTimer() {
+    _start = 10;
+    const oneSec = const Duration(seconds: 1);
+    if(_timer != null)
+      return;
+    _timer = new Timer.periodic(
+      oneSec,
+      (Timer timer) => setState(
+        () {
+          if (_start < 1f) {
+            timer.cancel();
+            _start = null;
+            _timer = null;
+          } else {
+            _start = _start - 1;
+          }
+        },
+      ),
+    );
   }
 }

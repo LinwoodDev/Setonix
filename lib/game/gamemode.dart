@@ -11,13 +11,11 @@ abstract class GameMode extends StatefulWidget {
 }
 
 class GameModeManager {
-  FlutterBlue flutterBlue;
-  GameMode currentGameMode;
+  FlutterBlue flutterBlue = FlutterBlue.instance;
+  GameMode currentGameMode = LobbyPage();
   List<BluetoothDevice> players;
 
   GameModeManager() {
-    flutterBlue = FlutterBlue.instance;
-    currentGameMode = LobbyPage();
   }
 
   void changeGameMode(GameMode gameMode) {
