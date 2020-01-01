@@ -15,8 +15,7 @@ class GameModeManager {
   GameMode currentGameMode = LobbyPage();
   List<BluetoothDevice> players;
 
-  GameModeManager() {
-  }
+  GameModeManager();
 
   void changeGameMode(GameMode gameMode) {
     currentGameMode = gameMode;

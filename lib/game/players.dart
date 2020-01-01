@@ -5,7 +5,7 @@ import 'package:minigamesparty/game/drawer.dart';
 import 'package:minigamesparty/game/gamemode.dart';
 
 class PlayersPage extends StatefulWidget {
-  GameModeManager manager;
+  final GameModeManager manager;
 
   PlayersPage({Key key, @required this.manager}) : super(key: key);
 

@@ -7,5 +7,5 @@ abstract class Card {
 class CardManager {
   var registerBlacks;
 
-  CardManager(this.registerBlacks) {}
+  CardManager(this.registerBlacks);
 }

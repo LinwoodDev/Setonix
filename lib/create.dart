@@ -21,9 +21,7 @@ class CreatePage extends StatefulWidget {
 }
 
 class _CreatePageState extends State<CreatePage> {
-  var _selectedGamemode;
-  var gameModes = ["Memory"];
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

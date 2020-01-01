@@ -62,12 +62,12 @@ void dispose() {
             children: <Widget>[
               ListTile(
                 title: Text('Memory card game'),
+                subtitle: Text('2 players needed!'),
                 trailing: Icon(MdiIcons.puzzleOutline),
                 leading: Radio(
                   value: GameModes.memory,
                   groupValue: _gameModes,
                   onChanged: (GameModes value) {
-                    print("change");
                     setState(() {
                       _gameModes = (_gameModes != value) ? value : null;
                     });
@@ -99,7 +99,7 @@ void dispose() {
       oneSec,
       (Timer timer) => setState(
         () {
-          if (_start < 1f) {
+          if (_start < 1) {
             timer.cancel();
             _start = null;
             _timer = null;
