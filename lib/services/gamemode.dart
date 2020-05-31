@@ -1,19 +1,23 @@
+import 'package:flame/game.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:minigamesparty/game/lobby.dart';
 
-abstract class GameMode extends StatefulWidget {
+abstract class GameMode {
   final GameModeManager manager;
 
-  GameMode({this.manager, Key key}) : super(key: key);
+  GameMode({this.manager});
 
   bool join(BluetoothDevice device);
+  
+  Widget build();
 }
 
 class GameModeManager {
   FlutterBlue flutterBlue = FlutterBlue.instance;
-  GameMode currentGameMode = LobbyPage();
+  GameMode currentGameMode;
   List<BluetoothDevice> players;
+  BluetoothDevice owner;
 
   GameModeManager();
 
@@ -22,7 +26,7 @@ class GameModeManager {
   }
 
   void changeToLobby() {
-    currentGameMode = LobbyPage();
+    currentGameMode = LobbyGame();  
   }
 
   void startScan() {
@@ -45,5 +49,9 @@ class GameModeManager {
 
   bool join(BluetoothDevice device) {
     return currentGameMode?.join(device);
+  }
+
+  bool isOwner(){
+    return owner == null;
   }
 }

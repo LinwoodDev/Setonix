@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:minigamesparty/game/gamemode.dart';
+import 'package:minigamesparty/services/gamemode.dart';
 
 class CreatePage extends StatefulWidget {
   CreatePage({Key key}) : super(key: key);
@@ -28,7 +28,20 @@ class _CreatePageState extends State<CreatePage> {
         appBar: AppBar(
           title: Text("Create"),
         ),
-        body: SingleChildScrollView(child: Column(children: <Widget>[])),
+        body: SingleChildScrollView(child: Form(child: Column(
+          children: <Widget>[
+            TextFormField(
+              decoration: InputDecoration(
+                labelText: "Name"
+              ),
+              validator: (value){
+                if(value.isEmpty)
+                  return "This value can't be empty!";
+                return null;
+              },
+            )
+          ],
+        ),)),
         floatingActionButton: Builder(builder: (BuildContext context) {
           return new FloatingActionButton(
             child: Icon(MdiIcons.check),
@@ -53,7 +66,7 @@ class _CreatePageState extends State<CreatePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => gameModeManager.currentGameMode),
+                    builder: (context) => gameModeManager.currentGameMode.build()),
               );
             },
           );

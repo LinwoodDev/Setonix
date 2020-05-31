@@ -5,11 +5,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:minigamesparty/game/drawer.dart';
-import 'package:minigamesparty/game/gamemode.dart';
+import 'package:minigamesparty/services/gamemode.dart';
 
-class LobbyPage extends GameMode {
-  LobbyPage({Key key}) : super(key: key);
-
+class LobbyGame implements GameMode {
+  
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
   // how it looks.
@@ -20,12 +19,20 @@ class LobbyPage extends GameMode {
   // always marked "final".
 
   @override
-  _LobbyPageState createState() => _LobbyPageState();
-
-  @override
   bool join(BluetoothDevice device) {
     return false;
   }
+
+  @override
+  Widget build() {
+    return this;
+  }
+}
+class LobbyPage extends StatefulWidget {
+  LobbyGame game;
+  LobbyPage({Key key, this.game}):super(key: key);
+  @override
+  _LobbyPageState createState() => _LobbyPageState();
 }
 
 enum GameModes { memory }
@@ -49,12 +56,12 @@ void dispose() {
         appBar: AppBar(
           title: Text("Lobby"),
         ),
-        drawer: GameDrawer(manager: widget.manager, page: GamePage.game),
+        drawer: GameDrawer(manager: widget.game.manager, page: GamePage.game),
         body: Center(
             child: Column(children: <Widget>[
           Text(
             (_start != null) ? "Game starts in " + (_start).toString() +" seconds!" : "Please choose a game!",
-            style: Theme.of(context).textTheme.title,
+            style: Theme.of(context).textTheme.headline6,
           ),
           ListView(
             scrollDirection: Axis.vertical,

@@ -1,7 +1,26 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:minigamesparty/drawer.dart';
+import 'package:minigamesparty/services/gamemode.dart';
+import 'package:path_provider/path_provider.dart';
 
-void main() => runApp(MyApp());
+
+Future<void> main() async {
+  debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  var dir = await getApplicationDocumentsDirectory();
+  Hive.init(dir.path);
+
+  await Hive.openBox('pref');
+  
+  GetIt.I.registerSingleton<GameModeManager>(GameModeManager());
+
+
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -66,7 +85,7 @@ class _HomePageState extends State<HomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      drawer: HomeDrawer(page: Page.home,),
+      drawer: HomeDrawer(page: DrawerPage.home,),
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
@@ -97,7 +116,7 @@ class _HomePageState extends State<HomePage> {
             ),
             Text(
               '$_counter',
-              style: Theme.of(context).textTheme.display1,
+              style: Theme.of(context).textTheme.headline4,
             ),
           ],
         ),

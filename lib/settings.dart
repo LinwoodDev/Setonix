@@ -25,8 +25,7 @@ class _SettingsPageState extends State<SettingsPage> {
       appBar: AppBar(
         title: Text("Information"),
       ),
-      body: Center(
-        child: Column(
+      body: ListView(
           children: <Widget>[
             InkWell(
               child: Card(
@@ -35,7 +34,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   child: Column(children: <Widget>[
                     Text(
                       "Information about this open source project",
-                      style: Theme.of(context).textTheme.title,
+                      style: Theme.of(context).textTheme.headline6,
                     ),
                     Text(
                       "GitLab: https://gitlab.com/codedoctorde/minigamesparty \r\n"
@@ -50,8 +49,13 @@ class _SettingsPageState extends State<SettingsPage> {
                 launch("https://gitlab.com/codedoctorde/minigamesparty");
               },
             ),
+            ListTile(
+              title: Text("Information"),
+              onTap: (){
+                showAboutDialog(context: context);
+              },
+            )
           ],
-        ),
       ),
     );
   }

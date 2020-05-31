@@ -4,10 +4,10 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:minigamesparty/create.dart';
 import 'package:minigamesparty/info.dart';
 
-enum Page { home, info, settings, create, connect }
+enum DrawerPage { home, info, settings, create, connect }
 
 class HomeDrawer extends StatelessWidget {
-  final Page page;
+  final DrawerPage page;
 
   HomeDrawer({this.page});
 
@@ -28,7 +28,7 @@ class HomeDrawer extends StatelessWidget {
           ListTile(
             title: Text('Connect'),
             leading: Icon(MdiIcons.transitConnection),
-            selected: page == Page.connect,
+            selected: page == DrawerPage.connect,
             onTap: () {
               Navigator.push(
                 context,
@@ -39,7 +39,7 @@ class HomeDrawer extends StatelessWidget {
           ListTile(
             title: Text('Create'),
             leading: Icon(MdiIcons.plus),
-            selected: page == Page.create,
+            selected: page == DrawerPage.create,
             onTap: () {
               Navigator.push(
                 context,
@@ -51,7 +51,7 @@ class HomeDrawer extends StatelessWidget {
           ListTile(
             title: Text('Info'),
             leading: Icon(MdiIcons.informationOutline),
-            selected: page == Page.info,
+            selected: page == DrawerPage.info,
             onTap: () {
               Navigator.push(
                 context,
@@ -62,7 +62,7 @@ class HomeDrawer extends StatelessWidget {
           ListTile(
             title: Text('Settings'),
             leading: Icon(MdiIcons.settingsOutline),
-            selected: page == Page.settings,
+            selected: page == DrawerPage.settings,
             onTap: () {
               Navigator.push(
                 context,
