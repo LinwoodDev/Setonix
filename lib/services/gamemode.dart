@@ -1,4 +1,3 @@
-import 'package:flame/game.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:minigamesparty/game/lobby.dart';

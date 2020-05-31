@@ -25,11 +25,15 @@ class LobbyGame implements GameMode {
 
   @override
   Widget build() {
-    return this;
+    return LobbyPage(game: this,);
   }
+
+  @override
+  // TODO: implement manager
+  GameModeManager get manager => throw UnimplementedError();
 }
 class LobbyPage extends StatefulWidget {
-  LobbyGame game;
+  final LobbyGame game;
   LobbyPage({Key key, this.game}):super(key: key);
   @override
   _LobbyPageState createState() => _LobbyPageState();

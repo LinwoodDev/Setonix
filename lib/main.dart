@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:minigamesparty/drawer.dart';
 import 'package:minigamesparty/services/gamemode.dart';

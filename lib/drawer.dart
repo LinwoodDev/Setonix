@@ -61,7 +61,7 @@ class HomeDrawer extends StatelessWidget {
           ),
           ListTile(
             title: Text('Settings'),
-            leading: Icon(MdiIcons.settingsOutline),
+            leading: Icon(MdiIcons.cogOutline),
             selected: page == DrawerPage.settings,
             onTap: () {
               Navigator.push(
