@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:minigamesparty/game/gamemode.dart';
+import 'package:minigamesparty/services/gamemode.dart';
 import 'package:minigamesparty/game/players.dart';
 
 enum GamePage { game, chat, players }
@@ -35,7 +35,7 @@ class GameDrawer extends StatelessWidget {
               Navigator.pop(context);
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => manager?.currentGameMode),
+                MaterialPageRoute(builder: (context) => manager?.currentGameMode?.build()),
               );
             },
           ),

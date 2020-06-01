@@ -25,20 +25,37 @@ class _SettingsPageState extends State<SettingsPage> {
       appBar: AppBar(
         title: Text("Information"),
       ),
-      body: Center(
-        child: ListView(
+      body: ListView(
           children: <Widget>[
+            InkWell(
+              child: Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(50.0),
+                  child: Column(children: <Widget>[
+                    Text(
+                      "Information about this open source project",
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
+                    Text(
+                      "GitLab: https://gitlab.com/codedoctorde/minigamesparty \r\n"
+                      "MIT License \r\n"
+                      "Contributors: CodeDoctorDE\r\n"
+                      "(C) 2019",
+                    ),
+                  ]),
+                ),
+              ),
+              onTap: () {
+                launch("https://gitlab.com/codedoctorde/minigamesparty");
+              },
+            ),
             ListTile(
-              leading: Icon(MdiIcons.translate),
-              title: Text("Language"),
-              trailing: Icon(MdiIcons.arrowRight),
+              title: Text("Information"),
               onTap: (){
-                showBottomSheet(context: context, builder: (context){
-                });
+                showAboutDialog(context: context);
               },
             )
           ],
-        ),
       ),
     );
   }

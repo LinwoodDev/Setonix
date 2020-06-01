@@ -5,12 +5,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:minigamesparty/game/drawer.dart';
-import 'package:minigamesparty/game/gamemode.dart';
+import 'package:minigamesparty/services/gamemode.dart';
 
-class LobbyPage extends GameMode {
-  LobbyPage({GameModeManager manager, Key key})
-      : super(manager: manager, key: key);
-
+class LobbyGame extends GameMode {
+  
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
   // how it looks.
@@ -21,12 +19,24 @@ class LobbyPage extends GameMode {
   // always marked "final".
 
   @override
-  _LobbyPageState createState() => _LobbyPageState();
+  bool join(BluetoothDevice device) {
+    return true;
+  }
 
   @override
-  bool join(BluetoothDevice device) {
-    return false;
+  Widget build() {
+    return LobbyPage(game: this,);
   }
+
+  @override
+  void read(BluetoothDevice device, String data) {
+  }
+}
+class LobbyPage extends StatefulWidget {
+  final LobbyGame game;
+  LobbyPage({Key key, this.game}):super(key: key);
+  @override
+  _LobbyPageState createState() => _LobbyPageState();
 }
 
 enum GameModes { memory }
@@ -45,19 +55,15 @@ class _LobbyPageState extends State<LobbyPage> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.manager);
     return Scaffold(
         appBar: AppBar(
           title: Text("Lobby"),
         ),
-        drawer: GameDrawer(manager: widget.manager, page: GamePage.game),
-        body: Builder(
-        builder: (context) => Center(
+        drawer: GameDrawer(manager: widget.game.manager, page: GamePage.game),
+        body: Center(
             child: Column(children: <Widget>[
           Text(
-            (_start != null)
-                ? "Game starts in " + (_start).toString() + " seconds!"
-                : "Please choose a game!",
+            (_start != null) ? "Game starts in " + (_start).toString() +" seconds!" : "Please choose a game!",
             style: Theme.of(context).textTheme.headline6,
           ),
           ListView(
@@ -72,7 +78,7 @@ class _LobbyPageState extends State<LobbyPage> {
                   value: GameModes.memory,
                   groupValue: _gameModes,
                   onChanged: (GameModes value) {
-                    if (widget.manager.players.length >= 2)
+                    if (widget.game.manager.players.length >= 2)
                       setState(() {
                         _gameModes = (_gameModes != value) ? value : null;
                       });
@@ -85,7 +91,7 @@ class _LobbyPageState extends State<LobbyPage> {
               ),
             ],
           )
-        ]))),
+        ])),
         floatingActionButton: FloatingActionButton.extended(
           label: Text("Start game"),
           icon: Icon(MdiIcons.play),

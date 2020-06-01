@@ -5,11 +5,10 @@ import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InfoPage extends StatelessWidget {
-  // TODO implement build
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MinigamesPartyDrawer(page: DrawerPage.info),
+      drawer: HomeDrawer(page: DrawerPage.info),
       appBar: AppBar(
         title: Text("MinigamesParty - Information"),
       ),

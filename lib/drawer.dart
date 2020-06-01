@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:minigamesparty/create.dart';
 import 'package:minigamesparty/info.dart';
+import 'package:minigamesparty/test.dart';
 
-enum DrawerPage { home, info, settings, create, connect }
+enum DrawerPage { home, info, settings, create, connect, example }
 
-class MinigamesPartyDrawer extends StatelessWidget {
+class HomeDrawer extends StatelessWidget {
   final DrawerPage page;
 
-  MinigamesPartyDrawer({this.page});
+  HomeDrawer({this.page});
 
   @override
   Widget build(BuildContext context) {
@@ -61,12 +62,24 @@ class MinigamesPartyDrawer extends StatelessWidget {
           ),
           ListTile(
             title: Text('Settings'),
-            leading: Icon(MdiIcons.cogs),
+            leading: Icon(MdiIcons.cogOutline),
             selected: page == DrawerPage.settings,
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => InfoPage()),
+              );
+            },
+          ),
+          Divider(),
+          ListTile(
+            title: Text('Example'),
+            leading: Icon(MdiIcons.chatOutline),
+            selected: page == DrawerPage.example,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MyHomePage()),
               );
             },
           ),

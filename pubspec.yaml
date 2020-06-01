@@ -17,32 +17,31 @@ environment:
   sdk: ">=2.6.0 <3.0.0"
 
 dependencies:
-  package_info: ^0.4.0+18
-  url_launcher: ^5.4.7
-  url_launcher_web: ^0.1.1+5
-  material_design_icons_flutter: ^4.0.5145
-  flutter_blue: ^0.7.2
+  flame: ^0.22.0
   hive: ^1.4.1+1
   hive_flutter: ^0.3.0+2
-  flutter_localizations:
-    sdk: flutter
+  package_info: ^0.4.0+18
+  url_launcher: ^5.4.10
+  url_launcher_web: ^0.1.1+6
+  material_design_icons_flutter: ^4.0.5345
+  flutter_blue: ^0.7.2
   flutter:
     sdk: flutter
-dependency_overrides:
-  dartx: ^0.3.0
+  get_it: ^4.0.2
+
 dev_dependencies:
   hive_generator: ^0.7.0+2
   build_runner: ^1.10.0
   flutter_test:
     sdk: flutter
 
-
+dependency_overrides:
+  path: 1.7.0
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -54,13 +53,10 @@ flutter:
     - lang/*.json
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
-
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
-
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
-
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a

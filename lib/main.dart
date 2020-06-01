@@ -1,9 +1,29 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:minigamesparty/drawer.dart';
 import 'package:minigamesparty/localization.dart';
+import 'package:get_it/get_it.dart';
+import 'package:hive/hive.dart';
+import 'package:minigamesparty/services/gamemode.dart';
+import 'package:path_provider/path_provider.dart';
 
-void main() => runApp(MyApp());
+
+Future<void> main() async {
+  debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  var dir = await getApplicationDocumentsDirectory();
+  Hive.init(dir.path);
+
+  await Hive.openBox('pref');
+  
+  GetIt.I.registerSingleton<GameModeManager>(GameModeManager());
+
+
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -79,9 +99,13 @@ class _HomePageState extends State<HomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
+<<<<<<< HEAD
       drawer: MinigamesPartyDrawer(
         page: DrawerPage.home,
       ),
+=======
+      drawer: HomeDrawer(page: DrawerPage.home,),
+>>>>>>> 3b0cd9b47a2f8cdd407524b92319876eb03e8ad1
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
