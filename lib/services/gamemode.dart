@@ -11,13 +11,15 @@ abstract class GameMode {
   
   Widget build();
 
-  void read(Guid guid, String data);
+  void read(BluetoothDevice device, String data);
 }
   
   class GameModeManager {
     FlutterBlue flutterBlue = FlutterBlue.instance;
     GameMode currentGameMode;
+    List<BluetoothDevice> _players = List<BluetoothDevice>(); 
     BluetoothDevice owner;
+    
   
     GameModeManager();
   
@@ -26,7 +28,17 @@ abstract class GameMode {
     }
   
     void changeToLobby() {
-      currentGameMode = LobbyGame();  
+      currentGameMode = LobbyGame();
+    }
+
+    Future<void> initCommunication() async {
+      
+    }
+    Future<void> reloadPlayers() async {
+      _players = await flutterBlue.connectedDevices;
+      _players.forEach((_player) async { 
+        var services = await _player.discoverServices();
+      });
     }
   
     void startScan() {
@@ -40,14 +52,15 @@ abstract class GameMode {
         print('${device.name} found! rssi: ${device.id}');
         if (join(device))
           device.disconnect().then((value) => print("Successfully disconnected the device ${device.name}, rssi: ${device.id}"));
+        reloadPlayers();
       });
     }
   
     void stopScan() {
       flutterBlue.stopScan();
     }
-    void onRead(Guid guid, String data){
-        currentGameMode?.read(guid, data);
+    void onRead(BluetoothDevice device, String data){
+        currentGameMode?.read(device, data);
   }
   void communicate(String data){
 
