@@ -56,7 +56,8 @@ class _CreatePageState extends State<CreatePage> {
                 );
                 return;
               }
-              GameModeManager gameModeManager = GameModeManager();
+              var gameModeManager = GameModeManager();
+              gameModeManager.startScan();
               Scaffold.of(context).showSnackBar(SnackBar(
                 content: Column(children: <Widget>[
                   Icon(MdiIcons.bluetooth),
@@ -67,7 +68,7 @@ class _CreatePageState extends State<CreatePage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => gameModeManager.currentGameMode.build()),
-              );
+              ).then((value) => gameModeManager.stopScan());
             },
           );
         }));

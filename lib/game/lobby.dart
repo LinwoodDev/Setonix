@@ -20,7 +20,7 @@ class LobbyGame implements GameMode {
 
   @override
   bool join(BluetoothDevice device) {
-    return false;
+    return true;
   }
 
   @override
@@ -31,6 +31,10 @@ class LobbyGame implements GameMode {
   @override
   // TODO: implement manager
   GameModeManager get manager => throw UnimplementedError();
+
+  @override
+  void read(Guid guid, String data) {
+  }
 }
 class LobbyPage extends StatefulWidget {
   final LobbyGame game;
