@@ -7,7 +7,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:minigamesparty/game/drawer.dart';
 import 'package:minigamesparty/services/gamemode.dart';
 
-class LobbyGame implements GameMode {
+class LobbyGame extends GameMode {
   
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -27,10 +27,6 @@ class LobbyGame implements GameMode {
   Widget build() {
     return LobbyPage(game: this,);
   }
-
-  @override
-  // TODO: implement manager
-  GameModeManager get manager => throw UnimplementedError();
 
   @override
   void read(BluetoothDevice device, String data) {

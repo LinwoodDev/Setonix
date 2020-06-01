@@ -1,17 +1,24 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:minigamesparty/game/lobby.dart';
-
 abstract class GameMode {
+
+  const GameMode({this.manager});
   final GameModeManager manager;
 
-  GameMode({this.manager});
-
-  bool join(BluetoothDevice device);
+  bool join(BluetoothDevice device){
+    return true;
+  }
   
   Widget build();
 
-  void read(BluetoothDevice device, String data);
+  void read(BluetoothDevice device, String data){
+
+  }
+
+  void initGame(){
+    
+  }
 }
   
   class GameModeManager {
