@@ -33,7 +33,7 @@ class LobbyGame implements GameMode {
   GameModeManager get manager => throw UnimplementedError();
 
   @override
-  void read(Guid guid, String data) {
+  void read(BluetoothDevice device, String data) {
   }
 }
 class LobbyPage extends StatefulWidget {
