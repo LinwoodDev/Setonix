@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:minigamesparty/game/lobby.dart';
@@ -7,15 +8,17 @@ abstract class GameMode extends StatefulWidget {
 
   GameMode({this.manager, Key key}) : super(key: key);
 
-  bool join(BluetoothDevice device);
+  
 }
 
 class GameModeManager {
   FlutterBlue flutterBlue = FlutterBlue.instance;
-  GameMode currentGameMode = LobbyPage();
-  List<BluetoothDevice> players;
+  GameMode currentGameMode;
+  List<BluetoothDevice> players = List();
 
-  GameModeManager();
+  GameModeManager(){
+    currentGameMode = LobbyPage(manager: this);
+  }
 
   void changeGameMode(GameMode gameMode) {
     currentGameMode = gameMode;
@@ -44,6 +47,6 @@ class GameModeManager {
   }
 
   bool join(BluetoothDevice device) {
-    return currentGameMode?.join(device);
+    return true;
   }
 }

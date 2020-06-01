@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:minigamesparty/drawer.dart';
+import 'package:minigamesparty/localization.dart';
 
 void main() => runApp(MyApp());
 
@@ -8,6 +10,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: [
+        // ... app-specific localization delegate[s] here
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        AppLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale("en"), // English
+        const Locale('de'), // Deutsch
+        // ... other locales the app supports
+      ],
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
@@ -19,7 +33,7 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.cyan,
       ),
       home: HomePage(),
     );
@@ -37,7 +51,6 @@ class HomePage extends StatefulWidget {
   // case the title) provided by the parent (in this case the App widget) and
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
-
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -66,11 +79,13 @@ class _HomePageState extends State<HomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      drawer: HomeDrawer(page: Page.home,),
+      drawer: MinigamesPartyDrawer(
+        page: DrawerPage.home,
+      ),
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text("Home"),
+        title: Text(AppLocalizations.of(context).translate('title')),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -97,7 +112,7 @@ class _HomePageState extends State<HomePage> {
             ),
             Text(
               '$_counter',
-              style: Theme.of(context).textTheme.display1,
+              style: Theme.of(context).textTheme.headline4,
             ),
           ],
         ),

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class SettingsPage extends StatefulWidget {
   SettingsPage({Key key}) : super(key: key);
@@ -26,30 +26,17 @@ class _SettingsPageState extends State<SettingsPage> {
         title: Text("Information"),
       ),
       body: Center(
-        child: Column(
+        child: ListView(
           children: <Widget>[
-            InkWell(
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(50.0),
-                  child: Column(children: <Widget>[
-                    Text(
-                      "Information about this open source project",
-                      style: Theme.of(context).textTheme.title,
-                    ),
-                    Text(
-                      "GitLab: https://gitlab.com/codedoctorde/minigamesparty \r\n"
-                      "MIT License \r\n"
-                      "Contributors: CodeDoctorDE\r\n"
-                      "(C) 2019",
-                    ),
-                  ]),
-                ),
-              ),
-              onTap: () {
-                launch("https://gitlab.com/codedoctorde/minigamesparty");
+            ListTile(
+              leading: Icon(MdiIcons.translate),
+              title: Text("Language"),
+              trailing: Icon(MdiIcons.arrowRight),
+              onTap: (){
+                showBottomSheet(context: context, builder: (context){
+                });
               },
-            ),
+            )
           ],
         ),
       ),

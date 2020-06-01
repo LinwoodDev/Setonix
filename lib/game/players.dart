@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:minigamesparty/game/drawer.dart';
 import 'package:minigamesparty/game/gamemode.dart';
 
@@ -47,7 +48,7 @@ class _PlayersPageState extends State<PlayersPage> {
             } else if (snapshot.hasError) {
               children = <Widget>[
                 Icon(
-                  Icons.error_outline,
+                  MdiIcons.alertCircleOutline,
                   color: Colors.red,
                   size: 60,
                 ),
