@@ -21,54 +21,54 @@ class CreatePage extends StatefulWidget {
 }
 
 class _CreatePageState extends State<CreatePage> {
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text("Create"),
         ),
-        body: SingleChildScrollView(child: Form(child: Column(
-          children: <Widget>[
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: "Name"
-              ),
-              validator: (value){
-                if(value.isEmpty)
-                  return "This value can't be empty!";
-                return null;
-              },
-            )
-          ],
-        ),)),
+        body: SingleChildScrollView(
+            child: Form(
+          child: Column(
+            children: <Widget>[
+              TextFormField(
+                decoration: InputDecoration(labelText: "Name"),
+                validator: (value) {
+                  if (value.isEmpty) return "This value can't be empty!";
+                  return null;
+                },
+              )
+            ],
+          ),
+        )),
         floatingActionButton: Builder(builder: (BuildContext context) {
           return new FloatingActionButton(
             child: Icon(MdiIcons.check),
             onPressed: () async {
-              bool isOn = await FlutterBlue.instance.isOn;
-              if (!isOn) {
-                Scaffold.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                        "You need to activate bluetooth for this.")
-                  ),
-                );
-                return;
-              }
-              var gameModeManager = GameModeManager();
-              gameModeManager.startScan();
-              Scaffold.of(context).showSnackBar(SnackBar(
-                content: Column(children: <Widget>[
-                  Icon(MdiIcons.bluetooth),
-                  Text("Successfully started game!")
-                ]),
-              ));
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => gameModeManager.currentGameMode.build()),
-              ).then((value) => gameModeManager.stopScan());
+              FlutterBlue.instance.state.listen((state) {
+                if (state != BluetoothState.on) {
+                  Scaffold.of(context).showSnackBar(
+                    SnackBar(
+                        content:
+                            Text("You need to activate bluetooth for this.")),
+                  );
+                  return;
+                }
+                var gameModeManager = GameModeManager();
+                gameModeManager.startScan();
+                Scaffold.of(context).showSnackBar(SnackBar(
+                  content: Column(children: <Widget>[
+                    Icon(MdiIcons.bluetooth),
+                    Text("Successfully started game!")
+                  ]),
+                ));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          gameModeManager.currentGameMode.build()),
+                ).then((value) => gameModeManager.stopScan());
+              });
             },
           );
         }));

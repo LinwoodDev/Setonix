@@ -99,13 +99,7 @@ class _HomePageState extends State<HomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-<<<<<<< HEAD
-      drawer: MinigamesPartyDrawer(
-        page: DrawerPage.home,
-      ),
-=======
       drawer: HomeDrawer(page: DrawerPage.home,),
->>>>>>> 3b0cd9b47a2f8cdd407524b92319876eb03e8ad1
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.

@@ -17,15 +17,17 @@ environment:
   sdk: ">=2.6.0 <3.0.0"
 
 dependencies:
-  flame: ^0.22.0
+  flame: ^0.22.1
   hive: ^1.4.1+1
   hive_flutter: ^0.3.0+2
-  package_info: ^0.4.0+18
-  url_launcher: ^5.4.10
+  package_info: ^0.4.1
+  url_launcher: ^5.4.11
   url_launcher_web: ^0.1.1+6
   material_design_icons_flutter: ^4.0.5345
   flutter_blue: ^0.7.2
   flutter:
+    sdk: flutter
+  flutter_localizations:
     sdk: flutter
   get_it: ^4.0.2
 
@@ -50,7 +52,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
-    - lang/*.json
+    - lang/
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
