@@ -8,7 +8,6 @@ import 'package:minigamesparty/game/drawer.dart';
 import 'package:minigamesparty/services/gamemode.dart';
 
 class LobbyGame extends GameMode {
-  
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
   // how it looks.
@@ -25,16 +24,18 @@ class LobbyGame extends GameMode {
 
   @override
   Widget build() {
-    return LobbyPage(game: this,);
+    return LobbyPage(
+      game: this,
+    );
   }
 
   @override
-  void read(BluetoothDevice device, String data) {
-  }
+  void read(BluetoothDevice device, String data) {}
 }
+
 class LobbyPage extends StatefulWidget {
   final LobbyGame game;
-  LobbyPage({Key key, this.game}):super(key: key);
+  LobbyPage({Key key, this.game}) : super(key: key);
   @override
   _LobbyPageState createState() => _LobbyPageState();
 }
@@ -63,7 +64,9 @@ class _LobbyPageState extends State<LobbyPage> {
         body: Center(
             child: Column(children: <Widget>[
           Text(
-            (_start != null) ? "Game starts in " + (_start).toString() +" seconds!" : "Please choose a game!",
+            (_start != null)
+                ? "Game starts in " + (_start).toString() + " seconds!"
+                : "Please choose a game!",
             style: Theme.of(context).textTheme.headline6,
           ),
           ListView(
@@ -96,8 +99,7 @@ class _LobbyPageState extends State<LobbyPage> {
           label: Text("Start game"),
           icon: Icon(MdiIcons.play),
           tooltip: "Start game",
-          backgroundColor:
-              (_gameModes == null || _start != null) ? Colors.grey : null,
+          backgroundColor: (_gameModes == null || _start != null) ? Colors.grey : null,
           onPressed: (_gameModes == null || _start != null)
               ? null
               : () {
