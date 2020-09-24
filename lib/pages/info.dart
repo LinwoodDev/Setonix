@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:minigamesparty/drawer.dart';
+import 'package:minigamesparty/widgets/drawer.dart';
 import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -32,9 +32,7 @@ class InfoPage extends StatelessWidget {
                       ),
                       FutureBuilder(
                         future: getVersionNumber(),
-                        builder: (BuildContext context,
-                                AsyncSnapshot<String> snapshot) =>
-                            Text(
+                        builder: (BuildContext context, AsyncSnapshot<String> snapshot) => Text(
                           snapshot.hasData ? snapshot.data : "Loading ...",
                           style: TextStyle(color: Colors.black38),
                         ),

@@ -19,13 +19,11 @@ class PlayersPage extends StatefulWidget {
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
 
-
   @override
   _PlayersPageState createState() => _PlayersPageState();
 }
 
 class _PlayersPageState extends State<PlayersPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,17 +31,21 @@ class _PlayersPageState extends State<PlayersPage> {
         title: Text("Players"),
       ),
       drawer: GameDrawer(
-        manager: widget.manager,page: GamePage.players,),
+        manager: widget.manager,
+        page: GamePage.players,
+      ),
       body: FutureBuilder(
-          future: widget.manager?.flutterBlue?.connectedDevices,
-          builder:  (BuildContext context, AsyncSnapshot snapshot) {
+          future: Future.delayed(Duration(seconds: 1)),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
             List<Widget> children;
             if (snapshot.hasData) {
               children = <Widget>[
                 ListView.builder(
                     itemCount: snapshot.data.length,
-                    itemBuilder: (BuildContext context, int index) => ListTile(title: Text(snapshot.data[index].name), subtitle: Text(snapshot.data[index].id.id),)
-                )
+                    itemBuilder: (BuildContext context, int index) => ListTile(
+                          title: Text(snapshot.data[index].name),
+                          subtitle: Text(snapshot.data[index].id.id),
+                        ))
               ];
             } else if (snapshot.hasError) {
               children = <Widget>[
@@ -77,8 +79,7 @@ class _PlayersPageState extends State<PlayersPage> {
                 children: children,
               ),
             );
-          }
-      ),
+          }),
     );
   }
 }

@@ -61,7 +61,10 @@ class GameDrawer extends StatelessWidget {
               Navigator.pop(context);
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => PlayersPage(manager: manager,)),
+                MaterialPageRoute(
+                    builder: (context) => PlayersPage(
+                          manager: manager,
+                        )),
               );
             },
           ),

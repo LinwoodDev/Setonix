@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:minigamesparty/create.dart';
-import 'package:minigamesparty/info.dart';
-import 'package:minigamesparty/test.dart';
+import 'package:minigamesparty/main.dart';
+import 'package:minigamesparty/pages/create.dart';
+import 'package:minigamesparty/pages/info.dart';
 
 enum DrawerPage { home, info, settings, create, connect, example }
 
@@ -79,7 +79,7 @@ class HomeDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => MyHomePage()),
+                MaterialPageRoute(builder: (context) => HomePage()),
               );
             },
           ),

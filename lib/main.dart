@@ -1,13 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:minigamesparty/drawer.dart';
-import 'package:minigamesparty/localization.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:minigamesparty/services/gamemode.dart';
+import 'package:minigamesparty/services/localization.dart';
+import 'package:minigamesparty/widgets/drawer.dart';
 import 'package:path_provider/path_provider.dart';
-
 
 Future<void> main() async {
   debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
@@ -18,9 +17,8 @@ Future<void> main() async {
   Hive.init(dir.path);
 
   await Hive.openBox('pref');
-  
-  GetIt.I.registerSingleton<GameModeManager>(GameModeManager());
 
+  GetIt.I.registerSingleton<GameModeManager>(GameModeManager());
 
   runApp(MyApp());
 }
@@ -99,7 +97,9 @@ class _HomePageState extends State<HomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      drawer: HomeDrawer(page: DrawerPage.home,),
+      drawer: HomeDrawer(
+        page: DrawerPage.home,
+      ),
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
