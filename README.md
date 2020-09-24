@@ -1,5 +1,7 @@
 # MinigamesParty
 
+*Please note that this project is in development!*
+
 Play games with(out) internet but with friends :) and have many games.
 
 ## Features
