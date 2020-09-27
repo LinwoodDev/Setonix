@@ -17,19 +17,33 @@ environment:
   sdk: ">=2.6.0 <3.0.0"
 
 dependencies:
-  flame: ^0.26.0
-  hive: ^1.4.4
-  hive_flutter: ^0.3.1
-  package_info: ^0.4.3
-  url_launcher: ^5.7.2
-  url_launcher_web: ^0.1.4+1
-  material_design_icons_flutter: ^4.0.5655
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  get_it: ^5.0.1
+  # Game engine
+  flame: ^0.26.0
+  
+  # Database
+  hive: ^1.4.4
+  hive_flutter: ^0.3.1
+
+  # UI
+  material_design_icons_flutter: ^4.0.5655
+  flutter_bloc: ^6.0.5
+
+  # Communication
   flutter_ble_lib: ^2.3.0
+
+  # Generation
+  barcode: ^1.17.0
+  flutter_modular: ^2.0.1
+
+  # Utils
+  package_info: ^0.4.3
+  url_launcher: ^5.7.2
+  url_launcher_web: ^0.1.4+1
+  get_it: ^5.0.1
 
 dev_dependencies:
   hive_generator: ^0.7.2+1
