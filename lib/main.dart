@@ -18,7 +18,7 @@ Future<void> main() async {
 
   await Hive.openBox('pref');
 
-  GetIt.I.registerSingleton<GameModeManager>(GameModeManager());
+  // GetIt.I.registerSingleton<Game>(GameModeManager());
 
   runApp(MyApp());
 }

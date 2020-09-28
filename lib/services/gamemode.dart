@@ -7,4 +7,6 @@ abstract class GameMode {
   void leave(Player player);
   void stop();
   void start(Game game);
+
+  build() {}
 }

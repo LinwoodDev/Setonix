@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:minigamesparty/services/gamemode.dart';
 import 'package:minigamesparty/game/players.dart';
+import 'package:minigamesparty/services/game.dart';
 
 enum GamePage { game, chat, players }
 
 class GameDrawer extends StatelessWidget {
-  final GameModeManager manager;
+  final Game manager;
   final GamePage page;
 
   GameDrawer({this.page, @required this.manager});
