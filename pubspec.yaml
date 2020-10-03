@@ -22,7 +22,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   # Game engine
-  flame: ^0.26.0
+  flame: ^0.27.0
   
   # Database
   hive: ^1.4.4
