@@ -25,7 +25,7 @@ class InfoPage extends StatelessWidget {
                         style: Theme.of(context).textTheme.headline6,
                       ),
                       Text(
-                        "GitLab: https://gitlab.com/codedoctorde/minigamesparty \r\n"
+                        "GitHub: https://github.com/codedoctorde/minigamesparty \r\n"
                         "MIT License \r\n"
                         "Contributors: CodeDoctorDE\r\n"
                         "(C) 2019",

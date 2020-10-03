@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:minigamesparty/main.dart';
 import 'package:minigamesparty/pages/create.dart';
+import 'package:minigamesparty/pages/home.dart';
 import 'package:minigamesparty/pages/info.dart';
 
 enum DrawerPage { home, info, settings, create, connect, example }

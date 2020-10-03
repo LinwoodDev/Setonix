@@ -16,11 +16,6 @@ class RockPaperScissors extends GameMode {
   }
 
   @override
-  void initGame() {
-    game = RockPaperScissorsGame();
-  }
-
-  @override
   void join(Player player) {
     // TODO: implement join
   }
@@ -31,9 +26,7 @@ class RockPaperScissors extends GameMode {
   }
 
   @override
-  void start(Game game) {
-    // TODO: implement start
-  }
+  void start(Game game) {}
 
   @override
   void stop() {

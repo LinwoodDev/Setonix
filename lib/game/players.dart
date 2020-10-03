@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:minigamesparty/game/drawer.dart';
 import 'package:minigamesparty/services/game.dart';
-import 'package:minigamesparty/services/gamemode.dart';
 
 class PlayersPage extends StatefulWidget {
   final Game manager;

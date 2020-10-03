@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:minigamesparty/services/game.dart';
-import 'package:minigamesparty/services/gamemode.dart';
 
 class TicTacToePage extends StatefulWidget {
   final Game manager;

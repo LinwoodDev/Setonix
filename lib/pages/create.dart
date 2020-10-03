@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:minigamesparty/services/gamemode.dart';
 
 class CreatePage extends StatefulWidget {
   CreatePage({Key key}) : super(key: key);
