@@ -30,7 +30,7 @@ dependencies:
 
   # UI
   material_design_icons_flutter: ^4.0.5655
-  flutter_bloc: ^6.0.5
+  flutter_bloc: ^6.0.6
   convex_bottom_bar: ^2.5.1
 
   # Communication
@@ -48,7 +48,7 @@ dependencies:
   enum_to_string: ^1.0.13
 
 dev_dependencies:
-  hive_generator: ^0.8.0
+  hive_generator: ^0.8.1
   build_runner: ^1.10.3
   flutter_test:
     sdk: flutter
