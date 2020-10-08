@@ -1,11 +1,10 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:minigamesparty/pages.dart';
 import 'package:minigamesparty/pages/connect.dart';
 import 'package:minigamesparty/pages/create.dart';
-import 'package:minigamesparty/pages/welcome.dart';
-import 'package:minigamesparty/services/localization.dart';
-import 'package:minigamesparty/widgets/drawer.dart';
+import 'package:minigamesparty/pages/intro.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -24,23 +23,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _counter = 0;
   final List<Widget> _tabs = [WelcomePage(), CreatePage(), ConnectPage()];
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-  }
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
   }
 
   @override
@@ -75,17 +61,10 @@ class _HomePageState extends State<HomePage> {
             style: TabStyle.fixedCircle,
             onTabNotify: (i) {
               var intercept = i == 1;
-              if (intercept) {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => CreatePage()));
-              }
+              if (intercept) Navigator.pushNamed(context, RoutePages.create);
               return !intercept;
             },
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: _incrementCounter,
-            tooltip: 'Increment',
-            child: Icon(Icons.add),
-          ), // This trailing comma makes auto-formatting nicer for build methods.
         ));
   }
 }

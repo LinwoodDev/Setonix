@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -22,41 +23,58 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Information"),
-      ),
-      body: ListView(
-          children: <Widget>[
-            InkWell(
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(50.0),
-                  child: Column(children: <Widget>[
-                    Text(
-                      "Information about this open source project",
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                    Text(
-                      "GitLab: https://gitlab.com/codedoctorde/minigamesparty \r\n"
-                      "MIT License \r\n"
-                      "Contributors: CodeDoctorDE\r\n"
-                      "(C) 2019",
-                    ),
-                  ]),
-                ),
+        appBar: AppBar(
+          title: Text("Information"),
+        ),
+        body: Container(
+            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: ListView(children: [
+              ListTile(
+                  tileColor: Theme.of(context).primaryColor,
+                  onTap: () => launch("https://github.com/codedoctorde/minigamesparty"),
+                  title: Text(
+                    "GitHub Repository",
+                    style: Theme.of(context).primaryTextTheme.subtitle1,
+                  ),
+                  trailing: Icon(MdiIcons.chevronRight,
+                      color: Theme.of(context).primaryIconTheme.color,
+                      size: Theme.of(context).primaryIconTheme.size)),
+              ListTile(
+                tileColor: Theme.of(context).primaryColor,
+                title: Text("Impress", style: Theme.of(context).primaryTextTheme.subtitle1),
+                trailing: Icon(MdiIcons.openInNew,
+                    color: Theme.of(context).primaryIconTheme.color,
+                    size: Theme.of(context).primaryIconTheme.size),
+                onTap: () => launch("https://codedoctor.tk/impress", forceWebView: true),
               ),
-              onTap: () {
-                launch("https://gitlab.com/codedoctorde/minigamesparty");
-              },
-            ),
-            ListTile(
-              title: Text("Information"),
-              onTap: (){
-                showAboutDialog(context: context);
-              },
-            )
-          ],
-      ),
-    );
+              ListTile(
+                tileColor: Theme.of(context).primaryColor,
+                title: Text("Privacy", style: Theme.of(context).primaryTextTheme.subtitle1),
+                trailing: Icon(MdiIcons.openInNew,
+                    color: Theme.of(context).primaryIconTheme.color,
+                    size: Theme.of(context).primaryIconTheme.size),
+                onTap: () => launch("https://codedoctor.tk/privacy", forceWebView: true),
+              ),
+              ListTile(
+                onTap: () => showAboutDialog(context: context),
+                title: Text(
+                  "About",
+                  style: Theme.of(context).primaryTextTheme.subtitle1,
+                ),
+                trailing: Icon(MdiIcons.informationOutline,
+                    color: Theme.of(context).primaryIconTheme.color,
+                    size: Theme.of(context).primaryIconTheme.size),
+              ),
+              ListTile(
+                onTap: () => showAboutDialog(context: context),
+                title: Text(
+                  "Language",
+                  style: Theme.of(context).primaryTextTheme.subtitle1,
+                ),
+                trailing: Icon(MdiIcons.translate,
+                    color: Theme.of(context).primaryIconTheme.color,
+                    size: Theme.of(context).primaryIconTheme.size),
+              )
+            ])));
   }
 }
