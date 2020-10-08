@@ -8,6 +8,7 @@ abstract class GameMode {
   void leave(Player player);
   void stop();
   void start(GameSystem game);
+  void read(Player player, String message);
 
   Widget build(BuildContext context);
 }

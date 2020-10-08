@@ -1,1 +1,1 @@
-class Player {}
+abstract class Player {}
