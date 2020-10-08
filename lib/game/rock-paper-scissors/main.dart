@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:minigamesparty/services/game.dart';
-import 'package:minigamesparty/services/gamemode.dart';
-import 'package:minigamesparty/services/player.dart';
+import 'package:minigamesparty/services/game/mode.dart';
+import 'package:minigamesparty/services/game/player.dart';
+import 'package:minigamesparty/services/game/system.dart';
 
 import 'game.dart';
 import 'round.dart';
@@ -11,8 +11,9 @@ class RockPaperScissors extends GameMode {
   RockPaperScissorsRound round;
 
   @override
-  Widget build() {
-    return game.widget;
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    throw UnimplementedError();
   }
 
   @override
@@ -26,7 +27,9 @@ class RockPaperScissors extends GameMode {
   }
 
   @override
-  void start(Game game) {}
+  void start(GameSystem game) {
+    // TODO: implement start
+  }
 
   @override
   void stop() {

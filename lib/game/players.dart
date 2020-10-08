@@ -3,10 +3,10 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:minigamesparty/game/drawer.dart';
-import 'package:minigamesparty/services/game.dart';
+import 'package:minigamesparty/services/game/system.dart';
 
 class PlayersPage extends StatefulWidget {
-  final Game manager;
+  final GameSystem manager;
 
   PlayersPage({Key key, @required this.manager}) : super(key: key);
 
