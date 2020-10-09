@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(runner LANGUAGES CXX)
 
 set(BINARY_NAME "minigamesparty")
-set(APPLICATION_ID "com.gitlab.codedoctorde.minigamesparty")
+set(APPLICATION_ID "com.github.codedoctorde.minigamesparty")
 
 cmake_policy(SET CMP0063 NEW)
 

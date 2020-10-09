@@ -29,18 +29,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    var colorCustom = MaterialColor(PaletteColors.primary, {
-      50: PaletteColors.primaryColor.withAlpha((255 * .1).round()),
-      100: PaletteColors.primaryColor.withAlpha((255 * .2).round()),
-      200: PaletteColors.primaryColor.withAlpha((255 * .3).round()),
-      300: PaletteColors.primaryColor.withAlpha((255 * .4).round()),
-      400: PaletteColors.primaryColor.withAlpha((255 * .5).round()),
-      500: PaletteColors.primaryColor.withAlpha((255 * .6).round()),
-      600: PaletteColors.primaryColor.withAlpha((255 * .7).round()),
-      700: PaletteColors.primaryColor.withAlpha((255 * .8).round()),
-      800: PaletteColors.primaryColor.withAlpha((255 * .9).round()),
-      900: PaletteColors.primaryColor.withAlpha(255),
-    });
     return MaterialApp(
         localizationsDelegates: [
           // ... app-specific localization delegate[s] here
@@ -65,8 +53,8 @@ class MyApp extends StatelessWidget {
             // or simply save your changes to "hot reload" in a Flutter IDE).
             // Notice that the counter didn't reset back to zero; the application
             // is not restarted.
-            bottomAppBarColor: colorCustom,
-            primarySwatch: colorCustom),
+            bottomAppBarColor: PaletteColors.colorCustom,
+            primarySwatch: PaletteColors.colorCustom),
         routes: {
           RoutePages.home: (_) => HomePage(),
           RoutePages.create: (_) => CreatePage(),

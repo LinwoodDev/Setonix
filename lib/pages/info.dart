@@ -29,7 +29,7 @@ class InfoPage extends StatelessWidget {
                                 style: TextStyle(color: Colors.black38)))
                       ]))),
               onTap: () {
-                launch("https://gitlab.com/codedoctorde/minigamesparty");
+                launch("https://github.com/codedoctorde/minigamesparty");
               })
         ])));
   }

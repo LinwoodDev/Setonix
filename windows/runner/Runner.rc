@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.gitlab.codedoctorde" "\0"
-            VALUE "FileDescription", "A new Flutter project." "\0"
+            VALUE "CompanyName", "com.github.codedoctorde" "\0"
+            VALUE "FileDescription", "Play games everywhere." "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "minigamesparty" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2020 com.gitlab.codedoctorde. All rights reserved." "\0"
+            VALUE "InternalName", "Minigames Party" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2020 com.github.codedoctorde. All rights reserved." "\0"
             VALUE "OriginalFilename", "minigamesparty.exe" "\0"
-            VALUE "ProductName", "minigamesparty" "\0"
+            VALUE "ProductName", "Minigames Party" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

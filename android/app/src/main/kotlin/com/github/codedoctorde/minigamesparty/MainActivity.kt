@@ -1,4 +1,4 @@
-package com.gitlab.codedoctorde.minigamesparty
+package com.github.codedoctorde.minigamesparty
 
 import io.flutter.embedding.android.FlutterActivity
 
