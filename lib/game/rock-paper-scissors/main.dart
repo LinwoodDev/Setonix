@@ -35,4 +35,9 @@ class RockPaperScissors extends GameMode {
   void stop() {
     // TODO: implement stop
   }
+
+  @override
+  void read(Player player, String message) {
+    // TODO: implement read
+  }
 }

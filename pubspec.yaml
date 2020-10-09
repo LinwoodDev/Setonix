@@ -34,6 +34,8 @@ dependencies:
   hive_flutter: ^0.3.1
   material_design_icons_flutter: ^4.0.5655
   package_info: ^0.4.3
+  path_provider: ^1.6.18
+  path_provider_windows: ^0.0.4+1
   socket_io_client: ^0.9.11
   url_launcher: ^5.7.2
   url_launcher_web: ^0.1.4+1

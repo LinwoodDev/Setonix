@@ -1,6 +1,7 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:minigamesparty/colors.dart';
 import 'package:minigamesparty/pages.dart';
 import 'package:minigamesparty/pages/connect.dart';
 import 'package:minigamesparty/pages/create.dart';
@@ -46,14 +47,12 @@ class _HomePageState extends State<HomePage> {
           ),
           bottomNavigationBar: ConvexAppBar(
             curve: Curves.ease,
+            backgroundColor: PaletteColors.accentColor,
             items: [
               TabItem(icon: MdiIcons.homeOutline, title: "Home"),
               TabItem(
                   icon: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color(0xFFFF5722),
-                ),
+                decoration: BoxDecoration(shape: BoxShape.circle, color: PaletteColors.darkColor),
                 child: Icon(Icons.add, color: Colors.white, size: 40),
               )),
               TabItem(icon: MdiIcons.menu, title: "Join")

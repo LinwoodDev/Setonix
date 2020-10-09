@@ -113,18 +113,18 @@ class _WelcomePageState extends State<WelcomePage> {
                   ]));
             },
           ),
-          Align(
-              alignment: Alignment.bottomLeft,
-              child: MouseRegion(
-                  cursor: SystemMouseCursors.click,
-                  child: GestureDetector(
-                      onTap: () {
-                        launch("https://linwood.tk", forceWebView: true);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image.asset("assets/icon.png", height: 50),
-                      )))),
+          // Align(
+          //     alignment: Alignment.bottomLeft,
+          //     child: MouseRegion(
+          //         cursor: SystemMouseCursors.click,
+          //         child: GestureDetector(
+          //             onTap: () {
+          //               launch("https://linwood.tk", forceWebView: true);
+          //             },
+          //             child: Padding(
+          //               padding: const EdgeInsets.all(8.0),
+          //               child: Image.asset("assets/icon.png", height: 50),
+          //             )))),
           Align(
               alignment: Alignment.bottomCenter,
               child: Container(
