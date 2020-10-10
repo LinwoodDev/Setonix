@@ -22,7 +22,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   barcode: ^1.17.0
-  convex_bottom_bar: ^2.5.1
+  convex_bottom_bar: ^2.5.1+1
   enum_to_string: ^1.0.13
   flame: ^0.27.0
   flutter_ble_lib: ^2.3.0
