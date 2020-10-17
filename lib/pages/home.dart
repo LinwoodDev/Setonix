@@ -6,6 +6,7 @@ import 'package:minigamesparty/pages.dart';
 import 'package:minigamesparty/pages/connect.dart';
 import 'package:minigamesparty/pages/create.dart';
 import 'package:minigamesparty/pages/intro.dart';
+import 'package:minigamesparty/pages/settings.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -41,6 +42,17 @@ class _HomePageState extends State<HomePage> {
     return DefaultTabController(
         length: _tabs.length,
         child: Scaffold(
+          appBar: AppBar(
+            title: Text("Home"),
+            actions: [
+              IconButton(
+                icon: Icon(MdiIcons.cogOutline),
+                tooltip: "Settings",
+                onPressed: () => Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => SettingsPage())),
+              )
+            ],
+          ),
           body: TabBarView(
             children: _tabs,
             physics: NeverScrollableScrollPhysics(),
