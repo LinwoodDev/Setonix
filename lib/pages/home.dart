@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
           ),
           bottomNavigationBar: ConvexAppBar(
             curve: Curves.ease,
-            backgroundColor: PaletteColors.accentColor,
+            backgroundColor: PaletteColors.primaryColor,
             items: [
               TabItem(icon: MdiIcons.homeOutline, title: "Home"),
               TabItem(

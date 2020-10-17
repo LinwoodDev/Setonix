@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:minigamesparty/game/players.dart';
+import 'package:minigamesparty/games/players.dart';
 import 'package:minigamesparty/services/game/system.dart';
 
 enum GamePage { game, chat, players }

@@ -7,6 +7,7 @@ import 'package:minigamesparty/pages.dart';
 import 'package:minigamesparty/pages/create.dart';
 import 'package:minigamesparty/pages/home.dart';
 import 'package:minigamesparty/pages/info.dart';
+import 'package:minigamesparty/pages/intro.dart';
 import 'package:minigamesparty/services/localization.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -55,10 +56,12 @@ class MyApp extends StatelessWidget {
             // is not restarted.
             bottomAppBarColor: PaletteColors.colorCustom,
             primarySwatch: PaletteColors.colorCustom),
+        initialRoute: RoutePages.intro,
         routes: {
           RoutePages.home: (_) => HomePage(),
           RoutePages.create: (_) => CreatePage(),
-          RoutePages.info: (_) => InfoPage()
+          RoutePages.info: (_) => InfoPage(),
+          RoutePages.intro: (_) => IntroPage()
         });
   }
 }

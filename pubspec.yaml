@@ -32,12 +32,12 @@ dependencies:
   get_it: ^5.0.1
   hive: ^1.4.4+1
   hive_flutter: ^0.3.1
-  material_design_icons_flutter: ^4.0.5655
+  material_design_icons_flutter: ^4.0.5755
   package_info: ^0.4.3
-  path_provider: ^1.6.18
+  path_provider: ^1.6.21
   path_provider_windows: ^0.0.4+1
   socket_io_client: ^0.9.11
-  url_launcher: ^5.7.2
+  url_launcher: ^5.7.5
   url_launcher_web: ^0.1.4+1
 
 dev_dependencies:
