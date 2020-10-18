@@ -21,24 +21,31 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  barcode: ^1.17.0
-  convex_bottom_bar: ^2.5.1+1
-  enum_to_string: ^1.0.13
+  # Engine
   flame: ^0.27.0
-  flutter_ble_lib: ^2.3.0
-  flutter_bloc: ^6.0.6
-  flutter_modular: ^2.0.1
+  # UI
+  material_design_icons_flutter: ^4.0.5755
   flutter_slidable: ^0.5.7
-  get_it: ^5.0.1
+  convex_bottom_bar: ^2.5.1+1
+  # Communication
+  flutter_ble_lib: ^2.3.0
+  socket_io_client: ^0.9.11
+  # Database
   hive: ^1.4.4+1
   hive_flutter: ^0.3.1
-  material_design_icons_flutter: ^4.0.5755
+  # Generation
+  barcode: ^1.17.0
+  flutter_modular: ^2.0.1
+  # Internal
+  flutter_bloc: ^6.0.6
+  get_it: ^5.0.1
+  url_launcher: ^5.7.5
+  url_launcher_web: ^0.1.4+1
+  # Information
+  enum_to_string: ^1.0.13
   package_info: ^0.4.3
   path_provider: ^1.6.21
   path_provider_windows: ^0.0.4+1
-  socket_io_client: ^0.9.11
-  url_launcher: ^5.7.5
-  url_launcher_web: ^0.1.4+1
 
 dev_dependencies:
   flutter_test:
