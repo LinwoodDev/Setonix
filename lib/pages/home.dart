@@ -1,5 +1,6 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:minigamesparty/colors.dart';
 import 'package:minigamesparty/pages.dart';
@@ -27,9 +28,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final List<Widget> _tabs = [NewsPage(), CreatePage(), ConnectPage()];
+  var prefBox = Hive.box("pref");
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => checkFirstTime());
+  }
+
+  void checkFirstTime() {
+    if (prefBox.get("first", defaultValue: true)) Navigator.of(context).pushNamed(RoutePages.intro);
   }
 
   @override
@@ -46,6 +53,10 @@ class _HomePageState extends State<HomePage> {
           appBar: AppBar(
             title: Text("Home"),
             actions: [
+              IconButton(
+                  icon: Icon(MdiIcons.reload),
+                  tooltip: "Reset",
+                  onPressed: () => prefBox.put("first", true)),
               IconButton(
                 icon: Icon(MdiIcons.cogOutline),
                 tooltip: "Settings",

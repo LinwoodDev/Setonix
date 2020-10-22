@@ -23,6 +23,7 @@ class CreatePage extends StatefulWidget {
 class _CreatePageState extends State<CreatePage> {
   ConnectionType _typeController;
   bool _showPassword = false;
+  final _formKey = GlobalKey<FormState>();
   TextEditingController _maxPlayerCountController = TextEditingController(text: "10");
   @override
   Widget build(BuildContext context) {
@@ -33,61 +34,77 @@ class _CreatePageState extends State<CreatePage> {
         body: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
             child: Form(
+                key: _formKey,
                 child: Center(
                     child: Column(
-              children: <Widget>[
-                TextFormField(
-                  decoration: InputDecoration(labelText: "Name"),
-                  validator: (value) {
-                    if (value.isEmpty) return "This value can't be empty!";
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  decoration: InputDecoration(
-                      labelText: "Password",
-                      suffixIcon: IconButton(
-                        icon: Icon(_showPassword ? MdiIcons.eyeOff : MdiIcons.eye),
-                        onPressed: () => setState(() => _showPassword = !_showPassword),
-                      )),
-                  validator: (value) {
-                    if (value.isEmpty) return "This value can't be empty!";
-                    return null;
-                  },
-                  obscureText: _showPassword,
-                  keyboardType: _showPassword ? TextInputType.visiblePassword : TextInputType.text,
-                ),
-                TextFormField(
-                    decoration: InputDecoration(labelText: "Maximum number of players"),
-                    keyboardType: TextInputType.number,
-                    controller: _maxPlayerCountController,
-                    inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly]),
-                DropdownButtonFormField<ConnectionType>(
-                    value: _typeController,
-                    itemHeight: 1000,
-                    items: ConnectionType.values
-                        .map((label) => DropdownMenuItem(
-                              child: Text(label.getName()),
-                              value: label,
-                            ))
-                        .toList(),
-                    decoration: InputDecoration(
-                        labelText: "Connection type",
-                        helperText: "Choose where you want to host your game"),
-                    onChanged: (value) {
-                      setState(() {
-                        _typeController = value;
-                      });
-                    }),
-                SizedBox(height: 20),
-                Text(_typeController != null ? _typeController.getDescription() : '',
-                    textAlign: TextAlign.center)
-              ],
-            )))),
+                  children: <Widget>[
+                    TextFormField(
+                        decoration: InputDecoration(labelText: "Name"),
+                        validator: (value) {
+                          if (value.isEmpty) return "This value can't be empty!";
+                          return null;
+                        }),
+                    TextFormField(
+                        decoration: InputDecoration(
+                            labelText: "Password",
+                            suffixIcon: IconButton(
+                              icon: Icon(_showPassword ? MdiIcons.eyeOff : MdiIcons.eye),
+                              onPressed: () => setState(() => _showPassword = !_showPassword),
+                            )),
+                        validator: (value) {
+                          if (value.isEmpty) return "This value can't be empty!";
+                          return null;
+                        },
+                        obscureText: !_showPassword,
+                        keyboardType:
+                            _showPassword ? TextInputType.visiblePassword : TextInputType.text),
+                    TextFormField(
+                        decoration: InputDecoration(labelText: "Maximum number of players"),
+                        keyboardType: TextInputType.number,
+                        controller: _maxPlayerCountController,
+                        onChanged: (text) => _maxPlayerCountController.value,
+                        validator: (value) {
+                          var number = int.parse(value);
+                          if (number > 100)
+                            return "Invalid max player count! You can't set this value above 100";
+                          if (number < 2)
+                            return "Invalid max player count! The value need to be over 1!";
+                          return null;
+                        },
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly
+                        ]),
+                    DropdownButtonFormField<ConnectionType>(
+                        value: _typeController,
+                        itemHeight: 1000,
+                        validator: (value) {
+                          if (value == null) return "This value can't be empty!";
+                          return null;
+                        },
+                        items: ConnectionType.values
+                            .map((label) => DropdownMenuItem(
+                                  child: Text(label.getName()),
+                                  value: label,
+                                ))
+                            .toList(),
+                        decoration: InputDecoration(
+                            labelText: "Connection type",
+                            helperText: "Choose where you want to host your game"),
+                        onChanged: (value) {
+                          setState(() {
+                            _typeController = value;
+                          });
+                        }),
+                    SizedBox(height: 20),
+                    Text(_typeController != null ? _typeController.getDescription() : '',
+                        textAlign: TextAlign.center)
+                  ],
+                )))),
         floatingActionButton: Builder(builder: (BuildContext context) {
           return FloatingActionButton(
             child: Icon(MdiIcons.arrowRight),
             onPressed: () async {
+              _formKey.currentState.validate();
               // FlutterBlue.instance.state.listen((state) {
               //   if (state != BluetoothState.on) {
               //     Scaffold.of(context).showSnackBar(

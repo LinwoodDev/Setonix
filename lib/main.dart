@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:minigamesparty/colors.dart';
+import 'package:minigamesparty/models/server.dart';
 import 'package:minigamesparty/pages.dart';
 import 'package:minigamesparty/pages/create.dart';
 import 'package:minigamesparty/pages/home.dart';
@@ -19,6 +20,7 @@ Future<void> main() async {
   await Hive.initFlutter();
 
   await Hive.openBox('pref');
+  Hive.registerAdapter(ServerAdapter());
 
   // GetIt.I.registerSingleton<Game>(GameModeManager());
 

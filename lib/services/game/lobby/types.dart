@@ -4,14 +4,14 @@ import 'package:minigamesparty/services/localization.dart';
 enum LobbyType { unlimited, win, board }
 
 extension LobbyTypeExtension on LobbyType {
-  String getName() {
+  String getName(BuildContext context) {
     switch (this) {
       case LobbyType.board:
-        return "Board";
+        return AppLocalizations.of(context).translate("lobby-types.board.name");
       case LobbyType.unlimited:
-        return "Unlimited";
+        return AppLocalizations.of(context).translate("lobby-types.unlimited.name");
       case LobbyType.win:
-        return "Win";
+        return AppLocalizations.of(context).translate("lobby-types.win.name");
     }
     return null;
   }
@@ -19,11 +19,11 @@ extension LobbyTypeExtension on LobbyType {
   String getDescription(BuildContext context) {
     switch (this) {
       case LobbyType.board:
-        AppLocalizations.of(context).translate("lobby-types.board");
+        return AppLocalizations.of(context).translate("lobby-types.board.description");
       case LobbyType.unlimited:
-        AppLocalizations.of(context).translate("lobby-types.unlimited");
+        return AppLocalizations.of(context).translate("lobby-types.unlimited.description");
       case LobbyType.win:
-        AppLocalizations.of(context).translate("lobby-types.win");
+        return AppLocalizations.of(context).translate("lobby-types.win.description");
     }
     return null;
   }
