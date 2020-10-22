@@ -15,31 +15,36 @@ class AppLocalizations {
   }
 
   // Static member to have a simple access to the delegate from the MaterialApp
-  static const LocalizationsDelegate<AppLocalizations> delegate =
-  _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
 
   Map<String, String> _localizedStrings;
+  Map flattenTranslations(Map<String, dynamic> json, [String prefix = '']) {
+    final Map<String, String> translations = {};
+    json.forEach((String key, dynamic value) {
+      if (value is Map) {
+        translations.addAll(flattenTranslations(value, '$prefix$key.'));
+      } else {
+        translations['$prefix$key'] = value.toString();
+      }
+    });
+    return translations;
+  }
 
   Future<bool> load() async {
     // Load the language JSON file from the "lang" folder
-    String jsonString =
-    await rootBundle.loadString('lang/${locale.languageCode}.json');
-    Map<String, dynamic> jsonMap = json.decode(jsonString);
-
-    _localizedStrings = jsonMap.map((key, value) {
-      return MapEntry(key, value.toString());
-    });
-
+    String value = await rootBundle.loadString('lang/${locale.languageCode}.json');
+    Map<String, dynamic> jsonMap = jsonDecode(value);
+    _localizedStrings = flattenTranslations(jsonMap);
     return true;
   }
 
   // This method will be called from every widget which needs a localized text
   String translate(String key) {
-    return _localizedStrings[key];
+    return _localizedStrings[key] ?? key;
   }
 }
-class _AppLocalizationsDelegate
-    extends LocalizationsDelegate<AppLocalizations> {
+
+class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
   // This delegate instance will never change (it doesn't even have fields!)
   // It can provide a constant constructor.
   const _AppLocalizationsDelegate();

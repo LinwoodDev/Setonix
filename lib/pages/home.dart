@@ -6,6 +6,7 @@ import 'package:minigamesparty/pages.dart';
 import 'package:minigamesparty/pages/connect.dart';
 import 'package:minigamesparty/pages/create.dart';
 import 'package:minigamesparty/pages/intro.dart';
+import 'package:minigamesparty/pages/news.dart';
 import 'package:minigamesparty/pages/settings.dart';
 
 class HomePage extends StatefulWidget {
@@ -25,7 +26,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<Widget> _tabs = [WelcomePage(), CreatePage(), ConnectPage()];
+  final List<Widget> _tabs = [NewsPage(), CreatePage(), ConnectPage()];
   @override
   void initState() {
     super.initState();

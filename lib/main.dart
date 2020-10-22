@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:minigamesparty/colors.dart';
 import 'package:minigamesparty/pages.dart';
 import 'package:minigamesparty/pages/create.dart';
@@ -9,15 +10,13 @@ import 'package:minigamesparty/pages/home.dart';
 import 'package:minigamesparty/pages/info.dart';
 import 'package:minigamesparty/pages/intro.dart';
 import 'package:minigamesparty/services/localization.dart';
-import 'package:path_provider/path_provider.dart';
 
 Future<void> main() async {
   debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  var dir = await getApplicationDocumentsDirectory();
-  Hive.init(dir.path);
+  await Hive.initFlutter();
 
   await Hive.openBox('pref');
 
@@ -56,7 +55,6 @@ class MyApp extends StatelessWidget {
             // is not restarted.
             bottomAppBarColor: PaletteColors.colorCustom,
             primarySwatch: PaletteColors.colorCustom),
-        initialRoute: RoutePages.intro,
         routes: {
           RoutePages.home: (_) => HomePage(),
           RoutePages.create: (_) => CreatePage(),

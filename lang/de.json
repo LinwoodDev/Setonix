@@ -1,3 +1,9 @@
 {
-    "title":"HALLo"
+    "title":"HALLo",
+    "lobby-type":{
+        "win":{
+            "name": "Am meisten gewonnen",
+            "description":"Der Spieler gewinnt, der bei den Spielen am meisten gewonnen hat."
+        }
+    }
 }
