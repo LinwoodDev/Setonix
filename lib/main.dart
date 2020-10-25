@@ -6,7 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:minigamesparty/colors.dart';
 import 'package:minigamesparty/models/server.dart';
 import 'package:minigamesparty/pages.dart';
-import 'package:minigamesparty/pages/create.dart';
+import 'package:minigamesparty/pages/create/lobby.dart';
 import 'package:minigamesparty/pages/home.dart';
 import 'package:minigamesparty/pages/info.dart';
 import 'package:minigamesparty/pages/intro.dart';
@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
             primarySwatch: PaletteColors.colorCustom),
         routes: {
           RoutePages.home: (_) => HomePage(),
-          RoutePages.create: (_) => CreatePage(),
+          RoutePages.create: (_) => CreateLobbyPage(),
           RoutePages.info: (_) => InfoPage(),
           RoutePages.intro: (_) => IntroPage()
         });

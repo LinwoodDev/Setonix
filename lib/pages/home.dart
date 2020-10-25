@@ -5,7 +5,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:minigamesparty/colors.dart';
 import 'package:minigamesparty/pages.dart';
 import 'package:minigamesparty/pages/connect.dart';
-import 'package:minigamesparty/pages/create.dart';
+import 'package:minigamesparty/pages/create/lobby.dart';
 import 'package:minigamesparty/pages/intro.dart';
 import 'package:minigamesparty/pages/news.dart';
 import 'package:minigamesparty/pages/settings.dart';
@@ -27,7 +27,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<Widget> _tabs = [NewsPage(), CreatePage(), ConnectPage()];
+  final List<Widget> _tabs = [NewsPage(), CreateLobbyPage(), ConnectPage()];
   var prefBox = Hive.box("pref");
   @override
   void initState() {

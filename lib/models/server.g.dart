@@ -16,21 +16,24 @@ class ServerAdapter extends TypeAdapter<Server> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Server()
-      ..name = fields[0] as String
-      ..address = fields[1] as String
-      ..password = fields[2] as String;
+    return Server(
+      name: fields[0] as String,
+      address: fields[2] as String,
+      password: fields[3] as String,
+    )..description = fields[1] as String;
   }
 
   @override
   void write(BinaryWriter writer, Server obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
-      ..write(obj.address)
+      ..write(obj.description)
       ..writeByte(2)
+      ..write(obj.address)
+      ..writeByte(3)
       ..write(obj.password);
   }
 

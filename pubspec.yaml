@@ -28,25 +28,25 @@ dependencies:
   flutter_slidable: ^0.5.7
   convex_bottom_bar: ^2.6.0
   # Communication
-  flutter_reactive_ble: ^2.6.0
+  flutter_reactive_ble: ^2.6.1
   socket_io_client: ^0.9.11
   # Database
   hive: ^1.4.4+1
   hive_flutter: ^0.3.1
   # Generation
-  barcode: ^1.17.0
+  barcode: ^1.17.1
   flutter_modular: ^2.0.1
   webfeed: ^0.6.0
   # Internal
   flutter_bloc: ^6.0.6
   get_it: ^5.0.1
-  url_launcher: ^5.7.6
+  url_launcher: ^5.7.8
   url_launcher_web: ^0.1.5
   # Information
   enum_to_string: ^1.0.13
   http: ^0.12.2
   package_info: ^0.4.3
-  path_provider: ^1.6.21
+  path_provider: ^1.6.22
   path_provider_windows: ^0.0.4+1
 
 dev_dependencies:

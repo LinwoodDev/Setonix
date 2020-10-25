@@ -7,7 +7,10 @@ class Server {
   @HiveField(0)
   String name;
   @HiveField(1)
-  String address;
+  String description;
   @HiveField(2)
+  String address;
+  @HiveField(3)
   String password;
+  Server({this.name, this.address, this.password});
 }
