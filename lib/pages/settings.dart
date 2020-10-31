@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:responsive_grid/responsive_grid.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../pages.dart';
 
 class SettingsPage extends StatefulWidget {
   SettingsPage({Key key}) : super(key: key);
@@ -20,61 +23,71 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  static const settingsPages = [
+    {
+      "name": "Appeareance",
+      "icon": MdiIcons.monitorEdit,
+      "description": "Dark mode, Quality, ..",
+      "route": RoutePages.appeareance
+    },
+    {
+      "name": "Accounts",
+      "icon": MdiIcons.accountMultipleOutline,
+      "description": "Add account, remove account, ...",
+      "route": RoutePages.settings
+    },
+    {"name": "Data", "icon": MdiIcons.database, "description": "Load, save, ..."},
+    {
+      "name": "Info",
+      "icon": MdiIcons.informationOutline,
+      "description": "Licenses, Legal, ...",
+      "route": RoutePages.info
+    }
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Information"),
+          title: Text("Settings"),
         ),
         body: Container(
             margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: ListView(children: [
-              ListTile(
-                  tileColor: Theme.of(context).primaryColor,
-                  onTap: () => launch("https://github.com/codedoctorde/minigamesparty"),
-                  title: Text(
-                    "GitHub Repository",
-                    style: Theme.of(context).primaryTextTheme.subtitle1,
-                  ),
-                  trailing: Icon(MdiIcons.chevronRight,
-                      color: Theme.of(context).primaryIconTheme.color,
-                      size: Theme.of(context).primaryIconTheme.size)),
-              ListTile(
-                tileColor: Theme.of(context).primaryColor,
-                title: Text("Impress", style: Theme.of(context).primaryTextTheme.subtitle1),
-                trailing: Icon(MdiIcons.openInNew,
-                    color: Theme.of(context).primaryIconTheme.color,
-                    size: Theme.of(context).primaryIconTheme.size),
-                onTap: () => launch("https://codedoctor.tk/impress", forceWebView: true),
-              ),
-              ListTile(
-                tileColor: Theme.of(context).primaryColor,
-                title: Text("Privacy", style: Theme.of(context).primaryTextTheme.subtitle1),
-                trailing: Icon(MdiIcons.openInNew,
-                    color: Theme.of(context).primaryIconTheme.color,
-                    size: Theme.of(context).primaryIconTheme.size),
-                onTap: () => launch("https://codedoctor.tk/privacy", forceWebView: true),
-              ),
-              ListTile(
-                onTap: () => showAboutDialog(context: context),
-                title: Text(
-                  "About",
-                  style: Theme.of(context).primaryTextTheme.subtitle1,
-                ),
-                trailing: Icon(MdiIcons.informationOutline,
-                    color: Theme.of(context).primaryIconTheme.color,
-                    size: Theme.of(context).primaryIconTheme.size),
-              ),
-              ListTile(
-                onTap: () => showAboutDialog(context: context),
-                title: Text(
-                  "Language",
-                  style: Theme.of(context).primaryTextTheme.subtitle1,
-                ),
-                trailing: Icon(MdiIcons.translate,
-                    color: Theme.of(context).primaryIconTheme.color,
-                    size: Theme.of(context).primaryIconTheme.size),
-              )
-            ])));
+            child: ResponsiveGridList(
+                desiredItemWidth: 100,
+                minSpacing: 10,
+                scroll: true,
+                rowMainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(
+                    settingsPages.length,
+                    (index) => Container(
+                        alignment: Alignment(0, 0),
+                        child: OutlineButton(
+                          padding: EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Icon(settingsPages[index]["icon"],
+                                      color: Theme.of(context).primaryColor)),
+                              Padding(
+                                  padding: const EdgeInsets.all(2.0),
+                                  child: Text(settingsPages[index]["name"],
+                                      textAlign: TextAlign.center,
+                                      textWidthBasis: TextWidthBasis.parent,
+                                      softWrap: false,
+                                      style: Theme.of(context).textTheme.button)),
+                              Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: Text(settingsPages[index]["description"],
+                                    style: Theme.of(context).textTheme.caption),
+                              ),
+                            ],
+                          ),
+                          onPressed: () =>
+                              Navigator.of(context).pushNamed(settingsPages[index]["route"]),
+                        ))))));
   }
 }

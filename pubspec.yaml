@@ -27,6 +27,7 @@ dependencies:
   material_design_icons_flutter: ^4.0.5755
   flutter_slidable: ^0.5.7
   convex_bottom_bar: ^2.6.0
+  responsive_grid: ^1.2.1+1
   # Communication
   flutter_reactive_ble: ^2.6.1
   socket_io_client: ^0.9.11
