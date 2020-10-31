@@ -105,7 +105,7 @@ packages:
       name: build_runner
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.10.3"
+    version: "1.10.4"
   build_runner_core:
     dependency: transitive
     description:
@@ -247,7 +247,7 @@ packages:
     source: hosted
     version: "0.10.11"
   flame:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: flame
       url: "https://pub.dartlang.org"
@@ -297,7 +297,7 @@ packages:
       name: flutter_reactive_ble
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.6.1"
+    version: "2.6.1+1"
   flutter_slidable:
     dependency: "direct main"
     description:
@@ -623,6 +623,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.5"
+  responsive_grid:
+    dependency: "direct main"
+    description:
+      name: responsive_grid
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.1+1"
   shared_preferences:
     dependency: transitive
     description:
@@ -665,13 +672,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.1+1"
-  responsive_grid:
-    dependency: "direct main"
-    description:
-      name: responsive_grid
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.1+1"
   shelf:
     dependency: transitive
     description:
@@ -725,7 +725,7 @@ packages:
       name: stack_trace
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.10.0-nullsafety.4"
+    version: "1.10.0-nullsafety.2"
   stream_channel:
     dependency: transitive
     description:
@@ -902,5 +902,5 @@ packages:
     source: hosted
     version: "2.2.1"
 sdks:
-  dart: ">=2.10.0-110 <=2.11.0-242.0.dev"
+  dart: ">=2.10.0-110 <=2.11.0-218.0.dev"
   flutter: ">=1.22.0 <2.0.0"
