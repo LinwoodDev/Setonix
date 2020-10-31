@@ -8,8 +8,9 @@ import 'package:minigamesparty/models/server.dart';
 import 'package:minigamesparty/pages.dart';
 import 'package:minigamesparty/pages/create/lobby.dart';
 import 'package:minigamesparty/pages/home.dart';
-import 'package:minigamesparty/pages/info.dart';
+import 'package:minigamesparty/pages/settings/info.dart';
 import 'package:minigamesparty/pages/intro.dart';
+import 'package:minigamesparty/pages/settings.dart';
 import 'package:minigamesparty/services/localization.dart';
 
 Future<void> main() async {
@@ -60,7 +61,8 @@ class MyApp extends StatelessWidget {
         routes: {
           RoutePages.home: (_) => HomePage(),
           RoutePages.create: (_) => CreateLobbyPage(),
-          RoutePages.info: (_) => InfoPage(),
+          RoutePages.settings: (_) => SettingsPage(),
+          RoutePages.info: (_) => InfoSettingsPage(),
           RoutePages.intro: (_) => IntroPage()
         });
   }
