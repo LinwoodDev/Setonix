@@ -22,6 +22,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   # Engine
+  bonfire: ^0.7.6
   flame: ^0.27.0
   # UI
   material_design_icons_flutter: ^4.0.5755
