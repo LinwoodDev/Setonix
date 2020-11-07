@@ -3,8 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:minigamesparty/pages.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class IntroPage extends StatefulWidget {
   @override

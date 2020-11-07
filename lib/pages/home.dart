@@ -6,7 +6,6 @@ import 'package:minigamesparty/colors.dart';
 import 'package:minigamesparty/pages.dart';
 import 'package:minigamesparty/pages/connect.dart';
 import 'package:minigamesparty/pages/create/lobby.dart';
-import 'package:minigamesparty/pages/intro.dart';
 import 'package:minigamesparty/pages/news.dart';
 import 'package:minigamesparty/pages/settings.dart';
 

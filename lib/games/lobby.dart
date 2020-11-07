@@ -1,4 +1,4 @@
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/widgets.dart';
 import 'package:minigamesparty/services/game/mode.dart';
 import 'package:minigamesparty/services/game/system.dart';
 import 'package:minigamesparty/services/game/player.dart';

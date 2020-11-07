@@ -11,9 +11,9 @@ class NewsPage extends StatefulWidget {
 }
 
 class _NewsPageState extends State<NewsPage> {
-  static final String FEED_URL = 'https://blog.linwood.tk/feed.xml';
+  static final feedUrl = 'https://blog.linwood.tk/feed.xml';
   Future<AtomFeed> getFeed() =>
-      http.get(FEED_URL).then((response) => AtomFeed.parse(utf8.decode(response.bodyBytes)));
+      http.get(feedUrl).then((response) => AtomFeed.parse(utf8.decode(response.bodyBytes)));
 
   @override
   Widget build(BuildContext context) {
