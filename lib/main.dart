@@ -56,8 +56,10 @@ class MyApp extends StatelessWidget {
             // or simply save your changes to "hot reload" in a Flutter IDE).
             // Notice that the counter didn't reset back to zero; the application
             // is not restarted.
-            bottomAppBarColor: PaletteColors.colorCustom,
-            primarySwatch: PaletteColors.colorCustom),
+            buttonColor: PaletteColors.secondaryColor,
+            accentColor: PaletteColors.accentColor,
+            bottomAppBarColor: PaletteColors.primaryPalette,
+            primarySwatch: PaletteColors.primaryPalette),
         routes: {
           RoutePages.home: (_) => HomePage(),
           RoutePages.create: (_) => CreateLobbyPage(),
