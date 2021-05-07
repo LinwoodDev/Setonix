@@ -1,7 +1,7 @@
 enum ConnectionType { bluetooth, socket, online }
 
 extension ConnectTypeExtension on ConnectionType {
-  String getName() {
+  String? getName() {
     switch (this) {
       case ConnectionType.bluetooth:
         return "Bluetooth";
@@ -9,11 +9,12 @@ extension ConnectTypeExtension on ConnectionType {
         return "LAN";
       case ConnectionType.online:
         return "Online";
+      default:
+        return null;
     }
-    return null;
   }
 
-  String getDescription() {
+  String? getDescription() {
     switch (this) {
       case ConnectionType.bluetooth:
         return "Play without internet together using bluetooth.";
@@ -21,7 +22,8 @@ extension ConnectTypeExtension on ConnectionType {
         return "Play on your current network. All players need to be on the same!";
       case ConnectionType.online:
         return "Play on the official servers.";
+      default:
+        return null;
     }
-    return null;
   }
 }

@@ -8,9 +8,9 @@ enum GamePage { game, chat, players }
 
 class GameDrawer extends StatelessWidget {
   final GameSystem manager;
-  final GamePage page;
+  final GamePage? page;
 
-  GameDrawer({this.page, @required this.manager});
+  GameDrawer({this.page, required this.manager});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class GameDrawer extends StatelessWidget {
               Navigator.pop(context);
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => manager?.currentMode?.build()),
+                MaterialPageRoute(builder: (context) => manager.currentMode!.build(context)),
               );
             },
           ),

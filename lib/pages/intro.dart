@@ -40,7 +40,7 @@ class _WelcomePageState extends State<WelcomePage> {
     }
   ];
   final _pageViewController = PageController();
-  double _currentPage = 0;
+  double? _currentPage = 0;
   List<Widget> indicator() => List<Widget>.generate(
       _items.length,
       (index) => Container(
@@ -51,7 +51,7 @@ class _WelcomePageState extends State<WelcomePage> {
               onTap: () => _setPage(index),
             ),
             decoration: BoxDecoration(
-                color: _currentPage.round() == index
+                color: _currentPage!.round() == index
                     ? Color(0XFF256075)
                     : Color(0XFF256075).withOpacity(0.2),
                 borderRadius: BorderRadius.circular(10.0)),
@@ -140,14 +140,14 @@ class _WelcomePageState extends State<WelcomePage> {
               alignment: Alignment.bottomRight,
               child: Container(
                 child: Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
-                  (_currentPage <= _items.length - 1.5)
-                      ? FlatButton(
+                  (_currentPage! <= _items.length - 1.5)
+                      ? TextButton(
                           onPressed: () {
                             _setPage(5);
                           },
                           child: Text("SKIP"),
                         )
-                      : RaisedButton(
+                      : TextButton(
                           onPressed: () {
                             var prefBox = Hive.box("pref");
                             prefBox.put("first", false);

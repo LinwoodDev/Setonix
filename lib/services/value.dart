@@ -1,7 +1,7 @@
 class BluetoothValue {
-  final bool service;
+  final bool? service;
   // final BluetoothDevice device;
-  final String data;
+  final String? data;
 
   BluetoothValue({this.service, this.data});
   Map<String, dynamic> toJson() => {"service": service, "data": data};

@@ -28,7 +28,7 @@ class CreateOnlinePage extends StatelessWidget {
             itemCount: _servers.length,
             physics: NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) => ListTile(
-                title: Text(_servers[index].name), subtitle: Text(_servers[index].address)),
+                title: Text(_servers[index].name!), subtitle: Text(_servers[index].address!)),
           )
         ],
       ),

@@ -8,7 +8,7 @@ import 'package:minigamesparty/widgets/game/drawer.dart';
 class PlayersPage extends StatefulWidget {
   final GameSystem manager;
 
-  PlayersPage({Key key, @required this.manager}) : super(key: key);
+  PlayersPage({Key? key, required this.manager}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect

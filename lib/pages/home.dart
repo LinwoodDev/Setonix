@@ -10,7 +10,7 @@ import 'package:minigamesparty/pages/news.dart';
 import 'package:minigamesparty/pages/settings.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => checkFirstTime());
+    WidgetsBinding.instance!.addPostFrameCallback((_) => checkFirstTime());
   }
 
   void checkFirstTime() {

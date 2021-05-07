@@ -6,7 +6,7 @@ import 'package:responsive_grid/responsive_grid.dart';
 import '../pages.dart';
 
 class SettingsPage extends StatefulWidget {
-  SettingsPage({Key key}) : super(key: key);
+  SettingsPage({Key? key}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -61,32 +61,31 @@ class _SettingsPageState extends State<SettingsPage> {
                     settingsPages.length,
                     (index) => Container(
                         alignment: Alignment(0, 0),
-                        child: OutlineButton(
-                          padding: EdgeInsets.all(8.0),
+                        child: OutlinedButton(
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: <Widget>[
                               Padding(
                                   padding: const EdgeInsets.all(4.0),
-                                  child: Icon(settingsPages[index]["icon"],
+                                  child: Icon(settingsPages[index]["icon"] as IconData?,
                                       color: Theme.of(context).primaryColor)),
                               Padding(
                                   padding: const EdgeInsets.all(2.0),
-                                  child: Text(settingsPages[index]["name"],
+                                  child: Text(settingsPages[index]["name"] as String,
                                       textAlign: TextAlign.center,
                                       textWidthBasis: TextWidthBasis.parent,
                                       softWrap: false,
                                       style: Theme.of(context).textTheme.button)),
                               Padding(
                                 padding: const EdgeInsets.all(2.0),
-                                child: Text(settingsPages[index]["description"],
+                                child: Text(settingsPages[index]["description"] as String,
                                     style: Theme.of(context).textTheme.caption),
                               ),
                             ],
                           ),
                           onPressed: () =>
-                              Navigator.of(context).pushNamed(settingsPages[index]["route"]),
+                              Navigator.of(context).pushNamed(settingsPages[index]["route"] as String),
                         ))))));
   }
 }

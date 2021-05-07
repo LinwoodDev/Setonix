@@ -24,7 +24,7 @@ class _CreateServerPageState extends State<CreateServerPage> {
                       decoration: InputDecoration(
                           labelText: "Name", prefixIcon: Icon(MdiIcons.pencilOutline)),
                       validator: (value) {
-                        if (value.isEmpty) return "This value can't be empty!";
+                        if (value!.isEmpty) return "This value can't be empty!";
                         return null;
                       }),
                   TextFormField(
@@ -36,7 +36,7 @@ class _CreateServerPageState extends State<CreateServerPage> {
                             onPressed: () => setState(() => _showPassword = !_showPassword),
                           )),
                       validator: (value) {
-                        if (value.isEmpty) return "This value can't be empty!";
+                        if (value!.isEmpty) return "This value can't be empty!";
                         return null;
                       },
                       obscureText: !_showPassword,
@@ -46,7 +46,7 @@ class _CreateServerPageState extends State<CreateServerPage> {
                       decoration: InputDecoration(labelText: "Description"),
                       maxLines: null,
                       validator: (value) {
-                        if (value.isEmpty) return "This value can't be empty!";
+                        if (value!.isEmpty) return "This value can't be empty!";
                         return null;
                       }),
                 ],

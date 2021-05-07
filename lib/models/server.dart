@@ -5,12 +5,12 @@ part 'server.g.dart';
 @HiveType(typeId: 0)
 class Server {
   @HiveField(0)
-  String name;
+  String? name;
   @HiveField(1)
-  String description;
+  String? description;
   @HiveField(2)
-  String address;
+  String? address;
   @HiveField(3)
-  String password;
+  String? password;
   Server({this.name, this.address, this.password});
 }

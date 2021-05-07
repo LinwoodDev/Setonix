@@ -17,10 +17,10 @@ class ServerAdapter extends TypeAdapter<Server> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Server(
-      name: fields[0] as String,
-      address: fields[2] as String,
-      password: fields[3] as String,
-    )..description = fields[1] as String;
+      name: fields[0] as String?,
+      address: fields[2] as String?,
+      password: fields[3] as String?,
+    )..description = fields[1] as String?;
   }
 
   @override

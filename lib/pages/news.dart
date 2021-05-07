@@ -11,9 +11,9 @@ class NewsPage extends StatefulWidget {
 }
 
 class _NewsPageState extends State<NewsPage> {
-  static final feedUrl = 'https://blog.linwood.tk/feed.xml';
-  Future<AtomFeed> getFeed() =>
-      http.get(feedUrl).then((response) => AtomFeed.parse(utf8.decode(response.bodyBytes)));
+  Future<AtomFeed> getFeed() => http
+      .get(Uri.parse("https://linwood.tk/blog/atom.xml"))
+      .then((response) => AtomFeed.parse(utf8.decode(response.bodyBytes)));
 
   @override
   Widget build(BuildContext context) {
@@ -24,15 +24,15 @@ class _NewsPageState extends State<NewsPage> {
             case ConnectionState.done:
               if (snapshot.hasData) {
                 if (snapshot.data != null) {
-                  final feed = snapshot.data;
+                  final feed = snapshot.data!;
                   return ListView.builder(
-                    itemCount: feed.items.length,
+                    itemCount: feed.items!.length,
                     itemBuilder: (context, index) {
-                      var current = feed.items[index];
+                      var current = feed.items![index];
                       return ListTile(
-                        title: Text(current.title),
-                        subtitle: Text(current.summary),
-                        onTap: () async => await launch(current.id),
+                        title: Text(current.title!),
+                        subtitle: Text(current.summary!),
+                        onTap: () async => await launch(current.id!),
                       );
                     },
                   );

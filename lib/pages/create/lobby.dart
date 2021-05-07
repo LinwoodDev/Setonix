@@ -6,7 +6,7 @@ import 'package:minigamesparty/pages/create/online.dart';
 import 'package:minigamesparty/services/game/system/types.dart';
 
 class CreateLobbyPage extends StatefulWidget {
-  CreateLobbyPage({Key key}) : super(key: key);
+  CreateLobbyPage({Key? key}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -22,7 +22,7 @@ class CreateLobbyPage extends StatefulWidget {
 }
 
 class _CreateLobbyPageState extends State<CreateLobbyPage> {
-  ConnectionType _typeController;
+  ConnectionType? _typeController;
   bool _showPassword = false;
   final _formKey = GlobalKey<FormState>();
   TextEditingController _maxPlayerCountController = TextEditingController(text: "10");
@@ -43,7 +43,7 @@ class _CreateLobbyPageState extends State<CreateLobbyPage> {
                         decoration:
                             InputDecoration(labelText: "Name", icon: Icon(MdiIcons.pencilOutline)),
                         validator: (value) {
-                          if (value.isEmpty) return "This value can't be empty!";
+                          if (value!.isEmpty) return "This value can't be empty!";
                           return null;
                         }),
                     TextFormField(
@@ -55,7 +55,7 @@ class _CreateLobbyPageState extends State<CreateLobbyPage> {
                               onPressed: () => setState(() => _showPassword = !_showPassword),
                             )),
                         validator: (value) {
-                          if (value.isEmpty) return "This value can't be empty!";
+                          if (value!.isEmpty) return "This value can't be empty!";
                           return null;
                         },
                         obscureText: !_showPassword,
@@ -69,7 +69,7 @@ class _CreateLobbyPageState extends State<CreateLobbyPage> {
                         controller: _maxPlayerCountController,
                         onChanged: (text) => _maxPlayerCountController.value,
                         validator: (value) {
-                          var number = int.parse(value);
+                          var number = int.parse(value!);
                           if (number > 100)
                             return "Invalid max player count! You can't set this value above 100";
                           if (number < 2)
@@ -88,7 +88,7 @@ class _CreateLobbyPageState extends State<CreateLobbyPage> {
                         },
                         items: ConnectionType.values
                             .map((label) => DropdownMenuItem(
-                                  child: Text(label.getName()),
+                                  child: Text(label.getName()!),
                                   value: label,
                                 ))
                             .toList(),
@@ -102,7 +102,7 @@ class _CreateLobbyPageState extends State<CreateLobbyPage> {
                           });
                         }),
                     SizedBox(height: 20),
-                    Text(_typeController != null ? _typeController.getDescription() : '',
+                    Text(_typeController != null ? _typeController?.getDescription() ?? '' : '',
                         textAlign: TextAlign.center)
                   ],
                 )))),
@@ -110,7 +110,7 @@ class _CreateLobbyPageState extends State<CreateLobbyPage> {
           return FloatingActionButton(
             child: Icon(MdiIcons.arrowRight),
             onPressed: () async {
-              if (_formKey.currentState.validate())
+              if (_formKey.currentState!.validate())
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) => CreateOnlinePage()));
               // FlutterBlue.instance.state.listen((state) {
