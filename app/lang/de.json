@@ -1,0 +1,79 @@
+{
+  "pages": {
+    "create-game": {
+      "title": "Erstelle ein Spiel",
+      "name": "Name",
+      "connection-type": "Verbindungsart",
+      "lobby-type": "Spielart",
+      "next": "Weiter"
+    },
+    "add-server": {
+      "title": "Füge ein Server hinzu",
+      "name": "Name",
+      "address": "Adresse",
+      "password": "Passwort"
+    },
+    "servers": {
+      "title": "Server",
+      "create": "Neu"
+    },
+    "settings": {
+      "title": "Einstellungen",
+      "appeareance": {
+        "title": "Personalisierung",
+        "theme": {
+          "title": "Thema",
+          "dark": "Dunkel",
+          "light": "Hell",
+          "system": "System"
+        }
+      },
+      "characters": {
+        "title": "Charakter",
+        "color": "Farbe",
+        "hats": {
+          "title": "Hüte"
+        },
+        "pets": {
+          "title": "Haustiere"
+        }
+      },
+      "accounts": {
+        "title": "Konten",
+        "add": "Konto hinzufügen"
+      },
+      "information": {
+        "title": "Informationen",
+        "description": "Lizenzen, Rechtliche Informationen"
+      }
+    }
+  },
+  "lobby-type": {
+    "win": {
+      "name": "Am meisten gewonnen",
+      "description": "Der Spieler gewinnt, der bei den Spielen am meisten gewonnen hat."
+    },
+    "board": {
+      "name": "Spielbrett",
+      "description": "Spiele mit Würfel und Felder und der erste im Ziel gewinnt!"
+    },
+    "unlimited": {
+      "name": "Unendlich",
+      "description": "Spiele solange man Lust hat"
+    }
+  },
+  "connection-type": {
+    "bluetooth": {
+      "name": "Bluetooth",
+      "description": "Spiele ohne Internet mit Bluetooth zusammen"
+    },
+    "socket": {
+      "name": "LAN",
+      "description": "Spiele im Netzwerk zusammen"
+    },
+    "onlinee": {
+      "name": "Online",
+      "description": "Spiele auf den offiziellen Servern"
+    }
+  }
+}
