@@ -21,6 +21,8 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  shared:
+    path: ../shared
   # Engine
   flame: ^1.0.0-releasecandidate.13
   # UI
