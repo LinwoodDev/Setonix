@@ -6,7 +6,7 @@ import 'package:linwood_city/services/game/system/types.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class CreateLobbyPage extends StatefulWidget {
-  CreateLobbyPage({Key? key}) : super(key: key);
+  const CreateLobbyPage({Key? key}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -25,13 +25,13 @@ class _CreateLobbyPageState extends State<CreateLobbyPage> {
   ConnectionType _typeController = ConnectionType.socket;
   bool _showPassword = false;
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _maxPlayerCountController = TextEditingController(text: "10");
+  final TextEditingController _maxPlayerCountController = TextEditingController(text: "10");
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Create game lobby"),
+          title: const Text("Create game lobby"),
         ),
         body: Align(
             alignment: Alignment.topCenter,
@@ -39,13 +39,14 @@ class _CreateLobbyPageState extends State<CreateLobbyPage> {
                 padding: const EdgeInsets.all(16.0),
                 constraints: const BoxConstraints(maxWidth: 800),
                 child: SingleChildScrollView(
-                    padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
                     child: Form(
                         key: _formKey,
                         child: Center(
                             child: Column(children: <Widget>[
                           TextFormField(
-                              decoration: InputDecoration(labelText: "Name", icon: Icon(PhosphorIcons.pencilLight)),
+                              decoration:
+                                  const InputDecoration(labelText: "Name", icon: Icon(PhosphorIcons.pencilLight)),
                               validator: (value) {
                                 if (value!.isEmpty) return "This value can't be empty!";
                                 return null;
@@ -53,7 +54,7 @@ class _CreateLobbyPageState extends State<CreateLobbyPage> {
                           TextFormField(
                               decoration: InputDecoration(
                                   labelText: "Password",
-                                  icon: Icon(PhosphorIcons.lockLight),
+                                  icon: const Icon(PhosphorIcons.lockLight),
                                   suffixIcon: IconButton(
                                     icon: Icon(_showPassword ? PhosphorIcons.eyeSlashLight : PhosphorIcons.eyeLight),
                                     onPressed: () => setState(() => _showPassword = !_showPassword),
@@ -61,7 +62,7 @@ class _CreateLobbyPageState extends State<CreateLobbyPage> {
                               obscureText: !_showPassword,
                               keyboardType: _showPassword ? TextInputType.visiblePassword : TextInputType.text),
                           TextFormField(
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                   labelText: "Maximum number of players", icon: Icon(PhosphorIcons.usersLight)),
                               keyboardType: TextInputType.number,
                               controller: _maxPlayerCountController,
@@ -73,16 +74,16 @@ class _CreateLobbyPageState extends State<CreateLobbyPage> {
                                 return null;
                               },
                               inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly]),
-                          SizedBox(height: 10),
-                          Divider(),
+                          const SizedBox(height: 10),
+                          const Divider(),
                           ListTile(
-                            title: Text("Connection type"),
+                            title: const Text("Connection type"),
                             subtitle: Text(_typeController.getName()),
-                            leading: Icon(PhosphorIcons.shareNetworkLight),
+                            leading: const Icon(PhosphorIcons.shareNetworkLight),
                             onTap: () => showModalBottomSheet(
                                 context: context,
                                 builder: (context) => Container(
-                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                                     child: Column(mainAxisSize: MainAxisSize.min, children: [
                                       Padding(
                                         padding: const EdgeInsets.all(16.0),
@@ -104,10 +105,11 @@ class _CreateLobbyPageState extends State<CreateLobbyPage> {
                         ])))))),
         floatingActionButton: Builder(builder: (BuildContext context) {
           return FloatingActionButton(
-            child: Icon(PhosphorIcons.arrowRightLight),
+            child: const Icon(PhosphorIcons.arrowRightLight),
             onPressed: () async {
-              if (_formKey.currentState!.validate())
+              if (_formKey.currentState!.validate()) {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreateOnlinePage()));
+              }
               // FlutterBlue.instance.state.listen((state) {
               //   if (state != BluetoothState.on) {
               //     Scaffold.of(context).showSnackBar(

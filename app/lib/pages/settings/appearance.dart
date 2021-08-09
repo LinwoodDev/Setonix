@@ -7,12 +7,12 @@ class AppearanceSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("Appearance")),
+        appBar: AppBar(title: const Text("Appearance")),
         body: ListView(children: [
           ListTile(
               onTap: () => showAboutDialog(context: context),
-              title: Text("Language"),
-              leading: Icon(PhosphorIcons.translateLight))
+              title: const Text("Language"),
+              leading: const Icon(PhosphorIcons.translateLight))
         ]));
   }
 }

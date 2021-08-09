@@ -10,7 +10,7 @@ class GameDrawer extends StatelessWidget {
   final GameSystem manager;
   final GamePage? page;
 
-  GameDrawer({this.page, required this.manager});
+  const GameDrawer({Key? key, this.page, required this.manager}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +19,8 @@ class GameDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           Container(
-            child: Text('Minigames Party - Ingame'),
-            decoration: BoxDecoration(
+            child: const Text('Minigames Party - Ingame'),
+            decoration: const BoxDecoration(
                 image: DecorationImage(
               image: ExactAssetImage('assets/logo.png'),
               fit: BoxFit.fill,
@@ -28,8 +28,8 @@ class GameDrawer extends StatelessWidget {
             height: 200,
           ),
           ListTile(
-            title: Text('Game'),
-            leading: Icon(PhosphorIcons.gameControllerLight),
+            title: const Text('Game'),
+            leading: const Icon(PhosphorIcons.gameControllerLight),
             selected: page == GamePage.game,
             onTap: () {
               Navigator.pop(context);
@@ -40,10 +40,10 @@ class GameDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: Text('Chat'),
-            subtitle: Text("Coming soon..."),
+            title: const Text('Chat'),
+            subtitle: const Text("Coming soon..."),
             enabled: false,
-            leading: Icon(PhosphorIcons.chatLight),
+            leading: const Icon(PhosphorIcons.chatLight),
             selected: page == GamePage.chat,
             onTap: () {
               // Navigator.pop(context);
@@ -54,8 +54,8 @@ class GameDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: Text('Players'),
-            leading: Icon(PhosphorIcons.usersLight),
+            title: const Text('Players'),
+            leading: const Icon(PhosphorIcons.usersLight),
             selected: page == GamePage.players,
             onTap: () {
               Navigator.pop(context);

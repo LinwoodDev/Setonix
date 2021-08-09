@@ -20,5 +20,5 @@ Future<void> main() async {
 
   // GetIt.I.registerSingleton<Game>(GameModeManager());
 
-  runApp(ModularApp(module: AppModule(), child: CityApp()));
+  runApp(ModularApp(module: AppModule(), child: const CityApp()));
 }

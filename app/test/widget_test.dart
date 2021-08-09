@@ -12,7 +12,7 @@ import 'package:linwood_city/app_widget.dart';
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(CityApp());
+    await tester.pumpWidget(const CityApp());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

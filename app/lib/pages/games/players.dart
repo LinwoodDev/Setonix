@@ -8,7 +8,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 class PlayersPage extends StatefulWidget {
   final GameSystem manager;
 
-  PlayersPage({Key? key, required this.manager}) : super(key: key);
+  const PlayersPage({Key? key, required this.manager}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -28,14 +28,14 @@ class _PlayersPageState extends State<PlayersPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Players"),
+        title: const Text("Players"),
       ),
       drawer: GameDrawer(
         manager: widget.manager,
         page: GamePage.players,
       ),
       body: FutureBuilder(
-          future: Future.delayed(Duration(seconds: 1)),
+          future: Future.delayed(const Duration(seconds: 1)),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             List<Widget> children;
             if (snapshot.hasData) {
@@ -61,7 +61,7 @@ class _PlayersPageState extends State<PlayersPage> {
               ];
             } else {
               children = <Widget>[
-                SizedBox(
+                const SizedBox(
                   child: CircularProgressIndicator(),
                   width: 60,
                   height: 60,

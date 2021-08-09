@@ -12,9 +12,9 @@ class AppModule extends Module {
   // Provide all the routes for your module
   @override
   List<ModularRoute> get routes => [
-        ChildRoute(Modular.initialRoute, child: (_, __) => HomePage()),
-        ChildRoute("/intro", child: (_, __) => IntroPage()),
+        ChildRoute(Modular.initialRoute, child: (_, __) => const HomePage()),
+        ChildRoute("/intro", child: (_, __) => const IntroPage()),
         ModuleRoute("/settings", module: SettingsModule()),
-        ChildRoute("/create", child: (_, __) => CreateLobbyPage())
+        ChildRoute("/create", child: (_, __) => const CreateLobbyPage())
       ];
 }

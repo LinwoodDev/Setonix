@@ -7,8 +7,8 @@ import 'info.dart';
 class SettingsModule extends Module {
   @override
   List<ModularRoute> get routes => [
-        ChildRoute("/", child: (_, __) => SettingsPage()),
-        ChildRoute("/appearance", child: (_, __) => AppearanceSettingsPage()),
-        ChildRoute("/info", child: (_, __) => InfoSettingsPage())
+        ChildRoute("/", child: (_, __) => const SettingsPage()),
+        ChildRoute("/appearance", child: (_, __) => const AppearanceSettingsPage()),
+        ChildRoute("/info", child: (_, __) => const InfoSettingsPage())
       ];
 }

@@ -6,6 +6,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:webfeed/webfeed.dart';
 
 class NewsPage extends StatefulWidget {
+  const NewsPage({Key? key}) : super(key: key);
+
   @override
   _NewsPageState createState() => _NewsPageState();
 }
@@ -41,7 +43,7 @@ class _NewsPageState extends State<NewsPage> {
               break;
             default:
           }
-          return Align(
+          return const Align(
             alignment: Alignment.center,
             child: CircularProgressIndicator(),
           );

@@ -9,7 +9,7 @@ import 'package:linwood_city/pages/settings/home.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -25,7 +25,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<Widget> _tabs = [NewsPage(), CreateLobbyPage(), ConnectPage()];
+  final List<Widget> _tabs = [const NewsPage(), const CreateLobbyPage(), const ConnectPage()];
   var prefBox = Hive.box("pref");
 
   @override
@@ -50,34 +50,35 @@ class _HomePageState extends State<HomePage> {
         length: _tabs.length,
         child: Scaffold(
           appBar: AppBar(
-            title: Text("Home"),
+            title: const Text("Home"),
             actions: [
               IconButton(
-                  icon: Icon(PhosphorIcons.arrowClockwiseLight),
+                  icon: const Icon(PhosphorIcons.arrowClockwiseLight),
                   tooltip: "Reset",
                   onPressed: () => prefBox.put("first", true)),
               IconButton(
-                icon: Icon(PhosphorIcons.gearLight),
+                icon: const Icon(PhosphorIcons.gearLight),
                 tooltip: "Settings",
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => SettingsPage())),
+                onPressed: () =>
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SettingsPage())),
               )
             ],
           ),
           body: TabBarView(
             children: _tabs,
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
           ),
           bottomNavigationBar: ConvexAppBar(
             curve: Curves.ease,
             backgroundColor: PaletteColors.primaryColor,
             items: [
-              TabItem(icon: PhosphorIcons.houseLight, title: "Home"),
+              const TabItem(icon: PhosphorIcons.houseLight, title: "Home"),
               TabItem(
                   icon: Container(
-                decoration: BoxDecoration(shape: BoxShape.circle, color: PaletteColors.darkColor),
-                child: Icon(PhosphorIcons.plusLight, color: Colors.white, size: 40),
+                decoration: const BoxDecoration(shape: BoxShape.circle, color: PaletteColors.darkColor),
+                child: const Icon(PhosphorIcons.plusLight, color: Colors.white, size: 40),
               )),
-              TabItem(icon: PhosphorIcons.listLight, title: "Join")
+              const TabItem(icon: PhosphorIcons.listLight, title: "Join")
             ],
             style: TabStyle.fixedCircle,
             onTabNotify: (i) {

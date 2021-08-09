@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 class PaletteColors {
   static const int primary = 0xFFDB4900;
-  static const Color primaryColor = const Color(primary);
+  static const Color primaryColor = Color(primary);
   static const int secondary = 0xFFFFE605;
-  static const Color secondaryColor = const Color(secondary);
-  static const Color accentColor = const Color(0xFFFA003E);
-  static const Color lightColor = const Color(0xFFFFDFB3);
-  static const Color darkColor = const Color(0xFF660A00);
+  static const Color secondaryColor = Color(secondary);
+  static const Color accentColor = Color(0xFFFA003E);
+  static const Color lightColor = Color(0xFFFFDFB3);
+  static const Color darkColor = Color(0xFF660A00);
   static final MaterialColor primaryPalette = _generateColors(primary);
   static final MaterialColor secondaryPalette = _generateColors(secondary);
 

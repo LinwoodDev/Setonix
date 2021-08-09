@@ -31,7 +31,7 @@ class ThemeControllerProvider extends InheritedWidget {
   final ThemeController? controller;
 
   @override
-  bool updateShouldNotify(ThemeControllerProvider old) => controller != old.controller;
+  bool updateShouldNotify(ThemeControllerProvider oldWidget) => controller != oldWidget.controller;
 }
 
 extension ThemeModeIndex on ThemeMode {

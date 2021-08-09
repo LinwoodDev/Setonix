@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class DevicesPage extends StatefulWidget {
+  const DevicesPage({Key? key}) : super(key: key);
+
   @override
   _DevicesPageState createState() => _DevicesPageState();
 }
@@ -10,7 +12,7 @@ class _DevicesPageState extends State<DevicesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Devices"),
+        title: const Text("Devices"),
       ),
     );
   }

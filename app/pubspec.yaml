@@ -12,6 +12,7 @@ description: Play games without internet
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 version: 0.1.0
+publish_to: none
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
@@ -23,6 +24,7 @@ dependencies:
     sdk: flutter
   shared:
     path: ../shared
+  msix: ^2.1.3
   # Engine
   flame: ^1.0.0-releasecandidate.13
   # UI
@@ -54,6 +56,7 @@ dev_dependencies:
     sdk: flutter
   build_runner: ^2.1.0
   hive_generator: ^1.1.0
+  flutter_lints: ^1.0.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
