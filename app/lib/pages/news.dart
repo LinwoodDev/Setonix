@@ -32,9 +32,14 @@ class _NewsPageState extends State<NewsPage> {
                     itemBuilder: (context, index) {
                       var current = feed.items![index];
                       return ListTile(
-                        title: Text(current.title!),
-                        subtitle: Text(current.summary!),
-                        onTap: () async => await launch(current.id!),
+                        title: Text(current.title ?? ''),
+                        subtitle: Text(current.summary ?? ''),
+                        onTap: () async {
+                          final link = current.links?[0].href;
+                          if (link != null) {
+                            await launchUrl(Uri.parse(link));
+                          }
+                        },
                       );
                     },
                   );

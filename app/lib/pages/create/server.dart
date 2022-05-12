@@ -22,16 +22,19 @@ class _CreateServerPageState extends State<CreateServerPage> {
               padding: const EdgeInsets.all(16.0),
               constraints: const BoxConstraints(maxWidth: 800),
               child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
                   child: Form(
                       key: _formKey,
                       child: Center(
                           child: Column(children: <Widget>[
                         TextFormField(
-                            decoration:
-                                const InputDecoration(labelText: "Name", prefixIcon: Icon(PhosphorIcons.pencilLight)),
+                            decoration: const InputDecoration(
+                                labelText: "Name",
+                                prefixIcon: Icon(PhosphorIcons.pencilLight)),
                             validator: (value) {
-                              if (value!.isEmpty) return "This value can't be empty!";
+                              if (value!.isEmpty)
+                                return "This value can't be empty!";
                               return null;
                             }),
                         TextFormField(
@@ -39,20 +42,28 @@ class _CreateServerPageState extends State<CreateServerPage> {
                                 labelText: "Password",
                                 prefixIcon: const Icon(PhosphorIcons.lockLight),
                                 suffixIcon: IconButton(
-                                  icon: Icon(_showPassword ? PhosphorIcons.eyeSlashLight : PhosphorIcons.eyeLight),
-                                  onPressed: () => setState(() => _showPassword = !_showPassword),
+                                  icon: Icon(_showPassword
+                                      ? PhosphorIcons.eyeSlashLight
+                                      : PhosphorIcons.eyeLight),
+                                  onPressed: () => setState(
+                                      () => _showPassword = !_showPassword),
                                 )),
                             validator: (value) {
-                              if (value!.isEmpty) return "This value can't be empty!";
+                              if (value!.isEmpty)
+                                return "This value can't be empty!";
                               return null;
                             },
                             obscureText: !_showPassword,
-                            keyboardType: _showPassword ? TextInputType.visiblePassword : TextInputType.text),
+                            keyboardType: _showPassword
+                                ? TextInputType.visiblePassword
+                                : TextInputType.text),
                         TextFormField(
-                            decoration: const InputDecoration(labelText: "Description"),
+                            decoration:
+                                const InputDecoration(labelText: "Description"),
                             maxLines: null,
                             validator: (value) {
-                              if (value!.isEmpty) return "This value can't be empty!";
+                              if (value!.isEmpty)
+                                return "This value can't be empty!";
                               return null;
                             })
                       ])))))),

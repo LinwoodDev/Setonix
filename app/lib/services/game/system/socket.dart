@@ -1,4 +1,4 @@
-import 'package:linwood_city/services/game/system.dart';
+import 'package:bits/services/game/system.dart';
 
 class SocketGame extends GameSystem {
   @override

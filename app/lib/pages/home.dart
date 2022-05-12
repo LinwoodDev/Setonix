@@ -1,11 +1,11 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:linwood_city/colors.dart';
-import 'package:linwood_city/pages/connect.dart';
-import 'package:linwood_city/pages/create/lobby.dart';
-import 'package:linwood_city/pages/news.dart';
-import 'package:linwood_city/pages/settings/home.dart';
+import 'package:bits/colors.dart';
+import 'package:bits/pages/connect.dart';
+import 'package:bits/pages/create/lobby.dart';
+import 'package:bits/pages/news.dart';
+import 'package:bits/pages/settings/home.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class HomePage extends StatefulWidget {
@@ -25,17 +25,23 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<Widget> _tabs = [const NewsPage(), const CreateLobbyPage(), const ConnectPage()];
+  final List<Widget> _tabs = [
+    const NewsPage(),
+    const CreateLobbyPage(),
+    const ConnectPage()
+  ];
   var prefBox = Hive.box("pref");
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) => checkFirstTime());
+    WidgetsBinding.instance.addPostFrameCallback((_) => checkFirstTime());
   }
 
   void checkFirstTime() {
-    if (prefBox.get("first", defaultValue: true)) Navigator.of(context).pushNamed("/intro");
+    if (prefBox.get("first", defaultValue: true)) {
+      Navigator.of(context).pushNamed("/intro");
+    }
   }
 
   @override
@@ -59,14 +65,14 @@ class _HomePageState extends State<HomePage> {
               IconButton(
                 icon: const Icon(PhosphorIcons.gearLight),
                 tooltip: "Settings",
-                onPressed: () =>
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SettingsPage())),
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const SettingsPage())),
               )
             ],
           ),
           body: TabBarView(
-            children: _tabs,
             physics: const NeverScrollableScrollPhysics(),
+            children: _tabs,
           ),
           bottomNavigationBar: ConvexAppBar(
             curve: Curves.ease,
@@ -75,8 +81,10 @@ class _HomePageState extends State<HomePage> {
               const TabItem(icon: PhosphorIcons.houseLight, title: "Home"),
               TabItem(
                   icon: Container(
-                decoration: const BoxDecoration(shape: BoxShape.circle, color: PaletteColors.darkColor),
-                child: const Icon(PhosphorIcons.plusLight, color: Colors.white, size: 40),
+                decoration: const BoxDecoration(
+                    shape: BoxShape.circle, color: PaletteColors.darkColor),
+                child: const Icon(PhosphorIcons.plusLight,
+                    color: Colors.white, size: 40),
               )),
               const TabItem(icon: PhosphorIcons.listLight, title: "Join")
             ],

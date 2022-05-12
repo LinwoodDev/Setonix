@@ -1,5 +1,5 @@
-name: city_server
-description: Libraries for Linwood City server and client
+name: bits_server
+description: Server for the bits app
 version: 0.0.1
 publish_to: none
 
@@ -11,4 +11,4 @@ dependencies:
     path: ../shared
 
 dev_dependencies: 
-  lints: ^1.0.1
+  lints: ^2.0.0

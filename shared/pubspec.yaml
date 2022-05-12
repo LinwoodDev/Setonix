@@ -1,5 +1,5 @@
 name: shared
-description: Libraries for Linwood City server and client
+description: Libraries for Linwood Bits server and client
 version: 0.0.1
 publish_to: none
 
@@ -9,4 +9,4 @@ environment:
 dependencies: {}
 
 dev_dependencies: 
-  lints: ^1.0.1
+  lints: ^2.0.0

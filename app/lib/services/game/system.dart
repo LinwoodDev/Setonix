@@ -1,4 +1,4 @@
-import 'package:linwood_city/services/game/mode.dart';
+import 'package:bits/services/game/mode.dart';
 
 abstract class GameSystem {
   GameSystem();

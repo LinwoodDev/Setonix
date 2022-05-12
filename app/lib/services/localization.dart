@@ -15,7 +15,8 @@ class AppLocalizations {
   }
 
   // Static member to have a simple access to the delegate from the MaterialApp
-  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+      _AppLocalizationsDelegate();
 
   late Map<String, String> _localizedStrings;
 
@@ -23,7 +24,9 @@ class AppLocalizations {
     final Map<String, String> translations = {};
     json.forEach((String key, dynamic value) {
       if (value is Map) {
-        translations.addAll(flattenTranslations(value as Map<String, dynamic>, '$prefix$key.') as Map<String, String>);
+        translations.addAll(
+            flattenTranslations(value as Map<String, dynamic>, '$prefix$key.')
+                as Map<String, String>);
       } else {
         translations['$prefix$key'] = value.toString();
       }
@@ -33,7 +36,8 @@ class AppLocalizations {
 
   Future<bool> load() async {
     // Load the language JSON file from the "lang" folder
-    String value = await rootBundle.loadString('lang/${locale.languageCode}.json');
+    String value =
+        await rootBundle.loadString('lang/${locale.languageCode}.json');
     Map<String, dynamic> jsonMap = jsonDecode(value);
     _localizedStrings = flattenTranslations(jsonMap) as Map<String, String>;
     return true;
@@ -45,7 +49,8 @@ class AppLocalizations {
   }
 }
 
-class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
   // This delegate instance will never change (it doesn't even have fields!)
   // It can provide a constant constructor.
   const _AppLocalizationsDelegate();

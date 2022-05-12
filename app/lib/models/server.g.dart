@@ -42,5 +42,8 @@ class ServerAdapter extends TypeAdapter<Server> {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || other is ServerAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
+      identical(this, other) ||
+      other is ServerAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

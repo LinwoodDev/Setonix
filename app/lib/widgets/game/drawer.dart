@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:linwood_city/pages/games/players.dart';
-import 'package:linwood_city/services/game/system.dart';
+import 'package:bits/pages/games/players.dart';
+import 'package:bits/services/game/system.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 enum GamePage { game, chat, players }
@@ -10,7 +9,8 @@ class GameDrawer extends StatelessWidget {
   final GameSystem manager;
   final GamePage? page;
 
-  const GameDrawer({Key? key, this.page, required this.manager}) : super(key: key);
+  const GameDrawer({Key? key, this.page, required this.manager})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,13 +19,13 @@ class GameDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           Container(
-            child: const Text('Minigames Party - Ingame'),
             decoration: const BoxDecoration(
                 image: DecorationImage(
               image: ExactAssetImage('assets/logo.png'),
               fit: BoxFit.fill,
             )),
             height: 200,
+            child: const Text('Minigames Party - Ingame'),
           ),
           ListTile(
             title: const Text('Game'),
@@ -35,7 +35,8 @@ class GameDrawer extends StatelessWidget {
               Navigator.pop(context);
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => manager.currentMode!.build(context)),
+                MaterialPageRoute(
+                    builder: (context) => manager.currentMode!.build(context)),
               );
             },
           ),

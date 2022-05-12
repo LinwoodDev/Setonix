@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
-import 'package:linwood_city/services/game/system.dart';
-import 'package:linwood_city/widgets/game/drawer.dart';
+import 'package:bits/services/game/system.dart';
+import 'package:bits/widgets/game/drawer.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class PlayersPage extends StatefulWidget {
@@ -62,9 +60,9 @@ class _PlayersPageState extends State<PlayersPage> {
             } else {
               children = <Widget>[
                 const SizedBox(
-                  child: CircularProgressIndicator(),
                   width: 60,
                   height: 60,
+                  child: CircularProgressIndicator(),
                 ),
                 const Padding(
                   padding: EdgeInsets.only(top: 16),

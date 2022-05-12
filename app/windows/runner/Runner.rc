@@ -94,7 +94,7 @@ BEGIN
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "Minigames Party" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2020 com.github.codedoctorde. All rights reserved." "\0"
-            VALUE "OriginalFilename", "linwood_city.exe" "\0"
+            VALUE "OriginalFilename", "linwood_bits.exe" "\0"
             VALUE "ProductName", "Minigames Party" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END

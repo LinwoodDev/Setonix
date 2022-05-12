@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -32,8 +31,18 @@ class _SettingsPageState extends State<SettingsPage> {
       "description": "Add account, remove account, ...",
       "route": "/settings/accounts"
     },
-    {"name": "Data", "icon": PhosphorIcons.databaseLight, "description": "Load, save, ...", "route": "/settings/data"},
-    {"name": "Info", "icon": PhosphorIcons.infoLight, "description": "Licenses, Legal, ...", "route": "/settings/info"}
+    {
+      "name": "Data",
+      "icon": PhosphorIcons.databaseLight,
+      "description": "Load, save, ...",
+      "route": "/settings/data"
+    },
+    {
+      "name": "Info",
+      "icon": PhosphorIcons.infoLight,
+      "description": "Licenses, Legal, ...",
+      "route": "/settings/info"
+    }
   ];
 
   @override
@@ -48,9 +57,11 @@ class _SettingsPageState extends State<SettingsPage> {
                 (index) => ListTile(
                       leading: Icon(settingsPages[index]["icon"] as IconData?),
                       title: Text(settingsPages[index]["name"] as String),
-                      subtitle: Text(settingsPages[index]["description"] as String,
+                      subtitle: Text(
+                          settingsPages[index]["description"] as String,
                           style: Theme.of(context).textTheme.caption),
-                      onTap: () => Navigator.of(context).pushNamed(settingsPages[index]["route"] as String),
+                      onTap: () => Navigator.of(context)
+                          .pushNamed(settingsPages[index]["route"] as String),
                     ))));
   }
 }

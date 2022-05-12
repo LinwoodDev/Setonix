@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:hive/hive.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -52,17 +50,19 @@ class _WelcomePageState extends State<WelcomePage> {
             margin: const EdgeInsets.symmetric(horizontal: 3.0),
             height: 10.0,
             width: 10.0,
+            decoration: BoxDecoration(
+                color: _currentPage!.round() == index
+                    ? const Color(0XFF256075)
+                    : const Color(0XFF256075).withOpacity(0.2),
+                borderRadius: BorderRadius.circular(10.0)),
             child: InkWell(
               onTap: () => _setPage(index),
             ),
-            decoration: BoxDecoration(
-                color:
-                    _currentPage!.round() == index ? const Color(0XFF256075) : const Color(0XFF256075).withOpacity(0.2),
-                borderRadius: BorderRadius.circular(10.0)),
           ));
 
   void _setPage(int index) {
-    _pageViewController.animateToPage(index, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+    _pageViewController.animateToPage(index,
+        duration: const Duration(milliseconds: 500), curve: Curves.ease);
   }
 
   @override
@@ -104,8 +104,11 @@ class _WelcomePageState extends State<WelcomePage> {
                                     height: 2.0)),
                             Text(
                               item['description'],
-                              style:
-                                  const TextStyle(color: Colors.grey, letterSpacing: 1.2, fontSize: 16.0, height: 1.3),
+                              style: const TextStyle(
+                                  color: Colors.grey,
+                                  letterSpacing: 1.2,
+                                  fontSize: 16.0,
+                                  height: 1.3),
                               textAlign: TextAlign.center,
                             )
                           ]))),
@@ -139,25 +142,27 @@ class _WelcomePageState extends State<WelcomePage> {
         Align(
             alignment: Alignment.bottomRight,
             child: Container(
-              child: Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
-                (_currentPage! <= _items.length - 1.5)
-                    ? TextButton(
-                        onPressed: () {
-                          _setPage(5);
-                        },
-                        child: const Text("SKIP"),
-                      )
-                    : TextButton(
-                        onPressed: () {
-                          var prefBox = Hive.box("pref");
-                          prefBox.put("first", false);
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text("START"),
-                      ),
-              ]),
               margin: const EdgeInsets.all(10),
               padding: const EdgeInsets.symmetric(horizontal: 32),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    (_currentPage! <= _items.length - 1.5)
+                        ? TextButton(
+                            onPressed: () {
+                              _setPage(5);
+                            },
+                            child: const Text("SKIP"),
+                          )
+                        : TextButton(
+                            onPressed: () {
+                              var prefBox = Hive.box("pref");
+                              prefBox.put("first", false);
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text("START"),
+                          ),
+                  ]),
             ))
         // )
       ],

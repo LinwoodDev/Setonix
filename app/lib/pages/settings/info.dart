@@ -11,7 +11,8 @@ class InfoSettingsPage extends StatelessWidget {
         appBar: AppBar(title: const Text("Information")),
         body: ListView(children: [
           ListTile(
-              onTap: () => launch("https://github.com/codedoctorde/linwood_city"),
+              onTap: () =>
+                  launchUrl(Uri.https("github.com", "/LinwoodCloud/Bits")),
               title: const Text("GitHub Repository"),
               leading: const Icon(PhosphorIcons.codeLight),
               trailing: const Icon(PhosphorIcons.arrowSquareOutLight)),
@@ -19,12 +20,12 @@ class InfoSettingsPage extends StatelessWidget {
               title: const Text("Impress"),
               leading: const Icon(PhosphorIcons.wrenchLight),
               trailing: const Icon(PhosphorIcons.arrowSquareOutLight),
-              onTap: () => launch("https://codedoctor.tk/impress", forceWebView: true)),
+              onTap: () => launchUrl(Uri.https("go.linwood.dev", "/impress"))),
           ListTile(
               title: const Text("Privacy"),
               leading: const Icon(PhosphorIcons.shieldLight),
               trailing: const Icon(PhosphorIcons.arrowSquareOutLight),
-              onTap: () => launch("https://codedoctor.tk/privacy", forceWebView: true)),
+              onTap: () => launchUrl(Uri.https("codedoctor.tk", "/privacy"))),
           ListTile(
               onTap: () => showAboutDialog(context: context),
               title: const Text("About"),

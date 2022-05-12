@@ -1,10 +1,10 @@
 # MinigamesParty
 
 [![Powered by Flame](https://img.shields.io/badge/Powered%20by-%F0%9F%94%A5-orange.svg?style=for-the-badge)](https://flame-engine.org)
-[![GitHub repo size](https://img.shields.io/github/repo-size/LinwoodCloud/City?style=for-the-badge)](https://github.com/CodeDoctorDE/Linwood/archive/master.zip)
-[![GitHub commit activity](https://img.shields.io/github/commit-activity/m/LinwoodCloud/City?style=for-the-badge)](https://github.com/LinwoodCloud/City/commits/master)
-[![GitHub commits since latest release (by date)](https://img.shields.io/github/commits-since/LinwoodCloud/City/latest?style=for-the-badge)](https://github.com/LinwoodCloud/City/releases/latest)
-[![GitHub](https://img.shields.io/github/license/LinwoodCloud/City?style=for-the-badge)](LICENSE)
+[![GitHub repo size](https://img.shields.io/github/repo-size/LinwoodCloud/Bits?style=for-the-badge)](https://github.com/CodeDoctorDE/Linwood/archive/master.zip)
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/m/LinwoodCloud/Bits?style=for-the-badge)](https://github.com/LinwoodCloud/Bits/commits/master)
+[![GitHub commits since latest release (by date)](https://img.shields.io/github/commits-since/LinwoodCloud/Bits/latest?style=for-the-badge)](https://github.com/LinwoodCloud/Bits/releases/latest)
+[![GitHub](https://img.shields.io/github/license/LinwoodCloud/Bits?style=for-the-badge)](LICENSE)
 
 *Please note that this project is in development!*
 

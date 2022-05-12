@@ -1,0 +1,248 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      next_version:
+        default: "0.0.0"
+        description: "The next version to be released"
+        required: false
+      stable:
+        default: false
+        description: "Is this version stable?"
+        type: boolean
+        required: false
+
+jobs:
+  release:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.CI_PAT }}
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.0.0'
+          channel: "stable" # or: 'beta' or 'dev'
+      - name: Setup git
+        id: setup
+        shell: bash
+        run: |
+          BITS_VERSION_REGEX="version:\s(.+)\+(.+)"
+          [[ $(grep -E "${BITS_VERSION_REGEX}" app/pubspec.yaml) =~ ${BITS_VERSION_REGEX} ]]
+          BITS_VERSION="${BASH_REMATCH[1]}"
+          echo "BITS_VERSION=${BITS_VERSION}" >> $GITHUB_ENV
+          BITS_BUILD_NUMBER="${BASH_REMATCH[2]}"
+          echo "BITS_BUILD_NUMBER=${BITS_BUILD_NUMBER}" >> $GITHUB_ENV
+          git config --global user.email "ci@linwood.dev"
+          git config --global user.name "Linwood CI"
+      - name: Create changelog
+        run: |
+          dart pub get -C tools
+          dart run tools/set_version.dart --build-number keep --changelog
+          git add .
+          git commit -m "Create changelog for ${{ env.BITS_VERSION }}"
+          git push origin
+      - name: Create tag
+        run: |
+          BITS_VERSION="${{ env.BITS_VERSION }}"
+          git tag -fa v${{ env.BITS_VERSION }} -m "Release ${BITS_VERSION}"
+          git push origin v${BITS_VERSION}
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        with:
+          prerelease: ${{ github.event.inputs.stable }}
+          tag_name: v${{ env.BITS_VERSION }}
+          name: v${{ env.BITS_VERSION }}
+          token: ${{ secrets.CI_PAT }}
+          body_path: fastlane/metadata/android/en-US/changelogs/${{ env.BITS_BUILD_NUMBER }}.txt
+      - name: Retag stable
+        if: ${{ !github.event.inputs.stable }}
+        run: |
+          git tag -fa stable -m "Find all stable releases here"
+          git push origin stable -f
+      - name: Retag nightly
+        if: ${{ github.event.inputs.stable }}
+        run: |
+          git tag -fa nightly -m "Find all nightly releases here"
+          git push origin nightly -f
+  update-version:
+    runs-on: ubuntu-20.04
+    needs:
+      - release
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.CI_PAT }}
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.0.0'
+          channel: "stable" # or: 'beta' or 'dev'
+      - name: Setup git
+        id: setup
+        run: |
+          BITS_VERSION_REGEX="version:\s(.+)\+(.+)"
+          [[ $(grep -E "${BITS_VERSION_REGEX}" app/pubspec.yaml) =~ ${BITS_VERSION_REGEX} ]]
+          BITS_VERSION="${BASH_REMATCH[1]}"
+          echo "BITS_VERSION=${BITS_VERSION}" >> $GITHUB_ENV
+          BITS_BUILD_NUMBER="${BASH_REMATCH[2]}"
+          echo "BITS_BUILD_NUMBER=${BITS_BUILD_NUMBER}" >> $GITHUB_ENV
+          git config --global user.email "ci@linwood.dev"
+          git config --global user.name "Linwood CI"
+      - name: Set next version
+        run: |
+          git fetch
+          git pull origin
+          dart pub get -C tools
+          dart run tools/set_version.dart --build-number increment ${{ github.event.inputs.next_version }} --no-changelog
+          git add .
+          git commit -m "Update Version to ${{ github.event.inputs.next_version }}"
+          git push origin
+  update-main:
+    if: ${{ github.ref == 'refs/heads/develop' }}
+    runs-on: ubuntu-20.04
+    needs:
+      - release
+      - update-version
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: main
+          token: ${{ secrets.CI_PAT }}
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.0.0'
+          channel: "stable" # or: 'beta' or 'dev'
+      - name: Setup git
+        id: setup
+        run: |
+          BITS_VERSION_REGEX="version:\s(.+)\+(.+)"
+          [[ $(grep -E "${BITS_VERSION_REGEX}" app/pubspec.yaml) =~ ${BITS_VERSION_REGEX} ]]
+          BITS_VERSION="${BASH_REMATCH[1]}"
+          echo "BITS_VERSION=${BITS_VERSION}" >> $GITHUB_ENV
+          BITS_BUILD_NUMBER="${BASH_REMATCH[2]}"
+          echo "BITS_BUILD_NUMBER=${BITS_BUILD_NUMBER}" >> $GITHUB_ENV
+          git config --global user.email "ci@linwood.dev"
+          git config --global user.name "Linwood CI"
+      - name: Update version number
+        if: ${{ github.event.inputs.stable }}
+        run: |
+          dart pub get -C tools
+          dart run tools/set_version.dart --build-number increment --no-changelog
+
+          git add .
+          git commit -m "Update version number"
+          git push origin main
+      - name: Merge main in develop
+        run: |
+          git fetch
+          git pull
+          git checkout develop
+          git pull
+          git merge origin/main --strategy-option ours
+          git push origin develop
+  update-develop:
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-20.04
+    needs:
+      - release
+      - update-version
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: develop
+          token: ${{ secrets.CI_PAT }}
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.0.0'
+          channel: "stable" # or: 'beta' or 'dev'
+      - name: Setup git
+        id: setup
+        run: |
+          BITS_VERSION_REGEX="version:\s(.+)\+(.+)"
+          [[ $(grep -E "${BITS_VERSION_REGEX}" app/pubspec.yaml) =~ ${BITS_VERSION_REGEX} ]]
+          BITS_VERSION="${BASH_REMATCH[1]}"
+          echo "BITS_VERSION=${BITS_VERSION}" >> $GITHUB_ENV
+          BITS_BUILD_NUMBER="${BASH_REMATCH[2]}"
+          echo "BITS_BUILD_NUMBER=${BITS_BUILD_NUMBER}" >> $GITHUB_ENV
+          git config --global user.email "ci@linwood.dev"
+          git config --global user.name "Linwood CI"
+      - name: Merge main
+        run: |
+          git fetch
+          git pull
+          git checkout develop
+          git pull
+          git merge origin/main --strategy-option ours
+          git push origin develop
+      - name: Update version number
+        run: |
+          git fetch
+          git pull
+          dart pub get -C tools
+          dart run tools/set_version.dart --build-number increment --no-changelog
+
+          git add .
+          git commit -m "Update version number"
+          git push origin develop
+  notify:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.CI_PAT }}
+      - name: Get information
+        shell: bash
+        run: |
+          BITS_VERSION_REGEX="version:\s(.+)\+(.+)"
+          [[ $(grep -E "${BITS_VERSION_REGEX}" app/pubspec.yaml) =~ ${BITS_VERSION_REGEX} ]]
+          BITS_VERSION="${BASH_REMATCH[1]}"
+          echo "BITS_VERSION=${BITS_VERSION}" >> $GITHUB_ENV
+          BITS_BUILD_NUMBER="${BASH_REMATCH[2]}"
+          echo "BITS_BUILD_NUMBER=${BITS_BUILD_NUMBER}" >> $GITHUB_ENV
+          echo 'BITS_CHANGELOG<<EOF' >> $GITHUB_ENV
+          cat fastlane/metadata/android/en-US/changelogs/${BITS_BUILD_NUMBER}.txt >> $GITHUB_ENV
+          echo '' >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+      - name: Discord Webhook Action
+        uses: tsickert/discord-webhook@v4.0.0
+        if: ${{ github.ref == 'refs/heads/main' || !github.event.inputs.stable }}
+        with:
+          webhook-url: ${{ secrets.WEBHOOK_URL }}
+          embed-title: ${{ env.BITS_VERSION }}
+          embed-description: ${{ env.BITS_CHANGELOG }}
+          content: |
+            Version ${{ env.BITS_VERSION }} released!
+            Download it here: https://docs.bits.linwood.dev/downloads
+
+            https://github.com/LinwoodCloud/bits/releases/tag/v${{ env.BITS_VERSION }}
+      - name: Discord Webhook Action
+        uses: tsickert/discord-webhook@v4.0.0
+        if: ${{ github.ref == 'refs/heads/develop' && github.event.inputs.stable }}
+        with:
+          webhook-url: ${{ secrets.WEBHOOK_URL }}
+          embed-title: ${{ env.BITS_VERSION }}
+          embed-description: ${{ env.BITS_CHANGELOG }}
+          content: |
+            Pre-release version ${{ env.BITS_VERSION }} released!
+            Download it here: https://docs.bits.linwood.dev/downloads
+
+            Please note that this is a pre-release version and is not intended for production use.
+            Read more about here: https://docs.bits.linwood.dev/nightly
+
+  #publish-to-play-store:
+  #  runs-on: ubuntu-20.04
+  #  steps:
+  #    - uses: actions/checkout@v3
+  #    - name: Publish beta
+  #      run: fastlane beta
+  #      if: ${{ github.event.inputs.stable }}
+  #      env:
+  #        PLAY_STORE_UPLOAD_KEY: ${{ secrets.PLAY_STORE_UPLOAD_KEY }}
+  #    - name: Publish stable
+  #      run: fastlane deploy
+  #      if: ${{ !github.event.inputs.stable }}
+  #      env:
+  #        PLAY_STORE_UPLOAD_KEY: ${{ secrets.PLAY_STORE_UPLOAD_KEY }}
