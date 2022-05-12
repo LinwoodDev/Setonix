@@ -7,7 +7,7 @@
 #endif
 #define MyAppPublisher "LinwoodCloud"
 #define MyAppURL "https://www.linwood.dev"
-#define MyAppExeName "town.exe" 
+#define MyAppExeName "linwood_town.exe" 
 #define BaseDirRelease "build\windows\runner\Release"
 #define RunnerSourceDir "windows\runner"
 
@@ -15,7 +15,7 @@
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{966CE504-4AA5-49C7-A63B-74BD6C073E5B}
+AppId={{AFEA034B-35A4-44A9-9FAE-33F5A2AE860B}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -52,16 +52,7 @@ Name: "startmenu"; Description: "Create a Start Menu entry"
 [Files]
 Source: "{#BaseDirRelease}\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#BaseDirRelease}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-; NOTE: Don't use "Flags: ignoreversion" on any shared system files
-
-
-
-[Registry]
-Root: HKCR; Subkey: ".bfly"; ValueType: string; ValueName: ""; ValueData: "{#MyAppName}-File"; Tasks: bfly; Flags: uninsdeletevalue
-Root: HKCR; Subkey: "{#MyAppName}-File"; ValueType: string; ValueName: ""; ValueData: "{#MyAppName}-File"; Tasks: bfly; Flags: uninsdeletekey
-Root: HKCR; Subkey: "{#MyAppName}-File\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\{#MyAppExeName},0"
-Root: HKCR; Subkey: "{#MyAppName}-File\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" ""%1"""
-
+; NOTE: Don't use "Flags: ignoreversion" on any shared system filess
 
 [Icons]
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
