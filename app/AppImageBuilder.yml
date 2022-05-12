@@ -10,7 +10,6 @@ AppDir:
   app_info:
     id: dev.linwood.town
     name: Linwood Town
-    icon: linwood-town
     version: 1.3.0-rc.0
     exec: linwood_town
     exec_args: $@
