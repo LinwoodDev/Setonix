@@ -54,7 +54,6 @@ Future<void> main(List<String> args) async {
   await updateAppImageVersion(version);
   await updateDebianVersion(version);
   await updateWindowsVersion(version);
-  await updateSnapcraftVersion(version);
   if (results['changelog']) {
     var changelogFile =
         File('fastlane/metadata/android/en-US/changelogs/$newBuildNumber.txt');

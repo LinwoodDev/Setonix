@@ -183,14 +183,17 @@ jobs:
           - os: windows-latest
             output-name: server-windows.exe
     steps:
-      - uses: actions/checkout@v2
-      - uses: DanTup/gh-actions/setup-dart@master
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.0.0'
+          channel: "stable" # or: 'beta' or 'dev'
       - name: Build server
-        working-directory: server
         run: |
+          cd server
           mkdir build
-          pub get
-          dart compile exe bin/city_server.dart -v -o build/${{ matrix.output-name }}
+          dart pub get
+          dart compile exe bin/bits_server.dart -v -o build/${{ matrix.output-name }}
       - uses: actions/upload-artifact@v2
         with:
           name: server-${{ matrix.os }}

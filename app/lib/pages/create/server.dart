@@ -33,8 +33,9 @@ class _CreateServerPageState extends State<CreateServerPage> {
                                 labelText: "Name",
                                 prefixIcon: Icon(PhosphorIcons.pencilLight)),
                             validator: (value) {
-                              if (value!.isEmpty)
+                              if (value!.isEmpty) {
                                 return "This value can't be empty!";
+                              }
                               return null;
                             }),
                         TextFormField(
@@ -49,8 +50,9 @@ class _CreateServerPageState extends State<CreateServerPage> {
                                       () => _showPassword = !_showPassword),
                                 )),
                             validator: (value) {
-                              if (value!.isEmpty)
+                              if (value!.isEmpty) {
                                 return "This value can't be empty!";
+                              }
                               return null;
                             },
                             obscureText: !_showPassword,
@@ -62,8 +64,9 @@ class _CreateServerPageState extends State<CreateServerPage> {
                                 const InputDecoration(labelText: "Description"),
                             maxLines: null,
                             validator: (value) {
-                              if (value!.isEmpty)
+                              if (value!.isEmpty) {
                                 return "This value can't be empty!";
+                              }
                               return null;
                             })
                       ])))))),
