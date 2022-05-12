@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:bits/services/game/player.dart';
-import 'package:bits/services/game/system.dart';
+import 'package:town/services/game/player.dart';
+import 'package:town/services/game/system.dart';
 
 /// Define a new game mode which can be played.
 abstract class GameMode {

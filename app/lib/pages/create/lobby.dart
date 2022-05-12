@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:bits/pages/create/online.dart';
-import 'package:bits/services/game/system/types.dart';
+import 'package:town/pages/create/online.dart';
+import 'package:town/services/game/system/types.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class CreateLobbyPage extends StatefulWidget {

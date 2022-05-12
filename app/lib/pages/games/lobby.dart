@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
-import 'package:bits/services/game/mode.dart';
-import 'package:bits/services/game/player.dart';
-import 'package:bits/services/game/system.dart';
+import 'package:town/services/game/mode.dart';
+import 'package:town/services/game/player.dart';
+import 'package:town/services/game/system.dart';
 
 class LobbyGameMode extends GameMode {
   @override

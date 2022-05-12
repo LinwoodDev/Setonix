@@ -1,3 +1,3 @@
-import 'package:bits/services/game/player.dart';
+import 'package:town/services/game/player.dart';
 
 class BluetoothPlayer extends Player {}

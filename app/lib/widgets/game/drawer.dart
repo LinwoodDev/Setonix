@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:bits/pages/games/players.dart';
-import 'package:bits/services/game/system.dart';
+import 'package:town/pages/games/players.dart';
+import 'package:town/services/game/system.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 enum GamePage { game, chat, players }

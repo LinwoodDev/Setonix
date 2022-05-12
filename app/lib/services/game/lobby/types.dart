@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bits/services/localization.dart';
+import 'package:town/services/localization.dart';
 
 enum LobbyType { unlimited, win, board }
 

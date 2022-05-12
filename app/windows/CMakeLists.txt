@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
-project(linwood_bits LANGUAGES CXX)
+project(linwood_town LANGUAGES CXX)
 
-set(BINARY_NAME "linwood_bits")
+set(BINARY_NAME "linwood_town")
 
 cmake_policy(SET CMP0063 NEW)
 

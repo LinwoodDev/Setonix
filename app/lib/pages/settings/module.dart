@@ -1,5 +1,5 @@
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:bits/pages/settings/home.dart';
+import 'package:town/pages/settings/home.dart';
 
 import 'appearance.dart';
 import 'info.dart';

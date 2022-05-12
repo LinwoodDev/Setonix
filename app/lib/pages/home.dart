@@ -1,11 +1,11 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:bits/colors.dart';
-import 'package:bits/pages/connect.dart';
-import 'package:bits/pages/create/lobby.dart';
-import 'package:bits/pages/news.dart';
-import 'package:bits/pages/settings/home.dart';
+import 'package:town/colors.dart';
+import 'package:town/pages/connect.dart';
+import 'package:town/pages/create/lobby.dart';
+import 'package:town/pages/news.dart';
+import 'package:town/pages/settings/home.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class HomePage extends StatefulWidget {

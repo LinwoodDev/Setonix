@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:bits/models/server.dart';
+import 'package:town/models/server.dart';
 
 import 'app_module.dart';
 import 'app_widget.dart';
@@ -19,5 +19,5 @@ Future<void> main() async {
 
   // GetIt.I.registerSingleton<Game>(GameModeManager());
 
-  runApp(ModularApp(module: AppModule(), child: const BitsApp()));
+  runApp(ModularApp(module: AppModule(), child: const TownApp()));
 }

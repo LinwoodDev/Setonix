@@ -58,8 +58,8 @@ jobs:
         shell: pwsh
         run: |
           cd app
-          Get-Content pubspec.yaml | Select-String -Pattern 'version:\s(.+)\+'  | % {Set-Item -Path Env:BITS_VERSION -Value "$($_.matches.groups[1])"}
-          & 'C:/Program Files (x86)/Inno Setup 6/ISCC.exe' /DMyAppVersion=$Env:BITS_VERSION BitsSetup.iss
+          Get-Content pubspec.yaml | Select-String -Pattern 'version:\s(.+)\+'  | % {Set-Item -Path Env:TOWN_VERSION -Value "$($_.matches.groups[1])"}
+          & 'C:/Program Files (x86)/Inno Setup 6/ISCC.exe' /DMyAppVersion=$Env:TOWN_VERSION TownSetup.iss
         # flutter pub run msix:create
       - name: Archive
         uses: actions/upload-artifact@v3
@@ -72,7 +72,7 @@ jobs:
         with:
           name: windows-setup
           path: |
-            app/build/windows/Bits-Setup.exe
+            app/build/windows/Town-Setup.exe
   build-linux:
     runs-on: ubuntu-20.04
     steps:
@@ -101,8 +101,8 @@ jobs:
       #- name: Build .rpm executable
       #  run: |
       #    cd app
-      #    alien -r linwood-bits-linux-x86_64.deb
-      #    mv linwood-bits*.rpm linwood-bits-linux-x86_64.rpm
+      #    alien -r linwood-town-linux-x86_64.deb
+      #    mv linwood-town*.rpm linwood-town-linux-x86_64.rpm
       - name: Build .AppImage executable
         run: |
           cd app
@@ -113,7 +113,7 @@ jobs:
       - name: Rename AppImage
         run: |
           cd app
-          mv ./*.AppImage* Linwood-Bits-linux-x86_64.AppImage
+          mv ./*.AppImage* Linwood-Town-linux-x86_64.AppImage
       - name: Archive
         uses: actions/upload-artifact@v3
         with:
@@ -125,13 +125,13 @@ jobs:
       #  with:
       #    name: linux-rpm
       #    path: |
-      #      app/linwood-bits-linux-x86_64.rpm
+      #      app/linwood-town-linux-x86_64.rpm
       - name: Archive .AppImage
         uses: actions/upload-artifact@v3
         with:
           name: linux-appimage
           path: |
-            app/Linwood-Bits-linux-x86_64.AppImage
+            app/Linwood-Town-linux-x86_64.AppImage
   #build-macos:
   #  runs-on: macos-latest
   #  steps:
@@ -181,7 +181,7 @@ jobs:
           cd server
           mkdir build
           dart pub get
-          dart compile exe bin/bits_server.dart -v -o build/${{ matrix.output-name }}
+          dart compile exe bin/town_server.dart -v -o build/${{ matrix.output-name }}
       - uses: actions/upload-artifact@v2
         with:
           name: server-${{ matrix.os }}
@@ -241,11 +241,11 @@ jobs:
           prerelease: true
           tag_name: stable
           files: |
-            Bits-Setup.exe
+            Town-Setup.exe
             app-release.apk
             windows.zip
             linux.zip
-            Linwood-Bits-linux-x86_64.AppImage
+            Linwood-Town-linux-x86_64.AppImage
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: 🚀 Deploy nightly
@@ -256,11 +256,11 @@ jobs:
           prerelease: true
           tag_name: nightly
           files: |
-            Bits-Setup.exe
+            Town-Setup.exe
             app-release.apk
             windows.zip
             linux.zip
-            Linwood-Bits-linux-x86_64.AppImage
+            Linwood-Town-linux-x86_64.AppImage
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Release
@@ -269,10 +269,10 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         with:
           files: |
-            Bits-Setup.exe
+            Town-Setup.exe
             app-release.apk
             windows.zip
             linux.zip
-            Linwood-Bits-linux-x86_64.AppImage
+            Linwood-Town-linux-x86_64.AppImage
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

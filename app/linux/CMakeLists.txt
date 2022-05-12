@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 project(runner LANGUAGES CXX)
 
-set(BINARY_NAME "linwood_bits")
-set(APPLICATION_ID "dev.linwood.bits")
+set(BINARY_NAME "linwood_town")
+set(APPLICATION_ID "dev.linwood.town")
 
 cmake_policy(SET CMP0063 NEW)
 

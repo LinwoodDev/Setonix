@@ -1,4 +1,4 @@
-import 'package:bits/services/game/system.dart';
+import 'package:town/services/game/system.dart';
 
 class BluetoothGame extends GameSystem {
   @override

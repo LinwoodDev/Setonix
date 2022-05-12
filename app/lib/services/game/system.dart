@@ -1,4 +1,4 @@
-import 'package:bits/services/game/mode.dart';
+import 'package:town/services/game/mode.dart';
 
 abstract class GameSystem {
   GameSystem();

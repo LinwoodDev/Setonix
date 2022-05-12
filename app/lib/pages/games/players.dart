@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:bits/services/game/system.dart';
-import 'package:bits/widgets/game/drawer.dart';
+import 'package:town/services/game/system.dart';
+import 'package:town/widgets/game/drawer.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class PlayersPage extends StatefulWidget {

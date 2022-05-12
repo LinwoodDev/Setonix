@@ -1,8 +1,8 @@
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:bits/pages/create/lobby.dart';
-import 'package:bits/pages/home.dart';
-import 'package:bits/pages/intro.dart';
-import 'package:bits/pages/settings/module.dart';
+import 'package:town/pages/create/lobby.dart';
+import 'package:town/pages/home.dart';
+import 'package:town/pages/intro.dart';
+import 'package:town/pages/settings/module.dart';
 
 class AppModule extends Module {
   // Provide a list of dependencies to inject into your project

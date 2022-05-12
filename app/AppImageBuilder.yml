@@ -8,11 +8,11 @@ script:
 AppDir:
   path: ./AppDir
   app_info:
-    id: dev.linwood.bits
-    name: Linwood Bits
-    icon: linwood-bits
+    id: dev.linwood.town
+    name: Linwood Town
+    icon: linwood-town
     version: 1.3.0-rc.0
-    exec: bits
+    exec: town
     exec_args: $@
   apt:
     arch: amd64

@@ -12,7 +12,7 @@ class InfoSettingsPage extends StatelessWidget {
         body: ListView(children: [
           ListTile(
               onTap: () =>
-                  launchUrl(Uri.https("github.com", "/LinwoodCloud/Bits")),
+                  launchUrl(Uri.https("github.com", "/LinwoodCloud/Town")),
               title: const Text("GitHub Repository"),
               leading: const Icon(PhosphorIcons.codeLight),
               trailing: const Icon(PhosphorIcons.arrowSquareOutLight)),

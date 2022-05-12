@@ -1,5 +1,5 @@
-name: bits_server
-description: Server for the bits app
+name: town_server
+description: Server for the town app
 version: 0.0.1
 publish_to: none
 

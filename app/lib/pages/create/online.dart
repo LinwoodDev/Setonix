@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:bits/models/server.dart';
-import 'package:bits/pages/create/server.dart';
+import 'package:town/models/server.dart';
+import 'package:town/pages/create/server.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class CreateOnlinePage extends StatelessWidget {

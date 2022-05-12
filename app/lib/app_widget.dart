@@ -5,8 +5,8 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'colors.dart';
 import 'services/localization.dart';
 
-class BitsApp extends StatelessWidget {
-  const BitsApp({Key? key}) : super(key: key);
+class TownApp extends StatelessWidget {
+  const TownApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -25,7 +25,7 @@ class BitsApp extends StatelessWidget {
           Locale('de') // Deutsch
           // ... other locales the app supports
         ],
-        title: 'Linwood Bits',
+        title: 'Linwood Town',
         theme: ThemeData(
             // This is the theme of your application.
             //
