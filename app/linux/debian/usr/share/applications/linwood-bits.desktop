@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Linwood Bits
+Comment=Opensource collection of small games
+Exec=butterfly
+Icon=${SNAP}/meta/gui/bits.png # replace name to your app name
+Terminal=false
+Type=Application
+Categories=Games; #adjust accordingly your snap category

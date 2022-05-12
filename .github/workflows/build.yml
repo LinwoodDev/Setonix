@@ -98,12 +98,6 @@ jobs:
           flutter clean
           flutter doctor -v
           flutter build linux -v --release
-      - name: Build .deb executable
-        run: |
-          cd app
-          cp -fr build/linux/x64/release/bundle linux/debian/usr/bin
-          dpkg-deb --build --root-owner-group linux/debian
-          cp linux/*.deb linwood-bits-linux-x86_64.deb
       #- name: Build .rpm executable
       #  run: |
       #    cd app
@@ -126,12 +120,6 @@ jobs:
           name: linux-build
           path: |
             app/build/linux/x64/release/bundle/**
-      - name: Archive .deb
-        uses: actions/upload-artifact@v3
-        with:
-          name: linux-deb
-          path: |
-            app/linwood-bits-linux-x86_64.deb
       #- name: Archive .rpm
       #  uses: actions/upload-artifact@v3
       #  with:
@@ -225,9 +213,6 @@ jobs:
         with:
           name: linux-build
           path: linux-build/
-      - uses: actions/download-artifact@v3
-        with:
-          name: linux-deb
       #- uses: actions/download-artifact@v3
       #  with:
       #    name: linux-rpm
@@ -260,7 +245,6 @@ jobs:
             app-release.apk
             windows.zip
             linux.zip
-            linwood-bits-linux-x86_64.deb
             Linwood-Bits-linux-x86_64.AppImage
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -276,7 +260,6 @@ jobs:
             app-release.apk
             windows.zip
             linux.zip
-            linwood-bits-linux-x86_64.deb
             Linwood-Bits-linux-x86_64.AppImage
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -290,7 +273,6 @@ jobs:
             app-release.apk
             windows.zip
             linux.zip
-            linwood-bits-linux-x86_64.deb
             Linwood-Bits-linux-x86_64.AppImage
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
