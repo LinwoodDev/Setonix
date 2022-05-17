@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:town/pages/create/online.dart';
 import 'package:town/services/game/system/types.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -124,7 +125,7 @@ class _CreateLobbyPageState extends State<CreateLobbyPage> {
                                                       setState(() =>
                                                           _typeController =
                                                               label);
-                                                      Navigator.of(context)
+                                                      GoRouter.of(context)
                                                           .pop();
                                                     },
                                                   ))
@@ -155,7 +156,7 @@ class _CreateLobbyPageState extends State<CreateLobbyPage> {
               //       Text("Successfully started game!")
               //     ]),
               //   ));
-              //   Navigator.push(
+              //   GoRouter.push(
               //     context,
               //     MaterialPageRoute(builder: (context) => gameModeManager.currentGameMode.build()),
               //   ).then((value) => gameModeManager.stopScan());

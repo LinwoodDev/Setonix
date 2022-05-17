@@ -47,8 +47,8 @@ class GameDrawer extends StatelessWidget {
             leading: const Icon(PhosphorIcons.chatLight),
             selected: page == GamePage.chat,
             onTap: () {
-              // Navigator.pop(context);
-              // Navigator.pushReplacement(
+              // GoRouter.pop(context);
+              // GoRouter.pushReplacement(
               //   context,
               //   MaterialPageRoute(builder: (context) => CreatePage()),
               // );

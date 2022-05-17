@@ -28,17 +28,15 @@ dependencies:
   flame: ^1.1.1
   # UI
   phosphor_flutter: ^1.4.0
-  flutter_slidable: ^1.2.0
   convex_bottom_bar: ^3.0.0
   responsive_grid: ^2.1.0
   # Communication
   flutter_reactive_ble: ^5.0.2
   # Database
-  hive: ^2.1.0
+  hive: ^2.2.0
   hive_flutter: ^1.1.0
   # Generation
   barcode: ^2.2.1
-  flutter_modular: ^5.0.2
   webfeed: ^0.7.0
   # Internal
   flutter_bloc: ^8.0.1
@@ -49,11 +47,12 @@ dependencies:
   http: ^0.13.4
   package_info: ^2.0.2
   path_provider: ^2.0.10
+  go_router: ^3.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner: ^2.1.10
+  build_runner: ^2.1.11
   hive_generator: ^1.1.2
   flutter_lints: ^2.0.1
 

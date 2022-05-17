@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -158,7 +159,7 @@ class _WelcomePageState extends State<WelcomePage> {
                             onPressed: () {
                               var prefBox = Hive.box("pref");
                               prefBox.put("first", false);
-                              Navigator.of(context).pop();
+                              GoRouter.of(context).pop();
                             },
                             child: const Text("START"),
                           ),

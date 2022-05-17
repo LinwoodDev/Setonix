@@ -1,11 +1,11 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
 import 'package:town/colors.dart';
 import 'package:town/pages/connect.dart';
 import 'package:town/pages/create/lobby.dart';
 import 'package:town/pages/news.dart';
-import 'package:town/pages/settings/home.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class HomePage extends StatefulWidget {
@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
 
   void checkFirstTime() {
     if (prefBox.get("first", defaultValue: true)) {
-      Navigator.of(context).pushNamed("/intro");
+      GoRouter.of(context).go("/intro");
     }
   }
 
@@ -65,8 +65,7 @@ class _HomePageState extends State<HomePage> {
               IconButton(
                 icon: const Icon(PhosphorIcons.gearLight),
                 tooltip: "Settings",
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const SettingsPage())),
+                onPressed: () => GoRouter.of(context).push('/settings'),
               )
             ],
           ),
@@ -91,7 +90,7 @@ class _HomePageState extends State<HomePage> {
             style: TabStyle.fixedCircle,
             onTabNotify: (i) {
               var intercept = i == 1;
-              if (intercept) Navigator.pushNamed(context, "/create");
+              if (intercept) GoRouter.of(context).push("/create");
               return !intercept;
             },
           ),

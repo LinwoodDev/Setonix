@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -60,7 +61,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       subtitle: Text(
                           settingsPages[index]["description"] as String,
                           style: Theme.of(context).textTheme.caption),
-                      onTap: () => Navigator.of(context)
+                      onTap: () => GoRouter.of(context)
                           .pushNamed(settingsPages[index]["route"] as String),
                     ))));
   }
