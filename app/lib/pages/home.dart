@@ -5,7 +5,7 @@ import 'package:hive/hive.dart';
 import 'package:town/colors.dart';
 import 'package:town/pages/connect.dart';
 import 'package:town/pages/create/lobby.dart';
-import 'package:town/pages/news.dart';
+import 'package:town/pages/customize.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class HomePage extends StatefulWidget {
@@ -26,7 +26,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final List<Widget> _tabs = [
-    const NewsPage(),
+    const CustomizePage(),
     const CreateLobbyPage(),
     const ConnectPage()
   ];

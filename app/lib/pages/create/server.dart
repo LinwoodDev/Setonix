@@ -31,6 +31,7 @@ class _CreateServerPageState extends State<CreateServerPage> {
                         TextFormField(
                             decoration: const InputDecoration(
                                 labelText: "Name",
+                                filled: true,
                                 prefixIcon: Icon(PhosphorIcons.pencilLight)),
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -38,9 +39,11 @@ class _CreateServerPageState extends State<CreateServerPage> {
                               }
                               return null;
                             }),
+                        const SizedBox(height: 8),
                         TextFormField(
                             decoration: InputDecoration(
                                 labelText: "Password",
+                                filled: true,
                                 prefixIcon: const Icon(PhosphorIcons.lockLight),
                                 suffixIcon: IconButton(
                                   icon: Icon(_showPassword
@@ -59,6 +62,7 @@ class _CreateServerPageState extends State<CreateServerPage> {
                             keyboardType: _showPassword
                                 ? TextInputType.visiblePassword
                                 : TextInputType.text),
+                        const SizedBox(height: 8),
                         TextFormField(
                             decoration:
                                 const InputDecoration(labelText: "Description"),

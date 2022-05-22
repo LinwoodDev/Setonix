@@ -62,7 +62,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           settingsPages[index]["description"] as String,
                           style: Theme.of(context).textTheme.caption),
                       onTap: () => GoRouter.of(context)
-                          .pushNamed(settingsPages[index]["route"] as String),
+                          .push(settingsPages[index]["route"] as String),
                     ))));
   }
 }

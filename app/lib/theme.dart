@@ -1,4 +1,3 @@
-import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
@@ -14,11 +13,9 @@ class ThemeController extends ChangeNotifier {
     notifyListeners();
   }
 
-  set currentThemeMode(ThemeMode? themeMode) =>
-      currentTheme = EnumToString.convertToString(themeMode);
+  set currentThemeMode(ThemeMode? themeMode) => currentTheme = themeMode?.name;
 
-  ThemeMode? get currentThemeMode =>
-      EnumToString.fromString(ThemeMode.values, currentTheme!);
+  ThemeMode? get currentThemeMode => ThemeMode.values.byName(currentTheme!);
 
   /// get the controller from any page of your app
   static ThemeController? of(BuildContext context) {

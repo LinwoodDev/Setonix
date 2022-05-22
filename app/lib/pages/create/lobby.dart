@@ -49,17 +49,21 @@ class _CreateLobbyPageState extends State<CreateLobbyPage> {
                           TextFormField(
                               decoration: const InputDecoration(
                                   labelText: "Name",
-                                  icon: Icon(PhosphorIcons.pencilLight)),
+                                  filled: true,
+                                  prefixIcon: Icon(PhosphorIcons.pencilLight)),
                               validator: (value) {
                                 if (value!.isEmpty) {
                                   return "This value can't be empty!";
                                 }
                                 return null;
                               }),
+                          const SizedBox(height: 8),
                           TextFormField(
                               decoration: InputDecoration(
                                   labelText: "Password",
-                                  icon: const Icon(PhosphorIcons.lockLight),
+                                  filled: true,
+                                  prefixIcon:
+                                      const Icon(PhosphorIcons.lockLight),
                                   suffixIcon: IconButton(
                                     icon: Icon(_showPassword
                                         ? PhosphorIcons.eyeSlashLight
@@ -71,10 +75,12 @@ class _CreateLobbyPageState extends State<CreateLobbyPage> {
                               keyboardType: _showPassword
                                   ? TextInputType.visiblePassword
                                   : TextInputType.text),
+                          const SizedBox(height: 8),
                           TextFormField(
                               decoration: const InputDecoration(
+                                  filled: true,
                                   labelText: "Maximum number of players",
-                                  icon: Icon(PhosphorIcons.usersLight)),
+                                  prefixIcon: Icon(PhosphorIcons.usersLight)),
                               keyboardType: TextInputType.number,
                               controller: _maxPlayerCountController,
                               onChanged: (text) =>
@@ -99,6 +105,7 @@ class _CreateLobbyPageState extends State<CreateLobbyPage> {
                             subtitle: Text(_typeController.getName()),
                             leading:
                                 const Icon(PhosphorIcons.shareNetworkLight),
+                            trailing: const Icon(PhosphorIcons.caretDownLight),
                             onTap: () => showModalBottomSheet(
                                 context: context,
                                 builder: (context) => Container(
