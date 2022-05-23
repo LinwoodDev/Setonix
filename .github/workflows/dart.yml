@@ -15,7 +15,7 @@ jobs:
           submodules: true
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.0.0'
+          flutter-version: '3.0.1'
           channel: 'stable' # or: 'stable' or 'dev'
       - name: Get dependencies
         working-directory: ${{ matrix.dir }}

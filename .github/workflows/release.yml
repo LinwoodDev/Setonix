@@ -23,7 +23,7 @@ jobs:
           token: ${{ secrets.CI_PAT }}
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.0.0'
+          flutter-version: '3.0.1'
           channel: "stable" # or: 'beta' or 'dev'
       - name: Setup git
         id: setup
@@ -78,7 +78,7 @@ jobs:
           token: ${{ secrets.CI_PAT }}
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.0.0'
+          flutter-version: '3.0.1'
           channel: "stable" # or: 'beta' or 'dev'
       - name: Setup git
         id: setup
@@ -115,7 +115,7 @@ jobs:
           token: ${{ secrets.CI_PAT }}
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.0.0'
+          flutter-version: '3.0.1'
           channel: "stable" # or: 'beta' or 'dev'
       - name: Setup git
         id: setup
@@ -160,7 +160,7 @@ jobs:
           token: ${{ secrets.CI_PAT }}
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.0.0'
+          flutter-version: '3.0.1'
           channel: "stable" # or: 'beta' or 'dev'
       - name: Setup git
         id: setup
