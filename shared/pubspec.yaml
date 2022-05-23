@@ -10,6 +10,10 @@ dependencies:
   collection: ^1.16.0
   equatable: ^2.0.3
   meta: ^1.7.0
+  networker:
+    path: ../networker/networker
+  networker_socket:
+    path: ../networker/networker_socket
 
 dev_dependencies: 
   lints: ^2.0.0
