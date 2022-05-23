@@ -109,17 +109,17 @@ jobs:
       #    cd app
       #    alien -r linwood-town-linux-x86_64.deb
       #    mv linwood-town*.rpm linwood-town-linux-x86_64.rpm
-      - name: Build .AppImage executable
-        run: |
-          cd app
-          sudo wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O /usr/local/bin/appimagetool
-          sudo chmod +x /usr/local/bin/appimagetool
-          sudo pip3 install appimage-builder
-          appimage-builder --recipe AppImageBuilder.yml --skip-test
-      - name: Rename AppImage
-        run: |
-          cd app
-          mv ./*.AppImage* Linwood-Town-linux-x86_64.AppImage
+      # - name: Build .AppImage executable
+      #   run: |
+      #     cd app
+      #     sudo wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O /usr/local/bin/appimagetool
+      #     sudo chmod +x /usr/local/bin/appimagetool
+      #     sudo pip3 install appimage-builder
+      #     appimage-builder --recipe AppImageBuilder.yml --skip-test
+      # - name: Rename AppImage
+      #   run: |
+      #     cd app
+      #     mv ./*.AppImage* Linwood-Town-linux-x86_64.AppImage
       - name: Archive
         uses: actions/upload-artifact@v3
         with:
@@ -132,12 +132,12 @@ jobs:
       #    name: linux-rpm
       #    path: |
       #      app/linwood-town-linux-x86_64.rpm
-      - name: Archive .AppImage
-        uses: actions/upload-artifact@v3
-        with:
-          name: linux-appimage
-          path: |
-            app/Linwood-Town-linux-x86_64.AppImage
+      # - name: Archive .AppImage
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: linux-appimage
+      #     path: |
+      #       app/Linwood-Town-linux-x86_64.AppImage
   #build-macos:
   #  runs-on: macos-latest
   #  steps:
@@ -222,12 +222,12 @@ jobs:
         with:
           name: linux-build
           path: linux-build/
-      #- uses: actions/download-artifact@v3
-      #  with:
-      #    name: linux-rpm
-      - uses: actions/download-artifact@v3
-        with:
-          name: linux-appimage
+      # - uses: actions/download-artifact@v3
+      #   with:
+      #     name: linux-rpm
+      # - uses: actions/download-artifact@v3
+      #   with:
+      #     name: linux-appimage
       - uses: actions/download-artifact@v3
         with:
           name: windows-setup
@@ -254,7 +254,6 @@ jobs:
             app-release.apk
             windows.zip
             linux.zip
-            Linwood-Town-linux-x86_64.AppImage
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: 🚀 Deploy nightly
@@ -269,7 +268,6 @@ jobs:
             app-release.apk
             windows.zip
             linux.zip
-            Linwood-Town-linux-x86_64.AppImage
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Release
@@ -282,6 +280,5 @@ jobs:
             app-release.apk
             windows.zip
             linux.zip
-            Linwood-Town-linux-x86_64.AppImage
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
