@@ -19,6 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
+          submodules: true
           token: ${{ secrets.CI_PAT }}
       - uses: subosito/flutter-action@v2
         with:
@@ -73,6 +74,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
+          submodules: true
           token: ${{ secrets.CI_PAT }}
       - uses: subosito/flutter-action@v2
         with:
@@ -107,6 +109,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
+          submodules: true
           fetch-depth: 0
           ref: main
           token: ${{ secrets.CI_PAT }}
@@ -151,6 +154,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
+          submodules: true
           fetch-depth: 0
           ref: develop
           token: ${{ secrets.CI_PAT }}
@@ -192,6 +196,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
+          submodules: true
           token: ${{ secrets.CI_PAT }}
       - name: Get information
         shell: bash
