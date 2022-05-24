@@ -76,7 +76,7 @@ jobs:
         with:
           name: windows-setup
           path: |
-            app/build/windows/Town-Setup.exe
+            app/build/windows/Linwood Town-Setup.exe
   build-linux:
     runs-on: ubuntu-20.04
     steps:
