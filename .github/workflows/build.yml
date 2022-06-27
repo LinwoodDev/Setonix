@@ -1,15 +1,15 @@
 name: Flutter build
 
 on: [push, release]
-
 jobs:
   build-apk:
-    runs-on: ubuntu-20.04
+    defaults:
+      run:
+        working-directory: app
+    runs-on: ubuntu-22.04
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v3
-        with:
-          submodules: true
       - name: 🔧 Setup java
         uses: actions/setup-java@v3
         with:
@@ -17,51 +17,55 @@ jobs:
           distribution: "adopt"
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.0.1'
+          flutter-version: '3.0.3'
           channel: "stable" # or: 'beta' or 'dev'
       - name: 📦 Get dependencies
         run: |
-          cd app
           flutter pub get
       #- run: flutter test
-      - name: 🏭 Build
+      - name: 🏭 Build nightly
+        if: ${{ github.ref != 'refs/tags/stable' }}
         run: |
-          cd app
           flutter doctor -v
-          flutter build apk -v --release
+          flutter build apk -v --release --flavor development
+          cp build/app/outputs/flutter-apk/app-development-release.apk linwood-town-android.apk
+      - name: 🏭 Build production
+        if: ${{ github.ref == 'refs/tags/stable' }}
+        run: |
+          flutter doctor -v
+          flutter build apk -v --release --flavor production
+          cp build/app/outputs/flutter-apk/app-production-release.apk linwood-town-android.apk
       - name: Archive
         uses: actions/upload-artifact@v3
         with:
           name: apk-build
-          path: app/build/app/outputs/flutter-apk/app-release.apk
+          path: app/linwood-town-android.apk
   build-windows:
     runs-on: windows-2022
+    defaults:
+      run:
+        working-directory: app
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v3
-        with:
-          submodules: true
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.0.1'
+          flutter-version: '3.0.3'
           channel: "stable" # or: 'beta' or 'dev'
       - name: ✅ Enable platforms
         run: flutter config --enable-windows-desktop
       - name: 📦 Get dependencies
         run: |
-          cd app
           flutter pub get
       - name: 🏭 Build
         shell: pwsh
         run: |
-          cd app
           flutter clean
           flutter doctor -v
           flutter build windows -v --release
       - name: Build setup
         shell: pwsh
         run: |
-          cd app
           Get-Content pubspec.yaml | Select-String -Pattern 'version:\s(.+)\+'  | % {Set-Item -Path Env:TOWN_VERSION -Value "$($_.matches.groups[1])"}
           & 'C:/Program Files (x86)/Inno Setup 6/ISCC.exe' /DMyAppVersion=$Env:TOWN_VERSION TownSetup.iss
         # flutter pub run msix:create
@@ -76,68 +80,138 @@ jobs:
         with:
           name: windows-setup
           path: |
-            app/build/windows/Linwood Town-Setup.exe
+            app/build/windows/linwood-town-windows-setup.exe
   build-linux:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: app
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v3
-        with:
-          submodules: true
       - name: Get dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3-pip python3-setuptools desktop-file-utils libgdk-pixbuf2.0-dev fakeroot strace fuse libgtk-3-dev libx11-dev pkg-config cmake ninja-build libblkid-dev liblzma-dev clang dpkg-dev patchelf alien
+          sudo apt-get install -y python3-pip \
+            python3-setuptools \
+            desktop-file-utils \
+            libgdk-pixbuf2.0-dev \
+            fakeroot \
+            strace \
+            fuse \
+            libgtk-3-dev \
+            libx11-dev \
+            pkg-config \
+            cmake \
+            ninja-build \
+            libblkid-dev \
+            liblzma-dev \
+            clang \
+            dpkg-dev \
+            patchelf \
+            alien \
+            libsecret-1-dev \
+            libjsoncpp-dev
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.0.1'
+          flutter-version: '3.0.3'
           channel: "stable" # or: 'beta' or 'dev'
       - name: ✅ Enable platforms
         run: flutter config --enable-linux-desktop
       - name: 📦 Get dependencies
         run: |
-          cd app
           flutter pub get
       - name: 🏭 Build
         run: |
-          cd app
           flutter clean
           flutter doctor -v
           flutter build linux -v --release
+      - name: Build .deb executable
+        run: |
+          cp -fr build/linux/x64/release/bundle linux/debian/usr/bin
+          dpkg-deb --build --root-owner-group linux/debian
+          cp linux/*.deb linwood-town-linux.deb
       #- name: Build .rpm executable
       #  run: |
       #    cd app
-      #    alien -r linwood-town-linux-x86_64.deb
-      #    mv linwood-town*.rpm linwood-town-linux-x86_64.rpm
-      # - name: Build .AppImage executable
-      #   run: |
-      #     cd app
-      #     sudo wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O /usr/local/bin/appimagetool
-      #     sudo chmod +x /usr/local/bin/appimagetool
-      #     sudo pip3 install appimage-builder
-      #     appimage-builder --recipe AppImageBuilder.yml --skip-test
-      # - name: Rename AppImage
-      #   run: |
-      #     cd app
-      #     mv ./*.AppImage* Linwood-Town-linux-x86_64.AppImage
+      #    alien -r linwood-town-linux.deb
+      #    mv linwood-town*.rpm linwood-town-linux.rpm
+      - name: Build .AppImage executable
+        run: |
+          wget -O appimage-builder-x86_64.AppImage https://github.com/AppImageCrafters/appimage-builder/releases/download/v1.0.0-beta.1/appimage-builder-1.0.0-677acbd-x86_64.AppImage
+          chmod +x appimage-builder-x86_64.AppImage
+          sudo mv appimage-builder-x86_64.AppImage /usr/local/bin/appimage-builder
+          appimage-builder --recipe AppImageBuilder.yml --skip-test
+      - name: Rename AppImage
+        run: |
+          mv ./*.AppImage* linwood-town-linux.AppImage
+      #- name: Compress Flutter build
+      #  run: tar -C build/linux/x64/release/bundle -cvf linwood-town-linux-portable.tar.gz .
+      #- name: Upload app archive for next steps
+      #  uses: actions/upload-artifact@v3
+      #  with:
+      #    name: linux-build-portable
+      #    path: app/linwood-town-linux-portable.tar.gz
       - name: Archive
         uses: actions/upload-artifact@v3
         with:
           name: linux-build
           path: |
             app/build/linux/x64/release/bundle/**
+      - name: Archive .deb
+        uses: actions/upload-artifact@v3
+        with:
+          name: linux-deb
+          path: |
+            app/linwood-town-linux.deb
       #- name: Archive .rpm
       #  uses: actions/upload-artifact@v3
       #  with:
       #    name: linux-rpm
       #    path: |
-      #      app/linwood-town-linux-x86_64.rpm
-      # - name: Archive .AppImage
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: linux-appimage
-      #     path: |
-      #       app/Linwood-Town-linux-x86_64.AppImage
+      #      app/linwood-town-linux.rpm
+      - name: Archive .AppImage
+        uses: actions/upload-artifact@v3
+        with:
+          name: linux-appimage
+          path: |
+            app/linwood-town-linux.AppImage
+  #build-flatpak:
+  #  name: Build flatpak
+  #  needs: build-linux
+  #  runs-on: ubuntu-latest
+  #  steps:
+  #    - name: ⬆️ Checkout
+  #      uses: actions/checkout@v3
+  #    - name: Download app archive
+  #      uses: actions/download-artifact@v3
+  #      with:
+  #        name: linux-build-portable
+  #        path: app/linwood-town-linux-portable.tar.gz
+  #    - name: Install flatpak
+  #      run: |
+  #        sudo apt-get update
+  #        sudo apt-get install -y flatpak flatpak-builder
+  #    - name: Install dependencies
+  #      run: |
+  #        flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo --user
+  #        flatpak install flathub org.freedesktop.Platform//21.08 org.freedesktop.Sdk//21.08 --user -y
+  #    - name: Copy nessessary files
+  #      working-directory: app
+  #      run: |
+  #        cp linux/debian/usr/share/metainfo/dev.linwood.town.appdata.xml .
+  #        cp linux/debian/usr/share/applications/dev.linwood.town.desktop .
+  #    - name: Build .flatpak
+  #      working-directory: app
+  #      run: |
+  #        flatpak-builder --disable-rofiles-fuse --install-deps-from=flathub --force-clean --arch=x86_64 --ccache flatpak_app flatpak.json -y -v
+  #        flatpak build-export export build-dir -v
+  #        flatpak build-bundle export linwood-town-linux.flatpak dev.linwood.town -v
+  #    - name: Upload .flatpak artifact to workflow
+  #      uses: actions/upload-artifact@v3
+  #      with:
+  #        name: linux-flatpak
+  #        path: linwood-town-linux.flatpak
   #build-macos:
   #  runs-on: macos-latest
   #  steps:
@@ -162,50 +236,17 @@ jobs:
   #        name: macos-build
   #        path: |
   #          build/windows/runner/Release/**
-  
-  build-server:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [ ubuntu-latest, windows-latest, macOS-latest ]
-        include:
-          - os: ubuntu-latest
-            output-name: server-linux
-          - os: macOS-latest
-            output-name: server-mac
-          - os: windows-latest
-            output-name: server-windows.exe
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: true
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.0.1'
-          channel: "stable" # or: 'beta' or 'dev'
-      - name: Build server
-        run: |
-          cd server
-          mkdir build
-          dart pub get
-          dart compile exe bin/town_server.dart -v -o build/${{ matrix.output-name }}
-      - uses: actions/upload-artifact@v2
-        with:
-          name: server-${{ matrix.os }}
-          path: server/build/${{ matrix.output-name }}
   deploy:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs:
       - build-apk
       - build-windows
       - build-linux
-      - build-server
+      #- build-flatpak
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v3
         with:
-          submodules: true
           token: ${{ secrets.CI_PAT }}
       - name: Setup git
         run: |
@@ -222,19 +263,25 @@ jobs:
         with:
           name: linux-build
           path: linux-build/
-      # - uses: actions/download-artifact@v3
-      #   with:
-      #     name: linux-rpm
-      # - uses: actions/download-artifact@v3
-      #   with:
-      #     name: linux-appimage
+      - uses: actions/download-artifact@v3
+        with:
+          name: linux-deb
+      #- uses: actions/download-artifact@v3
+      #  with:
+      #    name: linux-rpm
+      - uses: actions/download-artifact@v3
+        with:
+          name: linux-appimage
+      #- uses: actions/download-artifact@v3
+      #  with:
+      #    name: linux-flatpak
       - uses: actions/download-artifact@v3
         with:
           name: windows-setup
       - name: 📦 Zip artifacts
         run: |
-          zip -r windows.zip windows-build/*
-          zip -r linux.zip linux-build/*
+          zip -r linwood-town-windows.zip windows-build/*
+          zip -r linwood-town-linux.zip linux-build/*
       - name: Configure git
         if: ${{ github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main' }}
         run: |
@@ -250,10 +297,13 @@ jobs:
           prerelease: true
           tag_name: stable
           files: |
-            Town-Setup.exe
-            app-release.apk
-            windows.zip
-            linux.zip
+            linwood-town-windows-setup.exe
+            linwood-town-windows.zip
+            linwood-town-android.apk
+            linwood-town-linux.zip
+            linwood-town-linux.deb
+            linwood-town-linux.AppImage
+          #  linwood-town-linux.flatpak
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: 🚀 Deploy nightly
@@ -264,10 +314,13 @@ jobs:
           prerelease: true
           tag_name: nightly
           files: |
-            Town-Setup.exe
-            app-release.apk
-            windows.zip
-            linux.zip
+            linwood-town-windows-setup.exe
+            linwood-town-windows.zip
+            linwood-town-android.apk
+            linwood-town-linux.zip
+            linwood-town-linux.deb
+            linwood-town-linux.AppImage
+          #  linwood-town-linux.flatpak
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Release
@@ -276,9 +329,63 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         with:
           files: |
-            Town-Setup.exe
-            app-release.apk
-            windows.zip
-            linux.zip
+            linwood-town-windows-setup.exe
+            linwood-town-windows.zip
+            linwood-town-android.apk
+            linwood-town-linux.zip
+            linwood-town-linux.deb
+            linwood-town-linux.AppImage
+          #  linwood-town-linux.flatpak
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  deploy-to-play-store:
+    runs-on: ubuntu-22.04
+    if: startsWith(github.ref, 'refs/tags/')
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - name: ⬆️ Checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.CI_PAT }}
+      - name: Setup git
+        run: |
+          git config --global user.email "ci@linwood.dev"
+          git config --global user.name "Linwood CI"
+      - name: Import files
+        env:
+          KEY_JKS: ${{ secrets.KEY_JKS }}
+          KEY_PROPERTIES: ${{ secrets.KEY_PROPERTIES }}
+          PLAY_STORE_CREDENTIALS: ${{ secrets.PLAY_STORE_CREDENTIALS }}
+        run: |
+          cd android
+          echo "$KEY_PROPERTIES" | base64 --decode > key.properties
+          echo "$KEY_JKS" | base64 --decode > key.jks
+          echo "$PLAY_STORE_CREDENTIALS" | base64 --decode > play-store-credentials.json
+      - name: 🔧 Setup java
+        uses: actions/setup-java@v3
+        with:
+          java-version: "11"
+          distribution: "adopt"
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.0.3'
+          channel: "stable" # or: 'beta' or 'dev'
+      - name: 📦 Get dependencies
+        run: |
+          flutter pub get
+      - name: Setup Fastlane
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.1.2"
+          bundler-cache: true
+          working-directory: app/android
+      - name: 🚀 Deploy to Play Store
+        if: ${{ github.ref == 'refs/tags/stable' }}
+        run: bundle exec fastlane deploy
+        working-directory: app/android
+      - name: 🚀 Deploy to Play Store
+        if: ${{ github.ref == 'refs/tags/nightly' }}
+        run: bundle exec fastlane beta
+        working-directory: app/androidhttps://github.com/LinwoodCloud/Town/blob/develop/app/AppImageBuilder.yml

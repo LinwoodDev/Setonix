@@ -64,6 +64,7 @@ class TownApp extends StatelessWidget {
     return MaterialApp.router(
         routeInformationParser: _router.routeInformationParser,
         routerDelegate: _router.routerDelegate,
+        routeInformationProvider: _router.routeInformationProvider,
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
