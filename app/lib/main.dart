@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:town/models/server.dart';
-import 'package:town/services/localization.dart';
 
 import 'colors.dart';
 import 'pages/create/lobby.dart';
@@ -71,11 +71,7 @@ class TownApp extends StatelessWidget {
           GlobalCupertinoLocalizations.delegate,
           AppLocalizations.delegate,
         ],
-        supportedLocales: const [
-          Locale("en"), // English
-          Locale('de') // Deutsch
-          // ... other locales the app supports
-        ],
+        supportedLocales: AppLocalizations.supportedLocales,
         title: 'Linwood Town',
         theme: ThemeData(
             useMaterial3: true,
