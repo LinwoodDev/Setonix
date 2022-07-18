@@ -145,35 +145,35 @@ packages:
       name: quick_blue
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.1+1"
+    version: "0.5.0-dev.2"
   quick_blue_linux:
     dependency: transitive
     description:
       name: quick_blue_linux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.2"
+    version: "0.2.0-dev.0"
   quick_blue_macos:
     dependency: transitive
     description:
       name: quick_blue_macos
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.1+2"
+    version: "0.4.0-dev.0"
   quick_blue_platform_interface:
     dependency: transitive
     description:
       name: quick_blue_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.2"
+    version: "0.4.0-dev.0"
   quick_blue_windows:
     dependency: transitive
     description:
       name: quick_blue_windows
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.2+2"
+    version: "0.4.0-dev.0"
   shared:
     dependency: "direct main"
     description:
