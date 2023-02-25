@@ -7,15 +7,9 @@ environment:
   sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
-  collection: ^1.16.0
-  equatable: ^2.0.3
-  meta: ^1.7.0
-  networker:
-    path: ../networker/networker
-  networker_socket:
-    path: ../networker/networker_socket
-  networker_ble:
-    path: ../networker/networker_ble
+  collection: ^1.17.1
+  equatable: ^2.0.5
+  meta: ^1.8.0
 
 dev_dependencies: 
-  lints: ^2.0.0
+  lints: ^2.0.1

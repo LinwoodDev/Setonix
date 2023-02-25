@@ -1,3 +1,4 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -62,28 +63,22 @@ class TownApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-        routeInformationParser: _router.routeInformationParser,
-        routerDelegate: _router.routerDelegate,
-        routeInformationProvider: _router.routeInformationProvider,
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-          AppLocalizations.delegate,
-        ],
-        supportedLocales: AppLocalizations.supportedLocales,
-        title: 'Linwood Town',
-        theme: ThemeData(
-            useMaterial3: true,
-            // This is the theme of your application.
-            //
-            // Try running your application with "flutter run". You'll see the
-            // application has a blue toolbar. Then, without quitting the app, try
-            // changing the primarySwatch below to Colors.green and then invoke
-            // "hot reload" (press "r" in the console where you ran "flutter run",
-            // or simply save your changes to "hot reload" in a Flutter IDE).
-            // Notice that the counter didn't reset back to zero; the application
-            // is not restarted.
-            primarySwatch: PaletteColors.primaryPalette));
+      routeInformationParser: _router.routeInformationParser,
+      routerDelegate: _router.routerDelegate,
+      routeInformationProvider: _router.routeInformationProvider,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        AppLocalizations.delegate,
+      ],
+      supportedLocales: AppLocalizations.supportedLocales,
+      title: 'Linwood Town',
+      theme:
+          FlexThemeData.light(scheme: FlexScheme.mandyRed, useMaterial3: true),
+      darkTheme:
+          FlexThemeData.dark(scheme: FlexScheme.mandyRed, useMaterial3: true, ),
+      themeMode: ThemeMode.system,
+    );
   }
 }
