@@ -3,6 +3,8 @@ import 'package:town/services/game/system.dart';
 import 'package:town/widgets/game/drawer.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
+import '../../widgets/window.dart';
+
 class PlayersPage extends StatefulWidget {
   final GameSystem manager;
 
@@ -25,8 +27,8 @@ class _PlayersPageState extends State<PlayersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Players"),
+      appBar: const WindowTitleBar(
+        title: Text("Players"),
       ),
       drawer: GameDrawer(
         manager: widget.manager,
@@ -49,7 +51,7 @@ class _PlayersPageState extends State<PlayersPage> {
               children = <Widget>[
                 Icon(
                   PhosphorIcons.warningLight,
-                  color: Theme.of(context).errorColor,
+                  color: Theme.of(context).colorScheme.error,
                   size: 60,
                 ),
                 Padding(

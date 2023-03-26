@@ -14,20 +14,23 @@ on:
         required: false
 
 jobs:
-  release:
-    runs-on: ubuntu-20.04
+  update-changelog:
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
         with:
-          submodules: true
           token: ${{ secrets.CI_PAT }}
+          fetch-depth: 0
+      - name: Get flutter version
+        run: |
+          FLUTTER_VERSION=$(cat FLUTTER_VERSION)
+          echo "FLUTTER_VERSION=${FLUTTER_VERSION}" >> $GITHUB_ENV
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.0.1'
-          channel: "stable" # or: 'beta' or 'dev'
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: "any"
       - name: Setup git
         id: setup
-        shell: bash
         run: |
           TOWN_VERSION_REGEX="version:\s(.+)\+(.+)"
           [[ $(grep -E "${TOWN_VERSION_REGEX}" app/pubspec.yaml) =~ ${TOWN_VERSION_REGEX} ]]
@@ -37,49 +40,109 @@ jobs:
           echo "TOWN_BUILD_NUMBER=${TOWN_BUILD_NUMBER}" >> $GITHUB_ENV
           git config --global user.email "ci@linwood.dev"
           git config --global user.name "Linwood CI"
-      - name: Create changelog
+      - name: Update changelog
         run: |
+          git fetch
+          git pull origin
           dart pub get -C tools
-          dart run tools/set_version.dart --build-number keep --changelog
+          dart run tools/set_version.dart --build-number keep ${{ env.TOWN_VERSION }} --changelog
           git add .
-          git commit -m "Create changelog for ${{ env.TOWN_VERSION }}"
+          git commit -m "Add changelog of v${{ env.TOWN_VERSION }}"
           git push origin
+      - name: Merge in develop
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: |
+          git fetch
+          git checkout develop
+          git pull origin develop
+          git merge main --strategy-option ours
+          git push origin develop
+  release:
+    runs-on: ubuntu-22.04
+    needs:
+      - update-changelog
+    outputs:
+      version: ${{ steps.setup.outputs.TOWN_VERSION }}
+      build_number: ${{ steps.setup.outputs.TOWN_BUILD_NUMBER }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.CI_PAT }}
+          ref: ${{ github.ref }}
+      - name: Get flutter version
+        run: |
+          FLUTTER_VERSION=$(cat FLUTTER_VERSION)
+          echo "FLUTTER_VERSION=${FLUTTER_VERSION}" >> $GITHUB_ENV
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: "any"
+      - name: Setup git
+        id: setup
+        shell: bash
+        run: |
+          TOWN_VERSION_REGEX="version:\s(.+)\+(.+)"
+          [[ $(grep -E "${TOWN_VERSION_REGEX}" app/pubspec.yaml) =~ ${TOWN_VERSION_REGEX} ]]
+          TOWN_VERSION="${BASH_REMATCH[1]}"
+          echo "TOWN_VERSION=${TOWN_VERSION}" >> $GITHUB_ENV
+          echo "TOWN_VERSION=${TOWN_VERSION}" >> $GITHUB_OUTPUT
+          TOWN_BUILD_NUMBER="${BASH_REMATCH[2]}"
+          echo "TOWN_BUILD_NUMBER=${TOWN_BUILD_NUMBER}" >> $GITHUB_ENV
+          echo "TOWN_BUILD_NUMBER=${TOWN_BUILD_NUMBER}" >> $GITHUB_OUTPUT
+          git config --global user.email "ci@linwood.dev"
+          git config --global user.name "Linwood CI"
       - name: Create tag
         run: |
           TOWN_VERSION="${{ env.TOWN_VERSION }}"
           git tag -fa v${{ env.TOWN_VERSION }} -m "Release ${TOWN_VERSION}"
-          git push origin v${TOWN_VERSION}
+          git push origin v${TOWN_VERSION} -f
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.CI_PAT }}
       - name: Create release
         uses: softprops/action-gh-release@v1
         with:
-          prerelease: ${{ github.event.inputs.stable }}
+          prerelease: ${{ github.event.inputs.stable != 'true' }}
           tag_name: v${{ env.TOWN_VERSION }}
           name: v${{ env.TOWN_VERSION }}
           token: ${{ secrets.CI_PAT }}
           body_path: fastlane/metadata/android/en-US/changelogs/${{ env.TOWN_BUILD_NUMBER }}.txt
       - name: Retag stable
-        if: ${{ !github.event.inputs.stable }}
+        if: ${{ github.event.inputs.stable == 'true' || github.ref == 'refs/heads/main' }}
         run: |
           git tag -fa stable -m "Find all stable releases here"
-          git push origin stable -f
+          git push origin HEAD:stable -f
       - name: Retag nightly
-        if: ${{ github.event.inputs.stable }}
+        if: ${{ github.event.inputs.stable != 'true' && github.ref == 'refs/heads/develop' }}
         run: |
           git tag -fa nightly -m "Find all nightly releases here"
-          git push origin nightly -f
-  update-version:
-    runs-on: ubuntu-20.04
+          git push origin HEAD:nightly -f
+      - name: Merge in main
+        if: ${{ github.ref == 'refs/heads/develop' && github.event.inputs.stable == 'true' }}
+        run: |
+          git fetch
+          git checkout main
+          git pull origin main
+          git merge develop --strategy-option ours
+          git push origin main
+  set-next-version:
+    runs-on: ubuntu-22.04
     needs:
+      - update-changelog
       - release
     steps:
       - uses: actions/checkout@v3
         with:
-          submodules: true
           token: ${{ secrets.CI_PAT }}
+          fetch-depth: 0
+      - name: Get flutter version
+        run: |
+          FLUTTER_VERSION=$(cat FLUTTER_VERSION)
+          echo "FLUTTER_VERSION=${FLUTTER_VERSION}" >> $GITHUB_ENV
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.0.1'
-          channel: "stable" # or: 'beta' or 'dev'
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: "any"
       - name: Setup git
         id: setup
         run: |
@@ -100,68 +163,35 @@ jobs:
           git add .
           git commit -m "Update Version to ${{ github.event.inputs.next_version }}"
           git push origin
-  update-main:
-    if: ${{ github.ref == 'refs/heads/develop' }}
-    runs-on: ubuntu-20.04
+      - name: Merge develop
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: |
+          git fetch
+          git checkout develop
+          git pull origin develop
+          git merge main --strategy-option ours
+          git push origin develop
+  bump-version:
+    runs-on: ubuntu-22.04
     needs:
+      - update-changelog
       - release
-      - update-version
+      - set-next-version
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout main
+        if: ${{ github.ref == 'refs/heads/develop' }}
+        uses: actions/checkout@v3
         with:
-          submodules: true
+          token: ${{ secrets.CI_PAT }}
           fetch-depth: 0
           ref: main
+      - name: Checkout develop
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: actions/checkout@v3
+        with:
           token: ${{ secrets.CI_PAT }}
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.0.1'
-          channel: "stable" # or: 'beta' or 'dev'
-      - name: Setup git
-        id: setup
-        run: |
-          TOWN_VERSION_REGEX="version:\s(.+)\+(.+)"
-          [[ $(grep -E "${TOWN_VERSION_REGEX}" app/pubspec.yaml) =~ ${TOWN_VERSION_REGEX} ]]
-          TOWN_VERSION="${BASH_REMATCH[1]}"
-          echo "TOWN_VERSION=${TOWN_VERSION}" >> $GITHUB_ENV
-          TOWN_BUILD_NUMBER="${BASH_REMATCH[2]}"
-          echo "TOWN_BUILD_NUMBER=${TOWN_BUILD_NUMBER}" >> $GITHUB_ENV
-          git config --global user.email "ci@linwood.dev"
-          git config --global user.name "Linwood CI"
-      - name: Update version number
-        if: ${{ github.event.inputs.stable }}
-        run: |
-          dart pub get -C tools
-          dart run tools/set_version.dart --build-number increment --no-changelog
-
-          git add .
-          git commit -m "Update version number"
-          git push origin main
-      - name: Merge main in develop
-        run: |
-          git fetch
-          git pull
-          git checkout develop
-          git pull
-          git merge origin/main --strategy-option ours
-          git push origin develop
-  update-develop:
-    if: ${{ github.ref == 'refs/heads/main' }}
-    runs-on: ubuntu-20.04
-    needs:
-      - release
-      - update-version
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: true
           fetch-depth: 0
           ref: develop
-          token: ${{ secrets.CI_PAT }}
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.0.1'
-          channel: "stable" # or: 'beta' or 'dev'
       - name: Setup git
         id: setup
         run: |
@@ -173,30 +203,37 @@ jobs:
           echo "TOWN_BUILD_NUMBER=${TOWN_BUILD_NUMBER}" >> $GITHUB_ENV
           git config --global user.email "ci@linwood.dev"
           git config --global user.name "Linwood CI"
-      - name: Merge main
+      - name: Get flutter version
+        run: |
+          FLUTTER_VERSION=$(cat FLUTTER_VERSION)
+          echo "FLUTTER_VERSION=${FLUTTER_VERSION}" >> $GITHUB_ENV
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: "any"
+      - name: Bump version
         run: |
           git fetch
-          git pull
-          git checkout develop
-          git pull
-          git merge origin/main --strategy-option ours
-          git push origin develop
-      - name: Update version number
-        run: |
-          git fetch
-          git pull
+          git pull origin
           dart pub get -C tools
-          dart run tools/set_version.dart --build-number increment --no-changelog
-
+          dart run tools/set_version.dart --build-number increment ${{ env.TOWN_VERSION }} --no-changelog
           git add .
-          git commit -m "Update version number"
+          git commit -m "Bump version"
+          git push origin
+      - name: Update develop
+        if: ${{ github.ref == 'refs/heads/develop' }}
+        run: |
+          git fetch
+          git checkout develop
+          git pull origin
+          git merge main --strategy-option ours
           git push origin develop
   notify:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
+    needs: [release]
     steps:
       - uses: actions/checkout@v3
         with:
-          submodules: true
           token: ${{ secrets.CI_PAT }}
       - name: Get information
         shell: bash
@@ -212,42 +249,27 @@ jobs:
           echo '' >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
       - name: Discord Webhook Action
-        uses: tsickert/discord-webhook@v4.0.0
-        if: ${{ github.ref == 'refs/heads/main' || !github.event.inputs.stable }}
+        uses: tsickert/discord-webhook@v5.3.0
+        if: ${{ github.event.inputs.stable == 'true' || github.ref == 'refs/heads/main' }}
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
           embed-title: ${{ env.TOWN_VERSION }}
           embed-description: ${{ env.TOWN_CHANGELOG }}
+          embed-url: https://github.com/LinwoodCloud/Town/releases/tag/v${{ env.TOWN_VERSION }}
           content: |
             Version ${{ env.TOWN_VERSION }} released!
             Download it here: https://docs.town.linwood.dev/downloads
-
-            https://github.com/LinwoodCloud/town/releases/tag/v${{ env.TOWN_VERSION }}
+            https://github.com/LinwoodCloud/Town/releases/tag/v${{ env.TOWN_VERSION }}
       - name: Discord Webhook Action
-        uses: tsickert/discord-webhook@v4.0.0
-        if: ${{ github.ref == 'refs/heads/develop' && github.event.inputs.stable }}
+        uses: tsickert/discord-webhook@v5.3.0
+        if: ${{ github.event.inputs.stable == 'false' && github.ref == 'refs/heads/develop' }}
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
           embed-title: ${{ env.TOWN_VERSION }}
           embed-description: ${{ env.TOWN_CHANGELOG }}
+          embed-url: https://github.com/LinwoodCloud/Town/releases/tag/v${{ env.TOWN_VERSION }}
           content: |
             Pre-release version ${{ env.TOWN_VERSION }} released!
             Download it here: https://docs.town.linwood.dev/downloads
-
             Please note that this is a pre-release version and is not intended for production use.
-            Read more about here: https://docs.town.linwood.dev/nightly
-
-  #publish-to-play-store:
-  #  runs-on: ubuntu-20.04
-  #  steps:
-  #    - uses: actions/checkout@v3
-  #    - name: Publish beta
-  #      run: fastlane beta
-  #      if: ${{ github.event.inputs.stable }}
-  #      env:
-  #        PLAY_STORE_UPLOAD_KEY: ${{ secrets.PLAY_STORE_UPLOAD_KEY }}
-  #    - name: Publish stable
-  #      run: fastlane deploy
-  #      if: ${{ !github.event.inputs.stable }}
-  #      env:
-  #        PLAY_STORE_UPLOAD_KEY: ${{ secrets.PLAY_STORE_UPLOAD_KEY }}
+            Read more about it here: https://docs.town.linwood.dev/nightly

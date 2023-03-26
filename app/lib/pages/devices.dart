@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:town/widgets/window.dart';
 
 class DevicesPage extends StatefulWidget {
   const DevicesPage({Key? key}) : super(key: key);
@@ -10,9 +11,9 @@ class DevicesPage extends StatefulWidget {
 class _DevicesPageState extends State<DevicesPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Devices"),
+    return const Scaffold(
+      appBar: WindowTitleBar(
+        title: Text("Devices"),
       ),
     );
   }

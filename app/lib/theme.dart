@@ -1,45 +1,44 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 
-/// provides the currently selected theme, saves changed theme preferences to disk
-class ThemeController extends ChangeNotifier {
-  static const themePrefKey = 'theme';
+import 'main.dart';
 
-  String? get currentTheme =>
-      Hive.box("settings").get(themePrefKey, defaultValue: "system") as String?;
+const kClassicThemePrimary = isNightly ? Color(0xFF6877FD) : Color(0xFFA28DDB);
+const kClassicThemeSecondary = Color(0xFF35EF53);
+const kClassicTheme = FlexSchemeColor(
+    primary: kClassicThemePrimary, secondary: kClassicThemeSecondary);
+const kClassicThemeData = FlexSchemeData(
+    name: '', description: '', light: kClassicTheme, dark: kClassicTheme);
 
-  set currentTheme(String? value) {
-    Hive.box("settings").put(themePrefKey, value);
-    notifyListeners();
+ThemeData getThemeData(String name, bool dark, [ColorScheme? overridden]) {
+  final color = getFlexThemeColor(name, dark);
+  final override = overridden != null && name.isEmpty;
+  if (dark) {
+    return FlexThemeData.dark(
+      colors: override ? null : color,
+      colorScheme: override ? overridden : null,
+      useMaterial3: true,
+      appBarElevation: 2,
+      fontFamily: 'Roboto',
+    );
   }
-
-  set currentThemeMode(ThemeMode? themeMode) => currentTheme = themeMode?.name;
-
-  ThemeMode? get currentThemeMode => ThemeMode.values.byName(currentTheme!);
-
-  /// get the controller from any page of your app
-  static ThemeController? of(BuildContext context) {
-    final provider =
-        context.dependOnInheritedWidgetOfExactType<ThemeControllerProvider>()!;
-    return provider.controller;
-  }
+  return FlexThemeData.light(
+    colors: override ? null : color,
+    colorScheme: override ? overridden : null,
+    useMaterial3: true,
+    appBarElevation: 0.5,
+    fontFamily: 'Roboto',
+  );
 }
 
-/// provides the theme controller to any page of your app
-class ThemeControllerProvider extends InheritedWidget {
-  const ThemeControllerProvider(
-      {Key? key, this.controller, required Widget child})
-      : super(key: key, child: child);
-
-  final ThemeController? controller;
-
-  @override
-  bool updateShouldNotify(ThemeControllerProvider oldWidget) =>
-      controller != oldWidget.controller;
+FlexSchemeColor getFlexThemeColor(String name, bool dark) {
+  final color = FlexColor.schemesList.firstWhere(
+      (scheme) => scheme.name == name,
+      orElse: () => kClassicThemeData);
+  if (dark) return color.dark;
+  return color.light;
 }
 
-extension ThemeModeIndex on ThemeMode {
-  // Overload the [] getter to get the name of the fruit.
-  operator [](String key) =>
-      ThemeMode.values.firstWhere((e) => e.toString() == 'ThemeMode.$key');
+List<String> getThemes() {
+  return FlexColor.schemesList.map((e) => e.name).toList();
 }

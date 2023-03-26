@@ -5,6 +5,8 @@ import 'package:town/pages/create/online.dart';
 import 'package:town/services/game/system/types.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
+import '../../widgets/window.dart';
+
 class CreateLobbyPage extends StatefulWidget {
   const CreateLobbyPage({Key? key}) : super(key: key);
 
@@ -31,8 +33,8 @@ class _CreateLobbyPageState extends State<CreateLobbyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Create game lobby"),
+        appBar: const WindowTitleBar(
+          title: Text("Create game lobby"),
         ),
         body: Align(
             alignment: Alignment.topCenter,
@@ -120,7 +122,7 @@ class _CreateLobbyPageState extends State<CreateLobbyPage> {
                                                 "Choose where you want to host your game",
                                                 style: Theme.of(context)
                                                     .textTheme
-                                                    .headline5),
+                                                    .headlineLarge),
                                           ),
                                           ...ConnectionType.values
                                               .map((label) => ListTile(

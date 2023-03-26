@@ -1,12 +1,13 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hive/hive.dart';
 import 'package:town/colors.dart';
 import 'package:town/pages/connect.dart';
 import 'package:town/pages/create/lobby.dart';
 import 'package:town/pages/customize.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+
+import '../widgets/window.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -30,8 +31,6 @@ class _HomePageState extends State<HomePage> {
     const CreateLobbyPage(),
     const ConnectPage()
   ];
-  var prefBox = Hive.box("pref");
-
   @override
   void initState() {
     super.initState();
@@ -39,9 +38,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void checkFirstTime() {
-    if (prefBox.get("first", defaultValue: true)) {
-      GoRouter.of(context).go("/intro");
-    }
+    GoRouter.of(context).go("/intro");
   }
 
   @override
@@ -55,13 +52,9 @@ class _HomePageState extends State<HomePage> {
     return DefaultTabController(
         length: _tabs.length,
         child: Scaffold(
-          appBar: AppBar(
+          appBar: WindowTitleBar(
             title: const Text("Home"),
             actions: [
-              IconButton(
-                  icon: const Icon(PhosphorIcons.arrowClockwiseLight),
-                  tooltip: "Reset",
-                  onPressed: () => prefBox.put("first", true)),
               IconButton(
                 icon: const Icon(PhosphorIcons.gearLight),
                 tooltip: "Settings",

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
+import '../../widgets/window.dart';
+
 class CreateServerPage extends StatefulWidget {
   const CreateServerPage({Key? key}) : super(key: key);
 
@@ -15,7 +17,7 @@ class _CreateServerPageState extends State<CreateServerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Create server")),
+      appBar: const WindowTitleBar(title: Text("Create server")),
       body: Align(
           alignment: Alignment.topCenter,
           child: Container(

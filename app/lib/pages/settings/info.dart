@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../widgets/window.dart';
+
 class InfoSettingsPage extends StatelessWidget {
   const InfoSettingsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("Information")),
+        appBar: const WindowTitleBar(title: Text("Information")),
         body: ListView(children: [
           ListTile(
               onTap: () =>

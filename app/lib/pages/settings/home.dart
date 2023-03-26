@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
+import '../../widgets/window.dart';
+
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
@@ -49,8 +51,8 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Settings"),
+        appBar: const WindowTitleBar(
+          title: Text("Settings"),
         ),
         body: Column(
             children: List.generate(
@@ -60,7 +62,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       title: Text(settingsPages[index]["name"] as String),
                       subtitle: Text(
                           settingsPages[index]["description"] as String,
-                          style: Theme.of(context).textTheme.caption),
+                          style: Theme.of(context).textTheme.bodySmall),
                       onTap: () => GoRouter.of(context)
                           .push(settingsPages[index]["route"] as String),
                     ))));

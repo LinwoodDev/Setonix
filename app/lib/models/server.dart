@@ -1,17 +1,18 @@
-import 'package:hive/hive.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'server.g.dart';
+part 'server.freezed.dart';
 
-@HiveType(typeId: 0)
-class Server {
-  @HiveField(0)
-  String? name;
-  @HiveField(1)
-  String? description;
-  @HiveField(2)
-  String? address;
-  @HiveField(3)
-  String? password;
+@freezed
+class GameServer with _$GameServer {
+  const GameServer._();
 
-  Server({this.name, this.address, this.password});
+  const factory GameServer({
+    @Default('') String name,
+    @Default('') String address,
+    @Default(0) int port,
+  }) = _GameServer;
+
+  factory GameServer.fromJson(Map<String, dynamic> json) =>
+      _$GameServerFromJson(json);
 }

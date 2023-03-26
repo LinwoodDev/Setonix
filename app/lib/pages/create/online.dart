@@ -3,9 +3,11 @@ import 'package:town/models/server.dart';
 import 'package:town/pages/create/server.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
+import '../../widgets/window.dart';
+
 class CreateOnlinePage extends StatelessWidget {
-  final List<Server> _servers = [
-    Server(name: "Test1", password: "abc", address: "example.com")
+  final List<GameServer> _servers = [
+    const GameServer(name: "Test1", address: "example.com")
   ];
 
   CreateOnlinePage({Key? key}) : super(key: key);
@@ -13,7 +15,7 @@ class CreateOnlinePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Choose a server")),
+      appBar: const WindowTitleBar(title: Text("Choose a server")),
       body: Align(
           alignment: Alignment.topCenter,
           child: Container(
@@ -35,8 +37,8 @@ class CreateOnlinePage extends StatelessWidget {
                   itemCount: _servers.length,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) => ListTile(
-                      title: Text(_servers[index].name!),
-                      subtitle: Text(_servers[index].address!)),
+                      title: Text(_servers[index].name),
+                      subtitle: Text(_servers[index].address)),
                 )
               ]))),
       floatingActionButton: FloatingActionButton.extended(
