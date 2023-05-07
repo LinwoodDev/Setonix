@@ -9,5 +9,6 @@
   "unnamed": "Unnamed",
   "name": "Name",
   "description": "Description",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "address": "Address"
 }

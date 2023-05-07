@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:town/models/server.dart';
+import 'package:town/pages/game/logic.dart';
 
 class GamePage extends StatefulWidget {
-  final String address;
-  final GameProperty property;
+  final GameConnection connection;
 
-  const GamePage(
-      {super.key, this.address = '', this.property = const GameProperty()});
+  const GamePage({super.key, required this.connection});
 
   @override
   State<GamePage> createState() => _GamePageState();
