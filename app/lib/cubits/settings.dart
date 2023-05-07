@@ -14,7 +14,7 @@ class TownSettings with _$TownSettings {
     @Default(ThemeMode.system) ThemeMode themeMode,
     @Default(false) bool nativeTitleBar,
     @Default('') String design,
-  }) = _TownSettings;
+  }) = _FlowSettings;
 
   factory TownSettings.fromPrefs(SharedPreferences prefs) => TownSettings(
         themeMode:

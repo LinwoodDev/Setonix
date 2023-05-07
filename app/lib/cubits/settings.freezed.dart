@@ -76,11 +76,11 @@ class _$TownSettingsCopyWithImpl<$Res, $Val extends TownSettings>
 }
 
 /// @nodoc
-abstract class _$$_TownSettingsCopyWith<$Res>
+abstract class _$$_FlowSettingsCopyWith<$Res>
     implements $TownSettingsCopyWith<$Res> {
-  factory _$$_TownSettingsCopyWith(
-          _$_TownSettings value, $Res Function(_$_TownSettings) then) =
-      __$$_TownSettingsCopyWithImpl<$Res>;
+  factory _$$_FlowSettingsCopyWith(
+          _$_FlowSettings value, $Res Function(_$_FlowSettings) then) =
+      __$$_FlowSettingsCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -88,11 +88,11 @@ abstract class _$$_TownSettingsCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_TownSettingsCopyWithImpl<$Res>
-    extends _$TownSettingsCopyWithImpl<$Res, _$_TownSettings>
-    implements _$$_TownSettingsCopyWith<$Res> {
-  __$$_TownSettingsCopyWithImpl(
-      _$_TownSettings _value, $Res Function(_$_TownSettings) _then)
+class __$$_FlowSettingsCopyWithImpl<$Res>
+    extends _$TownSettingsCopyWithImpl<$Res, _$_FlowSettings>
+    implements _$$_FlowSettingsCopyWith<$Res> {
+  __$$_FlowSettingsCopyWithImpl(
+      _$_FlowSettings _value, $Res Function(_$_FlowSettings) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -103,7 +103,7 @@ class __$$_TownSettingsCopyWithImpl<$Res>
     Object? nativeTitleBar = null,
     Object? design = null,
   }) {
-    return _then(_$_TownSettings(
+    return _then(_$_FlowSettings(
       locale: null == locale
           ? _value.locale
           : locale // ignore: cast_nullable_to_non_nullable
@@ -126,8 +126,8 @@ class __$$_TownSettingsCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_TownSettings extends _TownSettings {
-  const _$_TownSettings(
+class _$_FlowSettings extends _FlowSettings {
+  const _$_FlowSettings(
       {this.locale = '',
       this.themeMode = ThemeMode.system,
       this.nativeTitleBar = false,
@@ -156,7 +156,7 @@ class _$_TownSettings extends _TownSettings {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_TownSettings &&
+            other is _$_FlowSettings &&
             (identical(other.locale, locale) || other.locale == locale) &&
             (identical(other.themeMode, themeMode) ||
                 other.themeMode == themeMode) &&
@@ -172,17 +172,17 @@ class _$_TownSettings extends _TownSettings {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_TownSettingsCopyWith<_$_TownSettings> get copyWith =>
-      __$$_TownSettingsCopyWithImpl<_$_TownSettings>(this, _$identity);
+  _$$_FlowSettingsCopyWith<_$_FlowSettings> get copyWith =>
+      __$$_FlowSettingsCopyWithImpl<_$_FlowSettings>(this, _$identity);
 }
 
-abstract class _TownSettings extends TownSettings {
-  const factory _TownSettings(
+abstract class _FlowSettings extends TownSettings {
+  const factory _FlowSettings(
       {final String locale,
       final ThemeMode themeMode,
       final bool nativeTitleBar,
-      final String design}) = _$_TownSettings;
-  const _TownSettings._() : super._();
+      final String design}) = _$_FlowSettings;
+  const _FlowSettings._() : super._();
 
   @override
   String get locale;
@@ -194,6 +194,6 @@ abstract class _TownSettings extends TownSettings {
   String get design;
   @override
   @JsonKey(ignore: true)
-  _$$_TownSettingsCopyWith<_$_TownSettings> get copyWith =>
+  _$$_FlowSettingsCopyWith<_$_FlowSettings> get copyWith =>
       throw _privateConstructorUsedError;
 }

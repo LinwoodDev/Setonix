@@ -1,69 +1,65 @@
 import 'package:dynamic_color/dynamic_color.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:material_leap/l10n/leap_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:town/services/connection.dart';
+import 'package:window_manager/window_manager.dart';
 
 import 'cubits/settings.dart';
-import 'pages/create/lobby.dart';
-import 'pages/home.dart';
-import 'pages/intro.dart';
-import 'pages/settings/appearance.dart';
-import 'pages/settings/home.dart';
-import 'pages/settings/info.dart';
+import 'pages/home/page.dart';
+import 'pages/settings/page.dart';
 import 'setup.dart'
     if (dart.library.html) 'setup_web.dart'
     if (dart.library.io) 'setup_io.dart';
 import 'theme.dart';
 
-Future<void> main() async {
+String? dataPath;
+
+Future<void> main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
 
   usePathUrlStrategy();
 
   final prefs = await SharedPreferences.getInstance();
   final settingsCubit = SettingsCubit(prefs);
+
   await setup(settingsCubit);
   runApp(
     BlocProvider.value(
       value: settingsCubit,
-      child: TownApp(),
+      child: RepositoryProvider(
+        create: (context) => ConnectionService(settingsCubit),
+        child: FlowApp(),
+      ),
     ),
   );
 }
 
-class TownApp extends StatelessWidget {
-  TownApp({Key? key}) : super(key: key);
+Page<void> Function(BuildContext, GoRouterState) _fadeTransitionBuilder(
+    Widget Function(BuildContext, GoRouterState) child) {
+  return (context, state) => CustomTransitionPage<void>(
+        key: state.pageKey,
+        child: child(context, state),
+        transitionDuration: const Duration(milliseconds: 200),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(
+          opacity: CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeInOut,
+          ),
+          child: child,
+        ),
+      );
+}
 
-  final GoRouter _router = GoRouter(routes: <GoRoute>[
-    GoRoute(path: '/', builder: (_, __) => const HomePage(), routes: [
-      GoRoute(
-        path: 'intro',
-        builder: (_, __) => const IntroPage(),
-      ),
-      GoRoute(
-          path: 'settings',
-          builder: (_, __) => const SettingsPage(),
-          routes: [
-            GoRoute(
-              path: "appearance",
-              builder: (_, __) => const AppearanceSettingsPage(),
-            ),
-            GoRoute(
-              path: "info",
-              builder: (_, __) => const InfoSettingsPage(),
-            )
-          ]),
-      GoRoute(
-        path: 'create',
-        builder: (_, __) => const CreateLobbyPage(),
-      ),
-    ]),
-  ]);
+class FlowApp extends StatelessWidget {
+  FlowApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +71,7 @@ class TownApp extends StatelessWidget {
   }
 
   Widget _buildApp(ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
+    final virtualWindowFrameBuilder = VirtualWindowFrameInit();
     return BlocBuilder<SettingsCubit, TownSettings>(
         buildWhen: (previous, current) =>
             previous.design != current.design ||
@@ -83,22 +80,42 @@ class TownApp extends StatelessWidget {
         builder: (context, state) => MaterialApp.router(
               debugShowCheckedModeBanner: false,
               routerConfig: _router,
-              title: isNightly ? 'Linwood Town Nightly' : 'Linwood Town',
+              title: applicationName,
               theme: getThemeData(state.design, false, lightDynamic),
               darkTheme: getThemeData(state.design, true, darkDynamic),
               themeMode: state.themeMode,
               locale: state.locale.isEmpty ? null : Locale(state.locale),
               localizationsDelegates: const [
-                AppLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
+                ...AppLocalizations.localizationsDelegates,
+                LeapLocalizations.delegate,
+                LocaleNamesLocalizationsDelegate(),
               ],
+              builder: virtualWindowFrameBuilder,
               supportedLocales: AppLocalizations.supportedLocales,
             ));
   }
+
+  final GoRouter _router = GoRouter(
+    routes: <RouteBase>[
+      GoRoute(
+        path: '/',
+        pageBuilder:
+            _fadeTransitionBuilder((context, state) => const HomePage()),
+        routes: [
+          GoRoute(
+            path: 'settings',
+            pageBuilder: _fadeTransitionBuilder(
+              (context, state) => const SettingsPage(),
+            ),
+          ),
+        ],
+      ),
+    ],
+  );
 }
 
 const flavor = String.fromEnvironment('flavor');
 const isNightly =
     flavor == 'nightly' || flavor == 'dev' || flavor == 'development';
+const shortApplicationName = isNightly ? 'Town Nightly' : 'Town';
+const applicationName = 'Linwood $shortApplicationName';

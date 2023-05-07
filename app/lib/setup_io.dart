@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:town/main.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'cubits/settings.dart';
@@ -15,7 +16,7 @@ Future<void> setup(SettingsCubit settingsCubit) async {
       titleBarStyle: settingsCubit.state.nativeTitleBar
           ? TitleBarStyle.normal
           : TitleBarStyle.hidden,
-      title: 'Town',
+      title: applicationName,
     );
     windowManager.waitUntilReadyToShow(windowOptions, () async {
       await windowManager.show();

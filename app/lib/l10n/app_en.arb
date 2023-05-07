@@ -1,6 +1,13 @@
 {
-    "minimize": "Minimize",
-    "maximize": "Maximize",
-    "restore": "Restore",
-    "close": "Close"
+  "servers": "Servers",
+  "connect": "Connect",
+  "create": "Create",
+  "minimize": "Minimize",
+  "maximize": "Maximize",
+  "restore": "Restore",
+  "close": "Close",
+  "unnamed": "Unnamed",
+  "name": "Name",
+  "description": "Description",
+  "cancel": "Cancel"
 }

@@ -14,17 +14,43 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-GameServer _$GameServerFromJson(Map<String, dynamic> json) {
-  return _GameServer.fromJson(json);
-}
-
 /// @nodoc
 mixin _$GameServer {
-  String get name => throw _privateConstructorUsedError;
   String get address => throw _privateConstructorUsedError;
-  int get port => throw _privateConstructorUsedError;
+  GameProperty get property => throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String address, GameProperty property) lan,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String address, GameProperty property)? lan,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String address, GameProperty property)? lan,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(LanGameServer value) lan,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(LanGameServer value)? lan,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(LanGameServer value)? lan,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $GameServerCopyWith<GameServer> get copyWith =>
       throw _privateConstructorUsedError;
@@ -36,7 +62,9 @@ abstract class $GameServerCopyWith<$Res> {
           GameServer value, $Res Function(GameServer) then) =
       _$GameServerCopyWithImpl<$Res, GameServer>;
   @useResult
-  $Res call({String name, String address, int port});
+  $Res call({String address, GameProperty property});
+
+  $GamePropertyCopyWith<$Res> get property;
 }
 
 /// @nodoc
@@ -52,140 +80,310 @@ class _$GameServerCopyWithImpl<$Res, $Val extends GameServer>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = null,
     Object? address = null,
-    Object? port = null,
+    Object? property = null,
   }) {
     return _then(_value.copyWith(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
       address: null == address
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
               as String,
-      port: null == port
-          ? _value.port
-          : port // ignore: cast_nullable_to_non_nullable
-              as int,
+      property: null == property
+          ? _value.property
+          : property // ignore: cast_nullable_to_non_nullable
+              as GameProperty,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $GamePropertyCopyWith<$Res> get property {
+    return $GamePropertyCopyWith<$Res>(_value.property, (value) {
+      return _then(_value.copyWith(property: value) as $Val);
+    });
   }
 }
 
 /// @nodoc
-abstract class _$$_GameServerCopyWith<$Res>
+abstract class _$$LanGameServerCopyWith<$Res>
     implements $GameServerCopyWith<$Res> {
-  factory _$$_GameServerCopyWith(
-          _$_GameServer value, $Res Function(_$_GameServer) then) =
-      __$$_GameServerCopyWithImpl<$Res>;
+  factory _$$LanGameServerCopyWith(
+          _$LanGameServer value, $Res Function(_$LanGameServer) then) =
+      __$$LanGameServerCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, String address, int port});
+  $Res call({String address, GameProperty property});
+
+  @override
+  $GamePropertyCopyWith<$Res> get property;
 }
 
 /// @nodoc
-class __$$_GameServerCopyWithImpl<$Res>
-    extends _$GameServerCopyWithImpl<$Res, _$_GameServer>
-    implements _$$_GameServerCopyWith<$Res> {
-  __$$_GameServerCopyWithImpl(
-      _$_GameServer _value, $Res Function(_$_GameServer) _then)
+class __$$LanGameServerCopyWithImpl<$Res>
+    extends _$GameServerCopyWithImpl<$Res, _$LanGameServer>
+    implements _$$LanGameServerCopyWith<$Res> {
+  __$$LanGameServerCopyWithImpl(
+      _$LanGameServer _value, $Res Function(_$LanGameServer) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = null,
     Object? address = null,
-    Object? port = null,
+    Object? property = null,
   }) {
-    return _then(_$_GameServer(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
+    return _then(_$LanGameServer(
       address: null == address
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
               as String,
-      port: null == port
-          ? _value.port
-          : port // ignore: cast_nullable_to_non_nullable
-              as int,
+      property: null == property
+          ? _value.property
+          : property // ignore: cast_nullable_to_non_nullable
+              as GameProperty,
     ));
   }
 }
 
 /// @nodoc
-@JsonSerializable()
-class _$_GameServer extends _GameServer {
-  const _$_GameServer({this.name = '', this.address = '', this.port = 0})
-      : super._();
 
-  factory _$_GameServer.fromJson(Map<String, dynamic> json) =>
-      _$$_GameServerFromJson(json);
+class _$LanGameServer implements LanGameServer {
+  const _$LanGameServer({required this.address, required this.property});
 
   @override
-  @JsonKey()
-  final String name;
-  @override
-  @JsonKey()
   final String address;
   @override
-  @JsonKey()
-  final int port;
+  final GameProperty property;
 
   @override
   String toString() {
-    return 'GameServer(name: $name, address: $address, port: $port)';
+    return 'GameServer.lan(address: $address, property: $property)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_GameServer &&
-            (identical(other.name, name) || other.name == name) &&
+            other is _$LanGameServer &&
             (identical(other.address, address) || other.address == address) &&
-            (identical(other.port, port) || other.port == port));
+            (identical(other.property, property) ||
+                other.property == property));
   }
 
-  @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, name, address, port);
+  int get hashCode => Object.hash(runtimeType, address, property);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_GameServerCopyWith<_$_GameServer> get copyWith =>
-      __$$_GameServerCopyWithImpl<_$_GameServer>(this, _$identity);
+  _$$LanGameServerCopyWith<_$LanGameServer> get copyWith =>
+      __$$LanGameServerCopyWithImpl<_$LanGameServer>(this, _$identity);
 
   @override
-  Map<String, dynamic> toJson() {
-    return _$$_GameServerToJson(
-      this,
-    );
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String address, GameProperty property) lan,
+  }) {
+    return lan(address, property);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String address, GameProperty property)? lan,
+  }) {
+    return lan?.call(address, property);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String address, GameProperty property)? lan,
+    required TResult orElse(),
+  }) {
+    if (lan != null) {
+      return lan(address, property);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(LanGameServer value) lan,
+  }) {
+    return lan(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(LanGameServer value)? lan,
+  }) {
+    return lan?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(LanGameServer value)? lan,
+    required TResult orElse(),
+  }) {
+    if (lan != null) {
+      return lan(this);
+    }
+    return orElse();
   }
 }
 
-abstract class _GameServer extends GameServer {
-  const factory _GameServer(
-      {final String name,
-      final String address,
-      final int port}) = _$_GameServer;
-  const _GameServer._() : super._();
+abstract class LanGameServer implements GameServer {
+  const factory LanGameServer(
+      {required final String address,
+      required final GameProperty property}) = _$LanGameServer;
 
-  factory _GameServer.fromJson(Map<String, dynamic> json) =
-      _$_GameServer.fromJson;
+  @override
+  String get address;
+  @override
+  GameProperty get property;
+  @override
+  @JsonKey(ignore: true)
+  _$$LanGameServerCopyWith<_$LanGameServer> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$GameProperty {
+  String get name => throw _privateConstructorUsedError;
+  String get description => throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $GamePropertyCopyWith<GameProperty> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $GamePropertyCopyWith<$Res> {
+  factory $GamePropertyCopyWith(
+          GameProperty value, $Res Function(GameProperty) then) =
+      _$GamePropertyCopyWithImpl<$Res, GameProperty>;
+  @useResult
+  $Res call({String name, String description});
+}
+
+/// @nodoc
+class _$GamePropertyCopyWithImpl<$Res, $Val extends GameProperty>
+    implements $GamePropertyCopyWith<$Res> {
+  _$GamePropertyCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? name = null,
+    Object? description = null,
+  }) {
+    return _then(_value.copyWith(
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_GamePropertyCopyWith<$Res>
+    implements $GamePropertyCopyWith<$Res> {
+  factory _$$_GamePropertyCopyWith(
+          _$_GameProperty value, $Res Function(_$_GameProperty) then) =
+      __$$_GamePropertyCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String name, String description});
+}
+
+/// @nodoc
+class __$$_GamePropertyCopyWithImpl<$Res>
+    extends _$GamePropertyCopyWithImpl<$Res, _$_GameProperty>
+    implements _$$_GamePropertyCopyWith<$Res> {
+  __$$_GamePropertyCopyWithImpl(
+      _$_GameProperty _value, $Res Function(_$_GameProperty) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? name = null,
+    Object? description = null,
+  }) {
+    return _then(_$_GameProperty(
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_GameProperty implements _GameProperty {
+  const _$_GameProperty({this.name = '', this.description = ''});
+
+  @override
+  @JsonKey()
+  final String name;
+  @override
+  @JsonKey()
+  final String description;
+
+  @override
+  String toString() {
+    return 'GameProperty(name: $name, description: $description)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_GameProperty &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.description, description) ||
+                other.description == description));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, name, description);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_GamePropertyCopyWith<_$_GameProperty> get copyWith =>
+      __$$_GamePropertyCopyWithImpl<_$_GameProperty>(this, _$identity);
+}
+
+abstract class _GameProperty implements GameProperty {
+  const factory _GameProperty({final String name, final String description}) =
+      _$_GameProperty;
 
   @override
   String get name;
   @override
-  String get address;
-  @override
-  int get port;
+  String get description;
   @override
   @JsonKey(ignore: true)
-  _$$_GameServerCopyWith<_$_GameServer> get copyWith =>
+  _$$_GamePropertyCopyWith<_$_GameProperty> get copyWith =>
       throw _privateConstructorUsedError;
 }

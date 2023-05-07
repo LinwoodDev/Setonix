@@ -21,12 +21,14 @@ class WindowTitleBar extends StatelessWidget with PreferredSizeWidget {
   final bool inView;
   final Color? backgroundColor;
   final double height;
+  final double? leadingWidth;
 
   const WindowTitleBar({
     super.key,
     this.title,
     this.leading,
     this.bottom,
+    this.leadingWidth,
     this.backgroundColor,
     this.actions = const [],
     this.onlyShowOnDesktop = false,
@@ -36,29 +38,35 @@ class WindowTitleBar extends StatelessWidget with PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDesktop = isWindow && !kIsWeb;
-    if (onlyShowOnDesktop && !isDesktop) return const SizedBox.shrink();
-    final appBar = AppBar(
-      title: title,
-      backgroundColor: backgroundColor,
-      automaticallyImplyLeading: !inView,
-      leading: leading,
-      bottom: bottom,
-      toolbarHeight: height,
-      actions: [
-        ...actions,
-        if (isDesktop && !inView)
-          WindowButtons(
-            divider: actions.isNotEmpty,
-          ),
-      ],
-    );
-    if (isDesktop) {
-      return DragToMoveArea(
-        child: appBar,
-      );
-    }
-    return appBar;
+    return BlocBuilder<SettingsCubit, TownSettings>(
+        buildWhen: (previous, current) =>
+            previous.nativeTitleBar != current.nativeTitleBar,
+        builder: (context, settings) {
+          final isDesktop = isWindow && !kIsWeb;
+          if (onlyShowOnDesktop && !isDesktop) return const SizedBox.shrink();
+          final appBar = AppBar(
+            title: title,
+            backgroundColor: backgroundColor,
+            automaticallyImplyLeading: !inView,
+            leading: leading,
+            bottom: bottom,
+            leadingWidth: leadingWidth,
+            toolbarHeight: height,
+            actions: [
+              ...actions,
+              if (isDesktop && !inView)
+                WindowButtons(
+                  divider: actions.isNotEmpty,
+                ),
+            ],
+          );
+          if (isDesktop && !settings.nativeTitleBar) {
+            return DragToMoveArea(
+              child: appBar,
+            );
+          }
+          return appBar;
+        });
   }
 
   @override
@@ -134,50 +142,59 @@ class _WindowButtonsState extends State<WindowButtons> with WindowListener {
         builder: (context, settings) {
           if (!kIsWeb && isWindow && !settings.nativeTitleBar) {
             return LayoutBuilder(
-              builder: (context, constraints) => Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxHeight: 42),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      if (widget.divider) const VerticalDivider(),
-                      ...[
-                        if (!fullScreen) ...[
-                          IconButton(
-                            icon: const Icon(PhosphorIcons.minusLight),
-                            tooltip: AppLocalizations.of(context).minimize,
-                            splashRadius: 20,
-                            onPressed: () => windowManager.minimize(),
-                          ),
-                          TextButton(
-                            child: Tooltip(
-                              message: maximized
-                                  ? AppLocalizations.of(context).restore
-                                  : AppLocalizations.of(context).maximize,
-                              child: Icon(
-                                PhosphorIcons.squareLight,
-                                size: maximized ? 14 : 20,
-                                color: Theme.of(context).iconTheme.color,
-                              ),
-                            ),
-                            onPressed: () async =>
-                                await windowManager.isMaximized()
-                                    ? windowManager.unmaximize()
-                                    : windowManager.maximize(),
-                          ),
-                          IconButton(
-                            icon: const Icon(PhosphorIcons.xLight),
-                            tooltip: AppLocalizations.of(context).close,
-                            color: Colors.red,
-                            splashRadius: 20,
-                            onPressed: () => windowManager.close(),
-                          )
-                        ]
-                      ].map((e) => AspectRatio(aspectRatio: 1, child: e))
-                    ],
+              builder: (context, constraints) => Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  if (widget.divider) const VerticalDivider(),
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ConstrainedBox(
+                          constraints: const BoxConstraints(maxHeight: 42),
+                          child: Builder(builder: (context) {
+                            return Row(
+                              children: [
+                                if (!fullScreen) ...[
+                                  IconButton(
+                                    icon: const PhosphorIcon(
+                                        PhosphorIconsLight.minus),
+                                    tooltip:
+                                        AppLocalizations.of(context).minimize,
+                                    splashRadius: 20,
+                                    onPressed: () => windowManager.minimize(),
+                                  ),
+                                  IconButton(
+                                    tooltip: maximized
+                                        ? AppLocalizations.of(context).restore
+                                        : AppLocalizations.of(context).maximize,
+                                    icon: PhosphorIcon(
+                                      PhosphorIconsLight.square,
+                                      size: maximized ? 14 : 20,
+                                      color: Theme.of(context).iconTheme.color,
+                                    ),
+                                    onPressed: () async =>
+                                        await windowManager.isMaximized()
+                                            ? windowManager.unmaximize()
+                                            : windowManager.maximize(),
+                                  ),
+                                  IconButton(
+                                    icon: const PhosphorIcon(
+                                        PhosphorIconsLight.x),
+                                    tooltip: AppLocalizations.of(context).close,
+                                    color: Colors.red,
+                                    splashRadius: 20,
+                                    onPressed: () => windowManager.close(),
+                                  )
+                                ]
+                              ]
+                                  .map((e) =>
+                                      AspectRatio(aspectRatio: 1, child: e))
+                                  .toList(),
+                            );
+                          })),
+                    ),
                   ),
-                ),
+                ],
               ),
             );
           }

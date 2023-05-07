@@ -1,18 +1,21 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'server.g.dart';
 part 'server.freezed.dart';
+
+const kDefaultPort = 71035;
 
 @freezed
 class GameServer with _$GameServer {
-  const GameServer._();
+  const factory GameServer.lan({
+    required String address,
+    required GameProperty property,
+  }) = LanGameServer;
+}
 
-  const factory GameServer({
+@freezed
+class GameProperty with _$GameProperty {
+  const factory GameProperty({
     @Default('') String name,
-    @Default('') String address,
-    @Default(0) int port,
-  }) = _GameServer;
-
-  factory GameServer.fromJson(Map<String, dynamic> json) =>
-      _$GameServerFromJson(json);
+    @Default('') String description,
+  }) = _GameProperty;
 }
