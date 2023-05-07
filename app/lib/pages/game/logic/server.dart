@@ -15,6 +15,9 @@ class ServerConnectionMessage with _$ServerConnectionMessage {
   const factory ServerConnectionMessage.fetchPlayers() =
       FetchPlayersServerConnectionMessage;
 
+  const factory ServerConnectionMessage.chatMessage(String message) =
+      ChatMessageServerConnectionMessage;
+
   factory ServerConnectionMessage.fromJson(Map<String, dynamic> json) =>
       _$ServerConnectionMessageFromJson(json);
 }
@@ -30,7 +33,9 @@ class ServerGameConnection extends GameConnection {
   final HttpServer server;
   final List<WebSocketClient> clients = [];
 
-  ServerGameConnection(this.server);
+  ServerGameConnection(this.server) {
+    setup();
+  }
 
   static Future<ServerGameConnection> create() async {
     return ServerGameConnection(
@@ -48,44 +53,54 @@ class ServerGameConnection extends GameConnection {
 
   Future<void> setup() async {
     await for (HttpRequest request in server) {
-      if (request.uri.path == '/ws') {
-        final info = request.connectionInfo;
-        if (info == null) {
-          request.response.statusCode = HttpStatus.forbidden;
-          request.response.close();
-          continue;
-        }
-        var socket = await WebSocketTransformer.upgrade(request);
-        final client = WebSocketClient(socket, info);
-        clients.add(client);
-
-        // Listen for incoming messages from the client
-        socket.listen((event) => _onMessage(client, event), onDone: () {
-          clients.remove(client);
-        });
-      } else {
+      final info = request.connectionInfo;
+      if (info == null) {
         request.response.statusCode = HttpStatus.forbidden;
         request.response.close();
+        continue;
       }
+      var socket = await WebSocketTransformer.upgrade(request);
+      final client = WebSocketClient(socket, info);
+      clients.add(client);
+
+      // Listen for incoming messages from the client
+      socket.listen((event) => _onMessage(client, event), onDone: () {
+        clients.remove(client);
+      });
     }
   }
 
   @override
   List<GamePlayer> getPlayers() => clients
       .map((e) => GamePlayer(
-          name: e.info.remoteAddress.address, id: e.info.remoteAddress.address))
+          name: e.info.remoteAddress.address, id: e.hashCode.toString()))
       .toList();
+
+  void _send(WebSocketClient client, ClientConnectionMessage message) {
+    client.socket.add(jsonEncode(message));
+  }
+
+  void _sendToAll(ClientConnectionMessage message) {
+    for (final client in clients) {
+      _send(client, message);
+    }
+  }
 
   Future<void> _onMessage(WebSocketClient client, event) async {
     final message = ServerConnectionMessage.fromJson(jsonDecode(event));
     void sendBack(ClientConnectionMessage message) {
-      client.socket.add(jsonEncode(message));
+      _send(client, message);
     }
 
     message.when(
-      fetchPlayers: () => sendBack(
-        ClientConnectionMessage.fetchedPlayers(getPlayers()),
-      ),
-    );
+        fetchPlayers: () => sendBack(
+              ClientConnectionMessage.fetchedPlayers(getPlayers()),
+            ),
+        chatMessage: (message) => _sendToAll(
+              ClientConnectionMessage.chatMessage(
+                message,
+                client.info.remoteAddress.address,
+              ),
+            ));
   }
 }

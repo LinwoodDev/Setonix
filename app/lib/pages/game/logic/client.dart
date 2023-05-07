@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:town/pages/game/server.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 import 'logic.dart';
+import 'server.dart';
 
 part 'client.freezed.dart';
 part 'client.g.dart';
@@ -16,6 +16,11 @@ class ClientConnectionMessage with _$ClientConnectionMessage {
     List<GamePlayer> players,
   ) = FetchedPlayersClientConnectionMessage;
 
+  const factory ClientConnectionMessage.chatMessage(
+    String message,
+    String from,
+  ) = ChatMessageClientConnectionMessage;
+
   factory ClientConnectionMessage.fromJson(Map<String, dynamic> json) =>
       _$ClientConnectionMessageFromJson(json);
 }
@@ -25,8 +30,8 @@ class ClientGameConnection extends GameConnection {
 
   ClientGameConnection(this.channel);
 
-  factory ClientGameConnection.connect(String address) {
-    final channel = WebSocketChannel.connect(Uri.parse(address));
+  factory ClientGameConnection.connect(Uri address) {
+    final channel = WebSocketChannel.connect(address);
     return ClientGameConnection(channel);
   }
 
@@ -35,11 +40,11 @@ class ClientGameConnection extends GameConnection {
   }
 
   void _send(ServerConnectionMessage message) {
-    channel.sink.add(message.toJson());
+    channel.sink.add(jsonEncode(message.toJson()));
   }
 
   Future<T> _waitForResponse<T extends ClientConnectionMessage>() async {
-    return channel.stream
+    return await channel.stream
         .map((event) => jsonDecode(event))
         .map((event) => ClientConnectionMessage.fromJson(event))
         .where((event) => event is T)

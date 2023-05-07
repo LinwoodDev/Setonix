@@ -10,5 +10,8 @@
   "name": "Name",
   "description": "Description",
   "cancel": "Cancel",
-  "address": "Address"
+  "address": "Address",
+  "game": "Game",
+  "players": "Players",
+  "noPlayers": "No players"
 }

@@ -8,12 +8,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:material_leap/l10n/leap_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:town/pages/game/logic.dart';
 import 'package:town/pages/game/page.dart';
 import 'package:town/services/connection.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'cubits/settings.dart';
+import 'pages/game/logic/logic.dart';
 import 'pages/home/page.dart';
 import 'pages/settings/page.dart';
 import 'setup.dart'
@@ -107,9 +107,15 @@ class FlowApp extends StatelessWidget {
           GoRoute(
             path: 'game',
             pageBuilder: _fadeTransitionBuilder(
-              (context, state) => GamePage(
-                connection: state.extra as GameConnection,
-              ),
+              (context, state) {
+                if (state.extra is! GameConnection) {
+                  context.go('/');
+                  return const SizedBox.shrink();
+                }
+                return GamePage(
+                  connection: state.extra as GameConnection,
+                );
+              },
             ),
           ),
           GoRoute(

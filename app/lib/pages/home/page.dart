@@ -7,11 +7,11 @@ import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:town/main.dart';
 import 'package:town/models/server.dart';
-import 'package:town/pages/game/client.dart';
-import 'package:town/pages/game/server.dart';
 import 'package:town/services/connection.dart';
 import 'package:town/widgets/window.dart';
 
+import '../game/logic/client.dart';
+import '../game/logic/server.dart';
 import 'connect.dart';
 import 'create.dart';
 
@@ -64,7 +64,7 @@ class HomePage extends StatelessWidget {
               ListTile(
                 title: Text(AppLocalizations.of(context).connect),
                 onTap: () async {
-                  final address = await showDialog<String>(
+                  final address = await showDialog<Uri>(
                     context: context,
                     builder: (context) => const ConnectGameDialog(),
                   );

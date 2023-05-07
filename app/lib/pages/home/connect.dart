@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:town/models/server.dart';
 
 class ConnectGameDialog extends StatelessWidget {
   const ConnectGameDialog({super.key});
@@ -34,7 +35,11 @@ class ConnectGameDialog extends StatelessWidget {
           child: Text(AppLocalizations.of(context).cancel),
         ),
         ElevatedButton(
-          onPressed: () => Navigator.of(context).pop(currentAddress),
+          onPressed: () => Navigator.of(context).pop(Uri(
+            scheme: 'ws',
+            host: currentAddress,
+            port: kDefaultPort,
+          )),
           child: Text(AppLocalizations.of(context).create),
         ),
       ],

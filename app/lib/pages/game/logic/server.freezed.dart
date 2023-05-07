@@ -16,7 +16,19 @@ final _privateConstructorUsedError = UnsupportedError(
 
 ServerConnectionMessage _$ServerConnectionMessageFromJson(
     Map<String, dynamic> json) {
-  return FetchPlayersServerConnectionMessage.fromJson(json);
+  switch (json['runtimeType']) {
+    case 'fetchPlayers':
+      return FetchPlayersServerConnectionMessage.fromJson(json);
+    case 'chatMessage':
+      return ChatMessageServerConnectionMessage.fromJson(json);
+
+    default:
+      throw CheckedFromJsonException(
+          json,
+          'runtimeType',
+          'ServerConnectionMessage',
+          'Invalid union type "${json['runtimeType']}"!');
+  }
 }
 
 /// @nodoc
@@ -24,16 +36,19 @@ mixin _$ServerConnectionMessage {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() fetchPlayers,
+    required TResult Function(String message) chatMessage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? fetchPlayers,
+    TResult? Function(String message)? chatMessage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? fetchPlayers,
+    TResult Function(String message)? chatMessage,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -41,16 +56,20 @@ mixin _$ServerConnectionMessage {
   TResult map<TResult extends Object?>({
     required TResult Function(FetchPlayersServerConnectionMessage value)
         fetchPlayers,
+    required TResult Function(ChatMessageServerConnectionMessage value)
+        chatMessage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(FetchPlayersServerConnectionMessage value)? fetchPlayers,
+    TResult? Function(ChatMessageServerConnectionMessage value)? chatMessage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(FetchPlayersServerConnectionMessage value)? fetchPlayers,
+    TResult Function(ChatMessageServerConnectionMessage value)? chatMessage,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -99,11 +118,15 @@ class __$$FetchPlayersServerConnectionMessageCopyWithImpl<$Res>
 @JsonSerializable()
 class _$FetchPlayersServerConnectionMessage
     implements FetchPlayersServerConnectionMessage {
-  const _$FetchPlayersServerConnectionMessage();
+  const _$FetchPlayersServerConnectionMessage({final String? $type})
+      : $type = $type ?? 'fetchPlayers';
 
   factory _$FetchPlayersServerConnectionMessage.fromJson(
           Map<String, dynamic> json) =>
       _$$FetchPlayersServerConnectionMessageFromJson(json);
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
 
   @override
   String toString() {
@@ -125,6 +148,7 @@ class _$FetchPlayersServerConnectionMessage
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() fetchPlayers,
+    required TResult Function(String message) chatMessage,
   }) {
     return fetchPlayers();
   }
@@ -133,6 +157,7 @@ class _$FetchPlayersServerConnectionMessage
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? fetchPlayers,
+    TResult? Function(String message)? chatMessage,
   }) {
     return fetchPlayers?.call();
   }
@@ -141,6 +166,7 @@ class _$FetchPlayersServerConnectionMessage
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? fetchPlayers,
+    TResult Function(String message)? chatMessage,
     required TResult orElse(),
   }) {
     if (fetchPlayers != null) {
@@ -154,6 +180,8 @@ class _$FetchPlayersServerConnectionMessage
   TResult map<TResult extends Object?>({
     required TResult Function(FetchPlayersServerConnectionMessage value)
         fetchPlayers,
+    required TResult Function(ChatMessageServerConnectionMessage value)
+        chatMessage,
   }) {
     return fetchPlayers(this);
   }
@@ -162,6 +190,7 @@ class _$FetchPlayersServerConnectionMessage
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(FetchPlayersServerConnectionMessage value)? fetchPlayers,
+    TResult? Function(ChatMessageServerConnectionMessage value)? chatMessage,
   }) {
     return fetchPlayers?.call(this);
   }
@@ -170,6 +199,7 @@ class _$FetchPlayersServerConnectionMessage
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(FetchPlayersServerConnectionMessage value)? fetchPlayers,
+    TResult Function(ChatMessageServerConnectionMessage value)? chatMessage,
     required TResult orElse(),
   }) {
     if (fetchPlayers != null) {
@@ -194,4 +224,169 @@ abstract class FetchPlayersServerConnectionMessage
   factory FetchPlayersServerConnectionMessage.fromJson(
           Map<String, dynamic> json) =
       _$FetchPlayersServerConnectionMessage.fromJson;
+}
+
+/// @nodoc
+abstract class _$$ChatMessageServerConnectionMessageCopyWith<$Res> {
+  factory _$$ChatMessageServerConnectionMessageCopyWith(
+          _$ChatMessageServerConnectionMessage value,
+          $Res Function(_$ChatMessageServerConnectionMessage) then) =
+      __$$ChatMessageServerConnectionMessageCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String message});
+}
+
+/// @nodoc
+class __$$ChatMessageServerConnectionMessageCopyWithImpl<$Res>
+    extends _$ServerConnectionMessageCopyWithImpl<$Res,
+        _$ChatMessageServerConnectionMessage>
+    implements _$$ChatMessageServerConnectionMessageCopyWith<$Res> {
+  __$$ChatMessageServerConnectionMessageCopyWithImpl(
+      _$ChatMessageServerConnectionMessage _value,
+      $Res Function(_$ChatMessageServerConnectionMessage) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? message = null,
+  }) {
+    return _then(_$ChatMessageServerConnectionMessage(
+      null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$ChatMessageServerConnectionMessage
+    implements ChatMessageServerConnectionMessage {
+  const _$ChatMessageServerConnectionMessage(this.message,
+      {final String? $type})
+      : $type = $type ?? 'chatMessage';
+
+  factory _$ChatMessageServerConnectionMessage.fromJson(
+          Map<String, dynamic> json) =>
+      _$$ChatMessageServerConnectionMessageFromJson(json);
+
+  @override
+  final String message;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
+
+  @override
+  String toString() {
+    return 'ServerConnectionMessage.chatMessage(message: $message)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ChatMessageServerConnectionMessage &&
+            (identical(other.message, message) || other.message == message));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, message);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ChatMessageServerConnectionMessageCopyWith<
+          _$ChatMessageServerConnectionMessage>
+      get copyWith => __$$ChatMessageServerConnectionMessageCopyWithImpl<
+          _$ChatMessageServerConnectionMessage>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() fetchPlayers,
+    required TResult Function(String message) chatMessage,
+  }) {
+    return chatMessage(message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? fetchPlayers,
+    TResult? Function(String message)? chatMessage,
+  }) {
+    return chatMessage?.call(message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? fetchPlayers,
+    TResult Function(String message)? chatMessage,
+    required TResult orElse(),
+  }) {
+    if (chatMessage != null) {
+      return chatMessage(message);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FetchPlayersServerConnectionMessage value)
+        fetchPlayers,
+    required TResult Function(ChatMessageServerConnectionMessage value)
+        chatMessage,
+  }) {
+    return chatMessage(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FetchPlayersServerConnectionMessage value)? fetchPlayers,
+    TResult? Function(ChatMessageServerConnectionMessage value)? chatMessage,
+  }) {
+    return chatMessage?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FetchPlayersServerConnectionMessage value)? fetchPlayers,
+    TResult Function(ChatMessageServerConnectionMessage value)? chatMessage,
+    required TResult orElse(),
+  }) {
+    if (chatMessage != null) {
+      return chatMessage(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ChatMessageServerConnectionMessageToJson(
+      this,
+    );
+  }
+}
+
+abstract class ChatMessageServerConnectionMessage
+    implements ServerConnectionMessage {
+  const factory ChatMessageServerConnectionMessage(final String message) =
+      _$ChatMessageServerConnectionMessage;
+
+  factory ChatMessageServerConnectionMessage.fromJson(
+          Map<String, dynamic> json) =
+      _$ChatMessageServerConnectionMessage.fromJson;
+
+  String get message;
+  @JsonKey(ignore: true)
+  _$$ChatMessageServerConnectionMessageCopyWith<
+          _$ChatMessageServerConnectionMessage>
+      get copyWith => throw _privateConstructorUsedError;
 }
