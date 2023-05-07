@@ -255,11 +255,17 @@ abstract class ClassicGameCard implements GameCard {
       throw _privateConstructorUsedError;
 }
 
+GameState _$GameStateFromJson(Map<String, dynamic> json) {
+  return _GameState.fromJson(json);
+}
+
 /// @nodoc
 mixin _$GameState {
   List<GameDeck> get decks => throw _privateConstructorUsedError;
   Map<String, GameDeck> get playerDecks => throw _privateConstructorUsedError;
+  GameDeck get playerDeck => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $GameStateCopyWith<GameState> get copyWith =>
       throw _privateConstructorUsedError;
@@ -270,7 +276,12 @@ abstract class $GameStateCopyWith<$Res> {
   factory $GameStateCopyWith(GameState value, $Res Function(GameState) then) =
       _$GameStateCopyWithImpl<$Res, GameState>;
   @useResult
-  $Res call({List<GameDeck> decks, Map<String, GameDeck> playerDecks});
+  $Res call(
+      {List<GameDeck> decks,
+      Map<String, GameDeck> playerDecks,
+      GameDeck playerDeck});
+
+  $GameDeckCopyWith<$Res> get playerDeck;
 }
 
 /// @nodoc
@@ -288,6 +299,7 @@ class _$GameStateCopyWithImpl<$Res, $Val extends GameState>
   $Res call({
     Object? decks = null,
     Object? playerDecks = null,
+    Object? playerDeck = null,
   }) {
     return _then(_value.copyWith(
       decks: null == decks
@@ -298,7 +310,19 @@ class _$GameStateCopyWithImpl<$Res, $Val extends GameState>
           ? _value.playerDecks
           : playerDecks // ignore: cast_nullable_to_non_nullable
               as Map<String, GameDeck>,
+      playerDeck: null == playerDeck
+          ? _value.playerDeck
+          : playerDeck // ignore: cast_nullable_to_non_nullable
+              as GameDeck,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $GameDeckCopyWith<$Res> get playerDeck {
+    return $GameDeckCopyWith<$Res>(_value.playerDeck, (value) {
+      return _then(_value.copyWith(playerDeck: value) as $Val);
+    });
   }
 }
 
@@ -309,7 +333,13 @@ abstract class _$$_GameStateCopyWith<$Res> implements $GameStateCopyWith<$Res> {
       __$$_GameStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<GameDeck> decks, Map<String, GameDeck> playerDecks});
+  $Res call(
+      {List<GameDeck> decks,
+      Map<String, GameDeck> playerDecks,
+      GameDeck playerDeck});
+
+  @override
+  $GameDeckCopyWith<$Res> get playerDeck;
 }
 
 /// @nodoc
@@ -325,6 +355,7 @@ class __$$_GameStateCopyWithImpl<$Res>
   $Res call({
     Object? decks = null,
     Object? playerDecks = null,
+    Object? playerDeck = null,
   }) {
     return _then(_$_GameState(
       decks: null == decks
@@ -335,18 +366,27 @@ class __$$_GameStateCopyWithImpl<$Res>
           ? _value._playerDecks
           : playerDecks // ignore: cast_nullable_to_non_nullable
               as Map<String, GameDeck>,
+      playerDeck: null == playerDeck
+          ? _value.playerDeck
+          : playerDeck // ignore: cast_nullable_to_non_nullable
+              as GameDeck,
     ));
   }
 }
 
 /// @nodoc
-
-class _$_GameState implements _GameState {
+@JsonSerializable()
+class _$_GameState extends _GameState {
   const _$_GameState(
       {final List<GameDeck> decks = const [],
-      final Map<String, GameDeck> playerDecks = const {}})
+      final Map<String, GameDeck> playerDecks = const {},
+      this.playerDeck = const GameDeck()})
       : _decks = decks,
-        _playerDecks = playerDecks;
+        _playerDecks = playerDecks,
+        super._();
+
+  factory _$_GameState.fromJson(Map<String, dynamic> json) =>
+      _$$_GameStateFromJson(json);
 
   final List<GameDeck> _decks;
   @override
@@ -367,8 +407,12 @@ class _$_GameState implements _GameState {
   }
 
   @override
+  @JsonKey()
+  final GameDeck playerDeck;
+
+  @override
   String toString() {
-    return 'GameState(decks: $decks, playerDecks: $playerDecks)';
+    return 'GameState(decks: $decks, playerDecks: $playerDecks, playerDeck: $playerDeck)';
   }
 
   @override
@@ -378,31 +422,49 @@ class _$_GameState implements _GameState {
             other is _$_GameState &&
             const DeepCollectionEquality().equals(other._decks, _decks) &&
             const DeepCollectionEquality()
-                .equals(other._playerDecks, _playerDecks));
+                .equals(other._playerDecks, _playerDecks) &&
+            (identical(other.playerDeck, playerDeck) ||
+                other.playerDeck == playerDeck));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_decks),
-      const DeepCollectionEquality().hash(_playerDecks));
+      const DeepCollectionEquality().hash(_playerDecks),
+      playerDeck);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$_GameStateCopyWith<_$_GameState> get copyWith =>
       __$$_GameStateCopyWithImpl<_$_GameState>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_GameStateToJson(
+      this,
+    );
+  }
 }
 
-abstract class _GameState implements GameState {
+abstract class _GameState extends GameState {
   const factory _GameState(
       {final List<GameDeck> decks,
-      final Map<String, GameDeck> playerDecks}) = _$_GameState;
+      final Map<String, GameDeck> playerDecks,
+      final GameDeck playerDeck}) = _$_GameState;
+  const _GameState._() : super._();
+
+  factory _GameState.fromJson(Map<String, dynamic> json) =
+      _$_GameState.fromJson;
 
   @override
   List<GameDeck> get decks;
   @override
   Map<String, GameDeck> get playerDecks;
+  @override
+  GameDeck get playerDeck;
   @override
   @JsonKey(ignore: true)
   _$$_GameStateCopyWith<_$_GameState> get copyWith =>

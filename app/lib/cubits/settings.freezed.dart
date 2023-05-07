@@ -15,31 +15,31 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-mixin _$TownSettings {
+mixin _$QeckSettings {
   String get locale => throw _privateConstructorUsedError;
   ThemeMode get themeMode => throw _privateConstructorUsedError;
   bool get nativeTitleBar => throw _privateConstructorUsedError;
   String get design => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $TownSettingsCopyWith<TownSettings> get copyWith =>
+  $QeckSettingsCopyWith<QeckSettings> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $TownSettingsCopyWith<$Res> {
-  factory $TownSettingsCopyWith(
-          TownSettings value, $Res Function(TownSettings) then) =
-      _$TownSettingsCopyWithImpl<$Res, TownSettings>;
+abstract class $QeckSettingsCopyWith<$Res> {
+  factory $QeckSettingsCopyWith(
+          QeckSettings value, $Res Function(QeckSettings) then) =
+      _$QeckSettingsCopyWithImpl<$Res, QeckSettings>;
   @useResult
   $Res call(
       {String locale, ThemeMode themeMode, bool nativeTitleBar, String design});
 }
 
 /// @nodoc
-class _$TownSettingsCopyWithImpl<$Res, $Val extends TownSettings>
-    implements $TownSettingsCopyWith<$Res> {
-  _$TownSettingsCopyWithImpl(this._value, this._then);
+class _$QeckSettingsCopyWithImpl<$Res, $Val extends QeckSettings>
+    implements $QeckSettingsCopyWith<$Res> {
+  _$QeckSettingsCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -77,7 +77,7 @@ class _$TownSettingsCopyWithImpl<$Res, $Val extends TownSettings>
 
 /// @nodoc
 abstract class _$$_FlowSettingsCopyWith<$Res>
-    implements $TownSettingsCopyWith<$Res> {
+    implements $QeckSettingsCopyWith<$Res> {
   factory _$$_FlowSettingsCopyWith(
           _$_FlowSettings value, $Res Function(_$_FlowSettings) then) =
       __$$_FlowSettingsCopyWithImpl<$Res>;
@@ -89,7 +89,7 @@ abstract class _$$_FlowSettingsCopyWith<$Res>
 
 /// @nodoc
 class __$$_FlowSettingsCopyWithImpl<$Res>
-    extends _$TownSettingsCopyWithImpl<$Res, _$_FlowSettings>
+    extends _$QeckSettingsCopyWithImpl<$Res, _$_FlowSettings>
     implements _$$_FlowSettingsCopyWith<$Res> {
   __$$_FlowSettingsCopyWithImpl(
       _$_FlowSettings _value, $Res Function(_$_FlowSettings) _then)
@@ -149,7 +149,7 @@ class _$_FlowSettings extends _FlowSettings {
 
   @override
   String toString() {
-    return 'TownSettings(locale: $locale, themeMode: $themeMode, nativeTitleBar: $nativeTitleBar, design: $design)';
+    return 'QeckSettings(locale: $locale, themeMode: $themeMode, nativeTitleBar: $nativeTitleBar, design: $design)';
   }
 
   @override
@@ -176,7 +176,7 @@ class _$_FlowSettings extends _FlowSettings {
       __$$_FlowSettingsCopyWithImpl<_$_FlowSettings>(this, _$identity);
 }
 
-abstract class _FlowSettings extends TownSettings {
+abstract class _FlowSettings extends QeckSettings {
   const factory _FlowSettings(
       {final String locale,
       final ThemeMode themeMode,

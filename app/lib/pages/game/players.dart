@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:town/pages/game/logic/logic.dart';
+import 'package:qeck/pages/game/logic/logic.dart';
 
 class PlayersDialog extends StatelessWidget {
   final GameConnection connection;

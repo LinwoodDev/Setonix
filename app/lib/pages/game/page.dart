@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:town/widgets/window.dart';
+import 'package:qeck/widgets/window.dart';
 
 import 'logic/logic.dart';
 import 'players.dart';

@@ -5,10 +5,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:town/main.dart';
-import 'package:town/models/server.dart';
-import 'package:town/services/connection.dart';
-import 'package:town/widgets/window.dart';
+import 'package:qeck/main.dart';
+import 'package:qeck/models/server.dart';
+import 'package:qeck/services/connection.dart';
+import 'package:qeck/widgets/window.dart';
 
 import '../game/logic/client.dart';
 import '../game/logic/server.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:town/widgets/window.dart';
+import 'package:qeck/widgets/window.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});

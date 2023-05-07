@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-	<id>linwood-town</id>
-	<name>Linwood Town</name>
+	<id>linwood-qeck</id>
+	<name>Linwood Qeck</name>
 	<summary>Opensource collection of small games</summary>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-only</project_license>
@@ -11,13 +11,13 @@
 		<control>touch</control>
 	</recommends>
 	<developer_name>LinwoodCloud</developer_name>
-	<url type="homepage">https://github.com/LinwoodCloud/Town</url>
+	<url type="homepage">https://github.com/LinwoodCloud/Qeck</url>
 	<description>
 		<p>Coming soon...</p>
 	</description>
 	<screenshots>
 	</screenshots>
-	<launchable type="desktop-id">linwood-town.desktop</launchable>
+	<launchable type="desktop-id">linwood-qeck.desktop</launchable>
 	<releases>
 	</releases>
 	<content_rating type="oars-1.0" />

@@ -6,17 +6,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 part 'settings.freezed.dart';
 
 @freezed
-class TownSettings with _$TownSettings {
-  const TownSettings._();
+class QeckSettings with _$QeckSettings {
+  const QeckSettings._();
 
-  const factory TownSettings({
+  const factory QeckSettings({
     @Default('') String locale,
     @Default(ThemeMode.system) ThemeMode themeMode,
     @Default(false) bool nativeTitleBar,
     @Default('') String design,
   }) = _FlowSettings;
 
-  factory TownSettings.fromPrefs(SharedPreferences prefs) => TownSettings(
+  factory QeckSettings.fromPrefs(SharedPreferences prefs) => QeckSettings(
         themeMode:
             ThemeMode.values.byName(prefs.getString('themeMode') ?? 'system'),
         design: prefs.getString('design') ?? '',
@@ -33,8 +33,8 @@ class TownSettings with _$TownSettings {
   }
 }
 
-class SettingsCubit extends Cubit<TownSettings> {
-  SettingsCubit(SharedPreferences prefs) : super(TownSettings.fromPrefs(prefs));
+class SettingsCubit extends Cubit<QeckSettings> {
+  SettingsCubit(SharedPreferences prefs) : super(QeckSettings.fromPrefs(prefs));
 
   Future<void> setThemeMode(ThemeMode mode) {
     emit(state.copyWith(themeMode: mode));

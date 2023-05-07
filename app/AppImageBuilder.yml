@@ -8,10 +8,10 @@ script:
 AppDir:
   path: ./AppDir
   app_info:
-    id: dev.linwood.town
-    name: Linwood Town
+    id: dev.linwood.qeck
+    name: Linwood Qeck
     version: 1.3.0-rc.0
-    exec: linwood_town
+    exec: linwood_qeck
     exec_args: $@
   apt:
     arch: amd64

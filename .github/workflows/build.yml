@@ -43,17 +43,17 @@ jobs:
         if: ${{ github.ref != 'refs/tags/stable' }}
         run: |
           flutter build apk -v --release --flavor development --dart-define=flavor=development
-          cp build/app/outputs/flutter-apk/app-development-release.apk linwood-town-android.apk
+          cp build/app/outputs/flutter-apk/app-development-release.apk linwood-qeck-android.apk
       - name: 🏭 Build production
         if: ${{ github.ref == 'refs/tags/stable' }}
         run: |
           flutter build apk -v --release --flavor production
-          cp build/app/outputs/flutter-apk/app-production-release.apk linwood-town-android.apk
+          cp build/app/outputs/flutter-apk/app-production-release.apk linwood-qeck-android.apk
       - name: Archive
         uses: actions/upload-artifact@v3
         with:
           name: apk-build
-          path: app/linwood-town-android.apk
+          path: app/linwood-qeck-android.apk
   build-windows:
     runs-on: windows-2022
     defaults:
@@ -91,8 +91,8 @@ jobs:
       - name: Build setup
         shell: pwsh
         run: |
-          Get-Content pubspec.yaml | Select-String -Pattern 'version:\s(.+)\+'  | % {Set-Item -Path Env:TOWN_VERSION -Value "$($_.matches.groups[1])"}
-          & 'C:/Program Files (x86)/Inno Setup 6/ISCC.exe' /DMyAppVersion=$Env:TOWN_VERSION TownSetup.iss
+          Get-Content pubspec.yaml | Select-String -Pattern 'version:\s(.+)\+'  | % {Set-Item -Path Env:QECK_VERSION -Value "$($_.matches.groups[1])"}
+          & 'C:/Program Files (x86)/Inno Setup 6/ISCC.exe' /DMyAppVersion=$Env:QECK_VERSION QeckSetup.iss
         # flutter pub run msix:create
       - name: Copy portable start script
         run: |
@@ -108,7 +108,7 @@ jobs:
         with:
           name: windows-setup
           path: |
-            app/build/windows/linwood-town-windows-setup.exe
+            app/build/windows/linwood-qeck-windows-setup.exe
   build-linux:
     runs-on: ubuntu-22.04
     defaults:
@@ -169,12 +169,12 @@ jobs:
         run: |
           cp -fr build/linux/x64/release/bundle linux/debian/usr/bin
           dpkg-deb --build --root-owner-group linux/debian
-          cp linux/*.deb linwood-town-linux.deb
+          cp linux/*.deb linwood-qeck-linux.deb
       #- name: Build .rpm executable
       #  run: |
       #    cd app
-      #    alien -r linwood-town-linux.deb
-      #    mv linwood-town*.rpm linwood-town-linux.rpm
+      #    alien -r linwood-qeck-linux.deb
+      #    mv linwood-qeck*.rpm linwood-qeck-linux.rpm
       - name: Build .AppImage executable
         run: |
           wget -O appimage-builder-x86_64.AppImage https://github.com/AppImageCrafters/appimage-builder/releases/download/v1.1.0/appimage-builder-1.1.0-x86_64.AppImage
@@ -183,13 +183,13 @@ jobs:
           appimage-builder --recipe AppImageBuilder.yml --skip-test
       - name: Copy nessessary files
         run: |
-          cp images/logo.svg build/linux/x64/release/bundle/dev.linwood.town.svg
+          cp images/logo.svg build/linux/x64/release/bundle/dev.linwood.qeck.svg
           mkdir -p build/linux/x64/release/bundle/usr/share
           cp -r linux/debian/usr/share build/linux/x64/release/bundle/usr
       - name: Rename AppImage
         run: |
           ls
-          mv ./*.AppImage linwood-town-linux.AppImage
+          mv ./*.AppImage linwood-qeck-linux.AppImage
       - name: Copy portable start script
         run: |
           cp scripts/start.sh build/linux/x64/release/bundle
@@ -204,19 +204,19 @@ jobs:
         with:
           name: linux-deb
           path: |
-            app/linwood-town-linux.deb
+            app/linwood-qeck-linux.deb
       #- name: Archive .rpm
       #  uses: actions/upload-artifact@v3
       #  with:
       #    name: linux-rpm
       #    path: |
-      #      app/linwood-town-linux.rpm
+      #      app/linwood-qeck-linux.rpm
       - name: Archive .AppImage
         uses: actions/upload-artifact@v3
         with:
           name: linux-appimage
           path: |
-            app/linwood-town-linux.AppImage
+            app/linwood-qeck-linux.AppImage
   build-flatpak:
     name: Build flatpak
     runs-on: ubuntu-20.04
@@ -276,11 +276,11 @@ jobs:
           flutter build linux -v --release --dart-define=flavor=production
       - name: Copy nessessary files
         run: |
-          cp images/logo.svg build/linux/x64/release/bundle/dev.linwood.town.svg
+          cp images/logo.svg build/linux/x64/release/bundle/dev.linwood.qeck.svg
           mkdir -p build/linux/x64/release/bundle/usr/share
           cp -r linux/debian/usr/share build/linux/x64/release/bundle/usr
       - name: Compress Flutter build
-        run: tar -C build/linux/x64/release/bundle -czf linwood-town-linux-portable.tar.gz .
+        run: tar -C build/linux/x64/release/bundle -czf linwood-qeck-linux-portable.tar.gz .
       #    - name: Install flatpak
       #      run: |
       #        sudo apt-get update
@@ -294,12 +294,12 @@ jobs:
       #      run: |
       #        flatpak run org.flatpak.Builder -v --force-clean --sandbox --delete-build-dirs --user --install-deps-from=flathub --arch=x86_64 flatpak_app flatpak.json --bundle-sources
       #        flatpak build-export export flatpak_app -v
-      #        flatpak build-bundle export linwood-town-linux.flatpak dev.linwood.town -v
+      #        flatpak build-bundle export linwood-qeck-linux.flatpak dev.linwood.qeck -v
       #    - name: Upload .flatpak artifact to workflow
       #      uses: actions/upload-artifact@v3
       #      with:
       #        name: linux-flatpak
-      #        path: app/linwood-town-linux.flatpak
+      #        path: app/linwood-qeck-linux.flatpak
       - name: Archive old portable
         uses: actions/upload-artifact@v3
         with:
@@ -336,13 +336,13 @@ jobs:
   #      with:
   #        name: macos-build
   #        path: |
-  #          app/build/macos/Build/Products/Release/town.app
+  #          app/build/macos/Build/Products/Release/qeck.app
   deploy:
     runs-on: ubuntu-22.04
     if: github.event_name == 'push'
     outputs:
-      version: ${{ steps.setup.outputs.TOWN_VERSION }}
-      build_number: ${{ steps.setup.outputs.TOWN_BUILD_NUMBER }}
+      version: ${{ steps.setup.outputs.QECK_VERSION }}
+      build_number: ${{ steps.setup.outputs.QECK_BUILD_NUMBER }}
     needs:
       - build-apk
       - build-windows
@@ -359,14 +359,14 @@ jobs:
       - name: Setup git
         id: setup
         run: |
-          TOWN_VERSION_REGEX="version:\s(.+)\+(.+)"
-          [[ $(grep -E "${TOWN_VERSION_REGEX}" app/pubspec.yaml) =~ ${TOWN_VERSION_REGEX} ]]
-          TOWN_VERSION="${BASH_REMATCH[1]}"
-          echo "TOWN_VERSION=${TOWN_VERSION}" >> $GITHUB_ENV
-          echo "TOWN_VERSION=${TOWN_VERSION}" >> $GITHUB_OUTPUT
-          TOWN_BUILD_NUMBER="${BASH_REMATCH[2]}"
-          echo "TOWN_BUILD_NUMBER=${TOWN_BUILD_NUMBER}" >> $GITHUB_ENV
-          echo "TOWN_BUILD_NUMBER=${TOWN_BUILD_NUMBER}" >> $GITHUB_OUTPUT
+          QECK_VERSION_REGEX="version:\s(.+)\+(.+)"
+          [[ $(grep -E "${QECK_VERSION_REGEX}" app/pubspec.yaml) =~ ${QECK_VERSION_REGEX} ]]
+          QECK_VERSION="${BASH_REMATCH[1]}"
+          echo "QECK_VERSION=${QECK_VERSION}" >> $GITHUB_ENV
+          echo "QECK_VERSION=${QECK_VERSION}" >> $GITHUB_OUTPUT
+          QECK_BUILD_NUMBER="${BASH_REMATCH[2]}"
+          echo "QECK_BUILD_NUMBER=${QECK_BUILD_NUMBER}" >> $GITHUB_ENV
+          echo "QECK_BUILD_NUMBER=${QECK_BUILD_NUMBER}" >> $GITHUB_OUTPUT
           git config --global user.email "ci@linwood.dev"
           git config --global user.name "Linwood CI"
       - uses: actions/download-artifact@v3
@@ -405,10 +405,10 @@ jobs:
       #    path: macos-build/
       - name: 📦 Zip artifacts
         run: |
-          zip -r linwood-town-windows.zip windows-build/*
-          tar -C linux-build -czf linwood-town-linux.tar.gz .
-          tar -C linux-alternative-portable -czf linwood-town-linux-alternative.tar.gz .
-      #    tar -C macos-build -czf linwood-town-macos.tar.gz .
+          zip -r linwood-qeck-windows.zip windows-build/*
+          tar -C linux-build -czf linwood-qeck-linux.tar.gz .
+          tar -C linux-alternative-portable -czf linwood-qeck-linux-alternative.tar.gz .
+      #    tar -C macos-build -czf linwood-qeck-macos.tar.gz .
       - name: Configure git
         if: ${{ github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main' }}
         run: |
@@ -424,15 +424,15 @@ jobs:
           prerelease: true
           tag_name: stable
           files: |
-            linwood-town-windows-setup.exe
-            linwood-town-windows.zip
-            linwood-town-android.apk
-            linwood-town-linux.tar.gz
-            linwood-town-linux-alternative.tar.gz
-            linwood-town-linux.deb
-            linwood-town-linux.AppImage
-          #  linwood-town-macos.tar.gz
-          #  linwood-town-linux.flatpak
+            linwood-qeck-windows-setup.exe
+            linwood-qeck-windows.zip
+            linwood-qeck-android.apk
+            linwood-qeck-linux.tar.gz
+            linwood-qeck-linux-alternative.tar.gz
+            linwood-qeck-linux.deb
+            linwood-qeck-linux.AppImage
+          #  linwood-qeck-macos.tar.gz
+          #  linwood-qeck-linux.flatpak
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: 🚀 Deploy nightly
@@ -443,15 +443,15 @@ jobs:
           prerelease: true
           tag_name: nightly
           files: |
-            linwood-town-windows-setup.exe
-            linwood-town-windows.zip
-            linwood-town-android.apk
-            linwood-town-linux.tar.gz
-            linwood-town-linux-alternative.tar.gz
-            linwood-town-linux.deb
-            linwood-town-linux.AppImage
-          #  linwood-town-macos.tar.gz
-          #  linwood-town-linux.flatpak
+            linwood-qeck-windows-setup.exe
+            linwood-qeck-windows.zip
+            linwood-qeck-android.apk
+            linwood-qeck-linux.tar.gz
+            linwood-qeck-linux-alternative.tar.gz
+            linwood-qeck-linux.deb
+            linwood-qeck-linux.AppImage
+          #  linwood-qeck-macos.tar.gz
+          #  linwood-qeck-linux.flatpak
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Release
@@ -460,15 +460,15 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         with:
           files: |
-            linwood-town-windows-setup.exe
-            linwood-town-windows.zip
-            linwood-town-android.apk
-            linwood-town-linux.tar.gz
-            linwood-town-linux-alternative.tar.gz
-            linwood-town-linux.deb
-            linwood-town-linux.AppImage
-          #  linwood-town-macos.tar.gz
-          #  linwood-town-linux.flatpak
+            linwood-qeck-windows-setup.exe
+            linwood-qeck-windows.zip
+            linwood-qeck-android.apk
+            linwood-qeck-linux.tar.gz
+            linwood-qeck-linux-alternative.tar.gz
+            linwood-qeck-linux.deb
+            linwood-qeck-linux.AppImage
+          #  linwood-qeck-macos.tar.gz
+          #  linwood-qeck-linux.flatpak
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   deploy-to-play-store:
@@ -543,14 +543,14 @@ jobs:
       - if: ${{ github.ref == 'refs/tags/stable' }}
         uses: vedantmgoyal2009/winget-releaser@v1
         with:
-          identifier: LinwoodCloud.Town
+          identifier: LinwoodCloud.Qeck
           version: ${{ needs.deploy.outputs.version }}
           release-tag: v${{ needs.deploy.outputs.version }}
           token: ${{ secrets.CI_PAT }}
       - if: ${{ github.ref == 'refs/tags/nightly' }}
         uses: vedantmgoyal2009/winget-releaser@v1
         with:
-          identifier: LinwoodCloud.Town.Nightly
+          identifier: LinwoodCloud.Qeck.Nightly
           version: ${{ needs.deploy.outputs.version }}
           release-tag: v${{ needs.deploy.outputs.version }}
           token: ${{ secrets.CI_PAT }}

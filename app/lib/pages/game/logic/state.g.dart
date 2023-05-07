@@ -26,6 +26,27 @@ const _$GameCardColorEnumMap = {
   GameCardColor.club: 'club',
 };
 
+_$_GameState _$$_GameStateFromJson(Map<String, dynamic> json) => _$_GameState(
+      decks: (json['decks'] as List<dynamic>?)
+              ?.map((e) => GameDeck.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+      playerDecks: (json['playerDecks'] as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(k, GameDeck.fromJson(e as Map<String, dynamic>)),
+          ) ??
+          const {},
+      playerDeck: json['playerDeck'] == null
+          ? const GameDeck()
+          : GameDeck.fromJson(json['playerDeck'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$$_GameStateToJson(_$_GameState instance) =>
+    <String, dynamic>{
+      'decks': instance.decks,
+      'playerDecks': instance.playerDecks,
+      'playerDeck': instance.playerDeck,
+    };
+
 _$_DeckRefillNone _$$_DeckRefillNoneFromJson(Map<String, dynamic> json) =>
     _$_DeckRefillNone(
       $type: json['runtimeType'] as String?,

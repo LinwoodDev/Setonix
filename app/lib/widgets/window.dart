@@ -38,7 +38,7 @@ class WindowTitleBar extends StatelessWidget with PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingsCubit, TownSettings>(
+    return BlocBuilder<SettingsCubit, QeckSettings>(
         buildWhen: (previous, current) =>
             previous.nativeTitleBar != current.nativeTitleBar,
         builder: (context, settings) {
@@ -136,7 +136,7 @@ class _WindowButtonsState extends State<WindowButtons> with WindowListener {
   @override
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingsCubit, TownSettings>(
+    return BlocBuilder<SettingsCubit, QeckSettings>(
         buildWhen: (previous, current) =>
             previous.nativeTitleBar != current.nativeTitleBar,
         builder: (context, settings) {

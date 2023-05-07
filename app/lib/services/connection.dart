@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:town/cubits/settings.dart';
-import 'package:town/models/server.dart';
+import 'package:qeck/cubits/settings.dart';
+import 'package:qeck/models/server.dart';
 
 class ConnectionService {
   final SettingsCubit settingsCubit;

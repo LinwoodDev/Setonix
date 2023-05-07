@@ -1,8 +1,8 @@
 [Desktop Entry]
-Name=Linwood Town
+Name=Linwood Qeck
 Comment=Opensource collection of small games
 Exec=butterfly
-Icon=${SNAP}/meta/gui/town.png # replace name to your app name
+Icon=${SNAP}/meta/gui/qeck.png # replace name to your app name
 Terminal=false
 Type=Application
 Categories=Games; #adjust accordingly your snap category

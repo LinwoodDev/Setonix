@@ -23,10 +23,18 @@ class GameCard with _$GameCard {
 
 @freezed
 class GameState with _$GameState {
+  const GameState._();
   const factory GameState({
     @Default([]) List<GameDeck> decks,
     @Default({}) Map<String, GameDeck> playerDecks,
+    @Default(GameDeck()) GameDeck playerDeck,
   }) = _GameState;
+
+  factory GameState.fromJson(Map<String, dynamic> json) =>
+      _$GameStateFromJson(json);
+
+  Map<String, dynamic> toSaveJson() =>
+      Map.from(super.toJson())..remove('playerDecks');
 }
 
 enum DeckVisibility {

@@ -32,12 +32,12 @@ jobs:
       - name: Setup git
         id: setup
         run: |
-          TOWN_VERSION_REGEX="version:\s(.+)\+(.+)"
-          [[ $(grep -E "${TOWN_VERSION_REGEX}" app/pubspec.yaml) =~ ${TOWN_VERSION_REGEX} ]]
-          TOWN_VERSION="${BASH_REMATCH[1]}"
-          echo "TOWN_VERSION=${TOWN_VERSION}" >> $GITHUB_ENV
-          TOWN_BUILD_NUMBER="${BASH_REMATCH[2]}"
-          echo "TOWN_BUILD_NUMBER=${TOWN_BUILD_NUMBER}" >> $GITHUB_ENV
+          QECK_VERSION_REGEX="version:\s(.+)\+(.+)"
+          [[ $(grep -E "${QECK_VERSION_REGEX}" app/pubspec.yaml) =~ ${QECK_VERSION_REGEX} ]]
+          QECK_VERSION="${BASH_REMATCH[1]}"
+          echo "QECK_VERSION=${QECK_VERSION}" >> $GITHUB_ENV
+          QECK_BUILD_NUMBER="${BASH_REMATCH[2]}"
+          echo "QECK_BUILD_NUMBER=${QECK_BUILD_NUMBER}" >> $GITHUB_ENV
           git config --global user.email "ci@linwood.dev"
           git config --global user.name "Linwood CI"
       - name: Update changelog
@@ -45,9 +45,9 @@ jobs:
           git fetch
           git pull origin
           dart pub get -C tools
-          dart run tools/set_version.dart --build-number keep ${{ env.TOWN_VERSION }} --changelog
+          dart run tools/set_version.dart --build-number keep ${{ env.QECK_VERSION }} --changelog
           git add .
-          git commit -m "Add changelog of v${{ env.TOWN_VERSION }}"
+          git commit -m "Add changelog of v${{ env.QECK_VERSION }}"
           git push origin
       - name: Merge in develop
         if: ${{ github.ref == 'refs/heads/main' }}
@@ -62,8 +62,8 @@ jobs:
     needs:
       - update-changelog
     outputs:
-      version: ${{ steps.setup.outputs.TOWN_VERSION }}
-      build_number: ${{ steps.setup.outputs.TOWN_BUILD_NUMBER }}
+      version: ${{ steps.setup.outputs.QECK_VERSION }}
+      build_number: ${{ steps.setup.outputs.QECK_BUILD_NUMBER }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -82,21 +82,21 @@ jobs:
         id: setup
         shell: bash
         run: |
-          TOWN_VERSION_REGEX="version:\s(.+)\+(.+)"
-          [[ $(grep -E "${TOWN_VERSION_REGEX}" app/pubspec.yaml) =~ ${TOWN_VERSION_REGEX} ]]
-          TOWN_VERSION="${BASH_REMATCH[1]}"
-          echo "TOWN_VERSION=${TOWN_VERSION}" >> $GITHUB_ENV
-          echo "TOWN_VERSION=${TOWN_VERSION}" >> $GITHUB_OUTPUT
-          TOWN_BUILD_NUMBER="${BASH_REMATCH[2]}"
-          echo "TOWN_BUILD_NUMBER=${TOWN_BUILD_NUMBER}" >> $GITHUB_ENV
-          echo "TOWN_BUILD_NUMBER=${TOWN_BUILD_NUMBER}" >> $GITHUB_OUTPUT
+          QECK_VERSION_REGEX="version:\s(.+)\+(.+)"
+          [[ $(grep -E "${QECK_VERSION_REGEX}" app/pubspec.yaml) =~ ${QECK_VERSION_REGEX} ]]
+          QECK_VERSION="${BASH_REMATCH[1]}"
+          echo "QECK_VERSION=${QECK_VERSION}" >> $GITHUB_ENV
+          echo "QECK_VERSION=${QECK_VERSION}" >> $GITHUB_OUTPUT
+          QECK_BUILD_NUMBER="${BASH_REMATCH[2]}"
+          echo "QECK_BUILD_NUMBER=${QECK_BUILD_NUMBER}" >> $GITHUB_ENV
+          echo "QECK_BUILD_NUMBER=${QECK_BUILD_NUMBER}" >> $GITHUB_OUTPUT
           git config --global user.email "ci@linwood.dev"
           git config --global user.name "Linwood CI"
       - name: Create tag
         run: |
-          TOWN_VERSION="${{ env.TOWN_VERSION }}"
-          git tag -fa v${{ env.TOWN_VERSION }} -m "Release ${TOWN_VERSION}"
-          git push origin v${TOWN_VERSION} -f
+          QECK_VERSION="${{ env.QECK_VERSION }}"
+          git tag -fa v${{ env.QECK_VERSION }} -m "Release ${QECK_VERSION}"
+          git push origin v${QECK_VERSION} -f
       - uses: actions/checkout@v3
         with:
           token: ${{ secrets.CI_PAT }}
@@ -105,10 +105,10 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           prerelease: ${{ github.event.inputs.stable != 'true' }}
-          tag_name: v${{ env.TOWN_VERSION }}
-          name: v${{ env.TOWN_VERSION }}
+          tag_name: v${{ env.QECK_VERSION }}
+          name: v${{ env.QECK_VERSION }}
           token: ${{ secrets.CI_PAT }}
-          body_path: fastlane/metadata/android/en-US/changelogs/${{ env.TOWN_BUILD_NUMBER }}.txt
+          body_path: fastlane/metadata/android/en-US/changelogs/${{ env.QECK_BUILD_NUMBER }}.txt
       - name: Retag stable
         if: ${{ github.event.inputs.stable == 'true' || github.ref == 'refs/heads/main' }}
         run: |
@@ -148,12 +148,12 @@ jobs:
       - name: Setup git
         id: setup
         run: |
-          TOWN_VERSION_REGEX="version:\s(.+)\+(.+)"
-          [[ $(grep -E "${TOWN_VERSION_REGEX}" app/pubspec.yaml) =~ ${TOWN_VERSION_REGEX} ]]
-          TOWN_VERSION="${BASH_REMATCH[1]}"
-          echo "TOWN_VERSION=${TOWN_VERSION}" >> $GITHUB_ENV
-          TOWN_BUILD_NUMBER="${BASH_REMATCH[2]}"
-          echo "TOWN_BUILD_NUMBER=${TOWN_BUILD_NUMBER}" >> $GITHUB_ENV
+          QECK_VERSION_REGEX="version:\s(.+)\+(.+)"
+          [[ $(grep -E "${QECK_VERSION_REGEX}" app/pubspec.yaml) =~ ${QECK_VERSION_REGEX} ]]
+          QECK_VERSION="${BASH_REMATCH[1]}"
+          echo "QECK_VERSION=${QECK_VERSION}" >> $GITHUB_ENV
+          QECK_BUILD_NUMBER="${BASH_REMATCH[2]}"
+          echo "QECK_BUILD_NUMBER=${QECK_BUILD_NUMBER}" >> $GITHUB_ENV
           git config --global user.email "ci@linwood.dev"
           git config --global user.name "Linwood CI"
       - name: Set next version
@@ -197,12 +197,12 @@ jobs:
       - name: Setup git
         id: setup
         run: |
-          TOWN_VERSION_REGEX="version:\s(.+)\+(.+)"
-          [[ $(grep -E "${TOWN_VERSION_REGEX}" app/pubspec.yaml) =~ ${TOWN_VERSION_REGEX} ]]
-          TOWN_VERSION="${BASH_REMATCH[1]}"
-          echo "TOWN_VERSION=${TOWN_VERSION}" >> $GITHUB_ENV
-          TOWN_BUILD_NUMBER="${BASH_REMATCH[2]}"
-          echo "TOWN_BUILD_NUMBER=${TOWN_BUILD_NUMBER}" >> $GITHUB_ENV
+          QECK_VERSION_REGEX="version:\s(.+)\+(.+)"
+          [[ $(grep -E "${QECK_VERSION_REGEX}" app/pubspec.yaml) =~ ${QECK_VERSION_REGEX} ]]
+          QECK_VERSION="${BASH_REMATCH[1]}"
+          echo "QECK_VERSION=${QECK_VERSION}" >> $GITHUB_ENV
+          QECK_BUILD_NUMBER="${BASH_REMATCH[2]}"
+          echo "QECK_BUILD_NUMBER=${QECK_BUILD_NUMBER}" >> $GITHUB_ENV
           git config --global user.email "ci@linwood.dev"
           git config --global user.name "Linwood CI"
       - name: Get flutter version
@@ -218,7 +218,7 @@ jobs:
           git fetch
           git pull origin
           dart pub get -C tools
-          dart run tools/set_version.dart --build-number increment ${{ env.TOWN_VERSION }} --no-changelog
+          dart run tools/set_version.dart --build-number increment ${{ env.QECK_VERSION }} --no-changelog
           git add .
           git commit -m "Bump version"
           git push origin
@@ -240,14 +240,14 @@ jobs:
       - name: Get information
         shell: bash
         run: |
-          TOWN_VERSION_REGEX="version:\s(.+)\+(.+)"
-          [[ $(grep -E "${TOWN_VERSION_REGEX}" app/pubspec.yaml) =~ ${TOWN_VERSION_REGEX} ]]
-          TOWN_VERSION="${BASH_REMATCH[1]}"
-          echo "TOWN_VERSION=${TOWN_VERSION}" >> $GITHUB_ENV
-          TOWN_BUILD_NUMBER="${BASH_REMATCH[2]}"
-          echo "TOWN_BUILD_NUMBER=${TOWN_BUILD_NUMBER}" >> $GITHUB_ENV
-          echo 'TOWN_CHANGELOG<<EOF' >> $GITHUB_ENV
-          cat fastlane/metadata/android/en-US/changelogs/${TOWN_BUILD_NUMBER}.txt >> $GITHUB_ENV
+          QECK_VERSION_REGEX="version:\s(.+)\+(.+)"
+          [[ $(grep -E "${QECK_VERSION_REGEX}" app/pubspec.yaml) =~ ${QECK_VERSION_REGEX} ]]
+          QECK_VERSION="${BASH_REMATCH[1]}"
+          echo "QECK_VERSION=${QECK_VERSION}" >> $GITHUB_ENV
+          QECK_BUILD_NUMBER="${BASH_REMATCH[2]}"
+          echo "QECK_BUILD_NUMBER=${QECK_BUILD_NUMBER}" >> $GITHUB_ENV
+          echo 'QECK_CHANGELOG<<EOF' >> $GITHUB_ENV
+          cat fastlane/metadata/android/en-US/changelogs/${QECK_BUILD_NUMBER}.txt >> $GITHUB_ENV
           echo '' >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
       - name: Discord Webhook Action
@@ -255,23 +255,23 @@ jobs:
         if: ${{ github.event.inputs.stable == 'true' || github.ref == 'refs/heads/main' }}
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
-          embed-title: ${{ env.TOWN_VERSION }}
-          embed-description: ${{ env.TOWN_CHANGELOG }}
-          embed-url: https://github.com/LinwoodDev/town/releases/tag/v${{ env.TOWN_VERSION }}
+          embed-title: ${{ env.QECK_VERSION }}
+          embed-description: ${{ env.QECK_CHANGELOG }}
+          embed-url: https://github.com/LinwoodDev/qeck/releases/tag/v${{ env.QECK_VERSION }}
           content: |
-            Version ${{ env.TOWN_VERSION }} released!
-            Download it here: https://docs.town.linwood.dev/downloads
-            https://github.com/LinwoodDev/town/releases/tag/v${{ env.TOWN_VERSION }}
+            Version ${{ env.QECK_VERSION }} released!
+            Download it here: https://docs.qeck.linwood.dev/downloads
+            https://github.com/LinwoodDev/qeck/releases/tag/v${{ env.QECK_VERSION }}
       - name: Discord Webhook Action
         uses: tsickert/discord-webhook@v5.3.0
         if: ${{ github.event.inputs.stable == 'false' && github.ref == 'refs/heads/develop' }}
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
-          embed-title: ${{ env.TOWN_VERSION }}
-          embed-description: ${{ env.TOWN_CHANGELOG }}
-          embed-url: https://github.com/LinwoodDev/town/releases/tag/v${{ env.TOWN_VERSION }}
+          embed-title: ${{ env.QECK_VERSION }}
+          embed-description: ${{ env.QECK_CHANGELOG }}
+          embed-url: https://github.com/LinwoodDev/qeck/releases/tag/v${{ env.QECK_VERSION }}
           content: |
-            Pre-release version ${{ env.TOWN_VERSION }} released!
-            Download it here: https://docs.town.linwood.dev/downloads
+            Pre-release version ${{ env.QECK_VERSION }} released!
+            Download it here: https://docs.qeck.linwood.dev/downloads
             Please note that this is a pre-release version and is not intended for production use.
-            Read more about it here: https://docs.town.linwood.dev/nightly
+            Read more about it here: https://docs.qeck.linwood.dev/nightly

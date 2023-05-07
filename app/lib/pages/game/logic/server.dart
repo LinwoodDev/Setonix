@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:town/models/server.dart';
+import 'package:qeck/models/server.dart';
 
 import 'client.dart';
 import 'logic.dart';

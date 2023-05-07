@@ -8,8 +8,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:material_leap/l10n/leap_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:town/pages/game/page.dart';
-import 'package:town/services/connection.dart';
+import 'package:qeck/pages/game/page.dart';
+import 'package:qeck/services/connection.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'cubits/settings.dart';
@@ -74,7 +74,7 @@ class FlowApp extends StatelessWidget {
 
   Widget _buildApp(ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
     final virtualWindowFrameBuilder = VirtualWindowFrameInit();
-    return BlocBuilder<SettingsCubit, TownSettings>(
+    return BlocBuilder<SettingsCubit, QeckSettings>(
         buildWhen: (previous, current) =>
             previous.design != current.design ||
             previous.themeMode != current.themeMode ||
@@ -133,5 +133,5 @@ class FlowApp extends StatelessWidget {
 const flavor = String.fromEnvironment('flavor');
 const isNightly =
     flavor == 'nightly' || flavor == 'dev' || flavor == 'development';
-const shortApplicationName = isNightly ? 'Town Nightly' : 'Town';
+const shortApplicationName = isNightly ? 'Qeck Nightly' : 'Qeck';
 const applicationName = 'Linwood $shortApplicationName';
