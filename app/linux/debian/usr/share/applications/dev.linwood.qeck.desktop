@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Linwood Qeck
+Comment=Play games without internet with your friends 
+Exec=qeck %f
+Icon=dev.linwood.qeck
+Terminal=false
+Type=Application
+Categories=Games;

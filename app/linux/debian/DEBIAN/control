@@ -1,9 +1,9 @@
-Package: linwood-butterfly
-Version: 1.3.0-rc.0
+Package: linwood-qeck
+Version: 1.0.0
 Section: base
 Priority: optional
-Homepage: https://github.com/LinwoodCloud/butterfly
+Homepage: https://github.com/LinwoodDev/Qeck
 Architecture: amd64
-Maintainer: LinwoodCloud <contact@linwood.dev>
-Description: Linwood Butterfly
-  Butterfly is a note app where your ideas come first. You can paint, add texts and export them easily on every device. This app works on android, windows, linux and in the web.
+Maintainer: Linwood <contact@linwood.dev>
+Description: Linwood Qeck
+  Play games without internet with your friends
