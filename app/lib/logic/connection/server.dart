@@ -3,7 +3,8 @@ import 'dart:io';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:qeck/models/server.dart';
-import 'package:qeck/pages/game/logic/state.dart';
+import 'package:qeck/logic/state.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 import 'client.dart';
 import 'logic.dart';
@@ -52,17 +53,18 @@ class ServerGameConnection with GameConnection {
   final HttpServer server;
   final List<WebSocketClient> clients = [];
 
-  ServerGameConnection(this.server) {
-    setup();
+  ServerGameConnection._(this.server) {
+    _setup();
   }
 
   static Future<ServerGameConnection> create() async {
-    return ServerGameConnection(
+    final connection = ServerGameConnection._(
       await HttpServer.bind(
         InternetAddress.anyIPv4,
         kDefaultPort,
       ),
     );
+    return connection;
   }
 
   @override
@@ -70,7 +72,7 @@ class ServerGameConnection with GameConnection {
     await server.close();
   }
 
-  Future<void> setup() async {
+  Future<void> _setup() async {
     await for (HttpRequest request in server) {
       final info = request.connectionInfo;
       if (info == null) {
@@ -184,5 +186,28 @@ class ServerGameConnection with GameConnection {
                     ..remove(client.hashCode),
                 )));
         });
+  }
+}
+
+class ClientServerGameConnection extends ClientGameConnection {
+  final ServerGameConnection server;
+
+  ClientServerGameConnection(this.server, super.channel);
+
+  static Future<ClientServerGameConnection> create() async {
+    final server = await ServerGameConnection.create();
+    return ClientServerGameConnection(
+        server,
+        WebSocketChannel.connect(Uri(
+          scheme: 'ws',
+          host: 'localhost',
+          port: server.server.port,
+        )));
+  }
+
+  @override
+  Future<void> close() async {
+    await super.close();
+    await server.close();
   }
 }

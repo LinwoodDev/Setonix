@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:qeck/pages/game/view.dart';
 import 'package:qeck/widgets/window.dart';
 
-import 'logic/logic.dart';
+import '../../logic/connection/client.dart';
 import 'players.dart';
 
 class GamePage extends StatefulWidget {
-  final GameConnection connection;
+  final ClientGameConnection connection;
 
   const GamePage({super.key, required this.connection});
 
@@ -46,6 +47,9 @@ class _GamePageState extends State<GamePage> {
             onPressed: () => Navigator.of(context).pop(),
           ),
         ],
+      ),
+      body: GameView(
+        connection: widget.connection,
       ),
     );
   }

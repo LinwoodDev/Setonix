@@ -14,5 +14,9 @@
   "game": "Game",
   "players": "Players",
   "noPlayers": "No players",
-  "you": "You"
+  "you": "You",
+  "seat": "Seat",
+  "shuffle": "Shuffle",
+  "decks": "Decks",
+  "cards": "Cards"
 }

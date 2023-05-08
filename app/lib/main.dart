@@ -13,7 +13,7 @@ import 'package:qeck/services/connection.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'cubits/settings.dart';
-import 'pages/game/logic/logic.dart';
+import 'logic/connection/client.dart';
 import 'pages/home/page.dart';
 import 'pages/settings/page.dart';
 import 'setup.dart'
@@ -61,7 +61,7 @@ Page<void> Function(BuildContext, GoRouterState) _fadeTransitionBuilder(
 }
 
 class FlowApp extends StatelessWidget {
-  FlowApp({Key? key}) : super(key: key);
+  FlowApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -108,12 +108,12 @@ class FlowApp extends StatelessWidget {
             path: 'game',
             pageBuilder: _fadeTransitionBuilder(
               (context, state) {
-                if (state.extra is! GameConnection) {
+                if (state.extra is! ClientGameConnection) {
                   context.go('/');
                   return const SizedBox.shrink();
                 }
                 return GamePage(
-                  connection: state.extra as GameConnection,
+                  connection: state.extra as ClientGameConnection,
                 );
               },
             ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:qeck/pages/game/logic/logic.dart';
+
+import '../../logic/connection/logic.dart';
 
 class PlayersDialog extends StatelessWidget {
   final GameConnection connection;
@@ -16,20 +17,14 @@ class PlayersDialog extends StatelessWidget {
         width: 500,
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              title: Text(connection.playerId.toString()),
-              subtitle: Text(AppLocalizations.of(context).you),
-            ),
-            ...connection.players
-                .map(
-                  (player) => ListTile(
-                    title: Text(player.name),
-                    subtitle: Text(player.id),
-                  ),
-                )
-                .toList(),
-          ],
+          children: connection.players
+              .map(
+                (player) => ListTile(
+                  title: Text(player.name),
+                  subtitle: Text(player.id),
+                ),
+              )
+              .toList(),
         ),
       ),
     );

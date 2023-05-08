@@ -10,8 +10,8 @@ import 'package:qeck/models/server.dart';
 import 'package:qeck/services/connection.dart';
 import 'package:qeck/widgets/window.dart';
 
-import '../game/logic/client.dart';
-import '../game/logic/server.dart';
+import '../../logic/connection/client.dart';
+import '../../logic/connection/server.dart';
 import 'connect.dart';
 import 'create.dart';
 
@@ -85,7 +85,8 @@ class HomePage extends StatelessWidget {
                     );
                     if (property == null) return;
                     if (context.mounted) {
-                      final connection = await ServerGameConnection.create();
+                      final connection =
+                          await ClientServerGameConnection.create();
                       if (context.mounted) {
                         context.push('/game', extra: connection);
                       }

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:qeck/pages/game/logic/state.dart';
+import 'package:qeck/logic/state.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'logic.freezed.dart';
