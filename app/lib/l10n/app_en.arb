@@ -13,5 +13,6 @@
   "address": "Address",
   "game": "Game",
   "players": "Players",
-  "noPlayers": "No players"
+  "noPlayers": "No players",
+  "you": "You"
 }

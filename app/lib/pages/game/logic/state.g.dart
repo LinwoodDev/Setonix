@@ -8,22 +8,23 @@ part of 'state.dart';
 
 _$ClassicGameCard _$$ClassicGameCardFromJson(Map<String, dynamic> json) =>
     _$ClassicGameCard(
-      color: $enumDecodeNullable(_$GameCardColorEnumMap, json['color']) ??
-          GameCardColor.heart,
+      color:
+          $enumDecodeNullable(_$ClassicGameCardColorEnumMap, json['color']) ??
+              ClassicGameCardColor.heart,
       number: json['number'] as int? ?? 1,
     );
 
 Map<String, dynamic> _$$ClassicGameCardToJson(_$ClassicGameCard instance) =>
     <String, dynamic>{
-      'color': _$GameCardColorEnumMap[instance.color]!,
+      'color': _$ClassicGameCardColorEnumMap[instance.color]!,
       'number': instance.number,
     };
 
-const _$GameCardColorEnumMap = {
-  GameCardColor.heart: 'heart',
-  GameCardColor.diamond: 'diamond',
-  GameCardColor.spade: 'spade',
-  GameCardColor.club: 'club',
+const _$ClassicGameCardColorEnumMap = {
+  ClassicGameCardColor.heart: 'heart',
+  ClassicGameCardColor.diamond: 'diamond',
+  ClassicGameCardColor.spade: 'spade',
+  ClassicGameCardColor.club: 'club',
 };
 
 _$_GameState _$$_GameStateFromJson(Map<String, dynamic> json) => _$_GameState(
@@ -31,21 +32,44 @@ _$_GameState _$$_GameStateFromJson(Map<String, dynamic> json) => _$_GameState(
               ?.map((e) => GameDeck.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
-      playerDecks: (json['playerDecks'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(k, GameDeck.fromJson(e as Map<String, dynamic>)),
-          ) ??
-          const {},
-      playerDeck: json['playerDeck'] == null
-          ? const GameDeck()
-          : GameDeck.fromJson(json['playerDeck'] as Map<String, dynamic>),
+      seats: (json['seats'] as List<dynamic>?)
+              ?.map((e) => GameSeat.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$$_GameStateToJson(_$_GameState instance) =>
     <String, dynamic>{
       'decks': instance.decks,
-      'playerDecks': instance.playerDecks,
-      'playerDeck': instance.playerDeck,
+      'seats': instance.seats,
     };
+
+_$_GameSeat _$$_GameSeatFromJson(Map<String, dynamic> json) => _$_GameSeat(
+      name: json['name'] as String? ?? '',
+      decks: (json['decks'] as List<dynamic>?)
+              ?.map((e) => GameDeck.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+      players:
+          (json['players'] as List<dynamic>?)?.map((e) => e as int).toList() ??
+              const [],
+      ownDeckVisibility: $enumDecodeNullable(
+          _$DeckVisibilityEnumMap, json['ownDeckVisibility']),
+    );
+
+Map<String, dynamic> _$$_GameSeatToJson(_$_GameSeat instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'decks': instance.decks,
+      'players': instance.players,
+      'ownDeckVisibility': _$DeckVisibilityEnumMap[instance.ownDeckVisibility],
+    };
+
+const _$DeckVisibilityEnumMap = {
+  DeckVisibility.hidden: 'hidden',
+  DeckVisibility.onlyTop: 'onlyTop',
+  DeckVisibility.visible: 'visible',
+};
 
 _$_DeckRefillNone _$$_DeckRefillNoneFromJson(Map<String, dynamic> json) =>
     _$_DeckRefillNone(
@@ -87,6 +111,8 @@ _$_GameDeck _$$_GameDeckFromJson(Map<String, dynamic> json) => _$_GameDeck(
       visibility:
           $enumDecodeNullable(_$DeckVisibilityEnumMap, json['visibility']) ??
               DeckVisibility.hidden,
+      ownVisibility:
+          $enumDecodeNullable(_$DeckVisibilityEnumMap, json['ownVisibility']),
       cards: (json['cards'] as List<dynamic>?)
               ?.map((e) => GameCard.fromJson(e as Map<String, dynamic>))
               .toList() ??
@@ -97,11 +123,6 @@ Map<String, dynamic> _$$_GameDeckToJson(_$_GameDeck instance) =>
     <String, dynamic>{
       'name': instance.name,
       'visibility': _$DeckVisibilityEnumMap[instance.visibility]!,
+      'ownVisibility': _$DeckVisibilityEnumMap[instance.ownVisibility],
       'cards': instance.cards,
     };
-
-const _$DeckVisibilityEnumMap = {
-  DeckVisibility.hidden: 'hidden',
-  DeckVisibility.onlyTop: 'onlyTop',
-  DeckVisibility.visible: 'visible',
-};

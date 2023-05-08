@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:qeck/pages/game/logic/state.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 import 'logic.dart';
@@ -12,8 +13,9 @@ part 'client.g.dart';
 
 @freezed
 class ClientConnectionMessage with _$ClientConnectionMessage {
-  const factory ClientConnectionMessage.fetchedPlayers(
+  const factory ClientConnectionMessage.playersUpdated(
     List<GamePlayer> players,
+    int playerId,
   ) = FetchedPlayersClientConnectionMessage;
 
   const factory ClientConnectionMessage.chatMessage(
@@ -21,12 +23,17 @@ class ClientConnectionMessage with _$ClientConnectionMessage {
     String from,
   ) = ChatMessageClientConnectionMessage;
 
+  const factory ClientConnectionMessage.stateChanged(GameState state) =
+      GameStateChangedClientConnectionMessage;
+
   factory ClientConnectionMessage.fromJson(Map<String, dynamic> json) =>
       _$ClientConnectionMessageFromJson(json);
 }
 
-class ClientGameConnection extends GameConnection {
+class ClientGameConnection with GameConnection {
   final WebSocketChannel channel;
+  List<GamePlayer> _players = [];
+  int _playerId = -2;
 
   ClientGameConnection(this.channel);
 
@@ -36,7 +43,19 @@ class ClientGameConnection extends GameConnection {
   }
 
   void setup() {
-    channel.stream.listen((event) {});
+    channel.stream
+        .map((event) => ClientConnectionMessage.fromJson(jsonDecode(event)))
+        .listen((event) {
+      event.maybeWhen(
+          stateChanged: (state) {
+            stateSubject.add(state);
+          },
+          playersUpdated: (players, playerId) {
+            _players = players;
+            _playerId = playerId;
+          },
+          orElse: () {});
+    });
   }
 
   void _send(ServerConnectionMessage message) {
@@ -52,15 +71,13 @@ class ClientGameConnection extends GameConnection {
   }
 
   @override
-  Future<List<GamePlayer>> getPlayers() async {
-    const message = ServerConnectionMessage.fetchPlayers();
-    _send(message);
-    return (await _waitForResponse<FetchedPlayersClientConnectionMessage>())
-        .players;
-  }
-
-  @override
   Future<void> close() async {
     await channel.sink.close();
   }
+
+  @override
+  int get playerId => _playerId;
+
+  @override
+  List<GamePlayer> get players => _players;
 }

@@ -14,34 +14,22 @@ class PlayersDialog extends StatelessWidget {
       scrollable: true,
       content: SizedBox(
         width: 500,
-        child: FutureBuilder<List<GamePlayer>>(
-          future: Future.value(connection.getPlayers()),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Text(snapshot.error.toString());
-            }
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Align(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (snapshot.data == null) {
-              return Align(
-                child: Text(AppLocalizations.of(context).noPlayers),
-              );
-            }
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: snapshot.data!
-                  .map(
-                    (player) => ListTile(
-                      title: Text(player.name),
-                      subtitle: Text(player.id),
-                    ),
-                  )
-                  .toList(),
-            );
-          },
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              title: Text(connection.playerId.toString()),
+              subtitle: Text(AppLocalizations.of(context).you),
+            ),
+            ...connection.players
+                .map(
+                  (player) => ListTile(
+                    title: Text(player.name),
+                    subtitle: Text(player.id),
+                  ),
+                )
+                .toList(),
+          ],
         ),
       ),
     );

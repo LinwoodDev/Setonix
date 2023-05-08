@@ -17,10 +17,12 @@ final _privateConstructorUsedError = UnsupportedError(
 ClientConnectionMessage _$ClientConnectionMessageFromJson(
     Map<String, dynamic> json) {
   switch (json['runtimeType']) {
-    case 'fetchedPlayers':
+    case 'playersUpdated':
       return FetchedPlayersClientConnectionMessage.fromJson(json);
     case 'chatMessage':
       return ChatMessageClientConnectionMessage.fromJson(json);
+    case 'stateChanged':
+      return GameStateChangedClientConnectionMessage.fromJson(json);
 
     default:
       throw CheckedFromJsonException(
@@ -35,43 +37,53 @@ ClientConnectionMessage _$ClientConnectionMessageFromJson(
 mixin _$ClientConnectionMessage {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(List<GamePlayer> players) fetchedPlayers,
+    required TResult Function(List<GamePlayer> players, int playerId)
+        playersUpdated,
     required TResult Function(String message, String from) chatMessage,
+    required TResult Function(GameState state) stateChanged,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(List<GamePlayer> players)? fetchedPlayers,
+    TResult? Function(List<GamePlayer> players, int playerId)? playersUpdated,
     TResult? Function(String message, String from)? chatMessage,
+    TResult? Function(GameState state)? stateChanged,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(List<GamePlayer> players)? fetchedPlayers,
+    TResult Function(List<GamePlayer> players, int playerId)? playersUpdated,
     TResult Function(String message, String from)? chatMessage,
+    TResult Function(GameState state)? stateChanged,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(FetchedPlayersClientConnectionMessage value)
-        fetchedPlayers,
+        playersUpdated,
     required TResult Function(ChatMessageClientConnectionMessage value)
         chatMessage,
+    required TResult Function(GameStateChangedClientConnectionMessage value)
+        stateChanged,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(FetchedPlayersClientConnectionMessage value)?
-        fetchedPlayers,
+        playersUpdated,
     TResult? Function(ChatMessageClientConnectionMessage value)? chatMessage,
+    TResult? Function(GameStateChangedClientConnectionMessage value)?
+        stateChanged,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(FetchedPlayersClientConnectionMessage value)?
-        fetchedPlayers,
+        playersUpdated,
     TResult Function(ChatMessageClientConnectionMessage value)? chatMessage,
+    TResult Function(GameStateChangedClientConnectionMessage value)?
+        stateChanged,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -104,7 +116,7 @@ abstract class _$$FetchedPlayersClientConnectionMessageCopyWith<$Res> {
           $Res Function(_$FetchedPlayersClientConnectionMessage) then) =
       __$$FetchedPlayersClientConnectionMessageCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<GamePlayer> players});
+  $Res call({List<GamePlayer> players, int playerId});
 }
 
 /// @nodoc
@@ -121,12 +133,17 @@ class __$$FetchedPlayersClientConnectionMessageCopyWithImpl<$Res>
   @override
   $Res call({
     Object? players = null,
+    Object? playerId = null,
   }) {
     return _then(_$FetchedPlayersClientConnectionMessage(
       null == players
           ? _value._players
           : players // ignore: cast_nullable_to_non_nullable
               as List<GamePlayer>,
+      null == playerId
+          ? _value.playerId
+          : playerId // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -135,10 +152,11 @@ class __$$FetchedPlayersClientConnectionMessageCopyWithImpl<$Res>
 @JsonSerializable()
 class _$FetchedPlayersClientConnectionMessage
     implements FetchedPlayersClientConnectionMessage {
-  const _$FetchedPlayersClientConnectionMessage(final List<GamePlayer> players,
+  const _$FetchedPlayersClientConnectionMessage(
+      final List<GamePlayer> players, this.playerId,
       {final String? $type})
       : _players = players,
-        $type = $type ?? 'fetchedPlayers';
+        $type = $type ?? 'playersUpdated';
 
   factory _$FetchedPlayersClientConnectionMessage.fromJson(
           Map<String, dynamic> json) =>
@@ -152,12 +170,15 @@ class _$FetchedPlayersClientConnectionMessage
     return EqualUnmodifiableListView(_players);
   }
 
+  @override
+  final int playerId;
+
   @JsonKey(name: 'runtimeType')
   final String $type;
 
   @override
   String toString() {
-    return 'ClientConnectionMessage.fetchedPlayers(players: $players)';
+    return 'ClientConnectionMessage.playersUpdated(players: $players, playerId: $playerId)';
   }
 
   @override
@@ -165,13 +186,15 @@ class _$FetchedPlayersClientConnectionMessage
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$FetchedPlayersClientConnectionMessage &&
-            const DeepCollectionEquality().equals(other._players, _players));
+            const DeepCollectionEquality().equals(other._players, _players) &&
+            (identical(other.playerId, playerId) ||
+                other.playerId == playerId));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_players));
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(_players), playerId);
 
   @JsonKey(ignore: true)
   @override
@@ -184,30 +207,34 @@ class _$FetchedPlayersClientConnectionMessage
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(List<GamePlayer> players) fetchedPlayers,
+    required TResult Function(List<GamePlayer> players, int playerId)
+        playersUpdated,
     required TResult Function(String message, String from) chatMessage,
+    required TResult Function(GameState state) stateChanged,
   }) {
-    return fetchedPlayers(players);
+    return playersUpdated(players, playerId);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(List<GamePlayer> players)? fetchedPlayers,
+    TResult? Function(List<GamePlayer> players, int playerId)? playersUpdated,
     TResult? Function(String message, String from)? chatMessage,
+    TResult? Function(GameState state)? stateChanged,
   }) {
-    return fetchedPlayers?.call(players);
+    return playersUpdated?.call(players, playerId);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(List<GamePlayer> players)? fetchedPlayers,
+    TResult Function(List<GamePlayer> players, int playerId)? playersUpdated,
     TResult Function(String message, String from)? chatMessage,
+    TResult Function(GameState state)? stateChanged,
     required TResult orElse(),
   }) {
-    if (fetchedPlayers != null) {
-      return fetchedPlayers(players);
+    if (playersUpdated != null) {
+      return playersUpdated(players, playerId);
     }
     return orElse();
   }
@@ -216,33 +243,39 @@ class _$FetchedPlayersClientConnectionMessage
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(FetchedPlayersClientConnectionMessage value)
-        fetchedPlayers,
+        playersUpdated,
     required TResult Function(ChatMessageClientConnectionMessage value)
         chatMessage,
+    required TResult Function(GameStateChangedClientConnectionMessage value)
+        stateChanged,
   }) {
-    return fetchedPlayers(this);
+    return playersUpdated(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(FetchedPlayersClientConnectionMessage value)?
-        fetchedPlayers,
+        playersUpdated,
     TResult? Function(ChatMessageClientConnectionMessage value)? chatMessage,
+    TResult? Function(GameStateChangedClientConnectionMessage value)?
+        stateChanged,
   }) {
-    return fetchedPlayers?.call(this);
+    return playersUpdated?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(FetchedPlayersClientConnectionMessage value)?
-        fetchedPlayers,
+        playersUpdated,
     TResult Function(ChatMessageClientConnectionMessage value)? chatMessage,
+    TResult Function(GameStateChangedClientConnectionMessage value)?
+        stateChanged,
     required TResult orElse(),
   }) {
-    if (fetchedPlayers != null) {
-      return fetchedPlayers(this);
+    if (playersUpdated != null) {
+      return playersUpdated(this);
     }
     return orElse();
   }
@@ -258,13 +291,15 @@ class _$FetchedPlayersClientConnectionMessage
 abstract class FetchedPlayersClientConnectionMessage
     implements ClientConnectionMessage {
   const factory FetchedPlayersClientConnectionMessage(
-      final List<GamePlayer> players) = _$FetchedPlayersClientConnectionMessage;
+          final List<GamePlayer> players, final int playerId) =
+      _$FetchedPlayersClientConnectionMessage;
 
   factory FetchedPlayersClientConnectionMessage.fromJson(
           Map<String, dynamic> json) =
       _$FetchedPlayersClientConnectionMessage.fromJson;
 
   List<GamePlayer> get players;
+  int get playerId;
   @JsonKey(ignore: true)
   _$$FetchedPlayersClientConnectionMessageCopyWith<
           _$FetchedPlayersClientConnectionMessage>
@@ -359,8 +394,10 @@ class _$ChatMessageClientConnectionMessage
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(List<GamePlayer> players) fetchedPlayers,
+    required TResult Function(List<GamePlayer> players, int playerId)
+        playersUpdated,
     required TResult Function(String message, String from) chatMessage,
+    required TResult Function(GameState state) stateChanged,
   }) {
     return chatMessage(message, from);
   }
@@ -368,8 +405,9 @@ class _$ChatMessageClientConnectionMessage
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(List<GamePlayer> players)? fetchedPlayers,
+    TResult? Function(List<GamePlayer> players, int playerId)? playersUpdated,
     TResult? Function(String message, String from)? chatMessage,
+    TResult? Function(GameState state)? stateChanged,
   }) {
     return chatMessage?.call(message, from);
   }
@@ -377,8 +415,9 @@ class _$ChatMessageClientConnectionMessage
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(List<GamePlayer> players)? fetchedPlayers,
+    TResult Function(List<GamePlayer> players, int playerId)? playersUpdated,
     TResult Function(String message, String from)? chatMessage,
+    TResult Function(GameState state)? stateChanged,
     required TResult orElse(),
   }) {
     if (chatMessage != null) {
@@ -391,9 +430,11 @@ class _$ChatMessageClientConnectionMessage
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(FetchedPlayersClientConnectionMessage value)
-        fetchedPlayers,
+        playersUpdated,
     required TResult Function(ChatMessageClientConnectionMessage value)
         chatMessage,
+    required TResult Function(GameStateChangedClientConnectionMessage value)
+        stateChanged,
   }) {
     return chatMessage(this);
   }
@@ -402,8 +443,10 @@ class _$ChatMessageClientConnectionMessage
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(FetchedPlayersClientConnectionMessage value)?
-        fetchedPlayers,
+        playersUpdated,
     TResult? Function(ChatMessageClientConnectionMessage value)? chatMessage,
+    TResult? Function(GameStateChangedClientConnectionMessage value)?
+        stateChanged,
   }) {
     return chatMessage?.call(this);
   }
@@ -412,8 +455,10 @@ class _$ChatMessageClientConnectionMessage
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(FetchedPlayersClientConnectionMessage value)?
-        fetchedPlayers,
+        playersUpdated,
     TResult Function(ChatMessageClientConnectionMessage value)? chatMessage,
+    TResult Function(GameStateChangedClientConnectionMessage value)?
+        stateChanged,
     required TResult orElse(),
   }) {
     if (chatMessage != null) {
@@ -445,5 +490,192 @@ abstract class ChatMessageClientConnectionMessage
   @JsonKey(ignore: true)
   _$$ChatMessageClientConnectionMessageCopyWith<
           _$ChatMessageClientConnectionMessage>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$GameStateChangedClientConnectionMessageCopyWith<$Res> {
+  factory _$$GameStateChangedClientConnectionMessageCopyWith(
+          _$GameStateChangedClientConnectionMessage value,
+          $Res Function(_$GameStateChangedClientConnectionMessage) then) =
+      __$$GameStateChangedClientConnectionMessageCopyWithImpl<$Res>;
+  @useResult
+  $Res call({GameState state});
+
+  $GameStateCopyWith<$Res> get state;
+}
+
+/// @nodoc
+class __$$GameStateChangedClientConnectionMessageCopyWithImpl<$Res>
+    extends _$ClientConnectionMessageCopyWithImpl<$Res,
+        _$GameStateChangedClientConnectionMessage>
+    implements _$$GameStateChangedClientConnectionMessageCopyWith<$Res> {
+  __$$GameStateChangedClientConnectionMessageCopyWithImpl(
+      _$GameStateChangedClientConnectionMessage _value,
+      $Res Function(_$GameStateChangedClientConnectionMessage) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? state = null,
+  }) {
+    return _then(_$GameStateChangedClientConnectionMessage(
+      null == state
+          ? _value.state
+          : state // ignore: cast_nullable_to_non_nullable
+              as GameState,
+    ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $GameStateCopyWith<$Res> get state {
+    return $GameStateCopyWith<$Res>(_value.state, (value) {
+      return _then(_value.copyWith(state: value));
+    });
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$GameStateChangedClientConnectionMessage
+    implements GameStateChangedClientConnectionMessage {
+  const _$GameStateChangedClientConnectionMessage(this.state,
+      {final String? $type})
+      : $type = $type ?? 'stateChanged';
+
+  factory _$GameStateChangedClientConnectionMessage.fromJson(
+          Map<String, dynamic> json) =>
+      _$$GameStateChangedClientConnectionMessageFromJson(json);
+
+  @override
+  final GameState state;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
+
+  @override
+  String toString() {
+    return 'ClientConnectionMessage.stateChanged(state: $state)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$GameStateChangedClientConnectionMessage &&
+            (identical(other.state, state) || other.state == state));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, state);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$GameStateChangedClientConnectionMessageCopyWith<
+          _$GameStateChangedClientConnectionMessage>
+      get copyWith => __$$GameStateChangedClientConnectionMessageCopyWithImpl<
+          _$GameStateChangedClientConnectionMessage>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(List<GamePlayer> players, int playerId)
+        playersUpdated,
+    required TResult Function(String message, String from) chatMessage,
+    required TResult Function(GameState state) stateChanged,
+  }) {
+    return stateChanged(state);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(List<GamePlayer> players, int playerId)? playersUpdated,
+    TResult? Function(String message, String from)? chatMessage,
+    TResult? Function(GameState state)? stateChanged,
+  }) {
+    return stateChanged?.call(state);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(List<GamePlayer> players, int playerId)? playersUpdated,
+    TResult Function(String message, String from)? chatMessage,
+    TResult Function(GameState state)? stateChanged,
+    required TResult orElse(),
+  }) {
+    if (stateChanged != null) {
+      return stateChanged(state);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FetchedPlayersClientConnectionMessage value)
+        playersUpdated,
+    required TResult Function(ChatMessageClientConnectionMessage value)
+        chatMessage,
+    required TResult Function(GameStateChangedClientConnectionMessage value)
+        stateChanged,
+  }) {
+    return stateChanged(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FetchedPlayersClientConnectionMessage value)?
+        playersUpdated,
+    TResult? Function(ChatMessageClientConnectionMessage value)? chatMessage,
+    TResult? Function(GameStateChangedClientConnectionMessage value)?
+        stateChanged,
+  }) {
+    return stateChanged?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FetchedPlayersClientConnectionMessage value)?
+        playersUpdated,
+    TResult Function(ChatMessageClientConnectionMessage value)? chatMessage,
+    TResult Function(GameStateChangedClientConnectionMessage value)?
+        stateChanged,
+    required TResult orElse(),
+  }) {
+    if (stateChanged != null) {
+      return stateChanged(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$GameStateChangedClientConnectionMessageToJson(
+      this,
+    );
+  }
+}
+
+abstract class GameStateChangedClientConnectionMessage
+    implements ClientConnectionMessage {
+  const factory GameStateChangedClientConnectionMessage(final GameState state) =
+      _$GameStateChangedClientConnectionMessage;
+
+  factory GameStateChangedClientConnectionMessage.fromJson(
+          Map<String, dynamic> json) =
+      _$GameStateChangedClientConnectionMessage.fromJson;
+
+  GameState get state;
+  @JsonKey(ignore: true)
+  _$$GameStateChangedClientConnectionMessageCopyWith<
+          _$GameStateChangedClientConnectionMessage>
       get copyWith => throw _privateConstructorUsedError;
 }

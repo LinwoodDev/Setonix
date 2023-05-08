@@ -1,9 +1,11 @@
+import 'dart:math';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'state.freezed.dart';
 part 'state.g.dart';
 
-enum GameCardColor {
+enum ClassicGameCardColor {
   heart,
   diamond,
   spade,
@@ -13,28 +15,57 @@ enum GameCardColor {
 @freezed
 class GameCard with _$GameCard {
   const factory GameCard.classic({
-    @Default(GameCardColor.heart) GameCardColor color,
+    @Default(ClassicGameCardColor.heart) ClassicGameCardColor color,
     @Default(1) int number,
   }) = ClassicGameCard;
 
   factory GameCard.fromJson(Map<String, dynamic> json) =>
       _$GameCardFromJson(json);
+
+  static List<ClassicGameCard> getClassicDeck() {
+    final cards = <ClassicGameCard>[];
+    for (final color in ClassicGameCardColor.values) {
+      for (var i = 1; i <= 13; i++) {
+        cards.add(ClassicGameCard(color: color, number: i));
+      }
+    }
+    return cards;
+  }
 }
 
 @freezed
 class GameState with _$GameState {
   const GameState._();
+
   const factory GameState({
     @Default([]) List<GameDeck> decks,
-    @Default({}) Map<String, GameDeck> playerDecks,
-    @Default(GameDeck()) GameDeck playerDeck,
+    @Default([]) List<GameSeat> seats,
   }) = _GameState;
 
   factory GameState.fromJson(Map<String, dynamic> json) =>
       _$GameStateFromJson(json);
 
   Map<String, dynamic> toSaveJson() =>
-      Map.from(super.toJson())..remove('playerDecks');
+      copyWith(seats: seats.map((e) => e.copyWith(players: [])).toList())
+          .toJson();
+
+  GameState onPlayer(int client) {
+    return copyWith();
+  }
+}
+
+@freezed
+class GameSeat with _$GameSeat {
+  const GameSeat._();
+  const factory GameSeat({
+    @Default('') String name,
+    @Default([]) List<GameDeck> decks,
+    @Default([]) List<int> players,
+    DeckVisibility? ownDeckVisibility,
+  }) = _GameSeat;
+
+  factory GameSeat.fromJson(Map<String, dynamic> json) =>
+      _$GameSeatFromJson(json);
 }
 
 enum DeckVisibility {
@@ -45,6 +76,8 @@ enum DeckVisibility {
 
 @freezed
 class DeckRefill with _$DeckRefill {
+  const DeckRefill._();
+
   const factory DeckRefill.none() = _DeckRefillNone;
 
   const factory DeckRefill.shuffle({
@@ -59,14 +92,96 @@ class DeckRefill with _$DeckRefill {
       _$DeckRefillFromJson(json);
 }
 
+enum CardLocation { top, bottom, random }
+
+@freezed
+class CardsRemoveState with _$CardsRemoveState {
+  const factory CardsRemoveState({
+    required GameDeck deck,
+    required List<GameCard> removedCards,
+  }) = _CardsRemoveState;
+}
+
 @freezed
 class GameDeck with _$GameDeck {
+  const GameDeck._();
   const factory GameDeck({
     @Default('') String name,
     @Default(DeckVisibility.hidden) DeckVisibility visibility,
+    DeckVisibility? ownVisibility,
     @Default([]) List<GameCard> cards,
   }) = _GameDeck;
 
   factory GameDeck.fromJson(Map<String, dynamic> json) =>
       _$GameDeckFromJson(json);
+
+  GameDeck hide() {
+    switch (visibility) {
+      case DeckVisibility.visible:
+        return this;
+      case DeckVisibility.onlyTop:
+        if (cards.isEmpty) {
+          return this;
+        }
+        return copyWith(
+          cards: [
+            cards.first,
+            ...cards.map((e) => e.copyWith(number: -1)).toList(),
+          ],
+        );
+      case DeckVisibility.hidden:
+        return copyWith(
+          cards: cards.map((e) => e.copyWith(number: -1)).toList(),
+        );
+    }
+  }
+
+  DeckVisibility getOwnVisibility() => ownVisibility ?? visibility;
+
+  GameDeck shuffle() {
+    final newCards = List<GameCard>.from(cards)..shuffle();
+    return copyWith(cards: newCards);
+  }
+
+  GameDeck putCards(List<GameCard> cards,
+      [CardLocation location = CardLocation.bottom]) {
+    final newCards = List<GameCard>.from(cards);
+    switch (location) {
+      case CardLocation.top:
+        newCards.insertAll(0, cards);
+        break;
+      case CardLocation.bottom:
+        newCards.addAll(cards);
+        break;
+      case CardLocation.random:
+        newCards.insertAll(Random().nextInt(newCards.length + 1), cards);
+        break;
+    }
+    return copyWith(cards: newCards);
+  }
+
+  CardsRemoveState removeCards(
+      [int count = 1, CardLocation location = CardLocation.top]) {
+    final newCards = List<GameCard>.from(cards);
+    final removedCards = <GameCard>[];
+    switch (location) {
+      case CardLocation.top:
+        removedCards.addAll(newCards.getRange(0, count));
+        newCards.removeRange(0, count);
+        break;
+      case CardLocation.bottom:
+        removedCards.addAll(
+            newCards.getRange(newCards.length - count, newCards.length));
+        newCards.removeRange(newCards.length - count, newCards.length);
+        break;
+      case CardLocation.random:
+        final random = Random();
+        for (var i = 0; i < count; i++) {
+          removedCards.add(newCards.removeAt(random.nextInt(newCards.length)));
+        }
+        break;
+    }
+    return CardsRemoveState(
+        deck: copyWith(cards: newCards), removedCards: removedCards);
+  }
 }
