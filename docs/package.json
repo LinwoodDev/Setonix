@@ -7,7 +7,7 @@
     "start": "docusaurus start",
     "build:meta": "node ./generate_meta.mjs",
     "build:docs": "docusaurus build",
-    "build": "yarn build:meta && yarn build:docs",
+    "build": "yarn build:docs",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
