@@ -1,109 +1,222 @@
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const redirects = require('./redirects.js');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
-  title: 'My Site',
-  tagline: 'Dinosaurs are cool',
-  url: 'https://your-docusaurus-test-site.com',
-  baseUrl: '/',
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.ico',
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
-  themeConfig: {
-    navbar: {
-      title: 'My Site',
-      logo: {
-        alt: 'My Site Logo',
-        src: 'img/logo.svg',
-      },
-      items: [
-        {
-          type: 'doc',
-          docId: 'intro',
-          position: 'left',
-          label: 'Tutorial',
+    title: 'Linwood Qeck',
+    tagline: 'Play games without internet with your friends ',
+    url: 'https://docs.qeck.linwood.dev',
+    baseUrl: '/',
+    onBrokenLinks: 'throw',
+    onBrokenMarkdownLinks: 'warn',
+    favicon: 'img/favicon.ico',
+    organizationName: 'LinwoodDev', // Usually your GitHub org/user name.
+    projectName: 'Qeck', // Usually your repo name.
+    themeConfig: {
+        colorMode: {
+            defaultMode: 'dark',
+            disableSwitch: false,
+            respectPrefersColorScheme: true,
         },
-        {to: '/blog', label: 'Blog', position: 'left'},
-        {
-          href: 'https://github.com/facebook/docusaurus',
-          label: 'GitHub',
-          position: 'right',
+        navbar: {
+            title: 'Qeck',
+            logo: {
+                alt: 'Qeck Logo',
+                src: 'img/logo.svg',
+            },
+            items: [
+                {
+                    type: 'doc',
+                    docId: 'intro',
+                    position: 'left',
+                    label: 'Tutorial',
+                },
+                {
+                    to: 'downloads',
+                    label: 'Downloads',
+                    position: 'left'
+                },
+                {
+                    type: 'doc',
+                    docId: 'community',
+                    docsPluginId: 'community',
+                    position: 'left',
+                    label: 'Community',
+                },
+                {
+                    type: 'dropdown',
+                    label: 'More',
+                    position: 'left',
+                    items: [
+                        {
+                            label: 'Matrix',
+                            href: 'https://linwood.dev/matrix',
+                        },
+                        {
+                            label: 'Discord',
+                            href: 'https://discord.linwood.dev',
+                        },
+                        {
+                            label: 'GitHub',
+                            href: 'https://github.com/LinwoodDev/Qeck',
+                        },
+                        {
+                            label: 'Blog', 
+                            href: 'https://linwood.dev/blog'
+                        },
+                        {
+                            label: 'Crowdin',
+                            href: 'https://go.linwood.dev/qeck/crowdin'
+                        },
+                        {
+                            label: 'Twitter',
+                            href: 'https://twitter.com/LinwoodDev',
+                        },
+                        {
+                            label: 'License',
+                            href: 'https://go.linwood.dev/qeck/license',
+                        }
+                    ],
+                },
+                {
+                    type: 'docsVersionDropdown',
+                    position: 'right',
+                    dropdownItemsBefore: [],
+                    dropdownItemsAfter: [{ to: '/versions', label: 'All versions' }],
+                    dropdownActiveClassDisabled: true
+                },
+                {
+                    type: 'localeDropdown',
+                    position: 'right',
+                }
+            ],
         },
-      ],
+        footer: {
+            style: 'dark',
+            links: [
+                {
+                    title: 'Community',
+                    items: [
+                        {
+                            label: 'Discord',
+                            href: 'https://discord.linwood.dev',
+                        },
+                        {
+                            label: 'Twitter',
+                            href: 'https://twitter.com/LinwoodDev',
+                        },
+                        {
+                            label: 'Contribution guide',
+                            href: 'https://github.com/LinwoodDev/Qeck/blob/develop/CONTRIBUTING.md',
+                        },
+                        {
+                            html: `
+                <a href="https://vercel.com?utm_source=Linwood&utm_campaign=oss" target="_blank" rel="noreferrer noopener" aria-label="Deploys by Netlify">
+                  <img src="/img/powered-by-vercel.svg" alt="Deploys by Netlify" />
+                </a>
+              `,
+                        },
+                    ],
+                },
+                {
+                    title: 'Source code',
+                    items: [
+                        {
+                            label: 'App',
+                            href: 'https://github.com/LinwoodDev/Qeck/tree/develop/app',
+                        },
+                        {
+                            label: 'Docs',
+                            href: 'https://github.com/LinwoodDev/Qeck/tree/develop/docs',
+                        }
+                    ],
+                },
+                {
+                    title: 'Legal',
+                    items: [
+                        {
+                            label: 'Imprint',
+                            href: 'https://go.linwood.dev/imprint',
+                        },
+                        {
+                            label: 'Privacy Policy of the app',
+                            href: '/privacypolicy',
+                        },
+                        {
+                            label: 'Privacy Policy of the website',
+                            href: 'https://go.linwood.dev/privacypolicy',
+                        },
+                    ],
+                }
+            ],
+            logo: {
+                alt: 'Linwood Logo',
+                src: 'https://raw.githubusercontent.com/LinwoodDev/website/main/public/Linwood.png',
+                width: 100,
+                href: 'https://linwood.dev',
+            },
+            copyright: `Copyright © ${new Date().getFullYear()} LinwoodDev.`,
+        },
     },
-    footer: {
-      style: 'dark',
-      links: [
-        {
-          title: 'Docs',
-          items: [
+    presets: [
+        [
+            '@docusaurus/preset-classic',
             {
-              label: 'Tutorial',
-              to: '/docs/intro',
+                docs: {
+                    sidebarPath: require.resolve('./sidebars.js'),
+                    // Please change this to your repo.
+                    editUrl:
+                        'https://github.com/LinwoodDev/Qeck/edit/develop/docs/',
+                },
+                blog: false,
+                theme: {
+                    customCss: require.resolve('./src/css/custom.css'),
+                },
             },
-          ],
-        },
-        {
-          title: 'Community',
-          items: [
-            {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-            },
-            {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
-            },
-            {
-              label: 'Twitter',
-              href: 'https://twitter.com/docusaurus',
-            },
-          ],
-        },
-        {
-          title: 'More',
-          items: [
-            {
-              label: 'Blog',
-              to: '/blog',
-            },
-            {
-              label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
-            },
-          ],
-        },
-      ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
-    },
-    prism: {
-      theme: lightCodeTheme,
-      darkTheme: darkCodeTheme,
-    },
-  },
-  presets: [
-    [
-      '@docusaurus/preset-classic',
-      {
-        docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
-          editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/',
-        },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/blog/',
-        },
-        theme: {
-          customCss: require.resolve('./src/css/custom.css'),
-        },
-      },
+        ],
     ],
-  ],
+    plugins: [
+        [
+            '@docusaurus/plugin-content-docs',
+            {
+                id: 'community',
+                path: 'community',
+                routeBasePath: '/',
+                sidebarPath: require.resolve('./sidebarsCommunity.js')
+            },
+        ],
+        [
+            '@docusaurus/plugin-client-redirects',
+            {
+                redirects: redirects
+            },
+        ],
+        [
+            '@docusaurus/plugin-pwa',
+            {
+                offlineModeActivationStrategies: [
+                    'appInstalled',
+                    'standalone',
+                    'queryString',
+                ],
+                pwaHead: [
+                    {
+                        tagName: 'link',
+                        rel: 'icon',
+                        href: '/img/logo.png',
+                    },
+                    {
+                        tagName: 'link',
+                        rel: 'manifest',
+                        href: '/manifest.json', // your PWA manifest
+                    },
+                    {
+                        tagName: 'meta',
+                        name: 'theme-color',
+                        content: '#f2b138',
+                    },
+                ],
+            },
+        ],
+        // Other tweaks
+    ]
 };

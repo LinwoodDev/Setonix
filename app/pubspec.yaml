@@ -27,7 +27,7 @@ dependencies:
   intl: ^0.17.0
   flutter_localized_locales: ^2.0.4
   # Engine
-  flame: ^1.7.3
+  #flame: ^1.7.3
   # UI
   phosphor_flutter:
     git:
@@ -41,7 +41,7 @@ dependencies:
   flex_color_scheme: ^7.0.5
   window_manager: ^0.3.2
   # Database
-  shared_preferences: ^2.1.0
+  shared_preferences: ^2.1.1
   # Generation
   barcode: ^2.2.3
   # Internal
@@ -51,7 +51,7 @@ dependencies:
   # Information
   http: ^0.13.6
   package_info_plus: ^3.1.2
-  path_provider: ^2.0.14
+  path_provider: ^2.0.15
   go_router: ^7.0.0
   json_annotation: ^4.8.1
   dynamic_color: ^1.6.3
