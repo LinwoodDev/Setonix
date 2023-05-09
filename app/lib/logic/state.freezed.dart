@@ -652,7 +652,7 @@ abstract class _GameSeat extends GameSeat {
 }
 
 DeckRefill _$DeckRefillFromJson(Map<String, dynamic> json) {
-  switch (json['runtimeType']) {
+  switch (json['type']) {
     case 'none':
       return _DeckRefillNone.fromJson(json);
     case 'shuffle':
@@ -661,8 +661,8 @@ DeckRefill _$DeckRefillFromJson(Map<String, dynamic> json) {
       return _DeckRefillFirst.fromJson(json);
 
     default:
-      throw CheckedFromJsonException(json, 'runtimeType', 'DeckRefill',
-          'Invalid union type "${json['runtimeType']}"!');
+      throw CheckedFromJsonException(
+          json, 'type', 'DeckRefill', 'Invalid union type "${json['type']}"!');
   }
 }
 
@@ -759,7 +759,7 @@ class _$_DeckRefillNone extends _DeckRefillNone {
   factory _$_DeckRefillNone.fromJson(Map<String, dynamic> json) =>
       _$$_DeckRefillNoneFromJson(json);
 
-  @JsonKey(name: 'runtimeType')
+  @JsonKey(name: 'type')
   final String $type;
 
   @override
@@ -905,7 +905,7 @@ class _$_DeckRefillShuffle extends _DeckRefillShuffle {
   @override
   final int? count;
 
-  @JsonKey(name: 'runtimeType')
+  @JsonKey(name: 'type')
   final String $type;
 
   @override
@@ -1065,7 +1065,7 @@ class _$_DeckRefillFirst extends _DeckRefillFirst {
   @override
   final int? count;
 
-  @JsonKey(name: 'runtimeType')
+  @JsonKey(name: 'type')
   final String $type;
 
   @override

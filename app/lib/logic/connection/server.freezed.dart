@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 ServerConnectionMessage _$ServerConnectionMessageFromJson(
     Map<String, dynamic> json) {
-  switch (json['runtimeType']) {
+  switch (json['type']) {
     case 'fetchPlayers':
       return FetchPlayersServerConnectionMessage.fromJson(json);
     case 'chatMessage':
@@ -35,11 +35,8 @@ ServerConnectionMessage _$ServerConnectionMessageFromJson(
       return LeaveSeatServerConnectionMessage.fromJson(json);
 
     default:
-      throw CheckedFromJsonException(
-          json,
-          'runtimeType',
-          'ServerConnectionMessage',
-          'Invalid union type "${json['runtimeType']}"!');
+      throw CheckedFromJsonException(json, 'type', 'ServerConnectionMessage',
+          'Invalid union type "${json['type']}"!');
   }
 }
 
@@ -49,8 +46,8 @@ mixin _$ServerConnectionMessage {
   TResult when<TResult extends Object?>({
     required TResult Function() fetchPlayers,
     required TResult Function(String message) chatMessage,
-    required TResult Function(GameDeck deck) addDeck,
-    required TResult Function(int index) removeDeck,
+    required TResult Function(GameDeck deck, int? seatIndex) addDeck,
+    required TResult Function(int index, int? seatIndex) removeDeck,
     required TResult Function(String name, List<GameDeck> decks) addSeat,
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
@@ -61,8 +58,8 @@ mixin _$ServerConnectionMessage {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? fetchPlayers,
     TResult? Function(String message)? chatMessage,
-    TResult? Function(GameDeck deck)? addDeck,
-    TResult? Function(int index)? removeDeck,
+    TResult? Function(GameDeck deck, int? seatIndex)? addDeck,
+    TResult? Function(int index, int? seatIndex)? removeDeck,
     TResult? Function(String name, List<GameDeck> decks)? addSeat,
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
@@ -73,8 +70,8 @@ mixin _$ServerConnectionMessage {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? fetchPlayers,
     TResult Function(String message)? chatMessage,
-    TResult Function(GameDeck deck)? addDeck,
-    TResult Function(int index)? removeDeck,
+    TResult Function(GameDeck deck, int? seatIndex)? addDeck,
+    TResult Function(int index, int? seatIndex)? removeDeck,
     TResult Function(String name, List<GameDeck> decks)? addSeat,
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
@@ -175,7 +172,7 @@ class _$FetchPlayersServerConnectionMessage
           Map<String, dynamic> json) =>
       _$$FetchPlayersServerConnectionMessageFromJson(json);
 
-  @JsonKey(name: 'runtimeType')
+  @JsonKey(name: 'type')
   final String $type;
 
   @override
@@ -199,8 +196,8 @@ class _$FetchPlayersServerConnectionMessage
   TResult when<TResult extends Object?>({
     required TResult Function() fetchPlayers,
     required TResult Function(String message) chatMessage,
-    required TResult Function(GameDeck deck) addDeck,
-    required TResult Function(int index) removeDeck,
+    required TResult Function(GameDeck deck, int? seatIndex) addDeck,
+    required TResult Function(int index, int? seatIndex) removeDeck,
     required TResult Function(String name, List<GameDeck> decks) addSeat,
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
@@ -214,8 +211,8 @@ class _$FetchPlayersServerConnectionMessage
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? fetchPlayers,
     TResult? Function(String message)? chatMessage,
-    TResult? Function(GameDeck deck)? addDeck,
-    TResult? Function(int index)? removeDeck,
+    TResult? Function(GameDeck deck, int? seatIndex)? addDeck,
+    TResult? Function(int index, int? seatIndex)? removeDeck,
     TResult? Function(String name, List<GameDeck> decks)? addSeat,
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
@@ -229,8 +226,8 @@ class _$FetchPlayersServerConnectionMessage
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? fetchPlayers,
     TResult Function(String message)? chatMessage,
-    TResult Function(GameDeck deck)? addDeck,
-    TResult Function(int index)? removeDeck,
+    TResult Function(GameDeck deck, int? seatIndex)? addDeck,
+    TResult Function(int index, int? seatIndex)? removeDeck,
     TResult Function(String name, List<GameDeck> decks)? addSeat,
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
@@ -363,7 +360,7 @@ class _$ChatMessageServerConnectionMessage
   @override
   final String message;
 
-  @JsonKey(name: 'runtimeType')
+  @JsonKey(name: 'type')
   final String $type;
 
   @override
@@ -396,8 +393,8 @@ class _$ChatMessageServerConnectionMessage
   TResult when<TResult extends Object?>({
     required TResult Function() fetchPlayers,
     required TResult Function(String message) chatMessage,
-    required TResult Function(GameDeck deck) addDeck,
-    required TResult Function(int index) removeDeck,
+    required TResult Function(GameDeck deck, int? seatIndex) addDeck,
+    required TResult Function(int index, int? seatIndex) removeDeck,
     required TResult Function(String name, List<GameDeck> decks) addSeat,
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
@@ -411,8 +408,8 @@ class _$ChatMessageServerConnectionMessage
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? fetchPlayers,
     TResult? Function(String message)? chatMessage,
-    TResult? Function(GameDeck deck)? addDeck,
-    TResult? Function(int index)? removeDeck,
+    TResult? Function(GameDeck deck, int? seatIndex)? addDeck,
+    TResult? Function(int index, int? seatIndex)? removeDeck,
     TResult? Function(String name, List<GameDeck> decks)? addSeat,
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
@@ -426,8 +423,8 @@ class _$ChatMessageServerConnectionMessage
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? fetchPlayers,
     TResult Function(String message)? chatMessage,
-    TResult Function(GameDeck deck)? addDeck,
-    TResult Function(int index)? removeDeck,
+    TResult Function(GameDeck deck, int? seatIndex)? addDeck,
+    TResult Function(int index, int? seatIndex)? removeDeck,
     TResult Function(String name, List<GameDeck> decks)? addSeat,
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
@@ -524,7 +521,7 @@ abstract class _$$AddDeckServerConnectionMessageCopyWith<$Res> {
           $Res Function(_$AddDeckServerConnectionMessage) then) =
       __$$AddDeckServerConnectionMessageCopyWithImpl<$Res>;
   @useResult
-  $Res call({GameDeck deck});
+  $Res call({GameDeck deck, int? seatIndex});
 
   $GameDeckCopyWith<$Res> get deck;
 }
@@ -543,12 +540,17 @@ class __$$AddDeckServerConnectionMessageCopyWithImpl<$Res>
   @override
   $Res call({
     Object? deck = null,
+    Object? seatIndex = freezed,
   }) {
     return _then(_$AddDeckServerConnectionMessage(
       null == deck
           ? _value.deck
           : deck // ignore: cast_nullable_to_non_nullable
               as GameDeck,
+      freezed == seatIndex
+          ? _value.seatIndex
+          : seatIndex // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 
@@ -565,7 +567,8 @@ class __$$AddDeckServerConnectionMessageCopyWithImpl<$Res>
 @JsonSerializable()
 class _$AddDeckServerConnectionMessage
     implements AddDeckServerConnectionMessage {
-  const _$AddDeckServerConnectionMessage(this.deck, {final String? $type})
+  const _$AddDeckServerConnectionMessage(this.deck, this.seatIndex,
+      {final String? $type})
       : $type = $type ?? 'addDeck';
 
   factory _$AddDeckServerConnectionMessage.fromJson(
@@ -574,13 +577,15 @@ class _$AddDeckServerConnectionMessage
 
   @override
   final GameDeck deck;
+  @override
+  final int? seatIndex;
 
-  @JsonKey(name: 'runtimeType')
+  @JsonKey(name: 'type')
   final String $type;
 
   @override
   String toString() {
-    return 'ServerConnectionMessage.addDeck(deck: $deck)';
+    return 'ServerConnectionMessage.addDeck(deck: $deck, seatIndex: $seatIndex)';
   }
 
   @override
@@ -588,12 +593,14 @@ class _$AddDeckServerConnectionMessage
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AddDeckServerConnectionMessage &&
-            (identical(other.deck, deck) || other.deck == deck));
+            (identical(other.deck, deck) || other.deck == deck) &&
+            (identical(other.seatIndex, seatIndex) ||
+                other.seatIndex == seatIndex));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, deck);
+  int get hashCode => Object.hash(runtimeType, deck, seatIndex);
 
   @JsonKey(ignore: true)
   @override
@@ -607,14 +614,14 @@ class _$AddDeckServerConnectionMessage
   TResult when<TResult extends Object?>({
     required TResult Function() fetchPlayers,
     required TResult Function(String message) chatMessage,
-    required TResult Function(GameDeck deck) addDeck,
-    required TResult Function(int index) removeDeck,
+    required TResult Function(GameDeck deck, int? seatIndex) addDeck,
+    required TResult Function(int index, int? seatIndex) removeDeck,
     required TResult Function(String name, List<GameDeck> decks) addSeat,
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
     required TResult Function(int index) leaveSeat,
   }) {
-    return addDeck(deck);
+    return addDeck(deck, seatIndex);
   }
 
   @override
@@ -622,14 +629,14 @@ class _$AddDeckServerConnectionMessage
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? fetchPlayers,
     TResult? Function(String message)? chatMessage,
-    TResult? Function(GameDeck deck)? addDeck,
-    TResult? Function(int index)? removeDeck,
+    TResult? Function(GameDeck deck, int? seatIndex)? addDeck,
+    TResult? Function(int index, int? seatIndex)? removeDeck,
     TResult? Function(String name, List<GameDeck> decks)? addSeat,
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
     TResult? Function(int index)? leaveSeat,
   }) {
-    return addDeck?.call(deck);
+    return addDeck?.call(deck, seatIndex);
   }
 
   @override
@@ -637,8 +644,8 @@ class _$AddDeckServerConnectionMessage
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? fetchPlayers,
     TResult Function(String message)? chatMessage,
-    TResult Function(GameDeck deck)? addDeck,
-    TResult Function(int index)? removeDeck,
+    TResult Function(GameDeck deck, int? seatIndex)? addDeck,
+    TResult Function(int index, int? seatIndex)? removeDeck,
     TResult Function(String name, List<GameDeck> decks)? addSeat,
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
@@ -646,7 +653,7 @@ class _$AddDeckServerConnectionMessage
     required TResult orElse(),
   }) {
     if (addDeck != null) {
-      return addDeck(deck);
+      return addDeck(deck, seatIndex);
     }
     return orElse();
   }
@@ -714,13 +721,15 @@ class _$AddDeckServerConnectionMessage
 
 abstract class AddDeckServerConnectionMessage
     implements ServerConnectionMessage {
-  const factory AddDeckServerConnectionMessage(final GameDeck deck) =
+  const factory AddDeckServerConnectionMessage(
+          final GameDeck deck, final int? seatIndex) =
       _$AddDeckServerConnectionMessage;
 
   factory AddDeckServerConnectionMessage.fromJson(Map<String, dynamic> json) =
       _$AddDeckServerConnectionMessage.fromJson;
 
   GameDeck get deck;
+  int? get seatIndex;
   @JsonKey(ignore: true)
   _$$AddDeckServerConnectionMessageCopyWith<_$AddDeckServerConnectionMessage>
       get copyWith => throw _privateConstructorUsedError;
@@ -733,7 +742,7 @@ abstract class _$$RemoveDeckServerConnectionMessageCopyWith<$Res> {
           $Res Function(_$RemoveDeckServerConnectionMessage) then) =
       __$$RemoveDeckServerConnectionMessageCopyWithImpl<$Res>;
   @useResult
-  $Res call({int index});
+  $Res call({int index, int? seatIndex});
 }
 
 /// @nodoc
@@ -750,12 +759,17 @@ class __$$RemoveDeckServerConnectionMessageCopyWithImpl<$Res>
   @override
   $Res call({
     Object? index = null,
+    Object? seatIndex = freezed,
   }) {
     return _then(_$RemoveDeckServerConnectionMessage(
       null == index
           ? _value.index
           : index // ignore: cast_nullable_to_non_nullable
               as int,
+      freezed == seatIndex
+          ? _value.seatIndex
+          : seatIndex // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -764,7 +778,8 @@ class __$$RemoveDeckServerConnectionMessageCopyWithImpl<$Res>
 @JsonSerializable()
 class _$RemoveDeckServerConnectionMessage
     implements RemoveDeckServerConnectionMessage {
-  const _$RemoveDeckServerConnectionMessage(this.index, {final String? $type})
+  const _$RemoveDeckServerConnectionMessage(this.index, this.seatIndex,
+      {final String? $type})
       : $type = $type ?? 'removeDeck';
 
   factory _$RemoveDeckServerConnectionMessage.fromJson(
@@ -773,13 +788,15 @@ class _$RemoveDeckServerConnectionMessage
 
   @override
   final int index;
+  @override
+  final int? seatIndex;
 
-  @JsonKey(name: 'runtimeType')
+  @JsonKey(name: 'type')
   final String $type;
 
   @override
   String toString() {
-    return 'ServerConnectionMessage.removeDeck(index: $index)';
+    return 'ServerConnectionMessage.removeDeck(index: $index, seatIndex: $seatIndex)';
   }
 
   @override
@@ -787,12 +804,14 @@ class _$RemoveDeckServerConnectionMessage
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$RemoveDeckServerConnectionMessage &&
-            (identical(other.index, index) || other.index == index));
+            (identical(other.index, index) || other.index == index) &&
+            (identical(other.seatIndex, seatIndex) ||
+                other.seatIndex == seatIndex));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, index);
+  int get hashCode => Object.hash(runtimeType, index, seatIndex);
 
   @JsonKey(ignore: true)
   @override
@@ -807,14 +826,14 @@ class _$RemoveDeckServerConnectionMessage
   TResult when<TResult extends Object?>({
     required TResult Function() fetchPlayers,
     required TResult Function(String message) chatMessage,
-    required TResult Function(GameDeck deck) addDeck,
-    required TResult Function(int index) removeDeck,
+    required TResult Function(GameDeck deck, int? seatIndex) addDeck,
+    required TResult Function(int index, int? seatIndex) removeDeck,
     required TResult Function(String name, List<GameDeck> decks) addSeat,
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
     required TResult Function(int index) leaveSeat,
   }) {
-    return removeDeck(index);
+    return removeDeck(index, seatIndex);
   }
 
   @override
@@ -822,14 +841,14 @@ class _$RemoveDeckServerConnectionMessage
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? fetchPlayers,
     TResult? Function(String message)? chatMessage,
-    TResult? Function(GameDeck deck)? addDeck,
-    TResult? Function(int index)? removeDeck,
+    TResult? Function(GameDeck deck, int? seatIndex)? addDeck,
+    TResult? Function(int index, int? seatIndex)? removeDeck,
     TResult? Function(String name, List<GameDeck> decks)? addSeat,
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
     TResult? Function(int index)? leaveSeat,
   }) {
-    return removeDeck?.call(index);
+    return removeDeck?.call(index, seatIndex);
   }
 
   @override
@@ -837,8 +856,8 @@ class _$RemoveDeckServerConnectionMessage
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? fetchPlayers,
     TResult Function(String message)? chatMessage,
-    TResult Function(GameDeck deck)? addDeck,
-    TResult Function(int index)? removeDeck,
+    TResult Function(GameDeck deck, int? seatIndex)? addDeck,
+    TResult Function(int index, int? seatIndex)? removeDeck,
     TResult Function(String name, List<GameDeck> decks)? addSeat,
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
@@ -846,7 +865,7 @@ class _$RemoveDeckServerConnectionMessage
     required TResult orElse(),
   }) {
     if (removeDeck != null) {
-      return removeDeck(index);
+      return removeDeck(index, seatIndex);
     }
     return orElse();
   }
@@ -914,13 +933,15 @@ class _$RemoveDeckServerConnectionMessage
 
 abstract class RemoveDeckServerConnectionMessage
     implements ServerConnectionMessage {
-  const factory RemoveDeckServerConnectionMessage(final int index) =
+  const factory RemoveDeckServerConnectionMessage(
+          final int index, final int? seatIndex) =
       _$RemoveDeckServerConnectionMessage;
 
   factory RemoveDeckServerConnectionMessage.fromJson(
       Map<String, dynamic> json) = _$RemoveDeckServerConnectionMessage.fromJson;
 
   int get index;
+  int? get seatIndex;
   @JsonKey(ignore: true)
   _$$RemoveDeckServerConnectionMessageCopyWith<
           _$RemoveDeckServerConnectionMessage>
@@ -990,7 +1011,7 @@ class _$AddSeatServerConnectionMessage
     return EqualUnmodifiableListView(_decks);
   }
 
-  @JsonKey(name: 'runtimeType')
+  @JsonKey(name: 'type')
   final String $type;
 
   @override
@@ -1024,8 +1045,8 @@ class _$AddSeatServerConnectionMessage
   TResult when<TResult extends Object?>({
     required TResult Function() fetchPlayers,
     required TResult Function(String message) chatMessage,
-    required TResult Function(GameDeck deck) addDeck,
-    required TResult Function(int index) removeDeck,
+    required TResult Function(GameDeck deck, int? seatIndex) addDeck,
+    required TResult Function(int index, int? seatIndex) removeDeck,
     required TResult Function(String name, List<GameDeck> decks) addSeat,
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
@@ -1039,8 +1060,8 @@ class _$AddSeatServerConnectionMessage
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? fetchPlayers,
     TResult? Function(String message)? chatMessage,
-    TResult? Function(GameDeck deck)? addDeck,
-    TResult? Function(int index)? removeDeck,
+    TResult? Function(GameDeck deck, int? seatIndex)? addDeck,
+    TResult? Function(int index, int? seatIndex)? removeDeck,
     TResult? Function(String name, List<GameDeck> decks)? addSeat,
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
@@ -1054,8 +1075,8 @@ class _$AddSeatServerConnectionMessage
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? fetchPlayers,
     TResult Function(String message)? chatMessage,
-    TResult Function(GameDeck deck)? addDeck,
-    TResult Function(int index)? removeDeck,
+    TResult Function(GameDeck deck, int? seatIndex)? addDeck,
+    TResult Function(int index, int? seatIndex)? removeDeck,
     TResult Function(String name, List<GameDeck> decks)? addSeat,
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
@@ -1192,7 +1213,7 @@ class _$RemoveSeatServerConnectionMessage
   @override
   final int index;
 
-  @JsonKey(name: 'runtimeType')
+  @JsonKey(name: 'type')
   final String $type;
 
   @override
@@ -1225,8 +1246,8 @@ class _$RemoveSeatServerConnectionMessage
   TResult when<TResult extends Object?>({
     required TResult Function() fetchPlayers,
     required TResult Function(String message) chatMessage,
-    required TResult Function(GameDeck deck) addDeck,
-    required TResult Function(int index) removeDeck,
+    required TResult Function(GameDeck deck, int? seatIndex) addDeck,
+    required TResult Function(int index, int? seatIndex) removeDeck,
     required TResult Function(String name, List<GameDeck> decks) addSeat,
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
@@ -1240,8 +1261,8 @@ class _$RemoveSeatServerConnectionMessage
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? fetchPlayers,
     TResult? Function(String message)? chatMessage,
-    TResult? Function(GameDeck deck)? addDeck,
-    TResult? Function(int index)? removeDeck,
+    TResult? Function(GameDeck deck, int? seatIndex)? addDeck,
+    TResult? Function(int index, int? seatIndex)? removeDeck,
     TResult? Function(String name, List<GameDeck> decks)? addSeat,
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
@@ -1255,8 +1276,8 @@ class _$RemoveSeatServerConnectionMessage
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? fetchPlayers,
     TResult Function(String message)? chatMessage,
-    TResult Function(GameDeck deck)? addDeck,
-    TResult Function(int index)? removeDeck,
+    TResult Function(GameDeck deck, int? seatIndex)? addDeck,
+    TResult Function(int index, int? seatIndex)? removeDeck,
     TResult Function(String name, List<GameDeck> decks)? addSeat,
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
@@ -1393,7 +1414,7 @@ class _$JoinSeatServerConnectionMessage
   @override
   final int index;
 
-  @JsonKey(name: 'runtimeType')
+  @JsonKey(name: 'type')
   final String $type;
 
   @override
@@ -1425,8 +1446,8 @@ class _$JoinSeatServerConnectionMessage
   TResult when<TResult extends Object?>({
     required TResult Function() fetchPlayers,
     required TResult Function(String message) chatMessage,
-    required TResult Function(GameDeck deck) addDeck,
-    required TResult Function(int index) removeDeck,
+    required TResult Function(GameDeck deck, int? seatIndex) addDeck,
+    required TResult Function(int index, int? seatIndex) removeDeck,
     required TResult Function(String name, List<GameDeck> decks) addSeat,
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
@@ -1440,8 +1461,8 @@ class _$JoinSeatServerConnectionMessage
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? fetchPlayers,
     TResult? Function(String message)? chatMessage,
-    TResult? Function(GameDeck deck)? addDeck,
-    TResult? Function(int index)? removeDeck,
+    TResult? Function(GameDeck deck, int? seatIndex)? addDeck,
+    TResult? Function(int index, int? seatIndex)? removeDeck,
     TResult? Function(String name, List<GameDeck> decks)? addSeat,
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
@@ -1455,8 +1476,8 @@ class _$JoinSeatServerConnectionMessage
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? fetchPlayers,
     TResult Function(String message)? chatMessage,
-    TResult Function(GameDeck deck)? addDeck,
-    TResult Function(int index)? removeDeck,
+    TResult Function(GameDeck deck, int? seatIndex)? addDeck,
+    TResult Function(int index, int? seatIndex)? removeDeck,
     TResult Function(String name, List<GameDeck> decks)? addSeat,
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
@@ -1592,7 +1613,7 @@ class _$LeaveSeatServerConnectionMessage
   @override
   final int index;
 
-  @JsonKey(name: 'runtimeType')
+  @JsonKey(name: 'type')
   final String $type;
 
   @override
@@ -1625,8 +1646,8 @@ class _$LeaveSeatServerConnectionMessage
   TResult when<TResult extends Object?>({
     required TResult Function() fetchPlayers,
     required TResult Function(String message) chatMessage,
-    required TResult Function(GameDeck deck) addDeck,
-    required TResult Function(int index) removeDeck,
+    required TResult Function(GameDeck deck, int? seatIndex) addDeck,
+    required TResult Function(int index, int? seatIndex) removeDeck,
     required TResult Function(String name, List<GameDeck> decks) addSeat,
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
@@ -1640,8 +1661,8 @@ class _$LeaveSeatServerConnectionMessage
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? fetchPlayers,
     TResult? Function(String message)? chatMessage,
-    TResult? Function(GameDeck deck)? addDeck,
-    TResult? Function(int index)? removeDeck,
+    TResult? Function(GameDeck deck, int? seatIndex)? addDeck,
+    TResult? Function(int index, int? seatIndex)? removeDeck,
     TResult? Function(String name, List<GameDeck> decks)? addSeat,
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
@@ -1655,8 +1676,8 @@ class _$LeaveSeatServerConnectionMessage
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? fetchPlayers,
     TResult Function(String message)? chatMessage,
-    TResult Function(GameDeck deck)? addDeck,
-    TResult Function(int index)? removeDeck,
+    TResult Function(GameDeck deck, int? seatIndex)? addDeck,
+    TResult Function(int index, int? seatIndex)? removeDeck,
     TResult Function(String name, List<GameDeck> decks)? addSeat,
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,

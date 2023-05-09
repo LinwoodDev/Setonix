@@ -6,8 +6,7 @@ part of 'logic.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_GamePlayer _$$_GamePlayerFromJson(Map<String, dynamic> json) =>
-    _$_GamePlayer(
+_$_GamePlayer _$$_GamePlayerFromJson(Map json) => _$_GamePlayer(
       name: json['name'] as String,
       id: json['id'] as String,
     );

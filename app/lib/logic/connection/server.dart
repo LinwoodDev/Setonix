@@ -20,10 +20,10 @@ class ServerConnectionMessage with _$ServerConnectionMessage {
   const factory ServerConnectionMessage.chatMessage(String message) =
       ChatMessageServerConnectionMessage;
 
-  const factory ServerConnectionMessage.addDeck(GameDeck deck) =
+  const factory ServerConnectionMessage.addDeck(GameDeck deck, int? seatIndex) =
       AddDeckServerConnectionMessage;
 
-  const factory ServerConnectionMessage.removeDeck(int index) =
+  const factory ServerConnectionMessage.removeDeck(int index, int? seatIndex) =
       RemoveDeckServerConnectionMessage;
 
   const factory ServerConnectionMessage.addSeat(String name,
@@ -151,10 +151,27 @@ class ServerGameConnection with GameConnection {
                 client.info.remoteAddress.address,
               ),
             ),
-        addDeck: (deck) {
+        addDeck: (deck, seatIndex) {
+          if (seatIndex != null) {
+            _changeState(state.copyWith(
+                seats: List<GameSeat>.from(state.seats)
+                  ..[seatIndex] = state.seats[seatIndex].copyWith(
+                    decks: [...state.seats[seatIndex].decks, deck],
+                  )));
+            return;
+          }
           _changeState(state.copyWith(decks: [...state.decks, deck]));
         },
-        removeDeck: (index) {
+        removeDeck: (index, seatIndex) {
+          if (seatIndex != null) {
+            _changeState(state.copyWith(
+                seats: List<GameSeat>.from(state.seats)
+                  ..[seatIndex] = state.seats[seatIndex].copyWith(
+                    decks: List<GameDeck>.from(state.seats[seatIndex].decks)
+                      ..removeAt(index),
+                  )));
+            return;
+          }
           _changeState(state.copyWith(
               decks: List<GameDeck>.from(state.decks)..removeAt(index)));
         },

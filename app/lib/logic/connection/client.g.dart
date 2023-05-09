@@ -7,30 +7,30 @@ part of 'client.dart';
 // **************************************************************************
 
 _$FetchedPlayersClientConnectionMessage
-    _$$FetchedPlayersClientConnectionMessageFromJson(
-            Map<String, dynamic> json) =>
+    _$$FetchedPlayersClientConnectionMessageFromJson(Map json) =>
         _$FetchedPlayersClientConnectionMessage(
           (json['players'] as List<dynamic>)
-              .map((e) => GamePlayer.fromJson(e as Map<String, dynamic>))
+              .map((e) =>
+                  GamePlayer.fromJson(Map<String, dynamic>.from(e as Map)))
               .toList(),
           json['playerId'] as int,
-          $type: json['runtimeType'] as String?,
+          $type: json['type'] as String?,
         );
 
 Map<String, dynamic> _$$FetchedPlayersClientConnectionMessageToJson(
         _$FetchedPlayersClientConnectionMessage instance) =>
     <String, dynamic>{
-      'players': instance.players,
+      'players': instance.players.map((e) => e.toJson()).toList(),
       'playerId': instance.playerId,
-      'runtimeType': instance.$type,
+      'type': instance.$type,
     };
 
 _$ChatMessageClientConnectionMessage
-    _$$ChatMessageClientConnectionMessageFromJson(Map<String, dynamic> json) =>
+    _$$ChatMessageClientConnectionMessageFromJson(Map json) =>
         _$ChatMessageClientConnectionMessage(
           json['message'] as String,
           json['from'] as String,
-          $type: json['runtimeType'] as String?,
+          $type: json['type'] as String?,
         );
 
 Map<String, dynamic> _$$ChatMessageClientConnectionMessageToJson(
@@ -38,20 +38,19 @@ Map<String, dynamic> _$$ChatMessageClientConnectionMessageToJson(
     <String, dynamic>{
       'message': instance.message,
       'from': instance.from,
-      'runtimeType': instance.$type,
+      'type': instance.$type,
     };
 
 _$GameStateChangedClientConnectionMessage
-    _$$GameStateChangedClientConnectionMessageFromJson(
-            Map<String, dynamic> json) =>
+    _$$GameStateChangedClientConnectionMessageFromJson(Map json) =>
         _$GameStateChangedClientConnectionMessage(
-          GameState.fromJson(json['state'] as Map<String, dynamic>),
-          $type: json['runtimeType'] as String?,
+          GameState.fromJson(Map<String, dynamic>.from(json['state'] as Map)),
+          $type: json['type'] as String?,
         );
 
 Map<String, dynamic> _$$GameStateChangedClientConnectionMessageToJson(
         _$GameStateChangedClientConnectionMessage instance) =>
     <String, dynamic>{
-      'state': instance.state,
-      'runtimeType': instance.$type,
+      'state': instance.state.toJson(),
+      'type': instance.$type,
     };

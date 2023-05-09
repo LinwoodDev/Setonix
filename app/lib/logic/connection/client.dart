@@ -86,4 +86,28 @@ class ClientGameConnection with GameConnection, ConnectedGameConnection {
   Future<void> close() async {
     await channel.sink.close();
   }
+
+  List<GameSeat> getMySeats() => state.seats
+      .where((element) => element.players.any((e) => e == playerId))
+      .toList();
+
+  void addSeat(String name) {
+    send(ServerConnectionMessage.addSeat(name));
+  }
+
+  void leaveSeat(int key) {
+    send(ServerConnectionMessage.leaveSeat(key));
+  }
+
+  void joinSeat(int key) {
+    send(ServerConnectionMessage.joinSeat(key));
+  }
+
+  void removeSeat(int key) {
+    send(ServerConnectionMessage.removeSeat(key));
+  }
+
+  void addDeck(GameDeck deck, int? seatIndex) {
+    send(ServerConnectionMessage.addDeck(deck, seatIndex));
+  }
 }

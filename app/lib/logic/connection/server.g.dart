@@ -7,116 +7,121 @@ part of 'server.dart';
 // **************************************************************************
 
 _$FetchPlayersServerConnectionMessage
-    _$$FetchPlayersServerConnectionMessageFromJson(Map<String, dynamic> json) =>
+    _$$FetchPlayersServerConnectionMessageFromJson(Map json) =>
         _$FetchPlayersServerConnectionMessage(
-          $type: json['runtimeType'] as String?,
+          $type: json['type'] as String?,
         );
 
 Map<String, dynamic> _$$FetchPlayersServerConnectionMessageToJson(
         _$FetchPlayersServerConnectionMessage instance) =>
     <String, dynamic>{
-      'runtimeType': instance.$type,
+      'type': instance.$type,
     };
 
 _$ChatMessageServerConnectionMessage
-    _$$ChatMessageServerConnectionMessageFromJson(Map<String, dynamic> json) =>
+    _$$ChatMessageServerConnectionMessageFromJson(Map json) =>
         _$ChatMessageServerConnectionMessage(
           json['message'] as String,
-          $type: json['runtimeType'] as String?,
+          $type: json['type'] as String?,
         );
 
 Map<String, dynamic> _$$ChatMessageServerConnectionMessageToJson(
         _$ChatMessageServerConnectionMessage instance) =>
     <String, dynamic>{
       'message': instance.message,
-      'runtimeType': instance.$type,
+      'type': instance.$type,
     };
 
 _$AddDeckServerConnectionMessage _$$AddDeckServerConnectionMessageFromJson(
-        Map<String, dynamic> json) =>
+        Map json) =>
     _$AddDeckServerConnectionMessage(
-      GameDeck.fromJson(json['deck'] as Map<String, dynamic>),
-      $type: json['runtimeType'] as String?,
+      GameDeck.fromJson(Map<String, dynamic>.from(json['deck'] as Map)),
+      json['seatIndex'] as int?,
+      $type: json['type'] as String?,
     );
 
 Map<String, dynamic> _$$AddDeckServerConnectionMessageToJson(
         _$AddDeckServerConnectionMessage instance) =>
     <String, dynamic>{
-      'deck': instance.deck,
-      'runtimeType': instance.$type,
+      'deck': instance.deck.toJson(),
+      'seatIndex': instance.seatIndex,
+      'type': instance.$type,
     };
 
 _$RemoveDeckServerConnectionMessage
-    _$$RemoveDeckServerConnectionMessageFromJson(Map<String, dynamic> json) =>
+    _$$RemoveDeckServerConnectionMessageFromJson(Map json) =>
         _$RemoveDeckServerConnectionMessage(
           json['index'] as int,
-          $type: json['runtimeType'] as String?,
+          json['seatIndex'] as int?,
+          $type: json['type'] as String?,
         );
 
 Map<String, dynamic> _$$RemoveDeckServerConnectionMessageToJson(
         _$RemoveDeckServerConnectionMessage instance) =>
     <String, dynamic>{
       'index': instance.index,
-      'runtimeType': instance.$type,
+      'seatIndex': instance.seatIndex,
+      'type': instance.$type,
     };
 
 _$AddSeatServerConnectionMessage _$$AddSeatServerConnectionMessageFromJson(
-        Map<String, dynamic> json) =>
+        Map json) =>
     _$AddSeatServerConnectionMessage(
       json['name'] as String,
       (json['decks'] as List<dynamic>?)
-              ?.map((e) => GameDeck.fromJson(e as Map<String, dynamic>))
+              ?.map(
+                  (e) => GameDeck.fromJson(Map<String, dynamic>.from(e as Map)))
               .toList() ??
           const [],
-      json['runtimeType'] as String?,
+      json['type'] as String?,
     );
 
 Map<String, dynamic> _$$AddSeatServerConnectionMessageToJson(
         _$AddSeatServerConnectionMessage instance) =>
     <String, dynamic>{
       'name': instance.name,
-      'decks': instance.decks,
-      'runtimeType': instance.$type,
+      'decks': instance.decks.map((e) => e.toJson()).toList(),
+      'type': instance.$type,
     };
 
 _$RemoveSeatServerConnectionMessage
-    _$$RemoveSeatServerConnectionMessageFromJson(Map<String, dynamic> json) =>
+    _$$RemoveSeatServerConnectionMessageFromJson(Map json) =>
         _$RemoveSeatServerConnectionMessage(
           json['index'] as int,
-          $type: json['runtimeType'] as String?,
+          $type: json['type'] as String?,
         );
 
 Map<String, dynamic> _$$RemoveSeatServerConnectionMessageToJson(
         _$RemoveSeatServerConnectionMessage instance) =>
     <String, dynamic>{
       'index': instance.index,
-      'runtimeType': instance.$type,
+      'type': instance.$type,
     };
 
 _$JoinSeatServerConnectionMessage _$$JoinSeatServerConnectionMessageFromJson(
-        Map<String, dynamic> json) =>
+        Map json) =>
     _$JoinSeatServerConnectionMessage(
       json['index'] as int,
-      $type: json['runtimeType'] as String?,
+      $type: json['type'] as String?,
     );
 
 Map<String, dynamic> _$$JoinSeatServerConnectionMessageToJson(
         _$JoinSeatServerConnectionMessage instance) =>
     <String, dynamic>{
       'index': instance.index,
-      'runtimeType': instance.$type,
+      'type': instance.$type,
     };
 
 _$LeaveSeatServerConnectionMessage _$$LeaveSeatServerConnectionMessageFromJson(
-        Map<String, dynamic> json) =>
+        Map json) =>
     _$LeaveSeatServerConnectionMessage(
       json['index'] as int,
-      $type: json['runtimeType'] as String?,
+      $type: json['type'] as String?,
     );
 
 Map<String, dynamic> _$$LeaveSeatServerConnectionMessageToJson(
         _$LeaveSeatServerConnectionMessage instance) =>
     <String, dynamic>{
       'index': instance.index,
-      'runtimeType': instance.$type,
+      'type': instance.$type,
     };

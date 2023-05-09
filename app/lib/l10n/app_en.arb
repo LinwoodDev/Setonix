@@ -18,5 +18,12 @@
   "seat": "Seat",
   "shuffle": "Shuffle",
   "decks": "Decks",
-  "cards": "Cards"
+  "cards": "Cards",
+  "classic": "Classic",
+  "available": "Available",
+  "seats": "Seats",
+  "addDeck": "Add deck",
+  "addSeat": "Add seat",
+  "visibility": "Visibility",
+  "ownVisibility": "Own visibility"
 }

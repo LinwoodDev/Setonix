@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 ClientConnectionMessage _$ClientConnectionMessageFromJson(
     Map<String, dynamic> json) {
-  switch (json['runtimeType']) {
+  switch (json['type']) {
     case 'playersUpdated':
       return FetchedPlayersClientConnectionMessage.fromJson(json);
     case 'chatMessage':
@@ -25,11 +25,8 @@ ClientConnectionMessage _$ClientConnectionMessageFromJson(
       return GameStateChangedClientConnectionMessage.fromJson(json);
 
     default:
-      throw CheckedFromJsonException(
-          json,
-          'runtimeType',
-          'ClientConnectionMessage',
-          'Invalid union type "${json['runtimeType']}"!');
+      throw CheckedFromJsonException(json, 'type', 'ClientConnectionMessage',
+          'Invalid union type "${json['type']}"!');
   }
 }
 
@@ -173,7 +170,7 @@ class _$FetchedPlayersClientConnectionMessage
   @override
   final int playerId;
 
-  @JsonKey(name: 'runtimeType')
+  @JsonKey(name: 'type')
   final String $type;
 
   @override
@@ -362,7 +359,7 @@ class _$ChatMessageClientConnectionMessage
   @override
   final String from;
 
-  @JsonKey(name: 'runtimeType')
+  @JsonKey(name: 'type')
   final String $type;
 
   @override
@@ -552,7 +549,7 @@ class _$GameStateChangedClientConnectionMessage
   @override
   final GameState state;
 
-  @JsonKey(name: 'runtimeType')
+  @JsonKey(name: 'type')
   final String $type;
 
   @override

@@ -6,8 +6,7 @@ part of 'state.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$ClassicGameCard _$$ClassicGameCardFromJson(Map<String, dynamic> json) =>
-    _$ClassicGameCard(
+_$ClassicGameCard _$$ClassicGameCardFromJson(Map json) => _$ClassicGameCard(
       color:
           $enumDecodeNullable(_$ClassicGameCardColorEnumMap, json['color']) ??
               ClassicGameCardColor.heart,
@@ -27,27 +26,30 @@ const _$ClassicGameCardColorEnumMap = {
   ClassicGameCardColor.club: 'club',
 };
 
-_$_GameState _$$_GameStateFromJson(Map<String, dynamic> json) => _$_GameState(
+_$_GameState _$$_GameStateFromJson(Map json) => _$_GameState(
       decks: (json['decks'] as List<dynamic>?)
-              ?.map((e) => GameDeck.fromJson(e as Map<String, dynamic>))
+              ?.map(
+                  (e) => GameDeck.fromJson(Map<String, dynamic>.from(e as Map)))
               .toList() ??
           const [],
       seats: (json['seats'] as List<dynamic>?)
-              ?.map((e) => GameSeat.fromJson(e as Map<String, dynamic>))
+              ?.map(
+                  (e) => GameSeat.fromJson(Map<String, dynamic>.from(e as Map)))
               .toList() ??
           const [],
     );
 
 Map<String, dynamic> _$$_GameStateToJson(_$_GameState instance) =>
     <String, dynamic>{
-      'decks': instance.decks,
-      'seats': instance.seats,
+      'decks': instance.decks.map((e) => e.toJson()).toList(),
+      'seats': instance.seats.map((e) => e.toJson()).toList(),
     };
 
-_$_GameSeat _$$_GameSeatFromJson(Map<String, dynamic> json) => _$_GameSeat(
+_$_GameSeat _$$_GameSeatFromJson(Map json) => _$_GameSeat(
       name: json['name'] as String? ?? '',
       decks: (json['decks'] as List<dynamic>?)
-              ?.map((e) => GameDeck.fromJson(e as Map<String, dynamic>))
+              ?.map(
+                  (e) => GameDeck.fromJson(Map<String, dynamic>.from(e as Map)))
               .toList() ??
           const [],
       players:
@@ -60,7 +62,7 @@ _$_GameSeat _$$_GameSeatFromJson(Map<String, dynamic> json) => _$_GameSeat(
 Map<String, dynamic> _$$_GameSeatToJson(_$_GameSeat instance) =>
     <String, dynamic>{
       'name': instance.name,
-      'decks': instance.decks,
+      'decks': instance.decks.map((e) => e.toJson()).toList(),
       'players': instance.players,
       'ownDeckVisibility': _$DeckVisibilityEnumMap[instance.ownDeckVisibility],
     };
@@ -71,42 +73,40 @@ const _$DeckVisibilityEnumMap = {
   DeckVisibility.visible: 'visible',
 };
 
-_$_DeckRefillNone _$$_DeckRefillNoneFromJson(Map<String, dynamic> json) =>
-    _$_DeckRefillNone(
-      $type: json['runtimeType'] as String?,
+_$_DeckRefillNone _$$_DeckRefillNoneFromJson(Map json) => _$_DeckRefillNone(
+      $type: json['type'] as String?,
     );
 
 Map<String, dynamic> _$$_DeckRefillNoneToJson(_$_DeckRefillNone instance) =>
     <String, dynamic>{
-      'runtimeType': instance.$type,
+      'type': instance.$type,
     };
 
-_$_DeckRefillShuffle _$$_DeckRefillShuffleFromJson(Map<String, dynamic> json) =>
+_$_DeckRefillShuffle _$$_DeckRefillShuffleFromJson(Map json) =>
     _$_DeckRefillShuffle(
       count: json['count'] as int?,
-      $type: json['runtimeType'] as String?,
+      $type: json['type'] as String?,
     );
 
 Map<String, dynamic> _$$_DeckRefillShuffleToJson(
         _$_DeckRefillShuffle instance) =>
     <String, dynamic>{
       'count': instance.count,
-      'runtimeType': instance.$type,
+      'type': instance.$type,
     };
 
-_$_DeckRefillFirst _$$_DeckRefillFirstFromJson(Map<String, dynamic> json) =>
-    _$_DeckRefillFirst(
+_$_DeckRefillFirst _$$_DeckRefillFirstFromJson(Map json) => _$_DeckRefillFirst(
       count: json['count'] as int?,
-      $type: json['runtimeType'] as String?,
+      $type: json['type'] as String?,
     );
 
 Map<String, dynamic> _$$_DeckRefillFirstToJson(_$_DeckRefillFirst instance) =>
     <String, dynamic>{
       'count': instance.count,
-      'runtimeType': instance.$type,
+      'type': instance.$type,
     };
 
-_$_GameDeck _$$_GameDeckFromJson(Map<String, dynamic> json) => _$_GameDeck(
+_$_GameDeck _$$_GameDeckFromJson(Map json) => _$_GameDeck(
       name: json['name'] as String? ?? '',
       visibility:
           $enumDecodeNullable(_$DeckVisibilityEnumMap, json['visibility']) ??
@@ -114,7 +114,8 @@ _$_GameDeck _$$_GameDeckFromJson(Map<String, dynamic> json) => _$_GameDeck(
       ownVisibility:
           $enumDecodeNullable(_$DeckVisibilityEnumMap, json['ownVisibility']),
       cards: (json['cards'] as List<dynamic>?)
-              ?.map((e) => GameCard.fromJson(e as Map<String, dynamic>))
+              ?.map(
+                  (e) => GameCard.fromJson(Map<String, dynamic>.from(e as Map)))
               .toList() ??
           const [],
     );
@@ -124,5 +125,5 @@ Map<String, dynamic> _$$_GameDeckToJson(_$_GameDeck instance) =>
       'name': instance.name,
       'visibility': _$DeckVisibilityEnumMap[instance.visibility]!,
       'ownVisibility': _$DeckVisibilityEnumMap[instance.ownVisibility],
-      'cards': instance.cards,
+      'cards': instance.cards.map((e) => e.toJson()).toList(),
     };
