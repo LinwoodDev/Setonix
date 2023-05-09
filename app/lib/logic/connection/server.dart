@@ -33,6 +33,15 @@ class ServerConnectionMessage with _$ServerConnectionMessage {
           List<CardIndex> cards, int deckIndex, int? seatIndex) =
       AddCardsServerConnectionMessage;
 
+  const factory ServerConnectionMessage.putCards(
+    int deckIndex,
+    int? seatIndex,
+    PickLocation location,
+    int count,
+    int movedDeckIndex,
+    int? movedSeatIndex,
+  ) = PutCardsServerConnectionMessage;
+
   const factory ServerConnectionMessage.removeCards(List<CardIndex> cards) =
       RemoveCardsServerConnectionMessage;
 
@@ -160,7 +169,9 @@ class ServerGameConnection with GameConnection {
                       final found = deckIndexes.any((element) =>
                           element.deckIndex == de.key &&
                           element.cardIndex == e.key);
-                      addingCards.add(e.value);
+                      if (found) {
+                        addingCards.add(e.value);
+                      }
                       return !found;
                     })
                     .map((e) => e.value)
@@ -181,7 +192,9 @@ class ServerGameConnection with GameConnection {
                           element.deckIndex == de.key &&
                           element.seatIndex == se.key &&
                           element.cardIndex == e.key);
-                      addingCards.add(e.value);
+                      if (found) {
+                        addingCards.add(e.value);
+                      }
                       return !found;
                     })
                     .map((e) => e.value)
@@ -285,6 +298,51 @@ class ServerGameConnection with GameConnection {
       removeCards: (cards) {
         _removeCards(cards);
         _changeState(state);
+      },
+      putCards: (deckIndex, seatIndex, location, count, movedDeckIndex,
+          movedSeatIndex) {
+        var cards = [];
+        var newState = state;
+        if (seatIndex != null) {
+          final removeState = state.seats[seatIndex].decks[deckIndex]
+              .removeCards(count, location);
+          newState = state.copyWith(
+              seats: List<GameSeat>.from(state.seats)
+                ..[seatIndex] = state.seats[seatIndex].copyWith(
+                    decks: List<GameDeck>.from(state.seats[seatIndex].decks)
+                      ..[deckIndex] = removeState.deck));
+          cards.addAll(removeState.removedCards);
+        } else {
+          final removeState =
+              state.decks[deckIndex].removeCards(count, location);
+          newState = state.copyWith(
+              decks: List<GameDeck>.from(state.decks)
+                ..[deckIndex] = removeState.deck);
+          cards.addAll(removeState.removedCards);
+        }
+        if (movedSeatIndex != null) {
+          newState = newState.copyWith(
+              seats: List<GameSeat>.from(newState.seats)
+                ..[movedSeatIndex] = newState.seats[movedSeatIndex].copyWith(
+                    decks: List<GameDeck>.from(
+                        newState.seats[movedSeatIndex].decks)
+                      ..[movedDeckIndex] = newState
+                          .seats[movedSeatIndex].decks[movedDeckIndex]
+                          .copyWith(
+                        cards: [
+                          ...newState.seats[movedSeatIndex]
+                              .decks[movedDeckIndex].cards,
+                          ...cards
+                        ],
+                      )));
+        } else {
+          newState = newState.copyWith(
+              decks: List<GameDeck>.from(newState.decks)
+                ..[movedDeckIndex] = newState.decks[movedDeckIndex].copyWith(
+                  cards: [...newState.decks[movedDeckIndex].cards, ...cards],
+                ));
+        }
+        _changeState(newState);
       },
     );
   }

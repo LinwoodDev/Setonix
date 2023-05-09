@@ -80,9 +80,29 @@ class GameView extends StatelessWidget {
                   ),
                 ],
               ),
-              ...connection.getMySeats().expand((e) => [
+              ...connection.getMySeats().asMap().entries.expand((se) => [
                     const SizedBox(height: 16),
-                    Text(e.name),
+                    Text(se.value.name),
+                    SizedBox(
+                      height: 150,
+                      child: ListView(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          ...se.value.decks
+                              .asMap()
+                              .entries
+                              .map((e) => GameDeckView(
+                                    connection: connection,
+                                    deck: e.value,
+                                    index: e.key,
+                                    seatIndex: se.key,
+                                  )),
+                          AddDeckView(
+                              connection: connection, seatIndex: se.key),
+                        ],
+                      ),
+                    ),
                   ])
             ],
           );

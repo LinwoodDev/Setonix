@@ -29,6 +29,8 @@ ServerConnectionMessage _$ServerConnectionMessageFromJson(
       return AddSeatServerConnectionMessage.fromJson(json);
     case 'addCards':
       return AddCardsServerConnectionMessage.fromJson(json);
+    case 'putCards':
+      return PutCardsServerConnectionMessage.fromJson(json);
     case 'removeCards':
       return RemoveCardsServerConnectionMessage.fromJson(json);
     case 'removeSeat':
@@ -56,6 +58,14 @@ mixin _$ServerConnectionMessage {
     required TResult Function(
             List<CardIndex> cards, int deckIndex, int? seatIndex)
         addCards,
+    required TResult Function(
+            int deckIndex,
+            int? seatIndex,
+            PickLocation location,
+            int count,
+            int movedDeckIndex,
+            int? movedSeatIndex)
+        putCards,
     required TResult Function(List<CardIndex> cards) removeCards,
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
@@ -71,6 +81,9 @@ mixin _$ServerConnectionMessage {
     TResult? Function(String name)? addSeat,
     TResult? Function(List<CardIndex> cards, int deckIndex, int? seatIndex)?
         addCards,
+    TResult? Function(int deckIndex, int? seatIndex, PickLocation location,
+            int count, int movedDeckIndex, int? movedSeatIndex)?
+        putCards,
     TResult? Function(List<CardIndex> cards)? removeCards,
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
@@ -86,6 +99,9 @@ mixin _$ServerConnectionMessage {
     TResult Function(String name)? addSeat,
     TResult Function(List<CardIndex> cards, int deckIndex, int? seatIndex)?
         addCards,
+    TResult Function(int deckIndex, int? seatIndex, PickLocation location,
+            int count, int movedDeckIndex, int? movedSeatIndex)?
+        putCards,
     TResult Function(List<CardIndex> cards)? removeCards,
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
@@ -104,6 +120,7 @@ mixin _$ServerConnectionMessage {
         removeDeck,
     required TResult Function(AddSeatServerConnectionMessage value) addSeat,
     required TResult Function(AddCardsServerConnectionMessage value) addCards,
+    required TResult Function(PutCardsServerConnectionMessage value) putCards,
     required TResult Function(RemoveCardsServerConnectionMessage value)
         removeCards,
     required TResult Function(RemoveSeatServerConnectionMessage value)
@@ -120,6 +137,7 @@ mixin _$ServerConnectionMessage {
     TResult? Function(RemoveDeckServerConnectionMessage value)? removeDeck,
     TResult? Function(AddSeatServerConnectionMessage value)? addSeat,
     TResult? Function(AddCardsServerConnectionMessage value)? addCards,
+    TResult? Function(PutCardsServerConnectionMessage value)? putCards,
     TResult? Function(RemoveCardsServerConnectionMessage value)? removeCards,
     TResult? Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult? Function(JoinSeatServerConnectionMessage value)? joinSeat,
@@ -134,6 +152,7 @@ mixin _$ServerConnectionMessage {
     TResult Function(RemoveDeckServerConnectionMessage value)? removeDeck,
     TResult Function(AddSeatServerConnectionMessage value)? addSeat,
     TResult Function(AddCardsServerConnectionMessage value)? addCards,
+    TResult Function(PutCardsServerConnectionMessage value)? putCards,
     TResult Function(RemoveCardsServerConnectionMessage value)? removeCards,
     TResult Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult Function(JoinSeatServerConnectionMessage value)? joinSeat,
@@ -223,6 +242,14 @@ class _$FetchPlayersServerConnectionMessage
     required TResult Function(
             List<CardIndex> cards, int deckIndex, int? seatIndex)
         addCards,
+    required TResult Function(
+            int deckIndex,
+            int? seatIndex,
+            PickLocation location,
+            int count,
+            int movedDeckIndex,
+            int? movedSeatIndex)
+        putCards,
     required TResult Function(List<CardIndex> cards) removeCards,
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
@@ -241,6 +268,9 @@ class _$FetchPlayersServerConnectionMessage
     TResult? Function(String name)? addSeat,
     TResult? Function(List<CardIndex> cards, int deckIndex, int? seatIndex)?
         addCards,
+    TResult? Function(int deckIndex, int? seatIndex, PickLocation location,
+            int count, int movedDeckIndex, int? movedSeatIndex)?
+        putCards,
     TResult? Function(List<CardIndex> cards)? removeCards,
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
@@ -259,6 +289,9 @@ class _$FetchPlayersServerConnectionMessage
     TResult Function(String name)? addSeat,
     TResult Function(List<CardIndex> cards, int deckIndex, int? seatIndex)?
         addCards,
+    TResult Function(int deckIndex, int? seatIndex, PickLocation location,
+            int count, int movedDeckIndex, int? movedSeatIndex)?
+        putCards,
     TResult Function(List<CardIndex> cards)? removeCards,
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
@@ -283,6 +316,7 @@ class _$FetchPlayersServerConnectionMessage
         removeDeck,
     required TResult Function(AddSeatServerConnectionMessage value) addSeat,
     required TResult Function(AddCardsServerConnectionMessage value) addCards,
+    required TResult Function(PutCardsServerConnectionMessage value) putCards,
     required TResult Function(RemoveCardsServerConnectionMessage value)
         removeCards,
     required TResult Function(RemoveSeatServerConnectionMessage value)
@@ -302,6 +336,7 @@ class _$FetchPlayersServerConnectionMessage
     TResult? Function(RemoveDeckServerConnectionMessage value)? removeDeck,
     TResult? Function(AddSeatServerConnectionMessage value)? addSeat,
     TResult? Function(AddCardsServerConnectionMessage value)? addCards,
+    TResult? Function(PutCardsServerConnectionMessage value)? putCards,
     TResult? Function(RemoveCardsServerConnectionMessage value)? removeCards,
     TResult? Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult? Function(JoinSeatServerConnectionMessage value)? joinSeat,
@@ -319,6 +354,7 @@ class _$FetchPlayersServerConnectionMessage
     TResult Function(RemoveDeckServerConnectionMessage value)? removeDeck,
     TResult Function(AddSeatServerConnectionMessage value)? addSeat,
     TResult Function(AddCardsServerConnectionMessage value)? addCards,
+    TResult Function(PutCardsServerConnectionMessage value)? putCards,
     TResult Function(RemoveCardsServerConnectionMessage value)? removeCards,
     TResult Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult Function(JoinSeatServerConnectionMessage value)? joinSeat,
@@ -437,6 +473,14 @@ class _$ChatMessageServerConnectionMessage
     required TResult Function(
             List<CardIndex> cards, int deckIndex, int? seatIndex)
         addCards,
+    required TResult Function(
+            int deckIndex,
+            int? seatIndex,
+            PickLocation location,
+            int count,
+            int movedDeckIndex,
+            int? movedSeatIndex)
+        putCards,
     required TResult Function(List<CardIndex> cards) removeCards,
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
@@ -455,6 +499,9 @@ class _$ChatMessageServerConnectionMessage
     TResult? Function(String name)? addSeat,
     TResult? Function(List<CardIndex> cards, int deckIndex, int? seatIndex)?
         addCards,
+    TResult? Function(int deckIndex, int? seatIndex, PickLocation location,
+            int count, int movedDeckIndex, int? movedSeatIndex)?
+        putCards,
     TResult? Function(List<CardIndex> cards)? removeCards,
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
@@ -473,6 +520,9 @@ class _$ChatMessageServerConnectionMessage
     TResult Function(String name)? addSeat,
     TResult Function(List<CardIndex> cards, int deckIndex, int? seatIndex)?
         addCards,
+    TResult Function(int deckIndex, int? seatIndex, PickLocation location,
+            int count, int movedDeckIndex, int? movedSeatIndex)?
+        putCards,
     TResult Function(List<CardIndex> cards)? removeCards,
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
@@ -497,6 +547,7 @@ class _$ChatMessageServerConnectionMessage
         removeDeck,
     required TResult Function(AddSeatServerConnectionMessage value) addSeat,
     required TResult Function(AddCardsServerConnectionMessage value) addCards,
+    required TResult Function(PutCardsServerConnectionMessage value) putCards,
     required TResult Function(RemoveCardsServerConnectionMessage value)
         removeCards,
     required TResult Function(RemoveSeatServerConnectionMessage value)
@@ -516,6 +567,7 @@ class _$ChatMessageServerConnectionMessage
     TResult? Function(RemoveDeckServerConnectionMessage value)? removeDeck,
     TResult? Function(AddSeatServerConnectionMessage value)? addSeat,
     TResult? Function(AddCardsServerConnectionMessage value)? addCards,
+    TResult? Function(PutCardsServerConnectionMessage value)? putCards,
     TResult? Function(RemoveCardsServerConnectionMessage value)? removeCards,
     TResult? Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult? Function(JoinSeatServerConnectionMessage value)? joinSeat,
@@ -533,6 +585,7 @@ class _$ChatMessageServerConnectionMessage
     TResult Function(RemoveDeckServerConnectionMessage value)? removeDeck,
     TResult Function(AddSeatServerConnectionMessage value)? addSeat,
     TResult Function(AddCardsServerConnectionMessage value)? addCards,
+    TResult Function(PutCardsServerConnectionMessage value)? putCards,
     TResult Function(RemoveCardsServerConnectionMessage value)? removeCards,
     TResult Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult Function(JoinSeatServerConnectionMessage value)? joinSeat,
@@ -675,6 +728,14 @@ class _$AddDeckServerConnectionMessage
     required TResult Function(
             List<CardIndex> cards, int deckIndex, int? seatIndex)
         addCards,
+    required TResult Function(
+            int deckIndex,
+            int? seatIndex,
+            PickLocation location,
+            int count,
+            int movedDeckIndex,
+            int? movedSeatIndex)
+        putCards,
     required TResult Function(List<CardIndex> cards) removeCards,
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
@@ -693,6 +754,9 @@ class _$AddDeckServerConnectionMessage
     TResult? Function(String name)? addSeat,
     TResult? Function(List<CardIndex> cards, int deckIndex, int? seatIndex)?
         addCards,
+    TResult? Function(int deckIndex, int? seatIndex, PickLocation location,
+            int count, int movedDeckIndex, int? movedSeatIndex)?
+        putCards,
     TResult? Function(List<CardIndex> cards)? removeCards,
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
@@ -711,6 +775,9 @@ class _$AddDeckServerConnectionMessage
     TResult Function(String name)? addSeat,
     TResult Function(List<CardIndex> cards, int deckIndex, int? seatIndex)?
         addCards,
+    TResult Function(int deckIndex, int? seatIndex, PickLocation location,
+            int count, int movedDeckIndex, int? movedSeatIndex)?
+        putCards,
     TResult Function(List<CardIndex> cards)? removeCards,
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
@@ -735,6 +802,7 @@ class _$AddDeckServerConnectionMessage
         removeDeck,
     required TResult Function(AddSeatServerConnectionMessage value) addSeat,
     required TResult Function(AddCardsServerConnectionMessage value) addCards,
+    required TResult Function(PutCardsServerConnectionMessage value) putCards,
     required TResult Function(RemoveCardsServerConnectionMessage value)
         removeCards,
     required TResult Function(RemoveSeatServerConnectionMessage value)
@@ -754,6 +822,7 @@ class _$AddDeckServerConnectionMessage
     TResult? Function(RemoveDeckServerConnectionMessage value)? removeDeck,
     TResult? Function(AddSeatServerConnectionMessage value)? addSeat,
     TResult? Function(AddCardsServerConnectionMessage value)? addCards,
+    TResult? Function(PutCardsServerConnectionMessage value)? putCards,
     TResult? Function(RemoveCardsServerConnectionMessage value)? removeCards,
     TResult? Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult? Function(JoinSeatServerConnectionMessage value)? joinSeat,
@@ -771,6 +840,7 @@ class _$AddDeckServerConnectionMessage
     TResult Function(RemoveDeckServerConnectionMessage value)? removeDeck,
     TResult Function(AddSeatServerConnectionMessage value)? addSeat,
     TResult Function(AddCardsServerConnectionMessage value)? addCards,
+    TResult Function(PutCardsServerConnectionMessage value)? putCards,
     TResult Function(RemoveCardsServerConnectionMessage value)? removeCards,
     TResult Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult Function(JoinSeatServerConnectionMessage value)? joinSeat,
@@ -904,6 +974,14 @@ class _$RemoveDeckServerConnectionMessage
     required TResult Function(
             List<CardIndex> cards, int deckIndex, int? seatIndex)
         addCards,
+    required TResult Function(
+            int deckIndex,
+            int? seatIndex,
+            PickLocation location,
+            int count,
+            int movedDeckIndex,
+            int? movedSeatIndex)
+        putCards,
     required TResult Function(List<CardIndex> cards) removeCards,
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
@@ -922,6 +1000,9 @@ class _$RemoveDeckServerConnectionMessage
     TResult? Function(String name)? addSeat,
     TResult? Function(List<CardIndex> cards, int deckIndex, int? seatIndex)?
         addCards,
+    TResult? Function(int deckIndex, int? seatIndex, PickLocation location,
+            int count, int movedDeckIndex, int? movedSeatIndex)?
+        putCards,
     TResult? Function(List<CardIndex> cards)? removeCards,
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
@@ -940,6 +1021,9 @@ class _$RemoveDeckServerConnectionMessage
     TResult Function(String name)? addSeat,
     TResult Function(List<CardIndex> cards, int deckIndex, int? seatIndex)?
         addCards,
+    TResult Function(int deckIndex, int? seatIndex, PickLocation location,
+            int count, int movedDeckIndex, int? movedSeatIndex)?
+        putCards,
     TResult Function(List<CardIndex> cards)? removeCards,
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
@@ -964,6 +1048,7 @@ class _$RemoveDeckServerConnectionMessage
         removeDeck,
     required TResult Function(AddSeatServerConnectionMessage value) addSeat,
     required TResult Function(AddCardsServerConnectionMessage value) addCards,
+    required TResult Function(PutCardsServerConnectionMessage value) putCards,
     required TResult Function(RemoveCardsServerConnectionMessage value)
         removeCards,
     required TResult Function(RemoveSeatServerConnectionMessage value)
@@ -983,6 +1068,7 @@ class _$RemoveDeckServerConnectionMessage
     TResult? Function(RemoveDeckServerConnectionMessage value)? removeDeck,
     TResult? Function(AddSeatServerConnectionMessage value)? addSeat,
     TResult? Function(AddCardsServerConnectionMessage value)? addCards,
+    TResult? Function(PutCardsServerConnectionMessage value)? putCards,
     TResult? Function(RemoveCardsServerConnectionMessage value)? removeCards,
     TResult? Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult? Function(JoinSeatServerConnectionMessage value)? joinSeat,
@@ -1000,6 +1086,7 @@ class _$RemoveDeckServerConnectionMessage
     TResult Function(RemoveDeckServerConnectionMessage value)? removeDeck,
     TResult Function(AddSeatServerConnectionMessage value)? addSeat,
     TResult Function(AddCardsServerConnectionMessage value)? addCards,
+    TResult Function(PutCardsServerConnectionMessage value)? putCards,
     TResult Function(RemoveCardsServerConnectionMessage value)? removeCards,
     TResult Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult Function(JoinSeatServerConnectionMessage value)? joinSeat,
@@ -1123,6 +1210,14 @@ class _$AddSeatServerConnectionMessage
     required TResult Function(
             List<CardIndex> cards, int deckIndex, int? seatIndex)
         addCards,
+    required TResult Function(
+            int deckIndex,
+            int? seatIndex,
+            PickLocation location,
+            int count,
+            int movedDeckIndex,
+            int? movedSeatIndex)
+        putCards,
     required TResult Function(List<CardIndex> cards) removeCards,
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
@@ -1141,6 +1236,9 @@ class _$AddSeatServerConnectionMessage
     TResult? Function(String name)? addSeat,
     TResult? Function(List<CardIndex> cards, int deckIndex, int? seatIndex)?
         addCards,
+    TResult? Function(int deckIndex, int? seatIndex, PickLocation location,
+            int count, int movedDeckIndex, int? movedSeatIndex)?
+        putCards,
     TResult? Function(List<CardIndex> cards)? removeCards,
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
@@ -1159,6 +1257,9 @@ class _$AddSeatServerConnectionMessage
     TResult Function(String name)? addSeat,
     TResult Function(List<CardIndex> cards, int deckIndex, int? seatIndex)?
         addCards,
+    TResult Function(int deckIndex, int? seatIndex, PickLocation location,
+            int count, int movedDeckIndex, int? movedSeatIndex)?
+        putCards,
     TResult Function(List<CardIndex> cards)? removeCards,
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
@@ -1183,6 +1284,7 @@ class _$AddSeatServerConnectionMessage
         removeDeck,
     required TResult Function(AddSeatServerConnectionMessage value) addSeat,
     required TResult Function(AddCardsServerConnectionMessage value) addCards,
+    required TResult Function(PutCardsServerConnectionMessage value) putCards,
     required TResult Function(RemoveCardsServerConnectionMessage value)
         removeCards,
     required TResult Function(RemoveSeatServerConnectionMessage value)
@@ -1202,6 +1304,7 @@ class _$AddSeatServerConnectionMessage
     TResult? Function(RemoveDeckServerConnectionMessage value)? removeDeck,
     TResult? Function(AddSeatServerConnectionMessage value)? addSeat,
     TResult? Function(AddCardsServerConnectionMessage value)? addCards,
+    TResult? Function(PutCardsServerConnectionMessage value)? putCards,
     TResult? Function(RemoveCardsServerConnectionMessage value)? removeCards,
     TResult? Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult? Function(JoinSeatServerConnectionMessage value)? joinSeat,
@@ -1219,6 +1322,7 @@ class _$AddSeatServerConnectionMessage
     TResult Function(RemoveDeckServerConnectionMessage value)? removeDeck,
     TResult Function(AddSeatServerConnectionMessage value)? addSeat,
     TResult Function(AddCardsServerConnectionMessage value)? addCards,
+    TResult Function(PutCardsServerConnectionMessage value)? putCards,
     TResult Function(RemoveCardsServerConnectionMessage value)? removeCards,
     TResult Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult Function(JoinSeatServerConnectionMessage value)? joinSeat,
@@ -1367,6 +1471,14 @@ class _$AddCardsServerConnectionMessage
     required TResult Function(
             List<CardIndex> cards, int deckIndex, int? seatIndex)
         addCards,
+    required TResult Function(
+            int deckIndex,
+            int? seatIndex,
+            PickLocation location,
+            int count,
+            int movedDeckIndex,
+            int? movedSeatIndex)
+        putCards,
     required TResult Function(List<CardIndex> cards) removeCards,
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
@@ -1385,6 +1497,9 @@ class _$AddCardsServerConnectionMessage
     TResult? Function(String name)? addSeat,
     TResult? Function(List<CardIndex> cards, int deckIndex, int? seatIndex)?
         addCards,
+    TResult? Function(int deckIndex, int? seatIndex, PickLocation location,
+            int count, int movedDeckIndex, int? movedSeatIndex)?
+        putCards,
     TResult? Function(List<CardIndex> cards)? removeCards,
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
@@ -1403,6 +1518,9 @@ class _$AddCardsServerConnectionMessage
     TResult Function(String name)? addSeat,
     TResult Function(List<CardIndex> cards, int deckIndex, int? seatIndex)?
         addCards,
+    TResult Function(int deckIndex, int? seatIndex, PickLocation location,
+            int count, int movedDeckIndex, int? movedSeatIndex)?
+        putCards,
     TResult Function(List<CardIndex> cards)? removeCards,
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
@@ -1427,6 +1545,7 @@ class _$AddCardsServerConnectionMessage
         removeDeck,
     required TResult Function(AddSeatServerConnectionMessage value) addSeat,
     required TResult Function(AddCardsServerConnectionMessage value) addCards,
+    required TResult Function(PutCardsServerConnectionMessage value) putCards,
     required TResult Function(RemoveCardsServerConnectionMessage value)
         removeCards,
     required TResult Function(RemoveSeatServerConnectionMessage value)
@@ -1446,6 +1565,7 @@ class _$AddCardsServerConnectionMessage
     TResult? Function(RemoveDeckServerConnectionMessage value)? removeDeck,
     TResult? Function(AddSeatServerConnectionMessage value)? addSeat,
     TResult? Function(AddCardsServerConnectionMessage value)? addCards,
+    TResult? Function(PutCardsServerConnectionMessage value)? putCards,
     TResult? Function(RemoveCardsServerConnectionMessage value)? removeCards,
     TResult? Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult? Function(JoinSeatServerConnectionMessage value)? joinSeat,
@@ -1463,6 +1583,7 @@ class _$AddCardsServerConnectionMessage
     TResult Function(RemoveDeckServerConnectionMessage value)? removeDeck,
     TResult Function(AddSeatServerConnectionMessage value)? addSeat,
     TResult Function(AddCardsServerConnectionMessage value)? addCards,
+    TResult Function(PutCardsServerConnectionMessage value)? putCards,
     TResult Function(RemoveCardsServerConnectionMessage value)? removeCards,
     TResult Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult Function(JoinSeatServerConnectionMessage value)? joinSeat,
@@ -1498,6 +1619,306 @@ abstract class AddCardsServerConnectionMessage
   int? get seatIndex;
   @JsonKey(ignore: true)
   _$$AddCardsServerConnectionMessageCopyWith<_$AddCardsServerConnectionMessage>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$PutCardsServerConnectionMessageCopyWith<$Res> {
+  factory _$$PutCardsServerConnectionMessageCopyWith(
+          _$PutCardsServerConnectionMessage value,
+          $Res Function(_$PutCardsServerConnectionMessage) then) =
+      __$$PutCardsServerConnectionMessageCopyWithImpl<$Res>;
+  @useResult
+  $Res call(
+      {int deckIndex,
+      int? seatIndex,
+      PickLocation location,
+      int count,
+      int movedDeckIndex,
+      int? movedSeatIndex});
+}
+
+/// @nodoc
+class __$$PutCardsServerConnectionMessageCopyWithImpl<$Res>
+    extends _$ServerConnectionMessageCopyWithImpl<$Res,
+        _$PutCardsServerConnectionMessage>
+    implements _$$PutCardsServerConnectionMessageCopyWith<$Res> {
+  __$$PutCardsServerConnectionMessageCopyWithImpl(
+      _$PutCardsServerConnectionMessage _value,
+      $Res Function(_$PutCardsServerConnectionMessage) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? deckIndex = null,
+    Object? seatIndex = freezed,
+    Object? location = null,
+    Object? count = null,
+    Object? movedDeckIndex = null,
+    Object? movedSeatIndex = freezed,
+  }) {
+    return _then(_$PutCardsServerConnectionMessage(
+      null == deckIndex
+          ? _value.deckIndex
+          : deckIndex // ignore: cast_nullable_to_non_nullable
+              as int,
+      freezed == seatIndex
+          ? _value.seatIndex
+          : seatIndex // ignore: cast_nullable_to_non_nullable
+              as int?,
+      null == location
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as PickLocation,
+      null == count
+          ? _value.count
+          : count // ignore: cast_nullable_to_non_nullable
+              as int,
+      null == movedDeckIndex
+          ? _value.movedDeckIndex
+          : movedDeckIndex // ignore: cast_nullable_to_non_nullable
+              as int,
+      freezed == movedSeatIndex
+          ? _value.movedSeatIndex
+          : movedSeatIndex // ignore: cast_nullable_to_non_nullable
+              as int?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$PutCardsServerConnectionMessage
+    implements PutCardsServerConnectionMessage {
+  const _$PutCardsServerConnectionMessage(this.deckIndex, this.seatIndex,
+      this.location, this.count, this.movedDeckIndex, this.movedSeatIndex,
+      {final String? $type})
+      : $type = $type ?? 'putCards';
+
+  factory _$PutCardsServerConnectionMessage.fromJson(
+          Map<String, dynamic> json) =>
+      _$$PutCardsServerConnectionMessageFromJson(json);
+
+  @override
+  final int deckIndex;
+  @override
+  final int? seatIndex;
+  @override
+  final PickLocation location;
+  @override
+  final int count;
+  @override
+  final int movedDeckIndex;
+  @override
+  final int? movedSeatIndex;
+
+  @JsonKey(name: 'type')
+  final String $type;
+
+  @override
+  String toString() {
+    return 'ServerConnectionMessage.putCards(deckIndex: $deckIndex, seatIndex: $seatIndex, location: $location, count: $count, movedDeckIndex: $movedDeckIndex, movedSeatIndex: $movedSeatIndex)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$PutCardsServerConnectionMessage &&
+            (identical(other.deckIndex, deckIndex) ||
+                other.deckIndex == deckIndex) &&
+            (identical(other.seatIndex, seatIndex) ||
+                other.seatIndex == seatIndex) &&
+            (identical(other.location, location) ||
+                other.location == location) &&
+            (identical(other.count, count) || other.count == count) &&
+            (identical(other.movedDeckIndex, movedDeckIndex) ||
+                other.movedDeckIndex == movedDeckIndex) &&
+            (identical(other.movedSeatIndex, movedSeatIndex) ||
+                other.movedSeatIndex == movedSeatIndex));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, deckIndex, seatIndex, location,
+      count, movedDeckIndex, movedSeatIndex);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$PutCardsServerConnectionMessageCopyWith<_$PutCardsServerConnectionMessage>
+      get copyWith => __$$PutCardsServerConnectionMessageCopyWithImpl<
+          _$PutCardsServerConnectionMessage>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() fetchPlayers,
+    required TResult Function(String message) chatMessage,
+    required TResult Function(GameDeck deck, int? seatIndex) addDeck,
+    required TResult Function(int index, int? seatIndex) removeDeck,
+    required TResult Function(String name) addSeat,
+    required TResult Function(
+            List<CardIndex> cards, int deckIndex, int? seatIndex)
+        addCards,
+    required TResult Function(
+            int deckIndex,
+            int? seatIndex,
+            PickLocation location,
+            int count,
+            int movedDeckIndex,
+            int? movedSeatIndex)
+        putCards,
+    required TResult Function(List<CardIndex> cards) removeCards,
+    required TResult Function(int index) removeSeat,
+    required TResult Function(int index) joinSeat,
+    required TResult Function(int index) leaveSeat,
+  }) {
+    return putCards(
+        deckIndex, seatIndex, location, count, movedDeckIndex, movedSeatIndex);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? fetchPlayers,
+    TResult? Function(String message)? chatMessage,
+    TResult? Function(GameDeck deck, int? seatIndex)? addDeck,
+    TResult? Function(int index, int? seatIndex)? removeDeck,
+    TResult? Function(String name)? addSeat,
+    TResult? Function(List<CardIndex> cards, int deckIndex, int? seatIndex)?
+        addCards,
+    TResult? Function(int deckIndex, int? seatIndex, PickLocation location,
+            int count, int movedDeckIndex, int? movedSeatIndex)?
+        putCards,
+    TResult? Function(List<CardIndex> cards)? removeCards,
+    TResult? Function(int index)? removeSeat,
+    TResult? Function(int index)? joinSeat,
+    TResult? Function(int index)? leaveSeat,
+  }) {
+    return putCards?.call(
+        deckIndex, seatIndex, location, count, movedDeckIndex, movedSeatIndex);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? fetchPlayers,
+    TResult Function(String message)? chatMessage,
+    TResult Function(GameDeck deck, int? seatIndex)? addDeck,
+    TResult Function(int index, int? seatIndex)? removeDeck,
+    TResult Function(String name)? addSeat,
+    TResult Function(List<CardIndex> cards, int deckIndex, int? seatIndex)?
+        addCards,
+    TResult Function(int deckIndex, int? seatIndex, PickLocation location,
+            int count, int movedDeckIndex, int? movedSeatIndex)?
+        putCards,
+    TResult Function(List<CardIndex> cards)? removeCards,
+    TResult Function(int index)? removeSeat,
+    TResult Function(int index)? joinSeat,
+    TResult Function(int index)? leaveSeat,
+    required TResult orElse(),
+  }) {
+    if (putCards != null) {
+      return putCards(deckIndex, seatIndex, location, count, movedDeckIndex,
+          movedSeatIndex);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FetchPlayersServerConnectionMessage value)
+        fetchPlayers,
+    required TResult Function(ChatMessageServerConnectionMessage value)
+        chatMessage,
+    required TResult Function(AddDeckServerConnectionMessage value) addDeck,
+    required TResult Function(RemoveDeckServerConnectionMessage value)
+        removeDeck,
+    required TResult Function(AddSeatServerConnectionMessage value) addSeat,
+    required TResult Function(AddCardsServerConnectionMessage value) addCards,
+    required TResult Function(PutCardsServerConnectionMessage value) putCards,
+    required TResult Function(RemoveCardsServerConnectionMessage value)
+        removeCards,
+    required TResult Function(RemoveSeatServerConnectionMessage value)
+        removeSeat,
+    required TResult Function(JoinSeatServerConnectionMessage value) joinSeat,
+    required TResult Function(LeaveSeatServerConnectionMessage value) leaveSeat,
+  }) {
+    return putCards(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FetchPlayersServerConnectionMessage value)? fetchPlayers,
+    TResult? Function(ChatMessageServerConnectionMessage value)? chatMessage,
+    TResult? Function(AddDeckServerConnectionMessage value)? addDeck,
+    TResult? Function(RemoveDeckServerConnectionMessage value)? removeDeck,
+    TResult? Function(AddSeatServerConnectionMessage value)? addSeat,
+    TResult? Function(AddCardsServerConnectionMessage value)? addCards,
+    TResult? Function(PutCardsServerConnectionMessage value)? putCards,
+    TResult? Function(RemoveCardsServerConnectionMessage value)? removeCards,
+    TResult? Function(RemoveSeatServerConnectionMessage value)? removeSeat,
+    TResult? Function(JoinSeatServerConnectionMessage value)? joinSeat,
+    TResult? Function(LeaveSeatServerConnectionMessage value)? leaveSeat,
+  }) {
+    return putCards?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FetchPlayersServerConnectionMessage value)? fetchPlayers,
+    TResult Function(ChatMessageServerConnectionMessage value)? chatMessage,
+    TResult Function(AddDeckServerConnectionMessage value)? addDeck,
+    TResult Function(RemoveDeckServerConnectionMessage value)? removeDeck,
+    TResult Function(AddSeatServerConnectionMessage value)? addSeat,
+    TResult Function(AddCardsServerConnectionMessage value)? addCards,
+    TResult Function(PutCardsServerConnectionMessage value)? putCards,
+    TResult Function(RemoveCardsServerConnectionMessage value)? removeCards,
+    TResult Function(RemoveSeatServerConnectionMessage value)? removeSeat,
+    TResult Function(JoinSeatServerConnectionMessage value)? joinSeat,
+    TResult Function(LeaveSeatServerConnectionMessage value)? leaveSeat,
+    required TResult orElse(),
+  }) {
+    if (putCards != null) {
+      return putCards(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$PutCardsServerConnectionMessageToJson(
+      this,
+    );
+  }
+}
+
+abstract class PutCardsServerConnectionMessage
+    implements ServerConnectionMessage {
+  const factory PutCardsServerConnectionMessage(
+      final int deckIndex,
+      final int? seatIndex,
+      final PickLocation location,
+      final int count,
+      final int movedDeckIndex,
+      final int? movedSeatIndex) = _$PutCardsServerConnectionMessage;
+
+  factory PutCardsServerConnectionMessage.fromJson(Map<String, dynamic> json) =
+      _$PutCardsServerConnectionMessage.fromJson;
+
+  int get deckIndex;
+  int? get seatIndex;
+  PickLocation get location;
+  int get count;
+  int get movedDeckIndex;
+  int? get movedSeatIndex;
+  @JsonKey(ignore: true)
+  _$$PutCardsServerConnectionMessageCopyWith<_$PutCardsServerConnectionMessage>
       get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -1596,6 +2017,14 @@ class _$RemoveCardsServerConnectionMessage
     required TResult Function(
             List<CardIndex> cards, int deckIndex, int? seatIndex)
         addCards,
+    required TResult Function(
+            int deckIndex,
+            int? seatIndex,
+            PickLocation location,
+            int count,
+            int movedDeckIndex,
+            int? movedSeatIndex)
+        putCards,
     required TResult Function(List<CardIndex> cards) removeCards,
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
@@ -1614,6 +2043,9 @@ class _$RemoveCardsServerConnectionMessage
     TResult? Function(String name)? addSeat,
     TResult? Function(List<CardIndex> cards, int deckIndex, int? seatIndex)?
         addCards,
+    TResult? Function(int deckIndex, int? seatIndex, PickLocation location,
+            int count, int movedDeckIndex, int? movedSeatIndex)?
+        putCards,
     TResult? Function(List<CardIndex> cards)? removeCards,
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
@@ -1632,6 +2064,9 @@ class _$RemoveCardsServerConnectionMessage
     TResult Function(String name)? addSeat,
     TResult Function(List<CardIndex> cards, int deckIndex, int? seatIndex)?
         addCards,
+    TResult Function(int deckIndex, int? seatIndex, PickLocation location,
+            int count, int movedDeckIndex, int? movedSeatIndex)?
+        putCards,
     TResult Function(List<CardIndex> cards)? removeCards,
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
@@ -1656,6 +2091,7 @@ class _$RemoveCardsServerConnectionMessage
         removeDeck,
     required TResult Function(AddSeatServerConnectionMessage value) addSeat,
     required TResult Function(AddCardsServerConnectionMessage value) addCards,
+    required TResult Function(PutCardsServerConnectionMessage value) putCards,
     required TResult Function(RemoveCardsServerConnectionMessage value)
         removeCards,
     required TResult Function(RemoveSeatServerConnectionMessage value)
@@ -1675,6 +2111,7 @@ class _$RemoveCardsServerConnectionMessage
     TResult? Function(RemoveDeckServerConnectionMessage value)? removeDeck,
     TResult? Function(AddSeatServerConnectionMessage value)? addSeat,
     TResult? Function(AddCardsServerConnectionMessage value)? addCards,
+    TResult? Function(PutCardsServerConnectionMessage value)? putCards,
     TResult? Function(RemoveCardsServerConnectionMessage value)? removeCards,
     TResult? Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult? Function(JoinSeatServerConnectionMessage value)? joinSeat,
@@ -1692,6 +2129,7 @@ class _$RemoveCardsServerConnectionMessage
     TResult Function(RemoveDeckServerConnectionMessage value)? removeDeck,
     TResult Function(AddSeatServerConnectionMessage value)? addSeat,
     TResult Function(AddCardsServerConnectionMessage value)? addCards,
+    TResult Function(PutCardsServerConnectionMessage value)? putCards,
     TResult Function(RemoveCardsServerConnectionMessage value)? removeCards,
     TResult Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult Function(JoinSeatServerConnectionMessage value)? joinSeat,
@@ -1815,6 +2253,14 @@ class _$RemoveSeatServerConnectionMessage
     required TResult Function(
             List<CardIndex> cards, int deckIndex, int? seatIndex)
         addCards,
+    required TResult Function(
+            int deckIndex,
+            int? seatIndex,
+            PickLocation location,
+            int count,
+            int movedDeckIndex,
+            int? movedSeatIndex)
+        putCards,
     required TResult Function(List<CardIndex> cards) removeCards,
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
@@ -1833,6 +2279,9 @@ class _$RemoveSeatServerConnectionMessage
     TResult? Function(String name)? addSeat,
     TResult? Function(List<CardIndex> cards, int deckIndex, int? seatIndex)?
         addCards,
+    TResult? Function(int deckIndex, int? seatIndex, PickLocation location,
+            int count, int movedDeckIndex, int? movedSeatIndex)?
+        putCards,
     TResult? Function(List<CardIndex> cards)? removeCards,
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
@@ -1851,6 +2300,9 @@ class _$RemoveSeatServerConnectionMessage
     TResult Function(String name)? addSeat,
     TResult Function(List<CardIndex> cards, int deckIndex, int? seatIndex)?
         addCards,
+    TResult Function(int deckIndex, int? seatIndex, PickLocation location,
+            int count, int movedDeckIndex, int? movedSeatIndex)?
+        putCards,
     TResult Function(List<CardIndex> cards)? removeCards,
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
@@ -1875,6 +2327,7 @@ class _$RemoveSeatServerConnectionMessage
         removeDeck,
     required TResult Function(AddSeatServerConnectionMessage value) addSeat,
     required TResult Function(AddCardsServerConnectionMessage value) addCards,
+    required TResult Function(PutCardsServerConnectionMessage value) putCards,
     required TResult Function(RemoveCardsServerConnectionMessage value)
         removeCards,
     required TResult Function(RemoveSeatServerConnectionMessage value)
@@ -1894,6 +2347,7 @@ class _$RemoveSeatServerConnectionMessage
     TResult? Function(RemoveDeckServerConnectionMessage value)? removeDeck,
     TResult? Function(AddSeatServerConnectionMessage value)? addSeat,
     TResult? Function(AddCardsServerConnectionMessage value)? addCards,
+    TResult? Function(PutCardsServerConnectionMessage value)? putCards,
     TResult? Function(RemoveCardsServerConnectionMessage value)? removeCards,
     TResult? Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult? Function(JoinSeatServerConnectionMessage value)? joinSeat,
@@ -1911,6 +2365,7 @@ class _$RemoveSeatServerConnectionMessage
     TResult Function(RemoveDeckServerConnectionMessage value)? removeDeck,
     TResult Function(AddSeatServerConnectionMessage value)? addSeat,
     TResult Function(AddCardsServerConnectionMessage value)? addCards,
+    TResult Function(PutCardsServerConnectionMessage value)? putCards,
     TResult Function(RemoveCardsServerConnectionMessage value)? removeCards,
     TResult Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult Function(JoinSeatServerConnectionMessage value)? joinSeat,
@@ -2032,6 +2487,14 @@ class _$JoinSeatServerConnectionMessage
     required TResult Function(
             List<CardIndex> cards, int deckIndex, int? seatIndex)
         addCards,
+    required TResult Function(
+            int deckIndex,
+            int? seatIndex,
+            PickLocation location,
+            int count,
+            int movedDeckIndex,
+            int? movedSeatIndex)
+        putCards,
     required TResult Function(List<CardIndex> cards) removeCards,
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
@@ -2050,6 +2513,9 @@ class _$JoinSeatServerConnectionMessage
     TResult? Function(String name)? addSeat,
     TResult? Function(List<CardIndex> cards, int deckIndex, int? seatIndex)?
         addCards,
+    TResult? Function(int deckIndex, int? seatIndex, PickLocation location,
+            int count, int movedDeckIndex, int? movedSeatIndex)?
+        putCards,
     TResult? Function(List<CardIndex> cards)? removeCards,
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
@@ -2068,6 +2534,9 @@ class _$JoinSeatServerConnectionMessage
     TResult Function(String name)? addSeat,
     TResult Function(List<CardIndex> cards, int deckIndex, int? seatIndex)?
         addCards,
+    TResult Function(int deckIndex, int? seatIndex, PickLocation location,
+            int count, int movedDeckIndex, int? movedSeatIndex)?
+        putCards,
     TResult Function(List<CardIndex> cards)? removeCards,
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
@@ -2092,6 +2561,7 @@ class _$JoinSeatServerConnectionMessage
         removeDeck,
     required TResult Function(AddSeatServerConnectionMessage value) addSeat,
     required TResult Function(AddCardsServerConnectionMessage value) addCards,
+    required TResult Function(PutCardsServerConnectionMessage value) putCards,
     required TResult Function(RemoveCardsServerConnectionMessage value)
         removeCards,
     required TResult Function(RemoveSeatServerConnectionMessage value)
@@ -2111,6 +2581,7 @@ class _$JoinSeatServerConnectionMessage
     TResult? Function(RemoveDeckServerConnectionMessage value)? removeDeck,
     TResult? Function(AddSeatServerConnectionMessage value)? addSeat,
     TResult? Function(AddCardsServerConnectionMessage value)? addCards,
+    TResult? Function(PutCardsServerConnectionMessage value)? putCards,
     TResult? Function(RemoveCardsServerConnectionMessage value)? removeCards,
     TResult? Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult? Function(JoinSeatServerConnectionMessage value)? joinSeat,
@@ -2128,6 +2599,7 @@ class _$JoinSeatServerConnectionMessage
     TResult Function(RemoveDeckServerConnectionMessage value)? removeDeck,
     TResult Function(AddSeatServerConnectionMessage value)? addSeat,
     TResult Function(AddCardsServerConnectionMessage value)? addCards,
+    TResult Function(PutCardsServerConnectionMessage value)? putCards,
     TResult Function(RemoveCardsServerConnectionMessage value)? removeCards,
     TResult Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult Function(JoinSeatServerConnectionMessage value)? joinSeat,
@@ -2249,6 +2721,14 @@ class _$LeaveSeatServerConnectionMessage
     required TResult Function(
             List<CardIndex> cards, int deckIndex, int? seatIndex)
         addCards,
+    required TResult Function(
+            int deckIndex,
+            int? seatIndex,
+            PickLocation location,
+            int count,
+            int movedDeckIndex,
+            int? movedSeatIndex)
+        putCards,
     required TResult Function(List<CardIndex> cards) removeCards,
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
@@ -2267,6 +2747,9 @@ class _$LeaveSeatServerConnectionMessage
     TResult? Function(String name)? addSeat,
     TResult? Function(List<CardIndex> cards, int deckIndex, int? seatIndex)?
         addCards,
+    TResult? Function(int deckIndex, int? seatIndex, PickLocation location,
+            int count, int movedDeckIndex, int? movedSeatIndex)?
+        putCards,
     TResult? Function(List<CardIndex> cards)? removeCards,
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
@@ -2285,6 +2768,9 @@ class _$LeaveSeatServerConnectionMessage
     TResult Function(String name)? addSeat,
     TResult Function(List<CardIndex> cards, int deckIndex, int? seatIndex)?
         addCards,
+    TResult Function(int deckIndex, int? seatIndex, PickLocation location,
+            int count, int movedDeckIndex, int? movedSeatIndex)?
+        putCards,
     TResult Function(List<CardIndex> cards)? removeCards,
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
@@ -2309,6 +2795,7 @@ class _$LeaveSeatServerConnectionMessage
         removeDeck,
     required TResult Function(AddSeatServerConnectionMessage value) addSeat,
     required TResult Function(AddCardsServerConnectionMessage value) addCards,
+    required TResult Function(PutCardsServerConnectionMessage value) putCards,
     required TResult Function(RemoveCardsServerConnectionMessage value)
         removeCards,
     required TResult Function(RemoveSeatServerConnectionMessage value)
@@ -2328,6 +2815,7 @@ class _$LeaveSeatServerConnectionMessage
     TResult? Function(RemoveDeckServerConnectionMessage value)? removeDeck,
     TResult? Function(AddSeatServerConnectionMessage value)? addSeat,
     TResult? Function(AddCardsServerConnectionMessage value)? addCards,
+    TResult? Function(PutCardsServerConnectionMessage value)? putCards,
     TResult? Function(RemoveCardsServerConnectionMessage value)? removeCards,
     TResult? Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult? Function(JoinSeatServerConnectionMessage value)? joinSeat,
@@ -2345,6 +2833,7 @@ class _$LeaveSeatServerConnectionMessage
     TResult Function(RemoveDeckServerConnectionMessage value)? removeDeck,
     TResult Function(AddSeatServerConnectionMessage value)? addSeat,
     TResult Function(AddCardsServerConnectionMessage value)? addCards,
+    TResult Function(PutCardsServerConnectionMessage value)? putCards,
     TResult Function(RemoveCardsServerConnectionMessage value)? removeCards,
     TResult Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult Function(JoinSeatServerConnectionMessage value)? joinSeat,

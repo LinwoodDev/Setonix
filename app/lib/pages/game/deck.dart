@@ -7,6 +7,8 @@ import 'package:qeck/logic/connection/logic.dart';
 import 'package:qeck/logic/state.dart';
 import 'package:qeck/pages/game/card.dart';
 
+import 'cards.dart';
+
 class DeckLocation {
   final GameDeck deck;
   final int? index;
@@ -50,11 +52,14 @@ class GameDeckView extends StatelessWidget {
             children: [
               if (firstCard != null)
                 Expanded(
-                  child: Draggable(
-                    data: DeckLocation(deck, index, seatIndex),
-                    feedback: Material(
-                      child: Text(deck.name),
-                    ),
+                  child: InkWell(
+                    onTap: () => showDialog(
+                        context: context,
+                        builder: (context) => CardDeckDialog(
+                            deck: deck,
+                            index: index,
+                            connection: connection,
+                            seatIndex: seatIndex)),
                     child: CardView(
                       card: firstCard,
                     ),
@@ -93,7 +98,28 @@ class GameDeckView extends StatelessWidget {
                           ),
                         );
                       },
-                    )
+                    ),
+                    if (index != null) ...[
+                      MenuItemButton(
+                        child: Text(AppLocalizations.of(context).putCards),
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => PutCardsDialog(
+                              deckIndex: index!,
+                              seatIndex: seatIndex,
+                              connection: connection,
+                            ),
+                          );
+                        },
+                      ),
+                      MenuItemButton(
+                        child: Text(AppLocalizations.of(context).remove),
+                        onPressed: () {
+                          connection.removeDeck(index!, seatIndex);
+                        },
+                      ),
+                    ],
                   ],
                 ),
               ]),
@@ -105,9 +131,84 @@ class GameDeckView extends StatelessWidget {
   }
 }
 
+class CardDeckDialog extends StatelessWidget {
+  final GameDeck deck;
+  final int? index;
+  final int? seatIndex;
+  final ClientGameConnection connection;
+
+  const CardDeckDialog({
+    super.key,
+    required this.deck,
+    required this.index,
+    required this.connection,
+    required this.seatIndex,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Align(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 500, maxHeight: 500),
+            child: Material(
+              child: SingleChildScrollView(
+                child: StreamBuilder<GameState>(
+                    stream: connection.stateStream,
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return const SizedBox();
+                      }
+                      final state = snapshot.data;
+                      var realDeck = deck;
+                      if (seatIndex != null) {
+                        realDeck = state!.seats[seatIndex!].decks[index!];
+                      } else if (index != null) {
+                        realDeck = state!.decks[index!];
+                      }
+                      return Wrap(
+                        children: realDeck.cards
+                            .asMap()
+                            .entries
+                            .map((e) => InkWell(
+                                  onTap: () {
+                                    CardIndex cardIndex;
+                                    if (index == null) {
+                                      cardIndex = AvailableCardIndex(e.value);
+                                    } else if (seatIndex == null) {
+                                      cardIndex = DeckCardIndex(e.key, index!);
+                                    } else {
+                                      cardIndex = SeatCardIndex(
+                                          e.key, index!, seatIndex!);
+                                    }
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) =>
+                                            CardsOperationDialog(
+                                                cards: [cardIndex],
+                                                connection: connection));
+                                  },
+                                  child: CardView(
+                                    card: e.value,
+                                  ),
+                                ))
+                            .toList(),
+                      );
+                    }),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class AddDeckView extends StatelessWidget {
   final ClientGameConnection connection;
-  const AddDeckView({super.key, required this.connection});
+  final int? seatIndex;
+  const AddDeckView({super.key, required this.connection, this.seatIndex});
 
   @override
   Widget build(BuildContext context) {
@@ -120,6 +221,7 @@ class AddDeckView extends StatelessWidget {
             context: context,
             builder: (context) => AddDeckDialog(
               connection: connection,
+              seatIndex: seatIndex,
             ),
           ),
           child: const Padding(

@@ -32,5 +32,8 @@
   "remove": "Remove",
   "move": "Move",
   "deck": "Deck",
-  "moveCards": "Move cards"
+  "moveCards": "Move cards",
+  "location": "Location",
+  "count": "Count",
+  "putCards": "Put cards"
 }

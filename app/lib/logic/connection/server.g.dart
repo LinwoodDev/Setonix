@@ -98,6 +98,36 @@ Map<String, dynamic> _$$AddCardsServerConnectionMessageToJson(
       'type': instance.$type,
     };
 
+_$PutCardsServerConnectionMessage _$$PutCardsServerConnectionMessageFromJson(
+        Map json) =>
+    _$PutCardsServerConnectionMessage(
+      json['deckIndex'] as int,
+      json['seatIndex'] as int?,
+      $enumDecode(_$PickLocationEnumMap, json['location']),
+      json['count'] as int,
+      json['movedDeckIndex'] as int,
+      json['movedSeatIndex'] as int?,
+      $type: json['type'] as String?,
+    );
+
+Map<String, dynamic> _$$PutCardsServerConnectionMessageToJson(
+        _$PutCardsServerConnectionMessage instance) =>
+    <String, dynamic>{
+      'deckIndex': instance.deckIndex,
+      'seatIndex': instance.seatIndex,
+      'location': _$PickLocationEnumMap[instance.location]!,
+      'count': instance.count,
+      'movedDeckIndex': instance.movedDeckIndex,
+      'movedSeatIndex': instance.movedSeatIndex,
+      'type': instance.$type,
+    };
+
+const _$PickLocationEnumMap = {
+  PickLocation.top: 'top',
+  PickLocation.bottom: 'bottom',
+  PickLocation.random: 'random',
+};
+
 _$RemoveCardsServerConnectionMessage
     _$$RemoveCardsServerConnectionMessageFromJson(Map json) =>
         _$RemoveCardsServerConnectionMessage(

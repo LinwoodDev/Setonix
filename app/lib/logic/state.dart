@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'state.freezed.dart';
@@ -49,8 +50,10 @@ class GameState with _$GameState {
       copyWith(seats: seats.map((e) => e.copyWith(players: [])).toList())
           .toJson();
 
-  GameState onPlayer(int client) {
-    return copyWith();
+  GameState onPlayer(int player) {
+    final sentDecks = decks.map((e) => e.hideOutside()).toList();
+    final sentSeats = seats.map((e) => e.forPlayer(player)).toList();
+    return copyWith(decks: sentDecks, seats: sentSeats);
   }
 }
 
@@ -66,6 +69,18 @@ class GameSeat with _$GameSeat {
 
   factory GameSeat.fromJson(Map<String, dynamic> json) =>
       _$GameSeatFromJson(json);
+
+  GameSeat forPlayer(int player) {
+    if (players.contains(player)) {
+      return copyWith(
+        decks: decks.map((e) => e.hideOwn()).toList(),
+      );
+    } else {
+      return copyWith(
+        decks: decks.map((e) => e.hideOutside()).toList(),
+      );
+    }
+  }
 }
 
 enum DeckVisibility {
@@ -92,7 +107,7 @@ class DeckRefill with _$DeckRefill {
       _$DeckRefillFromJson(json);
 }
 
-enum CardLocation { top, bottom, random }
+enum PickLocation { top, bottom, random }
 
 @freezed
 class CardsRemoveState with _$CardsRemoveState {
@@ -115,7 +130,11 @@ class GameDeck with _$GameDeck {
   factory GameDeck.fromJson(Map<String, dynamic> json) =>
       _$GameDeckFromJson(json);
 
-  GameDeck hide() {
+  GameDeck hideOutside() => hide(visibility);
+
+  GameDeck hideOwn() => hide(getOwnVisibility());
+
+  GameDeck hide(DeckVisibility visibility) {
     switch (visibility) {
       case DeckVisibility.visible:
         return this;
@@ -144,16 +163,16 @@ class GameDeck with _$GameDeck {
   }
 
   GameDeck putCards(List<GameCard> cards,
-      [CardLocation location = CardLocation.bottom]) {
+      [PickLocation location = PickLocation.bottom]) {
     final newCards = List<GameCard>.from(cards);
     switch (location) {
-      case CardLocation.top:
+      case PickLocation.top:
         newCards.insertAll(0, cards);
         break;
-      case CardLocation.bottom:
+      case PickLocation.bottom:
         newCards.addAll(cards);
         break;
-      case CardLocation.random:
+      case PickLocation.random:
         newCards.insertAll(Random().nextInt(newCards.length + 1), cards);
         break;
     }
@@ -161,20 +180,20 @@ class GameDeck with _$GameDeck {
   }
 
   CardsRemoveState removeCards(
-      [int count = 1, CardLocation location = CardLocation.top]) {
+      [int count = 1, PickLocation location = PickLocation.top]) {
     final newCards = List<GameCard>.from(cards);
     final removedCards = <GameCard>[];
     switch (location) {
-      case CardLocation.top:
+      case PickLocation.top:
         removedCards.addAll(newCards.getRange(0, count));
         newCards.removeRange(0, count);
         break;
-      case CardLocation.bottom:
+      case PickLocation.bottom:
         removedCards.addAll(
             newCards.getRange(newCards.length - count, newCards.length));
         newCards.removeRange(newCards.length - count, newCards.length);
         break;
-      case CardLocation.random:
+      case PickLocation.random:
         final random = Random();
         for (var i = 0; i < count; i++) {
           removedCards.add(newCards.removeAt(random.nextInt(newCards.length)));

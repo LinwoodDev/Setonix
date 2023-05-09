@@ -118,4 +118,20 @@ class ClientGameConnection with GameConnection, ConnectedGameConnection {
   void removeCards(List<CardIndex> cards) {
     send(ServerConnectionMessage.removeCards(cards));
   }
+
+  void putCards(int deckIndex, int? seatIndex, PickLocation location, int count,
+      int movedDeckIndex, int? movedSeatIndex) {
+    send(ServerConnectionMessage.putCards(
+      deckIndex,
+      seatIndex,
+      location,
+      count,
+      movedDeckIndex,
+      movedSeatIndex,
+    ));
+  }
+
+  void removeDeck(int deckIndex, int? seatIndex) {
+    send(ServerConnectionMessage.removeDeck(deckIndex, seatIndex));
+  }
 }
