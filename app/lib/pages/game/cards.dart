@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -16,6 +17,8 @@ class CardsOperationDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int? deckIndex, seatIndex;
+    bool showRemove =
+        cards.whereNot((element) => element is AvailableCardIndex).isNotEmpty;
     return StatefulBuilder(
         builder: (context, setState) => AlertDialog(
               title: Text(AppLocalizations.of(context).cardsOperation),
@@ -23,7 +26,7 @@ class CardsOperationDialog extends StatelessWidget {
                   width: 500,
                   height: 500,
                   child: DefaultTabController(
-                      length: 3,
+                      length: showRemove ? 3 : 2,
                       child: Column(
                         children: [
                           TabBar(tabs: [
@@ -33,9 +36,10 @@ class CardsOperationDialog extends StatelessWidget {
                             Tab(
                               text: AppLocalizations.of(context).moveToSeatDeck,
                             ),
-                            Tab(
-                              text: AppLocalizations.of(context).remove,
-                            ),
+                            if (showRemove)
+                              Tab(
+                                text: AppLocalizations.of(context).remove,
+                              ),
                           ]),
                           Expanded(
                             child: TabBarView(
@@ -130,17 +134,18 @@ class CardsOperationDialog extends StatelessWidget {
                                     ),
                                   )
                                 ]),
-                                ListView(children: [
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      connection.removeCards(cards);
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text(
-                                      AppLocalizations.of(context).remove,
-                                    ),
-                                  )
-                                ]),
+                                if (showRemove)
+                                  ListView(children: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        connection.removeCards(cards);
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        AppLocalizations.of(context).remove,
+                                      ),
+                                    )
+                                  ]),
                               ],
                             ),
                           )
