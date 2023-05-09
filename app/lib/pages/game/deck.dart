@@ -43,7 +43,7 @@ class GameDeckView extends StatelessWidget {
   Widget build(BuildContext context) {
     final firstCard = deck.cards.firstOrNull;
     return SizedBox(
-      width: 120,
+      width: 150,
       child: Card(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -65,8 +65,12 @@ class GameDeckView extends StatelessWidget {
                     ),
                   ),
                 ),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Text(deck.name),
+              Row(children: [
+                Expanded(
+                    child: Text(
+                  deck.name,
+                  overflow: TextOverflow.ellipsis,
+                )),
                 MenuAnchor(
                   builder: (context, controller, child) => IconButton(
                     icon: const PhosphorIcon(PhosphorIconsLight.list),

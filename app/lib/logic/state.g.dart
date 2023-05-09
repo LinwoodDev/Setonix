@@ -11,12 +11,14 @@ _$ClassicGameCard _$$ClassicGameCardFromJson(Map json) => _$ClassicGameCard(
           $enumDecodeNullable(_$ClassicGameCardColorEnumMap, json['color']) ??
               ClassicGameCardColor.heart,
       number: json['number'] as int? ?? 1,
+      $type: json['type'] as String?,
     );
 
 Map<String, dynamic> _$$ClassicGameCardToJson(_$ClassicGameCard instance) =>
     <String, dynamic>{
       'color': _$ClassicGameCardColorEnumMap[instance.color]!,
       'number': instance.number,
+      'type': instance.$type,
     };
 
 const _$ClassicGameCardColorEnumMap = {
@@ -25,6 +27,17 @@ const _$ClassicGameCardColorEnumMap = {
   ClassicGameCardColor.spade: 'spade',
   ClassicGameCardColor.club: 'club',
 };
+
+_$BackgroundGameCard _$$BackgroundGameCardFromJson(Map json) =>
+    _$BackgroundGameCard(
+      $type: json['type'] as String?,
+    );
+
+Map<String, dynamic> _$$BackgroundGameCardToJson(
+        _$BackgroundGameCard instance) =>
+    <String, dynamic>{
+      'type': instance.$type,
+    };
 
 _$_GameState _$$_GameStateFromJson(Map json) => _$_GameState(
       decks: (json['decks'] as List<dynamic>?)

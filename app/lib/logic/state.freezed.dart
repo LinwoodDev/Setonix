@@ -15,57 +15,65 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 GameCard _$GameCardFromJson(Map<String, dynamic> json) {
-  return ClassicGameCard.fromJson(json);
+  switch (json['type']) {
+    case 'classic':
+      return ClassicGameCard.fromJson(json);
+    case 'background':
+      return BackgroundGameCard.fromJson(json);
+
+    default:
+      throw CheckedFromJsonException(
+          json, 'type', 'GameCard', 'Invalid union type "${json['type']}"!');
+  }
 }
 
 /// @nodoc
 mixin _$GameCard {
-  ClassicGameCardColor get color => throw _privateConstructorUsedError;
-  int get number => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(ClassicGameCardColor color, int number) classic,
+    required TResult Function() background,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(ClassicGameCardColor color, int number)? classic,
+    TResult? Function()? background,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(ClassicGameCardColor color, int number)? classic,
+    TResult Function()? background,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(ClassicGameCard value) classic,
+    required TResult Function(BackgroundGameCard value) background,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(ClassicGameCard value)? classic,
+    TResult? Function(BackgroundGameCard value)? background,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ClassicGameCard value)? classic,
+    TResult Function(BackgroundGameCard value)? background,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $GameCardCopyWith<GameCard> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $GameCardCopyWith<$Res> {
   factory $GameCardCopyWith(GameCard value, $Res Function(GameCard) then) =
       _$GameCardCopyWithImpl<$Res, GameCard>;
-  @useResult
-  $Res call({ClassicGameCardColor color, int number});
 }
 
 /// @nodoc
@@ -77,33 +85,13 @@ class _$GameCardCopyWithImpl<$Res, $Val extends GameCard>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? color = null,
-    Object? number = null,
-  }) {
-    return _then(_value.copyWith(
-      color: null == color
-          ? _value.color
-          : color // ignore: cast_nullable_to_non_nullable
-              as ClassicGameCardColor,
-      number: null == number
-          ? _value.number
-          : number // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
-  }
 }
 
 /// @nodoc
-abstract class _$$ClassicGameCardCopyWith<$Res>
-    implements $GameCardCopyWith<$Res> {
+abstract class _$$ClassicGameCardCopyWith<$Res> {
   factory _$$ClassicGameCardCopyWith(
           _$ClassicGameCard value, $Res Function(_$ClassicGameCard) then) =
       __$$ClassicGameCardCopyWithImpl<$Res>;
-  @override
   @useResult
   $Res call({ClassicGameCardColor color, int number});
 }
@@ -139,7 +127,10 @@ class __$$ClassicGameCardCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ClassicGameCard implements ClassicGameCard {
   const _$ClassicGameCard(
-      {this.color = ClassicGameCardColor.heart, this.number = 1});
+      {this.color = ClassicGameCardColor.heart,
+      this.number = 1,
+      final String? $type})
+      : $type = $type ?? 'classic';
 
   factory _$ClassicGameCard.fromJson(Map<String, dynamic> json) =>
       _$$ClassicGameCardFromJson(json);
@@ -150,6 +141,9 @@ class _$ClassicGameCard implements ClassicGameCard {
   @override
   @JsonKey()
   final int number;
+
+  @JsonKey(name: 'type')
+  final String $type;
 
   @override
   String toString() {
@@ -179,6 +173,7 @@ class _$ClassicGameCard implements ClassicGameCard {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(ClassicGameCardColor color, int number) classic,
+    required TResult Function() background,
   }) {
     return classic(color, number);
   }
@@ -187,6 +182,7 @@ class _$ClassicGameCard implements ClassicGameCard {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(ClassicGameCardColor color, int number)? classic,
+    TResult? Function()? background,
   }) {
     return classic?.call(color, number);
   }
@@ -195,6 +191,7 @@ class _$ClassicGameCard implements ClassicGameCard {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(ClassicGameCardColor color, int number)? classic,
+    TResult Function()? background,
     required TResult orElse(),
   }) {
     if (classic != null) {
@@ -207,6 +204,7 @@ class _$ClassicGameCard implements ClassicGameCard {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(ClassicGameCard value) classic,
+    required TResult Function(BackgroundGameCard value) background,
   }) {
     return classic(this);
   }
@@ -215,6 +213,7 @@ class _$ClassicGameCard implements ClassicGameCard {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(ClassicGameCard value)? classic,
+    TResult? Function(BackgroundGameCard value)? background,
   }) {
     return classic?.call(this);
   }
@@ -223,6 +222,7 @@ class _$ClassicGameCard implements ClassicGameCard {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ClassicGameCard value)? classic,
+    TResult Function(BackgroundGameCard value)? background,
     required TResult orElse(),
   }) {
     if (classic != null) {
@@ -246,14 +246,131 @@ abstract class ClassicGameCard implements GameCard {
   factory ClassicGameCard.fromJson(Map<String, dynamic> json) =
       _$ClassicGameCard.fromJson;
 
-  @override
   ClassicGameCardColor get color;
-  @override
   int get number;
-  @override
   @JsonKey(ignore: true)
   _$$ClassicGameCardCopyWith<_$ClassicGameCard> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$BackgroundGameCardCopyWith<$Res> {
+  factory _$$BackgroundGameCardCopyWith(_$BackgroundGameCard value,
+          $Res Function(_$BackgroundGameCard) then) =
+      __$$BackgroundGameCardCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$BackgroundGameCardCopyWithImpl<$Res>
+    extends _$GameCardCopyWithImpl<$Res, _$BackgroundGameCard>
+    implements _$$BackgroundGameCardCopyWith<$Res> {
+  __$$BackgroundGameCardCopyWithImpl(
+      _$BackgroundGameCard _value, $Res Function(_$BackgroundGameCard) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$BackgroundGameCard implements BackgroundGameCard {
+  const _$BackgroundGameCard({final String? $type})
+      : $type = $type ?? 'background';
+
+  factory _$BackgroundGameCard.fromJson(Map<String, dynamic> json) =>
+      _$$BackgroundGameCardFromJson(json);
+
+  @JsonKey(name: 'type')
+  final String $type;
+
+  @override
+  String toString() {
+    return 'GameCard.background()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$BackgroundGameCard);
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(ClassicGameCardColor color, int number) classic,
+    required TResult Function() background,
+  }) {
+    return background();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(ClassicGameCardColor color, int number)? classic,
+    TResult? Function()? background,
+  }) {
+    return background?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(ClassicGameCardColor color, int number)? classic,
+    TResult Function()? background,
+    required TResult orElse(),
+  }) {
+    if (background != null) {
+      return background();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(ClassicGameCard value) classic,
+    required TResult Function(BackgroundGameCard value) background,
+  }) {
+    return background(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(ClassicGameCard value)? classic,
+    TResult? Function(BackgroundGameCard value)? background,
+  }) {
+    return background?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(ClassicGameCard value)? classic,
+    TResult Function(BackgroundGameCard value)? background,
+    required TResult orElse(),
+  }) {
+    if (background != null) {
+      return background(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$BackgroundGameCardToJson(
+      this,
+    );
+  }
+}
+
+abstract class BackgroundGameCard implements GameCard {
+  const factory BackgroundGameCard() = _$BackgroundGameCard;
+
+  factory BackgroundGameCard.fromJson(Map<String, dynamic> json) =
+      _$BackgroundGameCard.fromJson;
 }
 
 GameState _$GameStateFromJson(Map<String, dynamic> json) {

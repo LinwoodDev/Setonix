@@ -19,6 +19,8 @@ class GameCard with _$GameCard {
     @Default(1) int number,
   }) = ClassicGameCard;
 
+  const factory GameCard.background() = BackgroundGameCard;
+
   factory GameCard.fromJson(Map<String, dynamic> json) =>
       _$GameCardFromJson(json);
 
@@ -144,12 +146,12 @@ class GameDeck with _$GameDeck {
         return copyWith(
           cards: [
             cards.first,
-            ...cards.map((e) => e.copyWith(number: -1)).toList(),
+            ...cards.map((e) => const BackgroundGameCard()).toList(),
           ],
         );
       case DeckVisibility.hidden:
         return copyWith(
-          cards: cards.map((e) => e.copyWith(number: -1)).toList(),
+          cards: cards.map((e) => const BackgroundGameCard()).toList(),
         );
     }
   }
