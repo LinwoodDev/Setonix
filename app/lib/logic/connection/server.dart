@@ -107,6 +107,14 @@ class ServerGameConnection with GameConnection {
       final client = WebSocketClient(socket, info);
       clients.add(client);
       _sendPlayersUpdated();
+      _send(
+        client,
+        ClientConnectionMessage.stateChanged(
+          state.onPlayer(
+            client.socket.hashCode,
+          ),
+        ),
+      );
 
       // Listen for incoming messages from the client
       socket.listen((event) => _onMessage(client, event), onDone: () {

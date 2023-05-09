@@ -35,5 +35,8 @@ void main() {
     }
   }
 
-  io.serve(handler, 'localhost', 80);
+  // Serve on every ip
+  io.serve(handler, InternetAddress.anyIPv4, 80).then((server) {
+    print('Serving at http://${server.address.host}:${server.port}');
+  });
 }
