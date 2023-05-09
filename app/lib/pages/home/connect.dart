@@ -9,6 +9,8 @@ class ConnectGameDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var currentAddress = '';
+    var port = kDefaultPort;
+    bool secure = false;
     return AlertDialog(
       title: Text(AppLocalizations.of(context).create),
       scrollable: true,
@@ -17,6 +19,11 @@ class ConnectGameDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            CheckboxListTile(
+              title: Text(AppLocalizations.of(context).secure),
+              value: secure,
+              onChanged: (value) => secure = value ?? secure,
+            ),
             TextFormField(
               decoration: InputDecoration(
                 labelText: AppLocalizations.of(context).address,
@@ -25,6 +32,16 @@ class ConnectGameDialog extends StatelessWidget {
               ),
               initialValue: currentAddress,
               onChanged: (value) => currentAddress = value,
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context).port,
+                filled: true,
+                icon: const PhosphorIcon(PhosphorIconsLight.textT),
+              ),
+              initialValue: port.toString(),
+              onChanged: (value) => port = int.tryParse(value) ?? port,
             ),
           ],
         ),
@@ -36,9 +53,10 @@ class ConnectGameDialog extends StatelessWidget {
         ),
         ElevatedButton(
           onPressed: () => Navigator.of(context).pop(Uri(
-            scheme: 'ws',
+            scheme: secure ? 'wss' : 'ws',
             host: currentAddress,
-            port: kDefaultPort,
+            port: port,
+            path: '/connect',
           )),
           child: Text(AppLocalizations.of(context).create),
         ),
