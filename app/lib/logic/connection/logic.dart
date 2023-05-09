@@ -33,3 +33,14 @@ mixin GameConnection {
 
   Future<void> close();
 }
+
+@freezed
+class CardIndex with _$CardIndex {
+  const factory CardIndex.custom(GameCard card) = AvailableCardIndex;
+  const factory CardIndex.deck(int cardIndex, int deckIndex) = DeckCardIndex;
+  const factory CardIndex.seat(int cardIndex, int deckIndex, int seatIndex) =
+      SeatCardIndex;
+
+  factory CardIndex.fromJson(Map<String, dynamic> json) =>
+      _$CardIndexFromJson(json);
+}

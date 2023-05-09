@@ -110,4 +110,12 @@ class ClientGameConnection with GameConnection, ConnectedGameConnection {
   void addDeck(GameDeck deck, int? seatIndex) {
     send(ServerConnectionMessage.addDeck(deck, seatIndex));
   }
+
+  void addCards(List<CardIndex> cards, int deckIndex, [int? seatIndex]) {
+    send(ServerConnectionMessage.addCards(cards, deckIndex, seatIndex));
+  }
+
+  void removeCards(List<CardIndex> cards) {
+    send(ServerConnectionMessage.removeCards(cards));
+  }
 }

@@ -26,8 +26,15 @@ class ServerConnectionMessage with _$ServerConnectionMessage {
   const factory ServerConnectionMessage.removeDeck(int index, int? seatIndex) =
       RemoveDeckServerConnectionMessage;
 
-  const factory ServerConnectionMessage.addSeat(String name,
-      [@Default([]) List<GameDeck> decks]) = AddSeatServerConnectionMessage;
+  const factory ServerConnectionMessage.addSeat(String name) =
+      AddSeatServerConnectionMessage;
+
+  const factory ServerConnectionMessage.addCards(
+          List<CardIndex> cards, int deckIndex, int? seatIndex) =
+      AddCardsServerConnectionMessage;
+
+  const factory ServerConnectionMessage.removeCards(List<CardIndex> cards) =
+      RemoveCardsServerConnectionMessage;
 
   const factory ServerConnectionMessage.removeSeat(int index) =
       RemoveSeatServerConnectionMessage;
@@ -135,6 +142,55 @@ class ServerGameConnection with GameConnection {
     }
   }
 
+  List<GameCard> _removeCards(List<CardIndex> cards) {
+    final deckIndexes = cards.whereType<DeckCardIndex>().toList();
+    final seatIndexes = cards.whereType<SeatCardIndex>().toList();
+
+    final addingCards =
+        cards.whereType<AvailableCardIndex>().map((e) => e.card).toList();
+    _changeState(state.copyWith(
+        decks: state.decks.asMap().entries.map(
+          (de) {
+            final deck = de.value;
+            return deck.copyWith(
+                cards: deck.cards
+                    .asMap()
+                    .entries
+                    .where((e) {
+                      final found = deckIndexes.any((element) =>
+                          element.deckIndex == de.key &&
+                          element.cardIndex == e.key);
+                      addingCards.add(e.value);
+                      return !found;
+                    })
+                    .map((e) => e.value)
+                    .toList());
+          },
+        ).toList(),
+        seats: state.seats.asMap().entries.map((se) {
+          final seat = se.value;
+          return seat.copyWith(
+              decks: seat.decks.asMap().entries.map((de) {
+            final deck = de.value;
+            return deck.copyWith(
+                cards: deck.cards
+                    .asMap()
+                    .entries
+                    .where((e) {
+                      final found = seatIndexes.any((element) =>
+                          element.deckIndex == de.key &&
+                          element.seatIndex == se.key &&
+                          element.cardIndex == e.key);
+                      addingCards.add(e.value);
+                      return !found;
+                    })
+                    .map((e) => e.value)
+                    .toList());
+          }).toList());
+        }).toList()));
+    return addingCards;
+  }
+
   Future<void> _onMessage(WebSocketClient client, event) async {
     final message = ServerConnectionMessage.fromJson(jsonDecode(event));
     void sendBack(ClientConnectionMessage message) {
@@ -142,67 +198,95 @@ class ServerGameConnection with GameConnection {
     }
 
     message.when(
-        fetchPlayers: () => sendBack(
-              ClientConnectionMessage.playersUpdated(players, client.hashCode),
-            ),
-        chatMessage: (message) => _sendToAll(
-              ClientConnectionMessage.chatMessage(
-                message,
-                client.info.remoteAddress.address,
-              ),
-            ),
-        addDeck: (deck, seatIndex) {
-          if (seatIndex != null) {
-            _changeState(state.copyWith(
-                seats: List<GameSeat>.from(state.seats)
-                  ..[seatIndex] = state.seats[seatIndex].copyWith(
-                    decks: [...state.seats[seatIndex].decks, deck],
-                  )));
-            return;
-          }
-          _changeState(state.copyWith(decks: [...state.decks, deck]));
-        },
-        removeDeck: (index, seatIndex) {
-          if (seatIndex != null) {
-            _changeState(state.copyWith(
-                seats: List<GameSeat>.from(state.seats)
-                  ..[seatIndex] = state.seats[seatIndex].copyWith(
-                    decks: List<GameDeck>.from(state.seats[seatIndex].decks)
-                      ..removeAt(index),
-                  )));
-            return;
-          }
-          _changeState(state.copyWith(
-              decks: List<GameDeck>.from(state.decks)..removeAt(index)));
-        },
-        addSeat: (name, decks) {
-          _changeState(state.copyWith(seats: [
-            ...state.seats,
-            GameSeat(
-              name: name,
-              decks: decks,
-            ),
-          ]));
-        },
-        removeSeat: (index) {
-          _changeState(state.copyWith(
-              seats: List<GameSeat>.from(state.seats)..removeAt(index)));
-        },
-        joinSeat: (index) {
+      fetchPlayers: () => sendBack(
+        ClientConnectionMessage.playersUpdated(players, client.hashCode),
+      ),
+      chatMessage: (message) => _sendToAll(
+        ClientConnectionMessage.chatMessage(
+          message,
+          client.info.remoteAddress.address,
+        ),
+      ),
+      addDeck: (deck, seatIndex) {
+        if (seatIndex != null) {
           _changeState(state.copyWith(
               seats: List<GameSeat>.from(state.seats)
-                ..[index] = state.seats[index].copyWith(
-                  players: [...state.seats[index].players, client.hashCode],
+                ..[seatIndex] = state.seats[seatIndex].copyWith(
+                  decks: [...state.seats[seatIndex].decks, deck],
                 )));
-        },
-        leaveSeat: (index) {
+          return;
+        }
+        _changeState(state.copyWith(decks: [...state.decks, deck]));
+      },
+      removeDeck: (index, seatIndex) {
+        if (seatIndex != null) {
           _changeState(state.copyWith(
               seats: List<GameSeat>.from(state.seats)
-                ..[index] = state.seats[index].copyWith(
-                  players: List<int>.from(state.seats[index].players)
-                    ..remove(client.hashCode),
+                ..[seatIndex] = state.seats[seatIndex].copyWith(
+                  decks: List<GameDeck>.from(state.seats[seatIndex].decks)
+                    ..removeAt(index),
                 )));
-        });
+          return;
+        }
+        _changeState(state.copyWith(
+            decks: List<GameDeck>.from(state.decks)..removeAt(index)));
+      },
+      addSeat: (name) {
+        _changeState(state.copyWith(seats: [
+          ...state.seats,
+          GameSeat(
+            name: name,
+          ),
+        ]));
+      },
+      removeSeat: (index) {
+        _changeState(state.copyWith(
+            seats: List<GameSeat>.from(state.seats)..removeAt(index)));
+      },
+      joinSeat: (index) {
+        _changeState(state.copyWith(
+            seats: List<GameSeat>.from(state.seats)
+              ..[index] = state.seats[index].copyWith(
+                players: [...state.seats[index].players, client.hashCode],
+              )));
+      },
+      leaveSeat: (index) {
+        _changeState(state.copyWith(
+            seats: List<GameSeat>.from(state.seats)
+              ..[index] = state.seats[index].copyWith(
+                players: List<int>.from(state.seats[index].players)
+                  ..remove(client.hashCode),
+              )));
+      },
+      addCards: (cards, deckIndex, seatIndex) {
+        final addingCards = _removeCards(cards);
+        var newState = state;
+        if (seatIndex != null) {
+          newState = newState.copyWith(
+              seats: List<GameSeat>.from(newState.seats)
+                ..[seatIndex] = newState.seats[seatIndex].copyWith(
+                    decks: List<GameDeck>.from(newState.seats[seatIndex].decks)
+                      ..[deckIndex] =
+                          newState.seats[seatIndex].decks[deckIndex].copyWith(
+                        cards: [
+                          ...newState.seats[seatIndex].decks[deckIndex].cards,
+                          ...addingCards
+                        ],
+                      )));
+        } else {
+          newState = newState.copyWith(
+              decks: List<GameDeck>.from(newState.decks)
+                ..[deckIndex] = newState.decks[deckIndex].copyWith(
+                  cards: [...newState.decks[deckIndex].cards, ...addingCards],
+                ));
+        }
+        _changeState(newState);
+      },
+      removeCards: (cards) {
+        _removeCards(cards);
+        _changeState(state);
+      },
+    );
   }
 }
 

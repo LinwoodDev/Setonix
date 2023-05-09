@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:qeck/logic/connection/client.dart';
+import 'package:qeck/logic/connection/logic.dart';
 import 'package:qeck/logic/state.dart';
 import 'package:qeck/pages/game/card.dart';
 
@@ -71,6 +72,27 @@ class GameDeckView extends StatelessWidget {
                   menuChildren: [
                     MenuItemButton(
                       child: Text(AppLocalizations.of(context).shuffle),
+                    ),
+                    MenuItemButton(
+                      child: Text(AppLocalizations.of(context).moveCards),
+                      onPressed: () {
+                        final indexes = deck.cards.asMap().entries.map((e) {
+                          if (index == null) {
+                            return AvailableCardIndex(e.value);
+                          }
+                          if (seatIndex == null) {
+                            return DeckCardIndex(e.key, index!);
+                          }
+                          return SeatCardIndex(e.key, index!, seatIndex!);
+                        }).toList();
+                        showDialog(
+                          context: context,
+                          builder: (context) => CardsOperationDialog(
+                            cards: indexes,
+                            connection: connection,
+                          ),
+                        );
+                      },
                     )
                   ],
                 ),

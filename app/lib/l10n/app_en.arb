@@ -25,5 +25,12 @@
   "addDeck": "Add deck",
   "addSeat": "Add seat",
   "visibility": "Visibility",
-  "ownVisibility": "Own visibility"
+  "ownVisibility": "Own visibility",
+  "cardsOperation": "Cards operation",
+  "moveToDeck": "Move to deck",
+  "moveToSeatDeck": "Move to seat deck",
+  "remove": "Remove",
+  "move": "Move",
+  "deck": "Deck",
+  "moveCards": "Move cards"
 }

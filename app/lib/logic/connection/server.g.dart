@@ -68,19 +68,50 @@ _$AddSeatServerConnectionMessage _$$AddSeatServerConnectionMessageFromJson(
         Map json) =>
     _$AddSeatServerConnectionMessage(
       json['name'] as String,
-      (json['decks'] as List<dynamic>?)
-              ?.map(
-                  (e) => GameDeck.fromJson(Map<String, dynamic>.from(e as Map)))
-              .toList() ??
-          const [],
-      json['type'] as String?,
+      $type: json['type'] as String?,
     );
 
 Map<String, dynamic> _$$AddSeatServerConnectionMessageToJson(
         _$AddSeatServerConnectionMessage instance) =>
     <String, dynamic>{
       'name': instance.name,
-      'decks': instance.decks.map((e) => e.toJson()).toList(),
+      'type': instance.$type,
+    };
+
+_$AddCardsServerConnectionMessage _$$AddCardsServerConnectionMessageFromJson(
+        Map json) =>
+    _$AddCardsServerConnectionMessage(
+      (json['cards'] as List<dynamic>)
+          .map((e) => CardIndex.fromJson(Map<String, dynamic>.from(e as Map)))
+          .toList(),
+      json['deckIndex'] as int,
+      json['seatIndex'] as int?,
+      $type: json['type'] as String?,
+    );
+
+Map<String, dynamic> _$$AddCardsServerConnectionMessageToJson(
+        _$AddCardsServerConnectionMessage instance) =>
+    <String, dynamic>{
+      'cards': instance.cards.map((e) => e.toJson()).toList(),
+      'deckIndex': instance.deckIndex,
+      'seatIndex': instance.seatIndex,
+      'type': instance.$type,
+    };
+
+_$RemoveCardsServerConnectionMessage
+    _$$RemoveCardsServerConnectionMessageFromJson(Map json) =>
+        _$RemoveCardsServerConnectionMessage(
+          (json['cards'] as List<dynamic>)
+              .map((e) =>
+                  CardIndex.fromJson(Map<String, dynamic>.from(e as Map)))
+              .toList(),
+          $type: json['type'] as String?,
+        );
+
+Map<String, dynamic> _$$RemoveCardsServerConnectionMessageToJson(
+        _$RemoveCardsServerConnectionMessage instance) =>
+    <String, dynamic>{
+      'cards': instance.cards.map((e) => e.toJson()).toList(),
       'type': instance.$type,
     };
 
