@@ -76,9 +76,6 @@ class GameDeckView extends StatelessWidget {
                   ),
                   menuChildren: [
                     MenuItemButton(
-                      child: Text(AppLocalizations.of(context).shuffle),
-                    ),
-                    MenuItemButton(
                       child: Text(AppLocalizations.of(context).moveCards),
                       onPressed: () {
                         final indexes = deck.cards.asMap().entries.map((e) {
@@ -101,6 +98,12 @@ class GameDeckView extends StatelessWidget {
                     ),
                     if (index != null) ...[
                       MenuItemButton(
+                        child: Text(AppLocalizations.of(context).shuffle),
+                        onPressed: () {
+                          connection.shuffle(index!, seatIndex);
+                        },
+                      ),
+                      MenuItemButton(
                         child: Text(AppLocalizations.of(context).putCards),
                         onPressed: () {
                           showDialog(
@@ -109,6 +112,20 @@ class GameDeckView extends StatelessWidget {
                               deckIndex: index!,
                               seatIndex: seatIndex,
                               connection: connection,
+                            ),
+                          );
+                        },
+                      ),
+                      MenuItemButton(
+                        child:
+                            Text(AppLocalizations.of(context).changeVisibility),
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => ChangeVisibilityDeckDialog(
+                              connection: connection,
+                              index: index!,
+                              seatIndex: seatIndex,
                             ),
                           );
                         },
@@ -317,6 +334,57 @@ class AddDeckDialog extends StatelessWidget {
             Navigator.of(context).pop();
           },
           child: Text(AppLocalizations.of(context).create),
+        ),
+      ],
+    );
+  }
+}
+
+class ChangeVisibilityDeckDialog extends StatelessWidget {
+  final ClientGameConnection connection;
+  final int index;
+  final int? seatIndex;
+
+  const ChangeVisibilityDeckDialog({
+    super.key,
+    required this.connection,
+    required this.index,
+    this.seatIndex,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var visibility = seatIndex == null
+        ? connection.state.decks[index].visibility
+        : connection.state.seats[seatIndex!].decks[index].visibility;
+    return AlertDialog(
+      title: Text(AppLocalizations.of(context).changeVisibility),
+      content: DropdownButtonFormField<DeckVisibility>(
+        decoration: InputDecoration(
+          labelText: AppLocalizations.of(context).visibility,
+        ),
+        value: visibility,
+        items: DeckVisibility.values
+            .map((e) => DropdownMenuItem(
+                  value: e,
+                  child: Text(e.name),
+                ))
+            .toList(),
+        onChanged: (value) {
+          visibility = value ?? visibility;
+        },
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(AppLocalizations.of(context).cancel),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            connection.changeVisibility(index, seatIndex, visibility);
+            Navigator.of(context).pop();
+          },
+          child: Text(AppLocalizations.of(context).change),
         ),
       ],
     );

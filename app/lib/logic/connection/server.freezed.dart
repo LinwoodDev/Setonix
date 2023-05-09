@@ -39,6 +39,10 @@ ServerConnectionMessage _$ServerConnectionMessageFromJson(
       return JoinSeatServerConnectionMessage.fromJson(json);
     case 'leaveSeat':
       return LeaveSeatServerConnectionMessage.fromJson(json);
+    case 'shuffle':
+      return ShuffleServerConnectionMessage.fromJson(json);
+    case 'changeVisibility':
+      return ChangeVisibilityServerConnectionMessage.fromJson(json);
 
     default:
       throw CheckedFromJsonException(json, 'type', 'ServerConnectionMessage',
@@ -70,6 +74,10 @@ mixin _$ServerConnectionMessage {
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
     required TResult Function(int index) leaveSeat,
+    required TResult Function(int deckIndex, int? seatIndex) shuffle,
+    required TResult Function(
+            int deckIndex, int? seatIndex, DeckVisibility visibility)
+        changeVisibility,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -88,6 +96,9 @@ mixin _$ServerConnectionMessage {
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
     TResult? Function(int index)? leaveSeat,
+    TResult? Function(int deckIndex, int? seatIndex)? shuffle,
+    TResult? Function(int deckIndex, int? seatIndex, DeckVisibility visibility)?
+        changeVisibility,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -106,6 +117,9 @@ mixin _$ServerConnectionMessage {
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
     TResult Function(int index)? leaveSeat,
+    TResult Function(int deckIndex, int? seatIndex)? shuffle,
+    TResult Function(int deckIndex, int? seatIndex, DeckVisibility visibility)?
+        changeVisibility,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -127,6 +141,9 @@ mixin _$ServerConnectionMessage {
         removeSeat,
     required TResult Function(JoinSeatServerConnectionMessage value) joinSeat,
     required TResult Function(LeaveSeatServerConnectionMessage value) leaveSeat,
+    required TResult Function(ShuffleServerConnectionMessage value) shuffle,
+    required TResult Function(ChangeVisibilityServerConnectionMessage value)
+        changeVisibility,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -142,6 +159,9 @@ mixin _$ServerConnectionMessage {
     TResult? Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult? Function(JoinSeatServerConnectionMessage value)? joinSeat,
     TResult? Function(LeaveSeatServerConnectionMessage value)? leaveSeat,
+    TResult? Function(ShuffleServerConnectionMessage value)? shuffle,
+    TResult? Function(ChangeVisibilityServerConnectionMessage value)?
+        changeVisibility,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -157,6 +177,9 @@ mixin _$ServerConnectionMessage {
     TResult Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult Function(JoinSeatServerConnectionMessage value)? joinSeat,
     TResult Function(LeaveSeatServerConnectionMessage value)? leaveSeat,
+    TResult Function(ShuffleServerConnectionMessage value)? shuffle,
+    TResult Function(ChangeVisibilityServerConnectionMessage value)?
+        changeVisibility,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -254,6 +277,10 @@ class _$FetchPlayersServerConnectionMessage
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
     required TResult Function(int index) leaveSeat,
+    required TResult Function(int deckIndex, int? seatIndex) shuffle,
+    required TResult Function(
+            int deckIndex, int? seatIndex, DeckVisibility visibility)
+        changeVisibility,
   }) {
     return fetchPlayers();
   }
@@ -275,6 +302,9 @@ class _$FetchPlayersServerConnectionMessage
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
     TResult? Function(int index)? leaveSeat,
+    TResult? Function(int deckIndex, int? seatIndex)? shuffle,
+    TResult? Function(int deckIndex, int? seatIndex, DeckVisibility visibility)?
+        changeVisibility,
   }) {
     return fetchPlayers?.call();
   }
@@ -296,6 +326,9 @@ class _$FetchPlayersServerConnectionMessage
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
     TResult Function(int index)? leaveSeat,
+    TResult Function(int deckIndex, int? seatIndex)? shuffle,
+    TResult Function(int deckIndex, int? seatIndex, DeckVisibility visibility)?
+        changeVisibility,
     required TResult orElse(),
   }) {
     if (fetchPlayers != null) {
@@ -323,6 +356,9 @@ class _$FetchPlayersServerConnectionMessage
         removeSeat,
     required TResult Function(JoinSeatServerConnectionMessage value) joinSeat,
     required TResult Function(LeaveSeatServerConnectionMessage value) leaveSeat,
+    required TResult Function(ShuffleServerConnectionMessage value) shuffle,
+    required TResult Function(ChangeVisibilityServerConnectionMessage value)
+        changeVisibility,
   }) {
     return fetchPlayers(this);
   }
@@ -341,6 +377,9 @@ class _$FetchPlayersServerConnectionMessage
     TResult? Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult? Function(JoinSeatServerConnectionMessage value)? joinSeat,
     TResult? Function(LeaveSeatServerConnectionMessage value)? leaveSeat,
+    TResult? Function(ShuffleServerConnectionMessage value)? shuffle,
+    TResult? Function(ChangeVisibilityServerConnectionMessage value)?
+        changeVisibility,
   }) {
     return fetchPlayers?.call(this);
   }
@@ -359,6 +398,9 @@ class _$FetchPlayersServerConnectionMessage
     TResult Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult Function(JoinSeatServerConnectionMessage value)? joinSeat,
     TResult Function(LeaveSeatServerConnectionMessage value)? leaveSeat,
+    TResult Function(ShuffleServerConnectionMessage value)? shuffle,
+    TResult Function(ChangeVisibilityServerConnectionMessage value)?
+        changeVisibility,
     required TResult orElse(),
   }) {
     if (fetchPlayers != null) {
@@ -485,6 +527,10 @@ class _$ChatMessageServerConnectionMessage
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
     required TResult Function(int index) leaveSeat,
+    required TResult Function(int deckIndex, int? seatIndex) shuffle,
+    required TResult Function(
+            int deckIndex, int? seatIndex, DeckVisibility visibility)
+        changeVisibility,
   }) {
     return chatMessage(message);
   }
@@ -506,6 +552,9 @@ class _$ChatMessageServerConnectionMessage
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
     TResult? Function(int index)? leaveSeat,
+    TResult? Function(int deckIndex, int? seatIndex)? shuffle,
+    TResult? Function(int deckIndex, int? seatIndex, DeckVisibility visibility)?
+        changeVisibility,
   }) {
     return chatMessage?.call(message);
   }
@@ -527,6 +576,9 @@ class _$ChatMessageServerConnectionMessage
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
     TResult Function(int index)? leaveSeat,
+    TResult Function(int deckIndex, int? seatIndex)? shuffle,
+    TResult Function(int deckIndex, int? seatIndex, DeckVisibility visibility)?
+        changeVisibility,
     required TResult orElse(),
   }) {
     if (chatMessage != null) {
@@ -554,6 +606,9 @@ class _$ChatMessageServerConnectionMessage
         removeSeat,
     required TResult Function(JoinSeatServerConnectionMessage value) joinSeat,
     required TResult Function(LeaveSeatServerConnectionMessage value) leaveSeat,
+    required TResult Function(ShuffleServerConnectionMessage value) shuffle,
+    required TResult Function(ChangeVisibilityServerConnectionMessage value)
+        changeVisibility,
   }) {
     return chatMessage(this);
   }
@@ -572,6 +627,9 @@ class _$ChatMessageServerConnectionMessage
     TResult? Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult? Function(JoinSeatServerConnectionMessage value)? joinSeat,
     TResult? Function(LeaveSeatServerConnectionMessage value)? leaveSeat,
+    TResult? Function(ShuffleServerConnectionMessage value)? shuffle,
+    TResult? Function(ChangeVisibilityServerConnectionMessage value)?
+        changeVisibility,
   }) {
     return chatMessage?.call(this);
   }
@@ -590,6 +648,9 @@ class _$ChatMessageServerConnectionMessage
     TResult Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult Function(JoinSeatServerConnectionMessage value)? joinSeat,
     TResult Function(LeaveSeatServerConnectionMessage value)? leaveSeat,
+    TResult Function(ShuffleServerConnectionMessage value)? shuffle,
+    TResult Function(ChangeVisibilityServerConnectionMessage value)?
+        changeVisibility,
     required TResult orElse(),
   }) {
     if (chatMessage != null) {
@@ -740,6 +801,10 @@ class _$AddDeckServerConnectionMessage
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
     required TResult Function(int index) leaveSeat,
+    required TResult Function(int deckIndex, int? seatIndex) shuffle,
+    required TResult Function(
+            int deckIndex, int? seatIndex, DeckVisibility visibility)
+        changeVisibility,
   }) {
     return addDeck(deck, seatIndex);
   }
@@ -761,6 +826,9 @@ class _$AddDeckServerConnectionMessage
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
     TResult? Function(int index)? leaveSeat,
+    TResult? Function(int deckIndex, int? seatIndex)? shuffle,
+    TResult? Function(int deckIndex, int? seatIndex, DeckVisibility visibility)?
+        changeVisibility,
   }) {
     return addDeck?.call(deck, seatIndex);
   }
@@ -782,6 +850,9 @@ class _$AddDeckServerConnectionMessage
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
     TResult Function(int index)? leaveSeat,
+    TResult Function(int deckIndex, int? seatIndex)? shuffle,
+    TResult Function(int deckIndex, int? seatIndex, DeckVisibility visibility)?
+        changeVisibility,
     required TResult orElse(),
   }) {
     if (addDeck != null) {
@@ -809,6 +880,9 @@ class _$AddDeckServerConnectionMessage
         removeSeat,
     required TResult Function(JoinSeatServerConnectionMessage value) joinSeat,
     required TResult Function(LeaveSeatServerConnectionMessage value) leaveSeat,
+    required TResult Function(ShuffleServerConnectionMessage value) shuffle,
+    required TResult Function(ChangeVisibilityServerConnectionMessage value)
+        changeVisibility,
   }) {
     return addDeck(this);
   }
@@ -827,6 +901,9 @@ class _$AddDeckServerConnectionMessage
     TResult? Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult? Function(JoinSeatServerConnectionMessage value)? joinSeat,
     TResult? Function(LeaveSeatServerConnectionMessage value)? leaveSeat,
+    TResult? Function(ShuffleServerConnectionMessage value)? shuffle,
+    TResult? Function(ChangeVisibilityServerConnectionMessage value)?
+        changeVisibility,
   }) {
     return addDeck?.call(this);
   }
@@ -845,6 +922,9 @@ class _$AddDeckServerConnectionMessage
     TResult Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult Function(JoinSeatServerConnectionMessage value)? joinSeat,
     TResult Function(LeaveSeatServerConnectionMessage value)? leaveSeat,
+    TResult Function(ShuffleServerConnectionMessage value)? shuffle,
+    TResult Function(ChangeVisibilityServerConnectionMessage value)?
+        changeVisibility,
     required TResult orElse(),
   }) {
     if (addDeck != null) {
@@ -986,6 +1066,10 @@ class _$RemoveDeckServerConnectionMessage
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
     required TResult Function(int index) leaveSeat,
+    required TResult Function(int deckIndex, int? seatIndex) shuffle,
+    required TResult Function(
+            int deckIndex, int? seatIndex, DeckVisibility visibility)
+        changeVisibility,
   }) {
     return removeDeck(index, seatIndex);
   }
@@ -1007,6 +1091,9 @@ class _$RemoveDeckServerConnectionMessage
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
     TResult? Function(int index)? leaveSeat,
+    TResult? Function(int deckIndex, int? seatIndex)? shuffle,
+    TResult? Function(int deckIndex, int? seatIndex, DeckVisibility visibility)?
+        changeVisibility,
   }) {
     return removeDeck?.call(index, seatIndex);
   }
@@ -1028,6 +1115,9 @@ class _$RemoveDeckServerConnectionMessage
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
     TResult Function(int index)? leaveSeat,
+    TResult Function(int deckIndex, int? seatIndex)? shuffle,
+    TResult Function(int deckIndex, int? seatIndex, DeckVisibility visibility)?
+        changeVisibility,
     required TResult orElse(),
   }) {
     if (removeDeck != null) {
@@ -1055,6 +1145,9 @@ class _$RemoveDeckServerConnectionMessage
         removeSeat,
     required TResult Function(JoinSeatServerConnectionMessage value) joinSeat,
     required TResult Function(LeaveSeatServerConnectionMessage value) leaveSeat,
+    required TResult Function(ShuffleServerConnectionMessage value) shuffle,
+    required TResult Function(ChangeVisibilityServerConnectionMessage value)
+        changeVisibility,
   }) {
     return removeDeck(this);
   }
@@ -1073,6 +1166,9 @@ class _$RemoveDeckServerConnectionMessage
     TResult? Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult? Function(JoinSeatServerConnectionMessage value)? joinSeat,
     TResult? Function(LeaveSeatServerConnectionMessage value)? leaveSeat,
+    TResult? Function(ShuffleServerConnectionMessage value)? shuffle,
+    TResult? Function(ChangeVisibilityServerConnectionMessage value)?
+        changeVisibility,
   }) {
     return removeDeck?.call(this);
   }
@@ -1091,6 +1187,9 @@ class _$RemoveDeckServerConnectionMessage
     TResult Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult Function(JoinSeatServerConnectionMessage value)? joinSeat,
     TResult Function(LeaveSeatServerConnectionMessage value)? leaveSeat,
+    TResult Function(ShuffleServerConnectionMessage value)? shuffle,
+    TResult Function(ChangeVisibilityServerConnectionMessage value)?
+        changeVisibility,
     required TResult orElse(),
   }) {
     if (removeDeck != null) {
@@ -1222,6 +1321,10 @@ class _$AddSeatServerConnectionMessage
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
     required TResult Function(int index) leaveSeat,
+    required TResult Function(int deckIndex, int? seatIndex) shuffle,
+    required TResult Function(
+            int deckIndex, int? seatIndex, DeckVisibility visibility)
+        changeVisibility,
   }) {
     return addSeat(name);
   }
@@ -1243,6 +1346,9 @@ class _$AddSeatServerConnectionMessage
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
     TResult? Function(int index)? leaveSeat,
+    TResult? Function(int deckIndex, int? seatIndex)? shuffle,
+    TResult? Function(int deckIndex, int? seatIndex, DeckVisibility visibility)?
+        changeVisibility,
   }) {
     return addSeat?.call(name);
   }
@@ -1264,6 +1370,9 @@ class _$AddSeatServerConnectionMessage
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
     TResult Function(int index)? leaveSeat,
+    TResult Function(int deckIndex, int? seatIndex)? shuffle,
+    TResult Function(int deckIndex, int? seatIndex, DeckVisibility visibility)?
+        changeVisibility,
     required TResult orElse(),
   }) {
     if (addSeat != null) {
@@ -1291,6 +1400,9 @@ class _$AddSeatServerConnectionMessage
         removeSeat,
     required TResult Function(JoinSeatServerConnectionMessage value) joinSeat,
     required TResult Function(LeaveSeatServerConnectionMessage value) leaveSeat,
+    required TResult Function(ShuffleServerConnectionMessage value) shuffle,
+    required TResult Function(ChangeVisibilityServerConnectionMessage value)
+        changeVisibility,
   }) {
     return addSeat(this);
   }
@@ -1309,6 +1421,9 @@ class _$AddSeatServerConnectionMessage
     TResult? Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult? Function(JoinSeatServerConnectionMessage value)? joinSeat,
     TResult? Function(LeaveSeatServerConnectionMessage value)? leaveSeat,
+    TResult? Function(ShuffleServerConnectionMessage value)? shuffle,
+    TResult? Function(ChangeVisibilityServerConnectionMessage value)?
+        changeVisibility,
   }) {
     return addSeat?.call(this);
   }
@@ -1327,6 +1442,9 @@ class _$AddSeatServerConnectionMessage
     TResult Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult Function(JoinSeatServerConnectionMessage value)? joinSeat,
     TResult Function(LeaveSeatServerConnectionMessage value)? leaveSeat,
+    TResult Function(ShuffleServerConnectionMessage value)? shuffle,
+    TResult Function(ChangeVisibilityServerConnectionMessage value)?
+        changeVisibility,
     required TResult orElse(),
   }) {
     if (addSeat != null) {
@@ -1483,6 +1601,10 @@ class _$AddCardsServerConnectionMessage
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
     required TResult Function(int index) leaveSeat,
+    required TResult Function(int deckIndex, int? seatIndex) shuffle,
+    required TResult Function(
+            int deckIndex, int? seatIndex, DeckVisibility visibility)
+        changeVisibility,
   }) {
     return addCards(cards, deckIndex, seatIndex);
   }
@@ -1504,6 +1626,9 @@ class _$AddCardsServerConnectionMessage
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
     TResult? Function(int index)? leaveSeat,
+    TResult? Function(int deckIndex, int? seatIndex)? shuffle,
+    TResult? Function(int deckIndex, int? seatIndex, DeckVisibility visibility)?
+        changeVisibility,
   }) {
     return addCards?.call(cards, deckIndex, seatIndex);
   }
@@ -1525,6 +1650,9 @@ class _$AddCardsServerConnectionMessage
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
     TResult Function(int index)? leaveSeat,
+    TResult Function(int deckIndex, int? seatIndex)? shuffle,
+    TResult Function(int deckIndex, int? seatIndex, DeckVisibility visibility)?
+        changeVisibility,
     required TResult orElse(),
   }) {
     if (addCards != null) {
@@ -1552,6 +1680,9 @@ class _$AddCardsServerConnectionMessage
         removeSeat,
     required TResult Function(JoinSeatServerConnectionMessage value) joinSeat,
     required TResult Function(LeaveSeatServerConnectionMessage value) leaveSeat,
+    required TResult Function(ShuffleServerConnectionMessage value) shuffle,
+    required TResult Function(ChangeVisibilityServerConnectionMessage value)
+        changeVisibility,
   }) {
     return addCards(this);
   }
@@ -1570,6 +1701,9 @@ class _$AddCardsServerConnectionMessage
     TResult? Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult? Function(JoinSeatServerConnectionMessage value)? joinSeat,
     TResult? Function(LeaveSeatServerConnectionMessage value)? leaveSeat,
+    TResult? Function(ShuffleServerConnectionMessage value)? shuffle,
+    TResult? Function(ChangeVisibilityServerConnectionMessage value)?
+        changeVisibility,
   }) {
     return addCards?.call(this);
   }
@@ -1588,6 +1722,9 @@ class _$AddCardsServerConnectionMessage
     TResult Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult Function(JoinSeatServerConnectionMessage value)? joinSeat,
     TResult Function(LeaveSeatServerConnectionMessage value)? leaveSeat,
+    TResult Function(ShuffleServerConnectionMessage value)? shuffle,
+    TResult Function(ChangeVisibilityServerConnectionMessage value)?
+        changeVisibility,
     required TResult orElse(),
   }) {
     if (addCards != null) {
@@ -1774,6 +1911,10 @@ class _$PutCardsServerConnectionMessage
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
     required TResult Function(int index) leaveSeat,
+    required TResult Function(int deckIndex, int? seatIndex) shuffle,
+    required TResult Function(
+            int deckIndex, int? seatIndex, DeckVisibility visibility)
+        changeVisibility,
   }) {
     return putCards(
         deckIndex, seatIndex, location, count, movedDeckIndex, movedSeatIndex);
@@ -1796,6 +1937,9 @@ class _$PutCardsServerConnectionMessage
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
     TResult? Function(int index)? leaveSeat,
+    TResult? Function(int deckIndex, int? seatIndex)? shuffle,
+    TResult? Function(int deckIndex, int? seatIndex, DeckVisibility visibility)?
+        changeVisibility,
   }) {
     return putCards?.call(
         deckIndex, seatIndex, location, count, movedDeckIndex, movedSeatIndex);
@@ -1818,6 +1962,9 @@ class _$PutCardsServerConnectionMessage
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
     TResult Function(int index)? leaveSeat,
+    TResult Function(int deckIndex, int? seatIndex)? shuffle,
+    TResult Function(int deckIndex, int? seatIndex, DeckVisibility visibility)?
+        changeVisibility,
     required TResult orElse(),
   }) {
     if (putCards != null) {
@@ -1846,6 +1993,9 @@ class _$PutCardsServerConnectionMessage
         removeSeat,
     required TResult Function(JoinSeatServerConnectionMessage value) joinSeat,
     required TResult Function(LeaveSeatServerConnectionMessage value) leaveSeat,
+    required TResult Function(ShuffleServerConnectionMessage value) shuffle,
+    required TResult Function(ChangeVisibilityServerConnectionMessage value)
+        changeVisibility,
   }) {
     return putCards(this);
   }
@@ -1864,6 +2014,9 @@ class _$PutCardsServerConnectionMessage
     TResult? Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult? Function(JoinSeatServerConnectionMessage value)? joinSeat,
     TResult? Function(LeaveSeatServerConnectionMessage value)? leaveSeat,
+    TResult? Function(ShuffleServerConnectionMessage value)? shuffle,
+    TResult? Function(ChangeVisibilityServerConnectionMessage value)?
+        changeVisibility,
   }) {
     return putCards?.call(this);
   }
@@ -1882,6 +2035,9 @@ class _$PutCardsServerConnectionMessage
     TResult Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult Function(JoinSeatServerConnectionMessage value)? joinSeat,
     TResult Function(LeaveSeatServerConnectionMessage value)? leaveSeat,
+    TResult Function(ShuffleServerConnectionMessage value)? shuffle,
+    TResult Function(ChangeVisibilityServerConnectionMessage value)?
+        changeVisibility,
     required TResult orElse(),
   }) {
     if (putCards != null) {
@@ -2029,6 +2185,10 @@ class _$RemoveCardsServerConnectionMessage
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
     required TResult Function(int index) leaveSeat,
+    required TResult Function(int deckIndex, int? seatIndex) shuffle,
+    required TResult Function(
+            int deckIndex, int? seatIndex, DeckVisibility visibility)
+        changeVisibility,
   }) {
     return removeCards(cards);
   }
@@ -2050,6 +2210,9 @@ class _$RemoveCardsServerConnectionMessage
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
     TResult? Function(int index)? leaveSeat,
+    TResult? Function(int deckIndex, int? seatIndex)? shuffle,
+    TResult? Function(int deckIndex, int? seatIndex, DeckVisibility visibility)?
+        changeVisibility,
   }) {
     return removeCards?.call(cards);
   }
@@ -2071,6 +2234,9 @@ class _$RemoveCardsServerConnectionMessage
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
     TResult Function(int index)? leaveSeat,
+    TResult Function(int deckIndex, int? seatIndex)? shuffle,
+    TResult Function(int deckIndex, int? seatIndex, DeckVisibility visibility)?
+        changeVisibility,
     required TResult orElse(),
   }) {
     if (removeCards != null) {
@@ -2098,6 +2264,9 @@ class _$RemoveCardsServerConnectionMessage
         removeSeat,
     required TResult Function(JoinSeatServerConnectionMessage value) joinSeat,
     required TResult Function(LeaveSeatServerConnectionMessage value) leaveSeat,
+    required TResult Function(ShuffleServerConnectionMessage value) shuffle,
+    required TResult Function(ChangeVisibilityServerConnectionMessage value)
+        changeVisibility,
   }) {
     return removeCards(this);
   }
@@ -2116,6 +2285,9 @@ class _$RemoveCardsServerConnectionMessage
     TResult? Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult? Function(JoinSeatServerConnectionMessage value)? joinSeat,
     TResult? Function(LeaveSeatServerConnectionMessage value)? leaveSeat,
+    TResult? Function(ShuffleServerConnectionMessage value)? shuffle,
+    TResult? Function(ChangeVisibilityServerConnectionMessage value)?
+        changeVisibility,
   }) {
     return removeCards?.call(this);
   }
@@ -2134,6 +2306,9 @@ class _$RemoveCardsServerConnectionMessage
     TResult Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult Function(JoinSeatServerConnectionMessage value)? joinSeat,
     TResult Function(LeaveSeatServerConnectionMessage value)? leaveSeat,
+    TResult Function(ShuffleServerConnectionMessage value)? shuffle,
+    TResult Function(ChangeVisibilityServerConnectionMessage value)?
+        changeVisibility,
     required TResult orElse(),
   }) {
     if (removeCards != null) {
@@ -2265,6 +2440,10 @@ class _$RemoveSeatServerConnectionMessage
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
     required TResult Function(int index) leaveSeat,
+    required TResult Function(int deckIndex, int? seatIndex) shuffle,
+    required TResult Function(
+            int deckIndex, int? seatIndex, DeckVisibility visibility)
+        changeVisibility,
   }) {
     return removeSeat(index);
   }
@@ -2286,6 +2465,9 @@ class _$RemoveSeatServerConnectionMessage
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
     TResult? Function(int index)? leaveSeat,
+    TResult? Function(int deckIndex, int? seatIndex)? shuffle,
+    TResult? Function(int deckIndex, int? seatIndex, DeckVisibility visibility)?
+        changeVisibility,
   }) {
     return removeSeat?.call(index);
   }
@@ -2307,6 +2489,9 @@ class _$RemoveSeatServerConnectionMessage
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
     TResult Function(int index)? leaveSeat,
+    TResult Function(int deckIndex, int? seatIndex)? shuffle,
+    TResult Function(int deckIndex, int? seatIndex, DeckVisibility visibility)?
+        changeVisibility,
     required TResult orElse(),
   }) {
     if (removeSeat != null) {
@@ -2334,6 +2519,9 @@ class _$RemoveSeatServerConnectionMessage
         removeSeat,
     required TResult Function(JoinSeatServerConnectionMessage value) joinSeat,
     required TResult Function(LeaveSeatServerConnectionMessage value) leaveSeat,
+    required TResult Function(ShuffleServerConnectionMessage value) shuffle,
+    required TResult Function(ChangeVisibilityServerConnectionMessage value)
+        changeVisibility,
   }) {
     return removeSeat(this);
   }
@@ -2352,6 +2540,9 @@ class _$RemoveSeatServerConnectionMessage
     TResult? Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult? Function(JoinSeatServerConnectionMessage value)? joinSeat,
     TResult? Function(LeaveSeatServerConnectionMessage value)? leaveSeat,
+    TResult? Function(ShuffleServerConnectionMessage value)? shuffle,
+    TResult? Function(ChangeVisibilityServerConnectionMessage value)?
+        changeVisibility,
   }) {
     return removeSeat?.call(this);
   }
@@ -2370,6 +2561,9 @@ class _$RemoveSeatServerConnectionMessage
     TResult Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult Function(JoinSeatServerConnectionMessage value)? joinSeat,
     TResult Function(LeaveSeatServerConnectionMessage value)? leaveSeat,
+    TResult Function(ShuffleServerConnectionMessage value)? shuffle,
+    TResult Function(ChangeVisibilityServerConnectionMessage value)?
+        changeVisibility,
     required TResult orElse(),
   }) {
     if (removeSeat != null) {
@@ -2499,6 +2693,10 @@ class _$JoinSeatServerConnectionMessage
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
     required TResult Function(int index) leaveSeat,
+    required TResult Function(int deckIndex, int? seatIndex) shuffle,
+    required TResult Function(
+            int deckIndex, int? seatIndex, DeckVisibility visibility)
+        changeVisibility,
   }) {
     return joinSeat(index);
   }
@@ -2520,6 +2718,9 @@ class _$JoinSeatServerConnectionMessage
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
     TResult? Function(int index)? leaveSeat,
+    TResult? Function(int deckIndex, int? seatIndex)? shuffle,
+    TResult? Function(int deckIndex, int? seatIndex, DeckVisibility visibility)?
+        changeVisibility,
   }) {
     return joinSeat?.call(index);
   }
@@ -2541,6 +2742,9 @@ class _$JoinSeatServerConnectionMessage
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
     TResult Function(int index)? leaveSeat,
+    TResult Function(int deckIndex, int? seatIndex)? shuffle,
+    TResult Function(int deckIndex, int? seatIndex, DeckVisibility visibility)?
+        changeVisibility,
     required TResult orElse(),
   }) {
     if (joinSeat != null) {
@@ -2568,6 +2772,9 @@ class _$JoinSeatServerConnectionMessage
         removeSeat,
     required TResult Function(JoinSeatServerConnectionMessage value) joinSeat,
     required TResult Function(LeaveSeatServerConnectionMessage value) leaveSeat,
+    required TResult Function(ShuffleServerConnectionMessage value) shuffle,
+    required TResult Function(ChangeVisibilityServerConnectionMessage value)
+        changeVisibility,
   }) {
     return joinSeat(this);
   }
@@ -2586,6 +2793,9 @@ class _$JoinSeatServerConnectionMessage
     TResult? Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult? Function(JoinSeatServerConnectionMessage value)? joinSeat,
     TResult? Function(LeaveSeatServerConnectionMessage value)? leaveSeat,
+    TResult? Function(ShuffleServerConnectionMessage value)? shuffle,
+    TResult? Function(ChangeVisibilityServerConnectionMessage value)?
+        changeVisibility,
   }) {
     return joinSeat?.call(this);
   }
@@ -2604,6 +2814,9 @@ class _$JoinSeatServerConnectionMessage
     TResult Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult Function(JoinSeatServerConnectionMessage value)? joinSeat,
     TResult Function(LeaveSeatServerConnectionMessage value)? leaveSeat,
+    TResult Function(ShuffleServerConnectionMessage value)? shuffle,
+    TResult Function(ChangeVisibilityServerConnectionMessage value)?
+        changeVisibility,
     required TResult orElse(),
   }) {
     if (joinSeat != null) {
@@ -2733,6 +2946,10 @@ class _$LeaveSeatServerConnectionMessage
     required TResult Function(int index) removeSeat,
     required TResult Function(int index) joinSeat,
     required TResult Function(int index) leaveSeat,
+    required TResult Function(int deckIndex, int? seatIndex) shuffle,
+    required TResult Function(
+            int deckIndex, int? seatIndex, DeckVisibility visibility)
+        changeVisibility,
   }) {
     return leaveSeat(index);
   }
@@ -2754,6 +2971,9 @@ class _$LeaveSeatServerConnectionMessage
     TResult? Function(int index)? removeSeat,
     TResult? Function(int index)? joinSeat,
     TResult? Function(int index)? leaveSeat,
+    TResult? Function(int deckIndex, int? seatIndex)? shuffle,
+    TResult? Function(int deckIndex, int? seatIndex, DeckVisibility visibility)?
+        changeVisibility,
   }) {
     return leaveSeat?.call(index);
   }
@@ -2775,6 +2995,9 @@ class _$LeaveSeatServerConnectionMessage
     TResult Function(int index)? removeSeat,
     TResult Function(int index)? joinSeat,
     TResult Function(int index)? leaveSeat,
+    TResult Function(int deckIndex, int? seatIndex)? shuffle,
+    TResult Function(int deckIndex, int? seatIndex, DeckVisibility visibility)?
+        changeVisibility,
     required TResult orElse(),
   }) {
     if (leaveSeat != null) {
@@ -2802,6 +3025,9 @@ class _$LeaveSeatServerConnectionMessage
         removeSeat,
     required TResult Function(JoinSeatServerConnectionMessage value) joinSeat,
     required TResult Function(LeaveSeatServerConnectionMessage value) leaveSeat,
+    required TResult Function(ShuffleServerConnectionMessage value) shuffle,
+    required TResult Function(ChangeVisibilityServerConnectionMessage value)
+        changeVisibility,
   }) {
     return leaveSeat(this);
   }
@@ -2820,6 +3046,9 @@ class _$LeaveSeatServerConnectionMessage
     TResult? Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult? Function(JoinSeatServerConnectionMessage value)? joinSeat,
     TResult? Function(LeaveSeatServerConnectionMessage value)? leaveSeat,
+    TResult? Function(ShuffleServerConnectionMessage value)? shuffle,
+    TResult? Function(ChangeVisibilityServerConnectionMessage value)?
+        changeVisibility,
   }) {
     return leaveSeat?.call(this);
   }
@@ -2838,6 +3067,9 @@ class _$LeaveSeatServerConnectionMessage
     TResult Function(RemoveSeatServerConnectionMessage value)? removeSeat,
     TResult Function(JoinSeatServerConnectionMessage value)? joinSeat,
     TResult Function(LeaveSeatServerConnectionMessage value)? leaveSeat,
+    TResult Function(ShuffleServerConnectionMessage value)? shuffle,
+    TResult Function(ChangeVisibilityServerConnectionMessage value)?
+        changeVisibility,
     required TResult orElse(),
   }) {
     if (leaveSeat != null) {
@@ -2866,5 +3098,550 @@ abstract class LeaveSeatServerConnectionMessage
   @JsonKey(ignore: true)
   _$$LeaveSeatServerConnectionMessageCopyWith<
           _$LeaveSeatServerConnectionMessage>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ShuffleServerConnectionMessageCopyWith<$Res> {
+  factory _$$ShuffleServerConnectionMessageCopyWith(
+          _$ShuffleServerConnectionMessage value,
+          $Res Function(_$ShuffleServerConnectionMessage) then) =
+      __$$ShuffleServerConnectionMessageCopyWithImpl<$Res>;
+  @useResult
+  $Res call({int deckIndex, int? seatIndex});
+}
+
+/// @nodoc
+class __$$ShuffleServerConnectionMessageCopyWithImpl<$Res>
+    extends _$ServerConnectionMessageCopyWithImpl<$Res,
+        _$ShuffleServerConnectionMessage>
+    implements _$$ShuffleServerConnectionMessageCopyWith<$Res> {
+  __$$ShuffleServerConnectionMessageCopyWithImpl(
+      _$ShuffleServerConnectionMessage _value,
+      $Res Function(_$ShuffleServerConnectionMessage) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? deckIndex = null,
+    Object? seatIndex = freezed,
+  }) {
+    return _then(_$ShuffleServerConnectionMessage(
+      null == deckIndex
+          ? _value.deckIndex
+          : deckIndex // ignore: cast_nullable_to_non_nullable
+              as int,
+      freezed == seatIndex
+          ? _value.seatIndex
+          : seatIndex // ignore: cast_nullable_to_non_nullable
+              as int?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$ShuffleServerConnectionMessage
+    implements ShuffleServerConnectionMessage {
+  const _$ShuffleServerConnectionMessage(this.deckIndex, this.seatIndex,
+      {final String? $type})
+      : $type = $type ?? 'shuffle';
+
+  factory _$ShuffleServerConnectionMessage.fromJson(
+          Map<String, dynamic> json) =>
+      _$$ShuffleServerConnectionMessageFromJson(json);
+
+  @override
+  final int deckIndex;
+  @override
+  final int? seatIndex;
+
+  @JsonKey(name: 'type')
+  final String $type;
+
+  @override
+  String toString() {
+    return 'ServerConnectionMessage.shuffle(deckIndex: $deckIndex, seatIndex: $seatIndex)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ShuffleServerConnectionMessage &&
+            (identical(other.deckIndex, deckIndex) ||
+                other.deckIndex == deckIndex) &&
+            (identical(other.seatIndex, seatIndex) ||
+                other.seatIndex == seatIndex));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, deckIndex, seatIndex);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ShuffleServerConnectionMessageCopyWith<_$ShuffleServerConnectionMessage>
+      get copyWith => __$$ShuffleServerConnectionMessageCopyWithImpl<
+          _$ShuffleServerConnectionMessage>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() fetchPlayers,
+    required TResult Function(String message) chatMessage,
+    required TResult Function(GameDeck deck, int? seatIndex) addDeck,
+    required TResult Function(int index, int? seatIndex) removeDeck,
+    required TResult Function(String name) addSeat,
+    required TResult Function(
+            List<CardIndex> cards, int deckIndex, int? seatIndex)
+        addCards,
+    required TResult Function(
+            int deckIndex,
+            int? seatIndex,
+            PickLocation location,
+            int count,
+            int movedDeckIndex,
+            int? movedSeatIndex)
+        putCards,
+    required TResult Function(List<CardIndex> cards) removeCards,
+    required TResult Function(int index) removeSeat,
+    required TResult Function(int index) joinSeat,
+    required TResult Function(int index) leaveSeat,
+    required TResult Function(int deckIndex, int? seatIndex) shuffle,
+    required TResult Function(
+            int deckIndex, int? seatIndex, DeckVisibility visibility)
+        changeVisibility,
+  }) {
+    return shuffle(deckIndex, seatIndex);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? fetchPlayers,
+    TResult? Function(String message)? chatMessage,
+    TResult? Function(GameDeck deck, int? seatIndex)? addDeck,
+    TResult? Function(int index, int? seatIndex)? removeDeck,
+    TResult? Function(String name)? addSeat,
+    TResult? Function(List<CardIndex> cards, int deckIndex, int? seatIndex)?
+        addCards,
+    TResult? Function(int deckIndex, int? seatIndex, PickLocation location,
+            int count, int movedDeckIndex, int? movedSeatIndex)?
+        putCards,
+    TResult? Function(List<CardIndex> cards)? removeCards,
+    TResult? Function(int index)? removeSeat,
+    TResult? Function(int index)? joinSeat,
+    TResult? Function(int index)? leaveSeat,
+    TResult? Function(int deckIndex, int? seatIndex)? shuffle,
+    TResult? Function(int deckIndex, int? seatIndex, DeckVisibility visibility)?
+        changeVisibility,
+  }) {
+    return shuffle?.call(deckIndex, seatIndex);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? fetchPlayers,
+    TResult Function(String message)? chatMessage,
+    TResult Function(GameDeck deck, int? seatIndex)? addDeck,
+    TResult Function(int index, int? seatIndex)? removeDeck,
+    TResult Function(String name)? addSeat,
+    TResult Function(List<CardIndex> cards, int deckIndex, int? seatIndex)?
+        addCards,
+    TResult Function(int deckIndex, int? seatIndex, PickLocation location,
+            int count, int movedDeckIndex, int? movedSeatIndex)?
+        putCards,
+    TResult Function(List<CardIndex> cards)? removeCards,
+    TResult Function(int index)? removeSeat,
+    TResult Function(int index)? joinSeat,
+    TResult Function(int index)? leaveSeat,
+    TResult Function(int deckIndex, int? seatIndex)? shuffle,
+    TResult Function(int deckIndex, int? seatIndex, DeckVisibility visibility)?
+        changeVisibility,
+    required TResult orElse(),
+  }) {
+    if (shuffle != null) {
+      return shuffle(deckIndex, seatIndex);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FetchPlayersServerConnectionMessage value)
+        fetchPlayers,
+    required TResult Function(ChatMessageServerConnectionMessage value)
+        chatMessage,
+    required TResult Function(AddDeckServerConnectionMessage value) addDeck,
+    required TResult Function(RemoveDeckServerConnectionMessage value)
+        removeDeck,
+    required TResult Function(AddSeatServerConnectionMessage value) addSeat,
+    required TResult Function(AddCardsServerConnectionMessage value) addCards,
+    required TResult Function(PutCardsServerConnectionMessage value) putCards,
+    required TResult Function(RemoveCardsServerConnectionMessage value)
+        removeCards,
+    required TResult Function(RemoveSeatServerConnectionMessage value)
+        removeSeat,
+    required TResult Function(JoinSeatServerConnectionMessage value) joinSeat,
+    required TResult Function(LeaveSeatServerConnectionMessage value) leaveSeat,
+    required TResult Function(ShuffleServerConnectionMessage value) shuffle,
+    required TResult Function(ChangeVisibilityServerConnectionMessage value)
+        changeVisibility,
+  }) {
+    return shuffle(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FetchPlayersServerConnectionMessage value)? fetchPlayers,
+    TResult? Function(ChatMessageServerConnectionMessage value)? chatMessage,
+    TResult? Function(AddDeckServerConnectionMessage value)? addDeck,
+    TResult? Function(RemoveDeckServerConnectionMessage value)? removeDeck,
+    TResult? Function(AddSeatServerConnectionMessage value)? addSeat,
+    TResult? Function(AddCardsServerConnectionMessage value)? addCards,
+    TResult? Function(PutCardsServerConnectionMessage value)? putCards,
+    TResult? Function(RemoveCardsServerConnectionMessage value)? removeCards,
+    TResult? Function(RemoveSeatServerConnectionMessage value)? removeSeat,
+    TResult? Function(JoinSeatServerConnectionMessage value)? joinSeat,
+    TResult? Function(LeaveSeatServerConnectionMessage value)? leaveSeat,
+    TResult? Function(ShuffleServerConnectionMessage value)? shuffle,
+    TResult? Function(ChangeVisibilityServerConnectionMessage value)?
+        changeVisibility,
+  }) {
+    return shuffle?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FetchPlayersServerConnectionMessage value)? fetchPlayers,
+    TResult Function(ChatMessageServerConnectionMessage value)? chatMessage,
+    TResult Function(AddDeckServerConnectionMessage value)? addDeck,
+    TResult Function(RemoveDeckServerConnectionMessage value)? removeDeck,
+    TResult Function(AddSeatServerConnectionMessage value)? addSeat,
+    TResult Function(AddCardsServerConnectionMessage value)? addCards,
+    TResult Function(PutCardsServerConnectionMessage value)? putCards,
+    TResult Function(RemoveCardsServerConnectionMessage value)? removeCards,
+    TResult Function(RemoveSeatServerConnectionMessage value)? removeSeat,
+    TResult Function(JoinSeatServerConnectionMessage value)? joinSeat,
+    TResult Function(LeaveSeatServerConnectionMessage value)? leaveSeat,
+    TResult Function(ShuffleServerConnectionMessage value)? shuffle,
+    TResult Function(ChangeVisibilityServerConnectionMessage value)?
+        changeVisibility,
+    required TResult orElse(),
+  }) {
+    if (shuffle != null) {
+      return shuffle(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ShuffleServerConnectionMessageToJson(
+      this,
+    );
+  }
+}
+
+abstract class ShuffleServerConnectionMessage
+    implements ServerConnectionMessage {
+  const factory ShuffleServerConnectionMessage(
+          final int deckIndex, final int? seatIndex) =
+      _$ShuffleServerConnectionMessage;
+
+  factory ShuffleServerConnectionMessage.fromJson(Map<String, dynamic> json) =
+      _$ShuffleServerConnectionMessage.fromJson;
+
+  int get deckIndex;
+  int? get seatIndex;
+  @JsonKey(ignore: true)
+  _$$ShuffleServerConnectionMessageCopyWith<_$ShuffleServerConnectionMessage>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ChangeVisibilityServerConnectionMessageCopyWith<$Res> {
+  factory _$$ChangeVisibilityServerConnectionMessageCopyWith(
+          _$ChangeVisibilityServerConnectionMessage value,
+          $Res Function(_$ChangeVisibilityServerConnectionMessage) then) =
+      __$$ChangeVisibilityServerConnectionMessageCopyWithImpl<$Res>;
+  @useResult
+  $Res call({int deckIndex, int? seatIndex, DeckVisibility visibility});
+}
+
+/// @nodoc
+class __$$ChangeVisibilityServerConnectionMessageCopyWithImpl<$Res>
+    extends _$ServerConnectionMessageCopyWithImpl<$Res,
+        _$ChangeVisibilityServerConnectionMessage>
+    implements _$$ChangeVisibilityServerConnectionMessageCopyWith<$Res> {
+  __$$ChangeVisibilityServerConnectionMessageCopyWithImpl(
+      _$ChangeVisibilityServerConnectionMessage _value,
+      $Res Function(_$ChangeVisibilityServerConnectionMessage) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? deckIndex = null,
+    Object? seatIndex = freezed,
+    Object? visibility = null,
+  }) {
+    return _then(_$ChangeVisibilityServerConnectionMessage(
+      null == deckIndex
+          ? _value.deckIndex
+          : deckIndex // ignore: cast_nullable_to_non_nullable
+              as int,
+      freezed == seatIndex
+          ? _value.seatIndex
+          : seatIndex // ignore: cast_nullable_to_non_nullable
+              as int?,
+      null == visibility
+          ? _value.visibility
+          : visibility // ignore: cast_nullable_to_non_nullable
+              as DeckVisibility,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$ChangeVisibilityServerConnectionMessage
+    implements ChangeVisibilityServerConnectionMessage {
+  const _$ChangeVisibilityServerConnectionMessage(
+      this.deckIndex, this.seatIndex, this.visibility,
+      {final String? $type})
+      : $type = $type ?? 'changeVisibility';
+
+  factory _$ChangeVisibilityServerConnectionMessage.fromJson(
+          Map<String, dynamic> json) =>
+      _$$ChangeVisibilityServerConnectionMessageFromJson(json);
+
+  @override
+  final int deckIndex;
+  @override
+  final int? seatIndex;
+  @override
+  final DeckVisibility visibility;
+
+  @JsonKey(name: 'type')
+  final String $type;
+
+  @override
+  String toString() {
+    return 'ServerConnectionMessage.changeVisibility(deckIndex: $deckIndex, seatIndex: $seatIndex, visibility: $visibility)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ChangeVisibilityServerConnectionMessage &&
+            (identical(other.deckIndex, deckIndex) ||
+                other.deckIndex == deckIndex) &&
+            (identical(other.seatIndex, seatIndex) ||
+                other.seatIndex == seatIndex) &&
+            (identical(other.visibility, visibility) ||
+                other.visibility == visibility));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, deckIndex, seatIndex, visibility);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ChangeVisibilityServerConnectionMessageCopyWith<
+          _$ChangeVisibilityServerConnectionMessage>
+      get copyWith => __$$ChangeVisibilityServerConnectionMessageCopyWithImpl<
+          _$ChangeVisibilityServerConnectionMessage>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() fetchPlayers,
+    required TResult Function(String message) chatMessage,
+    required TResult Function(GameDeck deck, int? seatIndex) addDeck,
+    required TResult Function(int index, int? seatIndex) removeDeck,
+    required TResult Function(String name) addSeat,
+    required TResult Function(
+            List<CardIndex> cards, int deckIndex, int? seatIndex)
+        addCards,
+    required TResult Function(
+            int deckIndex,
+            int? seatIndex,
+            PickLocation location,
+            int count,
+            int movedDeckIndex,
+            int? movedSeatIndex)
+        putCards,
+    required TResult Function(List<CardIndex> cards) removeCards,
+    required TResult Function(int index) removeSeat,
+    required TResult Function(int index) joinSeat,
+    required TResult Function(int index) leaveSeat,
+    required TResult Function(int deckIndex, int? seatIndex) shuffle,
+    required TResult Function(
+            int deckIndex, int? seatIndex, DeckVisibility visibility)
+        changeVisibility,
+  }) {
+    return changeVisibility(deckIndex, seatIndex, visibility);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? fetchPlayers,
+    TResult? Function(String message)? chatMessage,
+    TResult? Function(GameDeck deck, int? seatIndex)? addDeck,
+    TResult? Function(int index, int? seatIndex)? removeDeck,
+    TResult? Function(String name)? addSeat,
+    TResult? Function(List<CardIndex> cards, int deckIndex, int? seatIndex)?
+        addCards,
+    TResult? Function(int deckIndex, int? seatIndex, PickLocation location,
+            int count, int movedDeckIndex, int? movedSeatIndex)?
+        putCards,
+    TResult? Function(List<CardIndex> cards)? removeCards,
+    TResult? Function(int index)? removeSeat,
+    TResult? Function(int index)? joinSeat,
+    TResult? Function(int index)? leaveSeat,
+    TResult? Function(int deckIndex, int? seatIndex)? shuffle,
+    TResult? Function(int deckIndex, int? seatIndex, DeckVisibility visibility)?
+        changeVisibility,
+  }) {
+    return changeVisibility?.call(deckIndex, seatIndex, visibility);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? fetchPlayers,
+    TResult Function(String message)? chatMessage,
+    TResult Function(GameDeck deck, int? seatIndex)? addDeck,
+    TResult Function(int index, int? seatIndex)? removeDeck,
+    TResult Function(String name)? addSeat,
+    TResult Function(List<CardIndex> cards, int deckIndex, int? seatIndex)?
+        addCards,
+    TResult Function(int deckIndex, int? seatIndex, PickLocation location,
+            int count, int movedDeckIndex, int? movedSeatIndex)?
+        putCards,
+    TResult Function(List<CardIndex> cards)? removeCards,
+    TResult Function(int index)? removeSeat,
+    TResult Function(int index)? joinSeat,
+    TResult Function(int index)? leaveSeat,
+    TResult Function(int deckIndex, int? seatIndex)? shuffle,
+    TResult Function(int deckIndex, int? seatIndex, DeckVisibility visibility)?
+        changeVisibility,
+    required TResult orElse(),
+  }) {
+    if (changeVisibility != null) {
+      return changeVisibility(deckIndex, seatIndex, visibility);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FetchPlayersServerConnectionMessage value)
+        fetchPlayers,
+    required TResult Function(ChatMessageServerConnectionMessage value)
+        chatMessage,
+    required TResult Function(AddDeckServerConnectionMessage value) addDeck,
+    required TResult Function(RemoveDeckServerConnectionMessage value)
+        removeDeck,
+    required TResult Function(AddSeatServerConnectionMessage value) addSeat,
+    required TResult Function(AddCardsServerConnectionMessage value) addCards,
+    required TResult Function(PutCardsServerConnectionMessage value) putCards,
+    required TResult Function(RemoveCardsServerConnectionMessage value)
+        removeCards,
+    required TResult Function(RemoveSeatServerConnectionMessage value)
+        removeSeat,
+    required TResult Function(JoinSeatServerConnectionMessage value) joinSeat,
+    required TResult Function(LeaveSeatServerConnectionMessage value) leaveSeat,
+    required TResult Function(ShuffleServerConnectionMessage value) shuffle,
+    required TResult Function(ChangeVisibilityServerConnectionMessage value)
+        changeVisibility,
+  }) {
+    return changeVisibility(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FetchPlayersServerConnectionMessage value)? fetchPlayers,
+    TResult? Function(ChatMessageServerConnectionMessage value)? chatMessage,
+    TResult? Function(AddDeckServerConnectionMessage value)? addDeck,
+    TResult? Function(RemoveDeckServerConnectionMessage value)? removeDeck,
+    TResult? Function(AddSeatServerConnectionMessage value)? addSeat,
+    TResult? Function(AddCardsServerConnectionMessage value)? addCards,
+    TResult? Function(PutCardsServerConnectionMessage value)? putCards,
+    TResult? Function(RemoveCardsServerConnectionMessage value)? removeCards,
+    TResult? Function(RemoveSeatServerConnectionMessage value)? removeSeat,
+    TResult? Function(JoinSeatServerConnectionMessage value)? joinSeat,
+    TResult? Function(LeaveSeatServerConnectionMessage value)? leaveSeat,
+    TResult? Function(ShuffleServerConnectionMessage value)? shuffle,
+    TResult? Function(ChangeVisibilityServerConnectionMessage value)?
+        changeVisibility,
+  }) {
+    return changeVisibility?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FetchPlayersServerConnectionMessage value)? fetchPlayers,
+    TResult Function(ChatMessageServerConnectionMessage value)? chatMessage,
+    TResult Function(AddDeckServerConnectionMessage value)? addDeck,
+    TResult Function(RemoveDeckServerConnectionMessage value)? removeDeck,
+    TResult Function(AddSeatServerConnectionMessage value)? addSeat,
+    TResult Function(AddCardsServerConnectionMessage value)? addCards,
+    TResult Function(PutCardsServerConnectionMessage value)? putCards,
+    TResult Function(RemoveCardsServerConnectionMessage value)? removeCards,
+    TResult Function(RemoveSeatServerConnectionMessage value)? removeSeat,
+    TResult Function(JoinSeatServerConnectionMessage value)? joinSeat,
+    TResult Function(LeaveSeatServerConnectionMessage value)? leaveSeat,
+    TResult Function(ShuffleServerConnectionMessage value)? shuffle,
+    TResult Function(ChangeVisibilityServerConnectionMessage value)?
+        changeVisibility,
+    required TResult orElse(),
+  }) {
+    if (changeVisibility != null) {
+      return changeVisibility(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ChangeVisibilityServerConnectionMessageToJson(
+      this,
+    );
+  }
+}
+
+abstract class ChangeVisibilityServerConnectionMessage
+    implements ServerConnectionMessage {
+  const factory ChangeVisibilityServerConnectionMessage(final int deckIndex,
+          final int? seatIndex, final DeckVisibility visibility) =
+      _$ChangeVisibilityServerConnectionMessage;
+
+  factory ChangeVisibilityServerConnectionMessage.fromJson(
+          Map<String, dynamic> json) =
+      _$ChangeVisibilityServerConnectionMessage.fromJson;
+
+  int get deckIndex;
+  int? get seatIndex;
+  DeckVisibility get visibility;
+  @JsonKey(ignore: true)
+  _$$ChangeVisibilityServerConnectionMessageCopyWith<
+          _$ChangeVisibilityServerConnectionMessage>
       get copyWith => throw _privateConstructorUsedError;
 }

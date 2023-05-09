@@ -54,6 +54,13 @@ class ServerConnectionMessage with _$ServerConnectionMessage {
   const factory ServerConnectionMessage.leaveSeat(int index) =
       LeaveSeatServerConnectionMessage;
 
+  const factory ServerConnectionMessage.shuffle(int deckIndex, int? seatIndex) =
+      ShuffleServerConnectionMessage;
+
+  const factory ServerConnectionMessage.changeVisibility(
+          int deckIndex, int? seatIndex, DeckVisibility visibility) =
+      ChangeVisibilityServerConnectionMessage;
+
   factory ServerConnectionMessage.fromJson(Map<String, dynamic> json) =>
       _$ServerConnectionMessageFromJson(json);
 }
@@ -343,6 +350,35 @@ class ServerGameConnection with GameConnection {
                 ));
         }
         _changeState(newState);
+      },
+      changeVisibility: (deckIndex, seatIndex, visibility) {
+        if (seatIndex != null) {
+          _changeState(state.copyWith(
+              seats: List<GameSeat>.from(state.seats)
+                ..[seatIndex] = state.seats[seatIndex].copyWith(
+                    decks: List<GameDeck>.from(state.seats[seatIndex].decks)
+                      ..[deckIndex] = state.seats[seatIndex].decks[deckIndex]
+                          .copyWith(visibility: visibility))));
+        } else {
+          _changeState(state.copyWith(
+              decks: List<GameDeck>.from(state.decks)
+                ..[deckIndex] =
+                    state.decks[deckIndex].copyWith(visibility: visibility)));
+        }
+      },
+      shuffle: (deckIndex, seatIndex) {
+        if (seatIndex != null) {
+          _changeState(state.copyWith(
+              seats: List<GameSeat>.from(state.seats)
+                ..[seatIndex] = state.seats[seatIndex].copyWith(
+                    decks: List<GameDeck>.from(state.seats[seatIndex].decks)
+                      ..[deckIndex] =
+                          state.seats[seatIndex].decks[deckIndex].shuffle())));
+        } else {
+          _changeState(state.copyWith(
+              decks: List<GameDeck>.from(state.decks)
+                ..[deckIndex] = state.decks[deckIndex].shuffle()));
+        }
       },
     );
   }

@@ -186,3 +186,43 @@ Map<String, dynamic> _$$LeaveSeatServerConnectionMessageToJson(
       'index': instance.index,
       'type': instance.$type,
     };
+
+_$ShuffleServerConnectionMessage _$$ShuffleServerConnectionMessageFromJson(
+        Map json) =>
+    _$ShuffleServerConnectionMessage(
+      json['deckIndex'] as int,
+      json['seatIndex'] as int?,
+      $type: json['type'] as String?,
+    );
+
+Map<String, dynamic> _$$ShuffleServerConnectionMessageToJson(
+        _$ShuffleServerConnectionMessage instance) =>
+    <String, dynamic>{
+      'deckIndex': instance.deckIndex,
+      'seatIndex': instance.seatIndex,
+      'type': instance.$type,
+    };
+
+_$ChangeVisibilityServerConnectionMessage
+    _$$ChangeVisibilityServerConnectionMessageFromJson(Map json) =>
+        _$ChangeVisibilityServerConnectionMessage(
+          json['deckIndex'] as int,
+          json['seatIndex'] as int?,
+          $enumDecode(_$DeckVisibilityEnumMap, json['visibility']),
+          $type: json['type'] as String?,
+        );
+
+Map<String, dynamic> _$$ChangeVisibilityServerConnectionMessageToJson(
+        _$ChangeVisibilityServerConnectionMessage instance) =>
+    <String, dynamic>{
+      'deckIndex': instance.deckIndex,
+      'seatIndex': instance.seatIndex,
+      'visibility': _$DeckVisibilityEnumMap[instance.visibility]!,
+      'type': instance.$type,
+    };
+
+const _$DeckVisibilityEnumMap = {
+  DeckVisibility.hidden: 'hidden',
+  DeckVisibility.onlyTop: 'onlyTop',
+  DeckVisibility.visible: 'visible',
+};

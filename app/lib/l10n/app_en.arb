@@ -35,5 +35,7 @@
   "moveCards": "Move cards",
   "location": "Location",
   "count": "Count",
-  "putCards": "Put cards"
+  "putCards": "Put cards",
+  "changeVisibility": "Change visibility",
+  "change": "Change"
 }
