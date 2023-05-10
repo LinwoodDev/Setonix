@@ -135,9 +135,10 @@ class ClientGameConnection with GameConnection, ConnectedGameConnection {
     send(ServerConnectionMessage.removeDeck(deckIndex, seatIndex));
   }
 
-  void changeVisibility(int index, int? seatIndex, DeckVisibility visibility) {
-    send(
-        ServerConnectionMessage.changeVisibility(index, seatIndex, visibility));
+  void changeVisibility(int index, int? seatIndex, DeckVisibility visibility,
+      [DeckVisibility? ownVisibility]) {
+    send(ServerConnectionMessage.changeVisibility(
+        index, seatIndex, visibility, ownVisibility));
   }
 
   void shuffle(int index, int? seatIndex) {

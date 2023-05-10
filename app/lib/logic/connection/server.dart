@@ -58,7 +58,8 @@ class ServerConnectionMessage with _$ServerConnectionMessage {
       ShuffleServerConnectionMessage;
 
   const factory ServerConnectionMessage.changeVisibility(
-          int deckIndex, int? seatIndex, DeckVisibility visibility) =
+          int deckIndex, int? seatIndex, DeckVisibility visibility,
+          [DeckVisibility? ownVisibility]) =
       ChangeVisibilityServerConnectionMessage;
 
   factory ServerConnectionMessage.fromJson(Map<String, dynamic> json) =>
@@ -70,6 +71,8 @@ class WebSocketClient {
   final HttpConnectionInfo info;
 
   WebSocketClient(this.socket, this.info);
+
+  int get id => socket.hashCode;
 }
 
 class ServerGameConnection with GameConnection {
@@ -107,14 +110,7 @@ class ServerGameConnection with GameConnection {
       final client = WebSocketClient(socket, info);
       clients.add(client);
       _sendPlayersUpdated();
-      _send(
-        client,
-        ClientConnectionMessage.stateChanged(
-          state.onPlayer(
-            client.socket.hashCode,
-          ),
-        ),
-      );
+      _sendState(client);
 
       // Listen for incoming messages from the client
       socket.listen((event) => _onMessage(client, event), onDone: () {
@@ -126,8 +122,7 @@ class ServerGameConnection with GameConnection {
 
   @override
   List<GamePlayer> get players => clients
-      .map((e) => GamePlayer(
-          name: e.info.remoteAddress.address, id: e.hashCode.toString()))
+      .map((e) => GamePlayer(name: e.info.remoteAddress.address, id: e.id))
       .toList();
 
   @override
@@ -141,7 +136,7 @@ class ServerGameConnection with GameConnection {
     for (final client in clients) {
       _send(
         client,
-        ClientConnectionMessage.playersUpdated(players, client.hashCode),
+        ClientConnectionMessage.playersUpdated(players, client.id),
       );
     }
   }
@@ -154,16 +149,18 @@ class ServerGameConnection with GameConnection {
 
   void _changeState(GameState state) {
     stateSubject.add(state);
-    for (final client in clients) {
-      _send(
-        client,
-        ClientConnectionMessage.stateChanged(
-          state.onPlayer(
-            client.socket.hashCode,
-          ),
+    clients.forEach(_sendState);
+  }
+
+  void _sendState(WebSocketClient client) {
+    _send(
+      client,
+      ClientConnectionMessage.stateChanged(
+        state.onPlayer(
+          client.id,
         ),
-      );
-    }
+      ),
+    );
   }
 
   List<GameCard> _removeCards(List<CardIndex> cards) {
@@ -227,7 +224,7 @@ class ServerGameConnection with GameConnection {
 
     message.when(
       fetchPlayers: () => sendBack(
-        ClientConnectionMessage.playersUpdated(players, client.hashCode),
+        ClientConnectionMessage.playersUpdated(players, client.id),
       ),
       chatMessage: (message) => _sendToAll(
         ClientConnectionMessage.chatMessage(
@@ -275,7 +272,7 @@ class ServerGameConnection with GameConnection {
         _changeState(state.copyWith(
             seats: List<GameSeat>.from(state.seats)
               ..[index] = state.seats[index].copyWith(
-                players: [...state.seats[index].players, client.hashCode],
+                players: [...state.seats[index].players, client.id],
               )));
       },
       leaveSeat: (index) {
@@ -283,7 +280,7 @@ class ServerGameConnection with GameConnection {
             seats: List<GameSeat>.from(state.seats)
               ..[index] = state.seats[index].copyWith(
                 players: List<int>.from(state.seats[index].players)
-                  ..remove(client.hashCode),
+                  ..remove(client.id),
               )));
       },
       addCards: (cards, deckIndex, seatIndex) {
@@ -359,19 +356,21 @@ class ServerGameConnection with GameConnection {
         }
         _changeState(newState);
       },
-      changeVisibility: (deckIndex, seatIndex, visibility) {
+      changeVisibility: (deckIndex, seatIndex, visibility, ownVisibility) {
         if (seatIndex != null) {
           _changeState(state.copyWith(
               seats: List<GameSeat>.from(state.seats)
                 ..[seatIndex] = state.seats[seatIndex].copyWith(
                     decks: List<GameDeck>.from(state.seats[seatIndex].decks)
                       ..[deckIndex] = state.seats[seatIndex].decks[deckIndex]
-                          .copyWith(visibility: visibility))));
+                          .copyWith(
+                              visibility: visibility,
+                              ownVisibility: ownVisibility))));
         } else {
           _changeState(state.copyWith(
               decks: List<GameDeck>.from(state.decks)
-                ..[deckIndex] =
-                    state.decks[deckIndex].copyWith(visibility: visibility)));
+                ..[deckIndex] = state.decks[deckIndex].copyWith(
+                    visibility: visibility, ownVisibility: ownVisibility)));
         }
       },
       shuffle: (deckIndex, seatIndex) {

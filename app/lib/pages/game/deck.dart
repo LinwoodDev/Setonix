@@ -316,9 +316,8 @@ class AddDeckDialog extends StatelessWidget {
                                   child: Text(e.name),
                                 ))
                             .toList(),
-                        onChanged: (value) => setState(() => deck =
-                            deck.copyWith(
-                                ownVisibility: value ?? deck.ownVisibility)),
+                        onChanged: (value) => setState(
+                            () => deck = deck.copyWith(ownVisibility: value)),
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -364,25 +363,61 @@ class ChangeVisibilityDeckDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var visibility = seatIndex == null
-        ? connection.state.decks[index].visibility
-        : connection.state.seats[seatIndex!].decks[index].visibility;
+    var deck = seatIndex == null
+        ? connection.state.decks[index]
+        : connection.state.seats[seatIndex!].decks[index];
+    var visibility = deck.visibility;
+    var ownVisiblity = deck.ownVisibility;
     return AlertDialog(
       title: Text(AppLocalizations.of(context).changeVisibility),
-      content: DropdownButtonFormField<DeckVisibility>(
-        decoration: InputDecoration(
-          labelText: AppLocalizations.of(context).visibility,
-        ),
-        value: visibility,
-        items: DeckVisibility.values
-            .map((e) => DropdownMenuItem(
-                  value: e,
-                  child: Text(e.name),
-                ))
-            .toList(),
-        onChanged: (value) {
-          visibility = value ?? visibility;
-        },
+      scrollable: true,
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          DropdownButtonFormField<DeckVisibility>(
+            decoration: InputDecoration(
+              labelText: AppLocalizations.of(context).visibility,
+            ),
+            value: visibility,
+            items: DeckVisibility.values
+                .map((e) => DropdownMenuItem(
+                      value: e,
+                      child: Text(e.name),
+                    ))
+                .toList(),
+            onChanged: (value) {
+              visibility = value ?? visibility;
+            },
+          ),
+          if (seatIndex != null)
+            StatefulBuilder(
+              builder: (context, setState) => Row(
+                children: [
+                  Expanded(
+                    child: DropdownButtonFormField<DeckVisibility>(
+                      decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context).ownVisibility,
+                      ),
+                      value: ownVisiblity,
+                      items: DeckVisibility.values
+                          .map((e) => DropdownMenuItem(
+                                value: e,
+                                child: Text(e.name),
+                              ))
+                          .toList(),
+                      onChanged: (value) =>
+                          setState(() => ownVisiblity = value),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  IconButton(
+                    icon: const PhosphorIcon(PhosphorIconsLight.trash),
+                    onPressed: () => setState(() => ownVisiblity = null),
+                  ),
+                ],
+              ),
+            ),
+        ],
       ),
       actions: [
         TextButton(

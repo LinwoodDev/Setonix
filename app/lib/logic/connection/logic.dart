@@ -11,7 +11,7 @@ part 'logic.g.dart';
 class GamePlayer with _$GamePlayer {
   const factory GamePlayer({
     required String name,
-    required String id,
+    required int id,
   }) = _GamePlayer;
 
   factory GamePlayer.fromJson(Map<String, dynamic> json) =>

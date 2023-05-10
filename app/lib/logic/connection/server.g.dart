@@ -209,7 +209,8 @@ _$ChangeVisibilityServerConnectionMessage
           json['deckIndex'] as int,
           json['seatIndex'] as int?,
           $enumDecode(_$DeckVisibilityEnumMap, json['visibility']),
-          $type: json['type'] as String?,
+          $enumDecodeNullable(_$DeckVisibilityEnumMap, json['ownVisibility']),
+          json['type'] as String?,
         );
 
 Map<String, dynamic> _$$ChangeVisibilityServerConnectionMessageToJson(
@@ -218,6 +219,7 @@ Map<String, dynamic> _$$ChangeVisibilityServerConnectionMessageToJson(
       'deckIndex': instance.deckIndex,
       'seatIndex': instance.seatIndex,
       'visibility': _$DeckVisibilityEnumMap[instance.visibility]!,
+      'ownVisibility': _$DeckVisibilityEnumMap[instance.ownVisibility],
       'type': instance.$type,
     };
 

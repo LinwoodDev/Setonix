@@ -8,7 +8,7 @@ part of 'logic.dart';
 
 _$_GamePlayer _$$_GamePlayerFromJson(Map json) => _$_GamePlayer(
       name: json['name'] as String,
-      id: json['id'] as String,
+      id: json['id'] as int,
     );
 
 Map<String, dynamic> _$$_GamePlayerToJson(_$_GamePlayer instance) =>

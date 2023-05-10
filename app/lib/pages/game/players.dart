@@ -21,7 +21,7 @@ class PlayersDialog extends StatelessWidget {
               .map(
                 (player) => ListTile(
                   title: Text(player.name),
-                  subtitle: Text(player.id),
+                  subtitle: Text(player.id.toString()),
                 ),
               )
               .toList(),

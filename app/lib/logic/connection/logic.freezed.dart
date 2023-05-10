@@ -21,7 +21,7 @@ GamePlayer _$GamePlayerFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$GamePlayer {
   String get name => throw _privateConstructorUsedError;
-  String get id => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +35,7 @@ abstract class $GamePlayerCopyWith<$Res> {
           GamePlayer value, $Res Function(GamePlayer) then) =
       _$GamePlayerCopyWithImpl<$Res, GamePlayer>;
   @useResult
-  $Res call({String name, String id});
+  $Res call({String name, int id});
 }
 
 /// @nodoc
@@ -62,7 +62,7 @@ class _$GamePlayerCopyWithImpl<$Res, $Val extends GamePlayer>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
     ) as $Val);
   }
 }
@@ -75,7 +75,7 @@ abstract class _$$_GamePlayerCopyWith<$Res>
       __$$_GamePlayerCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, String id});
+  $Res call({String name, int id});
 }
 
 /// @nodoc
@@ -100,7 +100,7 @@ class __$$_GamePlayerCopyWithImpl<$Res>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
     ));
   }
 }
@@ -116,7 +116,7 @@ class _$_GamePlayer implements _GamePlayer {
   @override
   final String name;
   @override
-  final String id;
+  final int id;
 
   @override
   String toString() {
@@ -152,7 +152,7 @@ class _$_GamePlayer implements _GamePlayer {
 
 abstract class _GamePlayer implements GamePlayer {
   const factory _GamePlayer(
-      {required final String name, required final String id}) = _$_GamePlayer;
+      {required final String name, required final int id}) = _$_GamePlayer;
 
   factory _GamePlayer.fromJson(Map<String, dynamic> json) =
       _$_GamePlayer.fromJson;
@@ -160,7 +160,7 @@ abstract class _GamePlayer implements GamePlayer {
   @override
   String get name;
   @override
-  String get id;
+  int get id;
   @override
   @JsonKey(ignore: true)
   _$$_GamePlayerCopyWith<_$_GamePlayer> get copyWith =>
