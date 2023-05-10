@@ -39,5 +39,6 @@
   "changeVisibility": "Change visibility",
   "change": "Change",
   "secure": "Secure",
-  "port": "Port"
+  "port": "Port",
+  "otherSeats": "Other seats"
 }

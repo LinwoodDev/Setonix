@@ -173,50 +173,56 @@ class CardDeckDialog extends StatelessWidget {
         Align(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 500, maxHeight: 500),
-            child: Material(
-              child: SingleChildScrollView(
-                child: StreamBuilder<GameState>(
-                    stream: connection.stateStream,
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return const SizedBox();
-                      }
-                      final state = snapshot.data;
-                      var realDeck = deck;
-                      if (seatIndex != null) {
-                        realDeck = state!.seats[seatIndex!].decks[index!];
-                      } else if (index != null) {
-                        realDeck = state!.decks[index!];
-                      }
-                      return Wrap(
-                        children: realDeck.cards
-                            .asMap()
-                            .entries
-                            .map((e) => InkWell(
-                                  onTap: () {
-                                    CardIndex cardIndex;
-                                    if (index == null) {
-                                      cardIndex = AvailableCardIndex(e.value);
-                                    } else if (seatIndex == null) {
-                                      cardIndex = DeckCardIndex(e.key, index!);
-                                    } else {
-                                      cardIndex = SeatCardIndex(
-                                          e.key, index!, seatIndex!);
-                                    }
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) =>
-                                            CardsOperationDialog(
-                                                cards: [cardIndex],
-                                                connection: connection));
-                                  },
-                                  child: CardView(
-                                    card: e.value,
-                                  ),
-                                ))
-                            .toList(),
-                      );
-                    }),
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SingleChildScrollView(
+                  child: StreamBuilder<GameState>(
+                      stream: connection.stateStream,
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return const SizedBox();
+                        }
+                        final state = snapshot.data;
+                        var realDeck = deck;
+                        if (seatIndex != null) {
+                          realDeck = state!.seats[seatIndex!].decks[index!];
+                        } else if (index != null) {
+                          realDeck = state!.decks[index!];
+                        }
+                        return Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: realDeck.cards
+                              .asMap()
+                              .entries
+                              .map((e) => InkWell(
+                                    onTap: () {
+                                      CardIndex cardIndex;
+                                      if (index == null) {
+                                        cardIndex = AvailableCardIndex(e.value);
+                                      } else if (seatIndex == null) {
+                                        cardIndex =
+                                            DeckCardIndex(e.key, index!);
+                                      } else {
+                                        cardIndex = SeatCardIndex(
+                                            e.key, index!, seatIndex!);
+                                      }
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) =>
+                                              CardsOperationDialog(
+                                                  cards: [cardIndex],
+                                                  connection: connection));
+                                    },
+                                    child: CardView(
+                                      card: e.value,
+                                    ),
+                                  ))
+                              .toList(),
+                        );
+                      }),
+                ),
               ),
             ),
           ),
@@ -234,7 +240,7 @@ class AddDeckView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 120,
+      width: 150,
       child: Card(
         clipBehavior: Clip.antiAlias,
         child: InkWell(

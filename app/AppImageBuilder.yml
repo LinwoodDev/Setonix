@@ -3,8 +3,8 @@ version: 1
 script:
  - rm -rf AppDir || true
  - cp -r build/linux/x64/release/bundle AppDir
- - mkdir -p AppDir/usr/share/icons/hicolor/64x64/apps/
- - cp linux/debian/usr/share/icons/hicolor AppDir/usr/share/icons/hicolor -r
+ #- mkdir -p AppDir/usr/share/icons/hicolor/64x64/apps/
+ #- cp linux/debian/usr/share/icons/hicolor AppDir/usr/share/icons/hicolor -r
 AppDir:
   path: ./AppDir
   app_info:

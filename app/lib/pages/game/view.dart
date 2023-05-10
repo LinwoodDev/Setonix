@@ -14,6 +14,7 @@ class GameView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool showOtherSeats = false;
     return StreamBuilder<GameState>(
         stream: connection.stateStream,
         builder: (context, snapshot) {
@@ -23,88 +24,109 @@ class GameView extends StatelessWidget {
                 alignment: Alignment.center,
                 child: CircularProgressIndicator());
           }
-          return ListView(
-            shrinkWrap: true,
-            children: [
-              Text(AppLocalizations.of(context).available,
-                  style: Theme.of(context).textTheme.headlineSmall),
-              SizedBox(
-                height: 180,
-                child: ListView(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
+          return StatefulBuilder(
+            builder: (context, setState) => ListView(
+              shrinkWrap: true,
+              children: [
+                Text(AppLocalizations.of(context).available,
+                    style: Theme.of(context).textTheme.headlineSmall),
+                SizedBox(
+                  height: 180,
+                  child: ListView(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      GameDeckView(
+                        connection: connection,
+                        deck: GameDeck(
+                            cards: GameCard.getClassicDeck(),
+                            name: AppLocalizations.of(context).classic),
+                        index: null,
+                        seatIndex: null,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(AppLocalizations.of(context).decks,
+                    style: Theme.of(context).textTheme.headlineSmall),
+                SizedBox(
+                  height: 150,
+                  child: ListView(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      ...state.decks.asMap().entries.map((e) => GameDeckView(
+                            connection: connection,
+                            deck: e.value,
+                            index: e.key,
+                            seatIndex: null,
+                          )),
+                      AddDeckView(connection: connection),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    GameDeckView(
-                      connection: connection,
-                      deck: GameDeck(
-                          cards: GameCard.getClassicDeck(),
-                          name: AppLocalizations.of(context).classic),
-                      index: null,
-                      seatIndex: null,
+                    Text(AppLocalizations.of(context).seats,
+                        style: Theme.of(context).textTheme.headlineSmall),
+                    IconButton(
+                      icon: const PhosphorIcon(PhosphorIconsLight.gear),
+                      onPressed: () => showDialog(
+                          context: context,
+                          builder: (context) => SeatsDialog(
+                                connection: connection,
+                              )),
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(height: 16),
-              Text(AppLocalizations.of(context).decks,
-                  style: Theme.of(context).textTheme.headlineSmall),
-              SizedBox(
-                height: 150,
-                child: ListView(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
+                ...connection.getMySeats().asMap().entries.expand((se) => [
+                      const SizedBox(height: 16),
+                      SeatView(
+                        connection: connection,
+                        seat: se.value,
+                        index: se.key,
+                      ),
+                    ]),
+                // Add other seats
+                ExpansionPanelList(
+                  expansionCallback: (index, isExpanded) {
+                    setState(() {
+                      showOtherSeats = !showOtherSeats;
+                    });
+                  },
                   children: [
-                    ...state.decks.asMap().entries.map((e) => GameDeckView(
-                          connection: connection,
-                          deck: e.value,
-                          index: e.key,
-                          seatIndex: null,
-                        )),
-                    AddDeckView(connection: connection),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(AppLocalizations.of(context).seats,
-                      style: Theme.of(context).textTheme.headlineSmall),
-                  IconButton(
-                    icon: const PhosphorIcon(PhosphorIconsLight.gear),
-                    onPressed: () => showDialog(
-                        context: context,
-                        builder: (context) => SeatsDialog(
-                              connection: connection,
-                            )),
-                  ),
-                ],
-              ),
-              ...connection.getMySeats().asMap().entries.expand((se) => [
-                    const SizedBox(height: 16),
-                    Text(se.value.name),
-                    SizedBox(
-                      height: 150,
-                      child: ListView(
+                    ExpansionPanel(
+                      headerBuilder: (context, isExpanded) => ListTile(
+                        title: Text(AppLocalizations.of(context).otherSeats),
+                      ),
+                      body: ListView(
                         shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
                         children: [
-                          ...se.value.decks
+                          ...state.seats
                               .asMap()
                               .entries
-                              .map((e) => GameDeckView(
-                                    connection: connection,
-                                    deck: e.value,
-                                    index: e.key,
-                                    seatIndex: se.key,
+                              .where((e) => !e.value.players
+                                  .contains(connection.playerId))
+                              .map((e) => Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
+                                    child: SeatView(
+                                      connection: connection,
+                                      seat: e.value,
+                                      index: e.key,
+                                    ),
                                   )),
-                          AddDeckView(
-                              connection: connection, seatIndex: se.key),
                         ],
                       ),
+                      isExpanded: showOtherSeats,
                     ),
-                  ])
-            ],
+                  ],
+                )
+              ],
+            ),
           );
         });
   }
