@@ -46,7 +46,7 @@ dependencies:
   barcode: ^2.2.3
   # Internal
   flutter_bloc: ^8.1.2
-  url_launcher: ^6.1.10
+  url_launcher: ^6.1.11
   freezed_annotation: ^2.2.0
   # Information
   http: ^0.13.6

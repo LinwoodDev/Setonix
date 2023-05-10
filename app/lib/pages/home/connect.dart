@@ -19,11 +19,13 @@ class ConnectGameDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            StatefulBuilder(builder: (context, setState) => CheckboxListTile(
-              title: Text(AppLocalizations.of(context).secure),
-              value: secure,
-              onChanged: (value) => setState(() => secure = value ?? secure),
-            )),
+            StatefulBuilder(
+                builder: (context, setState) => CheckboxListTile(
+                      title: Text(AppLocalizations.of(context).secure),
+                      value: secure,
+                      onChanged: (value) =>
+                          setState(() => secure = value ?? secure),
+                    )),
             TextFormField(
               decoration: InputDecoration(
                 labelText: AppLocalizations.of(context).address,
