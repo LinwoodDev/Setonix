@@ -24,7 +24,7 @@ dependencies:
     sdk: flutter
   flutter_web_plugins:
     sdk: flutter  
-  intl: ^0.17.0
+  intl: ^0.18.0
   flutter_localized_locales: ^2.0.4
   # Engine
   #flame: ^1.7.3
@@ -36,7 +36,7 @@ dependencies:
   material_leap:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 6dd2cd01ed81f2108804ca5f1ee5717e513dd910
+      ref: 0d321c994b6876016bb2a2044247510d8886bd3f
       path: packages/material_leap
   flex_color_scheme: ^7.0.5
   window_manager: ^0.3.2
@@ -62,7 +62,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner: ^2.3.3
+  build_runner: ^2.4.2
   flutter_lints: ^2.0.1
   freezed: ^2.3.3
   json_serializable: ^6.6.2
