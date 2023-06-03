@@ -10,6 +10,7 @@ import 'package:qeck/models/server.dart';
 import 'package:qeck/services/connection.dart';
 import 'package:qeck/widgets/window.dart';
 
+import '../../api/settings.dart';
 import '../../logic/connection/client.dart';
 import '../../logic/connection/server.dart';
 import 'connect.dart';
@@ -26,7 +27,7 @@ class HomePage extends StatelessWidget {
           actions: [
             IconButton(
               icon: const PhosphorIcon(PhosphorIconsLight.gear),
-              onPressed: () => context.push('/settings'),
+              onPressed: () => openSettings(context),
             )
           ],
         ),

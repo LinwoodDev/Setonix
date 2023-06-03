@@ -16,10 +16,10 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$QeckSettings {
-  String get locale => throw _privateConstructorUsedError;
-  ThemeMode get themeMode => throw _privateConstructorUsedError;
-  bool get nativeTitleBar => throw _privateConstructorUsedError;
+  String get localeTag => throw _privateConstructorUsedError;
+  ThemeMode get theme => throw _privateConstructorUsedError;
   String get design => throw _privateConstructorUsedError;
+  bool get nativeTitleBar => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $QeckSettingsCopyWith<QeckSettings> get copyWith =>
@@ -33,7 +33,7 @@ abstract class $QeckSettingsCopyWith<$Res> {
       _$QeckSettingsCopyWithImpl<$Res, QeckSettings>;
   @useResult
   $Res call(
-      {String locale, ThemeMode themeMode, bool nativeTitleBar, String design});
+      {String localeTag, ThemeMode theme, String design, bool nativeTitleBar});
 }
 
 /// @nodoc
@@ -49,28 +49,28 @@ class _$QeckSettingsCopyWithImpl<$Res, $Val extends QeckSettings>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? locale = null,
-    Object? themeMode = null,
-    Object? nativeTitleBar = null,
+    Object? localeTag = null,
+    Object? theme = null,
     Object? design = null,
+    Object? nativeTitleBar = null,
   }) {
     return _then(_value.copyWith(
-      locale: null == locale
-          ? _value.locale
-          : locale // ignore: cast_nullable_to_non_nullable
+      localeTag: null == localeTag
+          ? _value.localeTag
+          : localeTag // ignore: cast_nullable_to_non_nullable
               as String,
-      themeMode: null == themeMode
-          ? _value.themeMode
-          : themeMode // ignore: cast_nullable_to_non_nullable
+      theme: null == theme
+          ? _value.theme
+          : theme // ignore: cast_nullable_to_non_nullable
               as ThemeMode,
-      nativeTitleBar: null == nativeTitleBar
-          ? _value.nativeTitleBar
-          : nativeTitleBar // ignore: cast_nullable_to_non_nullable
-              as bool,
       design: null == design
           ? _value.design
           : design // ignore: cast_nullable_to_non_nullable
               as String,
+      nativeTitleBar: null == nativeTitleBar
+          ? _value.nativeTitleBar
+          : nativeTitleBar // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -84,7 +84,7 @@ abstract class _$$_FlowSettingsCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String locale, ThemeMode themeMode, bool nativeTitleBar, String design});
+      {String localeTag, ThemeMode theme, String design, bool nativeTitleBar});
 }
 
 /// @nodoc
@@ -98,28 +98,28 @@ class __$$_FlowSettingsCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? locale = null,
-    Object? themeMode = null,
-    Object? nativeTitleBar = null,
+    Object? localeTag = null,
+    Object? theme = null,
     Object? design = null,
+    Object? nativeTitleBar = null,
   }) {
     return _then(_$_FlowSettings(
-      locale: null == locale
-          ? _value.locale
-          : locale // ignore: cast_nullable_to_non_nullable
+      localeTag: null == localeTag
+          ? _value.localeTag
+          : localeTag // ignore: cast_nullable_to_non_nullable
               as String,
-      themeMode: null == themeMode
-          ? _value.themeMode
-          : themeMode // ignore: cast_nullable_to_non_nullable
+      theme: null == theme
+          ? _value.theme
+          : theme // ignore: cast_nullable_to_non_nullable
               as ThemeMode,
-      nativeTitleBar: null == nativeTitleBar
-          ? _value.nativeTitleBar
-          : nativeTitleBar // ignore: cast_nullable_to_non_nullable
-              as bool,
       design: null == design
           ? _value.design
           : design // ignore: cast_nullable_to_non_nullable
               as String,
+      nativeTitleBar: null == nativeTitleBar
+          ? _value.nativeTitleBar
+          : nativeTitleBar // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -128,28 +128,28 @@ class __$$_FlowSettingsCopyWithImpl<$Res>
 
 class _$_FlowSettings extends _FlowSettings {
   const _$_FlowSettings(
-      {this.locale = '',
-      this.themeMode = ThemeMode.system,
-      this.nativeTitleBar = false,
-      this.design = ''})
+      {this.localeTag = '',
+      this.theme = ThemeMode.system,
+      this.design = '',
+      this.nativeTitleBar = false})
       : super._();
 
   @override
   @JsonKey()
-  final String locale;
+  final String localeTag;
   @override
   @JsonKey()
-  final ThemeMode themeMode;
-  @override
-  @JsonKey()
-  final bool nativeTitleBar;
+  final ThemeMode theme;
   @override
   @JsonKey()
   final String design;
+  @override
+  @JsonKey()
+  final bool nativeTitleBar;
 
   @override
   String toString() {
-    return 'QeckSettings(locale: $locale, themeMode: $themeMode, nativeTitleBar: $nativeTitleBar, design: $design)';
+    return 'QeckSettings(localeTag: $localeTag, theme: $theme, design: $design, nativeTitleBar: $nativeTitleBar)';
   }
 
   @override
@@ -157,17 +157,17 @@ class _$_FlowSettings extends _FlowSettings {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_FlowSettings &&
-            (identical(other.locale, locale) || other.locale == locale) &&
-            (identical(other.themeMode, themeMode) ||
-                other.themeMode == themeMode) &&
+            (identical(other.localeTag, localeTag) ||
+                other.localeTag == localeTag) &&
+            (identical(other.theme, theme) || other.theme == theme) &&
+            (identical(other.design, design) || other.design == design) &&
             (identical(other.nativeTitleBar, nativeTitleBar) ||
-                other.nativeTitleBar == nativeTitleBar) &&
-            (identical(other.design, design) || other.design == design));
+                other.nativeTitleBar == nativeTitleBar));
   }
 
   @override
   int get hashCode =>
-      Object.hash(runtimeType, locale, themeMode, nativeTitleBar, design);
+      Object.hash(runtimeType, localeTag, theme, design, nativeTitleBar);
 
   @JsonKey(ignore: true)
   @override
@@ -178,20 +178,20 @@ class _$_FlowSettings extends _FlowSettings {
 
 abstract class _FlowSettings extends QeckSettings {
   const factory _FlowSettings(
-      {final String locale,
-      final ThemeMode themeMode,
-      final bool nativeTitleBar,
-      final String design}) = _$_FlowSettings;
+      {final String localeTag,
+      final ThemeMode theme,
+      final String design,
+      final bool nativeTitleBar}) = _$_FlowSettings;
   const _FlowSettings._() : super._();
 
   @override
-  String get locale;
+  String get localeTag;
   @override
-  ThemeMode get themeMode;
-  @override
-  bool get nativeTitleBar;
+  ThemeMode get theme;
   @override
   String get design;
+  @override
+  bool get nativeTitleBar;
   @override
   @JsonKey(ignore: true)
   _$$_FlowSettingsCopyWith<_$_FlowSettings> get copyWith =>

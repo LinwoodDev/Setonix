@@ -10,49 +10,60 @@ class QeckSettings with _$QeckSettings {
   const QeckSettings._();
 
   const factory QeckSettings({
-    @Default('') String locale,
-    @Default(ThemeMode.system) ThemeMode themeMode,
-    @Default(false) bool nativeTitleBar,
+    @Default('') String localeTag,
+    @Default(ThemeMode.system) ThemeMode theme,
     @Default('') String design,
+    @Default(false) bool nativeTitleBar,
   }) = _FlowSettings;
 
+  Locale? get locale {
+    if (localeTag.isEmpty) {
+      return null;
+    }
+    if (localeTag.contains('-')) {
+      return Locale(localeTag.split('-')[0], localeTag.split('-')[1]);
+    }
+    return Locale(localeTag);
+  }
+
   factory QeckSettings.fromPrefs(SharedPreferences prefs) => QeckSettings(
-        themeMode:
-            ThemeMode.values.byName(prefs.getString('themeMode') ?? 'system'),
+        theme: ThemeMode.values.byName(prefs.getString('theme') ?? 'system'),
         design: prefs.getString('design') ?? '',
         nativeTitleBar: prefs.getBool('nativeTitleBar') ?? false,
-        locale: prefs.getString('locale') ?? '',
+        localeTag: prefs.getString('locale') ?? '',
       );
 
   Future<void> save() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString('themeMode', themeMode.name);
+    prefs.setString('theme', theme.name);
     prefs.setString('design', design);
     prefs.setBool('nativeTitleBar', nativeTitleBar);
-    prefs.setString('locale', locale);
+    prefs.setString('locale', localeTag);
   }
 }
 
 class SettingsCubit extends Cubit<QeckSettings> {
   SettingsCubit(SharedPreferences prefs) : super(QeckSettings.fromPrefs(prefs));
 
-  Future<void> setThemeMode(ThemeMode mode) {
-    emit(state.copyWith(themeMode: mode));
-    return state.save();
+  Future<void> changeTheme(ThemeMode theme) {
+    emit(state.copyWith(theme: theme));
+    return save();
   }
 
-  Future<void> setDesign(String design) {
+  Future<void> changeDesign(String design) {
     emit(state.copyWith(design: design));
-    return state.save();
+    return save();
   }
 
-  Future<void> setNativeTitleBar(bool nativeTitleBar) {
+  Future<void> changeNativeTitleBar(bool nativeTitleBar) {
     emit(state.copyWith(nativeTitleBar: nativeTitleBar));
-    return state.save();
+    return save();
   }
 
-  Future<void> setLocale(String locale) {
-    emit(state.copyWith(locale: locale));
-    return state.save();
+  Future<void> changeLocale(Locale? locale) {
+    emit(state.copyWith(localeTag: locale?.toLanguageTag() ?? ''));
+    return save();
   }
+
+  Future<void> save() => state.save();
 }

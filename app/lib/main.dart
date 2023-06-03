@@ -20,6 +20,7 @@ import 'setup.dart'
     if (dart.library.html) 'setup_web.dart'
     if (dart.library.io) 'setup_io.dart';
 import 'theme.dart';
+import 'widgets/window.dart';
 
 String? dataPath;
 
@@ -60,6 +61,13 @@ Page<void> Function(BuildContext, GoRouterState) _fadeTransitionBuilder(
       );
 }
 
+const kUnsupportedLanguages = [];
+
+List<Locale> getLocales() =>
+    List<Locale>.from(AppLocalizations.supportedLocales)
+        .where((l) => !kUnsupportedLanguages.contains(l.toString()))
+        .toList();
+
 class FlowApp extends StatelessWidget {
   FlowApp({super.key});
 
@@ -68,33 +76,68 @@ class FlowApp extends StatelessWidget {
     if (kIsWeb) return _buildApp(null, null);
     return DynamicColorBuilder(
       builder: (lightDynamic, darkDynamic) =>
-          _buildApp(lightDynamic, darkDynamic),
+          BlocBuilder<SettingsCubit, QeckSettings>(
+        buildWhen: (previous, current) =>
+            previous.nativeTitleBar != current.nativeTitleBar ||
+            previous.design != current.design,
+        builder: (context, settings) {
+          if (!kIsWeb && isWindow) {
+            windowManager.waitUntilReadyToShow().then((_) async {
+              await windowManager.setTitleBarStyle(settings.nativeTitleBar
+                  ? TitleBarStyle.normal
+                  : TitleBarStyle.hidden);
+              windowManager.show();
+            });
+          }
+          return _buildApp(lightDynamic, darkDynamic);
+        },
+      ),
     );
   }
 
   Widget _buildApp(ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
     final virtualWindowFrameBuilder = VirtualWindowFrameInit();
     return BlocBuilder<SettingsCubit, QeckSettings>(
-        buildWhen: (previous, current) =>
-            previous.design != current.design ||
-            previous.themeMode != current.themeMode ||
-            previous.locale != current.locale,
-        builder: (context, state) => MaterialApp.router(
-              debugShowCheckedModeBanner: false,
-              routerConfig: _router,
-              title: applicationName,
-              theme: getThemeData(state.design, false, lightDynamic),
-              darkTheme: getThemeData(state.design, true, darkDynamic),
-              themeMode: state.themeMode,
-              locale: state.locale.isEmpty ? null : Locale(state.locale),
-              localizationsDelegates: const [
-                ...AppLocalizations.localizationsDelegates,
-                LeapLocalizations.delegate,
-                LocaleNamesLocalizationsDelegate(),
-              ],
-              builder: virtualWindowFrameBuilder,
-              supportedLocales: AppLocalizations.supportedLocales,
-            ));
+      buildWhen: (previous, current) =>
+          previous.design != current.design ||
+          previous.theme != current.theme ||
+          previous.localeTag != current.localeTag,
+      builder: (context, state) {
+        if (!kIsWeb && isWindow) {
+          windowManager.waitUntilReadyToShow().then((_) async {
+            Brightness brightness;
+            switch (state.theme) {
+              case ThemeMode.light:
+                brightness = Brightness.light;
+                break;
+              case ThemeMode.dark:
+                brightness = Brightness.dark;
+                break;
+              default:
+                brightness = MediaQuery.of(context).platformBrightness;
+                break;
+            }
+            await windowManager.setBrightness(brightness);
+          });
+        }
+        return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          routerConfig: _router,
+          title: applicationName,
+          theme: getThemeData(state.design, false, lightDynamic),
+          darkTheme: getThemeData(state.design, true, darkDynamic),
+          themeMode: state.theme,
+          locale: state.locale,
+          localizationsDelegates: const [
+            ...AppLocalizations.localizationsDelegates,
+            LeapLocalizations.delegate,
+            LocaleNamesLocalizationsDelegate(),
+          ],
+          builder: virtualWindowFrameBuilder,
+          supportedLocales: AppLocalizations.supportedLocales,
+        );
+      },
+    );
   }
 
   final GoRouter _router = GoRouter(
