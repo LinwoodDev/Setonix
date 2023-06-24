@@ -6,7 +6,8 @@ import 'package:shelf_static/shelf_static.dart';
 import 'package:shelf_web_socket/shelf_web_socket.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
-void main() {
+void main(List<String> args) {
+  final port = args.isEmpty ? 80 : int.parse(args.first);
   final staticHandler =
       createStaticHandler('app/build/web', defaultDocument: 'index.html');
 
@@ -36,7 +37,7 @@ void main() {
   }
 
   // Serve on every ip
-  io.serve(handler, InternetAddress.anyIPv4, 80).then((server) {
+  io.serve(handler, InternetAddress.anyIPv4, port).then((server) {
     print('Serving at http://${server.address.host}:${server.port}');
   });
 }
