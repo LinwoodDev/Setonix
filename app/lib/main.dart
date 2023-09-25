@@ -22,8 +22,6 @@ import 'setup.dart'
 import 'theme.dart';
 import 'widgets/window.dart';
 
-String? dataPath;
-
 Future<void> main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
 
