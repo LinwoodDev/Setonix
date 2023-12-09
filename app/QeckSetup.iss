@@ -8,7 +8,7 @@
 #define MyAppPublisher "LinwoodCloud"
 #define MyAppURL "https://www.linwood.dev"
 #define MyAppExeName "qeck.exe" 
-#define BaseDirRelease "build\windows\runner\Release"
+#define BaseDirRelease "build\windows\x64\runner\Release"
 #define RunnerSourceDir "windows\runner"
 
 

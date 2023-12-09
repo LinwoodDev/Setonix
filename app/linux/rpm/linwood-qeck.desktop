@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Linwood Qeck
+Comment=Play games without internet with your friends 
+Exec=/usr/bin/linwood-qeck %f
+Icon=/usr/share/linwood-qeck/data/flutter_assets/images/logo.svg
+Terminal=false
+Type=Application
+Categories=Games;
