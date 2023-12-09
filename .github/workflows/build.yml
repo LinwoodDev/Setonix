@@ -10,11 +10,11 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: ⬆️ Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: 🔧 Setup java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
-          java-version: "11"
+          java-version: "17"
           distribution: "adopt"
       - name: Get flutter version
         run: |
@@ -23,7 +23,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: 'any'
+          channel: 'master'
       - name: 📦 Get dependencies
         run: |
           flutter clean
@@ -61,7 +61,7 @@ jobs:
         working-directory: app
     steps:
       - name: ⬆️ Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Get flutter version
         shell: bash
         run: |
@@ -70,7 +70,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: 'any'
+          channel: 'master'
       - name: ✅ Enable platforms
         run: flutter config --enable-windows-desktop
       - name: 📦 Get dependencies
@@ -94,15 +94,15 @@ jobs:
           Get-Content pubspec.yaml | Select-String -Pattern 'version:\s(.+)\+'  | % {Set-Item -Path Env:QECK_VERSION -Value "$($_.matches.groups[1])"}
           & 'C:/Program Files (x86)/Inno Setup 6/ISCC.exe' /DMyAppVersion=$Env:QECK_VERSION QeckSetup.iss
         # flutter pub run msix:create
-      #- name: Copy portable start script
-      #  run: |
-      #    cp scripts/start.bat build/windows/runner/Release/
+      - name: Copy portable start script
+        run: |
+          cp scripts/start.bat build/windows/x64/runner/Release/
       - name: Archive
         uses: actions/upload-artifact@v3
         with:
           name: windows-build
           path: |
-            app/build/windows/runner/Release/**
+            app/build/windows/x64/runner/Release/**
       - name: Archive
         uses: actions/upload-artifact@v3
         with:
@@ -116,7 +116,7 @@ jobs:
         working-directory: app
     steps:
       - name: ⬆️ Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Get dependencies
         run: |
           sudo apt-get update
@@ -139,7 +139,8 @@ jobs:
             patchelf \
             alien \
             libsecret-1-dev \
-            libjsoncpp-dev
+            libjsoncpp-dev \
+            rpm
       - name: Get flutter version
         run: |
           FLUTTER_VERSION=$(cat ../FLUTTER_VERSION)
@@ -147,7 +148,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: 'any'
+          channel: 'master'
       - name: ✅ Enable platforms
         run: flutter config --enable-linux-desktop
       - name: 📦 Get dependencies
@@ -165,16 +166,17 @@ jobs:
         run: |
           flutter doctor -v
           flutter build linux -v --release --dart-define=flavor=production
+      - name: 🏭 Make binary executable
+        run: |
+          chmod +x build/linux/x64/release/bundle/qeck
       - name: Build .deb executable
         run: |
           cp -fr build/linux/x64/release/bundle linux/debian/usr/bin
           dpkg-deb --build --root-owner-group linux/debian
           cp linux/*.deb linwood-qeck-linux.deb
-      #- name: Build .rpm executable
-      #  run: |
-      #    cd app
-      #    alien -r linwood-qeck-linux.deb
-      #    mv linwood-qeck*.rpm linwood-qeck-linux.rpm
+      - name: Build .rpm executable
+        run: |
+          bash scripts/build-rpm.sh
       - name: Build .AppImage executable
         run: |
           wget -O appimage-builder-x86_64.AppImage https://github.com/AppImageCrafters/appimage-builder/releases/download/v1.1.0/appimage-builder-1.1.0-x86_64.AppImage
@@ -190,9 +192,10 @@ jobs:
         run: |
           ls
           mv ./*.AppImage linwood-qeck-linux.AppImage
-      #- name: Copy portable start script
-      #  run: |
-      #    cp scripts/start.sh build/linux/x64/release/bundle
+      - name: Copy portable start script
+        run: |
+          chmod +x scripts/start.sh
+          cp scripts/start.sh build/linux/x64/release/bundle
       - name: Archive
         uses: actions/upload-artifact@v3
         with:
@@ -205,12 +208,12 @@ jobs:
           name: linux-deb
           path: |
             app/linwood-qeck-linux.deb
-      #- name: Archive .rpm
-      #  uses: actions/upload-artifact@v3
-      #  with:
-      #    name: linux-rpm
-      #    path: |
-      #      app/linwood-qeck-linux.rpm
+      - name: Archive .rpm
+        uses: actions/upload-artifact@v3
+        with:
+          name: linux-rpm
+          path: |
+            app/build/linwood-qeck-linux.rpm
       - name: Archive .AppImage
         uses: actions/upload-artifact@v3
         with:
@@ -225,7 +228,7 @@ jobs:
         working-directory: app
     steps:
       - name: ⬆️ Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Get dependencies
         run: |
           sudo apt-get update
@@ -256,7 +259,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: 'any'
+          channel: 'master'
       - name: ✅ Enable platforms
         run: flutter config --enable-linux-desktop
       - name: 📦 Get dependencies
@@ -305,38 +308,79 @@ jobs:
         with:
           name: linux-alternative-portable
           path: app/build/linux/x64/release/bundle
-  #build-macos:
-  #  runs-on: macos-latest
-  #  defaults:
-  #    run:
-  #      working-directory: app
-  #  steps:
-  #    - name: ⬆️ Checkout
-  #      uses: actions/checkout@v3
-  #    - name: Get flutter version
-  #      run: |
-  #        FLUTTER_VERSION=$(cat ../FLUTTER_VERSION)
-  #        echo "FLUTTER_VERSION=${FLUTTER_VERSION}" >> $GITHUB_ENV
-  #    - uses: subosito/flutter-action@v2
-  #      with:
-  #        flutter-version: ${{ env.FLUTTER_VERSION }}
-  #        channel: 'any'
-  #    - name: ✅ Enable platforms
-  #      run: flutter config --enable-macos-desktop
-  #    - name: 📦 Get dependencies
-  #      run: |
-  #        flutter clean
-  #        flutter pub get
-  #        flutter doctor -v
-  #    - name: 🏭 Build
-  #      run: |
-  #        flutter build macos -v
-  #    - name: Archive
-  #      uses: actions/upload-artifact@v3
-  #      with:
-  #        name: macos-build
-  #        path: |
-  #          app/build/macos/Build/Products/Release/qeck.app
+  build-macos:
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - name: ⬆️ Checkout
+        uses: actions/checkout@v4
+      - name: Get flutter version
+        run: |
+          FLUTTER_VERSION=$(cat ../FLUTTER_VERSION)
+          echo "FLUTTER_VERSION=${FLUTTER_VERSION}" >> $GITHUB_ENV
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'master'
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11' 
+      - name: ✅ Enable platforms
+        run: flutter config --enable-macos-desktop
+      - name: 📦 Get dependencies
+        run: |
+          flutter clean
+          flutter pub get
+          flutter doctor -v
+      - name: 🏭 Build
+        run: |
+          flutter build macos -v --release
+      - name: Zip file
+        working-directory: app/build/macos/Build/Products/Release
+        run: zip --symlinks -qr linwood-qeck-macos.zip qeck.app
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install appdmg
+        run: npm install -g appdmg
+      - name: Create dmg
+        run: |
+          appdmg DmgSetup.json linwood-qeck-macos.dmg
+      - name: Archive
+        uses: actions/upload-artifact@v3
+        with:
+          name: macos-build
+          path: |
+            app/build/macos/Build/Products/Release/linwood-qeck-macos.zip
+      - name: Archive
+        uses: actions/upload-artifact@v3
+        with:
+          name: macos-dmg
+          path: |
+            app/linwood-qeck-macos.dmg
+  # build-snap:
+  #   name: Build Snap
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       architecture:
+  #         - amd64
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: docker/setup-qemu-action@v2
+  #       with:
+  #         image: tonistiigi/binfmt@sha256:df15403e06a03c2f461c1f7938b171fda34a5849eb63a70e2a2109ed5a778bde
+  #     - uses: diddlesnaps/snapcraft-multiarch-action@v1
+  #       id: build
+  #       with:
+  #         architecture: ${{ matrix.architecture }}
+  #     - uses: actions/upload-artifact@v3
+  #       with:
+  #         name: qeck-snap
+  #         path: ${{ steps.build.outputs.snap }}    
   deploy:
     runs-on: ubuntu-22.04
     if: github.event_name == 'push'
@@ -348,10 +392,10 @@ jobs:
       - build-windows
       - build-linux
       - build-flatpak
-      #- build-macos
+      - build-macos
     steps:
       - name: ⬆️ Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         env:
           CI_PAT: ${{ secrets.CI_PAT }}
         with:
@@ -383,15 +427,12 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: linux-deb
-      #- uses: actions/download-artifact@v3
-      #  with:
-      #    name: linux-rpm
+      - uses: actions/download-artifact@v3
+        with:
+          name: linux-rpm
       - uses: actions/download-artifact@v3
         with:
           name: linux-appimage
-      #- uses: actions/download-artifact@v3
-      #  with:
-      #    name: linux-flatpak
       - uses: actions/download-artifact@v3
         with:
           name: linux-alternative-portable
@@ -399,16 +440,17 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: windows-setup
-      #- uses: actions/download-artifact@v3
-      #  with:
-      #    name: macos-build
-      #    path: macos-build/
+      - uses: actions/download-artifact@v3
+        with:
+          name: macos-build
+      - uses: actions/download-artifact@v3
+        with:
+          name: macos-dmg
       - name: 📦 Zip artifacts
         run: |
           zip -r linwood-qeck-windows.zip windows-build/*
           tar -C linux-build -czf linwood-qeck-linux.tar.gz .
           tar -C linux-alternative-portable -czf linwood-qeck-linux-alternative.tar.gz .
-      #    tar -C macos-build -czf linwood-qeck-macos.tar.gz .
       - name: Configure git
         if: ${{ github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main' }}
         run: |
@@ -430,9 +472,10 @@ jobs:
             linwood-qeck-linux.tar.gz
             linwood-qeck-linux-alternative.tar.gz
             linwood-qeck-linux.deb
+            linwood-qeck-linux.rpm
             linwood-qeck-linux.AppImage
-          #  linwood-qeck-macos.tar.gz
-          #  linwood-qeck-linux.flatpak
+            linwood-qeck-macos.zip
+            linwood-qeck-macos.dmg
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: 🚀 Deploy nightly
@@ -449,9 +492,10 @@ jobs:
             linwood-qeck-linux.tar.gz
             linwood-qeck-linux-alternative.tar.gz
             linwood-qeck-linux.deb
+            linwood-qeck-linux.rpm
             linwood-qeck-linux.AppImage
-          #  linwood-qeck-macos.tar.gz
-          #  linwood-qeck-linux.flatpak
+            linwood-qeck-macos.zip
+            linwood-qeck-macos.dmg
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Release
@@ -466,9 +510,10 @@ jobs:
             linwood-qeck-linux.tar.gz
             linwood-qeck-linux-alternative.tar.gz
             linwood-qeck-linux.deb
+            linwood-qeck-linux.rpm
             linwood-qeck-linux.AppImage
-          #  linwood-qeck-macos.tar.gz
-          #  linwood-qeck-linux.flatpak
+            linwood-qeck-macos.zip
+            linwood-qeck-macos.dmg
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   deploy-to-play-store:
@@ -481,7 +526,7 @@ jobs:
       PLAY_STORE_CREDENTIALS: ${{ secrets.PLAY_STORE_CREDENTIALS }}
     steps:
       - name: ⬆️ Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.CI_PAT }}
       - name: Setup git
@@ -500,9 +545,9 @@ jobs:
           if [[ -n "$KEY_JKS" ]] ; then echo "$KEY_JKS" | base64 --decode > key.jks  ; fi
           echo "$PLAY_STORE_CREDENTIALS" | base64 --decode > play-store-credentials.json
       - name: 🔧 Setup java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
-          java-version: "11"
+          java-version: "17"
           distribution: "adopt"
       - name: Get flutter version
         run: |
@@ -511,14 +556,14 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: 'any'
+          channel: 'master'
       - name: 📦 Get dependencies
         run: |
           flutter pub get
       - name: Setup Fastlane
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.2.1"
+          ruby-version: "3.2.2"
           bundler-cache: true
           working-directory: app/android
       - name: 🚀 Deploy to Play Store
@@ -537,18 +582,18 @@ jobs:
     needs: [deploy]
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.CI_PAT }}
       - if: ${{ github.ref == 'refs/tags/stable' }}
-        uses: vedantmgoyal2009/winget-releaser@v1
+        uses: vedantmgoyal2009/winget-releaser@v2
         with:
           identifier: LinwoodCloud.Qeck
           version: ${{ needs.deploy.outputs.version }}
           release-tag: v${{ needs.deploy.outputs.version }}
           token: ${{ secrets.CI_PAT }}
       - if: ${{ github.ref == 'refs/tags/nightly' }}
-        uses: vedantmgoyal2009/winget-releaser@v1
+        uses: vedantmgoyal2009/winget-releaser@v2
         with:
           identifier: LinwoodCloud.Qeck.Nightly
           version: ${{ needs.deploy.outputs.version }}

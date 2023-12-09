@@ -1,2 +1,3 @@
 FLUTTER_VERSION=$(cat ../FLUTTER_VERSION)
-if [ "$QECK_NIGHTLY" = "true" ]; then cp -r web_nightly/** web; fi && if cd flutter; then git pull && cd ..; else git clone https://github.com/flutter/flutter.git -b $FLUTTER_VERSION; fi && flutter/bin/flutter config --enable-web && flutter/bin/flutter build web --release --dart-define=FLUTTER_WEB_CANVASKIT_URL=/canvaskit/
+QECK_FLAVOR=$([[ "$QECK_NIGHTLY" == "true" ]] && echo "nightly" || echo "stable")
+if [ "$QECK_NIGHTLY" = "true" ]; then cp -r web_nightly/** web; fi && if cd flutter; then git pull && cd ..; else git clone https://github.com/flutter/flutter.git -b $FLUTTER_VERSION; fi && flutter/bin/flutter config --enable-web && flutter/bin/flutter build web --release --dart-define=FLUTTER_WEB_CANVASKIT_URL=/canvaskit/ --dart-define=flavor=$QECK_FLAVOR

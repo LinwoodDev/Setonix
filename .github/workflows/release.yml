@@ -17,7 +17,7 @@ jobs:
   update-changelog:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.CI_PAT }}
           fetch-depth: 0
@@ -28,7 +28,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: "any"
+          channel: 'master'
       - name: Setup git
         id: setup
         run: |
@@ -65,7 +65,7 @@ jobs:
       version: ${{ steps.setup.outputs.QECK_VERSION }}
       build_number: ${{ steps.setup.outputs.QECK_BUILD_NUMBER }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.CI_PAT }}
           ref: ${{ github.ref }}
@@ -77,7 +77,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: "any"
+          channel: 'master'
       - name: Setup git
         id: setup
         shell: bash
@@ -97,7 +97,7 @@ jobs:
           QECK_VERSION="${{ env.QECK_VERSION }}"
           git tag -fa v${{ env.QECK_VERSION }} -m "Release ${QECK_VERSION}"
           git push origin v${QECK_VERSION} -f
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.CI_PAT }}
           fetch-depth: 0
@@ -133,7 +133,7 @@ jobs:
       - update-changelog
       - release
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.CI_PAT }}
           fetch-depth: 0
@@ -144,7 +144,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: "any"
+          channel: 'master'
       - name: Setup git
         id: setup
         run: |
@@ -182,14 +182,14 @@ jobs:
     steps:
       - name: Checkout main
         if: ${{ github.ref == 'refs/heads/develop' }}
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.CI_PAT }}
           fetch-depth: 0
           ref: main
       - name: Checkout develop
         if: ${{ github.ref == 'refs/heads/main' }}
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.CI_PAT }}
           fetch-depth: 0
@@ -206,13 +206,19 @@ jobs:
           git config --global user.email "ci@linwood.dev"
           git config --global user.name "Linwood CI"
       - name: Get flutter version
+        if: ${{ github.ref == 'refs/heads/develop' }}
+        run: |
+          FLUTTER_VERSION=$(cat app/FLUTTER_VERSION)
+          echo "FLUTTER_VERSION=${FLUTTER_VERSION}" >> $GITHUB_ENV
+      - name: Get flutter version
+        if: ${{ github.ref == 'refs/heads/main' }}
         run: |
           FLUTTER_VERSION=$(cat FLUTTER_VERSION)
           echo "FLUTTER_VERSION=${FLUTTER_VERSION}" >> $GITHUB_ENV
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: "any"
+          channel: 'master'
       - name: Bump version
         run: |
           git fetch
@@ -234,7 +240,7 @@ jobs:
     runs-on: ubuntu-22.04
     needs: [release]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.CI_PAT }}
       - name: Get information
