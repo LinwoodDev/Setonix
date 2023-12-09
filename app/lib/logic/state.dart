@@ -146,7 +146,7 @@ class GameDeck with _$GameDeck {
         return copyWith(
           cards: [
             cards.first,
-            ...cards.map((e) => const BackgroundGameCard()).toList(),
+            ...cards.map((e) => const BackgroundGameCard()),
           ],
         );
       case DeckVisibility.hidden:

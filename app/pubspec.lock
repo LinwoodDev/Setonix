@@ -458,8 +458,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/material_leap"
-      ref: "058c6f98e54b9f33361c2b4ca834d87e68fd20b9"
-      resolved-ref: "058c6f98e54b9f33361c2b4ca834d87e68fd20b9"
+      ref: "7a0a8dc7eaca62e83d85259dab12e11b5f14ac8e"
+      resolved-ref: "7a0a8dc7eaca62e83d85259dab12e11b5f14ac8e"
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "0.0.1"
@@ -491,8 +491,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/networker/networker"
-      ref: "058c6f98e54b9f33361c2b4ca834d87e68fd20b9"
-      resolved-ref: "058c6f98e54b9f33361c2b4ca834d87e68fd20b9"
+      ref: "51e8e6e0f3531c35f9d4f34f04ac1235e74fea9b"
+      resolved-ref: "51e8e6e0f3531c35f9d4f34f04ac1235e74fea9b"
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "1.0.0"
@@ -500,8 +500,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/networker/networker_socket"
-      ref: "71f331d665176ce306a4987de8bf81b77200ee17"
-      resolved-ref: "71f331d665176ce306a4987de8bf81b77200ee17"
+      ref: "75b5ec0e51096ae169df3cd4f02c9f6affe22a81"
+      resolved-ref: "75b5ec0e51096ae169df3cd4f02c9f6affe22a81"
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "1.0.0"

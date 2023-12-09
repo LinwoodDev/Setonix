@@ -27,7 +27,7 @@ dependencies:
   intl: ^0.18.1
   flutter_localized_locales: ^2.0.5
   # Engine
-  flame: ^1.9.1
+  flame: ^1.12.0
   # UI
   phosphor_flutter:
     git:
@@ -36,17 +36,17 @@ dependencies:
   material_leap:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 058c6f98e54b9f33361c2b4ca834d87e68fd20b9
+      ref: 7a0a8dc7eaca62e83d85259dab12e11b5f14ac8e
       path: packages/material_leap
   networker:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 058c6f98e54b9f33361c2b4ca834d87e68fd20b9
+      ref: 51e8e6e0f3531c35f9d4f34f04ac1235e74fea9b
       path: packages/networker/networker
   networker_socket:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 71f331d665176ce306a4987de8bf81b77200ee17
+      ref: 75b5ec0e51096ae169df3cd4f02c9f6affe22a81
       path: packages/networker/networker_socket
   flex_color_scheme: ^7.2.0
   flutter_svg: ^2.0.7
