@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:flame/collisions.dart';
@@ -7,11 +6,9 @@ import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/text.dart';
-import 'package:flame_tiled/flame_tiled.dart';
 import 'package:qeck/game/board.dart';
 import 'package:qeck/game/wall.dart';
-
-enum PlayerState { idle, walking, jumping }
+import 'package:qeck/services/network.dart';
 
 class _PreviousPlayerPositionComponent extends ReadOnlyPositionProvider {
   final BoardPlayer player;
@@ -58,21 +55,26 @@ class BoardPlayer extends SpriteAnimationGroupComponent<PlayerState>
     );
 
     add(_text);
-    add(RectangleHitbox(size: size));
+    final realSize = Vector2.all(12);
+    add(RectangleHitbox(
+      size: realSize,
+    ));
   }
 
   SpriteAnimation _getAnimation({
     required List<Vector2> frames,
     double stepTime = double.infinity,
   }) {
-    final size = Vector2.all(16);
+    final size = Vector2.all(18);
     return SpriteAnimation.spriteList(
       frames
           .map(
             (vector) => Sprite(
               _image,
               srcSize: size,
-              srcPosition: vector.clone()..multiply(size),
+              srcPosition: vector.clone()
+                ..multiply(size)
+                ..add(Vector2.all(1)),
             ),
           )
           .toList(),

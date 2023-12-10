@@ -27,15 +27,19 @@ enum NetworkingType {
       };
 }
 
+enum PlayerState { idle, walking, jumping }
+
 @MappableClass()
 class NetworkingUser with NetworkingUserMappable {
   final String name;
+  final PlayerState state;
   final (double, double) position;
   final (double, double) velocity;
 
   const NetworkingUser({
     required this.name,
     required this.position,
+    this.state = PlayerState.idle,
     this.velocity = const (0, 0),
   });
 }
