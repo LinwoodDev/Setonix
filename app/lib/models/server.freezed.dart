@@ -105,11 +105,11 @@ class _$GameServerCopyWithImpl<$Res, $Val extends GameServer>
 }
 
 /// @nodoc
-abstract class _$$LanGameServerCopyWith<$Res>
+abstract class _$$LanGameServerImplCopyWith<$Res>
     implements $GameServerCopyWith<$Res> {
-  factory _$$LanGameServerCopyWith(
-          _$LanGameServer value, $Res Function(_$LanGameServer) then) =
-      __$$LanGameServerCopyWithImpl<$Res>;
+  factory _$$LanGameServerImplCopyWith(
+          _$LanGameServerImpl value, $Res Function(_$LanGameServerImpl) then) =
+      __$$LanGameServerImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String address, GameProperty property});
@@ -119,11 +119,11 @@ abstract class _$$LanGameServerCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$LanGameServerCopyWithImpl<$Res>
-    extends _$GameServerCopyWithImpl<$Res, _$LanGameServer>
-    implements _$$LanGameServerCopyWith<$Res> {
-  __$$LanGameServerCopyWithImpl(
-      _$LanGameServer _value, $Res Function(_$LanGameServer) _then)
+class __$$LanGameServerImplCopyWithImpl<$Res>
+    extends _$GameServerCopyWithImpl<$Res, _$LanGameServerImpl>
+    implements _$$LanGameServerImplCopyWith<$Res> {
+  __$$LanGameServerImplCopyWithImpl(
+      _$LanGameServerImpl _value, $Res Function(_$LanGameServerImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -132,7 +132,7 @@ class __$$LanGameServerCopyWithImpl<$Res>
     Object? address = null,
     Object? property = null,
   }) {
-    return _then(_$LanGameServer(
+    return _then(_$LanGameServerImpl(
       address: null == address
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
@@ -147,8 +147,8 @@ class __$$LanGameServerCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$LanGameServer implements LanGameServer {
-  const _$LanGameServer({required this.address, required this.property});
+class _$LanGameServerImpl implements LanGameServer {
+  const _$LanGameServerImpl({required this.address, required this.property});
 
   @override
   final String address;
@@ -164,7 +164,7 @@ class _$LanGameServer implements LanGameServer {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$LanGameServer &&
+            other is _$LanGameServerImpl &&
             (identical(other.address, address) || other.address == address) &&
             (identical(other.property, property) ||
                 other.property == property));
@@ -176,8 +176,8 @@ class _$LanGameServer implements LanGameServer {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$LanGameServerCopyWith<_$LanGameServer> get copyWith =>
-      __$$LanGameServerCopyWithImpl<_$LanGameServer>(this, _$identity);
+  _$$LanGameServerImplCopyWith<_$LanGameServerImpl> get copyWith =>
+      __$$LanGameServerImplCopyWithImpl<_$LanGameServerImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -239,7 +239,7 @@ class _$LanGameServer implements LanGameServer {
 abstract class LanGameServer implements GameServer {
   const factory LanGameServer(
       {required final String address,
-      required final GameProperty property}) = _$LanGameServer;
+      required final GameProperty property}) = _$LanGameServerImpl;
 
   @override
   String get address;
@@ -247,7 +247,7 @@ abstract class LanGameServer implements GameServer {
   GameProperty get property;
   @override
   @JsonKey(ignore: true)
-  _$$LanGameServerCopyWith<_$LanGameServer> get copyWith =>
+  _$$LanGameServerImplCopyWith<_$LanGameServerImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -300,22 +300,22 @@ class _$GamePropertyCopyWithImpl<$Res, $Val extends GameProperty>
 }
 
 /// @nodoc
-abstract class _$$_GamePropertyCopyWith<$Res>
+abstract class _$$GamePropertyImplCopyWith<$Res>
     implements $GamePropertyCopyWith<$Res> {
-  factory _$$_GamePropertyCopyWith(
-          _$_GameProperty value, $Res Function(_$_GameProperty) then) =
-      __$$_GamePropertyCopyWithImpl<$Res>;
+  factory _$$GamePropertyImplCopyWith(
+          _$GamePropertyImpl value, $Res Function(_$GamePropertyImpl) then) =
+      __$$GamePropertyImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String name, String description});
 }
 
 /// @nodoc
-class __$$_GamePropertyCopyWithImpl<$Res>
-    extends _$GamePropertyCopyWithImpl<$Res, _$_GameProperty>
-    implements _$$_GamePropertyCopyWith<$Res> {
-  __$$_GamePropertyCopyWithImpl(
-      _$_GameProperty _value, $Res Function(_$_GameProperty) _then)
+class __$$GamePropertyImplCopyWithImpl<$Res>
+    extends _$GamePropertyCopyWithImpl<$Res, _$GamePropertyImpl>
+    implements _$$GamePropertyImplCopyWith<$Res> {
+  __$$GamePropertyImplCopyWithImpl(
+      _$GamePropertyImpl _value, $Res Function(_$GamePropertyImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -324,7 +324,7 @@ class __$$_GamePropertyCopyWithImpl<$Res>
     Object? name = null,
     Object? description = null,
   }) {
-    return _then(_$_GameProperty(
+    return _then(_$GamePropertyImpl(
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -339,8 +339,8 @@ class __$$_GamePropertyCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_GameProperty implements _GameProperty {
-  const _$_GameProperty({this.name = '', this.description = ''});
+class _$GamePropertyImpl implements _GameProperty {
+  const _$GamePropertyImpl({this.name = '', this.description = ''});
 
   @override
   @JsonKey()
@@ -358,7 +358,7 @@ class _$_GameProperty implements _GameProperty {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_GameProperty &&
+            other is _$GamePropertyImpl &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.description, description) ||
                 other.description == description));
@@ -370,13 +370,13 @@ class _$_GameProperty implements _GameProperty {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_GamePropertyCopyWith<_$_GameProperty> get copyWith =>
-      __$$_GamePropertyCopyWithImpl<_$_GameProperty>(this, _$identity);
+  _$$GamePropertyImplCopyWith<_$GamePropertyImpl> get copyWith =>
+      __$$GamePropertyImplCopyWithImpl<_$GamePropertyImpl>(this, _$identity);
 }
 
 abstract class _GameProperty implements GameProperty {
   const factory _GameProperty({final String name, final String description}) =
-      _$_GameProperty;
+      _$GamePropertyImpl;
 
   @override
   String get name;
@@ -384,6 +384,6 @@ abstract class _GameProperty implements GameProperty {
   String get description;
   @override
   @JsonKey(ignore: true)
-  _$$_GamePropertyCopyWith<_$_GameProperty> get copyWith =>
+  _$$GamePropertyImplCopyWith<_$GamePropertyImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

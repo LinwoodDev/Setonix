@@ -38,16 +38,6 @@ dependencies:
       url: https://github.com/LinwoodDev/dart_pkgs.git
       ref: 7a0a8dc7eaca62e83d85259dab12e11b5f14ac8e
       path: packages/material_leap
-  networker:
-    git:
-      url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 51e8e6e0f3531c35f9d4f34f04ac1235e74fea9b
-      path: packages/networker/networker
-  networker_socket:
-    git:
-      url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 75b5ec0e51096ae169df3cd4f02c9f6affe22a81
-      path: packages/networker/networker_socket
   flex_color_scheme: ^7.2.0
   flutter_svg: ^2.0.7
   window_manager: ^0.3.5
@@ -58,25 +48,39 @@ dependencies:
   # Internal
   flutter_bloc: ^8.1.3
   url_launcher: ^6.1.12
-  freezed_annotation: ^2.4.1
-  # Information
+  # Networking
   http: ^1.1.0
+  web_socket_channel: ^2.4.0
+  networker:
+    git:
+      url: https://github.com/LinwoodDev/dart_pkgs.git
+      ref: 51e8e6e0f3531c35f9d4f34f04ac1235e74fea9b
+      path: packages/networker/networker
+  networker_socket:
+    git:
+      url: https://github.com/LinwoodDev/dart_pkgs.git
+      ref: 75b5ec0e51096ae169df3cd4f02c9f6affe22a81
+      path: packages/networker/networker_socket
+  # Information
+  device_info_plus: ^9.1.1
   package_info_plus: ^5.0.1
   path_provider: ^2.0.15
   go_router: ^12.1.3
   json_annotation: ^4.8.1
   dynamic_color: ^1.6.7
-  web_socket_channel: ^2.4.0
   rxdart: ^0.27.7
   collection: ^1.18.0
+  freezed_annotation: ^2.4.1
+  dart_mappable: ^4.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner: ^2.4.6
+  build_runner: ^2.4.7
   flutter_lints: ^3.0.1
   freezed: ^2.4.1
   json_serializable: ^6.7.1
+  dart_mappable_builder: ^4.1.0
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter.

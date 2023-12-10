@@ -28,6 +28,7 @@ jobs:
         run: |
           flutter clean
           flutter pub get
+          dart run build_runner build --delete-conflicting-outputs
           flutter doctor -v
       - name: Import files
         if: ${{ github.event_name != 'pull_request' }}
@@ -77,6 +78,7 @@ jobs:
         run: |
           flutter clean
           flutter pub get
+          dart run build_runner build --delete-conflicting-outputs
           flutter doctor -v
       - name: 🏭 Build nightly
         if: ${{ github.ref != 'refs/tags/stable' }}
@@ -155,6 +157,7 @@ jobs:
         run: |
           flutter clean
           flutter pub get
+          dart run build_runner build --delete-conflicting-outputs
           flutter doctor -v
       - name: 🏭 Build nightly
         if: ${{ github.ref != 'refs/tags/stable' }}
@@ -266,6 +269,7 @@ jobs:
         run: |
           flutter clean
           flutter pub get
+          dart run build_runner build --delete-conflicting-outputs
           flutter doctor -v
       - name: 🏭 Build nightly
         if: ${{ github.ref != 'refs/tags/stable' }}
@@ -333,6 +337,7 @@ jobs:
         run: |
           flutter clean
           flutter pub get
+          dart run build_runner build --delete-conflicting-outputs
           flutter doctor -v
       - name: 🏭 Build
         run: |
@@ -559,6 +564,7 @@ jobs:
           channel: 'master'
       - name: 📦 Get dependencies
         run: |
+          dart run build_runner build --delete-conflicting-outputs
           flutter pub get
       - name: Setup Fastlane
         uses: ruby/setup-ruby@v1

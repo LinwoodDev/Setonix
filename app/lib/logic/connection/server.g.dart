@@ -6,91 +6,92 @@ part of 'server.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$FetchPlayersServerConnectionMessage
-    _$$FetchPlayersServerConnectionMessageFromJson(Map json) =>
-        _$FetchPlayersServerConnectionMessage(
+_$FetchPlayersServerConnectionMessageImpl
+    _$$FetchPlayersServerConnectionMessageImplFromJson(Map json) =>
+        _$FetchPlayersServerConnectionMessageImpl(
           $type: json['type'] as String?,
         );
 
-Map<String, dynamic> _$$FetchPlayersServerConnectionMessageToJson(
-        _$FetchPlayersServerConnectionMessage instance) =>
+Map<String, dynamic> _$$FetchPlayersServerConnectionMessageImplToJson(
+        _$FetchPlayersServerConnectionMessageImpl instance) =>
     <String, dynamic>{
       'type': instance.$type,
     };
 
-_$ChatMessageServerConnectionMessage
-    _$$ChatMessageServerConnectionMessageFromJson(Map json) =>
-        _$ChatMessageServerConnectionMessage(
+_$ChatMessageServerConnectionMessageImpl
+    _$$ChatMessageServerConnectionMessageImplFromJson(Map json) =>
+        _$ChatMessageServerConnectionMessageImpl(
           json['message'] as String,
           $type: json['type'] as String?,
         );
 
-Map<String, dynamic> _$$ChatMessageServerConnectionMessageToJson(
-        _$ChatMessageServerConnectionMessage instance) =>
+Map<String, dynamic> _$$ChatMessageServerConnectionMessageImplToJson(
+        _$ChatMessageServerConnectionMessageImpl instance) =>
     <String, dynamic>{
       'message': instance.message,
       'type': instance.$type,
     };
 
-_$AddDeckServerConnectionMessage _$$AddDeckServerConnectionMessageFromJson(
-        Map json) =>
-    _$AddDeckServerConnectionMessage(
-      GameDeck.fromJson(Map<String, dynamic>.from(json['deck'] as Map)),
-      json['seatIndex'] as int?,
-      $type: json['type'] as String?,
-    );
+_$AddDeckServerConnectionMessageImpl
+    _$$AddDeckServerConnectionMessageImplFromJson(Map json) =>
+        _$AddDeckServerConnectionMessageImpl(
+          GameDeck.fromJson(Map<String, dynamic>.from(json['deck'] as Map)),
+          json['seatIndex'] as int?,
+          $type: json['type'] as String?,
+        );
 
-Map<String, dynamic> _$$AddDeckServerConnectionMessageToJson(
-        _$AddDeckServerConnectionMessage instance) =>
+Map<String, dynamic> _$$AddDeckServerConnectionMessageImplToJson(
+        _$AddDeckServerConnectionMessageImpl instance) =>
     <String, dynamic>{
       'deck': instance.deck.toJson(),
       'seatIndex': instance.seatIndex,
       'type': instance.$type,
     };
 
-_$RemoveDeckServerConnectionMessage
-    _$$RemoveDeckServerConnectionMessageFromJson(Map json) =>
-        _$RemoveDeckServerConnectionMessage(
+_$RemoveDeckServerConnectionMessageImpl
+    _$$RemoveDeckServerConnectionMessageImplFromJson(Map json) =>
+        _$RemoveDeckServerConnectionMessageImpl(
           json['index'] as int,
           json['seatIndex'] as int?,
           $type: json['type'] as String?,
         );
 
-Map<String, dynamic> _$$RemoveDeckServerConnectionMessageToJson(
-        _$RemoveDeckServerConnectionMessage instance) =>
+Map<String, dynamic> _$$RemoveDeckServerConnectionMessageImplToJson(
+        _$RemoveDeckServerConnectionMessageImpl instance) =>
     <String, dynamic>{
       'index': instance.index,
       'seatIndex': instance.seatIndex,
       'type': instance.$type,
     };
 
-_$AddSeatServerConnectionMessage _$$AddSeatServerConnectionMessageFromJson(
-        Map json) =>
-    _$AddSeatServerConnectionMessage(
-      json['name'] as String,
-      $type: json['type'] as String?,
-    );
+_$AddSeatServerConnectionMessageImpl
+    _$$AddSeatServerConnectionMessageImplFromJson(Map json) =>
+        _$AddSeatServerConnectionMessageImpl(
+          json['name'] as String,
+          $type: json['type'] as String?,
+        );
 
-Map<String, dynamic> _$$AddSeatServerConnectionMessageToJson(
-        _$AddSeatServerConnectionMessage instance) =>
+Map<String, dynamic> _$$AddSeatServerConnectionMessageImplToJson(
+        _$AddSeatServerConnectionMessageImpl instance) =>
     <String, dynamic>{
       'name': instance.name,
       'type': instance.$type,
     };
 
-_$AddCardsServerConnectionMessage _$$AddCardsServerConnectionMessageFromJson(
-        Map json) =>
-    _$AddCardsServerConnectionMessage(
-      (json['cards'] as List<dynamic>)
-          .map((e) => CardIndex.fromJson(Map<String, dynamic>.from(e as Map)))
-          .toList(),
-      json['deckIndex'] as int,
-      json['seatIndex'] as int?,
-      $type: json['type'] as String?,
-    );
+_$AddCardsServerConnectionMessageImpl
+    _$$AddCardsServerConnectionMessageImplFromJson(Map json) =>
+        _$AddCardsServerConnectionMessageImpl(
+          (json['cards'] as List<dynamic>)
+              .map((e) =>
+                  CardIndex.fromJson(Map<String, dynamic>.from(e as Map)))
+              .toList(),
+          json['deckIndex'] as int,
+          json['seatIndex'] as int?,
+          $type: json['type'] as String?,
+        );
 
-Map<String, dynamic> _$$AddCardsServerConnectionMessageToJson(
-        _$AddCardsServerConnectionMessage instance) =>
+Map<String, dynamic> _$$AddCardsServerConnectionMessageImplToJson(
+        _$AddCardsServerConnectionMessageImpl instance) =>
     <String, dynamic>{
       'cards': instance.cards.map((e) => e.toJson()).toList(),
       'deckIndex': instance.deckIndex,
@@ -98,20 +99,20 @@ Map<String, dynamic> _$$AddCardsServerConnectionMessageToJson(
       'type': instance.$type,
     };
 
-_$PutCardsServerConnectionMessage _$$PutCardsServerConnectionMessageFromJson(
-        Map json) =>
-    _$PutCardsServerConnectionMessage(
-      json['deckIndex'] as int,
-      json['seatIndex'] as int?,
-      $enumDecode(_$PickLocationEnumMap, json['location']),
-      json['count'] as int,
-      json['movedDeckIndex'] as int,
-      json['movedSeatIndex'] as int?,
-      $type: json['type'] as String?,
-    );
+_$PutCardsServerConnectionMessageImpl
+    _$$PutCardsServerConnectionMessageImplFromJson(Map json) =>
+        _$PutCardsServerConnectionMessageImpl(
+          json['deckIndex'] as int,
+          json['seatIndex'] as int?,
+          $enumDecode(_$PickLocationEnumMap, json['location']),
+          json['count'] as int,
+          json['movedDeckIndex'] as int,
+          json['movedSeatIndex'] as int?,
+          $type: json['type'] as String?,
+        );
 
-Map<String, dynamic> _$$PutCardsServerConnectionMessageToJson(
-        _$PutCardsServerConnectionMessage instance) =>
+Map<String, dynamic> _$$PutCardsServerConnectionMessageImplToJson(
+        _$PutCardsServerConnectionMessageImpl instance) =>
     <String, dynamic>{
       'deckIndex': instance.deckIndex,
       'seatIndex': instance.seatIndex,
@@ -128,9 +129,9 @@ const _$PickLocationEnumMap = {
   PickLocation.random: 'random',
 };
 
-_$RemoveCardsServerConnectionMessage
-    _$$RemoveCardsServerConnectionMessageFromJson(Map json) =>
-        _$RemoveCardsServerConnectionMessage(
+_$RemoveCardsServerConnectionMessageImpl
+    _$$RemoveCardsServerConnectionMessageImplFromJson(Map json) =>
+        _$RemoveCardsServerConnectionMessageImpl(
           (json['cards'] as List<dynamic>)
               .map((e) =>
                   CardIndex.fromJson(Map<String, dynamic>.from(e as Map)))
@@ -138,74 +139,74 @@ _$RemoveCardsServerConnectionMessage
           $type: json['type'] as String?,
         );
 
-Map<String, dynamic> _$$RemoveCardsServerConnectionMessageToJson(
-        _$RemoveCardsServerConnectionMessage instance) =>
+Map<String, dynamic> _$$RemoveCardsServerConnectionMessageImplToJson(
+        _$RemoveCardsServerConnectionMessageImpl instance) =>
     <String, dynamic>{
       'cards': instance.cards.map((e) => e.toJson()).toList(),
       'type': instance.$type,
     };
 
-_$RemoveSeatServerConnectionMessage
-    _$$RemoveSeatServerConnectionMessageFromJson(Map json) =>
-        _$RemoveSeatServerConnectionMessage(
+_$RemoveSeatServerConnectionMessageImpl
+    _$$RemoveSeatServerConnectionMessageImplFromJson(Map json) =>
+        _$RemoveSeatServerConnectionMessageImpl(
           json['index'] as int,
           $type: json['type'] as String?,
         );
 
-Map<String, dynamic> _$$RemoveSeatServerConnectionMessageToJson(
-        _$RemoveSeatServerConnectionMessage instance) =>
+Map<String, dynamic> _$$RemoveSeatServerConnectionMessageImplToJson(
+        _$RemoveSeatServerConnectionMessageImpl instance) =>
     <String, dynamic>{
       'index': instance.index,
       'type': instance.$type,
     };
 
-_$JoinSeatServerConnectionMessage _$$JoinSeatServerConnectionMessageFromJson(
-        Map json) =>
-    _$JoinSeatServerConnectionMessage(
-      json['index'] as int,
-      $type: json['type'] as String?,
-    );
+_$JoinSeatServerConnectionMessageImpl
+    _$$JoinSeatServerConnectionMessageImplFromJson(Map json) =>
+        _$JoinSeatServerConnectionMessageImpl(
+          json['index'] as int,
+          $type: json['type'] as String?,
+        );
 
-Map<String, dynamic> _$$JoinSeatServerConnectionMessageToJson(
-        _$JoinSeatServerConnectionMessage instance) =>
+Map<String, dynamic> _$$JoinSeatServerConnectionMessageImplToJson(
+        _$JoinSeatServerConnectionMessageImpl instance) =>
     <String, dynamic>{
       'index': instance.index,
       'type': instance.$type,
     };
 
-_$LeaveSeatServerConnectionMessage _$$LeaveSeatServerConnectionMessageFromJson(
-        Map json) =>
-    _$LeaveSeatServerConnectionMessage(
-      json['index'] as int,
-      $type: json['type'] as String?,
-    );
+_$LeaveSeatServerConnectionMessageImpl
+    _$$LeaveSeatServerConnectionMessageImplFromJson(Map json) =>
+        _$LeaveSeatServerConnectionMessageImpl(
+          json['index'] as int,
+          $type: json['type'] as String?,
+        );
 
-Map<String, dynamic> _$$LeaveSeatServerConnectionMessageToJson(
-        _$LeaveSeatServerConnectionMessage instance) =>
+Map<String, dynamic> _$$LeaveSeatServerConnectionMessageImplToJson(
+        _$LeaveSeatServerConnectionMessageImpl instance) =>
     <String, dynamic>{
       'index': instance.index,
       'type': instance.$type,
     };
 
-_$ShuffleServerConnectionMessage _$$ShuffleServerConnectionMessageFromJson(
-        Map json) =>
-    _$ShuffleServerConnectionMessage(
-      json['deckIndex'] as int,
-      json['seatIndex'] as int?,
-      $type: json['type'] as String?,
-    );
+_$ShuffleServerConnectionMessageImpl
+    _$$ShuffleServerConnectionMessageImplFromJson(Map json) =>
+        _$ShuffleServerConnectionMessageImpl(
+          json['deckIndex'] as int,
+          json['seatIndex'] as int?,
+          $type: json['type'] as String?,
+        );
 
-Map<String, dynamic> _$$ShuffleServerConnectionMessageToJson(
-        _$ShuffleServerConnectionMessage instance) =>
+Map<String, dynamic> _$$ShuffleServerConnectionMessageImplToJson(
+        _$ShuffleServerConnectionMessageImpl instance) =>
     <String, dynamic>{
       'deckIndex': instance.deckIndex,
       'seatIndex': instance.seatIndex,
       'type': instance.$type,
     };
 
-_$ChangeVisibilityServerConnectionMessage
-    _$$ChangeVisibilityServerConnectionMessageFromJson(Map json) =>
-        _$ChangeVisibilityServerConnectionMessage(
+_$ChangeVisibilityServerConnectionMessageImpl
+    _$$ChangeVisibilityServerConnectionMessageImplFromJson(Map json) =>
+        _$ChangeVisibilityServerConnectionMessageImpl(
           json['deckIndex'] as int,
           json['seatIndex'] as int?,
           $enumDecode(_$DeckVisibilityEnumMap, json['visibility']),
@@ -213,8 +214,8 @@ _$ChangeVisibilityServerConnectionMessage
           json['type'] as String?,
         );
 
-Map<String, dynamic> _$$ChangeVisibilityServerConnectionMessageToJson(
-        _$ChangeVisibilityServerConnectionMessage instance) =>
+Map<String, dynamic> _$$ChangeVisibilityServerConnectionMessageImplToJson(
+        _$ChangeVisibilityServerConnectionMessageImpl instance) =>
     <String, dynamic>{
       'deckIndex': instance.deckIndex,
       'seatIndex': instance.seatIndex,

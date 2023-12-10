@@ -6,7 +6,8 @@ part of 'state.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$ClassicGameCard _$$ClassicGameCardFromJson(Map json) => _$ClassicGameCard(
+_$ClassicGameCardImpl _$$ClassicGameCardImplFromJson(Map json) =>
+    _$ClassicGameCardImpl(
       color:
           $enumDecodeNullable(_$ClassicGameCardColorEnumMap, json['color']) ??
               ClassicGameCardColor.heart,
@@ -14,7 +15,8 @@ _$ClassicGameCard _$$ClassicGameCardFromJson(Map json) => _$ClassicGameCard(
       $type: json['type'] as String?,
     );
 
-Map<String, dynamic> _$$ClassicGameCardToJson(_$ClassicGameCard instance) =>
+Map<String, dynamic> _$$ClassicGameCardImplToJson(
+        _$ClassicGameCardImpl instance) =>
     <String, dynamic>{
       'color': _$ClassicGameCardColorEnumMap[instance.color]!,
       'number': instance.number,
@@ -28,18 +30,18 @@ const _$ClassicGameCardColorEnumMap = {
   ClassicGameCardColor.club: 'club',
 };
 
-_$BackgroundGameCard _$$BackgroundGameCardFromJson(Map json) =>
-    _$BackgroundGameCard(
+_$BackgroundGameCardImpl _$$BackgroundGameCardImplFromJson(Map json) =>
+    _$BackgroundGameCardImpl(
       $type: json['type'] as String?,
     );
 
-Map<String, dynamic> _$$BackgroundGameCardToJson(
-        _$BackgroundGameCard instance) =>
+Map<String, dynamic> _$$BackgroundGameCardImplToJson(
+        _$BackgroundGameCardImpl instance) =>
     <String, dynamic>{
       'type': instance.$type,
     };
 
-_$_GameState _$$_GameStateFromJson(Map json) => _$_GameState(
+_$GameStateImpl _$$GameStateImplFromJson(Map json) => _$GameStateImpl(
       decks: (json['decks'] as List<dynamic>?)
               ?.map(
                   (e) => GameDeck.fromJson(Map<String, dynamic>.from(e as Map)))
@@ -52,13 +54,13 @@ _$_GameState _$$_GameStateFromJson(Map json) => _$_GameState(
           const [],
     );
 
-Map<String, dynamic> _$$_GameStateToJson(_$_GameState instance) =>
+Map<String, dynamic> _$$GameStateImplToJson(_$GameStateImpl instance) =>
     <String, dynamic>{
       'decks': instance.decks.map((e) => e.toJson()).toList(),
       'seats': instance.seats.map((e) => e.toJson()).toList(),
     };
 
-_$_GameSeat _$$_GameSeatFromJson(Map json) => _$_GameSeat(
+_$GameSeatImpl _$$GameSeatImplFromJson(Map json) => _$GameSeatImpl(
       name: json['name'] as String? ?? '',
       decks: (json['decks'] as List<dynamic>?)
               ?.map(
@@ -72,7 +74,7 @@ _$_GameSeat _$$_GameSeatFromJson(Map json) => _$_GameSeat(
           _$DeckVisibilityEnumMap, json['ownDeckVisibility']),
     );
 
-Map<String, dynamic> _$$_GameSeatToJson(_$_GameSeat instance) =>
+Map<String, dynamic> _$$GameSeatImplToJson(_$GameSeatImpl instance) =>
     <String, dynamic>{
       'name': instance.name,
       'decks': instance.decks.map((e) => e.toJson()).toList(),
@@ -86,40 +88,44 @@ const _$DeckVisibilityEnumMap = {
   DeckVisibility.visible: 'visible',
 };
 
-_$_DeckRefillNone _$$_DeckRefillNoneFromJson(Map json) => _$_DeckRefillNone(
+_$DeckRefillNoneImpl _$$DeckRefillNoneImplFromJson(Map json) =>
+    _$DeckRefillNoneImpl(
       $type: json['type'] as String?,
     );
 
-Map<String, dynamic> _$$_DeckRefillNoneToJson(_$_DeckRefillNone instance) =>
+Map<String, dynamic> _$$DeckRefillNoneImplToJson(
+        _$DeckRefillNoneImpl instance) =>
     <String, dynamic>{
       'type': instance.$type,
     };
 
-_$_DeckRefillShuffle _$$_DeckRefillShuffleFromJson(Map json) =>
-    _$_DeckRefillShuffle(
+_$DeckRefillShuffleImpl _$$DeckRefillShuffleImplFromJson(Map json) =>
+    _$DeckRefillShuffleImpl(
       count: json['count'] as int?,
       $type: json['type'] as String?,
     );
 
-Map<String, dynamic> _$$_DeckRefillShuffleToJson(
-        _$_DeckRefillShuffle instance) =>
+Map<String, dynamic> _$$DeckRefillShuffleImplToJson(
+        _$DeckRefillShuffleImpl instance) =>
     <String, dynamic>{
       'count': instance.count,
       'type': instance.$type,
     };
 
-_$_DeckRefillFirst _$$_DeckRefillFirstFromJson(Map json) => _$_DeckRefillFirst(
+_$DeckRefillFirstImpl _$$DeckRefillFirstImplFromJson(Map json) =>
+    _$DeckRefillFirstImpl(
       count: json['count'] as int?,
       $type: json['type'] as String?,
     );
 
-Map<String, dynamic> _$$_DeckRefillFirstToJson(_$_DeckRefillFirst instance) =>
+Map<String, dynamic> _$$DeckRefillFirstImplToJson(
+        _$DeckRefillFirstImpl instance) =>
     <String, dynamic>{
       'count': instance.count,
       'type': instance.$type,
     };
 
-_$_GameDeck _$$_GameDeckFromJson(Map json) => _$_GameDeck(
+_$GameDeckImpl _$$GameDeckImplFromJson(Map json) => _$GameDeckImpl(
       name: json['name'] as String? ?? '',
       visibility:
           $enumDecodeNullable(_$DeckVisibilityEnumMap, json['visibility']) ??
@@ -133,7 +139,7 @@ _$_GameDeck _$$_GameDeckFromJson(Map json) => _$_GameDeck(
           const [],
     );
 
-Map<String, dynamic> _$$_GameDeckToJson(_$_GameDeck instance) =>
+Map<String, dynamic> _$$GameDeckImplToJson(_$GameDeckImpl instance) =>
     <String, dynamic>{
       'name': instance.name,
       'visibility': _$DeckVisibilityEnumMap[instance.visibility]!,

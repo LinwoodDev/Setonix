@@ -88,20 +88,20 @@ class _$GameCardCopyWithImpl<$Res, $Val extends GameCard>
 }
 
 /// @nodoc
-abstract class _$$ClassicGameCardCopyWith<$Res> {
-  factory _$$ClassicGameCardCopyWith(
-          _$ClassicGameCard value, $Res Function(_$ClassicGameCard) then) =
-      __$$ClassicGameCardCopyWithImpl<$Res>;
+abstract class _$$ClassicGameCardImplCopyWith<$Res> {
+  factory _$$ClassicGameCardImplCopyWith(_$ClassicGameCardImpl value,
+          $Res Function(_$ClassicGameCardImpl) then) =
+      __$$ClassicGameCardImplCopyWithImpl<$Res>;
   @useResult
   $Res call({ClassicGameCardColor color, int number});
 }
 
 /// @nodoc
-class __$$ClassicGameCardCopyWithImpl<$Res>
-    extends _$GameCardCopyWithImpl<$Res, _$ClassicGameCard>
-    implements _$$ClassicGameCardCopyWith<$Res> {
-  __$$ClassicGameCardCopyWithImpl(
-      _$ClassicGameCard _value, $Res Function(_$ClassicGameCard) _then)
+class __$$ClassicGameCardImplCopyWithImpl<$Res>
+    extends _$GameCardCopyWithImpl<$Res, _$ClassicGameCardImpl>
+    implements _$$ClassicGameCardImplCopyWith<$Res> {
+  __$$ClassicGameCardImplCopyWithImpl(
+      _$ClassicGameCardImpl _value, $Res Function(_$ClassicGameCardImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -110,7 +110,7 @@ class __$$ClassicGameCardCopyWithImpl<$Res>
     Object? color = null,
     Object? number = null,
   }) {
-    return _then(_$ClassicGameCard(
+    return _then(_$ClassicGameCardImpl(
       color: null == color
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
@@ -125,15 +125,15 @@ class __$$ClassicGameCardCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ClassicGameCard implements ClassicGameCard {
-  const _$ClassicGameCard(
+class _$ClassicGameCardImpl implements ClassicGameCard {
+  const _$ClassicGameCardImpl(
       {this.color = ClassicGameCardColor.heart,
       this.number = 1,
       final String? $type})
       : $type = $type ?? 'classic';
 
-  factory _$ClassicGameCard.fromJson(Map<String, dynamic> json) =>
-      _$$ClassicGameCardFromJson(json);
+  factory _$ClassicGameCardImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ClassicGameCardImplFromJson(json);
 
   @override
   @JsonKey()
@@ -154,7 +154,7 @@ class _$ClassicGameCard implements ClassicGameCard {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ClassicGameCard &&
+            other is _$ClassicGameCardImpl &&
             (identical(other.color, color) || other.color == color) &&
             (identical(other.number, number) || other.number == number));
   }
@@ -166,8 +166,9 @@ class _$ClassicGameCard implements ClassicGameCard {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ClassicGameCardCopyWith<_$ClassicGameCard> get copyWith =>
-      __$$ClassicGameCardCopyWithImpl<_$ClassicGameCard>(this, _$identity);
+  _$$ClassicGameCardImplCopyWith<_$ClassicGameCardImpl> get copyWith =>
+      __$$ClassicGameCardImplCopyWithImpl<_$ClassicGameCardImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -233,7 +234,7 @@ class _$ClassicGameCard implements ClassicGameCard {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ClassicGameCardToJson(
+    return _$$ClassicGameCardImplToJson(
       this,
     );
   }
@@ -241,42 +242,43 @@ class _$ClassicGameCard implements ClassicGameCard {
 
 abstract class ClassicGameCard implements GameCard {
   const factory ClassicGameCard(
-      {final ClassicGameCardColor color, final int number}) = _$ClassicGameCard;
+      {final ClassicGameCardColor color,
+      final int number}) = _$ClassicGameCardImpl;
 
   factory ClassicGameCard.fromJson(Map<String, dynamic> json) =
-      _$ClassicGameCard.fromJson;
+      _$ClassicGameCardImpl.fromJson;
 
   ClassicGameCardColor get color;
   int get number;
   @JsonKey(ignore: true)
-  _$$ClassicGameCardCopyWith<_$ClassicGameCard> get copyWith =>
+  _$$ClassicGameCardImplCopyWith<_$ClassicGameCardImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$BackgroundGameCardCopyWith<$Res> {
-  factory _$$BackgroundGameCardCopyWith(_$BackgroundGameCard value,
-          $Res Function(_$BackgroundGameCard) then) =
-      __$$BackgroundGameCardCopyWithImpl<$Res>;
+abstract class _$$BackgroundGameCardImplCopyWith<$Res> {
+  factory _$$BackgroundGameCardImplCopyWith(_$BackgroundGameCardImpl value,
+          $Res Function(_$BackgroundGameCardImpl) then) =
+      __$$BackgroundGameCardImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$BackgroundGameCardCopyWithImpl<$Res>
-    extends _$GameCardCopyWithImpl<$Res, _$BackgroundGameCard>
-    implements _$$BackgroundGameCardCopyWith<$Res> {
-  __$$BackgroundGameCardCopyWithImpl(
-      _$BackgroundGameCard _value, $Res Function(_$BackgroundGameCard) _then)
+class __$$BackgroundGameCardImplCopyWithImpl<$Res>
+    extends _$GameCardCopyWithImpl<$Res, _$BackgroundGameCardImpl>
+    implements _$$BackgroundGameCardImplCopyWith<$Res> {
+  __$$BackgroundGameCardImplCopyWithImpl(_$BackgroundGameCardImpl _value,
+      $Res Function(_$BackgroundGameCardImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$BackgroundGameCard implements BackgroundGameCard {
-  const _$BackgroundGameCard({final String? $type})
+class _$BackgroundGameCardImpl implements BackgroundGameCard {
+  const _$BackgroundGameCardImpl({final String? $type})
       : $type = $type ?? 'background';
 
-  factory _$BackgroundGameCard.fromJson(Map<String, dynamic> json) =>
-      _$$BackgroundGameCardFromJson(json);
+  factory _$BackgroundGameCardImpl.fromJson(Map<String, dynamic> json) =>
+      _$$BackgroundGameCardImplFromJson(json);
 
   @JsonKey(name: 'type')
   final String $type;
@@ -289,7 +291,7 @@ class _$BackgroundGameCard implements BackgroundGameCard {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$BackgroundGameCard);
+        (other.runtimeType == runtimeType && other is _$BackgroundGameCardImpl);
   }
 
   @JsonKey(ignore: true)
@@ -360,17 +362,17 @@ class _$BackgroundGameCard implements BackgroundGameCard {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$BackgroundGameCardToJson(
+    return _$$BackgroundGameCardImplToJson(
       this,
     );
   }
 }
 
 abstract class BackgroundGameCard implements GameCard {
-  const factory BackgroundGameCard() = _$BackgroundGameCard;
+  const factory BackgroundGameCard() = _$BackgroundGameCardImpl;
 
   factory BackgroundGameCard.fromJson(Map<String, dynamic> json) =
-      _$BackgroundGameCard.fromJson;
+      _$BackgroundGameCardImpl.fromJson;
 }
 
 GameState _$GameStateFromJson(Map<String, dynamic> json) {
@@ -426,21 +428,22 @@ class _$GameStateCopyWithImpl<$Res, $Val extends GameState>
 }
 
 /// @nodoc
-abstract class _$$_GameStateCopyWith<$Res> implements $GameStateCopyWith<$Res> {
-  factory _$$_GameStateCopyWith(
-          _$_GameState value, $Res Function(_$_GameState) then) =
-      __$$_GameStateCopyWithImpl<$Res>;
+abstract class _$$GameStateImplCopyWith<$Res>
+    implements $GameStateCopyWith<$Res> {
+  factory _$$GameStateImplCopyWith(
+          _$GameStateImpl value, $Res Function(_$GameStateImpl) then) =
+      __$$GameStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({List<GameDeck> decks, List<GameSeat> seats});
 }
 
 /// @nodoc
-class __$$_GameStateCopyWithImpl<$Res>
-    extends _$GameStateCopyWithImpl<$Res, _$_GameState>
-    implements _$$_GameStateCopyWith<$Res> {
-  __$$_GameStateCopyWithImpl(
-      _$_GameState _value, $Res Function(_$_GameState) _then)
+class __$$GameStateImplCopyWithImpl<$Res>
+    extends _$GameStateCopyWithImpl<$Res, _$GameStateImpl>
+    implements _$$GameStateImplCopyWith<$Res> {
+  __$$GameStateImplCopyWithImpl(
+      _$GameStateImpl _value, $Res Function(_$GameStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -449,7 +452,7 @@ class __$$_GameStateCopyWithImpl<$Res>
     Object? decks = null,
     Object? seats = null,
   }) {
-    return _then(_$_GameState(
+    return _then(_$GameStateImpl(
       decks: null == decks
           ? _value._decks
           : decks // ignore: cast_nullable_to_non_nullable
@@ -464,16 +467,16 @@ class __$$_GameStateCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_GameState extends _GameState {
-  const _$_GameState(
+class _$GameStateImpl extends _GameState {
+  const _$GameStateImpl(
       {final List<GameDeck> decks = const [],
       final List<GameSeat> seats = const []})
       : _decks = decks,
         _seats = seats,
         super._();
 
-  factory _$_GameState.fromJson(Map<String, dynamic> json) =>
-      _$$_GameStateFromJson(json);
+  factory _$GameStateImpl.fromJson(Map<String, dynamic> json) =>
+      _$$GameStateImplFromJson(json);
 
   final List<GameDeck> _decks;
   @override
@@ -502,7 +505,7 @@ class _$_GameState extends _GameState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_GameState &&
+            other is _$GameStateImpl &&
             const DeepCollectionEquality().equals(other._decks, _decks) &&
             const DeepCollectionEquality().equals(other._seats, _seats));
   }
@@ -517,12 +520,12 @@ class _$_GameState extends _GameState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_GameStateCopyWith<_$_GameState> get copyWith =>
-      __$$_GameStateCopyWithImpl<_$_GameState>(this, _$identity);
+  _$$GameStateImplCopyWith<_$GameStateImpl> get copyWith =>
+      __$$GameStateImplCopyWithImpl<_$GameStateImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_GameStateToJson(
+    return _$$GameStateImplToJson(
       this,
     );
   }
@@ -530,11 +533,12 @@ class _$_GameState extends _GameState {
 
 abstract class _GameState extends GameState {
   const factory _GameState(
-      {final List<GameDeck> decks, final List<GameSeat> seats}) = _$_GameState;
+      {final List<GameDeck> decks,
+      final List<GameSeat> seats}) = _$GameStateImpl;
   const _GameState._() : super._();
 
   factory _GameState.fromJson(Map<String, dynamic> json) =
-      _$_GameState.fromJson;
+      _$GameStateImpl.fromJson;
 
   @override
   List<GameDeck> get decks;
@@ -542,7 +546,7 @@ abstract class _GameState extends GameState {
   List<GameSeat> get seats;
   @override
   @JsonKey(ignore: true)
-  _$$_GameStateCopyWith<_$_GameState> get copyWith =>
+  _$$GameStateImplCopyWith<_$GameStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -615,10 +619,11 @@ class _$GameSeatCopyWithImpl<$Res, $Val extends GameSeat>
 }
 
 /// @nodoc
-abstract class _$$_GameSeatCopyWith<$Res> implements $GameSeatCopyWith<$Res> {
-  factory _$$_GameSeatCopyWith(
-          _$_GameSeat value, $Res Function(_$_GameSeat) then) =
-      __$$_GameSeatCopyWithImpl<$Res>;
+abstract class _$$GameSeatImplCopyWith<$Res>
+    implements $GameSeatCopyWith<$Res> {
+  factory _$$GameSeatImplCopyWith(
+          _$GameSeatImpl value, $Res Function(_$GameSeatImpl) then) =
+      __$$GameSeatImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -629,11 +634,11 @@ abstract class _$$_GameSeatCopyWith<$Res> implements $GameSeatCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_GameSeatCopyWithImpl<$Res>
-    extends _$GameSeatCopyWithImpl<$Res, _$_GameSeat>
-    implements _$$_GameSeatCopyWith<$Res> {
-  __$$_GameSeatCopyWithImpl(
-      _$_GameSeat _value, $Res Function(_$_GameSeat) _then)
+class __$$GameSeatImplCopyWithImpl<$Res>
+    extends _$GameSeatCopyWithImpl<$Res, _$GameSeatImpl>
+    implements _$$GameSeatImplCopyWith<$Res> {
+  __$$GameSeatImplCopyWithImpl(
+      _$GameSeatImpl _value, $Res Function(_$GameSeatImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -644,7 +649,7 @@ class __$$_GameSeatCopyWithImpl<$Res>
     Object? players = null,
     Object? ownDeckVisibility = freezed,
   }) {
-    return _then(_$_GameSeat(
+    return _then(_$GameSeatImpl(
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -667,8 +672,8 @@ class __$$_GameSeatCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_GameSeat extends _GameSeat {
-  const _$_GameSeat(
+class _$GameSeatImpl extends _GameSeat {
+  const _$GameSeatImpl(
       {this.name = '',
       final List<GameDeck> decks = const [],
       final List<int> players = const [],
@@ -677,8 +682,8 @@ class _$_GameSeat extends _GameSeat {
         _players = players,
         super._();
 
-  factory _$_GameSeat.fromJson(Map<String, dynamic> json) =>
-      _$$_GameSeatFromJson(json);
+  factory _$GameSeatImpl.fromJson(Map<String, dynamic> json) =>
+      _$$GameSeatImplFromJson(json);
 
   @override
   @JsonKey()
@@ -713,7 +718,7 @@ class _$_GameSeat extends _GameSeat {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_GameSeat &&
+            other is _$GameSeatImpl &&
             (identical(other.name, name) || other.name == name) &&
             const DeepCollectionEquality().equals(other._decks, _decks) &&
             const DeepCollectionEquality().equals(other._players, _players) &&
@@ -733,12 +738,12 @@ class _$_GameSeat extends _GameSeat {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_GameSeatCopyWith<_$_GameSeat> get copyWith =>
-      __$$_GameSeatCopyWithImpl<_$_GameSeat>(this, _$identity);
+  _$$GameSeatImplCopyWith<_$GameSeatImpl> get copyWith =>
+      __$$GameSeatImplCopyWithImpl<_$GameSeatImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_GameSeatToJson(
+    return _$$GameSeatImplToJson(
       this,
     );
   }
@@ -749,10 +754,11 @@ abstract class _GameSeat extends GameSeat {
       {final String name,
       final List<GameDeck> decks,
       final List<int> players,
-      final DeckVisibility? ownDeckVisibility}) = _$_GameSeat;
+      final DeckVisibility? ownDeckVisibility}) = _$GameSeatImpl;
   const _GameSeat._() : super._();
 
-  factory _GameSeat.fromJson(Map<String, dynamic> json) = _$_GameSeat.fromJson;
+  factory _GameSeat.fromJson(Map<String, dynamic> json) =
+      _$GameSeatImpl.fromJson;
 
   @override
   String get name;
@@ -764,7 +770,7 @@ abstract class _GameSeat extends GameSeat {
   DeckVisibility? get ownDeckVisibility;
   @override
   @JsonKey(ignore: true)
-  _$$_GameSeatCopyWith<_$_GameSeat> get copyWith =>
+  _$$GameSeatImplCopyWith<_$GameSeatImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -851,30 +857,30 @@ class _$DeckRefillCopyWithImpl<$Res, $Val extends DeckRefill>
 }
 
 /// @nodoc
-abstract class _$$_DeckRefillNoneCopyWith<$Res> {
-  factory _$$_DeckRefillNoneCopyWith(
-          _$_DeckRefillNone value, $Res Function(_$_DeckRefillNone) then) =
-      __$$_DeckRefillNoneCopyWithImpl<$Res>;
+abstract class _$$DeckRefillNoneImplCopyWith<$Res> {
+  factory _$$DeckRefillNoneImplCopyWith(_$DeckRefillNoneImpl value,
+          $Res Function(_$DeckRefillNoneImpl) then) =
+      __$$DeckRefillNoneImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_DeckRefillNoneCopyWithImpl<$Res>
-    extends _$DeckRefillCopyWithImpl<$Res, _$_DeckRefillNone>
-    implements _$$_DeckRefillNoneCopyWith<$Res> {
-  __$$_DeckRefillNoneCopyWithImpl(
-      _$_DeckRefillNone _value, $Res Function(_$_DeckRefillNone) _then)
+class __$$DeckRefillNoneImplCopyWithImpl<$Res>
+    extends _$DeckRefillCopyWithImpl<$Res, _$DeckRefillNoneImpl>
+    implements _$$DeckRefillNoneImplCopyWith<$Res> {
+  __$$DeckRefillNoneImplCopyWithImpl(
+      _$DeckRefillNoneImpl _value, $Res Function(_$DeckRefillNoneImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_DeckRefillNone extends _DeckRefillNone {
-  const _$_DeckRefillNone({final String? $type})
+class _$DeckRefillNoneImpl extends _DeckRefillNone {
+  const _$DeckRefillNoneImpl({final String? $type})
       : $type = $type ?? 'none',
         super._();
 
-  factory _$_DeckRefillNone.fromJson(Map<String, dynamic> json) =>
-      _$$_DeckRefillNoneFromJson(json);
+  factory _$DeckRefillNoneImpl.fromJson(Map<String, dynamic> json) =>
+      _$$DeckRefillNoneImplFromJson(json);
 
   @JsonKey(name: 'type')
   final String $type;
@@ -887,7 +893,7 @@ class _$_DeckRefillNone extends _DeckRefillNone {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_DeckRefillNone);
+        (other.runtimeType == runtimeType && other is _$DeckRefillNoneImpl);
   }
 
   @JsonKey(ignore: true)
@@ -964,35 +970,35 @@ class _$_DeckRefillNone extends _DeckRefillNone {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_DeckRefillNoneToJson(
+    return _$$DeckRefillNoneImplToJson(
       this,
     );
   }
 }
 
 abstract class _DeckRefillNone extends DeckRefill {
-  const factory _DeckRefillNone() = _$_DeckRefillNone;
+  const factory _DeckRefillNone() = _$DeckRefillNoneImpl;
   const _DeckRefillNone._() : super._();
 
   factory _DeckRefillNone.fromJson(Map<String, dynamic> json) =
-      _$_DeckRefillNone.fromJson;
+      _$DeckRefillNoneImpl.fromJson;
 }
 
 /// @nodoc
-abstract class _$$_DeckRefillShuffleCopyWith<$Res> {
-  factory _$$_DeckRefillShuffleCopyWith(_$_DeckRefillShuffle value,
-          $Res Function(_$_DeckRefillShuffle) then) =
-      __$$_DeckRefillShuffleCopyWithImpl<$Res>;
+abstract class _$$DeckRefillShuffleImplCopyWith<$Res> {
+  factory _$$DeckRefillShuffleImplCopyWith(_$DeckRefillShuffleImpl value,
+          $Res Function(_$DeckRefillShuffleImpl) then) =
+      __$$DeckRefillShuffleImplCopyWithImpl<$Res>;
   @useResult
   $Res call({int? count});
 }
 
 /// @nodoc
-class __$$_DeckRefillShuffleCopyWithImpl<$Res>
-    extends _$DeckRefillCopyWithImpl<$Res, _$_DeckRefillShuffle>
-    implements _$$_DeckRefillShuffleCopyWith<$Res> {
-  __$$_DeckRefillShuffleCopyWithImpl(
-      _$_DeckRefillShuffle _value, $Res Function(_$_DeckRefillShuffle) _then)
+class __$$DeckRefillShuffleImplCopyWithImpl<$Res>
+    extends _$DeckRefillCopyWithImpl<$Res, _$DeckRefillShuffleImpl>
+    implements _$$DeckRefillShuffleImplCopyWith<$Res> {
+  __$$DeckRefillShuffleImplCopyWithImpl(_$DeckRefillShuffleImpl _value,
+      $Res Function(_$DeckRefillShuffleImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1000,7 +1006,7 @@ class __$$_DeckRefillShuffleCopyWithImpl<$Res>
   $Res call({
     Object? count = freezed,
   }) {
-    return _then(_$_DeckRefillShuffle(
+    return _then(_$DeckRefillShuffleImpl(
       count: freezed == count
           ? _value.count
           : count // ignore: cast_nullable_to_non_nullable
@@ -1011,13 +1017,13 @@ class __$$_DeckRefillShuffleCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_DeckRefillShuffle extends _DeckRefillShuffle {
-  const _$_DeckRefillShuffle({this.count, final String? $type})
+class _$DeckRefillShuffleImpl extends _DeckRefillShuffle {
+  const _$DeckRefillShuffleImpl({this.count, final String? $type})
       : $type = $type ?? 'shuffle',
         super._();
 
-  factory _$_DeckRefillShuffle.fromJson(Map<String, dynamic> json) =>
-      _$$_DeckRefillShuffleFromJson(json);
+  factory _$DeckRefillShuffleImpl.fromJson(Map<String, dynamic> json) =>
+      _$$DeckRefillShuffleImplFromJson(json);
 
   @override
   final int? count;
@@ -1034,7 +1040,7 @@ class _$_DeckRefillShuffle extends _DeckRefillShuffle {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_DeckRefillShuffle &&
+            other is _$DeckRefillShuffleImpl &&
             (identical(other.count, count) || other.count == count));
   }
 
@@ -1045,8 +1051,8 @@ class _$_DeckRefillShuffle extends _DeckRefillShuffle {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_DeckRefillShuffleCopyWith<_$_DeckRefillShuffle> get copyWith =>
-      __$$_DeckRefillShuffleCopyWithImpl<_$_DeckRefillShuffle>(
+  _$$DeckRefillShuffleImplCopyWith<_$DeckRefillShuffleImpl> get copyWith =>
+      __$$DeckRefillShuffleImplCopyWithImpl<_$DeckRefillShuffleImpl>(
           this, _$identity);
 
   @override
@@ -1119,40 +1125,41 @@ class _$_DeckRefillShuffle extends _DeckRefillShuffle {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_DeckRefillShuffleToJson(
+    return _$$DeckRefillShuffleImplToJson(
       this,
     );
   }
 }
 
 abstract class _DeckRefillShuffle extends DeckRefill {
-  const factory _DeckRefillShuffle({final int? count}) = _$_DeckRefillShuffle;
+  const factory _DeckRefillShuffle({final int? count}) =
+      _$DeckRefillShuffleImpl;
   const _DeckRefillShuffle._() : super._();
 
   factory _DeckRefillShuffle.fromJson(Map<String, dynamic> json) =
-      _$_DeckRefillShuffle.fromJson;
+      _$DeckRefillShuffleImpl.fromJson;
 
   int? get count;
   @JsonKey(ignore: true)
-  _$$_DeckRefillShuffleCopyWith<_$_DeckRefillShuffle> get copyWith =>
+  _$$DeckRefillShuffleImplCopyWith<_$DeckRefillShuffleImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_DeckRefillFirstCopyWith<$Res> {
-  factory _$$_DeckRefillFirstCopyWith(
-          _$_DeckRefillFirst value, $Res Function(_$_DeckRefillFirst) then) =
-      __$$_DeckRefillFirstCopyWithImpl<$Res>;
+abstract class _$$DeckRefillFirstImplCopyWith<$Res> {
+  factory _$$DeckRefillFirstImplCopyWith(_$DeckRefillFirstImpl value,
+          $Res Function(_$DeckRefillFirstImpl) then) =
+      __$$DeckRefillFirstImplCopyWithImpl<$Res>;
   @useResult
   $Res call({int? count});
 }
 
 /// @nodoc
-class __$$_DeckRefillFirstCopyWithImpl<$Res>
-    extends _$DeckRefillCopyWithImpl<$Res, _$_DeckRefillFirst>
-    implements _$$_DeckRefillFirstCopyWith<$Res> {
-  __$$_DeckRefillFirstCopyWithImpl(
-      _$_DeckRefillFirst _value, $Res Function(_$_DeckRefillFirst) _then)
+class __$$DeckRefillFirstImplCopyWithImpl<$Res>
+    extends _$DeckRefillCopyWithImpl<$Res, _$DeckRefillFirstImpl>
+    implements _$$DeckRefillFirstImplCopyWith<$Res> {
+  __$$DeckRefillFirstImplCopyWithImpl(
+      _$DeckRefillFirstImpl _value, $Res Function(_$DeckRefillFirstImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1160,7 +1167,7 @@ class __$$_DeckRefillFirstCopyWithImpl<$Res>
   $Res call({
     Object? count = freezed,
   }) {
-    return _then(_$_DeckRefillFirst(
+    return _then(_$DeckRefillFirstImpl(
       count: freezed == count
           ? _value.count
           : count // ignore: cast_nullable_to_non_nullable
@@ -1171,13 +1178,13 @@ class __$$_DeckRefillFirstCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_DeckRefillFirst extends _DeckRefillFirst {
-  const _$_DeckRefillFirst({this.count, final String? $type})
+class _$DeckRefillFirstImpl extends _DeckRefillFirst {
+  const _$DeckRefillFirstImpl({this.count, final String? $type})
       : $type = $type ?? 'first',
         super._();
 
-  factory _$_DeckRefillFirst.fromJson(Map<String, dynamic> json) =>
-      _$$_DeckRefillFirstFromJson(json);
+  factory _$DeckRefillFirstImpl.fromJson(Map<String, dynamic> json) =>
+      _$$DeckRefillFirstImplFromJson(json);
 
   @override
   final int? count;
@@ -1194,7 +1201,7 @@ class _$_DeckRefillFirst extends _DeckRefillFirst {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_DeckRefillFirst &&
+            other is _$DeckRefillFirstImpl &&
             (identical(other.count, count) || other.count == count));
   }
 
@@ -1205,8 +1212,9 @@ class _$_DeckRefillFirst extends _DeckRefillFirst {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_DeckRefillFirstCopyWith<_$_DeckRefillFirst> get copyWith =>
-      __$$_DeckRefillFirstCopyWithImpl<_$_DeckRefillFirst>(this, _$identity);
+  _$$DeckRefillFirstImplCopyWith<_$DeckRefillFirstImpl> get copyWith =>
+      __$$DeckRefillFirstImplCopyWithImpl<_$DeckRefillFirstImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1278,22 +1286,22 @@ class _$_DeckRefillFirst extends _DeckRefillFirst {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_DeckRefillFirstToJson(
+    return _$$DeckRefillFirstImplToJson(
       this,
     );
   }
 }
 
 abstract class _DeckRefillFirst extends DeckRefill {
-  const factory _DeckRefillFirst({final int? count}) = _$_DeckRefillFirst;
+  const factory _DeckRefillFirst({final int? count}) = _$DeckRefillFirstImpl;
   const _DeckRefillFirst._() : super._();
 
   factory _DeckRefillFirst.fromJson(Map<String, dynamic> json) =
-      _$_DeckRefillFirst.fromJson;
+      _$DeckRefillFirstImpl.fromJson;
 
   int? get count;
   @JsonKey(ignore: true)
-  _$$_DeckRefillFirstCopyWith<_$_DeckRefillFirst> get copyWith =>
+  _$$DeckRefillFirstImplCopyWith<_$DeckRefillFirstImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -1356,11 +1364,11 @@ class _$CardsRemoveStateCopyWithImpl<$Res, $Val extends CardsRemoveState>
 }
 
 /// @nodoc
-abstract class _$$_CardsRemoveStateCopyWith<$Res>
+abstract class _$$CardsRemoveStateImplCopyWith<$Res>
     implements $CardsRemoveStateCopyWith<$Res> {
-  factory _$$_CardsRemoveStateCopyWith(
-          _$_CardsRemoveState value, $Res Function(_$_CardsRemoveState) then) =
-      __$$_CardsRemoveStateCopyWithImpl<$Res>;
+  factory _$$CardsRemoveStateImplCopyWith(_$CardsRemoveStateImpl value,
+          $Res Function(_$CardsRemoveStateImpl) then) =
+      __$$CardsRemoveStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({GameDeck deck, List<GameCard> removedCards});
@@ -1370,11 +1378,11 @@ abstract class _$$_CardsRemoveStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_CardsRemoveStateCopyWithImpl<$Res>
-    extends _$CardsRemoveStateCopyWithImpl<$Res, _$_CardsRemoveState>
-    implements _$$_CardsRemoveStateCopyWith<$Res> {
-  __$$_CardsRemoveStateCopyWithImpl(
-      _$_CardsRemoveState _value, $Res Function(_$_CardsRemoveState) _then)
+class __$$CardsRemoveStateImplCopyWithImpl<$Res>
+    extends _$CardsRemoveStateCopyWithImpl<$Res, _$CardsRemoveStateImpl>
+    implements _$$CardsRemoveStateImplCopyWith<$Res> {
+  __$$CardsRemoveStateImplCopyWithImpl(_$CardsRemoveStateImpl _value,
+      $Res Function(_$CardsRemoveStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1383,7 +1391,7 @@ class __$$_CardsRemoveStateCopyWithImpl<$Res>
     Object? deck = null,
     Object? removedCards = null,
   }) {
-    return _then(_$_CardsRemoveState(
+    return _then(_$CardsRemoveStateImpl(
       deck: null == deck
           ? _value.deck
           : deck // ignore: cast_nullable_to_non_nullable
@@ -1398,8 +1406,8 @@ class __$$_CardsRemoveStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_CardsRemoveState implements _CardsRemoveState {
-  const _$_CardsRemoveState(
+class _$CardsRemoveStateImpl implements _CardsRemoveState {
+  const _$CardsRemoveStateImpl(
       {required this.deck, required final List<GameCard> removedCards})
       : _removedCards = removedCards;
 
@@ -1422,7 +1430,7 @@ class _$_CardsRemoveState implements _CardsRemoveState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_CardsRemoveState &&
+            other is _$CardsRemoveStateImpl &&
             (identical(other.deck, deck) || other.deck == deck) &&
             const DeepCollectionEquality()
                 .equals(other._removedCards, _removedCards));
@@ -1435,14 +1443,15 @@ class _$_CardsRemoveState implements _CardsRemoveState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_CardsRemoveStateCopyWith<_$_CardsRemoveState> get copyWith =>
-      __$$_CardsRemoveStateCopyWithImpl<_$_CardsRemoveState>(this, _$identity);
+  _$$CardsRemoveStateImplCopyWith<_$CardsRemoveStateImpl> get copyWith =>
+      __$$CardsRemoveStateImplCopyWithImpl<_$CardsRemoveStateImpl>(
+          this, _$identity);
 }
 
 abstract class _CardsRemoveState implements CardsRemoveState {
   const factory _CardsRemoveState(
       {required final GameDeck deck,
-      required final List<GameCard> removedCards}) = _$_CardsRemoveState;
+      required final List<GameCard> removedCards}) = _$CardsRemoveStateImpl;
 
   @override
   GameDeck get deck;
@@ -1450,7 +1459,7 @@ abstract class _CardsRemoveState implements CardsRemoveState {
   List<GameCard> get removedCards;
   @override
   @JsonKey(ignore: true)
-  _$$_CardsRemoveStateCopyWith<_$_CardsRemoveState> get copyWith =>
+  _$$CardsRemoveStateImplCopyWith<_$CardsRemoveStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -1523,10 +1532,11 @@ class _$GameDeckCopyWithImpl<$Res, $Val extends GameDeck>
 }
 
 /// @nodoc
-abstract class _$$_GameDeckCopyWith<$Res> implements $GameDeckCopyWith<$Res> {
-  factory _$$_GameDeckCopyWith(
-          _$_GameDeck value, $Res Function(_$_GameDeck) then) =
-      __$$_GameDeckCopyWithImpl<$Res>;
+abstract class _$$GameDeckImplCopyWith<$Res>
+    implements $GameDeckCopyWith<$Res> {
+  factory _$$GameDeckImplCopyWith(
+          _$GameDeckImpl value, $Res Function(_$GameDeckImpl) then) =
+      __$$GameDeckImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -1537,11 +1547,11 @@ abstract class _$$_GameDeckCopyWith<$Res> implements $GameDeckCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_GameDeckCopyWithImpl<$Res>
-    extends _$GameDeckCopyWithImpl<$Res, _$_GameDeck>
-    implements _$$_GameDeckCopyWith<$Res> {
-  __$$_GameDeckCopyWithImpl(
-      _$_GameDeck _value, $Res Function(_$_GameDeck) _then)
+class __$$GameDeckImplCopyWithImpl<$Res>
+    extends _$GameDeckCopyWithImpl<$Res, _$GameDeckImpl>
+    implements _$$GameDeckImplCopyWith<$Res> {
+  __$$GameDeckImplCopyWithImpl(
+      _$GameDeckImpl _value, $Res Function(_$GameDeckImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1552,7 +1562,7 @@ class __$$_GameDeckCopyWithImpl<$Res>
     Object? ownVisibility = freezed,
     Object? cards = null,
   }) {
-    return _then(_$_GameDeck(
+    return _then(_$GameDeckImpl(
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -1575,8 +1585,8 @@ class __$$_GameDeckCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_GameDeck extends _GameDeck {
-  const _$_GameDeck(
+class _$GameDeckImpl extends _GameDeck {
+  const _$GameDeckImpl(
       {this.name = '',
       this.visibility = DeckVisibility.hidden,
       this.ownVisibility,
@@ -1584,8 +1594,8 @@ class _$_GameDeck extends _GameDeck {
       : _cards = cards,
         super._();
 
-  factory _$_GameDeck.fromJson(Map<String, dynamic> json) =>
-      _$$_GameDeckFromJson(json);
+  factory _$GameDeckImpl.fromJson(Map<String, dynamic> json) =>
+      _$$GameDeckImplFromJson(json);
 
   @override
   @JsonKey()
@@ -1613,7 +1623,7 @@ class _$_GameDeck extends _GameDeck {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_GameDeck &&
+            other is _$GameDeckImpl &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.visibility, visibility) ||
                 other.visibility == visibility) &&
@@ -1630,12 +1640,12 @@ class _$_GameDeck extends _GameDeck {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_GameDeckCopyWith<_$_GameDeck> get copyWith =>
-      __$$_GameDeckCopyWithImpl<_$_GameDeck>(this, _$identity);
+  _$$GameDeckImplCopyWith<_$GameDeckImpl> get copyWith =>
+      __$$GameDeckImplCopyWithImpl<_$GameDeckImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_GameDeckToJson(
+    return _$$GameDeckImplToJson(
       this,
     );
   }
@@ -1646,10 +1656,11 @@ abstract class _GameDeck extends GameDeck {
       {final String name,
       final DeckVisibility visibility,
       final DeckVisibility? ownVisibility,
-      final List<GameCard> cards}) = _$_GameDeck;
+      final List<GameCard> cards}) = _$GameDeckImpl;
   const _GameDeck._() : super._();
 
-  factory _GameDeck.fromJson(Map<String, dynamic> json) = _$_GameDeck.fromJson;
+  factory _GameDeck.fromJson(Map<String, dynamic> json) =
+      _$GameDeckImpl.fromJson;
 
   @override
   String get name;
@@ -1661,6 +1672,6 @@ abstract class _GameDeck extends GameDeck {
   List<GameCard> get cards;
   @override
   @JsonKey(ignore: true)
-  _$$_GameDeckCopyWith<_$_GameDeck> get copyWith =>
+  _$$GameDeckImplCopyWith<_$GameDeckImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

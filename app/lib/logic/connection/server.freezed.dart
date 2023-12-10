@@ -208,34 +208,34 @@ class _$ServerConnectionMessageCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$FetchPlayersServerConnectionMessageCopyWith<$Res> {
-  factory _$$FetchPlayersServerConnectionMessageCopyWith(
-          _$FetchPlayersServerConnectionMessage value,
-          $Res Function(_$FetchPlayersServerConnectionMessage) then) =
-      __$$FetchPlayersServerConnectionMessageCopyWithImpl<$Res>;
+abstract class _$$FetchPlayersServerConnectionMessageImplCopyWith<$Res> {
+  factory _$$FetchPlayersServerConnectionMessageImplCopyWith(
+          _$FetchPlayersServerConnectionMessageImpl value,
+          $Res Function(_$FetchPlayersServerConnectionMessageImpl) then) =
+      __$$FetchPlayersServerConnectionMessageImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$FetchPlayersServerConnectionMessageCopyWithImpl<$Res>
+class __$$FetchPlayersServerConnectionMessageImplCopyWithImpl<$Res>
     extends _$ServerConnectionMessageCopyWithImpl<$Res,
-        _$FetchPlayersServerConnectionMessage>
-    implements _$$FetchPlayersServerConnectionMessageCopyWith<$Res> {
-  __$$FetchPlayersServerConnectionMessageCopyWithImpl(
-      _$FetchPlayersServerConnectionMessage _value,
-      $Res Function(_$FetchPlayersServerConnectionMessage) _then)
+        _$FetchPlayersServerConnectionMessageImpl>
+    implements _$$FetchPlayersServerConnectionMessageImplCopyWith<$Res> {
+  __$$FetchPlayersServerConnectionMessageImplCopyWithImpl(
+      _$FetchPlayersServerConnectionMessageImpl _value,
+      $Res Function(_$FetchPlayersServerConnectionMessageImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$FetchPlayersServerConnectionMessage
+class _$FetchPlayersServerConnectionMessageImpl
     implements FetchPlayersServerConnectionMessage {
-  const _$FetchPlayersServerConnectionMessage({final String? $type})
+  const _$FetchPlayersServerConnectionMessageImpl({final String? $type})
       : $type = $type ?? 'fetchPlayers';
 
-  factory _$FetchPlayersServerConnectionMessage.fromJson(
+  factory _$FetchPlayersServerConnectionMessageImpl.fromJson(
           Map<String, dynamic> json) =>
-      _$$FetchPlayersServerConnectionMessageFromJson(json);
+      _$$FetchPlayersServerConnectionMessageImplFromJson(json);
 
   @JsonKey(name: 'type')
   final String $type;
@@ -249,7 +249,7 @@ class _$FetchPlayersServerConnectionMessage
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$FetchPlayersServerConnectionMessage);
+            other is _$FetchPlayersServerConnectionMessageImpl);
   }
 
   @JsonKey(ignore: true)
@@ -415,7 +415,7 @@ class _$FetchPlayersServerConnectionMessage
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$FetchPlayersServerConnectionMessageToJson(
+    return _$$FetchPlayersServerConnectionMessageImplToJson(
       this,
     );
   }
@@ -424,31 +424,31 @@ class _$FetchPlayersServerConnectionMessage
 abstract class FetchPlayersServerConnectionMessage
     implements ServerConnectionMessage {
   const factory FetchPlayersServerConnectionMessage() =
-      _$FetchPlayersServerConnectionMessage;
+      _$FetchPlayersServerConnectionMessageImpl;
 
   factory FetchPlayersServerConnectionMessage.fromJson(
           Map<String, dynamic> json) =
-      _$FetchPlayersServerConnectionMessage.fromJson;
+      _$FetchPlayersServerConnectionMessageImpl.fromJson;
 }
 
 /// @nodoc
-abstract class _$$ChatMessageServerConnectionMessageCopyWith<$Res> {
-  factory _$$ChatMessageServerConnectionMessageCopyWith(
-          _$ChatMessageServerConnectionMessage value,
-          $Res Function(_$ChatMessageServerConnectionMessage) then) =
-      __$$ChatMessageServerConnectionMessageCopyWithImpl<$Res>;
+abstract class _$$ChatMessageServerConnectionMessageImplCopyWith<$Res> {
+  factory _$$ChatMessageServerConnectionMessageImplCopyWith(
+          _$ChatMessageServerConnectionMessageImpl value,
+          $Res Function(_$ChatMessageServerConnectionMessageImpl) then) =
+      __$$ChatMessageServerConnectionMessageImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$ChatMessageServerConnectionMessageCopyWithImpl<$Res>
+class __$$ChatMessageServerConnectionMessageImplCopyWithImpl<$Res>
     extends _$ServerConnectionMessageCopyWithImpl<$Res,
-        _$ChatMessageServerConnectionMessage>
-    implements _$$ChatMessageServerConnectionMessageCopyWith<$Res> {
-  __$$ChatMessageServerConnectionMessageCopyWithImpl(
-      _$ChatMessageServerConnectionMessage _value,
-      $Res Function(_$ChatMessageServerConnectionMessage) _then)
+        _$ChatMessageServerConnectionMessageImpl>
+    implements _$$ChatMessageServerConnectionMessageImplCopyWith<$Res> {
+  __$$ChatMessageServerConnectionMessageImplCopyWithImpl(
+      _$ChatMessageServerConnectionMessageImpl _value,
+      $Res Function(_$ChatMessageServerConnectionMessageImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -456,7 +456,7 @@ class __$$ChatMessageServerConnectionMessageCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
   }) {
-    return _then(_$ChatMessageServerConnectionMessage(
+    return _then(_$ChatMessageServerConnectionMessageImpl(
       null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -467,15 +467,15 @@ class __$$ChatMessageServerConnectionMessageCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ChatMessageServerConnectionMessage
+class _$ChatMessageServerConnectionMessageImpl
     implements ChatMessageServerConnectionMessage {
-  const _$ChatMessageServerConnectionMessage(this.message,
+  const _$ChatMessageServerConnectionMessageImpl(this.message,
       {final String? $type})
       : $type = $type ?? 'chatMessage';
 
-  factory _$ChatMessageServerConnectionMessage.fromJson(
+  factory _$ChatMessageServerConnectionMessageImpl.fromJson(
           Map<String, dynamic> json) =>
-      _$$ChatMessageServerConnectionMessageFromJson(json);
+      _$$ChatMessageServerConnectionMessageImplFromJson(json);
 
   @override
   final String message;
@@ -492,7 +492,7 @@ class _$ChatMessageServerConnectionMessage
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ChatMessageServerConnectionMessage &&
+            other is _$ChatMessageServerConnectionMessageImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -503,10 +503,10 @@ class _$ChatMessageServerConnectionMessage
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ChatMessageServerConnectionMessageCopyWith<
-          _$ChatMessageServerConnectionMessage>
-      get copyWith => __$$ChatMessageServerConnectionMessageCopyWithImpl<
-          _$ChatMessageServerConnectionMessage>(this, _$identity);
+  _$$ChatMessageServerConnectionMessageImplCopyWith<
+          _$ChatMessageServerConnectionMessageImpl>
+      get copyWith => __$$ChatMessageServerConnectionMessageImplCopyWithImpl<
+          _$ChatMessageServerConnectionMessageImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -667,7 +667,7 @@ class _$ChatMessageServerConnectionMessage
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ChatMessageServerConnectionMessageToJson(
+    return _$$ChatMessageServerConnectionMessageImplToJson(
       this,
     );
   }
@@ -676,25 +676,25 @@ class _$ChatMessageServerConnectionMessage
 abstract class ChatMessageServerConnectionMessage
     implements ServerConnectionMessage {
   const factory ChatMessageServerConnectionMessage(final String message) =
-      _$ChatMessageServerConnectionMessage;
+      _$ChatMessageServerConnectionMessageImpl;
 
   factory ChatMessageServerConnectionMessage.fromJson(
           Map<String, dynamic> json) =
-      _$ChatMessageServerConnectionMessage.fromJson;
+      _$ChatMessageServerConnectionMessageImpl.fromJson;
 
   String get message;
   @JsonKey(ignore: true)
-  _$$ChatMessageServerConnectionMessageCopyWith<
-          _$ChatMessageServerConnectionMessage>
+  _$$ChatMessageServerConnectionMessageImplCopyWith<
+          _$ChatMessageServerConnectionMessageImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$AddDeckServerConnectionMessageCopyWith<$Res> {
-  factory _$$AddDeckServerConnectionMessageCopyWith(
-          _$AddDeckServerConnectionMessage value,
-          $Res Function(_$AddDeckServerConnectionMessage) then) =
-      __$$AddDeckServerConnectionMessageCopyWithImpl<$Res>;
+abstract class _$$AddDeckServerConnectionMessageImplCopyWith<$Res> {
+  factory _$$AddDeckServerConnectionMessageImplCopyWith(
+          _$AddDeckServerConnectionMessageImpl value,
+          $Res Function(_$AddDeckServerConnectionMessageImpl) then) =
+      __$$AddDeckServerConnectionMessageImplCopyWithImpl<$Res>;
   @useResult
   $Res call({GameDeck deck, int? seatIndex});
 
@@ -702,13 +702,13 @@ abstract class _$$AddDeckServerConnectionMessageCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$AddDeckServerConnectionMessageCopyWithImpl<$Res>
+class __$$AddDeckServerConnectionMessageImplCopyWithImpl<$Res>
     extends _$ServerConnectionMessageCopyWithImpl<$Res,
-        _$AddDeckServerConnectionMessage>
-    implements _$$AddDeckServerConnectionMessageCopyWith<$Res> {
-  __$$AddDeckServerConnectionMessageCopyWithImpl(
-      _$AddDeckServerConnectionMessage _value,
-      $Res Function(_$AddDeckServerConnectionMessage) _then)
+        _$AddDeckServerConnectionMessageImpl>
+    implements _$$AddDeckServerConnectionMessageImplCopyWith<$Res> {
+  __$$AddDeckServerConnectionMessageImplCopyWithImpl(
+      _$AddDeckServerConnectionMessageImpl _value,
+      $Res Function(_$AddDeckServerConnectionMessageImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -717,7 +717,7 @@ class __$$AddDeckServerConnectionMessageCopyWithImpl<$Res>
     Object? deck = null,
     Object? seatIndex = freezed,
   }) {
-    return _then(_$AddDeckServerConnectionMessage(
+    return _then(_$AddDeckServerConnectionMessageImpl(
       null == deck
           ? _value.deck
           : deck // ignore: cast_nullable_to_non_nullable
@@ -740,15 +740,15 @@ class __$$AddDeckServerConnectionMessageCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$AddDeckServerConnectionMessage
+class _$AddDeckServerConnectionMessageImpl
     implements AddDeckServerConnectionMessage {
-  const _$AddDeckServerConnectionMessage(this.deck, this.seatIndex,
+  const _$AddDeckServerConnectionMessageImpl(this.deck, this.seatIndex,
       {final String? $type})
       : $type = $type ?? 'addDeck';
 
-  factory _$AddDeckServerConnectionMessage.fromJson(
+  factory _$AddDeckServerConnectionMessageImpl.fromJson(
           Map<String, dynamic> json) =>
-      _$$AddDeckServerConnectionMessageFromJson(json);
+      _$$AddDeckServerConnectionMessageImplFromJson(json);
 
   @override
   final GameDeck deck;
@@ -767,7 +767,7 @@ class _$AddDeckServerConnectionMessage
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AddDeckServerConnectionMessage &&
+            other is _$AddDeckServerConnectionMessageImpl &&
             (identical(other.deck, deck) || other.deck == deck) &&
             (identical(other.seatIndex, seatIndex) ||
                 other.seatIndex == seatIndex));
@@ -780,9 +780,10 @@ class _$AddDeckServerConnectionMessage
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$AddDeckServerConnectionMessageCopyWith<_$AddDeckServerConnectionMessage>
-      get copyWith => __$$AddDeckServerConnectionMessageCopyWithImpl<
-          _$AddDeckServerConnectionMessage>(this, _$identity);
+  _$$AddDeckServerConnectionMessageImplCopyWith<
+          _$AddDeckServerConnectionMessageImpl>
+      get copyWith => __$$AddDeckServerConnectionMessageImplCopyWithImpl<
+          _$AddDeckServerConnectionMessageImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -943,7 +944,7 @@ class _$AddDeckServerConnectionMessage
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$AddDeckServerConnectionMessageToJson(
+    return _$$AddDeckServerConnectionMessageImplToJson(
       this,
     );
   }
@@ -953,36 +954,37 @@ abstract class AddDeckServerConnectionMessage
     implements ServerConnectionMessage {
   const factory AddDeckServerConnectionMessage(
           final GameDeck deck, final int? seatIndex) =
-      _$AddDeckServerConnectionMessage;
+      _$AddDeckServerConnectionMessageImpl;
 
   factory AddDeckServerConnectionMessage.fromJson(Map<String, dynamic> json) =
-      _$AddDeckServerConnectionMessage.fromJson;
+      _$AddDeckServerConnectionMessageImpl.fromJson;
 
   GameDeck get deck;
   int? get seatIndex;
   @JsonKey(ignore: true)
-  _$$AddDeckServerConnectionMessageCopyWith<_$AddDeckServerConnectionMessage>
+  _$$AddDeckServerConnectionMessageImplCopyWith<
+          _$AddDeckServerConnectionMessageImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$RemoveDeckServerConnectionMessageCopyWith<$Res> {
-  factory _$$RemoveDeckServerConnectionMessageCopyWith(
-          _$RemoveDeckServerConnectionMessage value,
-          $Res Function(_$RemoveDeckServerConnectionMessage) then) =
-      __$$RemoveDeckServerConnectionMessageCopyWithImpl<$Res>;
+abstract class _$$RemoveDeckServerConnectionMessageImplCopyWith<$Res> {
+  factory _$$RemoveDeckServerConnectionMessageImplCopyWith(
+          _$RemoveDeckServerConnectionMessageImpl value,
+          $Res Function(_$RemoveDeckServerConnectionMessageImpl) then) =
+      __$$RemoveDeckServerConnectionMessageImplCopyWithImpl<$Res>;
   @useResult
   $Res call({int index, int? seatIndex});
 }
 
 /// @nodoc
-class __$$RemoveDeckServerConnectionMessageCopyWithImpl<$Res>
+class __$$RemoveDeckServerConnectionMessageImplCopyWithImpl<$Res>
     extends _$ServerConnectionMessageCopyWithImpl<$Res,
-        _$RemoveDeckServerConnectionMessage>
-    implements _$$RemoveDeckServerConnectionMessageCopyWith<$Res> {
-  __$$RemoveDeckServerConnectionMessageCopyWithImpl(
-      _$RemoveDeckServerConnectionMessage _value,
-      $Res Function(_$RemoveDeckServerConnectionMessage) _then)
+        _$RemoveDeckServerConnectionMessageImpl>
+    implements _$$RemoveDeckServerConnectionMessageImplCopyWith<$Res> {
+  __$$RemoveDeckServerConnectionMessageImplCopyWithImpl(
+      _$RemoveDeckServerConnectionMessageImpl _value,
+      $Res Function(_$RemoveDeckServerConnectionMessageImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -991,7 +993,7 @@ class __$$RemoveDeckServerConnectionMessageCopyWithImpl<$Res>
     Object? index = null,
     Object? seatIndex = freezed,
   }) {
-    return _then(_$RemoveDeckServerConnectionMessage(
+    return _then(_$RemoveDeckServerConnectionMessageImpl(
       null == index
           ? _value.index
           : index // ignore: cast_nullable_to_non_nullable
@@ -1006,15 +1008,15 @@ class __$$RemoveDeckServerConnectionMessageCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$RemoveDeckServerConnectionMessage
+class _$RemoveDeckServerConnectionMessageImpl
     implements RemoveDeckServerConnectionMessage {
-  const _$RemoveDeckServerConnectionMessage(this.index, this.seatIndex,
+  const _$RemoveDeckServerConnectionMessageImpl(this.index, this.seatIndex,
       {final String? $type})
       : $type = $type ?? 'removeDeck';
 
-  factory _$RemoveDeckServerConnectionMessage.fromJson(
+  factory _$RemoveDeckServerConnectionMessageImpl.fromJson(
           Map<String, dynamic> json) =>
-      _$$RemoveDeckServerConnectionMessageFromJson(json);
+      _$$RemoveDeckServerConnectionMessageImplFromJson(json);
 
   @override
   final int index;
@@ -1033,7 +1035,7 @@ class _$RemoveDeckServerConnectionMessage
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$RemoveDeckServerConnectionMessage &&
+            other is _$RemoveDeckServerConnectionMessageImpl &&
             (identical(other.index, index) || other.index == index) &&
             (identical(other.seatIndex, seatIndex) ||
                 other.seatIndex == seatIndex));
@@ -1046,10 +1048,10 @@ class _$RemoveDeckServerConnectionMessage
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$RemoveDeckServerConnectionMessageCopyWith<
-          _$RemoveDeckServerConnectionMessage>
-      get copyWith => __$$RemoveDeckServerConnectionMessageCopyWithImpl<
-          _$RemoveDeckServerConnectionMessage>(this, _$identity);
+  _$$RemoveDeckServerConnectionMessageImplCopyWith<
+          _$RemoveDeckServerConnectionMessageImpl>
+      get copyWith => __$$RemoveDeckServerConnectionMessageImplCopyWithImpl<
+          _$RemoveDeckServerConnectionMessageImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1210,7 +1212,7 @@ class _$RemoveDeckServerConnectionMessage
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$RemoveDeckServerConnectionMessageToJson(
+    return _$$RemoveDeckServerConnectionMessageImplToJson(
       this,
     );
   }
@@ -1220,37 +1222,38 @@ abstract class RemoveDeckServerConnectionMessage
     implements ServerConnectionMessage {
   const factory RemoveDeckServerConnectionMessage(
           final int index, final int? seatIndex) =
-      _$RemoveDeckServerConnectionMessage;
+      _$RemoveDeckServerConnectionMessageImpl;
 
   factory RemoveDeckServerConnectionMessage.fromJson(
-      Map<String, dynamic> json) = _$RemoveDeckServerConnectionMessage.fromJson;
+          Map<String, dynamic> json) =
+      _$RemoveDeckServerConnectionMessageImpl.fromJson;
 
   int get index;
   int? get seatIndex;
   @JsonKey(ignore: true)
-  _$$RemoveDeckServerConnectionMessageCopyWith<
-          _$RemoveDeckServerConnectionMessage>
+  _$$RemoveDeckServerConnectionMessageImplCopyWith<
+          _$RemoveDeckServerConnectionMessageImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$AddSeatServerConnectionMessageCopyWith<$Res> {
-  factory _$$AddSeatServerConnectionMessageCopyWith(
-          _$AddSeatServerConnectionMessage value,
-          $Res Function(_$AddSeatServerConnectionMessage) then) =
-      __$$AddSeatServerConnectionMessageCopyWithImpl<$Res>;
+abstract class _$$AddSeatServerConnectionMessageImplCopyWith<$Res> {
+  factory _$$AddSeatServerConnectionMessageImplCopyWith(
+          _$AddSeatServerConnectionMessageImpl value,
+          $Res Function(_$AddSeatServerConnectionMessageImpl) then) =
+      __$$AddSeatServerConnectionMessageImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String name});
 }
 
 /// @nodoc
-class __$$AddSeatServerConnectionMessageCopyWithImpl<$Res>
+class __$$AddSeatServerConnectionMessageImplCopyWithImpl<$Res>
     extends _$ServerConnectionMessageCopyWithImpl<$Res,
-        _$AddSeatServerConnectionMessage>
-    implements _$$AddSeatServerConnectionMessageCopyWith<$Res> {
-  __$$AddSeatServerConnectionMessageCopyWithImpl(
-      _$AddSeatServerConnectionMessage _value,
-      $Res Function(_$AddSeatServerConnectionMessage) _then)
+        _$AddSeatServerConnectionMessageImpl>
+    implements _$$AddSeatServerConnectionMessageImplCopyWith<$Res> {
+  __$$AddSeatServerConnectionMessageImplCopyWithImpl(
+      _$AddSeatServerConnectionMessageImpl _value,
+      $Res Function(_$AddSeatServerConnectionMessageImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1258,7 +1261,7 @@ class __$$AddSeatServerConnectionMessageCopyWithImpl<$Res>
   $Res call({
     Object? name = null,
   }) {
-    return _then(_$AddSeatServerConnectionMessage(
+    return _then(_$AddSeatServerConnectionMessageImpl(
       null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -1269,14 +1272,14 @@ class __$$AddSeatServerConnectionMessageCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$AddSeatServerConnectionMessage
+class _$AddSeatServerConnectionMessageImpl
     implements AddSeatServerConnectionMessage {
-  const _$AddSeatServerConnectionMessage(this.name, {final String? $type})
+  const _$AddSeatServerConnectionMessageImpl(this.name, {final String? $type})
       : $type = $type ?? 'addSeat';
 
-  factory _$AddSeatServerConnectionMessage.fromJson(
+  factory _$AddSeatServerConnectionMessageImpl.fromJson(
           Map<String, dynamic> json) =>
-      _$$AddSeatServerConnectionMessageFromJson(json);
+      _$$AddSeatServerConnectionMessageImplFromJson(json);
 
   @override
   final String name;
@@ -1293,7 +1296,7 @@ class _$AddSeatServerConnectionMessage
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AddSeatServerConnectionMessage &&
+            other is _$AddSeatServerConnectionMessageImpl &&
             (identical(other.name, name) || other.name == name));
   }
 
@@ -1304,9 +1307,10 @@ class _$AddSeatServerConnectionMessage
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$AddSeatServerConnectionMessageCopyWith<_$AddSeatServerConnectionMessage>
-      get copyWith => __$$AddSeatServerConnectionMessageCopyWithImpl<
-          _$AddSeatServerConnectionMessage>(this, _$identity);
+  _$$AddSeatServerConnectionMessageImplCopyWith<
+          _$AddSeatServerConnectionMessageImpl>
+      get copyWith => __$$AddSeatServerConnectionMessageImplCopyWithImpl<
+          _$AddSeatServerConnectionMessageImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1467,7 +1471,7 @@ class _$AddSeatServerConnectionMessage
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$AddSeatServerConnectionMessageToJson(
+    return _$$AddSeatServerConnectionMessageImplToJson(
       this,
     );
   }
@@ -1476,35 +1480,36 @@ class _$AddSeatServerConnectionMessage
 abstract class AddSeatServerConnectionMessage
     implements ServerConnectionMessage {
   const factory AddSeatServerConnectionMessage(final String name) =
-      _$AddSeatServerConnectionMessage;
+      _$AddSeatServerConnectionMessageImpl;
 
   factory AddSeatServerConnectionMessage.fromJson(Map<String, dynamic> json) =
-      _$AddSeatServerConnectionMessage.fromJson;
+      _$AddSeatServerConnectionMessageImpl.fromJson;
 
   String get name;
   @JsonKey(ignore: true)
-  _$$AddSeatServerConnectionMessageCopyWith<_$AddSeatServerConnectionMessage>
+  _$$AddSeatServerConnectionMessageImplCopyWith<
+          _$AddSeatServerConnectionMessageImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$AddCardsServerConnectionMessageCopyWith<$Res> {
-  factory _$$AddCardsServerConnectionMessageCopyWith(
-          _$AddCardsServerConnectionMessage value,
-          $Res Function(_$AddCardsServerConnectionMessage) then) =
-      __$$AddCardsServerConnectionMessageCopyWithImpl<$Res>;
+abstract class _$$AddCardsServerConnectionMessageImplCopyWith<$Res> {
+  factory _$$AddCardsServerConnectionMessageImplCopyWith(
+          _$AddCardsServerConnectionMessageImpl value,
+          $Res Function(_$AddCardsServerConnectionMessageImpl) then) =
+      __$$AddCardsServerConnectionMessageImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<CardIndex> cards, int deckIndex, int? seatIndex});
 }
 
 /// @nodoc
-class __$$AddCardsServerConnectionMessageCopyWithImpl<$Res>
+class __$$AddCardsServerConnectionMessageImplCopyWithImpl<$Res>
     extends _$ServerConnectionMessageCopyWithImpl<$Res,
-        _$AddCardsServerConnectionMessage>
-    implements _$$AddCardsServerConnectionMessageCopyWith<$Res> {
-  __$$AddCardsServerConnectionMessageCopyWithImpl(
-      _$AddCardsServerConnectionMessage _value,
-      $Res Function(_$AddCardsServerConnectionMessage) _then)
+        _$AddCardsServerConnectionMessageImpl>
+    implements _$$AddCardsServerConnectionMessageImplCopyWith<$Res> {
+  __$$AddCardsServerConnectionMessageImplCopyWithImpl(
+      _$AddCardsServerConnectionMessageImpl _value,
+      $Res Function(_$AddCardsServerConnectionMessageImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1514,7 +1519,7 @@ class __$$AddCardsServerConnectionMessageCopyWithImpl<$Res>
     Object? deckIndex = null,
     Object? seatIndex = freezed,
   }) {
-    return _then(_$AddCardsServerConnectionMessage(
+    return _then(_$AddCardsServerConnectionMessageImpl(
       null == cards
           ? _value._cards
           : cards // ignore: cast_nullable_to_non_nullable
@@ -1533,17 +1538,17 @@ class __$$AddCardsServerConnectionMessageCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$AddCardsServerConnectionMessage
+class _$AddCardsServerConnectionMessageImpl
     implements AddCardsServerConnectionMessage {
-  const _$AddCardsServerConnectionMessage(
+  const _$AddCardsServerConnectionMessageImpl(
       final List<CardIndex> cards, this.deckIndex, this.seatIndex,
       {final String? $type})
       : _cards = cards,
         $type = $type ?? 'addCards';
 
-  factory _$AddCardsServerConnectionMessage.fromJson(
+  factory _$AddCardsServerConnectionMessageImpl.fromJson(
           Map<String, dynamic> json) =>
-      _$$AddCardsServerConnectionMessageFromJson(json);
+      _$$AddCardsServerConnectionMessageImplFromJson(json);
 
   final List<CardIndex> _cards;
   @override
@@ -1570,7 +1575,7 @@ class _$AddCardsServerConnectionMessage
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AddCardsServerConnectionMessage &&
+            other is _$AddCardsServerConnectionMessageImpl &&
             const DeepCollectionEquality().equals(other._cards, _cards) &&
             (identical(other.deckIndex, deckIndex) ||
                 other.deckIndex == deckIndex) &&
@@ -1586,9 +1591,10 @@ class _$AddCardsServerConnectionMessage
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$AddCardsServerConnectionMessageCopyWith<_$AddCardsServerConnectionMessage>
-      get copyWith => __$$AddCardsServerConnectionMessageCopyWithImpl<
-          _$AddCardsServerConnectionMessage>(this, _$identity);
+  _$$AddCardsServerConnectionMessageImplCopyWith<
+          _$AddCardsServerConnectionMessageImpl>
+      get copyWith => __$$AddCardsServerConnectionMessageImplCopyWithImpl<
+          _$AddCardsServerConnectionMessageImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1749,7 +1755,7 @@ class _$AddCardsServerConnectionMessage
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$AddCardsServerConnectionMessageToJson(
+    return _$$AddCardsServerConnectionMessageImplToJson(
       this,
     );
   }
@@ -1760,25 +1766,26 @@ abstract class AddCardsServerConnectionMessage
   const factory AddCardsServerConnectionMessage(
       final List<CardIndex> cards,
       final int deckIndex,
-      final int? seatIndex) = _$AddCardsServerConnectionMessage;
+      final int? seatIndex) = _$AddCardsServerConnectionMessageImpl;
 
   factory AddCardsServerConnectionMessage.fromJson(Map<String, dynamic> json) =
-      _$AddCardsServerConnectionMessage.fromJson;
+      _$AddCardsServerConnectionMessageImpl.fromJson;
 
   List<CardIndex> get cards;
   int get deckIndex;
   int? get seatIndex;
   @JsonKey(ignore: true)
-  _$$AddCardsServerConnectionMessageCopyWith<_$AddCardsServerConnectionMessage>
+  _$$AddCardsServerConnectionMessageImplCopyWith<
+          _$AddCardsServerConnectionMessageImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$PutCardsServerConnectionMessageCopyWith<$Res> {
-  factory _$$PutCardsServerConnectionMessageCopyWith(
-          _$PutCardsServerConnectionMessage value,
-          $Res Function(_$PutCardsServerConnectionMessage) then) =
-      __$$PutCardsServerConnectionMessageCopyWithImpl<$Res>;
+abstract class _$$PutCardsServerConnectionMessageImplCopyWith<$Res> {
+  factory _$$PutCardsServerConnectionMessageImplCopyWith(
+          _$PutCardsServerConnectionMessageImpl value,
+          $Res Function(_$PutCardsServerConnectionMessageImpl) then) =
+      __$$PutCardsServerConnectionMessageImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
       {int deckIndex,
@@ -1790,13 +1797,13 @@ abstract class _$$PutCardsServerConnectionMessageCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$PutCardsServerConnectionMessageCopyWithImpl<$Res>
+class __$$PutCardsServerConnectionMessageImplCopyWithImpl<$Res>
     extends _$ServerConnectionMessageCopyWithImpl<$Res,
-        _$PutCardsServerConnectionMessage>
-    implements _$$PutCardsServerConnectionMessageCopyWith<$Res> {
-  __$$PutCardsServerConnectionMessageCopyWithImpl(
-      _$PutCardsServerConnectionMessage _value,
-      $Res Function(_$PutCardsServerConnectionMessage) _then)
+        _$PutCardsServerConnectionMessageImpl>
+    implements _$$PutCardsServerConnectionMessageImplCopyWith<$Res> {
+  __$$PutCardsServerConnectionMessageImplCopyWithImpl(
+      _$PutCardsServerConnectionMessageImpl _value,
+      $Res Function(_$PutCardsServerConnectionMessageImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1809,7 +1816,7 @@ class __$$PutCardsServerConnectionMessageCopyWithImpl<$Res>
     Object? movedDeckIndex = null,
     Object? movedSeatIndex = freezed,
   }) {
-    return _then(_$PutCardsServerConnectionMessage(
+    return _then(_$PutCardsServerConnectionMessageImpl(
       null == deckIndex
           ? _value.deckIndex
           : deckIndex // ignore: cast_nullable_to_non_nullable
@@ -1840,16 +1847,16 @@ class __$$PutCardsServerConnectionMessageCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$PutCardsServerConnectionMessage
+class _$PutCardsServerConnectionMessageImpl
     implements PutCardsServerConnectionMessage {
-  const _$PutCardsServerConnectionMessage(this.deckIndex, this.seatIndex,
+  const _$PutCardsServerConnectionMessageImpl(this.deckIndex, this.seatIndex,
       this.location, this.count, this.movedDeckIndex, this.movedSeatIndex,
       {final String? $type})
       : $type = $type ?? 'putCards';
 
-  factory _$PutCardsServerConnectionMessage.fromJson(
+  factory _$PutCardsServerConnectionMessageImpl.fromJson(
           Map<String, dynamic> json) =>
-      _$$PutCardsServerConnectionMessageFromJson(json);
+      _$$PutCardsServerConnectionMessageImplFromJson(json);
 
   @override
   final int deckIndex;
@@ -1876,7 +1883,7 @@ class _$PutCardsServerConnectionMessage
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PutCardsServerConnectionMessage &&
+            other is _$PutCardsServerConnectionMessageImpl &&
             (identical(other.deckIndex, deckIndex) ||
                 other.deckIndex == deckIndex) &&
             (identical(other.seatIndex, seatIndex) ||
@@ -1898,9 +1905,10 @@ class _$PutCardsServerConnectionMessage
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$PutCardsServerConnectionMessageCopyWith<_$PutCardsServerConnectionMessage>
-      get copyWith => __$$PutCardsServerConnectionMessageCopyWithImpl<
-          _$PutCardsServerConnectionMessage>(this, _$identity);
+  _$$PutCardsServerConnectionMessageImplCopyWith<
+          _$PutCardsServerConnectionMessageImpl>
+      get copyWith => __$$PutCardsServerConnectionMessageImplCopyWithImpl<
+          _$PutCardsServerConnectionMessageImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -2064,7 +2072,7 @@ class _$PutCardsServerConnectionMessage
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$PutCardsServerConnectionMessageToJson(
+    return _$$PutCardsServerConnectionMessageImplToJson(
       this,
     );
   }
@@ -2078,10 +2086,10 @@ abstract class PutCardsServerConnectionMessage
       final PickLocation location,
       final int count,
       final int movedDeckIndex,
-      final int? movedSeatIndex) = _$PutCardsServerConnectionMessage;
+      final int? movedSeatIndex) = _$PutCardsServerConnectionMessageImpl;
 
   factory PutCardsServerConnectionMessage.fromJson(Map<String, dynamic> json) =
-      _$PutCardsServerConnectionMessage.fromJson;
+      _$PutCardsServerConnectionMessageImpl.fromJson;
 
   int get deckIndex;
   int? get seatIndex;
@@ -2090,28 +2098,29 @@ abstract class PutCardsServerConnectionMessage
   int get movedDeckIndex;
   int? get movedSeatIndex;
   @JsonKey(ignore: true)
-  _$$PutCardsServerConnectionMessageCopyWith<_$PutCardsServerConnectionMessage>
+  _$$PutCardsServerConnectionMessageImplCopyWith<
+          _$PutCardsServerConnectionMessageImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$RemoveCardsServerConnectionMessageCopyWith<$Res> {
-  factory _$$RemoveCardsServerConnectionMessageCopyWith(
-          _$RemoveCardsServerConnectionMessage value,
-          $Res Function(_$RemoveCardsServerConnectionMessage) then) =
-      __$$RemoveCardsServerConnectionMessageCopyWithImpl<$Res>;
+abstract class _$$RemoveCardsServerConnectionMessageImplCopyWith<$Res> {
+  factory _$$RemoveCardsServerConnectionMessageImplCopyWith(
+          _$RemoveCardsServerConnectionMessageImpl value,
+          $Res Function(_$RemoveCardsServerConnectionMessageImpl) then) =
+      __$$RemoveCardsServerConnectionMessageImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<CardIndex> cards});
 }
 
 /// @nodoc
-class __$$RemoveCardsServerConnectionMessageCopyWithImpl<$Res>
+class __$$RemoveCardsServerConnectionMessageImplCopyWithImpl<$Res>
     extends _$ServerConnectionMessageCopyWithImpl<$Res,
-        _$RemoveCardsServerConnectionMessage>
-    implements _$$RemoveCardsServerConnectionMessageCopyWith<$Res> {
-  __$$RemoveCardsServerConnectionMessageCopyWithImpl(
-      _$RemoveCardsServerConnectionMessage _value,
-      $Res Function(_$RemoveCardsServerConnectionMessage) _then)
+        _$RemoveCardsServerConnectionMessageImpl>
+    implements _$$RemoveCardsServerConnectionMessageImplCopyWith<$Res> {
+  __$$RemoveCardsServerConnectionMessageImplCopyWithImpl(
+      _$RemoveCardsServerConnectionMessageImpl _value,
+      $Res Function(_$RemoveCardsServerConnectionMessageImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -2119,7 +2128,7 @@ class __$$RemoveCardsServerConnectionMessageCopyWithImpl<$Res>
   $Res call({
     Object? cards = null,
   }) {
-    return _then(_$RemoveCardsServerConnectionMessage(
+    return _then(_$RemoveCardsServerConnectionMessageImpl(
       null == cards
           ? _value._cards
           : cards // ignore: cast_nullable_to_non_nullable
@@ -2130,16 +2139,16 @@ class __$$RemoveCardsServerConnectionMessageCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$RemoveCardsServerConnectionMessage
+class _$RemoveCardsServerConnectionMessageImpl
     implements RemoveCardsServerConnectionMessage {
-  const _$RemoveCardsServerConnectionMessage(final List<CardIndex> cards,
+  const _$RemoveCardsServerConnectionMessageImpl(final List<CardIndex> cards,
       {final String? $type})
       : _cards = cards,
         $type = $type ?? 'removeCards';
 
-  factory _$RemoveCardsServerConnectionMessage.fromJson(
+  factory _$RemoveCardsServerConnectionMessageImpl.fromJson(
           Map<String, dynamic> json) =>
-      _$$RemoveCardsServerConnectionMessageFromJson(json);
+      _$$RemoveCardsServerConnectionMessageImplFromJson(json);
 
   final List<CardIndex> _cards;
   @override
@@ -2161,7 +2170,7 @@ class _$RemoveCardsServerConnectionMessage
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$RemoveCardsServerConnectionMessage &&
+            other is _$RemoveCardsServerConnectionMessageImpl &&
             const DeepCollectionEquality().equals(other._cards, _cards));
   }
 
@@ -2173,10 +2182,10 @@ class _$RemoveCardsServerConnectionMessage
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$RemoveCardsServerConnectionMessageCopyWith<
-          _$RemoveCardsServerConnectionMessage>
-      get copyWith => __$$RemoveCardsServerConnectionMessageCopyWithImpl<
-          _$RemoveCardsServerConnectionMessage>(this, _$identity);
+  _$$RemoveCardsServerConnectionMessageImplCopyWith<
+          _$RemoveCardsServerConnectionMessageImpl>
+      get copyWith => __$$RemoveCardsServerConnectionMessageImplCopyWithImpl<
+          _$RemoveCardsServerConnectionMessageImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -2337,7 +2346,7 @@ class _$RemoveCardsServerConnectionMessage
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$RemoveCardsServerConnectionMessageToJson(
+    return _$$RemoveCardsServerConnectionMessageImplToJson(
       this,
     );
   }
@@ -2346,37 +2355,37 @@ class _$RemoveCardsServerConnectionMessage
 abstract class RemoveCardsServerConnectionMessage
     implements ServerConnectionMessage {
   const factory RemoveCardsServerConnectionMessage(
-      final List<CardIndex> cards) = _$RemoveCardsServerConnectionMessage;
+      final List<CardIndex> cards) = _$RemoveCardsServerConnectionMessageImpl;
 
   factory RemoveCardsServerConnectionMessage.fromJson(
           Map<String, dynamic> json) =
-      _$RemoveCardsServerConnectionMessage.fromJson;
+      _$RemoveCardsServerConnectionMessageImpl.fromJson;
 
   List<CardIndex> get cards;
   @JsonKey(ignore: true)
-  _$$RemoveCardsServerConnectionMessageCopyWith<
-          _$RemoveCardsServerConnectionMessage>
+  _$$RemoveCardsServerConnectionMessageImplCopyWith<
+          _$RemoveCardsServerConnectionMessageImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$RemoveSeatServerConnectionMessageCopyWith<$Res> {
-  factory _$$RemoveSeatServerConnectionMessageCopyWith(
-          _$RemoveSeatServerConnectionMessage value,
-          $Res Function(_$RemoveSeatServerConnectionMessage) then) =
-      __$$RemoveSeatServerConnectionMessageCopyWithImpl<$Res>;
+abstract class _$$RemoveSeatServerConnectionMessageImplCopyWith<$Res> {
+  factory _$$RemoveSeatServerConnectionMessageImplCopyWith(
+          _$RemoveSeatServerConnectionMessageImpl value,
+          $Res Function(_$RemoveSeatServerConnectionMessageImpl) then) =
+      __$$RemoveSeatServerConnectionMessageImplCopyWithImpl<$Res>;
   @useResult
   $Res call({int index});
 }
 
 /// @nodoc
-class __$$RemoveSeatServerConnectionMessageCopyWithImpl<$Res>
+class __$$RemoveSeatServerConnectionMessageImplCopyWithImpl<$Res>
     extends _$ServerConnectionMessageCopyWithImpl<$Res,
-        _$RemoveSeatServerConnectionMessage>
-    implements _$$RemoveSeatServerConnectionMessageCopyWith<$Res> {
-  __$$RemoveSeatServerConnectionMessageCopyWithImpl(
-      _$RemoveSeatServerConnectionMessage _value,
-      $Res Function(_$RemoveSeatServerConnectionMessage) _then)
+        _$RemoveSeatServerConnectionMessageImpl>
+    implements _$$RemoveSeatServerConnectionMessageImplCopyWith<$Res> {
+  __$$RemoveSeatServerConnectionMessageImplCopyWithImpl(
+      _$RemoveSeatServerConnectionMessageImpl _value,
+      $Res Function(_$RemoveSeatServerConnectionMessageImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -2384,7 +2393,7 @@ class __$$RemoveSeatServerConnectionMessageCopyWithImpl<$Res>
   $Res call({
     Object? index = null,
   }) {
-    return _then(_$RemoveSeatServerConnectionMessage(
+    return _then(_$RemoveSeatServerConnectionMessageImpl(
       null == index
           ? _value.index
           : index // ignore: cast_nullable_to_non_nullable
@@ -2395,14 +2404,15 @@ class __$$RemoveSeatServerConnectionMessageCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$RemoveSeatServerConnectionMessage
+class _$RemoveSeatServerConnectionMessageImpl
     implements RemoveSeatServerConnectionMessage {
-  const _$RemoveSeatServerConnectionMessage(this.index, {final String? $type})
+  const _$RemoveSeatServerConnectionMessageImpl(this.index,
+      {final String? $type})
       : $type = $type ?? 'removeSeat';
 
-  factory _$RemoveSeatServerConnectionMessage.fromJson(
+  factory _$RemoveSeatServerConnectionMessageImpl.fromJson(
           Map<String, dynamic> json) =>
-      _$$RemoveSeatServerConnectionMessageFromJson(json);
+      _$$RemoveSeatServerConnectionMessageImplFromJson(json);
 
   @override
   final int index;
@@ -2419,7 +2429,7 @@ class _$RemoveSeatServerConnectionMessage
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$RemoveSeatServerConnectionMessage &&
+            other is _$RemoveSeatServerConnectionMessageImpl &&
             (identical(other.index, index) || other.index == index));
   }
 
@@ -2430,10 +2440,10 @@ class _$RemoveSeatServerConnectionMessage
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$RemoveSeatServerConnectionMessageCopyWith<
-          _$RemoveSeatServerConnectionMessage>
-      get copyWith => __$$RemoveSeatServerConnectionMessageCopyWithImpl<
-          _$RemoveSeatServerConnectionMessage>(this, _$identity);
+  _$$RemoveSeatServerConnectionMessageImplCopyWith<
+          _$RemoveSeatServerConnectionMessageImpl>
+      get copyWith => __$$RemoveSeatServerConnectionMessageImplCopyWithImpl<
+          _$RemoveSeatServerConnectionMessageImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -2594,7 +2604,7 @@ class _$RemoveSeatServerConnectionMessage
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$RemoveSeatServerConnectionMessageToJson(
+    return _$$RemoveSeatServerConnectionMessageImplToJson(
       this,
     );
   }
@@ -2603,36 +2613,37 @@ class _$RemoveSeatServerConnectionMessage
 abstract class RemoveSeatServerConnectionMessage
     implements ServerConnectionMessage {
   const factory RemoveSeatServerConnectionMessage(final int index) =
-      _$RemoveSeatServerConnectionMessage;
+      _$RemoveSeatServerConnectionMessageImpl;
 
   factory RemoveSeatServerConnectionMessage.fromJson(
-      Map<String, dynamic> json) = _$RemoveSeatServerConnectionMessage.fromJson;
+          Map<String, dynamic> json) =
+      _$RemoveSeatServerConnectionMessageImpl.fromJson;
 
   int get index;
   @JsonKey(ignore: true)
-  _$$RemoveSeatServerConnectionMessageCopyWith<
-          _$RemoveSeatServerConnectionMessage>
+  _$$RemoveSeatServerConnectionMessageImplCopyWith<
+          _$RemoveSeatServerConnectionMessageImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$JoinSeatServerConnectionMessageCopyWith<$Res> {
-  factory _$$JoinSeatServerConnectionMessageCopyWith(
-          _$JoinSeatServerConnectionMessage value,
-          $Res Function(_$JoinSeatServerConnectionMessage) then) =
-      __$$JoinSeatServerConnectionMessageCopyWithImpl<$Res>;
+abstract class _$$JoinSeatServerConnectionMessageImplCopyWith<$Res> {
+  factory _$$JoinSeatServerConnectionMessageImplCopyWith(
+          _$JoinSeatServerConnectionMessageImpl value,
+          $Res Function(_$JoinSeatServerConnectionMessageImpl) then) =
+      __$$JoinSeatServerConnectionMessageImplCopyWithImpl<$Res>;
   @useResult
   $Res call({int index});
 }
 
 /// @nodoc
-class __$$JoinSeatServerConnectionMessageCopyWithImpl<$Res>
+class __$$JoinSeatServerConnectionMessageImplCopyWithImpl<$Res>
     extends _$ServerConnectionMessageCopyWithImpl<$Res,
-        _$JoinSeatServerConnectionMessage>
-    implements _$$JoinSeatServerConnectionMessageCopyWith<$Res> {
-  __$$JoinSeatServerConnectionMessageCopyWithImpl(
-      _$JoinSeatServerConnectionMessage _value,
-      $Res Function(_$JoinSeatServerConnectionMessage) _then)
+        _$JoinSeatServerConnectionMessageImpl>
+    implements _$$JoinSeatServerConnectionMessageImplCopyWith<$Res> {
+  __$$JoinSeatServerConnectionMessageImplCopyWithImpl(
+      _$JoinSeatServerConnectionMessageImpl _value,
+      $Res Function(_$JoinSeatServerConnectionMessageImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -2640,7 +2651,7 @@ class __$$JoinSeatServerConnectionMessageCopyWithImpl<$Res>
   $Res call({
     Object? index = null,
   }) {
-    return _then(_$JoinSeatServerConnectionMessage(
+    return _then(_$JoinSeatServerConnectionMessageImpl(
       null == index
           ? _value.index
           : index // ignore: cast_nullable_to_non_nullable
@@ -2651,14 +2662,14 @@ class __$$JoinSeatServerConnectionMessageCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$JoinSeatServerConnectionMessage
+class _$JoinSeatServerConnectionMessageImpl
     implements JoinSeatServerConnectionMessage {
-  const _$JoinSeatServerConnectionMessage(this.index, {final String? $type})
+  const _$JoinSeatServerConnectionMessageImpl(this.index, {final String? $type})
       : $type = $type ?? 'joinSeat';
 
-  factory _$JoinSeatServerConnectionMessage.fromJson(
+  factory _$JoinSeatServerConnectionMessageImpl.fromJson(
           Map<String, dynamic> json) =>
-      _$$JoinSeatServerConnectionMessageFromJson(json);
+      _$$JoinSeatServerConnectionMessageImplFromJson(json);
 
   @override
   final int index;
@@ -2675,7 +2686,7 @@ class _$JoinSeatServerConnectionMessage
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$JoinSeatServerConnectionMessage &&
+            other is _$JoinSeatServerConnectionMessageImpl &&
             (identical(other.index, index) || other.index == index));
   }
 
@@ -2686,9 +2697,10 @@ class _$JoinSeatServerConnectionMessage
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$JoinSeatServerConnectionMessageCopyWith<_$JoinSeatServerConnectionMessage>
-      get copyWith => __$$JoinSeatServerConnectionMessageCopyWithImpl<
-          _$JoinSeatServerConnectionMessage>(this, _$identity);
+  _$$JoinSeatServerConnectionMessageImplCopyWith<
+          _$JoinSeatServerConnectionMessageImpl>
+      get copyWith => __$$JoinSeatServerConnectionMessageImplCopyWithImpl<
+          _$JoinSeatServerConnectionMessageImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -2849,7 +2861,7 @@ class _$JoinSeatServerConnectionMessage
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$JoinSeatServerConnectionMessageToJson(
+    return _$$JoinSeatServerConnectionMessageImplToJson(
       this,
     );
   }
@@ -2858,35 +2870,36 @@ class _$JoinSeatServerConnectionMessage
 abstract class JoinSeatServerConnectionMessage
     implements ServerConnectionMessage {
   const factory JoinSeatServerConnectionMessage(final int index) =
-      _$JoinSeatServerConnectionMessage;
+      _$JoinSeatServerConnectionMessageImpl;
 
   factory JoinSeatServerConnectionMessage.fromJson(Map<String, dynamic> json) =
-      _$JoinSeatServerConnectionMessage.fromJson;
+      _$JoinSeatServerConnectionMessageImpl.fromJson;
 
   int get index;
   @JsonKey(ignore: true)
-  _$$JoinSeatServerConnectionMessageCopyWith<_$JoinSeatServerConnectionMessage>
+  _$$JoinSeatServerConnectionMessageImplCopyWith<
+          _$JoinSeatServerConnectionMessageImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$LeaveSeatServerConnectionMessageCopyWith<$Res> {
-  factory _$$LeaveSeatServerConnectionMessageCopyWith(
-          _$LeaveSeatServerConnectionMessage value,
-          $Res Function(_$LeaveSeatServerConnectionMessage) then) =
-      __$$LeaveSeatServerConnectionMessageCopyWithImpl<$Res>;
+abstract class _$$LeaveSeatServerConnectionMessageImplCopyWith<$Res> {
+  factory _$$LeaveSeatServerConnectionMessageImplCopyWith(
+          _$LeaveSeatServerConnectionMessageImpl value,
+          $Res Function(_$LeaveSeatServerConnectionMessageImpl) then) =
+      __$$LeaveSeatServerConnectionMessageImplCopyWithImpl<$Res>;
   @useResult
   $Res call({int index});
 }
 
 /// @nodoc
-class __$$LeaveSeatServerConnectionMessageCopyWithImpl<$Res>
+class __$$LeaveSeatServerConnectionMessageImplCopyWithImpl<$Res>
     extends _$ServerConnectionMessageCopyWithImpl<$Res,
-        _$LeaveSeatServerConnectionMessage>
-    implements _$$LeaveSeatServerConnectionMessageCopyWith<$Res> {
-  __$$LeaveSeatServerConnectionMessageCopyWithImpl(
-      _$LeaveSeatServerConnectionMessage _value,
-      $Res Function(_$LeaveSeatServerConnectionMessage) _then)
+        _$LeaveSeatServerConnectionMessageImpl>
+    implements _$$LeaveSeatServerConnectionMessageImplCopyWith<$Res> {
+  __$$LeaveSeatServerConnectionMessageImplCopyWithImpl(
+      _$LeaveSeatServerConnectionMessageImpl _value,
+      $Res Function(_$LeaveSeatServerConnectionMessageImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -2894,7 +2907,7 @@ class __$$LeaveSeatServerConnectionMessageCopyWithImpl<$Res>
   $Res call({
     Object? index = null,
   }) {
-    return _then(_$LeaveSeatServerConnectionMessage(
+    return _then(_$LeaveSeatServerConnectionMessageImpl(
       null == index
           ? _value.index
           : index // ignore: cast_nullable_to_non_nullable
@@ -2905,14 +2918,15 @@ class __$$LeaveSeatServerConnectionMessageCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$LeaveSeatServerConnectionMessage
+class _$LeaveSeatServerConnectionMessageImpl
     implements LeaveSeatServerConnectionMessage {
-  const _$LeaveSeatServerConnectionMessage(this.index, {final String? $type})
+  const _$LeaveSeatServerConnectionMessageImpl(this.index,
+      {final String? $type})
       : $type = $type ?? 'leaveSeat';
 
-  factory _$LeaveSeatServerConnectionMessage.fromJson(
+  factory _$LeaveSeatServerConnectionMessageImpl.fromJson(
           Map<String, dynamic> json) =>
-      _$$LeaveSeatServerConnectionMessageFromJson(json);
+      _$$LeaveSeatServerConnectionMessageImplFromJson(json);
 
   @override
   final int index;
@@ -2929,7 +2943,7 @@ class _$LeaveSeatServerConnectionMessage
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$LeaveSeatServerConnectionMessage &&
+            other is _$LeaveSeatServerConnectionMessageImpl &&
             (identical(other.index, index) || other.index == index));
   }
 
@@ -2940,10 +2954,10 @@ class _$LeaveSeatServerConnectionMessage
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$LeaveSeatServerConnectionMessageCopyWith<
-          _$LeaveSeatServerConnectionMessage>
-      get copyWith => __$$LeaveSeatServerConnectionMessageCopyWithImpl<
-          _$LeaveSeatServerConnectionMessage>(this, _$identity);
+  _$$LeaveSeatServerConnectionMessageImplCopyWith<
+          _$LeaveSeatServerConnectionMessageImpl>
+      get copyWith => __$$LeaveSeatServerConnectionMessageImplCopyWithImpl<
+          _$LeaveSeatServerConnectionMessageImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -3104,7 +3118,7 @@ class _$LeaveSeatServerConnectionMessage
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$LeaveSeatServerConnectionMessageToJson(
+    return _$$LeaveSeatServerConnectionMessageImplToJson(
       this,
     );
   }
@@ -3113,36 +3127,36 @@ class _$LeaveSeatServerConnectionMessage
 abstract class LeaveSeatServerConnectionMessage
     implements ServerConnectionMessage {
   const factory LeaveSeatServerConnectionMessage(final int index) =
-      _$LeaveSeatServerConnectionMessage;
+      _$LeaveSeatServerConnectionMessageImpl;
 
   factory LeaveSeatServerConnectionMessage.fromJson(Map<String, dynamic> json) =
-      _$LeaveSeatServerConnectionMessage.fromJson;
+      _$LeaveSeatServerConnectionMessageImpl.fromJson;
 
   int get index;
   @JsonKey(ignore: true)
-  _$$LeaveSeatServerConnectionMessageCopyWith<
-          _$LeaveSeatServerConnectionMessage>
+  _$$LeaveSeatServerConnectionMessageImplCopyWith<
+          _$LeaveSeatServerConnectionMessageImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$ShuffleServerConnectionMessageCopyWith<$Res> {
-  factory _$$ShuffleServerConnectionMessageCopyWith(
-          _$ShuffleServerConnectionMessage value,
-          $Res Function(_$ShuffleServerConnectionMessage) then) =
-      __$$ShuffleServerConnectionMessageCopyWithImpl<$Res>;
+abstract class _$$ShuffleServerConnectionMessageImplCopyWith<$Res> {
+  factory _$$ShuffleServerConnectionMessageImplCopyWith(
+          _$ShuffleServerConnectionMessageImpl value,
+          $Res Function(_$ShuffleServerConnectionMessageImpl) then) =
+      __$$ShuffleServerConnectionMessageImplCopyWithImpl<$Res>;
   @useResult
   $Res call({int deckIndex, int? seatIndex});
 }
 
 /// @nodoc
-class __$$ShuffleServerConnectionMessageCopyWithImpl<$Res>
+class __$$ShuffleServerConnectionMessageImplCopyWithImpl<$Res>
     extends _$ServerConnectionMessageCopyWithImpl<$Res,
-        _$ShuffleServerConnectionMessage>
-    implements _$$ShuffleServerConnectionMessageCopyWith<$Res> {
-  __$$ShuffleServerConnectionMessageCopyWithImpl(
-      _$ShuffleServerConnectionMessage _value,
-      $Res Function(_$ShuffleServerConnectionMessage) _then)
+        _$ShuffleServerConnectionMessageImpl>
+    implements _$$ShuffleServerConnectionMessageImplCopyWith<$Res> {
+  __$$ShuffleServerConnectionMessageImplCopyWithImpl(
+      _$ShuffleServerConnectionMessageImpl _value,
+      $Res Function(_$ShuffleServerConnectionMessageImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -3151,7 +3165,7 @@ class __$$ShuffleServerConnectionMessageCopyWithImpl<$Res>
     Object? deckIndex = null,
     Object? seatIndex = freezed,
   }) {
-    return _then(_$ShuffleServerConnectionMessage(
+    return _then(_$ShuffleServerConnectionMessageImpl(
       null == deckIndex
           ? _value.deckIndex
           : deckIndex // ignore: cast_nullable_to_non_nullable
@@ -3166,15 +3180,15 @@ class __$$ShuffleServerConnectionMessageCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ShuffleServerConnectionMessage
+class _$ShuffleServerConnectionMessageImpl
     implements ShuffleServerConnectionMessage {
-  const _$ShuffleServerConnectionMessage(this.deckIndex, this.seatIndex,
+  const _$ShuffleServerConnectionMessageImpl(this.deckIndex, this.seatIndex,
       {final String? $type})
       : $type = $type ?? 'shuffle';
 
-  factory _$ShuffleServerConnectionMessage.fromJson(
+  factory _$ShuffleServerConnectionMessageImpl.fromJson(
           Map<String, dynamic> json) =>
-      _$$ShuffleServerConnectionMessageFromJson(json);
+      _$$ShuffleServerConnectionMessageImplFromJson(json);
 
   @override
   final int deckIndex;
@@ -3193,7 +3207,7 @@ class _$ShuffleServerConnectionMessage
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ShuffleServerConnectionMessage &&
+            other is _$ShuffleServerConnectionMessageImpl &&
             (identical(other.deckIndex, deckIndex) ||
                 other.deckIndex == deckIndex) &&
             (identical(other.seatIndex, seatIndex) ||
@@ -3207,9 +3221,10 @@ class _$ShuffleServerConnectionMessage
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ShuffleServerConnectionMessageCopyWith<_$ShuffleServerConnectionMessage>
-      get copyWith => __$$ShuffleServerConnectionMessageCopyWithImpl<
-          _$ShuffleServerConnectionMessage>(this, _$identity);
+  _$$ShuffleServerConnectionMessageImplCopyWith<
+          _$ShuffleServerConnectionMessageImpl>
+      get copyWith => __$$ShuffleServerConnectionMessageImplCopyWithImpl<
+          _$ShuffleServerConnectionMessageImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -3370,7 +3385,7 @@ class _$ShuffleServerConnectionMessage
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ShuffleServerConnectionMessageToJson(
+    return _$$ShuffleServerConnectionMessageImplToJson(
       this,
     );
   }
@@ -3380,24 +3395,25 @@ abstract class ShuffleServerConnectionMessage
     implements ServerConnectionMessage {
   const factory ShuffleServerConnectionMessage(
           final int deckIndex, final int? seatIndex) =
-      _$ShuffleServerConnectionMessage;
+      _$ShuffleServerConnectionMessageImpl;
 
   factory ShuffleServerConnectionMessage.fromJson(Map<String, dynamic> json) =
-      _$ShuffleServerConnectionMessage.fromJson;
+      _$ShuffleServerConnectionMessageImpl.fromJson;
 
   int get deckIndex;
   int? get seatIndex;
   @JsonKey(ignore: true)
-  _$$ShuffleServerConnectionMessageCopyWith<_$ShuffleServerConnectionMessage>
+  _$$ShuffleServerConnectionMessageImplCopyWith<
+          _$ShuffleServerConnectionMessageImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$ChangeVisibilityServerConnectionMessageCopyWith<$Res> {
-  factory _$$ChangeVisibilityServerConnectionMessageCopyWith(
-          _$ChangeVisibilityServerConnectionMessage value,
-          $Res Function(_$ChangeVisibilityServerConnectionMessage) then) =
-      __$$ChangeVisibilityServerConnectionMessageCopyWithImpl<$Res>;
+abstract class _$$ChangeVisibilityServerConnectionMessageImplCopyWith<$Res> {
+  factory _$$ChangeVisibilityServerConnectionMessageImplCopyWith(
+          _$ChangeVisibilityServerConnectionMessageImpl value,
+          $Res Function(_$ChangeVisibilityServerConnectionMessageImpl) then) =
+      __$$ChangeVisibilityServerConnectionMessageImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
       {int deckIndex,
@@ -3407,13 +3423,13 @@ abstract class _$$ChangeVisibilityServerConnectionMessageCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$ChangeVisibilityServerConnectionMessageCopyWithImpl<$Res>
+class __$$ChangeVisibilityServerConnectionMessageImplCopyWithImpl<$Res>
     extends _$ServerConnectionMessageCopyWithImpl<$Res,
-        _$ChangeVisibilityServerConnectionMessage>
-    implements _$$ChangeVisibilityServerConnectionMessageCopyWith<$Res> {
-  __$$ChangeVisibilityServerConnectionMessageCopyWithImpl(
-      _$ChangeVisibilityServerConnectionMessage _value,
-      $Res Function(_$ChangeVisibilityServerConnectionMessage) _then)
+        _$ChangeVisibilityServerConnectionMessageImpl>
+    implements _$$ChangeVisibilityServerConnectionMessageImplCopyWith<$Res> {
+  __$$ChangeVisibilityServerConnectionMessageImplCopyWithImpl(
+      _$ChangeVisibilityServerConnectionMessageImpl _value,
+      $Res Function(_$ChangeVisibilityServerConnectionMessageImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -3424,7 +3440,7 @@ class __$$ChangeVisibilityServerConnectionMessageCopyWithImpl<$Res>
     Object? visibility = null,
     Object? ownVisibility = freezed,
   }) {
-    return _then(_$ChangeVisibilityServerConnectionMessage(
+    return _then(_$ChangeVisibilityServerConnectionMessageImpl(
       null == deckIndex
           ? _value.deckIndex
           : deckIndex // ignore: cast_nullable_to_non_nullable
@@ -3447,16 +3463,16 @@ class __$$ChangeVisibilityServerConnectionMessageCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ChangeVisibilityServerConnectionMessage
+class _$ChangeVisibilityServerConnectionMessageImpl
     implements ChangeVisibilityServerConnectionMessage {
-  const _$ChangeVisibilityServerConnectionMessage(
+  const _$ChangeVisibilityServerConnectionMessageImpl(
       this.deckIndex, this.seatIndex, this.visibility,
       [this.ownVisibility, final String? $type])
       : $type = $type ?? 'changeVisibility';
 
-  factory _$ChangeVisibilityServerConnectionMessage.fromJson(
+  factory _$ChangeVisibilityServerConnectionMessageImpl.fromJson(
           Map<String, dynamic> json) =>
-      _$$ChangeVisibilityServerConnectionMessageFromJson(json);
+      _$$ChangeVisibilityServerConnectionMessageImplFromJson(json);
 
   @override
   final int deckIndex;
@@ -3479,7 +3495,7 @@ class _$ChangeVisibilityServerConnectionMessage
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ChangeVisibilityServerConnectionMessage &&
+            other is _$ChangeVisibilityServerConnectionMessageImpl &&
             (identical(other.deckIndex, deckIndex) ||
                 other.deckIndex == deckIndex) &&
             (identical(other.seatIndex, seatIndex) ||
@@ -3498,10 +3514,11 @@ class _$ChangeVisibilityServerConnectionMessage
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ChangeVisibilityServerConnectionMessageCopyWith<
-          _$ChangeVisibilityServerConnectionMessage>
-      get copyWith => __$$ChangeVisibilityServerConnectionMessageCopyWithImpl<
-          _$ChangeVisibilityServerConnectionMessage>(this, _$identity);
+  _$$ChangeVisibilityServerConnectionMessageImplCopyWith<
+          _$ChangeVisibilityServerConnectionMessageImpl>
+      get copyWith =>
+          __$$ChangeVisibilityServerConnectionMessageImplCopyWithImpl<
+              _$ChangeVisibilityServerConnectionMessageImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -3663,7 +3680,7 @@ class _$ChangeVisibilityServerConnectionMessage
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ChangeVisibilityServerConnectionMessageToJson(
+    return _$$ChangeVisibilityServerConnectionMessageImplToJson(
       this,
     );
   }
@@ -3674,18 +3691,18 @@ abstract class ChangeVisibilityServerConnectionMessage
   const factory ChangeVisibilityServerConnectionMessage(final int deckIndex,
           final int? seatIndex, final DeckVisibility visibility,
           [final DeckVisibility? ownVisibility]) =
-      _$ChangeVisibilityServerConnectionMessage;
+      _$ChangeVisibilityServerConnectionMessageImpl;
 
   factory ChangeVisibilityServerConnectionMessage.fromJson(
           Map<String, dynamic> json) =
-      _$ChangeVisibilityServerConnectionMessage.fromJson;
+      _$ChangeVisibilityServerConnectionMessageImpl.fromJson;
 
   int get deckIndex;
   int? get seatIndex;
   DeckVisibility get visibility;
   DeckVisibility? get ownVisibility;
   @JsonKey(ignore: true)
-  _$$ChangeVisibilityServerConnectionMessageCopyWith<
-          _$ChangeVisibilityServerConnectionMessage>
+  _$$ChangeVisibilityServerConnectionMessageImplCopyWith<
+          _$ChangeVisibilityServerConnectionMessageImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

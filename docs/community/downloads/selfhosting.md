@@ -14,6 +14,7 @@ Install flutter and build the app using:
 
 ```bash
 cd app
+dart run build_runner build --delete-conflicting-outputs
 flutter pub get
 flutter build web
 ```

@@ -68,22 +68,22 @@ class _$GamePlayerCopyWithImpl<$Res, $Val extends GamePlayer>
 }
 
 /// @nodoc
-abstract class _$$_GamePlayerCopyWith<$Res>
+abstract class _$$GamePlayerImplCopyWith<$Res>
     implements $GamePlayerCopyWith<$Res> {
-  factory _$$_GamePlayerCopyWith(
-          _$_GamePlayer value, $Res Function(_$_GamePlayer) then) =
-      __$$_GamePlayerCopyWithImpl<$Res>;
+  factory _$$GamePlayerImplCopyWith(
+          _$GamePlayerImpl value, $Res Function(_$GamePlayerImpl) then) =
+      __$$GamePlayerImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String name, int id});
 }
 
 /// @nodoc
-class __$$_GamePlayerCopyWithImpl<$Res>
-    extends _$GamePlayerCopyWithImpl<$Res, _$_GamePlayer>
-    implements _$$_GamePlayerCopyWith<$Res> {
-  __$$_GamePlayerCopyWithImpl(
-      _$_GamePlayer _value, $Res Function(_$_GamePlayer) _then)
+class __$$GamePlayerImplCopyWithImpl<$Res>
+    extends _$GamePlayerCopyWithImpl<$Res, _$GamePlayerImpl>
+    implements _$$GamePlayerImplCopyWith<$Res> {
+  __$$GamePlayerImplCopyWithImpl(
+      _$GamePlayerImpl _value, $Res Function(_$GamePlayerImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -92,7 +92,7 @@ class __$$_GamePlayerCopyWithImpl<$Res>
     Object? name = null,
     Object? id = null,
   }) {
-    return _then(_$_GamePlayer(
+    return _then(_$GamePlayerImpl(
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -107,11 +107,11 @@ class __$$_GamePlayerCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_GamePlayer implements _GamePlayer {
-  const _$_GamePlayer({required this.name, required this.id});
+class _$GamePlayerImpl implements _GamePlayer {
+  const _$GamePlayerImpl({required this.name, required this.id});
 
-  factory _$_GamePlayer.fromJson(Map<String, dynamic> json) =>
-      _$$_GamePlayerFromJson(json);
+  factory _$GamePlayerImpl.fromJson(Map<String, dynamic> json) =>
+      _$$GamePlayerImplFromJson(json);
 
   @override
   final String name;
@@ -127,7 +127,7 @@ class _$_GamePlayer implements _GamePlayer {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_GamePlayer &&
+            other is _$GamePlayerImpl &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.id, id) || other.id == id));
   }
@@ -139,12 +139,12 @@ class _$_GamePlayer implements _GamePlayer {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_GamePlayerCopyWith<_$_GamePlayer> get copyWith =>
-      __$$_GamePlayerCopyWithImpl<_$_GamePlayer>(this, _$identity);
+  _$$GamePlayerImplCopyWith<_$GamePlayerImpl> get copyWith =>
+      __$$GamePlayerImplCopyWithImpl<_$GamePlayerImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_GamePlayerToJson(
+    return _$$GamePlayerImplToJson(
       this,
     );
   }
@@ -152,10 +152,10 @@ class _$_GamePlayer implements _GamePlayer {
 
 abstract class _GamePlayer implements GamePlayer {
   const factory _GamePlayer(
-      {required final String name, required final int id}) = _$_GamePlayer;
+      {required final String name, required final int id}) = _$GamePlayerImpl;
 
   factory _GamePlayer.fromJson(Map<String, dynamic> json) =
-      _$_GamePlayer.fromJson;
+      _$GamePlayerImpl.fromJson;
 
   @override
   String get name;
@@ -163,7 +163,7 @@ abstract class _GamePlayer implements GamePlayer {
   int get id;
   @override
   @JsonKey(ignore: true)
-  _$$_GamePlayerCopyWith<_$_GamePlayer> get copyWith =>
+  _$$GamePlayerImplCopyWith<_$GamePlayerImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -249,10 +249,10 @@ class _$CardIndexCopyWithImpl<$Res, $Val extends CardIndex>
 }
 
 /// @nodoc
-abstract class _$$AvailableCardIndexCopyWith<$Res> {
-  factory _$$AvailableCardIndexCopyWith(_$AvailableCardIndex value,
-          $Res Function(_$AvailableCardIndex) then) =
-      __$$AvailableCardIndexCopyWithImpl<$Res>;
+abstract class _$$AvailableCardIndexImplCopyWith<$Res> {
+  factory _$$AvailableCardIndexImplCopyWith(_$AvailableCardIndexImpl value,
+          $Res Function(_$AvailableCardIndexImpl) then) =
+      __$$AvailableCardIndexImplCopyWithImpl<$Res>;
   @useResult
   $Res call({GameCard card});
 
@@ -260,11 +260,11 @@ abstract class _$$AvailableCardIndexCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$AvailableCardIndexCopyWithImpl<$Res>
-    extends _$CardIndexCopyWithImpl<$Res, _$AvailableCardIndex>
-    implements _$$AvailableCardIndexCopyWith<$Res> {
-  __$$AvailableCardIndexCopyWithImpl(
-      _$AvailableCardIndex _value, $Res Function(_$AvailableCardIndex) _then)
+class __$$AvailableCardIndexImplCopyWithImpl<$Res>
+    extends _$CardIndexCopyWithImpl<$Res, _$AvailableCardIndexImpl>
+    implements _$$AvailableCardIndexImplCopyWith<$Res> {
+  __$$AvailableCardIndexImplCopyWithImpl(_$AvailableCardIndexImpl _value,
+      $Res Function(_$AvailableCardIndexImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -272,7 +272,7 @@ class __$$AvailableCardIndexCopyWithImpl<$Res>
   $Res call({
     Object? card = null,
   }) {
-    return _then(_$AvailableCardIndex(
+    return _then(_$AvailableCardIndexImpl(
       null == card
           ? _value.card
           : card // ignore: cast_nullable_to_non_nullable
@@ -291,12 +291,12 @@ class __$$AvailableCardIndexCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$AvailableCardIndex implements AvailableCardIndex {
-  const _$AvailableCardIndex(this.card, {final String? $type})
+class _$AvailableCardIndexImpl implements AvailableCardIndex {
+  const _$AvailableCardIndexImpl(this.card, {final String? $type})
       : $type = $type ?? 'custom';
 
-  factory _$AvailableCardIndex.fromJson(Map<String, dynamic> json) =>
-      _$$AvailableCardIndexFromJson(json);
+  factory _$AvailableCardIndexImpl.fromJson(Map<String, dynamic> json) =>
+      _$$AvailableCardIndexImplFromJson(json);
 
   @override
   final GameCard card;
@@ -313,7 +313,7 @@ class _$AvailableCardIndex implements AvailableCardIndex {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AvailableCardIndex &&
+            other is _$AvailableCardIndexImpl &&
             (identical(other.card, card) || other.card == card));
   }
 
@@ -324,8 +324,8 @@ class _$AvailableCardIndex implements AvailableCardIndex {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$AvailableCardIndexCopyWith<_$AvailableCardIndex> get copyWith =>
-      __$$AvailableCardIndexCopyWithImpl<_$AvailableCardIndex>(
+  _$$AvailableCardIndexImplCopyWith<_$AvailableCardIndexImpl> get copyWith =>
+      __$$AvailableCardIndexImplCopyWithImpl<_$AvailableCardIndexImpl>(
           this, _$identity);
 
   @override
@@ -398,39 +398,40 @@ class _$AvailableCardIndex implements AvailableCardIndex {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$AvailableCardIndexToJson(
+    return _$$AvailableCardIndexImplToJson(
       this,
     );
   }
 }
 
 abstract class AvailableCardIndex implements CardIndex {
-  const factory AvailableCardIndex(final GameCard card) = _$AvailableCardIndex;
+  const factory AvailableCardIndex(final GameCard card) =
+      _$AvailableCardIndexImpl;
 
   factory AvailableCardIndex.fromJson(Map<String, dynamic> json) =
-      _$AvailableCardIndex.fromJson;
+      _$AvailableCardIndexImpl.fromJson;
 
   GameCard get card;
   @JsonKey(ignore: true)
-  _$$AvailableCardIndexCopyWith<_$AvailableCardIndex> get copyWith =>
+  _$$AvailableCardIndexImplCopyWith<_$AvailableCardIndexImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$DeckCardIndexCopyWith<$Res> {
-  factory _$$DeckCardIndexCopyWith(
-          _$DeckCardIndex value, $Res Function(_$DeckCardIndex) then) =
-      __$$DeckCardIndexCopyWithImpl<$Res>;
+abstract class _$$DeckCardIndexImplCopyWith<$Res> {
+  factory _$$DeckCardIndexImplCopyWith(
+          _$DeckCardIndexImpl value, $Res Function(_$DeckCardIndexImpl) then) =
+      __$$DeckCardIndexImplCopyWithImpl<$Res>;
   @useResult
   $Res call({int cardIndex, int deckIndex});
 }
 
 /// @nodoc
-class __$$DeckCardIndexCopyWithImpl<$Res>
-    extends _$CardIndexCopyWithImpl<$Res, _$DeckCardIndex>
-    implements _$$DeckCardIndexCopyWith<$Res> {
-  __$$DeckCardIndexCopyWithImpl(
-      _$DeckCardIndex _value, $Res Function(_$DeckCardIndex) _then)
+class __$$DeckCardIndexImplCopyWithImpl<$Res>
+    extends _$CardIndexCopyWithImpl<$Res, _$DeckCardIndexImpl>
+    implements _$$DeckCardIndexImplCopyWith<$Res> {
+  __$$DeckCardIndexImplCopyWithImpl(
+      _$DeckCardIndexImpl _value, $Res Function(_$DeckCardIndexImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -439,7 +440,7 @@ class __$$DeckCardIndexCopyWithImpl<$Res>
     Object? cardIndex = null,
     Object? deckIndex = null,
   }) {
-    return _then(_$DeckCardIndex(
+    return _then(_$DeckCardIndexImpl(
       null == cardIndex
           ? _value.cardIndex
           : cardIndex // ignore: cast_nullable_to_non_nullable
@@ -454,12 +455,13 @@ class __$$DeckCardIndexCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$DeckCardIndex implements DeckCardIndex {
-  const _$DeckCardIndex(this.cardIndex, this.deckIndex, {final String? $type})
+class _$DeckCardIndexImpl implements DeckCardIndex {
+  const _$DeckCardIndexImpl(this.cardIndex, this.deckIndex,
+      {final String? $type})
       : $type = $type ?? 'deck';
 
-  factory _$DeckCardIndex.fromJson(Map<String, dynamic> json) =>
-      _$$DeckCardIndexFromJson(json);
+  factory _$DeckCardIndexImpl.fromJson(Map<String, dynamic> json) =>
+      _$$DeckCardIndexImplFromJson(json);
 
   @override
   final int cardIndex;
@@ -478,7 +480,7 @@ class _$DeckCardIndex implements DeckCardIndex {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DeckCardIndex &&
+            other is _$DeckCardIndexImpl &&
             (identical(other.cardIndex, cardIndex) ||
                 other.cardIndex == cardIndex) &&
             (identical(other.deckIndex, deckIndex) ||
@@ -492,8 +494,8 @@ class _$DeckCardIndex implements DeckCardIndex {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$DeckCardIndexCopyWith<_$DeckCardIndex> get copyWith =>
-      __$$DeckCardIndexCopyWithImpl<_$DeckCardIndex>(this, _$identity);
+  _$$DeckCardIndexImplCopyWith<_$DeckCardIndexImpl> get copyWith =>
+      __$$DeckCardIndexImplCopyWithImpl<_$DeckCardIndexImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -565,7 +567,7 @@ class _$DeckCardIndex implements DeckCardIndex {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$DeckCardIndexToJson(
+    return _$$DeckCardIndexImplToJson(
       this,
     );
   }
@@ -573,33 +575,33 @@ class _$DeckCardIndex implements DeckCardIndex {
 
 abstract class DeckCardIndex implements CardIndex {
   const factory DeckCardIndex(final int cardIndex, final int deckIndex) =
-      _$DeckCardIndex;
+      _$DeckCardIndexImpl;
 
   factory DeckCardIndex.fromJson(Map<String, dynamic> json) =
-      _$DeckCardIndex.fromJson;
+      _$DeckCardIndexImpl.fromJson;
 
   int get cardIndex;
   int get deckIndex;
   @JsonKey(ignore: true)
-  _$$DeckCardIndexCopyWith<_$DeckCardIndex> get copyWith =>
+  _$$DeckCardIndexImplCopyWith<_$DeckCardIndexImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$SeatCardIndexCopyWith<$Res> {
-  factory _$$SeatCardIndexCopyWith(
-          _$SeatCardIndex value, $Res Function(_$SeatCardIndex) then) =
-      __$$SeatCardIndexCopyWithImpl<$Res>;
+abstract class _$$SeatCardIndexImplCopyWith<$Res> {
+  factory _$$SeatCardIndexImplCopyWith(
+          _$SeatCardIndexImpl value, $Res Function(_$SeatCardIndexImpl) then) =
+      __$$SeatCardIndexImplCopyWithImpl<$Res>;
   @useResult
   $Res call({int cardIndex, int deckIndex, int seatIndex});
 }
 
 /// @nodoc
-class __$$SeatCardIndexCopyWithImpl<$Res>
-    extends _$CardIndexCopyWithImpl<$Res, _$SeatCardIndex>
-    implements _$$SeatCardIndexCopyWith<$Res> {
-  __$$SeatCardIndexCopyWithImpl(
-      _$SeatCardIndex _value, $Res Function(_$SeatCardIndex) _then)
+class __$$SeatCardIndexImplCopyWithImpl<$Res>
+    extends _$CardIndexCopyWithImpl<$Res, _$SeatCardIndexImpl>
+    implements _$$SeatCardIndexImplCopyWith<$Res> {
+  __$$SeatCardIndexImplCopyWithImpl(
+      _$SeatCardIndexImpl _value, $Res Function(_$SeatCardIndexImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -609,7 +611,7 @@ class __$$SeatCardIndexCopyWithImpl<$Res>
     Object? deckIndex = null,
     Object? seatIndex = null,
   }) {
-    return _then(_$SeatCardIndex(
+    return _then(_$SeatCardIndexImpl(
       null == cardIndex
           ? _value.cardIndex
           : cardIndex // ignore: cast_nullable_to_non_nullable
@@ -628,13 +630,13 @@ class __$$SeatCardIndexCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$SeatCardIndex implements SeatCardIndex {
-  const _$SeatCardIndex(this.cardIndex, this.deckIndex, this.seatIndex,
+class _$SeatCardIndexImpl implements SeatCardIndex {
+  const _$SeatCardIndexImpl(this.cardIndex, this.deckIndex, this.seatIndex,
       {final String? $type})
       : $type = $type ?? 'seat';
 
-  factory _$SeatCardIndex.fromJson(Map<String, dynamic> json) =>
-      _$$SeatCardIndexFromJson(json);
+  factory _$SeatCardIndexImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SeatCardIndexImplFromJson(json);
 
   @override
   final int cardIndex;
@@ -655,7 +657,7 @@ class _$SeatCardIndex implements SeatCardIndex {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SeatCardIndex &&
+            other is _$SeatCardIndexImpl &&
             (identical(other.cardIndex, cardIndex) ||
                 other.cardIndex == cardIndex) &&
             (identical(other.deckIndex, deckIndex) ||
@@ -671,8 +673,8 @@ class _$SeatCardIndex implements SeatCardIndex {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$SeatCardIndexCopyWith<_$SeatCardIndex> get copyWith =>
-      __$$SeatCardIndexCopyWithImpl<_$SeatCardIndex>(this, _$identity);
+  _$$SeatCardIndexImplCopyWith<_$SeatCardIndexImpl> get copyWith =>
+      __$$SeatCardIndexImplCopyWithImpl<_$SeatCardIndexImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -744,7 +746,7 @@ class _$SeatCardIndex implements SeatCardIndex {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$SeatCardIndexToJson(
+    return _$$SeatCardIndexImplToJson(
       this,
     );
   }
@@ -753,15 +755,15 @@ class _$SeatCardIndex implements SeatCardIndex {
 abstract class SeatCardIndex implements CardIndex {
   const factory SeatCardIndex(
           final int cardIndex, final int deckIndex, final int seatIndex) =
-      _$SeatCardIndex;
+      _$SeatCardIndexImpl;
 
   factory SeatCardIndex.fromJson(Map<String, dynamic> json) =
-      _$SeatCardIndex.fromJson;
+      _$SeatCardIndexImpl.fromJson;
 
   int get cardIndex;
   int get deckIndex;
   int get seatIndex;
   @JsonKey(ignore: true)
-  _$$SeatCardIndexCopyWith<_$SeatCardIndex> get copyWith =>
+  _$$SeatCardIndexImplCopyWith<_$SeatCardIndexImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

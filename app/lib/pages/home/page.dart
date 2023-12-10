@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:qeck/main.dart';
 import 'package:qeck/models/server.dart';
-import 'package:qeck/services/connection.dart';
+import 'package:qeck/services/network.dart';
 import 'package:qeck/widgets/window.dart';
 
 import '../../api/settings.dart';
@@ -113,7 +113,7 @@ class HomePage extends StatelessWidget {
                             ))
                         .toList()),
                 StreamBuilder<List<GameServer>>(
-                  stream: context.read<ConnectionService>().fetchServers(),
+                  stream: context.read<NetworkingService>().fetchServers(),
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       return Center(

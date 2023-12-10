@@ -107,23 +107,23 @@ class _$ClientConnectionMessageCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$FetchedPlayersClientConnectionMessageCopyWith<$Res> {
-  factory _$$FetchedPlayersClientConnectionMessageCopyWith(
-          _$FetchedPlayersClientConnectionMessage value,
-          $Res Function(_$FetchedPlayersClientConnectionMessage) then) =
-      __$$FetchedPlayersClientConnectionMessageCopyWithImpl<$Res>;
+abstract class _$$FetchedPlayersClientConnectionMessageImplCopyWith<$Res> {
+  factory _$$FetchedPlayersClientConnectionMessageImplCopyWith(
+          _$FetchedPlayersClientConnectionMessageImpl value,
+          $Res Function(_$FetchedPlayersClientConnectionMessageImpl) then) =
+      __$$FetchedPlayersClientConnectionMessageImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<GamePlayer> players, int playerId});
 }
 
 /// @nodoc
-class __$$FetchedPlayersClientConnectionMessageCopyWithImpl<$Res>
+class __$$FetchedPlayersClientConnectionMessageImplCopyWithImpl<$Res>
     extends _$ClientConnectionMessageCopyWithImpl<$Res,
-        _$FetchedPlayersClientConnectionMessage>
-    implements _$$FetchedPlayersClientConnectionMessageCopyWith<$Res> {
-  __$$FetchedPlayersClientConnectionMessageCopyWithImpl(
-      _$FetchedPlayersClientConnectionMessage _value,
-      $Res Function(_$FetchedPlayersClientConnectionMessage) _then)
+        _$FetchedPlayersClientConnectionMessageImpl>
+    implements _$$FetchedPlayersClientConnectionMessageImplCopyWith<$Res> {
+  __$$FetchedPlayersClientConnectionMessageImplCopyWithImpl(
+      _$FetchedPlayersClientConnectionMessageImpl _value,
+      $Res Function(_$FetchedPlayersClientConnectionMessageImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -132,7 +132,7 @@ class __$$FetchedPlayersClientConnectionMessageCopyWithImpl<$Res>
     Object? players = null,
     Object? playerId = null,
   }) {
-    return _then(_$FetchedPlayersClientConnectionMessage(
+    return _then(_$FetchedPlayersClientConnectionMessageImpl(
       null == players
           ? _value._players
           : players // ignore: cast_nullable_to_non_nullable
@@ -147,17 +147,17 @@ class __$$FetchedPlayersClientConnectionMessageCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$FetchedPlayersClientConnectionMessage
+class _$FetchedPlayersClientConnectionMessageImpl
     implements FetchedPlayersClientConnectionMessage {
-  const _$FetchedPlayersClientConnectionMessage(
+  const _$FetchedPlayersClientConnectionMessageImpl(
       final List<GamePlayer> players, this.playerId,
       {final String? $type})
       : _players = players,
         $type = $type ?? 'playersUpdated';
 
-  factory _$FetchedPlayersClientConnectionMessage.fromJson(
+  factory _$FetchedPlayersClientConnectionMessageImpl.fromJson(
           Map<String, dynamic> json) =>
-      _$$FetchedPlayersClientConnectionMessageFromJson(json);
+      _$$FetchedPlayersClientConnectionMessageImplFromJson(json);
 
   final List<GamePlayer> _players;
   @override
@@ -182,7 +182,7 @@ class _$FetchedPlayersClientConnectionMessage
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$FetchedPlayersClientConnectionMessage &&
+            other is _$FetchedPlayersClientConnectionMessageImpl &&
             const DeepCollectionEquality().equals(other._players, _players) &&
             (identical(other.playerId, playerId) ||
                 other.playerId == playerId));
@@ -196,10 +196,10 @@ class _$FetchedPlayersClientConnectionMessage
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$FetchedPlayersClientConnectionMessageCopyWith<
-          _$FetchedPlayersClientConnectionMessage>
-      get copyWith => __$$FetchedPlayersClientConnectionMessageCopyWithImpl<
-          _$FetchedPlayersClientConnectionMessage>(this, _$identity);
+  _$$FetchedPlayersClientConnectionMessageImplCopyWith<
+          _$FetchedPlayersClientConnectionMessageImpl>
+      get copyWith => __$$FetchedPlayersClientConnectionMessageImplCopyWithImpl<
+          _$FetchedPlayersClientConnectionMessageImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -279,7 +279,7 @@ class _$FetchedPlayersClientConnectionMessage
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$FetchedPlayersClientConnectionMessageToJson(
+    return _$$FetchedPlayersClientConnectionMessageImplToJson(
       this,
     );
   }
@@ -289,38 +289,38 @@ abstract class FetchedPlayersClientConnectionMessage
     implements ClientConnectionMessage {
   const factory FetchedPlayersClientConnectionMessage(
           final List<GamePlayer> players, final int playerId) =
-      _$FetchedPlayersClientConnectionMessage;
+      _$FetchedPlayersClientConnectionMessageImpl;
 
   factory FetchedPlayersClientConnectionMessage.fromJson(
           Map<String, dynamic> json) =
-      _$FetchedPlayersClientConnectionMessage.fromJson;
+      _$FetchedPlayersClientConnectionMessageImpl.fromJson;
 
   List<GamePlayer> get players;
   int get playerId;
   @JsonKey(ignore: true)
-  _$$FetchedPlayersClientConnectionMessageCopyWith<
-          _$FetchedPlayersClientConnectionMessage>
+  _$$FetchedPlayersClientConnectionMessageImplCopyWith<
+          _$FetchedPlayersClientConnectionMessageImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$ChatMessageClientConnectionMessageCopyWith<$Res> {
-  factory _$$ChatMessageClientConnectionMessageCopyWith(
-          _$ChatMessageClientConnectionMessage value,
-          $Res Function(_$ChatMessageClientConnectionMessage) then) =
-      __$$ChatMessageClientConnectionMessageCopyWithImpl<$Res>;
+abstract class _$$ChatMessageClientConnectionMessageImplCopyWith<$Res> {
+  factory _$$ChatMessageClientConnectionMessageImplCopyWith(
+          _$ChatMessageClientConnectionMessageImpl value,
+          $Res Function(_$ChatMessageClientConnectionMessageImpl) then) =
+      __$$ChatMessageClientConnectionMessageImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message, String from});
 }
 
 /// @nodoc
-class __$$ChatMessageClientConnectionMessageCopyWithImpl<$Res>
+class __$$ChatMessageClientConnectionMessageImplCopyWithImpl<$Res>
     extends _$ClientConnectionMessageCopyWithImpl<$Res,
-        _$ChatMessageClientConnectionMessage>
-    implements _$$ChatMessageClientConnectionMessageCopyWith<$Res> {
-  __$$ChatMessageClientConnectionMessageCopyWithImpl(
-      _$ChatMessageClientConnectionMessage _value,
-      $Res Function(_$ChatMessageClientConnectionMessage) _then)
+        _$ChatMessageClientConnectionMessageImpl>
+    implements _$$ChatMessageClientConnectionMessageImplCopyWith<$Res> {
+  __$$ChatMessageClientConnectionMessageImplCopyWithImpl(
+      _$ChatMessageClientConnectionMessageImpl _value,
+      $Res Function(_$ChatMessageClientConnectionMessageImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -329,7 +329,7 @@ class __$$ChatMessageClientConnectionMessageCopyWithImpl<$Res>
     Object? message = null,
     Object? from = null,
   }) {
-    return _then(_$ChatMessageClientConnectionMessage(
+    return _then(_$ChatMessageClientConnectionMessageImpl(
       null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -344,15 +344,15 @@ class __$$ChatMessageClientConnectionMessageCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ChatMessageClientConnectionMessage
+class _$ChatMessageClientConnectionMessageImpl
     implements ChatMessageClientConnectionMessage {
-  const _$ChatMessageClientConnectionMessage(this.message, this.from,
+  const _$ChatMessageClientConnectionMessageImpl(this.message, this.from,
       {final String? $type})
       : $type = $type ?? 'chatMessage';
 
-  factory _$ChatMessageClientConnectionMessage.fromJson(
+  factory _$ChatMessageClientConnectionMessageImpl.fromJson(
           Map<String, dynamic> json) =>
-      _$$ChatMessageClientConnectionMessageFromJson(json);
+      _$$ChatMessageClientConnectionMessageImplFromJson(json);
 
   @override
   final String message;
@@ -371,7 +371,7 @@ class _$ChatMessageClientConnectionMessage
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ChatMessageClientConnectionMessage &&
+            other is _$ChatMessageClientConnectionMessageImpl &&
             (identical(other.message, message) || other.message == message) &&
             (identical(other.from, from) || other.from == from));
   }
@@ -383,10 +383,10 @@ class _$ChatMessageClientConnectionMessage
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ChatMessageClientConnectionMessageCopyWith<
-          _$ChatMessageClientConnectionMessage>
-      get copyWith => __$$ChatMessageClientConnectionMessageCopyWithImpl<
-          _$ChatMessageClientConnectionMessage>(this, _$identity);
+  _$$ChatMessageClientConnectionMessageImplCopyWith<
+          _$ChatMessageClientConnectionMessageImpl>
+      get copyWith => __$$ChatMessageClientConnectionMessageImplCopyWithImpl<
+          _$ChatMessageClientConnectionMessageImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -466,7 +466,7 @@ class _$ChatMessageClientConnectionMessage
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ChatMessageClientConnectionMessageToJson(
+    return _$$ChatMessageClientConnectionMessageImplToJson(
       this,
     );
   }
@@ -476,26 +476,26 @@ abstract class ChatMessageClientConnectionMessage
     implements ClientConnectionMessage {
   const factory ChatMessageClientConnectionMessage(
           final String message, final String from) =
-      _$ChatMessageClientConnectionMessage;
+      _$ChatMessageClientConnectionMessageImpl;
 
   factory ChatMessageClientConnectionMessage.fromJson(
           Map<String, dynamic> json) =
-      _$ChatMessageClientConnectionMessage.fromJson;
+      _$ChatMessageClientConnectionMessageImpl.fromJson;
 
   String get message;
   String get from;
   @JsonKey(ignore: true)
-  _$$ChatMessageClientConnectionMessageCopyWith<
-          _$ChatMessageClientConnectionMessage>
+  _$$ChatMessageClientConnectionMessageImplCopyWith<
+          _$ChatMessageClientConnectionMessageImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$GameStateChangedClientConnectionMessageCopyWith<$Res> {
-  factory _$$GameStateChangedClientConnectionMessageCopyWith(
-          _$GameStateChangedClientConnectionMessage value,
-          $Res Function(_$GameStateChangedClientConnectionMessage) then) =
-      __$$GameStateChangedClientConnectionMessageCopyWithImpl<$Res>;
+abstract class _$$GameStateChangedClientConnectionMessageImplCopyWith<$Res> {
+  factory _$$GameStateChangedClientConnectionMessageImplCopyWith(
+          _$GameStateChangedClientConnectionMessageImpl value,
+          $Res Function(_$GameStateChangedClientConnectionMessageImpl) then) =
+      __$$GameStateChangedClientConnectionMessageImplCopyWithImpl<$Res>;
   @useResult
   $Res call({GameState state});
 
@@ -503,13 +503,13 @@ abstract class _$$GameStateChangedClientConnectionMessageCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$GameStateChangedClientConnectionMessageCopyWithImpl<$Res>
+class __$$GameStateChangedClientConnectionMessageImplCopyWithImpl<$Res>
     extends _$ClientConnectionMessageCopyWithImpl<$Res,
-        _$GameStateChangedClientConnectionMessage>
-    implements _$$GameStateChangedClientConnectionMessageCopyWith<$Res> {
-  __$$GameStateChangedClientConnectionMessageCopyWithImpl(
-      _$GameStateChangedClientConnectionMessage _value,
-      $Res Function(_$GameStateChangedClientConnectionMessage) _then)
+        _$GameStateChangedClientConnectionMessageImpl>
+    implements _$$GameStateChangedClientConnectionMessageImplCopyWith<$Res> {
+  __$$GameStateChangedClientConnectionMessageImplCopyWithImpl(
+      _$GameStateChangedClientConnectionMessageImpl _value,
+      $Res Function(_$GameStateChangedClientConnectionMessageImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -517,7 +517,7 @@ class __$$GameStateChangedClientConnectionMessageCopyWithImpl<$Res>
   $Res call({
     Object? state = null,
   }) {
-    return _then(_$GameStateChangedClientConnectionMessage(
+    return _then(_$GameStateChangedClientConnectionMessageImpl(
       null == state
           ? _value.state
           : state // ignore: cast_nullable_to_non_nullable
@@ -536,15 +536,15 @@ class __$$GameStateChangedClientConnectionMessageCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$GameStateChangedClientConnectionMessage
+class _$GameStateChangedClientConnectionMessageImpl
     implements GameStateChangedClientConnectionMessage {
-  const _$GameStateChangedClientConnectionMessage(this.state,
+  const _$GameStateChangedClientConnectionMessageImpl(this.state,
       {final String? $type})
       : $type = $type ?? 'stateChanged';
 
-  factory _$GameStateChangedClientConnectionMessage.fromJson(
+  factory _$GameStateChangedClientConnectionMessageImpl.fromJson(
           Map<String, dynamic> json) =>
-      _$$GameStateChangedClientConnectionMessageFromJson(json);
+      _$$GameStateChangedClientConnectionMessageImplFromJson(json);
 
   @override
   final GameState state;
@@ -561,7 +561,7 @@ class _$GameStateChangedClientConnectionMessage
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$GameStateChangedClientConnectionMessage &&
+            other is _$GameStateChangedClientConnectionMessageImpl &&
             (identical(other.state, state) || other.state == state));
   }
 
@@ -572,10 +572,11 @@ class _$GameStateChangedClientConnectionMessage
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$GameStateChangedClientConnectionMessageCopyWith<
-          _$GameStateChangedClientConnectionMessage>
-      get copyWith => __$$GameStateChangedClientConnectionMessageCopyWithImpl<
-          _$GameStateChangedClientConnectionMessage>(this, _$identity);
+  _$$GameStateChangedClientConnectionMessageImplCopyWith<
+          _$GameStateChangedClientConnectionMessageImpl>
+      get copyWith =>
+          __$$GameStateChangedClientConnectionMessageImplCopyWithImpl<
+              _$GameStateChangedClientConnectionMessageImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -655,7 +656,7 @@ class _$GameStateChangedClientConnectionMessage
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$GameStateChangedClientConnectionMessageToJson(
+    return _$$GameStateChangedClientConnectionMessageImplToJson(
       this,
     );
   }
@@ -664,15 +665,15 @@ class _$GameStateChangedClientConnectionMessage
 abstract class GameStateChangedClientConnectionMessage
     implements ClientConnectionMessage {
   const factory GameStateChangedClientConnectionMessage(final GameState state) =
-      _$GameStateChangedClientConnectionMessage;
+      _$GameStateChangedClientConnectionMessageImpl;
 
   factory GameStateChangedClientConnectionMessage.fromJson(
           Map<String, dynamic> json) =
-      _$GameStateChangedClientConnectionMessage.fromJson;
+      _$GameStateChangedClientConnectionMessageImpl.fromJson;
 
   GameState get state;
   @JsonKey(ignore: true)
-  _$$GameStateChangedClientConnectionMessageCopyWith<
-          _$GameStateChangedClientConnectionMessage>
+  _$$GameStateChangedClientConnectionMessageImplCopyWith<
+          _$GameStateChangedClientConnectionMessageImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

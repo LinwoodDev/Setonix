@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 import fs from 'fs';
 
 // Fetch version value fromy yaml file https://raw.githubusercontent.com/LinwoodDev/Qeck/nightly/app/pubspec.yaml
-const nightlyUrl = 'https://raw.githubusercontent.com/LinwoodDev/Qeck/nightly/app/pubspec.yaml';
+const nightlyUrl = 'https://raw.githubusercontent.com/LinwoodDev/Qeck/develop/app/pubspec.yaml';
 const nightlyVersion = await fetch(nightlyUrl).then(res => res.text()).then(text => {
     const regex = /^version:\s(.+)\+(.+)$/gm;
     const match = regex.exec(text);
@@ -11,7 +11,7 @@ const nightlyVersion = await fetch(nightlyUrl).then(res => res.text()).then(text
 );
 
 // stable
-const stableUrl = 'https://raw.githubusercontent.com/LinwoodDev/Qeck/stable/app/pubspec.yaml';
+const stableUrl = 'https://raw.githubusercontent.com/LinwoodDev/Qeck/develop/app/pubspec.yaml';
 const stableVersion = await fetch(stableUrl).then(res => res.text()).then(text => {
     const regex = /^version:\s(.+)\+(.+)$/gm;
     const match = regex.exec(text);

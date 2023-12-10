@@ -1,20 +1,23 @@
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-part 'settings.freezed.dart';
+part 'settings.mapper.dart';
 
-@freezed
-class QeckSettings with _$QeckSettings {
-  const QeckSettings._();
+@MappableClass()
+class QeckSettings with QeckSettingsMappable {
+  final String localeTag;
+  final ThemeMode theme;
+  final String design;
+  final bool nativeTitleBar;
 
-  const factory QeckSettings({
-    @Default('') String localeTag,
-    @Default(ThemeMode.system) ThemeMode theme,
-    @Default('') String design,
-    @Default(false) bool nativeTitleBar,
-  }) = _FlowSettings;
+  const QeckSettings({
+    this.localeTag = '',
+    this.theme = ThemeMode.system,
+    this.design = '',
+    this.nativeTitleBar = false,
+  });
 
   Locale? get locale {
     if (localeTag.isEmpty) {

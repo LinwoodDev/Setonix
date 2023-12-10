@@ -10,7 +10,7 @@ import 'package:material_leap/l10n/leap_localizations.dart';
 import 'package:qeck/logic/connection/client.dart';
 import 'package:qeck/pages/game/page.dart';
 import 'package:qeck/pages/home/page.dart';
-import 'package:qeck/services/connection.dart';
+import 'package:qeck/services/network.dart';
 import 'package:qeck/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
@@ -42,7 +42,7 @@ Future<void> main(List<String> args) async {
     BlocProvider.value(
       value: settingsCubit,
       child: RepositoryProvider(
-        create: (context) => ConnectionService(settingsCubit),
+        create: (context) => NetworkingService(settingsCubit),
         child: FlowApp(),
       ),
     ),
