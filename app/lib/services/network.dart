@@ -27,7 +27,7 @@ enum NetworkingType {
       };
 }
 
-enum PlayerState { idle, walking, jumping }
+enum PlayerState { idle, walking, sitting }
 
 @MappableClass()
 class NetworkingUser with NetworkingUserMappable {

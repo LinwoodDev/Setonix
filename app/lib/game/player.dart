@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/flame.dart';
+import 'package:flame/geometry.dart';
 import 'package:flame/text.dart';
 import 'package:qeck/game/board.dart';
 import 'package:qeck/game/wall.dart';
@@ -16,12 +18,39 @@ class _PreviousPlayerPositionComponent extends ReadOnlyPositionProvider {
   _PreviousPlayerPositionComponent(this.player);
 
   @override
-  Vector2 get position => player.previousPosition;
+  Vector2 get position => player.position;
 }
 
-class BoardPlayer extends SpriteAnimationGroupComponent<PlayerState>
+enum PlayerDirection { front, left, right }
+
+extension RendererExtension on PlayerState {
+  List<int> get frames {
+    switch (this) {
+      case PlayerState.idle:
+        return [0];
+      case PlayerState.walking:
+        return [1, 2];
+      case PlayerState.sitting:
+        return [3];
+    }
+  }
+
+  double get stepTime {
+    switch (this) {
+      case PlayerState.idle:
+        return double.infinity;
+      case PlayerState.walking:
+        return 0.1;
+      case PlayerState.sitting:
+        return double.infinity;
+    }
+  }
+}
+
+class BoardPlayer
+    extends SpriteAnimationGroupComponent<(PlayerState, PlayerDirection)>
     with HasGameRef<BoardGame>, CollisionCallbacks {
-  BoardPlayer() : super(current: PlayerState.idle);
+  BoardPlayer() : super(current: (PlayerState.idle, PlayerDirection.front));
   late final ui.Image _image;
   late final TextComponent _text = TextComponent();
 
@@ -33,48 +62,63 @@ class BoardPlayer extends SpriteAnimationGroupComponent<PlayerState>
     size = game.tileSize;
     anchor = Anchor.center;
     _image = await Flame.images.load('player.png');
-    animations = {
-      PlayerState.idle: _getAnimation(frames: [Vector2(0, 0)]),
-      PlayerState.walking: _getAnimation(
-        frames: [
-          Vector2(1, 0),
-          Vector2(2, 0),
-        ],
-        stepTime: 0.2,
-      ),
-      PlayerState.jumping: _getAnimation(frames: [Vector2(3, 0)]),
-    };
+    animations = _getAnimations();
     _text.text = 'Player';
     _text.anchor = Anchor.bottomCenter;
     _text.position = Vector2(game.tileSize.x / 2, 0);
     _text.textRenderer = TextPaint(
       style: const TextStyle(
         color: ui.Color(0xFFFFFFFF),
-        fontSize: 8,
+        fontSize: 4,
       ),
     );
 
     add(_text);
-    final realSize = Vector2.all(12);
+    final realSize = Vector2.all(16);
     add(RectangleHitbox(
       size: realSize,
     ));
+  }
+
+  Map<(PlayerState, PlayerDirection), SpriteAnimation> _getAnimations() {
+    return PlayerDirection.values.fold({}, (map, direction) {
+      final spriteY = min(1, direction.index);
+      return {
+        ...map,
+        ...PlayerState.values.fold({}, (map, state) {
+          final frames = state.frames
+              .map((frame) => Vector2(frame.toDouble(), spriteY.toDouble()))
+              .toList();
+          return {
+            ...map,
+            (state, direction): _getAnimation(
+              frames: frames,
+              stepTime: state.stepTime,
+            ),
+          };
+        }),
+      };
+    });
+  }
+
+  Vector2 _getSpritePosition(Vector2 position) {
+    return position.clone()
+      ..multiply(Vector2.all(18))
+      ..add(Vector2.all(1));
   }
 
   SpriteAnimation _getAnimation({
     required List<Vector2> frames,
     double stepTime = double.infinity,
   }) {
-    final size = Vector2.all(18);
+    final size = Vector2.all(16);
     return SpriteAnimation.spriteList(
       frames
           .map(
             (vector) => Sprite(
               _image,
               srcSize: size,
-              srcPosition: vector.clone()
-                ..multiply(size)
-                ..add(Vector2.all(1)),
+              srcPosition: _getSpritePosition(vector),
             ),
           )
           .toList(),
@@ -83,28 +127,49 @@ class BoardPlayer extends SpriteAnimationGroupComponent<PlayerState>
   }
 
   Vector2 velocity = Vector2.zero(), previousPosition = Vector2.zero();
+  PlayerDirection get direction => current?.$2 ?? PlayerDirection.front;
+  PlayerState get state => current?.$1 ?? PlayerState.idle;
+  final double _speed = 50;
 
   @override
   void update(double dt) {
     previousPosition = position.clone();
-    position.add(velocity.xy);
+    final next = velocity.xy * dt * _speed;
+    final length = next.length;
+    if (length != 0) {
+      final ray = Ray2(
+        direction: next.normalized(),
+        origin: position,
+      );
+      final result =
+          game.collisionDetection.raycast(ray, maxDistance: length + 4);
+      if (result == null) {
+        position.add(next);
+      }
+    }
     if (velocity.x == 0 && velocity.y == 0) {
-      current = PlayerState.idle;
+      current = (PlayerState.idle, direction);
     } else {
-      current = PlayerState.walking;
+      current = (PlayerState.walking, direction);
     }
     super.update(dt);
   }
 
+  bool get wasFlipped => direction == PlayerDirection.left;
+
   void move(Vector3 velocity) {
     this.velocity = velocity.xy;
-  }
-
-  @override
-  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (other is BoardWall) {
-      position = previousPosition;
+    final lastFlipped = wasFlipped;
+    if (velocity.x > 0) {
+      current = (state, PlayerDirection.right);
+    } else if (velocity.x < 0) {
+      current = (state, PlayerDirection.left);
+    } else {
+      current = (state, PlayerDirection.front);
     }
-    super.onCollision(intersectionPoints, other);
+    if (wasFlipped != lastFlipped) {
+      flipHorizontally();
+      _text.flipHorizontally();
+    }
   }
 }
