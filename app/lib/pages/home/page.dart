@@ -48,6 +48,11 @@ class HomePage extends StatelessWidget {
                     alignment: WrapAlignment.center,
                     children: [
                       (
+                        AppLocalizations.of(context).board,
+                        PhosphorIconsLight.gridNine,
+                        () => context.push('/board'),
+                      ),
+                      (
                         AppLocalizations.of(context).connect,
                         PhosphorIconsLight.globe,
                         () async {

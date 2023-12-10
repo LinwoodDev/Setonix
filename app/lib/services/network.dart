@@ -31,10 +31,12 @@ enum NetworkingType {
 class NetworkingUser with NetworkingUserMappable {
   final String name;
   final (double, double) position;
+  final (double, double) velocity;
 
   const NetworkingUser({
     required this.name,
     required this.position,
+    this.velocity = const (0, 0),
   });
 }
 

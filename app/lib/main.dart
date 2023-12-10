@@ -8,6 +8,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:material_leap/l10n/leap_localizations.dart';
 import 'package:qeck/logic/connection/client.dart';
+import 'package:qeck/pages/board/page.dart';
 import 'package:qeck/pages/game/page.dart';
 import 'package:qeck/pages/home/page.dart';
 import 'package:qeck/services/network.dart';
@@ -129,6 +130,12 @@ class FlowApp extends StatelessWidget {
                   connection: state.extra as ClientGameConnection,
                 );
               },
+            ),
+          ),
+          GoRoute(
+            path: 'board',
+            pageBuilder: _fadeTransitionBuilder(
+              (context, state) => const BoardPage(),
             ),
           ),
           GoRoute(

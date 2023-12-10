@@ -25,6 +25,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.2"
+  archive:
+    dependency: transitive
+    description:
+      name: archive
+      sha256: "7b875fd4a20b165a3084bd2d210439b22ebc653f21cea4842729c0c30c82596b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.4.9"
   args:
     dependency: transitive
     description:
@@ -282,6 +290,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.12.0"
+  flame_tiled:
+    dependency: "direct main"
+    description:
+      name: flame_tiled
+      sha256: ed4da199d362e24fe36ada43bcf905aa028d667baabd0f0ad58833091fdad5da
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.18.1"
   flex_color_scheme:
     dependency: "direct main"
     description:
@@ -674,6 +690,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.7"
+  pointycastle:
+    dependency: transitive
+    description:
+      name: pointycastle
+      sha256: "7c1e5f0d23c9016c5bbd8b1473d0d3fb3fc851b876046039509e18e0c7485f2c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.7.3"
   pool:
     dependency: transitive
     description:
@@ -879,6 +903,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.1"
+  tiled:
+    dependency: transitive
+    description:
+      name: tiled
+      sha256: "988a57a07df280bb4a5d722c9e400b282d8d9a652b5a2afc8b68e1308bbf8222"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.10.2"
   timing:
     dependency: transitive
     description:

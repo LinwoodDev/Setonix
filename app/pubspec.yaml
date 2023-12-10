@@ -28,6 +28,7 @@ dependencies:
   flutter_localized_locales: ^2.0.5
   # Engine
   flame: ^1.12.0
+  flame_tiled: ^1.18.1
   # UI
   phosphor_flutter:
     git:
@@ -92,50 +93,52 @@ flutter:
   generate: true
   # To add assets to your application, add an assets section, like this:
   assets:
-    - images/
+    - assets/images/
+    - assets/fonts/
+    - assets/tiles/
   fonts:
     - family: Comfortaa
       fonts:
-        - asset: fonts/Comfortaa-Light.ttf
+        - asset: assets/fonts/Comfortaa-Light.ttf
           weight: 300
-        - asset: fonts/Comfortaa-Regular.ttf
+        - asset: assets/fonts/Comfortaa-Regular.ttf
           weight: 400
-        - asset: fonts/Comfortaa-Medium.ttf
+        - asset: assets/fonts/Comfortaa-Medium.ttf
           weight: 500
-        - asset: fonts/Comfortaa-SemiBold.ttf
+        - asset: assets/fonts/Comfortaa-SemiBold.ttf
           weight: 600
-        - asset: fonts/Comfortaa-Bold.ttf
+        - asset: assets/fonts/Comfortaa-Bold.ttf
           weight: 700
     - family: Roboto
       fonts:
-        - asset: fonts/Roboto-Thin.ttf
+        - asset: assets/fonts/Roboto-Thin.ttf
           weight: 100
-        - asset: fonts/Roboto-ThinItalic.ttf
+        - asset: assets/fonts/Roboto-ThinItalic.ttf
           weight: 100
           style: italic
-        - asset: fonts/Roboto-Light.ttf
+        - asset: assets/fonts/Roboto-Light.ttf
           weight: 300
-        - asset: fonts/Roboto-LightItalic.ttf
+        - asset: assets/fonts/Roboto-LightItalic.ttf
           weight: 300
           style: italic
-        - asset: fonts/Roboto-Regular.ttf
+        - asset: assets/fonts/Roboto-Regular.ttf
           weight: 400
-        - asset: fonts/Roboto-Italic.ttf
+        - asset: assets/fonts/Roboto-Italic.ttf
           weight: 400
           style: italic
-        - asset: fonts/Roboto-Medium.ttf
+        - asset: assets/fonts/Roboto-Medium.ttf
           weight: 500
-        - asset: fonts/Roboto-MediumItalic.ttf
+        - asset: assets/fonts/Roboto-MediumItalic.ttf
           weight: 500
           style: italic
-        - asset: fonts/Roboto-Bold.ttf
+        - asset: assets/fonts/Roboto-Bold.ttf
           weight: 700
-        - asset: fonts/Roboto-BoldItalic.ttf
+        - asset: assets/fonts/Roboto-BoldItalic.ttf
           weight: 700
           style: italic
-        - asset: fonts/Roboto-Black.ttf
+        - asset: assets/fonts/Roboto-Black.ttf
           weight: 900
-        - asset: fonts/Roboto-BlackItalic.ttf
+        - asset: assets/fonts/Roboto-BlackItalic.ttf
           weight: 900
           style: italic
   #  - images/a_dot_burr.jpeg
@@ -152,14 +155,14 @@ flutter:
   # fonts:
   #   - family: Schyler
   #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
+  #       - asset: assets/fonts/Schyler-Regular.ttf
+  #       - asset: assets/fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
+  #       - asset: assets/fonts/TrajanPro.ttf
+  #       - asset: assets/fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #
   # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/custom-fonts/#from-packages
+  # see https://flutter.dev/custom-fontsassets//#from-packages

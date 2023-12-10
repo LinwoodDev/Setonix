@@ -70,5 +70,6 @@
   "theme": "Theme",
   "design": "Design",
   "locale": "Locale",
-  "nativeTitleBar": "Native window title bar"
+  "nativeTitleBar": "Native window title bar",
+  "board": "Board"
 }
