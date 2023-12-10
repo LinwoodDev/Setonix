@@ -19,7 +19,9 @@ ThemeData getThemeData(String name, bool dark, [ColorScheme? overridden]) {
       colorScheme: override ? overridden : null,
       useMaterial3: true,
       appBarElevation: 2,
-      fontFamily: 'Roboto',
+      fontFamily: 'Comfortaa',
+      swapLegacyOnMaterial3: true,
+      fontFamilyFallback: ['Comfortaa'],
     );
   }
   return FlexThemeData.light(
@@ -27,7 +29,9 @@ ThemeData getThemeData(String name, bool dark, [ColorScheme? overridden]) {
     colorScheme: override ? overridden : null,
     useMaterial3: true,
     appBarElevation: 0.5,
-    fontFamily: 'Roboto',
+    fontFamily: 'Comfortaa',
+    swapLegacyOnMaterial3: true,
+    fontFamilyFallback: ['Comfortaa'],
   );
 }
 
