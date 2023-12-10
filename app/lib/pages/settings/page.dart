@@ -104,7 +104,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                   child: SizedBox(
                                       height: 50,
                                       child: SvgPicture.asset(
-                                          'images/powered-by-vercel.svg',
+                                          'assets/images/powered-by-vercel.svg',
                                           placeholderBuilder: (BuildContext
                                                   context) =>
                                               Container(

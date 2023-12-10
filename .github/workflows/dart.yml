@@ -30,6 +30,9 @@ jobs:
       - name: Install dependencies
         run: |
           flutter pub get
+      - name: Build files
+        if: matrix.projects == 'app'
+        run: |
           dart run build_runner build --delete-conflicting-outputs
       # Uncomment this step to verify the use of 'dart format' on each commit.
       - name: Verify formatting
