@@ -9,7 +9,6 @@ import 'package:flame/flame.dart';
 import 'package:flame/geometry.dart';
 import 'package:flame/text.dart';
 import 'package:qeck/game/board.dart';
-import 'package:qeck/game/wall.dart';
 import 'package:qeck/services/network.dart';
 
 class _PreviousPlayerPositionComponent extends ReadOnlyPositionProvider {
@@ -141,16 +140,18 @@ class BoardPlayer
         direction: next.normalized(),
         origin: position,
       );
-      final result =
-          game.collisionDetection.raycast(ray, maxDistance: length + 4);
+      final result = game.collisions.collisionDetection
+          .raycast(ray, maxDistance: length + 4);
       if (result == null) {
         position.add(next);
       }
     }
-    if (velocity.x == 0 && velocity.y == 0) {
-      current = (PlayerState.idle, direction);
-    } else {
-      current = (PlayerState.walking, direction);
+    if (state != PlayerState.sitting) {
+      if (velocity.x == 0 && velocity.y == 0) {
+        current = (PlayerState.idle, direction);
+      } else {
+        current = (PlayerState.walking, direction);
+      }
     }
     super.update(dt);
   }
@@ -158,7 +159,6 @@ class BoardPlayer
   bool get wasFlipped => direction == PlayerDirection.left;
 
   void move(Vector3 velocity) {
-    this.velocity = velocity.xy;
     final lastFlipped = wasFlipped;
     if (velocity.x > 0) {
       current = (state, PlayerDirection.right);
@@ -170,6 +170,19 @@ class BoardPlayer
     if (wasFlipped != lastFlipped) {
       flipHorizontally();
       _text.flipHorizontally();
+    }
+    if (state == PlayerState.sitting) {
+      return;
+    }
+    this.velocity = velocity.xy;
+  }
+
+  void toggleSit() {
+    if (state == PlayerState.sitting) {
+      current = (PlayerState.idle, direction);
+    } else {
+      current = (PlayerState.sitting, direction);
+      velocity = Vector2.zero();
     }
   }
 }

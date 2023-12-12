@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
@@ -10,8 +11,11 @@ import 'package:qeck/game/player.dart';
 import 'package:qeck/game/wall.dart';
 import 'package:qeck/services/network.dart';
 
+class BoardCollisions extends Component with HasCollisionDetection {}
+
 class BoardGame extends FlameGame with KeyboardEvents, HasCollisionDetection {
   final NetworkingService networkingService;
+  final BoardCollisions collisions = BoardCollisions();
   final BoardPlayer _player = BoardPlayer();
 
   final Vector2 _tileSize = Vector2.all(16);
@@ -40,6 +44,7 @@ class BoardGame extends FlameGame with KeyboardEvents, HasCollisionDetection {
     _player.position = Vector2(spawn?.x ?? 0, spawn?.y ?? 0);
 
     world.add(component);
+    world.add(collisions);
     world.add(_player);
     camera.follow(_player.positionProvider);
     camera.viewfinder.zoom = 8;
@@ -48,7 +53,7 @@ class BoardGame extends FlameGame with KeyboardEvents, HasCollisionDetection {
     for (final object
         in component.tileMap.getLayer<ObjectGroup>('Collisions')?.objects ??
             <TiledObject>[]) {
-      world.add(BoardWall(
+      collisions.add(BoardWall(
         position: Vector2(object.x, object.y),
         size: Vector2(object.width, object.height),
       ));
@@ -87,7 +92,15 @@ class BoardGame extends FlameGame with KeyboardEvents, HasCollisionDetection {
       handled = true;
     }
     movement.normalize();
-    _player.move(movement);
+    if (keysPressed.contains(LogicalKeyboardKey.shiftLeft)) {
+      movement *= 2;
+    }
+    if (event is RawKeyUpEvent &&
+        event.logicalKey == LogicalKeyboardKey.space) {
+      _player.toggleSit();
+    } else {
+      _player.move(movement);
+    }
     return handled ? KeyEventResult.handled : KeyEventResult.ignored;
   }
 }
