@@ -50,8 +50,8 @@ class BoardPlayer
     extends SpriteAnimationGroupComponent<(PlayerState, PlayerDirection)>
     with HasGameRef<BoardGame>, CollisionCallbacks {
   BoardPlayer() : super(current: (PlayerState.idle, PlayerDirection.front));
-  late final ui.Image _image;
   late final TextComponent _text = TextComponent();
+  late final SpacedSpriteSheet _spriteSheet;
 
   ReadOnlyPositionProvider get positionProvider =>
       _PreviousPlayerPositionComponent(this);
@@ -60,7 +60,13 @@ class BoardPlayer
   Future<void> onLoad() async {
     size = game.tileSize;
     anchor = Anchor.center;
-    _image = await Flame.images.load('player.png');
+    final image = await Flame.images.load('player.png');
+    _spriteSheet = SpacedSpriteSheet(
+      image: image,
+      srcSize: Vector2.all(16),
+      spacing: Vector2.all(2),
+      margin: Vector2.all(1),
+    );
     animations = _getAnimations();
     _text.text = 'Player';
     _text.anchor = Anchor.bottomCenter;
@@ -100,25 +106,15 @@ class BoardPlayer
     });
   }
 
-  Vector2 _getSpritePosition(Vector2 position) {
-    return position.clone()
-      ..multiply(Vector2.all(18))
-      ..add(Vector2.all(1));
-  }
-
   SpriteAnimation _getAnimation({
     required List<Vector2> frames,
     double stepTime = double.infinity,
   }) {
-    final size = Vector2.all(16);
     return SpriteAnimation.spriteList(
       frames
           .map(
-            (vector) => Sprite(
-              _image,
-              srcSize: size,
-              srcPosition: _getSpritePosition(vector),
-            ),
+            (vector) =>
+                _spriteSheet.getSprite(vector.x.toInt(), vector.y.toInt()),
           )
           .toList(),
       stepTime: stepTime,
@@ -158,8 +154,14 @@ class BoardPlayer
 
   bool get wasFlipped => direction == PlayerDirection.left;
 
-  void move(Vector3 velocity) {
+  static const sprintModifier = 1.5;
+
+  void move(Vector3 velocity, [bool isSprinting = false]) {
     final lastFlipped = wasFlipped;
+    velocity = velocity.normalized();
+    if (isSprinting) {
+      velocity *= sprintModifier;
+    }
     if (velocity.x > 0) {
       current = (state, PlayerDirection.right);
     } else if (velocity.x < 0) {

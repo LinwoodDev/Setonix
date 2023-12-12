@@ -1,17 +1,40 @@
 import 'dart:async';
+import 'dart:ui' as ui;
 
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
 import 'package:flame_tiled/flame_tiled.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
+import 'package:qeck/game/inventory.dart';
 import 'package:qeck/game/player.dart';
 import 'package:qeck/game/wall.dart';
 import 'package:qeck/services/network.dart';
 
 class BoardCollisions extends Component with HasCollisionDetection {}
+
+class SpacedSpriteSheet {
+  final ui.Image image;
+  final Vector2 srcSize, spacing, margin;
+
+  SpacedSpriteSheet({
+    required this.image,
+    required this.srcSize,
+    required this.spacing,
+    required this.margin,
+  });
+
+  Sprite getSprite(int x, int y) {
+    return Sprite(image,
+        srcPosition: Vector2(
+          margin.x + x * (srcSize.x + spacing.x),
+          margin.y + y * (srcSize.y + spacing.y),
+        ),
+        srcSize: srcSize);
+  }
+}
 
 class BoardGame extends FlameGame with KeyboardEvents, HasCollisionDetection {
   final NetworkingService networkingService;
@@ -46,6 +69,7 @@ class BoardGame extends FlameGame with KeyboardEvents, HasCollisionDetection {
     world.add(component);
     world.add(collisions);
     world.add(_player);
+    camera.viewport.add(InventoryHud());
     camera.follow(_player.positionProvider);
     camera.viewfinder.zoom = 8;
 
@@ -92,14 +116,12 @@ class BoardGame extends FlameGame with KeyboardEvents, HasCollisionDetection {
       handled = true;
     }
     movement.normalize();
-    if (keysPressed.contains(LogicalKeyboardKey.shiftLeft)) {
-      movement *= 2;
-    }
     if (event is RawKeyUpEvent &&
         event.logicalKey == LogicalKeyboardKey.space) {
       _player.toggleSit();
     } else {
-      _player.move(movement);
+      _player.move(
+          movement, keysPressed.contains(LogicalKeyboardKey.shiftLeft));
     }
     return handled ? KeyEventResult.handled : KeyEventResult.ignored;
   }

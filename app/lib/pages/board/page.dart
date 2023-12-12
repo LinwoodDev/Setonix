@@ -6,7 +6,9 @@ import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:qeck/api/settings.dart';
 import 'package:qeck/game/board.dart';
+import 'package:qeck/main.dart';
 import 'package:qeck/services/network.dart';
+import 'package:qeck/widgets/window.dart';
 
 class BoardPage extends StatelessWidget {
   const BoardPage({super.key});
@@ -14,6 +16,10 @@ class BoardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const WindowTitleBar(
+        onlyShowOnDesktop: true,
+        title: Text(applicationName),
+      ),
       drawer: Drawer(
         child: Center(
           child: ListView(
@@ -52,16 +58,18 @@ class BoardPage extends StatelessWidget {
           networkingService: context.read<NetworkingService>(),
         ),
         overlayBuilderMap: {
-          'controls': (context, game) => Padding(
-                padding: const EdgeInsets.all(16),
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: FloatingActionButton.small(
-                    onPressed: () => Scaffold.of(context).openDrawer(),
-                    child: const PhosphorIcon(PhosphorIconsLight.list),
+          'controls': (context, game) => isWindow
+              ? const SizedBox()
+              : Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: FloatingActionButton.small(
+                      onPressed: () => Scaffold.of(context).openDrawer(),
+                      child: const PhosphorIcon(PhosphorIconsLight.list),
+                    ),
                   ),
                 ),
-              ),
         },
         initialActiveOverlays: const ['controls'],
       ),
