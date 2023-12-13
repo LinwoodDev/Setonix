@@ -68,6 +68,12 @@ class NetworkingService {
 
   NetworkingService(this.settingsCubit);
 
+  void setupServer(NetworkerServer server) {
+    final rpc = RpcNetworkerServerPlugin();
+    server.addPlugin(rpc);
+    rpc.addFunction('move', RpcFunction(RpcType.any, (message) {}));
+  }
+
   Stream<List<GameServer>> fetchServers() async* {
     // Fetch lan servers from udp gateway broadcast
     if (kIsWeb) {

@@ -72,5 +72,6 @@
   "locale": "Locale",
   "nativeTitleBar": "Native window title bar",
   "board": "Board",
-  "home": "Home"
+  "home": "Home",
+  "disconnect": "Disconnect"
 }

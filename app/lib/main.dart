@@ -135,7 +135,7 @@ class FlowApp extends StatelessWidget {
           GoRoute(
             path: 'board',
             pageBuilder: _fadeTransitionBuilder(
-              (context, state) => const BoardPage(),
+              (context, state) => BoardPage(),
             ),
           ),
           GoRoute(

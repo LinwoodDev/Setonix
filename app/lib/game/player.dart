@@ -5,10 +5,11 @@ import 'dart:ui' as ui;
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
+import 'package:flame/extensions.dart';
 import 'package:flame/flame.dart';
-import 'package:flame/geometry.dart';
 import 'package:flame/text.dart';
 import 'package:qeck/game/board.dart';
+import 'package:qeck/game/wall.dart';
 import 'package:qeck/services/network.dart';
 
 class _PreviousPlayerPositionComponent extends ReadOnlyPositionProvider {
@@ -56,6 +57,10 @@ class BoardPlayer
   ReadOnlyPositionProvider get positionProvider =>
       _PreviousPlayerPositionComponent(this);
 
+  final RectangleHitbox collisionHitbox =
+      RectangleHitbox(position: Vector2.all(2), size: Vector2.all(12))
+        ..debugMode = true;
+
   @override
   Future<void> onLoad() async {
     size = game.tileSize;
@@ -79,10 +84,7 @@ class BoardPlayer
     );
 
     add(_text);
-    final realSize = Vector2.all(16);
-    add(RectangleHitbox(
-      size: realSize,
-    ));
+    add(collisionHitbox);
   }
 
   Map<(PlayerState, PlayerDirection), SpriteAnimation> _getAnimations() {
@@ -121,27 +123,27 @@ class BoardPlayer
     );
   }
 
-  Vector2 velocity = Vector2.zero(), previousPosition = Vector2.zero();
+  Vector2 velocity = Vector2.zero();
   PlayerDirection get direction => current?.$2 ?? PlayerDirection.front;
   PlayerState get state => current?.$1 ?? PlayerState.idle;
   final double _speed = 50;
+  final Set<PositionComponent> _collidesXPos = {},
+      _collidesXNeg = {},
+      _collidesYPos = {},
+      _collidesYNeg = {};
 
   @override
   void update(double dt) {
-    previousPosition = position.clone();
     final next = velocity.xy * dt * _speed;
-    final length = next.length;
-    if (length != 0) {
-      final ray = Ray2(
-        direction: next.normalized(),
-        origin: position,
-      );
-      final result = game.collisions.collisionDetection
-          .raycast(ray, maxDistance: length + 4);
-      if (result == null) {
-        position.add(next);
-      }
+    if (_collidesXPos.isNotEmpty && next.x > 0 ||
+        _collidesXNeg.isNotEmpty && next.x < 0) {
+      next.x = 0;
     }
+    if (_collidesYPos.isNotEmpty && next.y > 0 ||
+        _collidesYNeg.isNotEmpty && next.y < 0) {
+      next.y = 0;
+    }
+    position.add(next);
     if (state != PlayerState.sitting) {
       if (velocity.x == 0 && velocity.y == 0) {
         current = (PlayerState.idle, direction);
@@ -186,5 +188,57 @@ class BoardPlayer
       current = (PlayerState.sitting, direction);
       velocity = Vector2.zero();
     }
+  }
+
+  void _toggleSetElement<T>(Set<T> set, T element, bool value) {
+    if (value) {
+      set.add(element);
+    } else {
+      set.remove(element);
+    }
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if (other is BoardWall) {
+      other.debugMode = true;
+      collisionHitbox.debugMode = true;
+
+      Rect intersection =
+          collisionHitbox.toAbsoluteRect().intersect(other.toAbsoluteRect());
+      final dx = intersection.width;
+      final dy = intersection.height;
+      if (dx > dy) {
+        if (position.y < other.position.y) {
+          position.y -= dy;
+        } else {
+          position.y += dy;
+        }
+      } else {
+        if (position.x < other.position.x) {
+          position.x -= dx;
+        } else {
+          position.x += dx;
+        }
+      }
+      _toggleSetElement(
+          _collidesYPos, other, dx > dy && position.y < other.position.y);
+      _toggleSetElement(
+          _collidesYNeg, other, dx > dy && position.y > other.position.y);
+      _toggleSetElement(
+          _collidesXPos, other, dx < dy && position.x < other.position.x);
+      _toggleSetElement(
+          _collidesXNeg, other, dx < dy && position.x > other.position.x);
+    }
+    super.onCollision(intersectionPoints, other);
+  }
+
+  @override
+  void onCollisionEnd(PositionComponent other) {
+    super.onCollisionEnd(other);
+    _collidesXPos.remove(other);
+    _collidesXNeg.remove(other);
+    _collidesYPos.remove(other);
+    _collidesYNeg.remove(other);
   }
 }

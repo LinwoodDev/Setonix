@@ -11,11 +11,14 @@ import 'package:qeck/services/network.dart';
 import 'package:qeck/widgets/window.dart';
 
 class BoardPage extends StatelessWidget {
-  const BoardPage({super.key});
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+
+  BoardPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: const WindowTitleBar(
         onlyShowOnDesktop: true,
         title: Text(applicationName),
@@ -49,6 +52,28 @@ class BoardPage extends StatelessWidget {
                   openSettings(context);
                 },
               ),
+              const Divider(),
+              ListTile(
+                leading: const PhosphorIcon(PhosphorIconsLight.plugsConnected),
+                title: Text(AppLocalizations.of(context).connect),
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                leading: const PhosphorIcon(PhosphorIconsLight.plus),
+                title: Text(AppLocalizations.of(context).create),
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                leading: const PhosphorIcon(PhosphorIconsLight.x),
+                title: Text(AppLocalizations.of(context).disconnect),
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+              ),
             ],
           ),
         ),
@@ -56,6 +81,7 @@ class BoardPage extends StatelessWidget {
       body: GameWidget(
         game: BoardGame(
           networkingService: context.read<NetworkingService>(),
+          onEscape: () => _scaffoldKey.currentState?.openDrawer(),
         ),
         overlayBuilderMap: {
           'controls': (context, game) => isWindow
@@ -65,7 +91,7 @@ class BoardPage extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.topLeft,
                     child: FloatingActionButton.small(
-                      onPressed: () => Scaffold.of(context).openDrawer(),
+                      onPressed: () => _scaffoldKey.currentState?.openDrawer(),
                       child: const PhosphorIcon(PhosphorIconsLight.list),
                     ),
                   ),

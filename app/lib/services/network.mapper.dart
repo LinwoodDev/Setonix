@@ -26,16 +26,27 @@ class NetworkingUserMapper extends ClassMapperBase<NetworkingUser> {
   static _t$_R0<double, double> _$position(NetworkingUser v) => v.position;
   static const Field<NetworkingUser, _t$_R0<double, double>> _f$position =
       Field('position', _$position);
+  static PlayerState _$state(NetworkingUser v) => v.state;
+  static const Field<NetworkingUser, PlayerState> _f$state =
+      Field('state', _$state, opt: true, def: PlayerState.idle);
+  static _t$_R0<double, double> _$velocity(NetworkingUser v) => v.velocity;
+  static const Field<NetworkingUser, _t$_R0<double, double>> _f$velocity =
+      Field('velocity', _$velocity, opt: true, def: (0, 0));
 
   @override
   final Map<Symbol, Field<NetworkingUser, dynamic>> fields = const {
     #name: _f$name,
     #position: _f$position,
+    #state: _f$state,
+    #velocity: _f$velocity,
   };
 
   static NetworkingUser _instantiate(DecodingData data) {
     return NetworkingUser(
-        name: data.dec(_f$name), position: data.dec(_f$position));
+        name: data.dec(_f$name),
+        position: data.dec(_f$position),
+        state: data.dec(_f$state),
+        velocity: data.dec(_f$velocity));
   }
 
   @override
@@ -93,7 +104,11 @@ extension NetworkingUserValueCopy<$R, $Out>
 
 abstract class NetworkingUserCopyWith<$R, $In extends NetworkingUser, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call({String? name, _t$_R0<double, double>? position});
+  $R call(
+      {String? name,
+      _t$_R0<double, double>? position,
+      PlayerState? state,
+      _t$_R0<double, double>? velocity});
   NetworkingUserCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -107,15 +122,23 @@ class _NetworkingUserCopyWithImpl<$R, $Out>
   late final ClassMapperBase<NetworkingUser> $mapper =
       NetworkingUserMapper.ensureInitialized();
   @override
-  $R call({String? name, _t$_R0<double, double>? position}) =>
+  $R call(
+          {String? name,
+          _t$_R0<double, double>? position,
+          PlayerState? state,
+          _t$_R0<double, double>? velocity}) =>
       $apply(FieldCopyWithData({
         if (name != null) #name: name,
-        if (position != null) #position: position
+        if (position != null) #position: position,
+        if (state != null) #state: state,
+        if (velocity != null) #velocity: velocity
       }));
   @override
   NetworkingUser $make(CopyWithData data) => NetworkingUser(
       name: data.get(#name, or: $value.name),
-      position: data.get(#position, or: $value.position));
+      position: data.get(#position, or: $value.position),
+      state: data.get(#state, or: $value.state),
+      velocity: data.get(#velocity, or: $value.velocity));
 
   @override
   NetworkingUserCopyWith<$R2, NetworkingUser, $Out2> $chain<$R2, $Out2>(

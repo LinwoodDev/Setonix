@@ -13,8 +13,6 @@ import 'package:qeck/game/player.dart';
 import 'package:qeck/game/wall.dart';
 import 'package:qeck/services/network.dart';
 
-class BoardCollisions extends Component with HasCollisionDetection {}
-
 class SpacedSpriteSheet {
   final ui.Image image;
   final Vector2 srcSize, spacing, margin;
@@ -38,14 +36,15 @@ class SpacedSpriteSheet {
 
 class BoardGame extends FlameGame with KeyboardEvents, HasCollisionDetection {
   final NetworkingService networkingService;
-  final BoardCollisions collisions = BoardCollisions();
   final BoardPlayer _player = BoardPlayer();
 
   final Vector2 _tileSize = Vector2.all(16);
   Vector2 get tileSize => _tileSize;
+  final VoidCallback onEscape;
 
   BoardGame({
     required this.networkingService,
+    required this.onEscape,
   });
 
   @override
@@ -67,7 +66,6 @@ class BoardGame extends FlameGame with KeyboardEvents, HasCollisionDetection {
     _player.position = Vector2(spawn?.x ?? 0, spawn?.y ?? 0);
 
     world.add(component);
-    world.add(collisions);
     world.add(_player);
     camera.viewport.add(InventoryHud());
     camera.follow(_player.positionProvider);
@@ -77,7 +75,7 @@ class BoardGame extends FlameGame with KeyboardEvents, HasCollisionDetection {
     for (final object
         in component.tileMap.getLayer<ObjectGroup>('Collisions')?.objects ??
             <TiledObject>[]) {
-      collisions.add(BoardWall(
+      world.add(BoardWall(
         position: Vector2(object.x, object.y),
         size: Vector2(object.width, object.height),
       ));
@@ -116,6 +114,11 @@ class BoardGame extends FlameGame with KeyboardEvents, HasCollisionDetection {
       handled = true;
     }
     movement.normalize();
+    if (event is RawKeyUpEvent &&
+        event.logicalKey == LogicalKeyboardKey.escape) {
+      onEscape();
+      movement = Vector3.zero();
+    }
     if (event is RawKeyUpEvent &&
         event.logicalKey == LogicalKeyboardKey.space) {
       _player.toggleSit();

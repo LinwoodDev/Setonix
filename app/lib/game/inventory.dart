@@ -4,7 +4,6 @@ import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/flame.dart';
-import 'package:flame/input.dart';
 import 'package:qeck/game/board.dart';
 
 class HudSpriteSheet {
@@ -59,7 +58,10 @@ class QuickHud extends Component with HasGameRef {
   }
 }
 
-class InventoryScreen extends Component {}
+class InventoryScreen extends Component {
+  @override
+  Future<void> onLoad() async {}
+}
 
 class InventoryItem extends SpriteComponent with HoverCallbacks {
   final HudSpriteSheet _spriteSheet;
