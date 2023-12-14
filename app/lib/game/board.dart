@@ -89,17 +89,27 @@ class BoardGame extends FlameGame with KeyboardEvents, HasCollisionDetection {
       _updateSub = event?.usersStream.listen((event) {
         final removed = _players.keys.toSet()..removeAll(event.keys);
         _removePlayers(removed);
-        final added = event.keys.toSet()..removeAll(_players.keys);
-        for (final id in added) {
-          final player = BoardPlayer(false);
-          world.add(player);
-          _players[id] = player;
+        for (final id in event.entries) {
+          final existed = _players[id.key];
+          if (existed != null) {
+            existed.onUpdate(id.value);
+          } else {
+            final player = BoardPlayer(false, id.value);
+            world.add(player);
+            _players[id.key] = player;
+          }
         }
       });
       if (event == null) {
         _removePlayers(_players.keys.toSet());
       }
     });
+  }
+
+  @override
+  void onRemove() {
+    _updateSub?.cancel();
+    _networkerSub?.cancel();
   }
 
   void _removePlayers(Iterable<int> ids) {

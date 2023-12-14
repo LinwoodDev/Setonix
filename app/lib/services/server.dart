@@ -11,19 +11,20 @@ class ServerMessenger extends NetworkMessenger {
   final RpcNetworkerServerPlugin rpc = RpcNetworkerServerPlugin();
 
   ServerMessenger(this.networker) {
-    networker.addPlugin(RpcNetworkerServerPlugin());
+    networker.addPlugin(rpc);
     networker.connect.listen((event) => rpc.sendMessage(
           RpcRequest(
             kNetworkerConnectionIdAny,
             'join',
-            NetworkPlayerJoinMessage(id: event, user: getInitialUser(event)),
+            NetworkPlayerJoinMessage(id: event, user: getInitialUser(event))
+                .toMap(),
           ),
         ));
     networker.disconnect.listen((event) => rpc.sendMessage(
           RpcRequest(
             kNetworkerConnectionIdAny,
             'leave',
-            NetworkPlayerLeaveMessage(id: event),
+            NetworkPlayerLeaveMessage(id: event).toMap(),
           ),
         ));
   }

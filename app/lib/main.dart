@@ -106,7 +106,12 @@ class FlowApp extends StatelessWidget {
                 LeapLocalizations.delegate,
                 LocaleNamesLocalizationsDelegate(),
               ],
-              builder: virtualWindowFrameBuilder,
+              builder: (context, child) {
+                if (!state.nativeTitleBar) {
+                  child = virtualWindowFrameBuilder(context, child);
+                }
+                return child ?? Container();
+              },
               supportedLocales: AppLocalizations.supportedLocales,
             ));
   }

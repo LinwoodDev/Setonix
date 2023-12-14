@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:networker/networker.dart';
+import 'package:qeck/models/message.dart';
 import 'package:qeck/models/state.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -24,27 +25,30 @@ abstract class NetworkMessenger<Event> {
 
   void onUpdate(RpcMessage message) {
     if (message.receiver != kNetworkerConnectionIdAny) return;
-    final user = NetworkingUserMapper.fromMap(message.data);
+    final networkMessage = NetworkUpdateMessageMapper.fromMap(message.message);
     _currentId = message.you;
     usersSubject.add({
       ...users,
-      message.client: user,
+      message.client: networkMessage.user,
     });
   }
 
   void onJoin(RpcMessage message) {
     if (message.receiver != kNetworkerConnectionIdAny) return;
-    final user = NetworkingUserMapper.fromMap(message.data);
+    final networkMessage =
+        NetworkPlayerJoinMessageMapper.fromMap(message.message);
     _currentId = message.you;
     usersSubject.add({
       ...users,
-      message.client: user,
+      networkMessage.id: networkMessage.user,
     });
   }
 
   void onLeave(RpcMessage message) {
     if (message.receiver != kNetworkerConnectionIdAny) return;
+    final networkMessage =
+        NetworkPlayerLeaveMessageMapper.fromMap(message.message);
     _currentId = message.you;
-    usersSubject.add(Map.from(users)..remove(message.client));
+    usersSubject.add(Map.from(users)..remove(networkMessage.id));
   }
 }

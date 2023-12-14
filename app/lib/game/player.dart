@@ -250,6 +250,9 @@ class BoardPlayer
   }
 
   void onUpdate(NetworkingUser user) {
+    if (_user == user) {
+      return;
+    }
     _user = user;
     position = Vector2(user.position.$1, user.position.$2);
     velocity = Vector2(user.velocity.$1, user.velocity.$2);

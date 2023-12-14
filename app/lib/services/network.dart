@@ -47,6 +47,9 @@ class NetworkingService {
   }
 
   void startClient(Uri uri) {
+    if (uri.hasPort) {
+      uri = uri.replace(port: kDefaultPort);
+    }
     final networker = NetworkerSocketClient(uri);
     _subject.add(ClientMessenger(networker));
   }

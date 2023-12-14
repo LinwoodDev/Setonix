@@ -4,7 +4,8 @@ import 'package:qeck/services/messenger.dart';
 
 mixin GenericClientMessenger on NetworkMessenger {
   void sendUpdate(NetworkUpdateMessage event) {
-    rpc.sendMessage(RpcRequest(kNetworkerConnectionIdAny, 'update', event));
+    rpc.sendMessage(
+        RpcRequest(kNetworkerConnectionIdAny, 'update', event.toMap()));
   }
 }
 

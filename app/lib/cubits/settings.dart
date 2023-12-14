@@ -1,7 +1,10 @@
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:qeck/widgets/window.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:window_manager/window_manager.dart';
 
 part 'settings.mapper.dart';
 
@@ -58,8 +61,18 @@ class SettingsCubit extends Cubit<QeckSettings> {
     return save();
   }
 
-  Future<void> changeNativeTitleBar(bool nativeTitleBar) {
-    emit(state.copyWith(nativeTitleBar: nativeTitleBar));
+  void setNativeTitleBar([bool? value]) {
+    if (kIsWeb || !isWindow) return;
+    windowManager.setTitleBarStyle(
+        (value ?? state.nativeTitleBar)
+            ? TitleBarStyle.normal
+            : TitleBarStyle.hidden,
+        windowButtonVisibility: state.nativeTitleBar);
+  }
+
+  Future<void> changeNativeTitleBar(bool value, [bool modify = true]) {
+    if (modify) setNativeTitleBar(value);
+    emit(state.copyWith(nativeTitleBar: value));
     return save();
   }
 
