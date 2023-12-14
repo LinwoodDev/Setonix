@@ -84,12 +84,16 @@ class BoardGame extends FlameGame with KeyboardEvents, HasCollisionDetection {
       ));
     }
     _networkerSub?.cancel();
-    _networkerSub = networkingService.stream.listen((event) {
+    _networkerSub = networkingService.stream.listen((messenger) {
       _updateSub?.cancel();
-      _updateSub = event?.usersStream.listen((event) {
+      _updateSub = messenger?.usersStream.listen((event) {
         final removed = _players.keys.toSet()..removeAll(event.keys);
         _removePlayers(removed);
         for (final id in event.entries) {
+          if (id.key == messenger.currentId) {
+            _player.onUpdate(id.value);
+            continue;
+          }
           final existed = _players[id.key];
           if (existed != null) {
             existed.onUpdate(id.value);
@@ -100,9 +104,8 @@ class BoardGame extends FlameGame with KeyboardEvents, HasCollisionDetection {
           }
         }
       });
-      if (event == null) {
-        _removePlayers(_players.keys.toSet());
-      }
+      _removePlayers(_players.keys.toSet());
+      _player.onUpdate(messenger?.users[messenger.currentId]);
     });
   }
 

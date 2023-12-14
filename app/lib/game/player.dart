@@ -79,7 +79,7 @@ class BoardPlayer
       margin: Vector2.all(1),
     );
     animations = _getAnimations();
-    _text.text = 'Player';
+    _text.text = '';
     _text.anchor = Anchor.bottomCenter;
     _text.position = Vector2(game.tileSize.x / 2, 0);
     _text.textRenderer = TextPaint(
@@ -249,20 +249,21 @@ class BoardPlayer
     _collidesYNeg.remove(other);
   }
 
-  void onUpdate(NetworkingUser user) {
+  void onUpdate(NetworkingUser? user) {
     if (_user == user) {
       return;
     }
+    user ??= _user.copyWith(name: '');
     _user = user;
     position = Vector2(user.position.$1, user.position.$2);
     velocity = Vector2(user.velocity.$1, user.velocity.$2);
     current = (user.state, direction);
+    _text.text = user.name;
   }
 
   void _sendUpdate() {
-    if (!isSelf) {
-      return;
-    }
+    final currentId = game.networkingService.value?.currentId;
+    if (!isSelf || currentId == null) return;
     if (position.x == _user.position.$1 &&
         position.y == _user.position.$2 &&
         state == _user.state &&
@@ -276,6 +277,12 @@ class BoardPlayer
       state: state,
       velocity: (velocity.x, velocity.y),
     );
-    game.networkingService.value?.sendUpdate(NetworkUpdateMessage(user: _user));
+    game.networkingService.value?.sendUpdate(NetworkUpdateMessage(
+      id: currentId,
+      name: _user.name,
+      state: _user.state,
+      position: (position.x, position.y),
+      velocity: (velocity.x, velocity.y),
+    ));
   }
 }

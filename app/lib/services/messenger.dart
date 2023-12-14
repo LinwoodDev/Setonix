@@ -18,18 +18,34 @@ abstract class NetworkMessenger<Event> {
   int get currentId => _currentId;
 
   NetworkMessenger() {
-    rpc.addFunction('update', RpcFunction(RpcType.any, onUpdate, true));
+    rpc.addFunction('update', RpcFunction(RpcType.any, onUpdate, false));
     rpc.addFunction('join', RpcFunction(RpcType.authority, onJoin, true));
     rpc.addFunction('leave', RpcFunction(RpcType.authority, onLeave, true));
+    rpc.addFunction('init', RpcFunction(RpcType.authority, onInit, false));
+  }
+
+  void onInit(RpcMessage message) {
+    final networkMessage = NetworkInitMessageMapper.fromMap(message.message);
+    _currentId = message.you;
+    usersSubject.add(networkMessage.getUsers());
   }
 
   void onUpdate(RpcMessage message) {
-    if (message.receiver != kNetworkerConnectionIdAny) return;
     final networkMessage = NetworkUpdateMessageMapper.fromMap(message.message);
+    if (message.receiver != kNetworkerConnectionIdAny &&
+        (message.client == kNetworkerConnectionIdAuthority ||
+            message.client == networkMessage.id)) return;
     _currentId = message.you;
+    final current = users[networkMessage.id] ??
+        NetworkingUser(name: message.you.toString());
     usersSubject.add({
       ...users,
-      message.client: networkMessage.user,
+      networkMessage.id: NetworkingUser(
+        name: networkMessage.name ?? current.name,
+        state: networkMessage.state ?? current.state,
+        position: networkMessage.position ?? current.position,
+        velocity: networkMessage.velocity ?? current.velocity,
+      ),
     });
   }
 

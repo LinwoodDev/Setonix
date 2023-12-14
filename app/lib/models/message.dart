@@ -31,9 +31,33 @@ class NetworkPlayerLeaveMessage extends NetworkMessage
 @MappableClass()
 class NetworkUpdateMessage extends NetworkMessage
     with NetworkUpdateMessageMappable {
-  final NetworkingUser user;
+  final int id;
+  final String? name;
+  final PlayerState? state;
+  final (double, double)? position;
+  final (double, double)? velocity;
 
   NetworkUpdateMessage({
-    required this.user,
+    required this.id,
+    this.name,
+    this.state,
+    this.position,
+    this.velocity,
   });
+}
+
+@MappableClass()
+class NetworkInitMessage extends NetworkMessage
+    with NetworkInitMessageMappable {
+  final Map<String, NetworkingUser> users;
+
+  NetworkInitMessage({
+    required this.users,
+  });
+  NetworkInitMessage.build({
+    required Map<int, NetworkingUser> users,
+  }) : users = users.map((key, value) => MapEntry(key.toString(), value));
+
+  Map<int, NetworkingUser> getUsers() =>
+      users.map((key, value) => MapEntry(int.parse(key), value));
 }
