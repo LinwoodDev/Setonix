@@ -7,6 +7,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:qeck/api/settings.dart';
 import 'package:qeck/game/board.dart';
 import 'package:qeck/main.dart';
+import 'package:qeck/pages/board/create.dart';
 import 'package:qeck/services/network.dart';
 import 'package:qeck/widgets/window.dart';
 
@@ -63,8 +64,12 @@ class BoardPage extends StatelessWidget {
               ListTile(
                 leading: const PhosphorIcon(PhosphorIconsLight.plus),
                 title: Text(AppLocalizations.of(context).create),
-                onTap: () {
-                  Navigator.of(context).pop();
+                onTap: () async {
+                  await showDialog(
+                    context: context,
+                    builder: (_) => CreateGameDialog(),
+                  );
+                  if (context.mounted) Navigator.of(context).pop();
                 },
               ),
               ListTile(

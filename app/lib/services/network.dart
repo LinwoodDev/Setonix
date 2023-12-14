@@ -1,14 +1,11 @@
 import 'dart:io';
 
-import 'package:dart_mappable/dart_mappable.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
-import 'package:networker/networker.dart';
 import 'package:qeck/cubits/settings.dart';
 import 'package:qeck/models/server.dart';
+import 'package:qeck/services/messenger.dart';
 import 'package:rxdart/rxdart.dart';
-
-part 'network.mapper.dart';
 
 enum NetworkingSide {
   server,
@@ -27,52 +24,17 @@ enum NetworkingType {
       };
 }
 
-enum PlayerState { idle, walking, sitting }
-
-@MappableClass()
-class NetworkingUser with NetworkingUserMappable {
-  final String name;
-  final PlayerState state;
-  final (double, double) position;
-  final (double, double) velocity;
-
-  const NetworkingUser({
-    required this.name,
-    required this.position,
-    this.state = PlayerState.idle,
-    this.velocity = const (0, 0),
-  });
-}
-
 const kDefaultPort = 28005;
 const kTimeout = Duration(seconds: 10);
-typedef NetworkingState = (NetworkerBase, RpcPlugin);
 
 class NetworkingService {
-  final BehaviorSubject<NetworkingState?> _subject =
+  final BehaviorSubject<NetworkMessenger?> _subject =
       BehaviorSubject.seeded(null);
-  final BehaviorSubject<Set<ConnectionId>> _connections =
-      BehaviorSubject.seeded({});
-  final BehaviorSubject<Map<ConnectionId, NetworkingUser>> _users =
-      BehaviorSubject.seeded({});
-
-  Stream<NetworkingState?> get stream => _subject.stream;
-  NetworkingState? get state => _subject.value;
-
-  Stream<Set<ConnectionId>> get connectionsStream => _connections.stream;
-  Set<ConnectionId> get connections => _connections.value;
-
-  Stream<Map<ConnectionId, NetworkingUser>> get usersStream => _users.stream;
-  Map<ConnectionId, NetworkingUser> get users => _users.value;
+  Stream<NetworkMessenger?> get stream => _subject.stream;
+  NetworkMessenger? get value => _subject.value;
   final SettingsCubit settingsCubit;
 
   NetworkingService(this.settingsCubit);
-
-  void setupServer(NetworkerServer server) {
-    final rpc = RpcNetworkerServerPlugin();
-    server.addPlugin(rpc);
-    rpc.addFunction('move', RpcFunction(RpcType.any, (message) {}));
-  }
 
   Stream<List<GameServer>> fetchServers() async* {
     // Fetch lan servers from udp gateway broadcast

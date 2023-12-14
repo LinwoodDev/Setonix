@@ -10,7 +10,7 @@ import 'package:flame/flame.dart';
 import 'package:flame/text.dart';
 import 'package:qeck/game/board.dart';
 import 'package:qeck/game/wall.dart';
-import 'package:qeck/services/network.dart';
+import 'package:qeck/models/state.dart';
 
 class _PreviousPlayerPositionComponent extends ReadOnlyPositionProvider {
   final BoardPlayer player;
