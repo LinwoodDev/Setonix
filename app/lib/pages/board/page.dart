@@ -9,6 +9,7 @@ import 'package:qeck/game/board.dart';
 import 'package:qeck/main.dart';
 import 'package:qeck/pages/board/connect.dart';
 import 'package:qeck/pages/board/create.dart';
+import 'package:qeck/pages/board/servers.dart';
 import 'package:qeck/services/messenger.dart';
 import 'package:qeck/services/network.dart';
 import 'package:qeck/widgets/window.dart';
@@ -70,6 +71,17 @@ class BoardPage extends StatelessWidget {
                         },
                       ),
                     ] else ...[
+                      ListTile(
+                        leading: const PhosphorIcon(PhosphorIconsLight.list),
+                        title: Text(AppLocalizations.of(context).servers),
+                        onTap: () async {
+                          await showDialog(
+                            context: context,
+                            builder: (_) => const GameServersDialog(),
+                          );
+                          if (context.mounted) Navigator.of(context).pop();
+                        },
+                      ),
                       ListTile(
                         leading: const PhosphorIcon(
                             PhosphorIconsLight.plugsConnected),

@@ -74,5 +74,7 @@
   "board": "Board",
   "home": "Home",
   "disconnect": "Disconnect",
-  "url": "URL"
+  "url": "URL",
+  "official": "Official",
+  "community": "Community"
 }
