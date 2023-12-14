@@ -36,7 +36,8 @@ class SpacedSpriteSheet {
 
 class BoardGame extends FlameGame with KeyboardEvents, HasCollisionDetection {
   final NetworkingService networkingService;
-  final BoardPlayer _player = BoardPlayer();
+  final BoardPlayer _player = BoardPlayer(true);
+  final Map<int, BoardPlayer> _players = <int, BoardPlayer>{};
 
   final Vector2 _tileSize = Vector2.all(16);
   Vector2 get tileSize => _tileSize;
@@ -46,6 +47,8 @@ class BoardGame extends FlameGame with KeyboardEvents, HasCollisionDetection {
     required this.networkingService,
     required this.onEscape,
   });
+
+  StreamSubscription? _networkerSub, _updateSub;
 
   @override
   Future<void> onLoad() async {
@@ -79,6 +82,30 @@ class BoardGame extends FlameGame with KeyboardEvents, HasCollisionDetection {
         position: Vector2(object.x, object.y),
         size: Vector2(object.width, object.height),
       ));
+    }
+    _networkerSub?.cancel();
+    _networkerSub = networkingService.stream.listen((event) {
+      _updateSub?.cancel();
+      _updateSub = event?.usersStream.listen((event) {
+        final removed = _players.keys.toSet()..removeAll(event.keys);
+        _removePlayers(removed);
+        final added = event.keys.toSet()..removeAll(_players.keys);
+        for (final id in added) {
+          final player = BoardPlayer(false);
+          world.add(player);
+          _players[id] = player;
+        }
+      });
+      if (event == null) {
+        _removePlayers(_players.keys.toSet());
+      }
+    });
+  }
+
+  void _removePlayers(Iterable<int> ids) {
+    for (final id in ids) {
+      world.remove(_players[id]!);
+      _players.remove(id);
     }
   }
 

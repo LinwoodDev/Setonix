@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:qeck/models/server.dart';
 import 'package:qeck/logic/state.dart';
+import 'package:qeck/services/network.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 import 'client.dart';

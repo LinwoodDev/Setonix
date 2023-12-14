@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:qeck/models/server.dart';
+import 'package:qeck/services/network.dart';
 
 class ConnectGameDialog extends StatelessWidget {
   const ConnectGameDialog({super.key});

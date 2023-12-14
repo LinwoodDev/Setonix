@@ -2,9 +2,12 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
+import 'package:networker_socket/client.dart';
+import 'package:networker_socket/server.dart';
 import 'package:qeck/cubits/settings.dart';
 import 'package:qeck/models/server.dart';
-import 'package:qeck/services/messenger.dart';
+import 'package:qeck/services/client.dart';
+import 'package:qeck/services/server.dart';
 import 'package:rxdart/rxdart.dart';
 
 enum NetworkingSide {
@@ -28,13 +31,30 @@ const kDefaultPort = 28005;
 const kTimeout = Duration(seconds: 10);
 
 class NetworkingService {
-  final BehaviorSubject<NetworkMessenger?> _subject =
+  final BehaviorSubject<GenericClientMessenger?> _subject =
       BehaviorSubject.seeded(null);
-  Stream<NetworkMessenger?> get stream => _subject.stream;
-  NetworkMessenger? get value => _subject.value;
+  Stream<GenericClientMessenger?> get stream => _subject.stream;
+  GenericClientMessenger? get value => _subject.value;
   final SettingsCubit settingsCubit;
 
   NetworkingService(this.settingsCubit);
+
+  Future<void> startServer([int? port]) async {
+    port ??= kDefaultPort;
+    final server = await HttpServer.bind(InternetAddress.anyIPv4, port);
+    final networker = NetworkerSocketServer(server);
+    _subject.add(ClientServerMessenger(networker));
+  }
+
+  void startClient(Uri uri) {
+    final networker = NetworkerSocketClient(uri);
+    _subject.add(ClientMessenger(networker));
+  }
+
+  void closeNetworking() {
+    _subject.value?.networker.close();
+    _subject.add(null);
+  }
 
   Stream<List<GameServer>> fetchServers() async* {
     // Fetch lan servers from udp gateway broadcast

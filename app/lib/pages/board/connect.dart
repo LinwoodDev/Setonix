@@ -3,27 +3,25 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:qeck/services/network.dart';
 
-class CreateGameDialog extends StatelessWidget {
-  final TextEditingController _portController = TextEditingController();
+class ConnectGameDialog extends StatelessWidget {
+  final TextEditingController _urlController = TextEditingController();
 
-  CreateGameDialog({super.key});
+  ConnectGameDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(AppLocalizations.of(context).create),
+      title: Text(AppLocalizations.of(context).connect),
       scrollable: true,
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           TextFormField(
             decoration: InputDecoration(
-              labelText: AppLocalizations.of(context).port,
-              hintText: kDefaultPort.toString(),
+              labelText: AppLocalizations.of(context).url,
               filled: true,
             ),
-            controller: _portController,
-            keyboardType: TextInputType.number,
+            controller: _urlController,
           ),
         ],
       ),
@@ -36,9 +34,9 @@ class CreateGameDialog extends StatelessWidget {
         ),
         ElevatedButton(
           onPressed: () {
-            context.read<NetworkingService>().startServer(
-                  int.tryParse(_portController.text),
-                );
+            context.read<NetworkingService>().startClient(Uri.parse(
+                  _urlController.text,
+                ));
             Navigator.of(context).pop();
           },
           child: Text(AppLocalizations.of(context).create),

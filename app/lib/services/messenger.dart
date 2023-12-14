@@ -13,16 +13,19 @@ abstract class NetworkMessenger<Event> {
       BehaviorSubject.seeded({});
   Stream<Map<int, NetworkingUser>> get usersStream => usersSubject.stream;
   Map<int, NetworkingUser> get users => usersSubject.value;
+  int _currentId = kNetworkerConnectionIdAuthority;
+  int get currentId => _currentId;
 
   NetworkMessenger() {
-    rpc.addFunction('move', RpcFunction(RpcType.any, onMove, true));
+    rpc.addFunction('update', RpcFunction(RpcType.any, onUpdate, true));
     rpc.addFunction('join', RpcFunction(RpcType.authority, onJoin, true));
     rpc.addFunction('leave', RpcFunction(RpcType.authority, onLeave, true));
   }
 
-  void onMove(RpcMessage message) {
+  void onUpdate(RpcMessage message) {
     if (message.receiver != kNetworkerConnectionIdAny) return;
     final user = NetworkingUserMapper.fromMap(message.data);
+    _currentId = message.you;
     usersSubject.add({
       ...users,
       message.client: user,
@@ -32,6 +35,7 @@ abstract class NetworkMessenger<Event> {
   void onJoin(RpcMessage message) {
     if (message.receiver != kNetworkerConnectionIdAny) return;
     final user = NetworkingUserMapper.fromMap(message.data);
+    _currentId = message.you;
     usersSubject.add({
       ...users,
       message.client: user,
@@ -40,6 +44,7 @@ abstract class NetworkMessenger<Event> {
 
   void onLeave(RpcMessage message) {
     if (message.receiver != kNetworkerConnectionIdAny) return;
+    _currentId = message.you;
     usersSubject.add(Map.from(users)..remove(message.client));
   }
 }

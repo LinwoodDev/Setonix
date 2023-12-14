@@ -73,5 +73,6 @@
   "nativeTitleBar": "Native window title bar",
   "board": "Board",
   "home": "Home",
-  "disconnect": "Disconnect"
+  "disconnect": "Disconnect",
+  "url": "URL"
 }

@@ -2,8 +2,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'server.freezed.dart';
 
-const kDefaultPort = 10357;
-
 @freezed
 class GameServer with _$GameServer {
   const factory GameServer.lan({

@@ -10,6 +10,7 @@ import 'package:flame/flame.dart';
 import 'package:flame/text.dart';
 import 'package:qeck/game/board.dart';
 import 'package:qeck/game/wall.dart';
+import 'package:qeck/models/message.dart';
 import 'package:qeck/models/state.dart';
 
 class _PreviousPlayerPositionComponent extends ReadOnlyPositionProvider {
@@ -50,7 +51,12 @@ extension RendererExtension on PlayerState {
 class BoardPlayer
     extends SpriteAnimationGroupComponent<(PlayerState, PlayerDirection)>
     with HasGameRef<BoardGame>, CollisionCallbacks {
-  BoardPlayer() : super(current: (PlayerState.idle, PlayerDirection.front));
+  final bool isSelf;
+  NetworkingUser _user;
+
+  BoardPlayer(this.isSelf, [this._user = const NetworkingUser(name: '')])
+      : super(current: (PlayerState.idle, PlayerDirection.front));
+
   late final TextComponent _text = TextComponent();
   late final SpacedSpriteSheet _spriteSheet;
 
@@ -144,6 +150,7 @@ class BoardPlayer
       next.y = 0;
     }
     position.add(next);
+    _sendUpdate();
     if (state != PlayerState.sitting) {
       if (velocity.x == 0 && velocity.y == 0) {
         current = (PlayerState.idle, direction);
@@ -240,5 +247,32 @@ class BoardPlayer
     _collidesXNeg.remove(other);
     _collidesYPos.remove(other);
     _collidesYNeg.remove(other);
+  }
+
+  void onUpdate(NetworkingUser user) {
+    _user = user;
+    position = Vector2(user.position.$1, user.position.$2);
+    velocity = Vector2(user.velocity.$1, user.velocity.$2);
+    current = (user.state, direction);
+  }
+
+  void _sendUpdate() {
+    if (!isSelf) {
+      return;
+    }
+    if (position.x == _user.position.$1 &&
+        position.y == _user.position.$2 &&
+        state == _user.state &&
+        velocity.x == _user.velocity.$1 &&
+        velocity.y == _user.velocity.$2) {
+      return;
+    }
+    _user = NetworkingUser(
+      name: _user.name,
+      position: (position.x, position.y),
+      state: state,
+      velocity: (velocity.x, velocity.y),
+    );
+    game.networkingService.value?.sendUpdate(NetworkUpdateMessage(user: _user));
   }
 }
