@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-	<id>linwood-qeck</id>
+	<id>dev.linwood.qeck</id>
 	<name>Linwood Qeck</name>
-	<summary>Play games without internet with your friends</summary>
+	<developer_name>Linwood</developer_name>
+	<summary>Play games everywhere you like</summary>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>AGPL-3.0-only</project_license>
 	<recommends>
@@ -10,16 +11,24 @@
 		<control>keyboard</control>
 		<control>touch</control>
 	</recommends>
-	<developer_name>LinwoodCloud</developer_name>
-	<url type="homepage">https://github.com/LinwoodCloud/Qeck</url>
+	<branding>
+		<color type="primary" scheme_preference="light">#d0d0d0</color>
+		<color type="primary" scheme_preference="dark">#2f2f2f</color>
+	</branding>
+	<url type="homepage">https://qeck.linwood.dev/</url>
+	<url type="bugtracker">https://github.com/LinwoodDev/Qeck/issues</url>
+	<url type="help">https://qeck.linwood.dev/docs/latest/intro</url>
+	<url type="translate">https://linwood.dev/qeck/crowdin</url>
+	<url type="vcs-browser">https://github.com/LinwoodDev/Qeck.git</url>
+	<url type="contribute">https://github.com/LinwoodDev/Qeck/blob/develop/CONTRIBUTING.md</url>
 	<description>
 		<p>Coming soon...</p>
 	</description>
 	<screenshots>
 	</screenshots>
-	<launchable type="desktop-id">linwood-qeck.desktop</launchable>
+	<launchable type="desktop-id">dev.linwood.qeck.desktop</launchable>
 	<releases>
 	</releases>
-	<content_rating type="oars-1.0" />
+	<content_rating type="oars-1.1" />
 	<update_contact>contact@linwood.dev</update_contact>
 </component>

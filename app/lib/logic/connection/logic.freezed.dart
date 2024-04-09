@@ -12,7 +12,7 @@ part of 'logic.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 GamePlayer _$GamePlayerFromJson(Map<String, dynamic> json) {
   return _GamePlayer.fromJson(json);
@@ -124,7 +124,7 @@ class _$GamePlayerImpl implements _GamePlayer {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GamePlayerImpl &&
@@ -310,7 +310,7 @@ class _$AvailableCardIndexImpl implements AvailableCardIndex {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AvailableCardIndexImpl &&
@@ -477,7 +477,7 @@ class _$DeckCardIndexImpl implements DeckCardIndex {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$DeckCardIndexImpl &&
@@ -654,7 +654,7 @@ class _$SeatCardIndexImpl implements SeatCardIndex {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SeatCardIndexImpl &&

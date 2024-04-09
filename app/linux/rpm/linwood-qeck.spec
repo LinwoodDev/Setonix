@@ -1,7 +1,7 @@
 Name:           linwood-qeck
 Version:        1.0.0
 Release:        1%{?dist}
-Summary:        Play games without internet with your friends
+Summary:        Play games everywhere you like
 BuildArch:      x86_64
 URL:            https://github.com/LinwoodDev/Qeck
 License:        AGPLv3

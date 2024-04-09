@@ -12,7 +12,7 @@ part of 'state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 GameCard _$GameCardFromJson(Map<String, dynamic> json) {
   switch (json['type']) {
@@ -151,7 +151,7 @@ class _$ClassicGameCardImpl implements ClassicGameCard {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ClassicGameCardImpl &&
@@ -289,7 +289,7 @@ class _$BackgroundGameCardImpl implements BackgroundGameCard {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType && other is _$BackgroundGameCardImpl);
   }
@@ -502,7 +502,7 @@ class _$GameStateImpl extends _GameState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GameStateImpl &&
@@ -715,7 +715,7 @@ class _$GameSeatImpl extends _GameSeat {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GameSeatImpl &&
@@ -891,7 +891,7 @@ class _$DeckRefillNoneImpl extends _DeckRefillNone {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType && other is _$DeckRefillNoneImpl);
   }
@@ -1037,7 +1037,7 @@ class _$DeckRefillShuffleImpl extends _DeckRefillShuffle {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$DeckRefillShuffleImpl &&
@@ -1198,7 +1198,7 @@ class _$DeckRefillFirstImpl extends _DeckRefillFirst {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$DeckRefillFirstImpl &&
@@ -1427,7 +1427,7 @@ class _$CardsRemoveStateImpl implements _CardsRemoveState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CardsRemoveStateImpl &&
@@ -1620,7 +1620,7 @@ class _$GameDeckImpl extends _GameDeck {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GameDeckImpl &&

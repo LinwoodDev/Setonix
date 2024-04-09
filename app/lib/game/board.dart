@@ -124,7 +124,7 @@ class BoardGame extends FlameGame with KeyboardEvents, HasCollisionDetection {
 
   @override
   KeyEventResult onKeyEvent(
-    RawKeyEvent event,
+    KeyEvent event,
     Set<LogicalKeyboardKey> keysPressed,
   ) {
     var movement = Vector3.zero();
@@ -154,13 +154,11 @@ class BoardGame extends FlameGame with KeyboardEvents, HasCollisionDetection {
       handled = true;
     }
     movement.normalize();
-    if (event is RawKeyUpEvent &&
-        event.logicalKey == LogicalKeyboardKey.escape) {
+    if (event is KeyUpEvent && event.logicalKey == LogicalKeyboardKey.escape) {
       onEscape();
       movement = Vector3.zero();
     }
-    if (event is RawKeyUpEvent &&
-        event.logicalKey == LogicalKeyboardKey.space) {
+    if (event is KeyUpEvent && event.logicalKey == LogicalKeyboardKey.space) {
       _player.toggleSit();
     } else {
       _player.move(

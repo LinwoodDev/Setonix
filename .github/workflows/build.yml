@@ -20,7 +20,7 @@ jobs:
         run: |
           FLUTTER_VERSION=$(cat ../FLUTTER_VERSION)
           echo "FLUTTER_VERSION=${FLUTTER_VERSION}" >> $GITHUB_ENV
-      - uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@v2.16.0
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: 'master'
@@ -28,7 +28,6 @@ jobs:
         run: |
           flutter clean
           flutter pub get
-          dart run build_runner build --delete-conflicting-outputs
           flutter doctor -v
       - name: Import files
         if: ${{ github.event_name != 'pull_request' }}
@@ -41,12 +40,12 @@ jobs:
           if [[ -n "$KEY_JKS" ]] ; then echo "$KEY_JKS" | base64 --decode > key.jks  ; fi
       #- run: flutter test
       - name: 🏭 Build nightly
-        if: ${{ github.ref != 'refs/tags/stable' }}
+        if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.prerelease) }}
         run: |
-          flutter build apk -v --release --flavor development --dart-define=flavor=development
-          cp build/app/outputs/flutter-apk/app-development-release.apk linwood-qeck-android.apk
+          flutter build apk -v --release --flavor nightly --dart-define=flavor=nightly
+          cp build/app/outputs/flutter-apk/app-nightly-release.apk linwood-qeck-android.apk
       - name: 🏭 Build production
-        if: ${{ github.ref == 'refs/tags/stable' }}
+        if: ${{ github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.prerelease) }}
         run: |
           flutter build apk -v --release --flavor production
           cp build/app/outputs/flutter-apk/app-production-release.apk linwood-qeck-android.apk
@@ -55,6 +54,35 @@ jobs:
         with:
           name: apk-build
           path: app/linwood-qeck-android.apk
+      - name: 🏭 Build architecture nightly
+        if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.prerelease) }}
+        run: |
+          flutter build apk -v --release --target-platform android-arm,android-arm64,android-x64 --split-per-abi --flavor nightly --dart-define=flavor=nightly
+          cp build/app/outputs/flutter-apk/app-armeabi-v7a-nightly-release.apk linwood-qeck-android-arm.apk
+          cp build/app/outputs/flutter-apk/app-arm64-v8a-nightly-release.apk linwood-qeck-android-arm64.apk
+          cp build/app/outputs/flutter-apk/app-x86_64-nightly-release.apk linwood-qeck-android-x86_64.apk
+      - name: 🏭 Build architecture production
+        if: ${{ github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.prerelease) }}
+        run: |
+          flutter build apk -v --release --target-platform android-arm,android-arm64,android-x64 --split-per-abi --flavor production
+          cp build/app/outputs/flutter-apk/app-armeabi-v7a-production-release.apk linwood-qeck-android-arm.apk
+          cp build/app/outputs/flutter-apk/app-arm64-v8a-production-release.apk linwood-qeck-android-arm64.apk
+          cp build/app/outputs/flutter-apk/app-x86_64-production-release.apk linwood-qeck-android-x86_64.apk
+      - name: Archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk-arm-build
+          path: app/linwood-qeck-android-arm.apk
+      - name: Archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk-arm64-build
+          path: app/linwood-qeck-android-arm64.apk
+      - name: Archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk-x86_64-build
+          path: app/linwood-qeck-android-x86_64.apk
   build-windows:
     runs-on: windows-2022
     defaults:
@@ -68,7 +96,7 @@ jobs:
         run: |
           FLUTTER_VERSION=$(cat ../FLUTTER_VERSION)
           echo "FLUTTER_VERSION=${FLUTTER_VERSION}" >> $GITHUB_ENV
-      - uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@v2.16.0
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: 'master'
@@ -78,15 +106,14 @@ jobs:
         run: |
           flutter clean
           flutter pub get
-          dart run build_runner build --delete-conflicting-outputs
           flutter doctor -v
       - name: 🏭 Build nightly
-        if: ${{ github.ref != 'refs/tags/stable' }}
+        if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.prerelease) }}
         run: |
           flutter doctor -v
-          flutter build windows -v --release --dart-define=flavor=development
+          flutter build windows -v --release --dart-define=flavor=nightly
       - name: 🏭 Build production
-        if: ${{ github.ref == 'refs/tags/stable' }}
+        if: ${{ github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.prerelease) }}
         run: |
           flutter doctor -v
           flutter build windows -v --release --dart-define=flavor=production
@@ -99,6 +126,7 @@ jobs:
       - name: Copy portable start script
         run: |
           cp scripts/start.bat build/windows/x64/runner/Release/
+          cp build/windows/x64/linwood-qeck-windows-setup.exe linwood-qeck-windows-setup-x86_64.exe
       - name: Archive
         uses: actions/upload-artifact@v4
         with:
@@ -110,7 +138,7 @@ jobs:
         with:
           name: windows-setup
           path: |
-            app/build/windows/linwood-qeck-windows-setup.exe
+            app/linwood-qeck-windows-setup-x86_64.exe
   build-linux:
     runs-on: ubuntu-22.04
     defaults:
@@ -147,7 +175,7 @@ jobs:
         run: |
           FLUTTER_VERSION=$(cat ../FLUTTER_VERSION)
           echo "FLUTTER_VERSION=${FLUTTER_VERSION}" >> $GITHUB_ENV
-      - uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@v2.16.0
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: 'master'
@@ -157,15 +185,14 @@ jobs:
         run: |
           flutter clean
           flutter pub get
-          dart run build_runner build --delete-conflicting-outputs
           flutter doctor -v
       - name: 🏭 Build nightly
-        if: ${{ github.ref != 'refs/tags/stable' }}
+        if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.prerelease) }}
         run: |
           flutter doctor -v
-          flutter build linux -v --release --dart-define=flavor=development
+          flutter build linux -v --release --dart-define=flavor=nightly
       - name: 🏭 Build production
-        if: ${{ github.ref == 'refs/tags/stable' }}
+        if: ${{ github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.prerelease) }}
         run: |
           flutter doctor -v
           flutter build linux -v --release --dart-define=flavor=production
@@ -176,7 +203,7 @@ jobs:
         run: |
           cp -fr build/linux/x64/release/bundle linux/debian/usr/bin
           dpkg-deb --build --root-owner-group linux/debian
-          cp linux/*.deb linwood-qeck-linux.deb
+          cp linux/*.deb linwood-qeck-linux-x86_64.deb
       - name: Build .rpm executable
         run: |
           bash scripts/build-rpm.sh
@@ -188,13 +215,13 @@ jobs:
           appimage-builder --recipe AppImageBuilder.yml --skip-test
       - name: Copy nessessary files
         run: |
-          cp assets/images/logo.svg build/linux/x64/release/bundle/dev.linwood.qeck.svg
+          cp images/logo.svg build/linux/x64/release/bundle/dev.linwood.qeck.svg
           mkdir -p build/linux/x64/release/bundle/usr/share
           cp -r linux/debian/usr/share build/linux/x64/release/bundle/usr
       - name: Rename AppImage
         run: |
           ls
-          mv ./*.AppImage linwood-qeck-linux.AppImage
+          mv ./*.AppImage linwood-qeck-linux-x86_64.AppImage
       - name: Copy portable start script
         run: |
           chmod +x scripts/start.sh
@@ -210,21 +237,21 @@ jobs:
         with:
           name: linux-deb
           path: |
-            app/linwood-qeck-linux.deb
+            app/linwood-qeck-linux-x86_64.deb
       - name: Archive .rpm
         uses: actions/upload-artifact@v4
         with:
           name: linux-rpm
           path: |
-            app/build/linwood-qeck-linux.rpm
+            app/build/linwood-qeck-linux-x86_64.rpm
       - name: Archive .AppImage
         uses: actions/upload-artifact@v4
         with:
           name: linux-appimage
           path: |
-            app/linwood-qeck-linux.AppImage
+            app/linwood-qeck-linux-x86_64.AppImage
   build-flatpak:
-    name: Build flatpak
+    name: build-flatpak
     runs-on: ubuntu-20.04
     defaults:
       run:
@@ -259,7 +286,7 @@ jobs:
         run: |
           FLUTTER_VERSION=$(cat ../FLUTTER_VERSION)
           echo "FLUTTER_VERSION=${FLUTTER_VERSION}" >> $GITHUB_ENV
-      - uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@v2.16.0
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: 'master'
@@ -269,25 +296,24 @@ jobs:
         run: |
           flutter clean
           flutter pub get
-          dart run build_runner build --delete-conflicting-outputs
           flutter doctor -v
       - name: 🏭 Build nightly
-        if: ${{ github.ref != 'refs/tags/stable' }}
+        if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.prerelease) }}
         run: |
           flutter doctor -v
-          flutter build linux -v --release --dart-define=flavor=development
+          flutter build linux -v --release --dart-define=flavor=nightly
       - name: 🏭 Build production
-        if: ${{ github.ref == 'refs/tags/stable' }}
+        if: ${{ github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.prerelease) }}
         run: |
           flutter doctor -v
           flutter build linux -v --release --dart-define=flavor=production
       - name: Copy nessessary files
         run: |
-          cp assets/images/logo.svg build/linux/x64/release/bundle/dev.linwood.qeck.svg
+          cp images/logo.svg build/linux/x64/release/bundle/dev.linwood.qeck.svg
           mkdir -p build/linux/x64/release/bundle/usr/share
           cp -r linux/debian/usr/share build/linux/x64/release/bundle/usr
       - name: Compress Flutter build
-        run: tar -C build/linux/x64/release/bundle -czf linwood-qeck-linux-portable.tar.gz .
+        run: tar -C build/linux/x64/release/bundle -czf linwood-qeck-linux-portable-x86_64.tar.gz .
       #    - name: Install flatpak
       #      run: |
       #        sudo apt-get update
@@ -324,7 +350,7 @@ jobs:
         run: |
           FLUTTER_VERSION=$(cat ../FLUTTER_VERSION)
           echo "FLUTTER_VERSION=${FLUTTER_VERSION}" >> $GITHUB_ENV
-      - uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@v2.16.0
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: 'master'
@@ -337,7 +363,6 @@ jobs:
         run: |
           flutter clean
           flutter pub get
-          dart run build_runner build --delete-conflicting-outputs
           flutter doctor -v
       - name: 🏭 Build
         run: |
@@ -348,7 +373,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
       - name: Install appdmg
         run: npm install -g appdmg
       - name: Create dmg
@@ -366,6 +391,48 @@ jobs:
           name: macos-dmg
           path: |
             app/linwood-qeck-macos.dmg
+
+  build-ipa:
+    name: build-ipa (iOS)
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - name: ⬆️ Checkout
+        uses: actions/checkout@v4
+      - name: Get flutter version
+        run: |
+          FLUTTER_VERSION=$(cat ../FLUTTER_VERSION)
+          echo "FLUTTER_VERSION=${FLUTTER_VERSION}" >> $GITHUB_ENV
+      - uses: subosito/flutter-action@v2.16.0
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'master'
+      - name: 📦 Get dependencies
+        run: |
+          flutter clean
+          flutter pub get
+          flutter doctor -v
+      - name: 🏭 Build
+        run: |
+          flutter build ios --release --no-codesign -v
+      - name: Packing IPA
+        run: |
+          cd build/ios/iphoneos/
+          rm -rf Payload
+          mkdir Payload
+          cp -R Runner.app Payload/
+          rm -f linwood-qeck-ios.ipa
+          zip -vr linwood-qeck-ios.ipa Payload/
+#          ls -l linwood-qeck-ios.ipa
+      - name: Archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: ipa-build
+          path: app/build/ios/iphoneos/linwood-qeck-ios.ipa
+          compression-level: 0 #ipa is already compressed
+
   # build-snap:
   #   name: Build Snap
   #   runs-on: ubuntu-latest
@@ -398,6 +465,7 @@ jobs:
       - build-linux
       - build-flatpak
       - build-macos
+      - build-ipa
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v4
@@ -421,6 +489,15 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: apk-build
+      - uses: actions/download-artifact@v4
+        with:
+          name: apk-arm-build
+      - uses: actions/download-artifact@v4
+        with:
+          name: apk-arm64-build
+      - uses: actions/download-artifact@v4
+        with:
+          name: apk-x86_64-build
       - uses: actions/download-artifact@v4
         with:
           name: windows-build
@@ -451,11 +528,14 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: macos-dmg
+      - uses: actions/download-artifact@v4
+        with:
+          name: ipa-build
       - name: 📦 Zip artifacts
         run: |
-          zip -r linwood-qeck-windows.zip windows-build/*
-          tar -C linux-build -czf linwood-qeck-linux.tar.gz .
-          tar -C linux-alternative-portable -czf linwood-qeck-linux-alternative.tar.gz .
+          zip -r linwood-qeck-windows-x86_64.zip windows-build/*
+          tar -C linux-build -czf linwood-qeck-linux-x86_64.tar.gz .
+          tar -C linux-alternative-portable -czf linwood-qeck-linux-alternative-x86_64.tar.gz .
       - name: Configure git
         if: ${{ github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main' }}
         run: |
@@ -464,23 +544,24 @@ jobs:
           git config --global user.name "Actions"
           git pull --tags
       - name: 🚀 Deploy stable
-        if: ${{ github.ref == 'refs/tags/stable' }}
+        if: ${{ github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.prerelease) }}
         uses: softprops/action-gh-release@v2
         continue-on-error: true
         with:
           prerelease: true
           tag_name: stable
           files: |
-            linwood-qeck-windows-setup.exe
-            linwood-qeck-windows.zip
-            linwood-qeck-android.apk
-            linwood-qeck-linux.tar.gz
-            linwood-qeck-linux-alternative.tar.gz
-            linwood-qeck-linux.deb
-            linwood-qeck-linux.rpm
-            linwood-qeck-linux.AppImage
+            linwood-qeck-windows-setup-x86_64.exe
+            linwood-qeck-windows-x86_64.zip
+            linwood-qeck-linux-x86_64.tar.gz
+            linwood-qeck-linux-alternative-x86_64.tar.gz
+            linwood-qeck-linux-x86_64.deb
+            linwood-qeck-linux-x86_64.rpm
+            linwood-qeck-linux-x86_64.AppImage
             linwood-qeck-macos.zip
             linwood-qeck-macos.dmg
+            linwood-qeck-android.apk
+            linwood-qeck-ios.ipa
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: 🚀 Deploy nightly
@@ -491,16 +572,20 @@ jobs:
           prerelease: true
           tag_name: nightly
           files: |
-            linwood-qeck-windows-setup.exe
-            linwood-qeck-windows.zip
-            linwood-qeck-android.apk
-            linwood-qeck-linux.tar.gz
-            linwood-qeck-linux-alternative.tar.gz
-            linwood-qeck-linux.deb
-            linwood-qeck-linux.rpm
-            linwood-qeck-linux.AppImage
+            linwood-qeck-windows-setup-x86_64.exe
+            linwood-qeck-windows-x86_64.zip
+            linwood-qeck-linux-x86_64.tar.gz
+            linwood-qeck-linux-alternative-x86_64.tar.gz
+            linwood-qeck-linux-x86_64.deb
+            linwood-qeck-linux-x86_64.rpm
+            linwood-qeck-linux-x86_64.AppImage
             linwood-qeck-macos.zip
             linwood-qeck-macos.dmg
+            linwood-qeck-android.apk
+            linwood-qeck-android-arm.apk
+            linwood-qeck-android-arm64.apk
+            linwood-qeck-android-x86_64.apk
+            linwood-qeck-ios.ipa
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Release
@@ -509,16 +594,20 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         with:
           files: |
-            linwood-qeck-windows-setup.exe
-            linwood-qeck-windows.zip
-            linwood-qeck-android.apk
-            linwood-qeck-linux.tar.gz
-            linwood-qeck-linux-alternative.tar.gz
-            linwood-qeck-linux.deb
-            linwood-qeck-linux.rpm
-            linwood-qeck-linux.AppImage
+            linwood-qeck-windows-setup-x86_64.exe
+            linwood-qeck-windows-x86_64.zip
+            linwood-qeck-linux-x86_64.tar.gz
+            linwood-qeck-linux-alternative-x86_64.tar.gz
+            linwood-qeck-linux-x86_64.deb
+            linwood-qeck-linux-x86_64.rpm
+            linwood-qeck-linux-x86_64.AppImage
             linwood-qeck-macos.zip
             linwood-qeck-macos.dmg
+            linwood-qeck-android.apk
+            linwood-qeck-android-arm.apk
+            linwood-qeck-android-arm64.apk
+            linwood-qeck-android-x86_64.apk
+            linwood-qeck-ios.ipa
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   deploy-to-play-store:
@@ -558,18 +647,17 @@ jobs:
         run: |
           FLUTTER_VERSION=$(cat ../FLUTTER_VERSION)
           echo "FLUTTER_VERSION=${FLUTTER_VERSION}" >> $GITHUB_ENV
-      - uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@v2.16.0
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: 'master'
       - name: 📦 Get dependencies
         run: |
-          dart run build_runner build --delete-conflicting-outputs
           flutter pub get
       - name: Setup Fastlane
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.2.2"
+          ruby-version: "3.3.0"
           bundler-cache: true
           working-directory: app/android
       - name: 🚀 Deploy to Play Store
@@ -591,7 +679,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.CI_PAT }}
-      - if: ${{ github.ref == 'refs/tags/stable' }}
+      - if: ${{ github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.prerelease) }}
         uses: vedantmgoyal2009/winget-releaser@v2
         with:
           identifier: LinwoodCloud.Qeck

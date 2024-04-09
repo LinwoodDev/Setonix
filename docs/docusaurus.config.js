@@ -3,7 +3,7 @@ const redirects = require('./redirects.js');
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
     title: 'Linwood Qeck',
-    tagline: 'Play games without internet with your friends ',
+    tagline: 'Play games everywhere you like ',
     url: 'https://docs.qeck.linwood.dev',
     baseUrl: '/',
     onBrokenLinks: 'throw',

@@ -1,19 +1,34 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:dart_mappable/dart_mappable.dart';
 
-part 'server.freezed.dart';
+part 'server.mapper.dart';
 
-@freezed
-class GameServer with _$GameServer {
-  const factory GameServer.lan({
-    required String address,
-    required GameProperty property,
-  }) = LanGameServer;
+@MappableClass()
+sealed class GameServer with GameServerMappable {
+  final GameProperty property;
+
+  GameServer({required this.property});
+
+  String get address;
 }
 
-@freezed
-class GameProperty with _$GameProperty {
-  const factory GameProperty({
-    @Default('') String name,
-    @Default('') String description,
-  }) = _GameProperty;
+@MappableClass()
+class LanGameServer extends GameServer with LanGameServerMappable {
+  @override
+  final String address;
+
+  LanGameServer({
+    required this.address,
+    required super.property,
+  });
+}
+
+@MappableClass()
+class GameProperty with GamePropertyMappable {
+  final String name;
+  final String description;
+
+  const GameProperty({
+    this.name = '',
+    this.description = '',
+  });
 }

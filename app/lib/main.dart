@@ -160,3 +160,4 @@ const isNightly =
     flavor == 'nightly' || flavor == 'dev' || flavor == 'development';
 const shortApplicationName = isNightly ? 'Qeck Nightly' : 'Qeck';
 const applicationName = 'Linwood $shortApplicationName';
+const applicationMinorVersion = '1.0';

@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        projects: [app, tools]
+        projects: [app, api, tools]
     defaults:
       run:
         working-directory: ${{ matrix.projects }}
@@ -18,7 +18,7 @@ jobs:
         run: |
           FLUTTER_VERSION=$(cat ../FLUTTER_VERSION)
           echo "FLUTTER_VERSION=${FLUTTER_VERSION}" >> $GITHUB_ENV
-      - uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@v2.16.0
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: 'master'
@@ -30,10 +30,6 @@ jobs:
       - name: Install dependencies
         run: |
           flutter pub get
-      - name: Build files
-        if: matrix.projects == 'app'
-        run: |
-          dart run build_runner build --delete-conflicting-outputs
       # Uncomment this step to verify the use of 'dart format' on each commit.
       - name: Verify formatting
         run: dart format --output=none --set-exit-if-changed .
@@ -42,6 +38,11 @@ jobs:
       - name: Analyze project source
         run: |
           flutter analyze --fatal-infos
+      - name: Run build_runner
+        if: matrix.projects != 'tools'
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+      - name: Test for git changes
+        run: git diff --exit-code
       # Your project will need to have tests in test/ and a dependency on
       # package:test for this step to succeed. Note that Flutter projects will
       # want to change this to 'flutter test'.

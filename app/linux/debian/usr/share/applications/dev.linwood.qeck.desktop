@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Linwood Qeck
-Comment=Play games without internet with your friends 
+Comment=Play games everywhere you like 
 Exec=qeck %f
 Icon=dev.linwood.qeck
 Terminal=false

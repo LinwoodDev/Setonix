@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Linwood Qeck
-Comment=Play games without internet with your friends 
+Comment=Play games everywhere you like 
 Exec=/usr/bin/linwood-qeck %f
 Icon=/usr/share/linwood-qeck/data/flutter_assets/images/logo.svg
 Terminal=false

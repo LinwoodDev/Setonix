@@ -12,7 +12,7 @@ part of 'server.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 ServerConnectionMessage _$ServerConnectionMessageFromJson(
     Map<String, dynamic> json) {
@@ -246,7 +246,7 @@ class _$FetchPlayersServerConnectionMessageImpl
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$FetchPlayersServerConnectionMessageImpl);
@@ -489,7 +489,7 @@ class _$ChatMessageServerConnectionMessageImpl
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ChatMessageServerConnectionMessageImpl &&
@@ -764,7 +764,7 @@ class _$AddDeckServerConnectionMessageImpl
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AddDeckServerConnectionMessageImpl &&
@@ -1032,7 +1032,7 @@ class _$RemoveDeckServerConnectionMessageImpl
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$RemoveDeckServerConnectionMessageImpl &&
@@ -1293,7 +1293,7 @@ class _$AddSeatServerConnectionMessageImpl
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AddSeatServerConnectionMessageImpl &&
@@ -1572,7 +1572,7 @@ class _$AddCardsServerConnectionMessageImpl
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AddCardsServerConnectionMessageImpl &&
@@ -1880,7 +1880,7 @@ class _$PutCardsServerConnectionMessageImpl
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$PutCardsServerConnectionMessageImpl &&
@@ -2167,7 +2167,7 @@ class _$RemoveCardsServerConnectionMessageImpl
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$RemoveCardsServerConnectionMessageImpl &&
@@ -2426,7 +2426,7 @@ class _$RemoveSeatServerConnectionMessageImpl
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$RemoveSeatServerConnectionMessageImpl &&
@@ -2683,7 +2683,7 @@ class _$JoinSeatServerConnectionMessageImpl
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$JoinSeatServerConnectionMessageImpl &&
@@ -2940,7 +2940,7 @@ class _$LeaveSeatServerConnectionMessageImpl
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$LeaveSeatServerConnectionMessageImpl &&
@@ -3204,7 +3204,7 @@ class _$ShuffleServerConnectionMessageImpl
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ShuffleServerConnectionMessageImpl &&
@@ -3492,7 +3492,7 @@ class _$ChangeVisibilityServerConnectionMessageImpl
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ChangeVisibilityServerConnectionMessageImpl &&
