@@ -215,7 +215,7 @@ jobs:
           appimage-builder --recipe AppImageBuilder.yml --skip-test
       - name: Copy nessessary files
         run: |
-          cp images/logo.svg build/linux/x64/release/bundle/dev.linwood.qeck.svg
+          cp assets/images/logo.svg build/linux/x64/release/bundle/dev.linwood.qeck.svg
           mkdir -p build/linux/x64/release/bundle/usr/share
           cp -r linux/debian/usr/share build/linux/x64/release/bundle/usr
       - name: Rename AppImage
@@ -309,7 +309,7 @@ jobs:
           flutter build linux -v --release --dart-define=flavor=production
       - name: Copy nessessary files
         run: |
-          cp images/logo.svg build/linux/x64/release/bundle/dev.linwood.qeck.svg
+          cp assets/images/logo.svg build/linux/x64/release/bundle/dev.linwood.qeck.svg
           mkdir -p build/linux/x64/release/bundle/usr/share
           cp -r linux/debian/usr/share build/linux/x64/release/bundle/usr
       - name: Compress Flutter build

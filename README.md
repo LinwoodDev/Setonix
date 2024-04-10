@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/LinwoodDev/Vulpine/main/public/logo.png" width="350px" />
+<img src="https://www.linwood.dev/logos/logo.png" width="350px" />
 
-# Vulpine
+# Qeck
 
 > WIP: 🃏 Play games everywhere you like 🃏
 
@@ -32,3 +32,8 @@
 
 * Play games with your friends
 * Multiple connection types: Bluetooth, LAN and server
+* Configure if you want to play with or without rules
+* Create custom cards, board and dices
+* Develop your custom rules with webassembly
+* Pack them all into a package and share it with your friends
+* Load the wasm in the server and the client
