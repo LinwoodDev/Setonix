@@ -43,12 +43,12 @@ dependencies:
   flutter_svg: ^2.0.10+1
   window_manager: ^0.3.8
   # Database
-  shared_preferences: ^2.2.0
+  shared_preferences: ^2.2.3
   # Generation
-  barcode: ^2.2.6
+  barcode: ^2.2.7
   # Internal
   flutter_bloc: ^8.1.3
-  url_launcher: ^6.2.5
+  url_launcher: ^6.2.6
   # Networking
   http: ^1.2.1
   web_socket_channel: ^2.4.5
@@ -65,8 +65,8 @@ dependencies:
   # Information
   device_info_plus: ^10.1.0
   package_info_plus: ^7.0.0
-  path_provider: ^2.1.2
-  go_router: ^13.2.3
+  path_provider: ^2.1.3
+  go_router: ^13.2.4
   json_annotation: ^4.8.1
   dynamic_color: ^1.7.0
   rxdart: ^0.27.7
@@ -79,9 +79,11 @@ dev_dependencies:
     sdk: flutter
   build_runner: ^2.4.9
   flutter_lints: ^3.0.2
-  freezed: ^2.5.1
+  freezed: ^2.5.2
   json_serializable: ^6.7.1
   dart_mappable_builder: ^4.2.3
+  integration_test:
+    sdk: flutter
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter.

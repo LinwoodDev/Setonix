@@ -28,8 +28,8 @@ String? dataPath;
 
 Future<void> main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
-
   usePathUrlStrategy();
+
   final argParser = ArgParser();
   argParser.addOption('path', abbr: 'p');
   final result = argParser.parse(args);
@@ -44,7 +44,7 @@ Future<void> main(List<String> args) async {
       value: settingsCubit,
       child: RepositoryProvider(
         create: (context) => NetworkingService(settingsCubit),
-        child: FlowApp(),
+        child: QeckApp(),
       ),
     ),
   );
@@ -74,8 +74,8 @@ List<Locale> getLocales() =>
         .where((l) => !kUnsupportedLanguages.contains(l.toString()))
         .toList();
 
-class FlowApp extends StatelessWidget {
-  FlowApp({super.key});
+class QeckApp extends StatelessWidget {
+  QeckApp({super.key});
 
   @override
   Widget build(BuildContext context) {

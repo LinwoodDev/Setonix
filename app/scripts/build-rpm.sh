@@ -37,4 +37,4 @@ cd ../../
 # Build RPM
 QA_RPATHS=$[ 0x0001|0x0010 ] rpmbuild -bb build/SPECS/linwood-qeck.spec --define "_topdir $(pwd)/build"
 # Copy RPM to build folder
-cp build/RPMS/x86_64/linwood-qeck-*.rpm build/linwood-qeck-linux.rpm
+cp build/RPMS/x86_64/linwood-qeck-*.rpm build/linwood-qeck-linux-x86_64.rpm

@@ -8,8 +8,8 @@ import 'package:flame/effects.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/text.dart';
-import 'package:qeck/game/board.dart';
-import 'package:qeck/game/wall.dart';
+import 'package:qeck/game/world/game.dart';
+import 'package:qeck/game/world/wall.dart';
 import 'package:qeck/models/message.dart';
 import 'package:qeck/models/state.dart';
 
@@ -50,7 +50,7 @@ extension RendererExtension on PlayerState {
 
 class BoardPlayer
     extends SpriteAnimationGroupComponent<(PlayerState, PlayerDirection)>
-    with HasGameRef<BoardGame>, CollisionCallbacks {
+    with HasGameRef<GameWorld>, CollisionCallbacks {
   final bool isSelf;
   NetworkingUser _user;
 

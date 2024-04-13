@@ -3,5 +3,3 @@
 *.iws
 .idea/
 .vscode/
-
-*.mapper.dart

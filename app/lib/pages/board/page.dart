@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:qeck/api/settings.dart';
-import 'package:qeck/game/board.dart';
+import 'package:qeck/game/world/game.dart';
 import 'package:qeck/main.dart';
 import 'package:qeck/pages/board/connect.dart';
 import 'package:qeck/pages/board/create.dart';
@@ -112,7 +112,7 @@ class BoardPage extends StatelessWidget {
         ),
       ),
       body: GameWidget(
-        game: BoardGame(
+        game: GameWorld(
           networkingService: context.read<NetworkingService>(),
           onEscape: () => _scaffoldKey.currentState?.openDrawer(),
         ),

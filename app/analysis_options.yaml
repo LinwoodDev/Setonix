@@ -12,6 +12,9 @@ analyzer:
   exclude:
     - "**/*.g.dart"
     - "**/*.freezed.dart"
+    - "build/**/*.dart"
+    - "lib/src/rust/*.dart"
+    - "lib/src/rust/**/*.dart"
   errors:
     invalid_annotation_target: ignore
 linter:

@@ -52,7 +52,7 @@
     "@docusaurus/module-type-aliases": "3.2.1",
     "@docusaurus/tsconfig": "3.2.1",
     "markdownlint-cli2": "^0.13.0",
-    "typescript": "^5.4.4",
+    "typescript": "^5.4.5",
     "webpack": "^5.91.0"
   }
 }

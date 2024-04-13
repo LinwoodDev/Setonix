@@ -8,9 +8,9 @@ import 'package:flame/game.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:qeck/game/inventory.dart';
-import 'package:qeck/game/player.dart';
-import 'package:qeck/game/wall.dart';
+import 'package:qeck/game/world/inventory.dart';
+import 'package:qeck/game/world/player.dart';
+import 'package:qeck/game/world/wall.dart';
 import 'package:qeck/services/network.dart';
 
 class SpacedSpriteSheet {
@@ -34,7 +34,7 @@ class SpacedSpriteSheet {
   }
 }
 
-class BoardGame extends FlameGame with KeyboardEvents, HasCollisionDetection {
+class GameWorld extends FlameGame with KeyboardEvents, HasCollisionDetection {
   final NetworkingService networkingService;
   final BoardPlayer _player = BoardPlayer(true);
   final Map<int, BoardPlayer> _players = <int, BoardPlayer>{};
@@ -43,7 +43,7 @@ class BoardGame extends FlameGame with KeyboardEvents, HasCollisionDetection {
   Vector2 get tileSize => _tileSize;
   final VoidCallback onEscape;
 
-  BoardGame({
+  GameWorld({
     required this.networkingService,
     required this.onEscape,
   });
@@ -52,7 +52,11 @@ class BoardGame extends FlameGame with KeyboardEvents, HasCollisionDetection {
 
   @override
   Future<void> onLoad() async {
-    final component = await TiledComponent.load('map.tmx', _tileSize);
+    final component = await TiledComponent.load(
+      'map.tmx',
+      _tileSize,
+      useAtlas: false,
+    );
 
     final objects = component.tileMap.getLayer<ObjectGroup>('Objects')?.objects;
     final spawn = objects?.firstWhere(

@@ -4,7 +4,7 @@ import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/flame.dart';
-import 'package:qeck/game/board.dart';
+import 'package:qeck/game/world/game.dart';
 
 class HudSpriteSheet {
   final SpacedSpriteSheet _spriteSheet;
