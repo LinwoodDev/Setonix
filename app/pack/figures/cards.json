@@ -1,0 +1,363 @@
+{
+  "back": {
+    "texture": "figures/cards.png",
+    "offset": [224, 48],
+    "size": [16, 16]
+  },
+  "variations": {
+    "heart": {
+      "category": "heart",
+      "texture": "figures/cards.png",
+      "offset": [0, 0],
+      "size": [16, 16]
+    },
+    "heart-ace": {
+      "category": "heart",
+      "texture": "figures/cards.png",
+      "offset": [16, 0],
+      "size": [16, 16]
+    },
+    "heart-2": {
+      "category": "heart",
+      "texture": "figures/cards.png",
+      "offset": [32, 0],
+      "size": [16, 16]
+    },
+    "heart-3": {
+      "category": "heart",
+      "texture": "figures/cards.png",
+      "offset": [48, 0],
+      "size": [16, 16]
+    },
+    "heart-4": {
+      "category": "heart",
+      "texture": "figures/cards.png",
+      "offset": [64, 0],
+      "size": [16, 16]
+    },
+    "heart-5": {
+      "category": "heart",
+      "texture": "figures/cards.png",
+      "offset": [80, 0],
+      "size": [16, 16]
+    },
+    "heart-6": {
+      "category": "heart",
+      "texture": "figures/cards.png",
+      "offset": [96, 0],
+      "size": [16, 16]
+    },
+    "heart-7": {
+      "category": "heart",
+      "texture": "figures/cards.png",
+      "offset": [112, 0],
+      "size": [16, 16]
+    },
+    "heart-8": {
+      "category": "heart",
+      "texture": "figures/cards.png",
+      "offset": [128, 0],
+      "size": [16, 16]
+    },
+    "heart-9": {
+      "category": "heart",
+      "texture": "figures/cards.png",
+      "offset": [144, 0],
+      "size": [16, 16]
+    },
+    "heart-10": {
+      "category": "heart",
+      "texture": "figures/cards.png",
+      "offset": [160, 0],
+      "size": [16, 16]
+    },
+    "heart-jack": {
+      "category": "heart",
+      "texture": "figures/cards.png",
+      "offset": [176, 0],
+      "size": [16, 16]
+    },
+    "heart-queen": {
+      "category": "heart",
+      "texture": "figures/cards.png",
+      "offset": [192, 0],
+      "size": [16, 16]
+    },
+    "heart-king": {
+      "category": "heart",
+      "texture": "figures/cards.png",
+      "offset": [208, 0],
+      "size": [16, 16]
+    },
+    "diamond": {
+      "category": "diamond",
+      "texture": "figures/cards.png",
+      "offset": [0, 16],
+      "size": [16, 16]
+    },
+    "diamond-ace": {
+      "category": "diamond",
+      "texture": "figures/cards.png",
+      "offset": [16, 16],
+      "size": [16, 16]
+    },
+    "diamond-2": {
+      "category": "diamond",
+      "texture": "figures/cards.png",
+      "offset": [32, 16],
+      "size": [16, 16]
+    },
+    "diamond-3": {
+      "category": "diamond",
+      "texture": "figures/cards.png",
+      "offset": [48, 16],
+      "size": [16, 16]
+    },
+    "diamond-4": {
+      "category": "diamond",
+      "texture": "figures/cards.png",
+      "offset": [64, 16],
+      "size": [16, 16]
+    },
+    "diamond-5": {
+      "category": "diamond",
+      "texture": "figures/cards.png",
+      "offset": [80, 16],
+      "size": [16, 16]
+    },
+    "diamond-6": {
+      "category": "diamond",
+      "texture": "figures/cards.png",
+      "offset": [96, 16],
+      "size": [16, 16]
+    },
+    "diamond-7": {
+      "category": "diamond",
+      "texture": "figures/cards.png",
+      "offset": [112, 16],
+      "size": [16, 16]
+    },
+    "diamond-8": {
+      "category": "diamond",
+      "texture": "figures/cards.png",
+      "offset": [128, 16],
+      "size": [16, 16]
+    },
+    "diamond-9": {
+      "category": "diamond",
+      "texture": "figures/cards.png",
+      "offset": [144, 16],
+      "size": [16, 16]
+    },
+    "diamond-10": {
+      "category": "diamond",
+      "texture": "figures/cards.png",
+      "offset": [160, 16],
+      "size": [16, 16]
+    },
+    "diamond-jack": {
+      "category": "diamond",
+      "texture": "figures/cards.png",
+      "offset": [176, 16],
+      "size": [16, 16]
+    },
+    "diamond-queen": {
+      "category": "diamond",
+      "texture": "figures/cards.png",
+      "offset": [192, 16],
+      "size": [16, 16]
+    },
+    "diamond-king": {
+      "category": "diamond",
+      "texture": "figures/cards.png",
+      "offset": [208, 16],
+      "size": [16, 16]
+    },
+    "spade": {
+      "category": "spade",
+      "texture": "figures/cards.png",
+      "offset": [0, 32],
+      "size": [16, 16]
+    },
+    "spade-ace": {
+      "category": "spade",
+      "texture": "figures/cards.png",
+      "offset": [16, 32],
+      "size": [16, 16]
+    },
+    "spade-2": {
+      "category": "spade",
+      "texture": "figures/cards.png",
+      "offset": [32, 32],
+      "size": [16, 16]
+    },
+    "spade-3": {
+      "category": "spade",
+      "texture": "figures/cards.png",
+      "offset": [48, 32],
+      "size": [16, 16]
+    },
+    "spade-4": {
+      "category": "spade",
+      "texture": "figures/cards.png",
+      "offset": [64, 32],
+      "size": [16, 16]
+    },
+    "spade-5": {
+      "category": "spade",
+      "texture": "figures/cards.png",
+      "offset": [80, 32],
+      "size": [16, 16]
+    },
+    "spade-6": {
+      "category": "spade",
+      "texture": "figures/cards.png",
+      "offset": [96, 32],
+      "size": [16, 16]
+    },
+    "spade-7": {
+      "category": "spade",
+      "texture": "figures/cards.png",
+      "offset": [112, 32],
+      "size": [16, 16]
+    },
+    "spade-8": {
+      "category": "spade",
+      "texture": "figures/cards.png",
+      "offset": [128, 32],
+      "size": [16, 16]
+    },
+    "spade-9": {
+      "category": "spade",
+      "texture": "figures/cards.png",
+      "offset": [144, 32],
+      "size": [16, 16]
+    },
+    "spade-10": {
+      "category": "spade",
+      "texture": "figures/cards.png",
+      "offset": [160, 32],
+      "size": [16, 16]
+    },
+    "spade-jack": {
+      "category": "spade",
+      "texture": "figures/cards.png",
+      "offset": [176, 32],
+      "size": [16, 16]
+    },
+    "spade-queen": {
+      "category": "spade",
+      "texture": "figures/cards.png",
+      "offset": [192, 32],
+      "size": [16, 16]
+    },
+    "spade-king": {
+      "category": "spade",
+      "texture": "figures/cards.png",
+      "offset": [208, 32],
+      "size": [16, 16]
+    },
+    "club": {
+      "category": "club",
+      "texture": "figures/cards.png",
+      "offset": [0, 48],
+      "size": [16, 16]
+    },
+    "club-ace": {
+      "category": "club",
+      "texture": "figures/cards.png",
+      "offset": [16, 48],
+      "size": [16, 16]
+    },
+    "club-2": {
+      "category": "club",
+      "texture": "figures/cards.png",
+      "offset": [32, 48],
+      "size": [16, 16]
+    },
+    "club-3": {
+      "category": "club",
+      "texture": "figures/cards.png",
+      "offset": [48, 48],
+      "size": [16, 16]
+    },
+    "club-4": {
+      "category": "club",
+      "texture": "figures/cards.png",
+      "offset": [64, 48],
+      "size": [16, 16]
+    },
+    "club-5": {
+      "category": "club",
+      "texture": "figures/cards.png",
+      "offset": [80, 48],
+      "size": [16, 16]
+    },
+    "club-6": {
+      "category": "club",
+      "texture": "figures/cards.png",
+      "offset": [96, 48],
+      "size": [16, 16]
+    },
+    "club-7": {
+      "category": "club",
+      "texture": "figures/cards.png",
+      "offset": [112, 48],
+      "size": [16, 16]
+    },
+    "club-8": {
+      "category": "club",
+      "texture": "figures/cards.png",
+      "offset": [128, 48],
+      "size": [16, 16]
+    },
+    "club-9": {
+      "category": "club",
+      "texture": "figures/cards.png",
+      "offset": [144, 48],
+      "size": [16, 16]
+    },
+    "club-10": {
+      "category": "club",
+      "texture": "figures/cards.png",
+      "offset": [160, 48],
+      "size": [16, 16]
+    },
+    "club-jack": {
+      "category": "club",
+      "texture": "figures/cards.png",
+      "offset": [176, 48],
+      "size": [16, 16]
+    },
+    "club-queen": {
+      "category": "club",
+      "texture": "figures/cards.png",
+      "offset": [192, 48],
+      "size": [16, 16]
+    },
+    "club-king": {
+      "category": "club",
+      "texture": "figures/cards.png",
+      "offset": [208, 48],
+      "size": [16, 16]
+    },
+    "joker-red": {
+      "category": "joker",
+      "texture": "figures/cards.png",
+      "offset": [224, 0],
+      "size": [16, 16]
+    },
+    "joker-black": {
+      "category": "joker",
+      "texture": "figures/cards.png",
+      "offset": [224, 16],
+      "size": [16, 16]
+    },
+    "joker-mixed": {
+      "category": "joker",
+      "texture": "figures/cards.png",
+      "offset": [224, 32],
+      "size": [16, 16]
+    }
+  }
+}

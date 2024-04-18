@@ -1,0 +1,198 @@
+{
+  "name": "Doppelkopf Deck with 9",
+  "description": "A deck of cards for playing Doppelkopf including the nines",
+  "figures": [
+    {
+      "position": [0, 0],
+      "name": "heart-9"
+    },
+    {
+      "position": [0, 0],
+      "name": "heart-9"
+    },
+    {
+      "position": [0, 0],
+      "name": "diamond-9"
+    },
+    {
+      "position": [0, 0],
+      "name": "diamond-9"
+    },
+    {
+      "position": [0, 0],
+      "name": "spade-9"
+    },
+    {
+      "position": [0, 0],
+      "name": "spade-9"
+    },
+    {
+      "position": [0, 0],
+      "name": "club-9"
+    },
+    {
+      "position": [0, 0],
+      "name": "club-9"
+    },
+    {
+      "position": [0, 0],
+      "name": "heart-10"
+    },
+    {
+      "position": [0, 0],
+      "name": "heart-10"
+    },
+    {
+      "position": [0, 0],
+      "name": "diamond-10"
+    },
+    {
+      "position": [0, 0],
+      "name": "diamond-10"
+    },
+    {
+      "position": [0, 0],
+      "name": "spade-10"
+    },
+    {
+      "position": [0, 0],
+      "name": "spade-10"
+    },
+    {
+      "position": [0, 0],
+      "name": "club-10"
+    },
+    {
+      "position": [0, 0],
+      "name": "club-10"
+    },
+    {
+      "position": [0, 0],
+      "name": "heart-jack"
+    },
+    {
+      "position": [0, 0],
+      "name": "heart-jack"
+    },
+    {
+      "position": [0, 0],
+      "name": "diamond-jack"
+    },
+    {
+      "position": [0, 0],
+      "name": "diamond-jack"
+    },
+    {
+      "position": [0, 0],
+      "name": "spade-jack"
+    },
+    {
+      "position": [0, 0],
+      "name": "spade-jack"
+    },
+    {
+      "position": [0, 0],
+      "name": "club-jack"
+    },
+    {
+      "position": [0, 0],
+      "name": "club-jack"
+    },
+    {
+      "position": [0, 0],
+      "name": "heart-queen"
+    },
+    {
+      "position": [0, 0],
+      "name": "heart-queen"
+    },
+    {
+      "position": [0, 0],
+      "name": "diamond-queen"
+    },
+    {
+      "position": [0, 0],
+      "name": "diamond-queen"
+    },
+    {
+      "position": [0, 0],
+      "name": "spade-queen"
+    },
+    {
+      "position": [0, 0],
+      "name": "spade-queen"
+    },
+    {
+      "position": [0, 0],
+      "name": "club-queen"
+    },
+    {
+      "position": [0, 0],
+      "name": "club-queen"
+    },
+    {
+      "position": [0, 0],
+      "name": "heart-king"
+    },
+    {
+      "position": [0, 0],
+      "name": "heart-king"
+    },
+    {
+      "position": [0, 0],
+      "name": "diamond-king"
+    },
+    {
+      "position": [0, 0],
+      "name": "diamond-king"
+    },
+    {
+      "position": [0, 0],
+      "name": "spade-king"
+    },
+    {
+      "position": [0, 0],
+      "name": "spade-king"
+    },
+    {
+      "position": [0, 0],
+      "name": "club-king"
+    },
+    {
+      "position": [0, 0],
+      "name": "club-king"
+    },
+    {
+      "position": [0, 0],
+      "name": "heart-ace"
+    },
+    {
+      "position": [0, 0],
+      "name": "heart-ace"
+    },
+    {
+      "position": [0, 0],
+      "name": "diamond-ace"
+    },
+    {
+      "position": [0, 0],
+      "name": "diamond-ace"
+    },
+    {
+      "position": [0, 0],
+      "name": "spade-ace"
+    },
+    {
+      "position": [0, 0],
+      "name": "spade-ace"
+    },
+    {
+      "position": [0, 0],
+      "name": "club-ace"
+    },
+    {
+      "position": [0, 0],
+      "name": "club-ace"
+    }
+  ]
+}

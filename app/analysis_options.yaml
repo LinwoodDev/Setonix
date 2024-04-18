@@ -12,6 +12,7 @@ analyzer:
   exclude:
     - "**/*.g.dart"
     - "**/*.freezed.dart"
+    - "**/*.mapper.dart"
     - "build/**/*.dart"
     - "lib/src/rust/*.dart"
     - "lib/src/rust/**/*.dart"
