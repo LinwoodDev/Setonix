@@ -29,6 +29,10 @@ jobs:
           flutter clean
           flutter pub get
           flutter doctor -v
+      - name: Build nessesary files
+        working-directory: /
+        run: |
+          dart run tools/generate.dart
       - name: Import files
         if: ${{ github.event_name != 'pull_request' }}
         env:
@@ -107,6 +111,10 @@ jobs:
           flutter clean
           flutter pub get
           flutter doctor -v
+      - name: Build nessesary files
+        working-directory: /
+        run: |
+          dart run tools/generate.dart
       - name: 🏭 Build nightly
         if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.prerelease) }}
         run: |
@@ -186,6 +194,10 @@ jobs:
           flutter clean
           flutter pub get
           flutter doctor -v
+      - name: Build nessesary files
+        working-directory: /
+        run: |
+          dart run tools/generate.dart
       - name: 🏭 Build nightly
         if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.prerelease) }}
         run: |
@@ -297,6 +309,10 @@ jobs:
           flutter clean
           flutter pub get
           flutter doctor -v
+      - name: Build nessesary files
+        working-directory: /
+        run: |
+          dart run tools/generate.dart
       - name: 🏭 Build nightly
         if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.prerelease) }}
         run: |
@@ -364,6 +380,10 @@ jobs:
           flutter clean
           flutter pub get
           flutter doctor -v
+      - name: Build nessesary files
+        working-directory: /
+        run: |
+          dart run tools/generate.dart
       - name: 🏭 Build
         run: |
           flutter build macos -v --release
@@ -414,6 +434,10 @@ jobs:
           flutter clean
           flutter pub get
           flutter doctor -v
+      - name: Build nessesary files
+        working-directory: /
+        run: |
+          dart run tools/generate.dart
       - name: 🏭 Build
         run: |
           flutter build ios --release --no-codesign -v

@@ -41,3 +41,6 @@
 *.png~
 *.tiled-session
 /node_modules
+
+# Runtime related
+assets/pack.qka

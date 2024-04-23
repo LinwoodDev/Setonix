@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
+import 'package:flutter/services.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:qeck/models/deck.dart';
 import 'package:qeck/models/meta.dart';
@@ -17,6 +17,12 @@ class PackData {
   final Archive archive;
 
   PackData(this.archive);
+
+  factory PackData.fromData(Uint8List data) {
+    return PackData(ZipDecoder().decodeBytes(data));
+  }
+  static Future<PackData?> getCorePack() async => PackData.fromData(
+      (await rootBundle.load('assets/pack.qka')).buffer.asUint8List());
 
   Uint8List? getAsset(String path) => archive.findFile(path)?.content;
 
