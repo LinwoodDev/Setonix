@@ -8,7 +8,7 @@ part of 'logic.dart';
 
 _$GamePlayerImpl _$$GamePlayerImplFromJson(Map json) => _$GamePlayerImpl(
       name: json['name'] as String,
-      id: json['id'] as int,
+      id: (json['id'] as num).toInt(),
     );
 
 Map<String, dynamic> _$$GamePlayerImplToJson(_$GamePlayerImpl instance) =>
@@ -32,8 +32,8 @@ Map<String, dynamic> _$$AvailableCardIndexImplToJson(
 
 _$DeckCardIndexImpl _$$DeckCardIndexImplFromJson(Map json) =>
     _$DeckCardIndexImpl(
-      json['cardIndex'] as int,
-      json['deckIndex'] as int,
+      (json['cardIndex'] as num).toInt(),
+      (json['deckIndex'] as num).toInt(),
       $type: json['type'] as String?,
     );
 
@@ -46,9 +46,9 @@ Map<String, dynamic> _$$DeckCardIndexImplToJson(_$DeckCardIndexImpl instance) =>
 
 _$SeatCardIndexImpl _$$SeatCardIndexImplFromJson(Map json) =>
     _$SeatCardIndexImpl(
-      json['cardIndex'] as int,
-      json['deckIndex'] as int,
-      json['seatIndex'] as int,
+      (json['cardIndex'] as num).toInt(),
+      (json['deckIndex'] as num).toInt(),
+      (json['seatIndex'] as num).toInt(),
       $type: json['type'] as String?,
     );
 

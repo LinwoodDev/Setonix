@@ -76,5 +76,7 @@
   "disconnect": "Disconnect",
   "url": "URL",
   "official": "Official",
-  "community": "Community"
+  "community": "Community",
+  "systemLocale": "System locale",
+  "packs": "Packs"
 }

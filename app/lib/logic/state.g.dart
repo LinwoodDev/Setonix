@@ -11,7 +11,7 @@ _$ClassicGameCardImpl _$$ClassicGameCardImplFromJson(Map json) =>
       color:
           $enumDecodeNullable(_$ClassicGameCardColorEnumMap, json['color']) ??
               ClassicGameCardColor.heart,
-      number: json['number'] as int? ?? 1,
+      number: (json['number'] as num?)?.toInt() ?? 1,
       $type: json['type'] as String?,
     );
 
@@ -67,9 +67,10 @@ _$GameSeatImpl _$$GameSeatImplFromJson(Map json) => _$GameSeatImpl(
                   (e) => GameDeck.fromJson(Map<String, dynamic>.from(e as Map)))
               .toList() ??
           const [],
-      players:
-          (json['players'] as List<dynamic>?)?.map((e) => e as int).toList() ??
-              const [],
+      players: (json['players'] as List<dynamic>?)
+              ?.map((e) => (e as num).toInt())
+              .toList() ??
+          const [],
       ownDeckVisibility: $enumDecodeNullable(
           _$DeckVisibilityEnumMap, json['ownDeckVisibility']),
     );
@@ -101,7 +102,7 @@ Map<String, dynamic> _$$DeckRefillNoneImplToJson(
 
 _$DeckRefillShuffleImpl _$$DeckRefillShuffleImplFromJson(Map json) =>
     _$DeckRefillShuffleImpl(
-      count: json['count'] as int?,
+      count: (json['count'] as num?)?.toInt(),
       $type: json['type'] as String?,
     );
 
@@ -114,7 +115,7 @@ Map<String, dynamic> _$$DeckRefillShuffleImplToJson(
 
 _$DeckRefillFirstImpl _$$DeckRefillFirstImplFromJson(Map json) =>
     _$DeckRefillFirstImpl(
-      count: json['count'] as int?,
+      count: (json['count'] as num?)?.toInt(),
       $type: json['type'] as String?,
     );
 

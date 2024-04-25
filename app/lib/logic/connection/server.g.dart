@@ -36,7 +36,7 @@ _$AddDeckServerConnectionMessageImpl
     _$$AddDeckServerConnectionMessageImplFromJson(Map json) =>
         _$AddDeckServerConnectionMessageImpl(
           GameDeck.fromJson(Map<String, dynamic>.from(json['deck'] as Map)),
-          json['seatIndex'] as int?,
+          (json['seatIndex'] as num?)?.toInt(),
           $type: json['type'] as String?,
         );
 
@@ -51,8 +51,8 @@ Map<String, dynamic> _$$AddDeckServerConnectionMessageImplToJson(
 _$RemoveDeckServerConnectionMessageImpl
     _$$RemoveDeckServerConnectionMessageImplFromJson(Map json) =>
         _$RemoveDeckServerConnectionMessageImpl(
-          json['index'] as int,
-          json['seatIndex'] as int?,
+          (json['index'] as num).toInt(),
+          (json['seatIndex'] as num?)?.toInt(),
           $type: json['type'] as String?,
         );
 
@@ -85,8 +85,8 @@ _$AddCardsServerConnectionMessageImpl
               .map((e) =>
                   CardIndex.fromJson(Map<String, dynamic>.from(e as Map)))
               .toList(),
-          json['deckIndex'] as int,
-          json['seatIndex'] as int?,
+          (json['deckIndex'] as num).toInt(),
+          (json['seatIndex'] as num?)?.toInt(),
           $type: json['type'] as String?,
         );
 
@@ -102,12 +102,12 @@ Map<String, dynamic> _$$AddCardsServerConnectionMessageImplToJson(
 _$PutCardsServerConnectionMessageImpl
     _$$PutCardsServerConnectionMessageImplFromJson(Map json) =>
         _$PutCardsServerConnectionMessageImpl(
-          json['deckIndex'] as int,
-          json['seatIndex'] as int?,
+          (json['deckIndex'] as num).toInt(),
+          (json['seatIndex'] as num?)?.toInt(),
           $enumDecode(_$PickLocationEnumMap, json['location']),
-          json['count'] as int,
-          json['movedDeckIndex'] as int,
-          json['movedSeatIndex'] as int?,
+          (json['count'] as num).toInt(),
+          (json['movedDeckIndex'] as num).toInt(),
+          (json['movedSeatIndex'] as num?)?.toInt(),
           $type: json['type'] as String?,
         );
 
@@ -149,7 +149,7 @@ Map<String, dynamic> _$$RemoveCardsServerConnectionMessageImplToJson(
 _$RemoveSeatServerConnectionMessageImpl
     _$$RemoveSeatServerConnectionMessageImplFromJson(Map json) =>
         _$RemoveSeatServerConnectionMessageImpl(
-          json['index'] as int,
+          (json['index'] as num).toInt(),
           $type: json['type'] as String?,
         );
 
@@ -163,7 +163,7 @@ Map<String, dynamic> _$$RemoveSeatServerConnectionMessageImplToJson(
 _$JoinSeatServerConnectionMessageImpl
     _$$JoinSeatServerConnectionMessageImplFromJson(Map json) =>
         _$JoinSeatServerConnectionMessageImpl(
-          json['index'] as int,
+          (json['index'] as num).toInt(),
           $type: json['type'] as String?,
         );
 
@@ -177,7 +177,7 @@ Map<String, dynamic> _$$JoinSeatServerConnectionMessageImplToJson(
 _$LeaveSeatServerConnectionMessageImpl
     _$$LeaveSeatServerConnectionMessageImplFromJson(Map json) =>
         _$LeaveSeatServerConnectionMessageImpl(
-          json['index'] as int,
+          (json['index'] as num).toInt(),
           $type: json['type'] as String?,
         );
 
@@ -191,8 +191,8 @@ Map<String, dynamic> _$$LeaveSeatServerConnectionMessageImplToJson(
 _$ShuffleServerConnectionMessageImpl
     _$$ShuffleServerConnectionMessageImplFromJson(Map json) =>
         _$ShuffleServerConnectionMessageImpl(
-          json['deckIndex'] as int,
-          json['seatIndex'] as int?,
+          (json['deckIndex'] as num).toInt(),
+          (json['seatIndex'] as num?)?.toInt(),
           $type: json['type'] as String?,
         );
 
@@ -207,8 +207,8 @@ Map<String, dynamic> _$$ShuffleServerConnectionMessageImplToJson(
 _$ChangeVisibilityServerConnectionMessageImpl
     _$$ChangeVisibilityServerConnectionMessageImplFromJson(Map json) =>
         _$ChangeVisibilityServerConnectionMessageImpl(
-          json['deckIndex'] as int,
-          json['seatIndex'] as int?,
+          (json['deckIndex'] as num).toInt(),
+          (json['seatIndex'] as num?)?.toInt(),
           $enumDecode(_$DeckVisibilityEnumMap, json['visibility']),
           $enumDecodeNullable(_$DeckVisibilityEnumMap, json['ownVisibility']),
           json['type'] as String?,

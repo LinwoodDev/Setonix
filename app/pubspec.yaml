@@ -67,7 +67,7 @@ dependencies:
   package_info_plus: ^7.0.0
   path_provider: ^2.1.3
   go_router: ^13.2.4
-  json_annotation: ^4.8.1
+  json_annotation: ^4.9.0
   dynamic_color: ^1.7.0
   rxdart: ^0.27.7
   collection: ^1.18.0

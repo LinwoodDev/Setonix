@@ -13,7 +13,7 @@ _$FetchedPlayersClientConnectionMessageImpl
               .map((e) =>
                   GamePlayer.fromJson(Map<String, dynamic>.from(e as Map)))
               .toList(),
-          json['playerId'] as int,
+          (json['playerId'] as num).toInt(),
           $type: json['type'] as String?,
         );
 

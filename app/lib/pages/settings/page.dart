@@ -5,12 +5,33 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:qeck/pages/settings/packs.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'general.dart';
 import 'personalization.dart';
 
-enum SettingsView { general, personalization }
+enum SettingsView {
+  general,
+  personalization,
+  packs;
+
+  bool get isEnabled => true;
+
+  String getLocalizedName(BuildContext context) => switch (this) {
+        SettingsView.general => AppLocalizations.of(context).general,
+        SettingsView.personalization =>
+          AppLocalizations.of(context).personalization,
+        SettingsView.packs => AppLocalizations.of(context).packs,
+      };
+
+  IconGetter get icon => switch (this) {
+        SettingsView.general => PhosphorIcons.gear,
+        SettingsView.personalization => PhosphorIcons.monitor,
+        SettingsView.packs => PhosphorIcons.package,
+      };
+  String get path => '/settings/$name';
+}
 
 class SettingsPage extends StatefulWidget {
   final bool isDialog;
@@ -53,41 +74,29 @@ class _SettingsPageState extends State<SettingsPage> {
                     controller: _scrollController,
                     shrinkWrap: true,
                     children: [
-                      ListTile(
-                        title: Text(AppLocalizations.of(context).general),
-                        leading: const PhosphorIcon(PhosphorIconsLight.gear),
-                        selected:
-                            !isMobile ? _view == SettingsView.general : false,
-                        onTap: () {
+                      ...SettingsView.values
+                          .where((e) => e.isEnabled)
+                          .map((view) {
+                        final selected = _view == view && !isMobile;
+                        void navigateTo() {
                           if (isMobile) {
-                            Navigator.of(context).pop();
-                            GoRouter.of(context).go('/settings/general');
+                            context.push(view.path);
                           } else {
                             setState(() {
-                              _view = SettingsView.general;
+                              _view = view;
                             });
                           }
-                        },
-                      ),
-                      ListTile(
-                          leading:
-                              const PhosphorIcon(PhosphorIconsLight.monitor),
-                          title: Text(
-                              AppLocalizations.of(context).personalization),
-                          selected: !isMobile
-                              ? _view == SettingsView.personalization
-                              : false,
-                          onTap: () {
-                            if (isMobile) {
-                              Navigator.of(context).pop();
-                              GoRouter.of(context)
-                                  .go('/settings/personalization');
-                            } else {
-                              setState(() {
-                                _view = SettingsView.personalization;
-                              });
-                            }
-                          }),
+                        }
+
+                        return ListTile(
+                          leading: PhosphorIcon(view.icon(selected
+                              ? PhosphorIconsStyle.fill
+                              : PhosphorIconsStyle.light)),
+                          title: Text(view.getLocalizedName(context)),
+                          onTap: navigateTo,
+                          selected: selected,
+                        );
+                      }),
                       if (kIsWeb) ...[
                         const Divider(),
                         Padding(
@@ -122,15 +131,12 @@ class _SettingsPageState extends State<SettingsPage> {
           if (isMobile) {
             return navigation;
           }
-          Widget content;
-          switch (_view) {
-            case SettingsView.general:
-              content = const GeneralSettingsPage(inView: true);
-              break;
-            case SettingsView.personalization:
-              content = const PersonalizationSettingsPage(inView: true);
-              break;
-          }
+          final content = switch (_view) {
+            SettingsView.general => const GeneralSettingsPage(inView: true),
+            SettingsView.personalization =>
+              const PersonalizationSettingsPage(inView: true),
+            SettingsView.packs => const PacksSettingsPage(inView: true),
+          };
           return Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             SizedBox(width: 300, child: navigation),
             Expanded(child: content),

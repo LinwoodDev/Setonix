@@ -1,6 +1,14 @@
 name: Flutter build
 
-on: [push, release, pull_request]
+on: 
+  push:
+    branches:
+      - "*"
+    tags:
+      - stable
+      - nightly
+  release: 
+  pull_request:
 jobs:
   build-apk:
     concurrency: ci-${{ github.ref }}
@@ -30,7 +38,7 @@ jobs:
           flutter pub get
           flutter doctor -v
       - name: Build nessesary files
-        working-directory: /
+        working-directory: ./
         run: |
           dart run tools/generate.dart
       - name: Import files
@@ -112,7 +120,7 @@ jobs:
           flutter pub get
           flutter doctor -v
       - name: Build nessesary files
-        working-directory: /
+        working-directory: ./
         run: |
           dart run tools/generate.dart
       - name: 🏭 Build nightly
@@ -195,7 +203,7 @@ jobs:
           flutter pub get
           flutter doctor -v
       - name: Build nessesary files
-        working-directory: /
+        working-directory: ./
         run: |
           dart run tools/generate.dart
       - name: 🏭 Build nightly
@@ -310,7 +318,7 @@ jobs:
           flutter pub get
           flutter doctor -v
       - name: Build nessesary files
-        working-directory: /
+        working-directory: ./
         run: |
           dart run tools/generate.dart
       - name: 🏭 Build nightly
@@ -381,7 +389,7 @@ jobs:
           flutter pub get
           flutter doctor -v
       - name: Build nessesary files
-        working-directory: /
+        working-directory: ./
         run: |
           dart run tools/generate.dart
       - name: 🏭 Build
@@ -435,7 +443,7 @@ jobs:
           flutter pub get
           flutter doctor -v
       - name: Build nessesary files
-        working-directory: /
+        working-directory: ./
         run: |
           dart run tools/generate.dart
       - name: 🏭 Build
@@ -479,7 +487,7 @@ jobs:
   #         path: ${{ steps.build.outputs.snap }}    
   deploy:
     runs-on: ubuntu-22.04
-    if: github.event_name == 'push'
+    if: github.event_name != 'pull_request'
     outputs:
       version: ${{ steps.setup.outputs.QECK_VERSION }}
       build_number: ${{ steps.setup.outputs.QECK_BUILD_NUMBER }}
