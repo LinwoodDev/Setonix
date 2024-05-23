@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Linwood Quokka
+Comment=Play games everywhere you like 
+Exec=/usr/bin/linwood-quokka %f
+Icon=/usr/share/linwood-quokka/data/flutter_assets/images/logo.svg
+Terminal=false
+Type=Application
+Categories=Game;

@@ -7,12 +7,10 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:material_leap/l10n/leap_localizations.dart';
-import 'package:qeck/logic/connection/client.dart';
-import 'package:qeck/pages/board/page.dart';
-import 'package:qeck/pages/game/page.dart';
-import 'package:qeck/pages/home/page.dart';
-import 'package:qeck/services/network.dart';
-import 'package:qeck/theme.dart';
+import 'package:quokka/pages/board/page.dart';
+import 'package:quokka/pages/home/page.dart';
+import 'package:quokka/services/network.dart';
+import 'package:quokka/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:window_manager/window_manager.dart';
@@ -44,7 +42,7 @@ Future<void> main(List<String> args) async {
       value: settingsCubit,
       child: RepositoryProvider(
         create: (context) => NetworkingService(settingsCubit),
-        child: QeckApp(),
+        child: QuokkaApp(),
       ),
     ),
   );
@@ -74,8 +72,8 @@ List<Locale> getLocales() =>
         .where((l) => !kUnsupportedLanguages.contains(l.toString()))
         .toList();
 
-class QeckApp extends StatelessWidget {
-  QeckApp({super.key});
+class QuokkaApp extends StatelessWidget {
+  QuokkaApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +86,7 @@ class QeckApp extends StatelessWidget {
 
   Widget _buildApp(ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
     final virtualWindowFrameBuilder = VirtualWindowFrameInit();
-    return BlocBuilder<SettingsCubit, QeckSettings>(
+    return BlocBuilder<SettingsCubit, QuokkaSettings>(
         buildWhen: (previous, current) =>
             previous.design != current.design ||
             previous.theme != current.theme ||
@@ -124,20 +122,6 @@ class QeckApp extends StatelessWidget {
             _fadeTransitionBuilder((context, state) => const HomePage()),
         routes: [
           GoRoute(
-            path: 'game',
-            pageBuilder: _fadeTransitionBuilder(
-              (context, state) {
-                if (state.extra is! ClientGameConnection) {
-                  context.go('/');
-                  return const SizedBox.shrink();
-                }
-                return GamePage(
-                  connection: state.extra as ClientGameConnection,
-                );
-              },
-            ),
-          ),
-          GoRoute(
             path: 'board',
             pageBuilder: _fadeTransitionBuilder(
               (context, state) => BoardPage(),
@@ -158,6 +142,6 @@ class QeckApp extends StatelessWidget {
 const flavor = String.fromEnvironment('flavor');
 const isNightly =
     flavor == 'nightly' || flavor == 'dev' || flavor == 'development';
-const shortApplicationName = isNightly ? 'Qeck Nightly' : 'Qeck';
+const shortApplicationName = isNightly ? 'Quokka Nightly' : 'Quokka';
 const applicationName = 'Linwood $shortApplicationName';
 const applicationMinorVersion = '1.0';

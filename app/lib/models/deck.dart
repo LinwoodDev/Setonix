@@ -1,5 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:qeck/models/vector.dart';
+import 'package:quokka/models/vector.dart';
 
 part 'deck.mapper.dart';
 

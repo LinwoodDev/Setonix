@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:qeck/main.dart';
+import 'package:quokka/main.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'cubits/settings.dart';

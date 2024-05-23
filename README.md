@@ -2,7 +2,7 @@
 
 <img src="https://www.linwood.dev/logos/logo.png" width="350px" />
 
-# Qeck
+# Quokka
 
 > WIP: 🃏 Play games everywhere you like 🃏
 

@@ -1,2 +1,2 @@
 #!/bin/sh
-./qeck --path ./UserData
+./quokka --path ./UserData

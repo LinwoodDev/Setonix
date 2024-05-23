@@ -1,9 +1,9 @@
-Name:           linwood-qeck
+Name:           linwood-quokka
 Version:        1.0.0
 Release:        1%{?dist}
 Summary:        Play games everywhere you like
 BuildArch:      x86_64
-URL:            https://github.com/LinwoodDev/Qeck
+URL:            https://github.com/LinwoodDev/Quokka
 License:        AGPLv3
 Source0:        %{name}-%{version}.tar.gz
 

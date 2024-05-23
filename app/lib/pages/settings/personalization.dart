@@ -37,7 +37,7 @@ class PersonalizationSettingsPage extends StatelessWidget {
           backgroundColor: inView ? Colors.transparent : null,
           title: Text(AppLocalizations.of(context).personalization),
         ),
-        body: BlocBuilder<SettingsCubit, QeckSettings>(
+        body: BlocBuilder<SettingsCubit, QuokkaSettings>(
           builder: (context, state) {
             final design = state.design;
             return ListView(children: [

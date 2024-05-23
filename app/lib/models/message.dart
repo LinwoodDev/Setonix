@@ -1,5 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:qeck/models/state.dart';
+import 'package:quokka/models/state.dart';
 
 part 'message.mapper.dart';
 

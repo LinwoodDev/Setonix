@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:qeck/services/network.dart';
+import 'package:quokka/services/network.dart';
 
 class ConnectGameDialog extends StatelessWidget {
   final TextEditingController _urlController = TextEditingController();

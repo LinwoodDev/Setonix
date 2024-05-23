@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "dev.linwood" "\0"
-            VALUE "FileDescription", "Linwood Qeck" "\0"
+            VALUE "FileDescription", "Linwood Quokka" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "Linwood Qeck" "\0"
+            VALUE "InternalName", "Linwood Quokka" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 dev.linwood. All rights reserved." "\0"
-            VALUE "OriginalFilename", "qeck.exe" "\0"
-            VALUE "ProductName", "Linwood Qeck" "\0"
+            VALUE "OriginalFilename", "quokka.exe" "\0"
+            VALUE "ProductName", "Linwood Quokka" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

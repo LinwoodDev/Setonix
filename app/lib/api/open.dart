@@ -1,4 +1,4 @@
-import 'package:qeck/main.dart';
+import 'package:quokka/main.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Future<bool> openReleaseNotes() {
@@ -6,6 +6,6 @@ Future<bool> openReleaseNotes() {
       Uri(
           scheme: 'https',
           host: 'go.linwood.dev',
-          pathSegments: ['qeck', applicationMinorVersion]),
+          pathSegments: ['quokka', applicationMinorVersion]),
       mode: LaunchMode.externalApplication);
 }

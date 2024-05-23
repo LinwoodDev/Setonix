@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:qeck/pages/settings/packs.dart';
+import 'package:quokka/pages/settings/packs.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'general.dart';

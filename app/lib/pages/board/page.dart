@@ -4,15 +4,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:qeck/api/settings.dart';
-import 'package:qeck/game/world/game.dart';
-import 'package:qeck/main.dart';
-import 'package:qeck/pages/board/connect.dart';
-import 'package:qeck/pages/board/create.dart';
-import 'package:qeck/pages/board/servers.dart';
-import 'package:qeck/services/messenger.dart';
-import 'package:qeck/services/network.dart';
-import 'package:qeck/widgets/window.dart';
+import 'package:quokka/api/settings.dart';
+import 'package:quokka/game/world/game.dart';
+import 'package:quokka/main.dart';
+import 'package:quokka/pages/board/connect.dart';
+import 'package:quokka/pages/board/create.dart';
+import 'package:quokka/pages/board/servers.dart';
+import 'package:quokka/services/messenger.dart';
+import 'package:quokka/services/network.dart';
+import 'package:quokka/widgets/window.dart';
 
 class BoardPage extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();

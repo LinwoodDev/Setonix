@@ -1,6 +1,6 @@
 import 'package:networker/networker.dart';
-import 'package:qeck/models/message.dart';
-import 'package:qeck/services/messenger.dart';
+import 'package:quokka/models/message.dart';
+import 'package:quokka/services/messenger.dart';
 
 mixin GenericClientMessenger on NetworkMessenger {
   void sendUpdate(NetworkUpdateMessage event) {

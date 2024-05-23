@@ -1,19 +1,14 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:qeck/main.dart';
-import 'package:qeck/models/server.dart';
-import 'package:qeck/services/network.dart';
-import 'package:qeck/widgets/window.dart';
+import 'package:quokka/main.dart';
+import 'package:quokka/models/server.dart';
+import 'package:quokka/services/network.dart';
+import 'package:quokka/widgets/window.dart';
 
 import '../../api/settings.dart';
-import '../../logic/connection/client.dart';
-import '../../logic/connection/server.dart';
-import 'connect.dart';
-import 'create.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -52,41 +47,6 @@ class HomePage extends StatelessWidget {
                         PhosphorIconsLight.gridNine,
                         () => context.push('/board'),
                       ),
-                      (
-                        AppLocalizations.of(context).connect,
-                        PhosphorIconsLight.globe,
-                        () async {
-                          final address = await showDialog<Uri>(
-                            context: context,
-                            builder: (context) => const ConnectGameDialog(),
-                          );
-                          if (address == null) return;
-                          if (context.mounted) {
-                            final connection =
-                                ClientGameConnection.connect(address);
-                            context.push('/game', extra: connection);
-                          }
-                        },
-                      ),
-                      if (!kIsWeb)
-                        (
-                          AppLocalizations.of(context).create,
-                          PhosphorIconsLight.plus,
-                          () async {
-                            final property = await showDialog<GameProperty>(
-                              context: context,
-                              builder: (context) => const CreateGameDialog(),
-                            );
-                            if (property == null) return;
-                            if (context.mounted) {
-                              final connection =
-                                  await ClientServerGameConnection.create();
-                              if (context.mounted) {
-                                context.push('/game', extra: connection);
-                              }
-                            }
-                          },
-                        ),
                     ]
                         .map((e) => SizedBox(
                               height: 200,

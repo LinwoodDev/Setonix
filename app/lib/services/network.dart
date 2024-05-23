@@ -4,10 +4,10 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:networker_socket/client.dart';
 import 'package:networker_socket/server.dart';
-import 'package:qeck/cubits/settings.dart';
-import 'package:qeck/models/server.dart';
-import 'package:qeck/services/client.dart';
-import 'package:qeck/services/server.dart';
+import 'package:quokka/cubits/settings.dart';
+import 'package:quokka/models/server.dart';
+import 'package:quokka/services/client.dart';
+import 'package:quokka/services/server.dart';
 import 'package:rxdart/rxdart.dart';
 
 enum NetworkingSide {

@@ -5,7 +5,7 @@ slug: "/nightly"
 
 :::warning
 
-Do not use the nightly version of Qeck for production.
+Do not use the nightly version of Quokka for production.
 
 :::
 

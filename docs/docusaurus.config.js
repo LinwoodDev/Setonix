@@ -2,15 +2,15 @@ const redirects = require('./redirects.js');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
-    title: 'Linwood Qeck',
+    title: 'Linwood Quokka',
     tagline: 'Play games everywhere you like ',
-    url: 'https://docs.qeck.linwood.dev',
+    url: 'https://docs.quokka.linwood.dev',
     baseUrl: '/',
     onBrokenLinks: 'throw',
     onBrokenMarkdownLinks: 'warn',
     favicon: 'img/favicon.ico',
     organizationName: 'LinwoodDev', // Usually your GitHub org/user name.
-    projectName: 'Qeck', // Usually your repo name.
+    projectName: 'Quokka', // Usually your repo name.
     themeConfig: {
         colorMode: {
             defaultMode: 'dark',
@@ -18,9 +18,9 @@ module.exports = {
             respectPrefersColorScheme: true,
         },
         navbar: {
-            title: 'Qeck',
+            title: 'Quokka',
             logo: {
-                alt: 'Qeck Logo',
+                alt: 'Quokka Logo',
                 src: 'img/logo.svg',
             },
             items: [
@@ -57,7 +57,7 @@ module.exports = {
                         },
                         {
                             label: 'GitHub',
-                            href: 'https://github.com/LinwoodDev/Qeck',
+                            href: 'https://github.com/LinwoodDev/Quokka',
                         },
                         {
                             label: 'Blog', 
@@ -65,7 +65,7 @@ module.exports = {
                         },
                         {
                             label: 'Crowdin',
-                            href: 'https://go.linwood.dev/qeck/crowdin'
+                            href: 'https://go.linwood.dev/quokka/crowdin'
                         },
                         {
                             label: 'Twitter',
@@ -73,7 +73,7 @@ module.exports = {
                         },
                         {
                             label: 'License',
-                            href: 'https://go.linwood.dev/qeck/license',
+                            href: 'https://go.linwood.dev/quokka/license',
                         }
                     ],
                 },
@@ -106,7 +106,7 @@ module.exports = {
                         },
                         {
                             label: 'Contribution guide',
-                            href: 'https://github.com/LinwoodDev/Qeck/blob/develop/CONTRIBUTING.md',
+                            href: 'https://github.com/LinwoodDev/Quokka/blob/develop/CONTRIBUTING.md',
                         },
                         {
                             html: `
@@ -122,11 +122,11 @@ module.exports = {
                     items: [
                         {
                             label: 'App',
-                            href: 'https://github.com/LinwoodDev/Qeck/tree/develop/app',
+                            href: 'https://github.com/LinwoodDev/Quokka/tree/develop/app',
                         },
                         {
                             label: 'Docs',
-                            href: 'https://github.com/LinwoodDev/Qeck/tree/develop/docs',
+                            href: 'https://github.com/LinwoodDev/Quokka/tree/develop/docs',
                         }
                     ],
                 },
@@ -165,7 +165,7 @@ module.exports = {
                     sidebarPath: require.resolve('./sidebars.js'),
                     // Please change this to your repo.
                     editUrl:
-                        'https://github.com/LinwoodDev/Qeck/edit/develop/docs/',
+                        'https://github.com/LinwoodDev/Quokka/edit/develop/docs/',
                 },
                 blog: false,
                 theme: {

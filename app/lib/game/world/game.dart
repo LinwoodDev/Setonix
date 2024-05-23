@@ -8,10 +8,10 @@ import 'package:flame/game.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:qeck/game/world/inventory.dart';
-import 'package:qeck/game/world/player.dart';
-import 'package:qeck/game/world/wall.dart';
-import 'package:qeck/services/network.dart';
+import 'package:quokka/game/world/inventory.dart';
+import 'package:quokka/game/world/player.dart';
+import 'package:quokka/game/world/wall.dart';
+import 'package:quokka/services/network.dart';
 
 class SpacedSpriteSheet {
   final ui.Image image;

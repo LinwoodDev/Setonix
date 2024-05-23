@@ -20,6 +20,6 @@ All other licenses can you found in the settings.
 
 ## Useful links
 
-* [GitHub](https://github.com/LinwoodDev/Qeck)
+* [GitHub](https://github.com/LinwoodDev/Quokka)
 * [Discord](https://go.linwood.dev/discord)
 * [Matrix](https://go.linwood.dev/matrix)

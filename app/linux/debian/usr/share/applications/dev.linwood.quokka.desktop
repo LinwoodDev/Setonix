@@ -1,8 +1,8 @@
 [Desktop Entry]
-Name=Linwood Qeck
+Name=Linwood Quokka
 Comment=Play games everywhere you like 
-Exec=qeck %f
-Icon=dev.linwood.qeck
+Exec=quokka %f
+Icon=dev.linwood.quokka
 Terminal=false
 Type=Application
 Categories=Game;

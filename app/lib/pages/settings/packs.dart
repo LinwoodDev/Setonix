@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:qeck/cubits/settings.dart';
-import 'package:qeck/widgets/window.dart';
+import 'package:quokka/cubits/settings.dart';
+import 'package:quokka/widgets/window.dart';
 
 class PacksSettingsPage extends StatelessWidget {
   final bool inView;
@@ -21,7 +21,7 @@ class PacksSettingsPage extends StatelessWidget {
         backgroundColor: inView ? Colors.transparent : null,
         title: Text(AppLocalizations.of(context).packs),
       ),
-      body: BlocBuilder<SettingsCubit, QeckSettings>(
+      body: BlocBuilder<SettingsCubit, QuokkaSettings>(
         builder: (context, state) {
           return ListView(children: const []);
         },

@@ -6,43 +6,43 @@
 
 part of 'settings.dart';
 
-class QeckSettingsMapper extends ClassMapperBase<QeckSettings> {
-  QeckSettingsMapper._();
+class QuokkaSettingsMapper extends ClassMapperBase<QuokkaSettings> {
+  QuokkaSettingsMapper._();
 
-  static QeckSettingsMapper? _instance;
-  static QeckSettingsMapper ensureInitialized() {
+  static QuokkaSettingsMapper? _instance;
+  static QuokkaSettingsMapper ensureInitialized() {
     if (_instance == null) {
-      MapperContainer.globals.use(_instance = QeckSettingsMapper._());
+      MapperContainer.globals.use(_instance = QuokkaSettingsMapper._());
     }
     return _instance!;
   }
 
   @override
-  final String id = 'QeckSettings';
+  final String id = 'QuokkaSettings';
 
-  static String _$localeTag(QeckSettings v) => v.localeTag;
-  static const Field<QeckSettings, String> _f$localeTag =
+  static String _$localeTag(QuokkaSettings v) => v.localeTag;
+  static const Field<QuokkaSettings, String> _f$localeTag =
       Field('localeTag', _$localeTag, opt: true, def: '');
-  static ThemeMode _$theme(QeckSettings v) => v.theme;
-  static const Field<QeckSettings, ThemeMode> _f$theme =
+  static ThemeMode _$theme(QuokkaSettings v) => v.theme;
+  static const Field<QuokkaSettings, ThemeMode> _f$theme =
       Field('theme', _$theme, opt: true, def: ThemeMode.system);
-  static String _$design(QeckSettings v) => v.design;
-  static const Field<QeckSettings, String> _f$design =
+  static String _$design(QuokkaSettings v) => v.design;
+  static const Field<QuokkaSettings, String> _f$design =
       Field('design', _$design, opt: true, def: '');
-  static bool _$nativeTitleBar(QeckSettings v) => v.nativeTitleBar;
-  static const Field<QeckSettings, bool> _f$nativeTitleBar =
+  static bool _$nativeTitleBar(QuokkaSettings v) => v.nativeTitleBar;
+  static const Field<QuokkaSettings, bool> _f$nativeTitleBar =
       Field('nativeTitleBar', _$nativeTitleBar, opt: true, def: false);
 
   @override
-  final MappableFields<QeckSettings> fields = const {
+  final MappableFields<QuokkaSettings> fields = const {
     #localeTag: _f$localeTag,
     #theme: _f$theme,
     #design: _f$design,
     #nativeTitleBar: _f$nativeTitleBar,
   };
 
-  static QeckSettings _instantiate(DecodingData data) {
-    return QeckSettings(
+  static QuokkaSettings _instantiate(DecodingData data) {
+    return QuokkaSettings(
         localeTag: data.dec(_f$localeTag),
         theme: data.dec(_f$theme),
         design: data.dec(_f$design),
@@ -52,71 +52,73 @@ class QeckSettingsMapper extends ClassMapperBase<QeckSettings> {
   @override
   final Function instantiate = _instantiate;
 
-  static QeckSettings fromMap(Map<String, dynamic> map) {
-    return ensureInitialized().decodeMap<QeckSettings>(map);
+  static QuokkaSettings fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<QuokkaSettings>(map);
   }
 
-  static QeckSettings fromJson(String json) {
-    return ensureInitialized().decodeJson<QeckSettings>(json);
+  static QuokkaSettings fromJson(String json) {
+    return ensureInitialized().decodeJson<QuokkaSettings>(json);
   }
 }
 
-mixin QeckSettingsMappable {
+mixin QuokkaSettingsMappable {
   String toJson() {
-    return QeckSettingsMapper.ensureInitialized()
-        .encodeJson<QeckSettings>(this as QeckSettings);
+    return QuokkaSettingsMapper.ensureInitialized()
+        .encodeJson<QuokkaSettings>(this as QuokkaSettings);
   }
 
   Map<String, dynamic> toMap() {
-    return QeckSettingsMapper.ensureInitialized()
-        .encodeMap<QeckSettings>(this as QeckSettings);
+    return QuokkaSettingsMapper.ensureInitialized()
+        .encodeMap<QuokkaSettings>(this as QuokkaSettings);
   }
 
-  QeckSettingsCopyWith<QeckSettings, QeckSettings, QeckSettings> get copyWith =>
-      _QeckSettingsCopyWithImpl(this as QeckSettings, $identity, $identity);
+  QuokkaSettingsCopyWith<QuokkaSettings, QuokkaSettings, QuokkaSettings>
+      get copyWith => _QuokkaSettingsCopyWithImpl(
+          this as QuokkaSettings, $identity, $identity);
   @override
   String toString() {
-    return QeckSettingsMapper.ensureInitialized()
-        .stringifyValue(this as QeckSettings);
+    return QuokkaSettingsMapper.ensureInitialized()
+        .stringifyValue(this as QuokkaSettings);
   }
 
   @override
   bool operator ==(Object other) {
-    return QeckSettingsMapper.ensureInitialized()
-        .equalsValue(this as QeckSettings, other);
+    return QuokkaSettingsMapper.ensureInitialized()
+        .equalsValue(this as QuokkaSettings, other);
   }
 
   @override
   int get hashCode {
-    return QeckSettingsMapper.ensureInitialized()
-        .hashValue(this as QeckSettings);
+    return QuokkaSettingsMapper.ensureInitialized()
+        .hashValue(this as QuokkaSettings);
   }
 }
 
-extension QeckSettingsValueCopy<$R, $Out>
-    on ObjectCopyWith<$R, QeckSettings, $Out> {
-  QeckSettingsCopyWith<$R, QeckSettings, $Out> get $asQeckSettings =>
-      $base.as((v, t, t2) => _QeckSettingsCopyWithImpl(v, t, t2));
+extension QuokkaSettingsValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, QuokkaSettings, $Out> {
+  QuokkaSettingsCopyWith<$R, QuokkaSettings, $Out> get $asQuokkaSettings =>
+      $base.as((v, t, t2) => _QuokkaSettingsCopyWithImpl(v, t, t2));
 }
 
-abstract class QeckSettingsCopyWith<$R, $In extends QeckSettings, $Out>
+abstract class QuokkaSettingsCopyWith<$R, $In extends QuokkaSettings, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call(
       {String? localeTag,
       ThemeMode? theme,
       String? design,
       bool? nativeTitleBar});
-  QeckSettingsCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+  QuokkaSettingsCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
 }
 
-class _QeckSettingsCopyWithImpl<$R, $Out>
-    extends ClassCopyWithBase<$R, QeckSettings, $Out>
-    implements QeckSettingsCopyWith<$R, QeckSettings, $Out> {
-  _QeckSettingsCopyWithImpl(super.value, super.then, super.then2);
+class _QuokkaSettingsCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, QuokkaSettings, $Out>
+    implements QuokkaSettingsCopyWith<$R, QuokkaSettings, $Out> {
+  _QuokkaSettingsCopyWithImpl(super.value, super.then, super.then2);
 
   @override
-  late final ClassMapperBase<QeckSettings> $mapper =
-      QeckSettingsMapper.ensureInitialized();
+  late final ClassMapperBase<QuokkaSettings> $mapper =
+      QuokkaSettingsMapper.ensureInitialized();
   @override
   $R call(
           {String? localeTag,
@@ -130,14 +132,14 @@ class _QeckSettingsCopyWithImpl<$R, $Out>
         if (nativeTitleBar != null) #nativeTitleBar: nativeTitleBar
       }));
   @override
-  QeckSettings $make(CopyWithData data) => QeckSettings(
+  QuokkaSettings $make(CopyWithData data) => QuokkaSettings(
       localeTag: data.get(#localeTag, or: $value.localeTag),
       theme: data.get(#theme, or: $value.theme),
       design: data.get(#design, or: $value.design),
       nativeTitleBar: data.get(#nativeTitleBar, or: $value.nativeTitleBar));
 
   @override
-  QeckSettingsCopyWith<$R2, QeckSettings, $Out2> $chain<$R2, $Out2>(
+  QuokkaSettingsCopyWith<$R2, QuokkaSettings, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _QeckSettingsCopyWithImpl($value, $cast, t);
+      _QuokkaSettingsCopyWithImpl($value, $cast, t);
 }

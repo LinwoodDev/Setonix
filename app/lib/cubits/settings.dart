@@ -2,20 +2,20 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:qeck/widgets/window.dart';
+import 'package:quokka/widgets/window.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:window_manager/window_manager.dart';
 
 part 'settings.mapper.dart';
 
 @MappableClass()
-class QeckSettings with QeckSettingsMappable {
+class QuokkaSettings with QuokkaSettingsMappable {
   final String localeTag;
   final ThemeMode theme;
   final String design;
   final bool nativeTitleBar;
 
-  const QeckSettings({
+  const QuokkaSettings({
     this.localeTag = '',
     this.theme = ThemeMode.system,
     this.design = '',
@@ -32,7 +32,7 @@ class QeckSettings with QeckSettingsMappable {
     return Locale(localeTag);
   }
 
-  factory QeckSettings.fromPrefs(SharedPreferences prefs) => QeckSettings(
+  factory QuokkaSettings.fromPrefs(SharedPreferences prefs) => QuokkaSettings(
         theme: ThemeMode.values.byName(prefs.getString('theme') ?? 'system'),
         design: prefs.getString('design') ?? '',
         nativeTitleBar: prefs.getBool('nativeTitleBar') ?? false,
@@ -48,8 +48,9 @@ class QeckSettings with QeckSettingsMappable {
   }
 }
 
-class SettingsCubit extends Cubit<QeckSettings> {
-  SettingsCubit(SharedPreferences prefs) : super(QeckSettings.fromPrefs(prefs));
+class SettingsCubit extends Cubit<QuokkaSettings> {
+  SettingsCubit(SharedPreferences prefs)
+      : super(QuokkaSettings.fromPrefs(prefs));
 
   Future<void> changeTheme(ThemeMode theme) {
     emit(state.copyWith(theme: theme));

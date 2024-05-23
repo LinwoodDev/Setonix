@@ -1,2 +1,2 @@
 @ECHO OFF
-START "" "%~dp0qeck.exe" --path "%~dp0UserData"
+START "" "%~dp0quokka.exe" --path "%~dp0UserData"

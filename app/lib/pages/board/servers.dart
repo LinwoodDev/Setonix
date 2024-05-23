@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:qeck/models/info.dart';
+import 'package:quokka/models/info.dart';
 
 const ServersInfo serversInfo = ServersInfo(
   official: [
     ServerInfo(
       name: 'Official Server',
-      description: 'The official Qeck server',
-      address: 'qeck.linwood.dev',
+      description: 'The official Quokka server',
+      address: 'quokka.linwood.dev',
     ),
   ],
   community: [
     ServerInfo(
       name: 'Community Server',
-      description: 'The community Qeck server',
-      address: 'qeck.linwood.dev',
+      description: 'The community Quokka server',
+      address: 'quokka.linwood.dev',
     ),
   ],
 );

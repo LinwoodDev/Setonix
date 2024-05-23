@@ -3,10 +3,10 @@ title: "Selfhosting"
 sidebar_position: 5
 ---
 
-![Stable release version](https://img.shields.io/badge/dynamic/yaml?color=c4840d&label=Stable&query=%24.version&url=https%3A%2F%2Fraw.githubusercontent.com%2FLinwoodDev%2Fqeck%2Fstable%2Fapp%2Fpubspec.yaml&style=for-the-badge)
-![Nightly release version](https://img.shields.io/badge/dynamic/yaml?color=f7d28c&label=Nightly&query=%24.version&url=https%3A%2F%2Fraw.githubusercontent.com%2FLinwoodDev%2Fqeck%2Fnightly%2Fapp%2Fpubspec.yaml&style=for-the-badge)
+![Stable release version](https://img.shields.io/badge/dynamic/yaml?color=c4840d&label=Stable&query=%24.version&url=https%3A%2F%2Fraw.githubusercontent.com%2FLinwoodDev%2Fquokka%2Fstable%2Fapp%2Fpubspec.yaml&style=for-the-badge)
+![Nightly release version](https://img.shields.io/badge/dynamic/yaml?color=f7d28c&label=Nightly&query=%24.version&url=https%3A%2F%2Fraw.githubusercontent.com%2FLinwoodDev%2Fquokka%2Fnightly%2Fapp%2Fpubspec.yaml&style=for-the-badge)
 
-It is very easy to host your own qeck web server.
+It is very easy to host your own quokka web server.
 
 ## Simple server
 
@@ -23,6 +23,6 @@ All the files are in the `app/build/web` directory.
 
 ## Docker
 
-Clone the repository and build the `Dockerfile` using: `docker build -t linwood-qeck`.
-Start the server using: `docker run -p 8080:8080 -d linwood-qeck`.
+Clone the repository and build the `Dockerfile` using: `docker build -t linwood-quokka`.
+Start the server using: `docker run -p 8080:8080 -d linwood-quokka`.
 

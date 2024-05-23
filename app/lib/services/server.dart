@@ -1,8 +1,8 @@
 import 'package:networker/networker.dart';
-import 'package:qeck/models/message.dart';
-import 'package:qeck/models/state.dart';
-import 'package:qeck/services/client.dart';
-import 'package:qeck/services/messenger.dart';
+import 'package:quokka/models/message.dart';
+import 'package:quokka/models/state.dart';
+import 'package:quokka/services/client.dart';
+import 'package:quokka/services/messenger.dart';
 
 class ServerMessenger extends NetworkMessenger {
   @override

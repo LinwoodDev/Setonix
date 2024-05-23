@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:networker/networker.dart';
-import 'package:qeck/models/message.dart';
-import 'package:qeck/models/state.dart';
+import 'package:quokka/models/message.dart';
+import 'package:quokka/models/state.dart';
 import 'package:rxdart/rxdart.dart';
 
 abstract class NetworkMessenger<Event> {

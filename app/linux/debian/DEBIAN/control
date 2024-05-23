@@ -1,9 +1,9 @@
-Package: linwood-qeck
+Package: linwood-quokka
 Version: 1.0.0
 Section: base
 Priority: optional
-Homepage: https://github.com/LinwoodDev/Qeck
+Homepage: https://github.com/LinwoodDev/Quokka
 Architecture: amd64
 Maintainer: Linwood <contact@linwood.dev>
-Description: Linwood Qeck
+Description: Linwood Quokka
   Play games everywhere you like

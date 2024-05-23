@@ -28,7 +28,7 @@ module.exports = {
     },
     {
       type: 'link',
-      href: 'https://github.com/LinwoodDev/Qeck',
+      href: 'https://github.com/LinwoodDev/Quokka',
       label: 'GitHub'
     }
   ],

@@ -7,8 +7,8 @@ sidebar_position: 3
 import DownloadButton from '@site/src/components/DownloadButton.tsx';
 ```
 
-![Stable release version](https://img.shields.io/badge/dynamic/yaml?color=c4840d&label=Stable&query=%24.version&url=https%3A%2F%2Fraw.githubusercontent.com%2FLinwoodDev%2Fqeck%2Fstable%2Fapp%2Fpubspec.yaml&style=for-the-badge)
-![Nightly release version](https://img.shields.io/badge/dynamic/yaml?color=f7d28c&label=Nightly&query=%24.version&url=https%3A%2F%2Fraw.githubusercontent.com%2FLinwoodDev%2Fqeck%2Fnightly%2Fapp%2Fpubspec.yaml&style=for-the-badge)
+![Stable release version](https://img.shields.io/badge/dynamic/yaml?color=c4840d&label=Stable&query=%24.version&url=https%3A%2F%2Fraw.githubusercontent.com%2FLinwoodDev%2Fquokka%2Fstable%2Fapp%2Fpubspec.yaml&style=for-the-badge)
+![Nightly release version](https://img.shields.io/badge/dynamic/yaml?color=f7d28c&label=Nightly&query=%24.version&url=https%3A%2F%2Fraw.githubusercontent.com%2FLinwoodDev%2Fquokka%2Fnightly%2Fapp%2Fpubspec.yaml&style=for-the-badge)
 
 :::note
 
@@ -24,17 +24,17 @@ Otherwise you need to install `libsecret-1-dev` and `libjsoncpp-dev`.
   <button className="button button--outline button--info button--lg">Stable</button>
   <ul className="dropdown__menu">
     <li>
-      <DownloadButton className="dropdown__link" href="https://github.com/LinwoodDev/qeck/releases/download/stable/linwood-qeck-linux.tar.gz">
+      <DownloadButton className="dropdown__link" href="https://github.com/LinwoodDev/quokka/releases/download/stable/linwood-quokka-linux.tar.gz">
         Portable
       </DownloadButton>
     </li>
     <li>
-      <DownloadButton className="dropdown__link" href="https://github.com/LinwoodDev/qeck/releases/download/stable/linwood-qeck-linux.deb">
+      <DownloadButton className="dropdown__link" href="https://github.com/LinwoodDev/quokka/releases/download/stable/linwood-quokka-linux.deb">
         DEB
       </DownloadButton>
     </li>
     <li>
-      <DownloadButton className="dropdown__link" href="https://github.com/LinwoodDev/qeck/releases/download/stable/linwood-qeck-linux.AppImage">
+      <DownloadButton className="dropdown__link" href="https://github.com/LinwoodDev/quokka/releases/download/stable/linwood-quokka-linux.AppImage">
         AppImage
       </DownloadButton>
     </li>
@@ -44,17 +44,17 @@ Otherwise you need to install `libsecret-1-dev` and `libjsoncpp-dev`.
   <button className="button button--outline button--danger button--lg">Nightly</button>
   <ul className="dropdown__menu">
     <li>
-      <DownloadButton className="dropdown__link" href="https://github.com/LinwoodDev/qeck/releases/download/nightly/linwood-qeck-linux.tar.gz">
+      <DownloadButton className="dropdown__link" href="https://github.com/LinwoodDev/quokka/releases/download/nightly/linwood-quokka-linux.tar.gz">
         Portable
       </DownloadButton>
     </li>
     <li>
-      <DownloadButton className="dropdown__link" href="https://github.com/LinwoodDev/qeck/releases/download/nightly/linwood-qeck-linux.deb">
+      <DownloadButton className="dropdown__link" href="https://github.com/LinwoodDev/quokka/releases/download/nightly/linwood-quokka-linux.deb">
         DEB
       </DownloadButton>
     </li>
     <li>
-      <DownloadButton className="dropdown__link" href="https://github.com/LinwoodDev/qeck/releases/download/nightly/linwood-qeck-linux.AppImage">
+      <DownloadButton className="dropdown__link" href="https://github.com/LinwoodDev/quokka/releases/download/nightly/linwood-quokka-linux.AppImage">
         AppImage
       </DownloadButton>
     </li>
@@ -62,15 +62,15 @@ Otherwise you need to install `libsecret-1-dev` and `libjsoncpp-dev`.
 </div>
 </div>
 
-Read more about the nightly version of Qeck [here](/nightly).
+Read more about the nightly version of Quokka [here](/nightly).
 
 ## Stores
 
 <div className="row margin-bottom--lg padding--sm">
-<a className="button button--outline button--primary button--lg margin--sm" href="https://flathub.org/apps/details/dev.linwood.qeck">
+<a className="button button--outline button--primary button--lg margin--sm" href="https://flathub.org/apps/details/dev.linwood.quokka">
   Flathub
 </a>
-<a className="button button--outline button--primary button--lg margin--sm" href="https://snapcraft.io/qeck">
+<a className="button button--outline button--primary button--lg margin--sm" href="https://snapcraft.io/quokka">
   Snap
 </a>
 </div>
