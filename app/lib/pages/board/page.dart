@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:quokka/api/settings.dart';
+import 'package:quokka/cubits/settings.dart';
 import 'package:quokka/game/world/game.dart';
 import 'package:quokka/main.dart';
 import 'package:quokka/pages/board/connect.dart';
@@ -12,7 +14,6 @@ import 'package:quokka/pages/board/create.dart';
 import 'package:quokka/pages/board/servers.dart';
 import 'package:quokka/services/messenger.dart';
 import 'package:quokka/services/network.dart';
-import 'package:quokka/widgets/window.dart';
 
 class BoardPage extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
@@ -24,7 +25,7 @@ class BoardPage extends StatelessWidget {
     final networkingService = context.read<NetworkingService>();
     return Scaffold(
       key: _scaffoldKey,
-      appBar: const WindowTitleBar(
+      appBar: const WindowTitleBar<SettingsCubit, QuokkaSettings>(
         onlyShowOnDesktop: true,
         title: Text(applicationName),
       ),

@@ -2,14 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:material_leap/material_leap.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:quokka/api/open.dart';
+import 'package:quokka/cubits/settings.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
-
-import '../../widgets/window.dart';
 
 @immutable
 class Meta {
@@ -59,7 +59,7 @@ class GeneralSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: inView ? Colors.transparent : null,
-        appBar: WindowTitleBar(
+        appBar: WindowTitleBar<SettingsCubit, QuokkaSettings>(
           title: Text(AppLocalizations.of(context).general),
           backgroundColor: inView ? Colors.transparent : null,
           inView: inView,

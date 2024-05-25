@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:quokka/models/pack.dart';
+import 'package:quokka/models/definitions/pack.dart';
 
 class PacksService {
   final PackData? _corePack;

@@ -2,17 +2,18 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:quokka/widgets/window.dart';
+import 'package:material_leap/material_leap.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:window_manager/window_manager.dart';
 
 part 'settings.mapper.dart';
 
 @MappableClass()
-class QuokkaSettings with QuokkaSettingsMappable {
+class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
   final String localeTag;
   final ThemeMode theme;
   final String design;
+  @override
   final bool nativeTitleBar;
 
   const QuokkaSettings({
@@ -48,7 +49,8 @@ class QuokkaSettings with QuokkaSettingsMappable {
   }
 }
 
-class SettingsCubit extends Cubit<QuokkaSettings> {
+class SettingsCubit extends Cubit<QuokkaSettings>
+    with LeapSettingsStreamableMixin<QuokkaSettings> {
   SettingsCubit(SharedPreferences prefs)
       : super(QuokkaSettings.fromPrefs(prefs));
 

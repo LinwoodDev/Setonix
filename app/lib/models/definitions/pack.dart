@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:archive/archive.dart';
 import 'package:flutter/services.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:quokka/models/deck.dart';
-import 'package:quokka/models/meta.dart';
-import 'package:quokka/models/object.dart';
+import 'package:quokka/models/definitions/deck.dart';
+import 'package:quokka/models/definitions/meta.dart';
+import 'package:quokka/models/definitions/object.dart';
 
 const kPackMetadataPath = 'pack.json';
 const kPackDecksPath = 'decks';

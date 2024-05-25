@@ -13,18 +13,52 @@ class GridLocation with GridLocationMappable {
 class GameTable with GameTableMappable {
   final Map<GridLocation, TableCell> cells;
   final Map<GridLocation, GameBoard> boards;
+  final Map<String, GameSeat> seats;
+  final Map<String, GamePlayer> players;
 
   GameTable({
     this.cells = const {},
     this.boards = const {},
+    this.seats = const {},
+    this.players = const {},
+  });
+}
+
+@MappableClass()
+class GamePlayer with GamePlayerMappable {
+  final String name;
+  final List<String>? teams;
+
+  GamePlayer({
+    required this.name,
+    this.teams = const [],
+  });
+}
+
+@MappableClass()
+class GameSeat with GameSeatMappable {
+  final int? color;
+
+  GameSeat({
+    this.color,
   });
 }
 
 @MappableClass()
 class TableCell with TableCellMappable {
   final List<GameObject> objects;
+  final String? team;
+  final int reveal;
+  final int? teamReveal;
 
-  TableCell(this.objects);
+  TableCell({
+    this.objects = const [],
+    this.team,
+    this.reveal = -1,
+    this.teamReveal,
+  });
+
+  int get teamRevealValue => teamReveal ?? reveal;
 }
 
 @MappableClass()

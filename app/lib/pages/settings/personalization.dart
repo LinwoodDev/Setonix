@@ -11,7 +11,6 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../../cubits/settings.dart';
 import '../../main.dart';
 import '../../theme.dart';
-import '../../widgets/window.dart';
 
 class PersonalizationSettingsPage extends StatelessWidget {
   final bool inView;
@@ -32,7 +31,7 @@ class PersonalizationSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: inView ? Colors.transparent : null,
-        appBar: WindowTitleBar(
+        appBar: WindowTitleBar<SettingsCubit, QuokkaSettings>(
           inView: inView,
           backgroundColor: inView ? Colors.transparent : null,
           title: Text(AppLocalizations.of(context).personalization),
