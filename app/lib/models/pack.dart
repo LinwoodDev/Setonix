@@ -11,7 +11,6 @@ const kPackDecksPath = 'decks';
 const kPackFiguresPath = 'decks';
 const kPackBoardsPath = 'boards';
 const kPackTexturesPath = 'textures';
-const kPackTranslationsPath = 'translations';
 
 class PackData {
   final Archive archive;
@@ -69,30 +68,11 @@ class PackData {
   Iterable<String> getBoards() => getAssets(kPackBoardsPath);
 
   BoardDefinition? getBoard(String id) {
-    try {
-      final data = getAsset('$kPackBoardsPath/$id.json');
-      if (data == null) return null;
-      final content = utf8.decode(data);
-      return BoardDefinitionMapper.fromJson(content);
-    } catch (e) {
-      return null;
-    }
+    final data = getAsset('$kPackBoardsPath/$id.json');
+    if (data == null) return null;
+    final content = utf8.decode(data);
+    return BoardDefinitionMapper.fromJson(content);
   }
 
   Uint8List? getTexture(String path) => getAsset('$kPackTexturesPath/$path');
-
-  String? getTranslation(String path, String key) {
-    try {
-      final data = getAsset('$kPackTranslationsPath/$path.json');
-      if (data == null) return null;
-      final content = utf8.decode(data);
-      final map = json.decode(content);
-      return map[key];
-    } catch (e) {
-      return null;
-    }
-  }
-
-  String getTranslationOrKey(String path, String key) =>
-      getTranslation(path, key) ?? key;
 }

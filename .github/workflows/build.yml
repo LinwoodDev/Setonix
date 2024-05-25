@@ -40,6 +40,9 @@ jobs:
       - name: Build nessesary files
         working-directory: ./
         run: |
+          cd tools
+          dart pub get
+          cd ..
           dart run tools/generate.dart
       - name: Import files
         if: ${{ github.event_name != 'pull_request' }}
@@ -122,6 +125,9 @@ jobs:
       - name: Build nessesary files
         working-directory: ./
         run: |
+          cd tools
+          dart pub get
+          cd ..
           dart run tools/generate.dart
       - name: 🏭 Build nightly
         if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.prerelease) }}
@@ -205,6 +211,9 @@ jobs:
       - name: Build nessesary files
         working-directory: ./
         run: |
+          cd tools
+          dart pub get
+          cd ..
           dart run tools/generate.dart
       - name: 🏭 Build nightly
         if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.prerelease) }}
@@ -320,6 +329,9 @@ jobs:
       - name: Build nessesary files
         working-directory: ./
         run: |
+          cd tools
+          dart pub get
+          cd ..
           dart run tools/generate.dart
       - name: 🏭 Build nightly
         if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.prerelease) }}
@@ -391,6 +403,9 @@ jobs:
       - name: Build nessesary files
         working-directory: ./
         run: |
+          cd tools
+          dart pub get
+          cd ..
           dart run tools/generate.dart
       - name: 🏭 Build
         run: |
@@ -445,6 +460,9 @@ jobs:
       - name: Build nessesary files
         working-directory: ./
         run: |
+          cd tools
+          dart pub get
+          cd ..
           dart run tools/generate.dart
       - name: 🏭 Build
         run: |

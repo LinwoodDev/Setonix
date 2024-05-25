@@ -78,5 +78,6 @@
   "official": "Official",
   "community": "Community",
   "systemLocale": "System locale",
-  "packs": "Packs"
+  "packs": "Packs",
+  "checkForUpdatesWarning": "Performing a check for updates will connect to the Butterfly website to get the information."
 }

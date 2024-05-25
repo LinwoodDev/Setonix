@@ -28,12 +28,14 @@
 
 **This project is still in development and not ready for production use. Please join the matrix or discord server for updates!**
 
+**Click [here](https://github.com/LinwoodDev/Quokka/discussions/26) to read about the concept and share your thoughts!**
+
 ## Features
 
-* Play games with your friends
-* Multiple connection types: Bluetooth, LAN and server
+* Play games with your friends or alone
+* No internet connection required to play together
 * Configure if you want to play with or without rules
 * Create custom cards, board and dices
-* Develop your custom rules with webassembly
+* Develop your custom rules with lua
 * Pack them all into a package and share it with your friends
-* Load the wasm in the server and the client
+* Load the rules in the server and the client

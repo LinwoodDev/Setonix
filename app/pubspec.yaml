@@ -73,7 +73,6 @@ dependencies:
   dynamic_color: ^1.7.0
   rxdart: ^0.27.7
   collection: ^1.18.0
-  freezed_annotation: ^2.4.1
   dart_mappable: ^4.2.2
   archive: ^3.4.10
 
@@ -82,8 +81,6 @@ dev_dependencies:
     sdk: flutter
   build_runner: ^2.4.9
   flutter_lints: ^4.0.0
-  freezed: ^2.5.2
-  json_serializable: ^6.7.1
   dart_mappable_builder: ^4.2.3
   integration_test:
     sdk: flutter

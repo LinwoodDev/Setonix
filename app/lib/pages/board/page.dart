@@ -11,7 +11,6 @@ import 'package:quokka/game/world/game.dart';
 import 'package:quokka/main.dart';
 import 'package:quokka/pages/board/connect.dart';
 import 'package:quokka/pages/board/create.dart';
-import 'package:quokka/pages/board/servers.dart';
 import 'package:quokka/services/messenger.dart';
 import 'package:quokka/services/network.dart';
 
@@ -72,17 +71,6 @@ class BoardPage extends StatelessWidget {
                         },
                       ),
                     ] else ...[
-                      ListTile(
-                        leading: const PhosphorIcon(PhosphorIconsLight.list),
-                        title: Text(AppLocalizations.of(context).servers),
-                        onTap: () async {
-                          await showDialog(
-                            context: context,
-                            builder: (_) => const GameServersDialog(),
-                          );
-                          if (context.mounted) Navigator.of(context).pop();
-                        },
-                      ),
                       ListTile(
                         leading: const PhosphorIcon(
                             PhosphorIconsLight.plugsConnected),

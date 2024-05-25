@@ -5,10 +5,10 @@ packages:
     dependency: "direct main"
     description:
       name: archive
-      sha256: "22600aa1e926be775fa5fe7e6894e7fb3df9efda8891c73f70fb3262399a432d"
+      sha256: "6bd38d335f0954f5fad9c79e614604fbf03a0e5b975923dd001b6ea965ef5b4b"
       url: "https://pub.dev"
     source: hosted
-    version: "3.4.10"
+    version: "3.6.0"
   args:
     dependency: "direct main"
     description:
@@ -81,14 +81,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.19.0"
-  js:
-    dependency: transitive
-    description:
-      name: js
-      sha256: c1b2e9b5ea78c45e1a0788d29606ba27dc5f71f019f32ca5140f61ef071838cf
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.7.1"
   lints:
     dependency: "direct main"
     description:
@@ -101,10 +93,10 @@ packages:
     dependency: transitive
     description:
       name: meta
-      sha256: "25dfcaf170a0190f47ca6355bdd4552cb8924b430512ff0cafb8db9bd41fe33b"
+      sha256: bdb68674043280c3428e9ec998512fb681678676b3c54e773629ffe74419f8c7
       url: "https://pub.dev"
     source: hosted
-    version: "1.14.0"
+    version: "1.15.0"
   mime:
     dependency: transitive
     description:
@@ -121,14 +113,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.0"
-  pointycastle:
-    dependency: transitive
-    description:
-      name: pointycastle
-      sha256: "79fbafed02cfdbe85ef3fd06c7f4bc2cbcba0177e61b765264853d4253b21744"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.9.0"
   shelf:
     dependency: "direct main"
     description:
