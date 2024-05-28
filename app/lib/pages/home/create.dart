@@ -13,6 +13,7 @@ class _CreateDialogState extends State<CreateDialog>
     with TickerProviderStateMixin {
   late final TabController _tabController, _customTabController;
   final PageController _pageController = PageController(keepPage: true);
+  final GlobalKey _pageKey = GlobalKey();
   bool _infoView = false;
 
   @override
@@ -20,11 +21,6 @@ class _CreateDialogState extends State<CreateDialog>
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
     _customTabController = TabController(length: 2, vsync: this);
-    _pageController.addListener(() {
-      setState(() {
-        _infoView = _pageController.page?.toInt() == 1;
-      });
-    });
   }
 
   @override
@@ -155,6 +151,7 @@ class _CreateDialogState extends State<CreateDialog>
         );
         return IndexedStack(
           index: isMobile ? 0 : 1,
+          key: _pageKey,
           children: [
             PageView(
               controller: _pageController,
@@ -162,7 +159,8 @@ class _CreateDialogState extends State<CreateDialog>
                 selections,
                 details,
               ],
-              onPageChanged: (value) => setState(() => _infoView = value == 1),
+              onPageChanged: (value) =>
+                  setState(() => _infoView = value.toInt() == 1),
             ),
             Row(
               children: [
