@@ -4,7 +4,8 @@ import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:quokka/cubits/settings.dart';
 import 'package:quokka/main.dart';
-import 'package:quokka/pages/packs/dialog.dart';
+import 'package:quokka/pages/home/packs.dart';
+import 'package:quokka/pages/home/play.dart';
 
 import '../../api/settings.dart';
 
@@ -49,7 +50,9 @@ class HomePage extends StatelessWidget {
                               (
                                 'Play',
                                 PhosphorIconsLight.play,
-                                () => context.push('/board'),
+                                () => showDialog(
+                                    context: context,
+                                    builder: (context) => const PlayDialog()),
                               ),
                               (
                                 'Connect',

@@ -358,18 +358,18 @@ packages:
     dependency: "direct main"
     description:
       name: flame
-      sha256: da1812e2f17a8ffd5d43ea6a83137794e7f482bcf50419bc9847b8efdb39f791
+      sha256: "79133dc46a3ff870950f41d0dc1598414e7bd7ae2c29bd9f0a9de208d9a70cb7"
       url: "https://pub.dev"
     source: hosted
-    version: "1.17.0"
+    version: "1.18.0"
   flame_tiled:
     dependency: "direct main"
     description:
       name: flame_tiled
-      sha256: ab052d0ef9f9bc29fae878955870c575ed50d020d734e4172f9f500d56a9b04a
+      sha256: "519dc91412dc617203ed182712c2d44343ce2ab103ab81921cd4032b10b0cc2b"
       url: "https://pub.dev"
     source: hosted
-    version: "1.20.1"
+    version: "1.20.2"
   flex_color_scheme:
     dependency: "direct main"
     description:
@@ -610,8 +610,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/material_leap"
-      ref: "06057f70ab2fd5f6a001821c326d14a1f06eff08"
-      resolved-ref: "06057f70ab2fd5f6a001821c326d14a1f06eff08"
+      ref: "631752620ffa6be5285a6c10863ea4699c361751"
+      resolved-ref: "631752620ffa6be5285a6c10863ea4699c361751"
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "0.0.1"
@@ -1248,4 +1248,4 @@ packages:
     version: "3.1.2"
 sdks:
   dart: ">=3.4.0 <4.0.0"
-  flutter: ">=3.19.0"
+  flutter: ">=3.22.0"

@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:material_leap/l10n/leap_localizations.dart';
+import 'package:material_leap/material_leap.dart';
 import 'package:quokka/pages/board/page.dart';
 import 'package:quokka/pages/home/page.dart';
 import 'package:quokka/services/network.dart';
@@ -38,8 +39,12 @@ Future<void> main(List<String> args) async {
 
   await setup(settingsCubit);
   runApp(
-    BlocProvider.value(
-      value: settingsCubit,
+    MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: settingsCubit),
+        BlocProvider.value(
+            value: WindowCubit(fullScreen: await isFullScreen())),
+      ],
       child: RepositoryProvider(
         create: (context) => NetworkingService(settingsCubit),
         child: QuokkaApp(),

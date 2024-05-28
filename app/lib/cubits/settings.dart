@@ -50,7 +50,7 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
 }
 
 class SettingsCubit extends Cubit<QuokkaSettings>
-    with LeapSettingsStreamableMixin<QuokkaSettings> {
+    with LeapSettingsBlocBaseMixin<QuokkaSettings> {
   SettingsCubit(SharedPreferences prefs)
       : super(QuokkaSettings.fromPrefs(prefs));
 
