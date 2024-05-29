@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:quokka/cubits/settings.dart';
 import 'package:quokka/main.dart';
+import 'package:quokka/pages/home/connect.dart';
 import 'package:quokka/pages/home/packs.dart';
 import 'package:quokka/pages/home/play.dart';
 
@@ -57,7 +57,10 @@ class HomePage extends StatelessWidget {
                               (
                                 'Connect',
                                 PhosphorIconsLight.plugsConnected,
-                                () => context.push('/board'),
+                                () => showDialog(
+                                    context: context,
+                                    builder: (context) =>
+                                        const ConnectDialog()),
                               ),
                               (
                                 'Packs',

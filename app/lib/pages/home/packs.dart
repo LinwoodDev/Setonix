@@ -85,6 +85,9 @@ class _PacksDialogState extends State<PacksDialog>
                 Center(
                   child: Text(AppLocalizations.of(context).comingSoon),
                 ),
+                Center(
+                  child: Text(AppLocalizations.of(context).comingSoon),
+                ),
               ],
             ),
           ),
