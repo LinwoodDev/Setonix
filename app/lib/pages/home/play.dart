@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:quokka/pages/home/create.dart';
@@ -17,7 +18,7 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final games = List.generate(30, (index) => 'Game ${index + 1}');
     return ResponsiveAlertDialog(
-      title: const Text('Play'),
+      title: Text(AppLocalizations.of(context).play),
       constraints: const BoxConstraints(
         maxWidth: LeapBreakpoints.compact,
       ),
@@ -77,7 +78,7 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
                       context: context,
                       builder: (context) => const CreateDialog(),
                     ),
-                    label: const Text('Create'),
+                    label: Text(AppLocalizations.of(context).create),
                     icon: const Icon(PhosphorIconsLight.plus),
                   ),
           ),

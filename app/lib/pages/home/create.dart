@@ -71,13 +71,15 @@ class _CreateDialogState extends State<CreateDialog>
               ),
               Column(children: [
                 TabBar.secondary(
-                  tabs: const [
+                  tabs: [
                     HorizontalTab(
-                        label: Text('Packs'),
-                        icon: Icon(PhosphorIconsLight.package)),
+                      label: Text(AppLocalizations.of(context).packs),
+                      icon: const Icon(PhosphorIconsLight.package),
+                    ),
                     HorizontalTab(
-                        label: Text('Configuration'),
-                        icon: Icon(PhosphorIconsLight.wrench)),
+                      label: Text(AppLocalizations.of(context).configuration),
+                      icon: const Icon(PhosphorIconsLight.wrench),
+                    ),
                   ],
                   tabAlignment: TabAlignment.center,
                   controller: _customTabController,
@@ -103,7 +105,8 @@ class _CreateDialogState extends State<CreateDialog>
                         ListView(
                           children: [
                             ListTile(
-                              title: const Text('Background'),
+                              title:
+                                  Text(AppLocalizations.of(context).background),
                               subtitle: const Text('Not set'),
                               onTap: () => Navigator.of(context).pop(),
                             ),

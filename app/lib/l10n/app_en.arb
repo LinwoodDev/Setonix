@@ -85,5 +85,9 @@
   "custom": "Custom",
   "installed": "Installed",
   "details": "Details",
-  "play": "Play"
+  "play": "Play",
+  "configuration": "Configuration",
+  "background": "Background",
+  "search": "Search",
+  "onlyFavorites": "Only favorites"
 }

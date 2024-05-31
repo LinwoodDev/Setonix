@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:quokka/widgets/search.dart';
 
 class ConnectDialog extends StatefulWidget {
   const ConnectDialog({super.key});
@@ -20,22 +21,41 @@ class _ConnectDialogState extends State<ConnectDialog> {
     final servers = List.generate(10, (index) => 'Server ${index + 1}');
     final currentIndex = _selectedIndex;
     final detailsChildren = [
-      const Text(
-        '''Labore commodo amet nisi ad ad aliquip minim. Do minim eiusmod sunt pariatur ullamco mollit nulla consequat enim Lorem deserunt amet. Velit cupidatat officia elit consectetur cillum culpa sunt pariatur magna cupidatat culpa. Occaecat ad mollit qui laboris do nostrud.
-
-Ad id adipisicing sunt laboris mollit deserunt id adipisicing culpa. Consequat amet ea velit culpa quis nostrud ullamco ipsum aliquip nostrud labore ipsum irure. Proident aliquip nulla labore aliquip tempor minim velit excepteur ipsum incididunt. Dolore tempor officia voluptate ipsum. Et occaecat deserunt sint id incididunt nisi duis commodo elit pariatur magna voluptate. Id incididunt minim consequat irure laboris culpa laborum ipsum. Dolor fugiat laborum dolor sint adipisicing fugiat.
-
-Lorem ullamco laboris do proident occaecat mollit aliquip minim. Do irure consectetur ut do laborum deserunt aliquip dolore consectetur eu. Cupidatat consequat ea occaecat reprehenderit minim voluptate fugiat cillum do labore in. Ullamco eiusmod occaecat eu voluptate elit cupidatat non proident. Reprehenderit Lorem elit est commodo in duis Lorem sunt esse.
-
-Nisi sunt irure consectetur officia occaecat. Elit do consequat sit laboris laboris sunt est ex. Amet laboris aliqua nisi anim incididunt pariatur ex. Duis eiusmod Lorem aliqua minim eiusmod laborum sit nulla. Officia eu cupidatat veniam ad mollit sint consectetur laboris elit ipsum. Laborum officia non in aute ut voluptate Lorem culpa id labore qui ea minim ex.''',
+      const ListTile(
+        title: Text('Description'),
+        subtitle: Text(
+          '''Labore commodo amet nisi ad ad aliquip minim. Do minim eiusmod sunt pariatur ullamco mollit nulla consequat enim Lorem deserunt amet. Velit cupidatat officia elit consectetur cillum culpa sunt pariatur magna cupidatat culpa. Occaecat ad mollit qui laboris do nostrud.
+      
+      Ad id adipisicing sunt laboris mollit deserunt id adipisicing culpa. Consequat amet ea velit culpa quis nostrud ullamco ipsum aliquip nostrud labore ipsum irure. Proident aliquip nulla labore aliquip tempor minim velit excepteur ipsum incididunt. Dolore tempor officia voluptate ipsum. Et occaecat deserunt sint id incididunt nisi duis commodo elit pariatur magna voluptate. Id incididunt minim consequat irure laboris culpa laborum ipsum. Dolor fugiat laborum dolor sint adipisicing fugiat.
+      
+      Lorem ullamco laboris do proident occaecat mollit aliquip minim. Do irure consectetur ut do laborum deserunt aliquip dolore consectetur eu. Cupidatat consequat ea occaecat reprehenderit minim voluptate fugiat cillum do labore in. Ullamco eiusmod occaecat eu voluptate elit cupidatat non proident. Reprehenderit Lorem elit est commodo in duis Lorem sunt esse.
+      
+      Nisi sunt irure consectetur officia occaecat. Elit do consequat sit laboris laboris sunt est ex. Amet laboris aliqua nisi anim incididunt pariatur ex. Duis eiusmod Lorem aliqua minim eiusmod laborum sit nulla. Officia eu cupidatat veniam ad mollit sint consectetur laboris elit ipsum. Laborum officia non in aute ut voluptate Lorem culpa id labore qui ea minim ex.''',
+        ),
       ),
     ];
     final playButton = SizedBox(
       height: 48,
-      child: FilledButton.icon(
-        icon: const Icon(PhosphorIconsLight.play),
-        label: Text(AppLocalizations.of(context).play),
-        onPressed: () => Navigator.of(context).pop(),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: FilledButton.icon(
+              icon: const Icon(PhosphorIconsLight.play),
+              label: Text(AppLocalizations.of(context).play),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ),
+          const SizedBox(width: 8),
+          Center(
+            child: IconButton.outlined(
+              icon: const Icon(PhosphorIconsLight.heart),
+              selectedIcon: const Icon(PhosphorIconsFill.heart),
+              onPressed: () {},
+              isSelected: true,
+            ),
+          ),
+        ],
       ),
     );
     final listView = ListView.builder(
@@ -54,7 +74,10 @@ Nisi sunt irure consectetur officia occaecat. Elit do consequat sit laboris labo
               childrenBuilder: (context) => [
                 ...detailsChildren,
                 const SizedBox(height: 16),
-                playButton,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: playButton,
+                ),
               ],
             ).then((_) {
               if (mounted) setState(() => _isMobileOpen = false);
@@ -67,11 +90,13 @@ Nisi sunt irure consectetur officia occaecat. Elit do consequat sit laboris labo
     final details = Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
-          servers[currentIndex],
-          style: Theme.of(context).textTheme.titleLarge,
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            servers[currentIndex],
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
         ),
-        const SizedBox(height: 16),
         Expanded(
           child: ListView(
             children: detailsChildren,
@@ -91,14 +116,47 @@ Nisi sunt irure consectetur officia occaecat. Elit do consequat sit laboris labo
         maxWidth: LeapBreakpoints.expanded,
         maxHeight: 700,
       ),
-      content: Row(
-        children: [
-          Expanded(child: listView),
-          if (!isMobile) ...[
-            const VerticalDivider(),
-            Expanded(child: details),
+      content: DefaultTabController(
+        length: 2,
+        child: Column(
+          children: [
+            RowSearchView(children: [
+              InputChip(
+                label: Text(AppLocalizations.of(context).official),
+                avatar: const Icon(PhosphorIconsLight.star),
+                showCheckmark: false,
+                selected: true,
+                onPressed: () {},
+              ),
+              InputChip(
+                label: Text(AppLocalizations.of(context).custom),
+                avatar: const Icon(PhosphorIconsLight.puzzlePiece),
+                showCheckmark: false,
+                selected: true,
+                onPressed: () {},
+              ),
+              InputChip(
+                label: Text(AppLocalizations.of(context).onlyFavorites),
+                avatar: const Icon(PhosphorIconsLight.listHeart),
+                showCheckmark: false,
+                selected: false,
+                onPressed: () {},
+              ),
+            ]),
+            const SizedBox(height: 8),
+            Expanded(
+              child: Row(
+                children: [
+                  Expanded(child: listView),
+                  if (!isMobile) ...[
+                    const VerticalDivider(),
+                    Expanded(child: details),
+                  ],
+                ],
+              ),
+            ),
           ],
-        ],
+        ),
       ),
     );
   }
