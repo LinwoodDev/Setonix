@@ -46,6 +46,8 @@ class HomePage extends StatelessWidget {
                         padding: const EdgeInsets.all(8.0),
                         child: OverflowBar(
                             overflowAlignment: OverflowBarAlignment.center,
+                            spacing: 12,
+                            overflowSpacing: 8,
                             children: [
                               (
                                 'Play',
@@ -77,7 +79,6 @@ class HomePage extends StatelessWidget {
                               ),
                             ]
                                 .map((e) => Container(
-                                      padding: const EdgeInsets.all(8.0),
                                       constraints:
                                           const BoxConstraints(minWidth: 250),
                                       child: OutlinedButton.icon(

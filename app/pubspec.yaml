@@ -31,6 +31,11 @@ dependencies:
   flame_tiled: ^1.20.1
   # UI
   phosphor_flutter: ^2.1.0
+  lw_file_system:
+    git:
+      url: https://github.com/LinwoodDev/dart_pkgs.git
+      ref: 09b05acf67be0640baa5f6a347c7ad9ed6a3831c
+      path: packages/lw_file_system
   material_leap:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
@@ -39,7 +44,7 @@ dependencies:
   lw_sysapi:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 622bb77e9309c72f0dbd5e5b086dd56272193e9c
+      ref: 3211529f737e38fa0ba01b5689751252e8bbfa3e
       path: packages/lw_sysapi
   flex_color_scheme: ^7.2.0
   flutter_svg: ^2.0.10+1
@@ -53,16 +58,16 @@ dependencies:
   url_launcher: ^6.2.6
   # Networking
   http: ^1.2.1
-  web_socket_channel: ^2.4.5
+  web_socket_channel: ^3.0.0
   networker:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 51e8e6e0f3531c35f9d4f34f04ac1235e74fea9b
+      ref: 6617b9bbfb481ef59b1a6921f1676bb90d73ecf9
       path: packages/networker/networker
   networker_socket:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 75b5ec0e51096ae169df3cd4f02c9f6affe22a81
+      ref: fce8dc67ec282861bf629e32c404c52921f54bbd
       path: packages/networker/networker_socket
   # Information
   device_info_plus: ^10.1.0
@@ -75,7 +80,8 @@ dependencies:
   collection: ^1.18.0
   dart_mappable: ^4.2.2
   archive: ^3.4.10
-
+dependency_overrides:
+  flutter_secure_storage_web: ^2.0.0-beta.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

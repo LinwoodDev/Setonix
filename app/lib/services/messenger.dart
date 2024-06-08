@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:networker/networker.dart';
 import 'package:quokka/models/message.dart';
 import 'package:quokka/models/state.dart';
@@ -26,7 +27,7 @@ abstract class NetworkMessenger<Event> {
 
   void onInit(RpcMessage message) {
     final networkMessage = NetworkInitMessageMapper.fromMap(message.message);
-    _currentId = message.you;
+    if (message.you != null) _currentId = message.you!;
     usersSubject.add(networkMessage.getUsers());
   }
 
@@ -35,7 +36,7 @@ abstract class NetworkMessenger<Event> {
     if (message.receiver != kNetworkerConnectionIdAny &&
         (message.client == kNetworkerConnectionIdAuthority ||
             message.client == networkMessage.id)) return;
-    _currentId = message.you;
+    if (message.you != null) _currentId = message.you!;
     final current = users[networkMessage.id] ??
         NetworkingUser(name: message.you.toString());
     usersSubject.add({
@@ -53,7 +54,7 @@ abstract class NetworkMessenger<Event> {
     if (message.receiver != kNetworkerConnectionIdAny) return;
     final networkMessage =
         NetworkPlayerJoinMessageMapper.fromMap(message.message);
-    _currentId = message.you;
+    if (message.you != null) _currentId = message.you!;
     usersSubject.add({
       ...users,
       networkMessage.id: networkMessage.user,
@@ -64,7 +65,7 @@ abstract class NetworkMessenger<Event> {
     if (message.receiver != kNetworkerConnectionIdAny) return;
     final networkMessage =
         NetworkPlayerLeaveMessageMapper.fromMap(message.message);
-    _currentId = message.you;
+    if (message.you != null) _currentId = message.you!;
     usersSubject.add(Map.from(users)..remove(networkMessage.id));
   }
 }

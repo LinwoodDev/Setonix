@@ -15,12 +15,16 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
   final String design;
   @override
   final bool nativeTitleBar;
+  final bool showConnectOfficial, showConnectCustom, showConnectOnlyFavorites;
 
   const QuokkaSettings({
     this.localeTag = '',
     this.theme = ThemeMode.system,
     this.design = '',
     this.nativeTitleBar = false,
+    this.showConnectOfficial = true,
+    this.showConnectCustom = true,
+    this.showConnectOnlyFavorites = false,
   });
 
   Locale? get locale {
@@ -38,14 +42,21 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
         design: prefs.getString('design') ?? '',
         nativeTitleBar: prefs.getBool('nativeTitleBar') ?? false,
         localeTag: prefs.getString('locale') ?? '',
+        showConnectOfficial: prefs.getBool('showConnectOfficial') ?? true,
+        showConnectCustom: prefs.getBool('showConnectCustom') ?? true,
+        showConnectOnlyFavorites:
+            prefs.getBool('showConnectOnlyFavorites') ?? false,
       );
 
   Future<void> save() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString('theme', theme.name);
-    prefs.setString('design', design);
-    prefs.setBool('nativeTitleBar', nativeTitleBar);
-    prefs.setString('locale', localeTag);
+    await prefs.setString('theme', theme.name);
+    await prefs.setString('design', design);
+    await prefs.setBool('nativeTitleBar', nativeTitleBar);
+    await prefs.setString('locale', localeTag);
+    await prefs.setBool('showConnectOfficial', showConnectOfficial);
+    await prefs.setBool('showConnectCustom', showConnectCustom);
+    await prefs.setBool('showConnectOnlyFavorites', showConnectOnlyFavorites);
   }
 }
 
@@ -81,6 +92,21 @@ class SettingsCubit extends Cubit<QuokkaSettings>
 
   Future<void> changeLocale(Locale? locale) {
     emit(state.copyWith(localeTag: locale?.toLanguageTag() ?? ''));
+    return save();
+  }
+
+  Future<void> changeShowConnectOfficial(bool value) {
+    emit(state.copyWith(showConnectOfficial: value));
+    return save();
+  }
+
+  Future<void> changeShowConnectCustom(bool value) {
+    emit(state.copyWith(showConnectCustom: value));
+    return save();
+  }
+
+  Future<void> changeShowConnectOnlyFavorites(bool value) {
+    emit(state.copyWith(showConnectOnlyFavorites: value));
     return save();
   }
 

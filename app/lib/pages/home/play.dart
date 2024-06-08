@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:quokka/pages/home/create.dart';
+import 'package:quokka/widgets/loading.dart';
 
 class PlayDialog extends StatefulWidget {
   const PlayDialog({super.key});
@@ -59,7 +60,17 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
                       const SizedBox(width: 16),
                       Expanded(
                         child: FilledButton.icon(
-                          onPressed: () => Navigator.of(context).pop(),
+                          onPressed: () async {
+                            final controller = showLoadingOverlay(context);
+                            await Future.delayed(const Duration(seconds: 2));
+                            controller.setLabel('Loading world...');
+                            await Future.delayed(const Duration(seconds: 2));
+                            controller.setLabel('Starting game...');
+                            await Future.delayed(const Duration(seconds: 2));
+                            controller.setLabel('Game started!');
+                            await Future.delayed(const Duration(seconds: 2));
+                            controller.remove();
+                          },
                           label: Text('Play ${games[_selectedGame!]}'),
                           icon: const Icon(PhosphorIconsLight.play),
                         ),

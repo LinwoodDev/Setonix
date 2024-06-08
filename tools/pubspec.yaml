@@ -5,10 +5,10 @@ dependencies:
   archive: ^3.4.10
   args: ^2.5.0
   intl: ^0.19.0
-  lints: ^3.0.0
+  lints: ^4.0.0
   shelf: ^1.4.1
   shelf_proxy: ^1.0.4
   shelf_static: ^1.1.2
-  shelf_web_socket: ^1.0.4
-  web_socket_channel: ^2.4.5
+  shelf_web_socket: ^2.0.0
+  web_socket_channel: ^3.0.0
   yaml: ^3.1.2

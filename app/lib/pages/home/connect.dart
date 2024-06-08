@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:quokka/cubits/settings.dart';
 import 'package:quokka/widgets/search.dart';
 
 class ConnectDialog extends StatefulWidget {
@@ -106,58 +108,74 @@ class _ConnectDialogState extends State<ConnectDialog> {
         playButton,
       ],
     );
-    return ResponsiveAlertDialog(
-      title: Text(AppLocalizations.of(context).connect),
-      leading: IconButton.outlined(
-        icon: const Icon(PhosphorIconsLight.x),
-        onPressed: () => Navigator.of(context).pop(),
-      ),
-      constraints: const BoxConstraints(
-        maxWidth: LeapBreakpoints.expanded,
-        maxHeight: 700,
-      ),
-      content: DefaultTabController(
-        length: 2,
-        child: Column(
-          children: [
-            RowSearchView(children: [
-              InputChip(
-                label: Text(AppLocalizations.of(context).official),
-                avatar: const Icon(PhosphorIconsLight.star),
-                showCheckmark: false,
-                selected: true,
-                onPressed: () {},
-              ),
-              InputChip(
-                label: Text(AppLocalizations.of(context).custom),
-                avatar: const Icon(PhosphorIconsLight.puzzlePiece),
-                showCheckmark: false,
-                selected: true,
-                onPressed: () {},
-              ),
-              InputChip(
-                label: Text(AppLocalizations.of(context).onlyFavorites),
-                avatar: const Icon(PhosphorIconsLight.listHeart),
-                showCheckmark: false,
-                selected: false,
-                onPressed: () {},
-              ),
-            ]),
-            const SizedBox(height: 8),
-            Expanded(
-              child: Row(
+    return BlocBuilder<SettingsCubit, QuokkaSettings>(
+        buildWhen: (previous, current) =>
+            previous.showConnectOfficial != current.showConnectOfficial ||
+            previous.showConnectCustom != current.showConnectCustom ||
+            previous.showConnectOnlyFavorites !=
+                current.showConnectOnlyFavorites,
+        builder: (context, settings) {
+          return ResponsiveAlertDialog(
+            title: Text(AppLocalizations.of(context).connect),
+            leading: IconButton.outlined(
+              icon: const Icon(PhosphorIconsLight.x),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            constraints: const BoxConstraints(
+              maxWidth: LeapBreakpoints.expanded,
+              maxHeight: 700,
+            ),
+            content: DefaultTabController(
+              length: 2,
+              child: Column(
                 children: [
-                  Expanded(child: listView),
-                  if (!isMobile) ...[
-                    const VerticalDivider(),
-                    Expanded(child: details),
-                  ],
+                  RowSearchView(children: [
+                    InputChip(
+                      label: Text(AppLocalizations.of(context).official),
+                      avatar: const Icon(PhosphorIconsLight.star),
+                      showCheckmark: false,
+                      selected: settings.showConnectOfficial,
+                      onPressed: () => context
+                          .read<SettingsCubit>()
+                          .changeShowConnectOfficial(
+                              !settings.showConnectOfficial),
+                    ),
+                    InputChip(
+                      label: Text(AppLocalizations.of(context).custom),
+                      avatar: const Icon(PhosphorIconsLight.puzzlePiece),
+                      showCheckmark: false,
+                      selected: settings.showConnectCustom,
+                      onPressed: () => context
+                          .read<SettingsCubit>()
+                          .changeShowConnectCustom(!settings.showConnectCustom),
+                    ),
+                    InputChip(
+                      label: Text(AppLocalizations.of(context).onlyFavorites),
+                      avatar: const Icon(PhosphorIconsLight.listHeart),
+                      showCheckmark: false,
+                      selected: settings.showConnectOnlyFavorites,
+                      onPressed: () => context
+                          .read<SettingsCubit>()
+                          .changeShowConnectOnlyFavorites(
+                              !settings.showConnectOnlyFavorites),
+                    ),
+                  ]),
+                  const SizedBox(height: 8),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Expanded(child: listView),
+                        if (!isMobile) ...[
+                          const VerticalDivider(),
+                          Expanded(child: details),
+                        ],
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
-    );
+          );
+        });
   }
 }

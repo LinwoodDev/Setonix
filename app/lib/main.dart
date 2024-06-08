@@ -10,6 +10,8 @@ import 'package:material_leap/l10n/leap_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:quokka/pages/board/page.dart';
 import 'package:quokka/pages/home/page.dart';
+import 'package:quokka/pages/settings/general.dart';
+import 'package:quokka/pages/settings/personalization.dart';
 import 'package:quokka/services/network.dart';
 import 'package:quokka/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -51,23 +53,6 @@ Future<void> main(List<String> args) async {
       ),
     ),
   );
-}
-
-Page<void> Function(BuildContext, GoRouterState) _fadeTransitionBuilder(
-    Widget Function(BuildContext, GoRouterState) child) {
-  return (context, state) => CustomTransitionPage<void>(
-        key: state.pageKey,
-        child: child(context, state),
-        transitionDuration: const Duration(milliseconds: 200),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-            FadeTransition(
-          opacity: CurvedAnimation(
-            parent: animation,
-            curve: Curves.easeInOut,
-          ),
-          child: child,
-        ),
-      );
 }
 
 const kUnsupportedLanguages = [];
@@ -123,20 +108,26 @@ class QuokkaApp extends StatelessWidget {
     routes: <RouteBase>[
       GoRoute(
         path: '/',
-        pageBuilder:
-            _fadeTransitionBuilder((context, state) => const HomePage()),
+        builder: (context, state) => const HomePage(),
         routes: [
           GoRoute(
             path: 'board',
-            pageBuilder: _fadeTransitionBuilder(
-              (context, state) => BoardPage(),
-            ),
+            builder: (context, state) => BoardPage(),
           ),
           GoRoute(
             path: 'settings',
-            pageBuilder: _fadeTransitionBuilder(
-              (context, state) => const SettingsPage(),
-            ),
+            builder: (context, state) => const SettingsPage(),
+            routes: [
+              GoRoute(
+                path: 'general',
+                builder: (context, state) => const GeneralSettingsPage(),
+              ),
+              GoRoute(
+                path: 'personalization',
+                builder: (context, state) =>
+                    const PersonalizationSettingsPage(),
+              ),
+            ],
           ),
         ],
       ),
