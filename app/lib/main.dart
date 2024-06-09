@@ -13,6 +13,7 @@ import 'package:quokka/pages/home/page.dart';
 import 'package:quokka/pages/settings/general.dart';
 import 'package:quokka/pages/settings/personalization.dart';
 import 'package:quokka/services/network.dart';
+import 'package:quokka/services/packs.dart';
 import 'package:quokka/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
@@ -47,8 +48,13 @@ Future<void> main(List<String> args) async {
         BlocProvider.value(
             value: WindowCubit(fullScreen: await isFullScreen())),
       ],
-      child: RepositoryProvider(
-        create: (context) => NetworkingService(settingsCubit),
+      child: MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider(
+            create: (context) => NetworkingService(settingsCubit),
+          ),
+          RepositoryProvider(create: (context) => PacksService()),
+        ],
         child: QuokkaApp(),
       ),
     ),

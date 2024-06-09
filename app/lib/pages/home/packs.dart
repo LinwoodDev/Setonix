@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:quokka/models/definitions/pack.dart';
+import 'package:quokka/services/packs.dart';
 import 'package:quokka/widgets/search.dart';
 
 class PacksDialog extends StatefulWidget {
@@ -14,12 +17,26 @@ class PacksDialog extends StatefulWidget {
 class _PacksDialogState extends State<PacksDialog>
     with TickerProviderStateMixin {
   bool _gridView = false;
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 100),
+  );
   late final TabController _tabController;
+  Future<Map<String, PackData>>? _packsFuture;
+  (PackData, String, bool)? _selectedPack;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.dismissed) {
+        setState(() {
+          _selectedPack = null;
+        });
+      }
+    });
+    _packsFuture = context.read<PacksService>().getPacks();
   }
 
   @override
@@ -28,8 +45,19 @@ class _PacksDialogState extends State<PacksDialog>
     super.dispose();
   }
 
+  void _selectPack(PackData pack, String id, bool installed) {
+    _controller.forward();
+    setState(() {
+      _selectedPack = (pack, id, installed);
+    });
+  }
+
+  void _deselectPack() => _controller.reverse();
+
   @override
   Widget build(BuildContext context) {
+    final currentSize = MediaQuery.sizeOf(context).width;
+    final isMobile = currentSize < LeapBreakpoints.medium;
     return ResponsiveAlertDialog(
       title: Text(AppLocalizations.of(context).packs),
       constraints: const BoxConstraints(
@@ -52,17 +80,69 @@ class _PacksDialogState extends State<PacksDialog>
               ),
             ],
           ),
+          const SizedBox(height: 8),
           Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                Center(
-                  child: Text(AppLocalizations.of(context).comingSoon),
-                ),
-                Center(
-                  child: Text(AppLocalizations.of(context).comingSoon),
-                ),
-              ],
+            child: FutureBuilder<Map<String, PackData>>(
+              future: _packsFuture,
+              builder: (context, snapshot) {
+                final packs = snapshot.data?.entries.toList() ?? [];
+                final view = TabBarView(
+                  controller: _tabController,
+                  children: [
+                    ListView.builder(
+                      itemCount: packs.length,
+                      itemBuilder: (context, index) {
+                        final key = packs[index].key;
+                        final pack = packs[index].value;
+                        final metadata = pack.getMetadata();
+                        return ListTile(
+                          title: Text(metadata?.name ??
+                              AppLocalizations.of(context).unnamed),
+                          selected: _selectedPack?.$1 == pack,
+                          onTap: () => _selectPack(pack, key, true),
+                        );
+                      },
+                    ),
+                    Center(
+                      child: Text(AppLocalizations.of(context).comingSoon),
+                    ),
+                  ],
+                );
+                if (isMobile) {
+                  return view;
+                }
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      child: view,
+                    ),
+                    SizeTransition(
+                      sizeFactor: CurvedAnimation(
+                        parent: _controller,
+                        curve: Curves.fastOutSlowIn,
+                      ),
+                      axis: Axis.horizontal,
+                      child: SizedBox(
+                        width: 300,
+                        child: Card(
+                          child: _PacksDetailsView(
+                            pack: _selectedPack?.$1,
+                            onClose: _deselectPack,
+                            onInstall: _selectedPack?.$3 ?? false
+                                ? null
+                                : _deselectPack,
+                            onRemove: (_selectedPack?.$3 ?? false) &&
+                                    (_selectedPack?.$2.isNotEmpty ?? true)
+                                ? _deselectPack
+                                : null,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
           ),
         ],
@@ -82,6 +162,81 @@ class _PacksDialogState extends State<PacksDialog>
         IconButton(
           icon: const Icon(PhosphorIconsBold.arrowSquareIn),
           onPressed: () => Navigator.of(context).pop(),
+        ),
+      ],
+    );
+  }
+}
+
+class _PacksDetailsView extends StatelessWidget {
+  final PackData? pack;
+  final VoidCallback? onClose, onInstall, onRemove;
+
+  const _PacksDetailsView({
+    this.pack,
+    this.onClose,
+    this.onInstall,
+    this.onRemove,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final metadata = pack?.getMetadata();
+    if (metadata == null) {
+      return const SizedBox();
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Header(
+          title: Text(metadata.name),
+          actions: [
+            if (onClose != null) ...[
+              IconButton.outlined(
+                icon: const Icon(PhosphorIconsLight.x),
+                onPressed: onClose,
+              ),
+            ],
+          ],
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                Text(metadata.description),
+              ],
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (onInstall != null) ...[
+                SizedBox(
+                  height: 42,
+                  child: FilledButton.tonalIcon(
+                    onPressed: onInstall,
+                    label: Text(AppLocalizations.of(context).install),
+                    icon: const Icon(PhosphorIconsLight.download),
+                  ),
+                ),
+              ],
+              if (onRemove != null) ...[
+                SizedBox(
+                  height: 42,
+                  child: FilledButton.tonalIcon(
+                    onPressed: onRemove,
+                    label: Text(AppLocalizations.of(context).remove),
+                    icon: const Icon(PhosphorIconsLight.trash),
+                  ),
+                ),
+              ],
+            ],
+          ),
         ),
       ],
     );

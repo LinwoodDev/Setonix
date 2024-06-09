@@ -89,5 +89,7 @@
   "configuration": "Configuration",
   "background": "Background",
   "search": "Search",
-  "onlyFavorites": "Only favorites"
+  "onlyFavorites": "Only favorites",
+  "loading": "Loading",
+  "install": "Install"
 }

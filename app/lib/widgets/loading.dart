@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 LoadingController showLoadingOverlay(BuildContext context) {
   final GlobalKey<_PlayOverlayState> key = GlobalKey();
@@ -65,7 +66,7 @@ class _PlayOverlayState extends State<LoadingOverlay>
                   const CircularProgressIndicator(),
                   const SizedBox(height: 16),
                   Text(
-                    _label ?? 'Playing...',
+                    _label ?? AppLocalizations.of(context).loading,
                     textAlign: TextAlign.center,
                   ),
                 ],

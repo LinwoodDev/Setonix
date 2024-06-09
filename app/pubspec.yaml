@@ -34,7 +34,7 @@ dependencies:
   lw_file_system:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 09b05acf67be0640baa5f6a347c7ad9ed6a3831c
+      ref: 1dc208fb1d91a41b09697411834b147d59db3c29
       path: packages/lw_file_system
   material_leap:
     git:
@@ -106,6 +106,7 @@ flutter:
     - assets/tiles/
     - assets/fonts/Comfortaa-LICENSE.txt
     - assets/fonts/Roboto-LICENSE.txt
+    - assets/pack.qka
   fonts:
     - family: Comfortaa
       fonts:

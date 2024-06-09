@@ -1,5 +1,6 @@
 {
   "name": "Core pack",
   "description": "Official general pack",
-  "author": "Linwood"
+  "author": "Linwood",
+  "version": "1.0.0"
 }

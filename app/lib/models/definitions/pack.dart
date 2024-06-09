@@ -95,4 +95,6 @@ class PackData {
 
   String getTranslationOrKey(String path, String key) =>
       getTranslation(path, key) ?? key;
+
+  Uint8List export() => Uint8List.fromList(ZipEncoder().encode(archive) ?? []);
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:quokka/cubits/settings.dart';
@@ -50,14 +51,14 @@ class HomePage extends StatelessWidget {
                             overflowSpacing: 8,
                             children: [
                               (
-                                'Play',
+                                AppLocalizations.of(context).play,
                                 PhosphorIconsLight.play,
                                 () => showDialog(
                                     context: context,
                                     builder: (context) => const PlayDialog()),
                               ),
                               (
-                                'Connect',
+                                AppLocalizations.of(context).connect,
                                 PhosphorIconsLight.plugsConnected,
                                 () => showDialog(
                                     context: context,
@@ -65,7 +66,7 @@ class HomePage extends StatelessWidget {
                                         const ConnectDialog()),
                               ),
                               (
-                                'Packs',
+                                AppLocalizations.of(context).packs,
                                 PhosphorIconsLight.package,
                                 () => showDialog(
                                       context: context,
@@ -73,7 +74,7 @@ class HomePage extends StatelessWidget {
                                     ),
                               ),
                               (
-                                'Options',
+                                AppLocalizations.of(context).settings,
                                 PhosphorIconsLight.gear,
                                 () => openSettings(context),
                               ),
