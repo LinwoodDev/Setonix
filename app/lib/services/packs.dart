@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:collection/collection.dart';
 import 'package:lw_file_system/lw_file_system.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:quokka/api/storage.dart';
 import 'package:quokka/models/definitions/pack.dart';
 
@@ -37,7 +34,7 @@ class PacksService {
               ? null
               : MapEntry(file.fileNameWithoutExtension, file.data!))
           .whereNotNull()),
-      if (corePack != null) '': corePack,
+      if (corePack != null) 'f': corePack,
     };
   }
 }

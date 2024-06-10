@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:quokka/models/definitions/meta.dart';
 import 'package:quokka/models/definitions/pack.dart';
 import 'package:quokka/services/packs.dart';
 import 'package:quokka/widgets/search.dart';
@@ -17,6 +18,7 @@ class PacksDialog extends StatefulWidget {
 class _PacksDialogState extends State<PacksDialog>
     with TickerProviderStateMixin {
   bool _gridView = false;
+  bool _isMobileOpen = false;
   late final AnimationController _controller = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 100),
@@ -33,6 +35,7 @@ class _PacksDialogState extends State<PacksDialog>
       if (status == AnimationStatus.dismissed) {
         setState(() {
           _selectedPack = null;
+          _isMobileOpen = false;
         });
       }
     });
@@ -45,12 +48,45 @@ class _PacksDialogState extends State<PacksDialog>
     super.dispose();
   }
 
-  void _selectPack(PackData pack, String id, bool installed) {
-    _controller.forward();
-    setState(() {
-      _selectedPack = (pack, id, installed);
-    });
+  List<Widget> _buildDetailsChildren(PackData pack, PackMetadata? metadata) {
+    if (metadata == null) {
+      return [];
+    }
+    return [
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(metadata.description),
+      ),
+    ];
   }
+
+  List<Widget> _buildActionsChildren(
+    PackData pack, {
+    VoidCallback? onInstall,
+    VoidCallback? onRemove,
+  }) =>
+      [
+        if (onInstall != null) ...[
+          SizedBox(
+            height: 42,
+            child: FilledButton.tonalIcon(
+              onPressed: onInstall,
+              label: Text(AppLocalizations.of(context).install),
+              icon: const Icon(PhosphorIconsLight.download),
+            ),
+          ),
+        ],
+        if (onRemove != null) ...[
+          SizedBox(
+            height: 42,
+            child: FilledButton.tonalIcon(
+              onPressed: onRemove,
+              label: Text(AppLocalizations.of(context).remove),
+              icon: const Icon(PhosphorIconsLight.trash),
+            ),
+          ),
+        ],
+      ];
 
   void _deselectPack() => _controller.reverse();
 
@@ -58,6 +94,35 @@ class _PacksDialogState extends State<PacksDialog>
   Widget build(BuildContext context) {
     final currentSize = MediaQuery.sizeOf(context).width;
     final isMobile = currentSize < LeapBreakpoints.medium;
+    final onInstall = _selectedPack?.$3 ?? false ? null : _deselectPack;
+    final onRemove =
+        (_selectedPack?.$3 ?? false) && (_selectedPack?.$2.isNotEmpty ?? true)
+            ? _deselectPack
+            : null;
+    Future<void> selectPack(PackData pack, String id, bool installed) async {
+      _controller.forward();
+      setState(() {
+        _selectedPack = (pack, id, installed);
+        _isMobileOpen = isMobile;
+      });
+      final metadata = pack.getMetadata();
+      if (isMobile) {
+        await showLeapBottomSheet(
+          context: context,
+          childrenBuilder: (context) => [
+            ..._buildDetailsChildren(pack, metadata),
+            const SizedBox(height: 16),
+            ..._buildActionsChildren(pack,
+                onInstall: onInstall, onRemove: onRemove),
+          ],
+          title: pack.getMetadata()?.name ?? '',
+        );
+        if (mounted) {
+          _deselectPack();
+        }
+      }
+    }
+
     return ResponsiveAlertDialog(
       title: Text(AppLocalizations.of(context).packs),
       constraints: const BoxConstraints(
@@ -98,8 +163,9 @@ class _PacksDialogState extends State<PacksDialog>
                         return ListTile(
                           title: Text(metadata?.name ??
                               AppLocalizations.of(context).unnamed),
-                          selected: _selectedPack?.$1 == pack,
-                          onTap: () => _selectPack(pack, key, true),
+                          selected: _selectedPack?.$1 == pack &&
+                              (!isMobile || _isMobileOpen),
+                          onTap: () => selectPack(pack, key, true),
                         );
                       },
                     ),
@@ -125,19 +191,45 @@ class _PacksDialogState extends State<PacksDialog>
                       axis: Axis.horizontal,
                       child: SizedBox(
                         width: 300,
-                        child: Card(
-                          child: _PacksDetailsView(
-                            pack: _selectedPack?.$1,
-                            onClose: _deselectPack,
-                            onInstall: _selectedPack?.$3 ?? false
-                                ? null
-                                : _deselectPack,
-                            onRemove: (_selectedPack?.$3 ?? false) &&
-                                    (_selectedPack?.$2.isNotEmpty ?? true)
-                                ? _deselectPack
-                                : null,
-                          ),
-                        ),
+                        child: Card(child: Builder(
+                          builder: (context) {
+                            final pack = _selectedPack?.$1;
+                            if (pack == null) {
+                              return const SizedBox();
+                            }
+                            final metadata = pack.getMetadata();
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: _selectedPack?.$1 == null
+                                  ? []
+                                  : [
+                                      Header(
+                                        title: Text(metadata?.name ?? ''),
+                                        actions: [
+                                          IconButton.outlined(
+                                            icon: const Icon(
+                                                PhosphorIconsLight.x),
+                                            onPressed: _deselectPack,
+                                          ),
+                                        ],
+                                      ),
+                                      Expanded(
+                                        child: ListView(
+                                          children: _buildDetailsChildren(
+                                            _selectedPack!.$1,
+                                            metadata,
+                                          ),
+                                        ),
+                                      ),
+                                      ..._buildActionsChildren(
+                                        pack,
+                                        onInstall: onInstall,
+                                        onRemove: onRemove,
+                                      ),
+                                    ],
+                            );
+                          },
+                        )),
                       ),
                     ),
                   ],
@@ -162,81 +254,6 @@ class _PacksDialogState extends State<PacksDialog>
         IconButton(
           icon: const Icon(PhosphorIconsBold.arrowSquareIn),
           onPressed: () => Navigator.of(context).pop(),
-        ),
-      ],
-    );
-  }
-}
-
-class _PacksDetailsView extends StatelessWidget {
-  final PackData? pack;
-  final VoidCallback? onClose, onInstall, onRemove;
-
-  const _PacksDetailsView({
-    this.pack,
-    this.onClose,
-    this.onInstall,
-    this.onRemove,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final metadata = pack?.getMetadata();
-    if (metadata == null) {
-      return const SizedBox();
-    }
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Header(
-          title: Text(metadata.name),
-          actions: [
-            if (onClose != null) ...[
-              IconButton.outlined(
-                icon: const Icon(PhosphorIconsLight.x),
-                onPressed: onClose,
-              ),
-            ],
-          ],
-        ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListView(
-              shrinkWrap: true,
-              children: [
-                Text(metadata.description),
-              ],
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (onInstall != null) ...[
-                SizedBox(
-                  height: 42,
-                  child: FilledButton.tonalIcon(
-                    onPressed: onInstall,
-                    label: Text(AppLocalizations.of(context).install),
-                    icon: const Icon(PhosphorIconsLight.download),
-                  ),
-                ),
-              ],
-              if (onRemove != null) ...[
-                SizedBox(
-                  height: 42,
-                  child: FilledButton.tonalIcon(
-                    onPressed: onRemove,
-                    label: Text(AppLocalizations.of(context).remove),
-                    icon: const Icon(PhosphorIconsLight.trash),
-                  ),
-                ),
-              ],
-            ],
-          ),
         ),
       ],
     );
