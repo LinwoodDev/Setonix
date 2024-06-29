@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:quokka/pages/settings/data.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'general.dart';
@@ -12,18 +13,21 @@ import 'personalization.dart';
 
 enum SettingsView {
   general,
+  data,
   personalization;
 
   bool get isEnabled => true;
 
   String getLocalizedName(BuildContext context) => switch (this) {
         SettingsView.general => AppLocalizations.of(context).general,
+        SettingsView.data => AppLocalizations.of(context).data,
         SettingsView.personalization =>
           AppLocalizations.of(context).personalization,
       };
 
   IconGetter get icon => switch (this) {
         SettingsView.general => PhosphorIcons.gear,
+        SettingsView.data => PhosphorIcons.database,
         SettingsView.personalization => PhosphorIcons.monitor,
       };
   String get path => '/settings/$name';
@@ -142,6 +146,7 @@ class _SettingsPageState extends State<SettingsPage> {
           }
           final content = switch (_view) {
             SettingsView.general => const GeneralSettingsPage(inView: true),
+            SettingsView.data => const DataSettingsPage(inView: true),
             SettingsView.personalization =>
               const PersonalizationSettingsPage(inView: true),
           };

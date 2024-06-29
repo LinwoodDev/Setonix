@@ -8,11 +8,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:material_leap/l10n/leap_localizations.dart';
 import 'package:material_leap/material_leap.dart';
-import 'package:quokka/pages/board/page.dart';
 import 'package:quokka/pages/home/page.dart';
+import 'package:quokka/pages/settings/data.dart';
 import 'package:quokka/pages/settings/general.dart';
 import 'package:quokka/pages/settings/personalization.dart';
-import 'package:quokka/services/network.dart';
 import 'package:quokka/services/packs.dart';
 import 'package:quokka/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -50,9 +49,6 @@ Future<void> main(List<String> args) async {
       ],
       child: MultiRepositoryProvider(
         providers: [
-          RepositoryProvider(
-            create: (context) => NetworkingService(settingsCubit),
-          ),
           RepositoryProvider(create: (context) => PacksService()),
         ],
         child: QuokkaApp(),
@@ -118,7 +114,7 @@ class QuokkaApp extends StatelessWidget {
         routes: [
           GoRoute(
             path: 'board',
-            builder: (context, state) => BoardPage(),
+            builder: (context, state) => const HomePage(),
           ),
           GoRoute(
             path: 'settings',
@@ -127,6 +123,10 @@ class QuokkaApp extends StatelessWidget {
               GoRoute(
                 path: 'general',
                 builder: (context, state) => const GeneralSettingsPage(),
+              ),
+              GoRoute(
+                path: 'data',
+                builder: (context, state) => const DataSettingsPage(),
               ),
               GoRoute(
                 path: 'personalization',

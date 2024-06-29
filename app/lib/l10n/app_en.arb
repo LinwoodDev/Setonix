@@ -91,5 +91,7 @@
   "search": "Search",
   "onlyFavorites": "Only favorites",
   "loading": "Loading",
-  "install": "Install"
+  "install": "Install",
+  "data": "Data",
+  "dataDirectory": "Data directory"
 }

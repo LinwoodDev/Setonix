@@ -205,9 +205,9 @@ packages:
     dependency: transitive
     description:
       path: "packages/dart_leap"
-      ref: d45bd54f2efd6a861d6f44a8b833575b0482dc4c
-      resolved-ref: d45bd54f2efd6a861d6f44a8b833575b0482dc4c
-      url: "https://github.com/LinwoodDev/dart_pkgs"
+      ref: "0e04c453c2b6d4aa499f79e54bb1c0b7a9b2c42c"
+      resolved-ref: "0e04c453c2b6d4aa499f79e54bb1c0b7a9b2c42c"
+      url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "1.0.0"
   dart_mappable:
@@ -395,10 +395,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_bloc
-      sha256: f0ecf6e6eb955193ca60af2d5ca39565a86b8a142452c5b24d96fb477428f4d2
+      sha256: b594505eac31a0518bdcb4b5b79573b8d9117b193cc80cc12e17d639b10aa27a
       url: "https://pub.dev"
     source: hosted
-    version: "8.1.5"
+    version: "8.1.6"
   flutter_driver:
     dependency: transitive
     description: flutter
@@ -516,10 +516,10 @@ packages:
     dependency: "direct main"
     description:
       name: go_router
-      sha256: abec47eb8c8c36ebf41d0a4c64dbbe7f956e39a012b3aafc530e951bdc12fe3f
+      sha256: cdae1b9c8bd7efadcef6112e81c903662ef2ce105cbd220a04bbb7c3425b5554
       url: "https://pub.dev"
     source: hosted
-    version: "14.1.4"
+    version: "14.2.0"
   graphs:
     dependency: transitive
     description:
@@ -641,17 +641,26 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/lw_file_system"
-      ref: "463385c5c4a3178ac8447d8ab50b8d10d2c354ab"
-      resolved-ref: "463385c5c4a3178ac8447d8ab50b8d10d2c354ab"
+      ref: eec1c7ed4c4f77c4e9ffc8a3419140b43d93a0e1
+      resolved-ref: eec1c7ed4c4f77c4e9ffc8a3419140b43d93a0e1
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
+    source: git
+    version: "1.0.0"
+  lw_file_system_api:
+    dependency: transitive
+    description:
+      path: "packages/lw_file_system_api"
+      ref: a2b169be76ddafffc0fd156e2d192dec64378994
+      resolved-ref: a2b169be76ddafffc0fd156e2d192dec64378994
+      url: "https://github.com/LinwoodDev/dart_pkgs"
     source: git
     version: "1.0.0"
   lw_sysapi:
     dependency: "direct main"
     description:
       path: "packages/lw_sysapi"
-      ref: "3211529f737e38fa0ba01b5689751252e8bbfa3e"
-      resolved-ref: "3211529f737e38fa0ba01b5689751252e8bbfa3e"
+      ref: "0e04c453c2b6d4aa499f79e54bb1c0b7a9b2c42c"
+      resolved-ref: "0e04c453c2b6d4aa499f79e54bb1c0b7a9b2c42c"
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "0.0.1"
@@ -675,8 +684,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/material_leap"
-      ref: "631752620ffa6be5285a6c10863ea4699c361751"
-      resolved-ref: "631752620ffa6be5285a6c10863ea4699c361751"
+      ref: "0e04c453c2b6d4aa499f79e54bb1c0b7a9b2c42c"
+      resolved-ref: "0e04c453c2b6d4aa499f79e54bb1c0b7a9b2c42c"
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "0.0.1"
@@ -708,18 +717,18 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/networker/networker"
-      ref: "6617b9bbfb481ef59b1a6921f1676bb90d73ecf9"
-      resolved-ref: "6617b9bbfb481ef59b1a6921f1676bb90d73ecf9"
-      url: "https://github.com/LinwoodDev/dart_pkgs.git"
+      ref: b440166c38b927b6520f2835ceffb860b88faa30
+      resolved-ref: b440166c38b927b6520f2835ceffb860b88faa30
+      url: "https://github.com/LinwoodDev/dart_pkgs"
     source: git
     version: "1.0.0"
   networker_socket:
     dependency: "direct main"
     description:
       path: "packages/networker/networker_socket"
-      ref: fce8dc67ec282861bf629e32c404c52921f54bbd
-      resolved-ref: fce8dc67ec282861bf629e32c404c52921f54bbd
-      url: "https://github.com/LinwoodDev/dart_pkgs.git"
+      ref: "8dc38c743c8dc3450e5c5a2f64536ef590e8d376"
+      resolved-ref: "8dc38c743c8dc3450e5c5a2f64536ef590e8d376"
+      url: "https://github.com/LinwoodDev/dart_pkgs"
     source: git
     version: "1.0.0"
   ordered_set:
@@ -782,10 +791,10 @@ packages:
     dependency: transitive
     description:
       name: path_provider_android
-      sha256: "9c96da072b421e98183f9ea7464898428e764bc0ce5567f27ec8693442e72514"
+      sha256: bca87b0165ffd7cdb9cad8edd22d18d2201e886d9a9f19b4fb3452ea7df3a72a
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.5"
+    version: "2.2.6"
   path_provider_foundation:
     dependency: transitive
     description:
@@ -902,10 +911,10 @@ packages:
     dependency: "direct main"
     description:
       name: rxdart
-      sha256: "0c7c0cedd93788d996e33041ffecda924cc54389199cde4e6a34b440f50044cb"
+      sha256: "5c3004a4a8dbb94bd4bf5412a4def4acdaa12e12f269737a5751369e12d1a962"
       url: "https://pub.dev"
     source: hosted
-    version: "0.27.7"
+    version: "0.28.0"
   screen_retriever:
     dependency: transitive
     description:

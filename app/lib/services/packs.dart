@@ -17,24 +17,29 @@ class PacksService {
             getDirectory: (storage) async =>
                 '${await getQuokkaDirectory()}/Packs',
             database: 'quokka.db',
+            databaseVersion: 1,
           ),
-          onDecode: (data) => PackData.fromData(data),
+          onDecode: PackData.fromData,
           onEncode: (data) => data.export(),
         );
 
   Future<PackData?> fetchCorePack() async =>
       _corePack ?? await PackData.getCorePack();
 
-  Future<Map<String, PackData>> getPacks() async {
-    final corePack = await fetchCorePack();
-    await _fileSystem.initialize();
+  Future<Map<String, PackData>> getPacks({
+    bool fetchExternal = true,
+    bool fetchCore = true,
+  }) async {
+    final corePack = fetchCore ? await fetchCorePack() : null;
+    if (fetchExternal) await _fileSystem.initialize();
     return {
-      ...Map.fromEntries((await _fileSystem.getFiles())
-          .map((file) => file.data == null
-              ? null
-              : MapEntry(file.fileNameWithoutExtension, file.data!))
-          .whereNotNull()),
-      if (corePack != null) 'f': corePack,
+      if (fetchExternal)
+        ...Map.fromEntries((await _fileSystem.getFiles())
+            .map((file) => file.data == null
+                ? null
+                : MapEntry(file.fileNameWithoutExtension, file.data!))
+            .whereNotNull()),
+      if (corePack != null) '': corePack,
     };
   }
 }
