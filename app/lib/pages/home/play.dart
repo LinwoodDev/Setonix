@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:quokka/pages/home/create.dart';
@@ -54,7 +55,7 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
                       Center(
                         child: IconButton.filledTonal(
                           icon: const Icon(PhosphorIconsLight.info),
-                          onPressed: () => Navigator.of(context).pop(),
+                          onPressed: () => GoRouter.of(context).go('/game'),
                         ),
                       ),
                       const SizedBox(width: 16),
@@ -70,6 +71,9 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
                             controller.setLabel('Game started!');
                             await Future.delayed(const Duration(seconds: 2));
                             controller.remove();
+                            if (context.mounted) {
+                              GoRouter.of(context).go('/game');
+                            }
                           },
                           label: Text('Play ${games[_selectedGame!]}'),
                           icon: const Icon(PhosphorIconsLight.play),

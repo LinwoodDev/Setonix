@@ -13,6 +13,7 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
   final String localeTag;
   final ThemeMode theme;
   final String design;
+  final String dataDirectory;
   @override
   final bool nativeTitleBar;
   final bool showConnectOfficial, showConnectCustom, showConnectOnlyFavorites;
@@ -21,6 +22,7 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
     this.localeTag = '',
     this.theme = ThemeMode.system,
     this.design = '',
+    this.dataDirectory = '',
     this.nativeTitleBar = false,
     this.showConnectOfficial = true,
     this.showConnectCustom = true,
@@ -40,6 +42,7 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
   factory QuokkaSettings.fromPrefs(SharedPreferences prefs) => QuokkaSettings(
         theme: ThemeMode.values.byName(prefs.getString('theme') ?? 'system'),
         design: prefs.getString('design') ?? '',
+        dataDirectory: prefs.getString('dataDirectory') ?? '',
         nativeTitleBar: prefs.getBool('nativeTitleBar') ?? false,
         localeTag: prefs.getString('locale') ?? '',
         showConnectOfficial: prefs.getBool('showConnectOfficial') ?? true,
@@ -52,6 +55,7 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('theme', theme.name);
     await prefs.setString('design', design);
+    await prefs.setString('dataDirectory', dataDirectory);
     await prefs.setBool('nativeTitleBar', nativeTitleBar);
     await prefs.setString('locale', localeTag);
     await prefs.setBool('showConnectOfficial', showConnectOfficial);

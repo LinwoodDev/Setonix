@@ -8,6 +8,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:material_leap/l10n/leap_localizations.dart';
 import 'package:material_leap/material_leap.dart';
+import 'package:quokka/pages/game/page.dart';
 import 'package:quokka/pages/home/page.dart';
 import 'package:quokka/pages/settings/data.dart';
 import 'package:quokka/pages/settings/general.dart';
@@ -113,8 +114,8 @@ class QuokkaApp extends StatelessWidget {
         builder: (context, state) => const HomePage(),
         routes: [
           GoRoute(
-            path: 'board',
-            builder: (context, state) => const HomePage(),
+            path: 'game',
+            builder: (context, state) => const GamePage(),
           ),
           GoRoute(
             path: 'settings',

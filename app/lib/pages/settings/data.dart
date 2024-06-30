@@ -34,7 +34,9 @@ class DataSettingsPage extends StatelessWidget {
                               const PhosphorIcon(PhosphorIconsLight.folder),
                           title:
                               Text(AppLocalizations.of(context).dataDirectory),
-                          subtitle: const Text(''),
+                          subtitle: state.dataDirectory.isNotEmpty
+                              ? Text(state.dataDirectory)
+                              : null,
                           onTap: () {},
                         ),
                       ]),

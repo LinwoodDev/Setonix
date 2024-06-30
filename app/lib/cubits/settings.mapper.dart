@@ -29,6 +29,9 @@ class QuokkaSettingsMapper extends ClassMapperBase<QuokkaSettings> {
   static String _$design(QuokkaSettings v) => v.design;
   static const Field<QuokkaSettings, String> _f$design =
       Field('design', _$design, opt: true, def: '');
+  static String _$dataDirectory(QuokkaSettings v) => v.dataDirectory;
+  static const Field<QuokkaSettings, String> _f$dataDirectory =
+      Field('dataDirectory', _$dataDirectory, opt: true, def: '');
   static bool _$nativeTitleBar(QuokkaSettings v) => v.nativeTitleBar;
   static const Field<QuokkaSettings, bool> _f$nativeTitleBar =
       Field('nativeTitleBar', _$nativeTitleBar, opt: true, def: false);
@@ -49,6 +52,7 @@ class QuokkaSettingsMapper extends ClassMapperBase<QuokkaSettings> {
     #localeTag: _f$localeTag,
     #theme: _f$theme,
     #design: _f$design,
+    #dataDirectory: _f$dataDirectory,
     #nativeTitleBar: _f$nativeTitleBar,
     #showConnectOfficial: _f$showConnectOfficial,
     #showConnectCustom: _f$showConnectCustom,
@@ -60,6 +64,7 @@ class QuokkaSettingsMapper extends ClassMapperBase<QuokkaSettings> {
         localeTag: data.dec(_f$localeTag),
         theme: data.dec(_f$theme),
         design: data.dec(_f$design),
+        dataDirectory: data.dec(_f$dataDirectory),
         nativeTitleBar: data.dec(_f$nativeTitleBar),
         showConnectOfficial: data.dec(_f$showConnectOfficial),
         showConnectCustom: data.dec(_f$showConnectCustom),
@@ -123,6 +128,7 @@ abstract class QuokkaSettingsCopyWith<$R, $In extends QuokkaSettings, $Out>
       {String? localeTag,
       ThemeMode? theme,
       String? design,
+      String? dataDirectory,
       bool? nativeTitleBar,
       bool? showConnectOfficial,
       bool? showConnectCustom,
@@ -144,6 +150,7 @@ class _QuokkaSettingsCopyWithImpl<$R, $Out>
           {String? localeTag,
           ThemeMode? theme,
           String? design,
+          String? dataDirectory,
           bool? nativeTitleBar,
           bool? showConnectOfficial,
           bool? showConnectCustom,
@@ -152,6 +159,7 @@ class _QuokkaSettingsCopyWithImpl<$R, $Out>
         if (localeTag != null) #localeTag: localeTag,
         if (theme != null) #theme: theme,
         if (design != null) #design: design,
+        if (dataDirectory != null) #dataDirectory: dataDirectory,
         if (nativeTitleBar != null) #nativeTitleBar: nativeTitleBar,
         if (showConnectOfficial != null)
           #showConnectOfficial: showConnectOfficial,
@@ -164,6 +172,7 @@ class _QuokkaSettingsCopyWithImpl<$R, $Out>
       localeTag: data.get(#localeTag, or: $value.localeTag),
       theme: data.get(#theme, or: $value.theme),
       design: data.get(#design, or: $value.design),
+      dataDirectory: data.get(#dataDirectory, or: $value.dataDirectory),
       nativeTitleBar: data.get(#nativeTitleBar, or: $value.nativeTitleBar),
       showConnectOfficial:
           data.get(#showConnectOfficial, or: $value.showConnectOfficial),

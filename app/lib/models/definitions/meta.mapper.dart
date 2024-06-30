@@ -20,18 +20,18 @@ class PackMetadataMapper extends ClassMapperBase<PackMetadata> {
   @override
   final String id = 'PackMetadata';
 
-  static String? _$name(PackMetadata v) => v.name;
+  static String _$name(PackMetadata v) => v.name;
   static const Field<PackMetadata, String> _f$name =
-      Field('name', _$name, opt: true);
-  static String? _$description(PackMetadata v) => v.description;
+      Field('name', _$name, opt: true, def: '');
+  static String _$description(PackMetadata v) => v.description;
   static const Field<PackMetadata, String> _f$description =
-      Field('description', _$description, opt: true);
-  static String? _$author(PackMetadata v) => v.author;
+      Field('description', _$description, opt: true, def: '');
+  static String _$author(PackMetadata v) => v.author;
   static const Field<PackMetadata, String> _f$author =
-      Field('author', _$author, opt: true);
-  static String? _$version(PackMetadata v) => v.version;
+      Field('author', _$author, opt: true, def: '');
+  static String _$version(PackMetadata v) => v.version;
   static const Field<PackMetadata, String> _f$version =
-      Field('version', _$version, opt: true);
+      Field('version', _$version, opt: true, def: '');
 
   @override
   final MappableFields<PackMetadata> fields = const {
@@ -115,15 +115,15 @@ class _PackMetadataCopyWithImpl<$R, $Out>
       PackMetadataMapper.ensureInitialized();
   @override
   $R call(
-          {Object? name = $none,
-          Object? description = $none,
-          Object? author = $none,
-          Object? version = $none}) =>
+          {String? name,
+          String? description,
+          String? author,
+          String? version}) =>
       $apply(FieldCopyWithData({
-        if (name != $none) #name: name,
-        if (description != $none) #description: description,
-        if (author != $none) #author: author,
-        if (version != $none) #version: version
+        if (name != null) #name: name,
+        if (description != null) #description: description,
+        if (author != null) #author: author,
+        if (version != null) #version: version
       }));
   @override
   PackMetadata $make(CopyWithData data) => PackMetadata(
