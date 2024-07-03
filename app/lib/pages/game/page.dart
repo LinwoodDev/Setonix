@@ -1,5 +1,6 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_leap/material_leap.dart';
@@ -7,6 +8,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:quokka/api/settings.dart';
 import 'package:quokka/cubits/settings.dart';
 import 'package:quokka/game/board/game.dart';
+import 'package:quokka/services/pack.dart';
 
 class GamePage extends StatelessWidget {
   const GamePage({super.key});
@@ -43,7 +45,9 @@ class GamePage extends StatelessWidget {
         ),
       ),
       body: GameWidget(
-        game: BoardGame(),
+        game: BoardGame(
+          packService: context.read<PackService>(),
+        ),
       ),
     );
   }

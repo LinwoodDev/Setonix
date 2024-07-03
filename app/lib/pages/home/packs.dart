@@ -6,7 +6,7 @@ import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:quokka/models/definitions/meta.dart';
 import 'package:quokka/models/definitions/pack.dart';
-import 'package:quokka/services/packs.dart';
+import 'package:quokka/services/pack.dart';
 import 'package:quokka/widgets/search.dart';
 
 class PacksDialog extends StatefulWidget {
@@ -40,7 +40,7 @@ class _PacksDialogState extends State<PacksDialog>
         });
       }
     });
-    _packsFuture = context.read<PacksService>().getPacks();
+    _packsFuture = context.read<PackService>().getPacks();
   }
 
   @override
@@ -273,7 +273,7 @@ class _PacksDialogState extends State<PacksDialog>
   }
 
   Future<void> _importPack() async {
-    final service = context.read<PacksService>();
+    final service = context.read<PackService>();
     final result = await fs.openFile(
       acceptedTypeGroups: [
         fs.XTypeGroup(

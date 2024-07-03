@@ -17,7 +17,6 @@ class GameCell extends PositionComponent with HasGameRef, HoverCallbacks {
       sprite: _selectionSprite,
       size: size,
     );
-    add(_selectionComponent);
   }
 
   @override
@@ -25,8 +24,11 @@ class GameCell extends PositionComponent with HasGameRef, HoverCallbacks {
     if (kDebugMode) {
       print('hover enter on $position');
     }
+    add(_selectionComponent);
   }
 
   @override
-  void onHoverExit() {}
+  void onHoverExit() {
+    if (!_selectionComponent.isRemoved) _selectionComponent.removeFromParent();
+  }
 }

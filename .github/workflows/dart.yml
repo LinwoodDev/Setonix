@@ -28,7 +28,7 @@ jobs:
           dart --version
           flutter --version
       - name: Run generate
-        working-directory: /
+        working-directory: ./
         run: |
           cd tools
           dart pub get
