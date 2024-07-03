@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:file_selector/file_selector.dart' as fs;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
@@ -154,20 +155,32 @@ class _PacksDialogState extends State<PacksDialog>
                 final view = TabBarView(
                   controller: _tabController,
                   children: [
-                    ListView.builder(
-                      itemCount: packs.length,
-                      itemBuilder: (context, index) {
-                        final key = packs[index].key;
-                        final pack = packs[index].value;
-                        final metadata = pack.getMetadata();
-                        return ListTile(
-                          title: Text(metadata?.name ??
-                              AppLocalizations.of(context).unnamed),
-                          selected: _selectedPack?.$1 == pack &&
-                              (!isMobile || _isMobileOpen),
-                          onTap: () => selectPack(pack, key, true),
-                        );
-                      },
+                    Stack(
+                      children: [
+                        ListView.builder(
+                          itemCount: packs.length,
+                          itemBuilder: (context, index) {
+                            final key = packs[index].key;
+                            final pack = packs[index].value;
+                            final metadata = pack.getMetadata();
+                            return ListTile(
+                              title: Text(metadata?.name ??
+                                  AppLocalizations.of(context).unnamed),
+                              selected: _selectedPack?.$1 == pack &&
+                                  (!isMobile || _isMobileOpen),
+                              onTap: () => selectPack(pack, key, true),
+                            );
+                          },
+                        ),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: FloatingActionButton(
+                            tooltip: AppLocalizations.of(context).import,
+                            onPressed: _importPack,
+                            child: const Icon(PhosphorIconsLight.arrowSquareIn),
+                          ),
+                        ),
+                      ],
                     ),
                     Center(
                       child: Text(AppLocalizations.of(context).comingSoon),
@@ -257,5 +270,35 @@ class _PacksDialogState extends State<PacksDialog>
         ),
       ],
     );
+  }
+
+  Future<void> _importPack() async {
+    final service = context.read<PacksService>();
+    final result = await fs.openFile(
+      acceptedTypeGroups: [
+        fs.XTypeGroup(
+          label: AppLocalizations.of(context).packs,
+          extensions: const ['qka'],
+          uniformTypeIdentifiers: const ['dev.linwood.quokka.pack'],
+          mimeTypes: const ['application/octet-stream', 'application/zip'],
+        )
+      ],
+    );
+    if (result == null) return;
+    final data = await result.readAsBytes();
+    var name = result.name;
+    const qka = '.qka';
+    if (name.endsWith(qka)) {
+      name = name.substring(0, name.length - qka.length);
+    }
+    final pack = PackData.fromData(data);
+    await service.fileSystem.updateFile(
+      name,
+      pack,
+    );
+
+    setState(() {
+      _packsFuture = service.getPacks();
+    });
   }
 }

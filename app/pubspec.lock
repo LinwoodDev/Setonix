@@ -283,7 +283,7 @@ packages:
     source: hosted
     version: "7.0.0"
   file_selector:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: file_selector
       sha256: "5019692b593455127794d5718304ff1ae15447dea286cdda9f0db2a796a1b828"
@@ -641,8 +641,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/lw_file_system"
-      ref: "3c839172e3e5b01fca75e92ec2b8f0b1b4b9b0ce"
-      resolved-ref: "3c839172e3e5b01fca75e92ec2b8f0b1b4b9b0ce"
+      ref: "8e8ec43715ea29b0ea04789628a7edab7d2e15c7"
+      resolved-ref: "8e8ec43715ea29b0ea04789628a7edab7d2e15c7"
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "1.0.0"
@@ -650,8 +650,8 @@ packages:
     dependency: transitive
     description:
       path: "packages/lw_file_system_api"
-      ref: a2b169be76ddafffc0fd156e2d192dec64378994
-      resolved-ref: a2b169be76ddafffc0fd156e2d192dec64378994
+      ref: "3cf054ad60aa87507a8c4a6d2fdf61625da39e3a"
+      resolved-ref: "3cf054ad60aa87507a8c4a6d2fdf61625da39e3a"
       url: "https://github.com/LinwoodDev/dart_pkgs"
     source: git
     version: "1.0.0"

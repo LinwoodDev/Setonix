@@ -5,12 +5,12 @@ import 'package:quokka/models/definitions/pack.dart';
 
 class PacksService {
   final PackData? _corePack;
-  final TypedKeyFileSystem<PackData> _fileSystem;
+  final TypedKeyFileSystem<PackData> fileSystem;
 
   PacksService({
     PackData? corePack,
   })  : _corePack = corePack,
-        _fileSystem = TypedKeyFileSystem.build(
+        fileSystem = TypedKeyFileSystem.build(
           FileSystemConfig(
             passwordStorage: SecureStoragePasswordStorage(),
             storeName: 'packs',
@@ -31,10 +31,10 @@ class PacksService {
     bool fetchCore = true,
   }) async {
     final corePack = fetchCore ? await fetchCorePack() : null;
-    if (fetchExternal) await _fileSystem.initialize();
+    if (fetchExternal) await fileSystem.initialize();
     return {
       if (fetchExternal)
-        ...Map.fromEntries((await _fileSystem.getFiles())
+        ...Map.fromEntries((await fileSystem.getFiles())
             .map((file) => file.data == null
                 ? null
                 : MapEntry(file.fileNameWithoutExtension, file.data!))

@@ -93,5 +93,6 @@
   "loading": "Loading",
   "install": "Install",
   "data": "Data",
-  "dataDirectory": "Data directory"
+  "dataDirectory": "Data directory",
+  "import": "Import"
 }
