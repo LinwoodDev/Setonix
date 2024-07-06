@@ -16,7 +16,7 @@ class GameTable with GameTableMappable {
   final Map<String, GameSeat> seats;
   final Map<String, GamePlayer> players;
 
-  GameTable({
+  const GameTable({
     this.cells = const {},
     this.boards = const {},
     this.seats = const {},

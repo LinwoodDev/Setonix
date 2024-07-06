@@ -2,25 +2,39 @@ import 'dart:async';
 
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
-import 'package:quokka/game/board/background.dart';
+import 'package:flame/sprite.dart';
+import 'package:flutter/painting.dart';
 import 'package:quokka/game/board/cell.dart';
 import 'package:quokka/game/board/grid.dart';
 import 'package:quokka/models/definitions/pack.dart';
+import 'package:quokka/models/table.dart';
 import 'package:quokka/services/pack.dart';
 
 class BoardGame extends FlameGame with ScrollDetector, ScaleDetector {
   final PackService packService;
+  final GameTable table;
   final Map<String, PackData> _loadedPacks = {};
+  Vector2? selectedCell;
+  late final Sprite gridSprite;
 
   BoardGame({
     required this.packService,
+    this.table = const GameTable(),
   });
 
   @override
-  FutureOr<void> onLoad() {
-    world
-      ..add(GameBoardBackground())
-      ..add(BoardGrid(cellSize: Vector2.all(64), createCell: GameCell.new));
+  FutureOr<void> onLoad() async {
+    final pack = await loadPack('');
+    if (pack == null) {
+      return;
+    }
+    final data = pack.getAsset('textures/backgrounds/cards.png');
+    if (data == null) {
+      return;
+    }
+    final image = await decodeImageFromList(data);
+    gridSprite = Sprite(image);
+    world.add(BoardGrid(cellSize: Vector2.all(64), createCell: GameCell.new));
   }
 
   void clampZoom(double zoom) {
