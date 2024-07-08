@@ -641,8 +641,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/lw_file_system"
-      ref: "8e8ec43715ea29b0ea04789628a7edab7d2e15c7"
-      resolved-ref: "8e8ec43715ea29b0ea04789628a7edab7d2e15c7"
+      ref: "4f0bb758887b0ca5c0b4b9c59092211194725115"
+      resolved-ref: "4f0bb758887b0ca5c0b4b9c59092211194725115"
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "1.0.0"

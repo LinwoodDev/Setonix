@@ -94,5 +94,8 @@
   "install": "Install",
   "data": "Data",
   "dataDirectory": "Data directory",
-  "import": "Import"
+  "import": "Import",
+  "whatsNew": "What's new?",
+  "welcome": "Hey, this is Linwood Quokka",
+  "welcomeContent": "A free and open-source tabletop simulator"
 }

@@ -75,7 +75,7 @@ class GameCell extends PositionComponent
 
     _selected = !_selected;
     final controller = EffectController(
-      duration: 1,
+      duration: 0.1,
     );
     final context = game.buildContext;
     final color =

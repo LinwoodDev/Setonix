@@ -34,11 +34,11 @@ class BoardGame extends FlameGame with ScrollDetector, ScaleDetector {
     }
     final image = await decodeImageFromList(data);
     gridSprite = Sprite(image);
-    world.add(BoardGrid(cellSize: Vector2.all(64), createCell: GameCell.new));
+    world.add(BoardGrid(cellSize: Vector2.all(256), createCell: GameCell.new));
   }
 
   void clampZoom(double zoom) {
-    camera.viewfinder.zoom = zoom.clamp(0.5, 3.0);
+    camera.viewfinder.zoom = zoom.clamp(0.3, 3.0);
   }
 
   static const zoomPerScrollUnit = 0.02;

@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:lw_file_system/lw_file_system.dart';
 import 'package:quokka/api/storage.dart';
 import 'package:quokka/models/definitions/pack.dart';
@@ -18,6 +17,7 @@ class PackService {
                 '${await getQuokkaDirectory()}/Packs',
             database: 'quokka.db',
             databaseVersion: 1,
+            keySuffix: '.qka',
           ),
           onDecode: PackData.fromData,
           onEncode: (data) => data.export(),
@@ -33,12 +33,7 @@ class PackService {
     final corePack = fetchCore ? await fetchCorePack() : null;
     if (fetchExternal) await fileSystem.initialize();
     return {
-      if (fetchExternal)
-        ...Map.fromEntries((await fileSystem.getFiles())
-            .map((file) => file.data == null
-                ? null
-                : MapEntry(file.fileNameWithoutExtension, file.data!))
-            .whereNotNull()),
+      if (fetchExternal) ...await fileSystem.getFiles(),
       if (corePack != null) '': corePack,
     };
   }

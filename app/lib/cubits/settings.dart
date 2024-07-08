@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_leap/material_leap.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -14,6 +15,7 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
   final ThemeMode theme;
   final String design;
   final String dataDirectory;
+  final String? lastVersion;
   @override
   final bool nativeTitleBar;
   final bool showConnectOfficial, showConnectCustom, showConnectOnlyFavorites;
@@ -27,6 +29,7 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
     this.showConnectOfficial = true,
     this.showConnectCustom = true,
     this.showConnectOnlyFavorites = false,
+    this.lastVersion,
   });
 
   Locale? get locale {
@@ -49,6 +52,7 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
         showConnectCustom: prefs.getBool('showConnectCustom') ?? true,
         showConnectOnlyFavorites:
             prefs.getBool('showConnectOnlyFavorites') ?? false,
+        lastVersion: prefs.getString('lastVersion'),
       );
 
   Future<void> save() async {
@@ -61,6 +65,13 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
     await prefs.setBool('showConnectOfficial', showConnectOfficial);
     await prefs.setBool('showConnectCustom', showConnectCustom);
     await prefs.setBool('showConnectOnlyFavorites', showConnectOnlyFavorites);
+    if (lastVersion == null) {
+      if (prefs.containsKey('last_version')) {
+        await prefs.remove('last_version');
+      }
+    } else {
+      await prefs.setString('last_version', lastVersion!);
+    }
   }
 }
 
@@ -114,5 +125,17 @@ class SettingsCubit extends Cubit<QuokkaSettings>
     return save();
   }
 
+  Future<void> updateLastVersion() async {
+    final info = await PackageInfo.fromPlatform();
+
+    emit(state.copyWith(lastVersion: info.version));
+    return save();
+  }
+
   Future<void> save() => state.save();
+
+  Future<bool> hasNewerVersion() async {
+    final info = await PackageInfo.fromPlatform();
+    return state.lastVersion != info.version;
+  }
 }

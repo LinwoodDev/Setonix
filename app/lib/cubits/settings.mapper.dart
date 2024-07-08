@@ -46,6 +46,9 @@ class QuokkaSettingsMapper extends ClassMapperBase<QuokkaSettings> {
   static const Field<QuokkaSettings, bool> _f$showConnectOnlyFavorites = Field(
       'showConnectOnlyFavorites', _$showConnectOnlyFavorites,
       opt: true, def: false);
+  static String? _$lastVersion(QuokkaSettings v) => v.lastVersion;
+  static const Field<QuokkaSettings, String> _f$lastVersion =
+      Field('lastVersion', _$lastVersion, opt: true);
 
   @override
   final MappableFields<QuokkaSettings> fields = const {
@@ -57,6 +60,7 @@ class QuokkaSettingsMapper extends ClassMapperBase<QuokkaSettings> {
     #showConnectOfficial: _f$showConnectOfficial,
     #showConnectCustom: _f$showConnectCustom,
     #showConnectOnlyFavorites: _f$showConnectOnlyFavorites,
+    #lastVersion: _f$lastVersion,
   };
 
   static QuokkaSettings _instantiate(DecodingData data) {
@@ -68,7 +72,8 @@ class QuokkaSettingsMapper extends ClassMapperBase<QuokkaSettings> {
         nativeTitleBar: data.dec(_f$nativeTitleBar),
         showConnectOfficial: data.dec(_f$showConnectOfficial),
         showConnectCustom: data.dec(_f$showConnectCustom),
-        showConnectOnlyFavorites: data.dec(_f$showConnectOnlyFavorites));
+        showConnectOnlyFavorites: data.dec(_f$showConnectOnlyFavorites),
+        lastVersion: data.dec(_f$lastVersion));
   }
 
   @override
@@ -132,7 +137,8 @@ abstract class QuokkaSettingsCopyWith<$R, $In extends QuokkaSettings, $Out>
       bool? nativeTitleBar,
       bool? showConnectOfficial,
       bool? showConnectCustom,
-      bool? showConnectOnlyFavorites});
+      bool? showConnectOnlyFavorites,
+      String? lastVersion});
   QuokkaSettingsCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -154,7 +160,8 @@ class _QuokkaSettingsCopyWithImpl<$R, $Out>
           bool? nativeTitleBar,
           bool? showConnectOfficial,
           bool? showConnectCustom,
-          bool? showConnectOnlyFavorites}) =>
+          bool? showConnectOnlyFavorites,
+          Object? lastVersion = $none}) =>
       $apply(FieldCopyWithData({
         if (localeTag != null) #localeTag: localeTag,
         if (theme != null) #theme: theme,
@@ -165,7 +172,8 @@ class _QuokkaSettingsCopyWithImpl<$R, $Out>
           #showConnectOfficial: showConnectOfficial,
         if (showConnectCustom != null) #showConnectCustom: showConnectCustom,
         if (showConnectOnlyFavorites != null)
-          #showConnectOnlyFavorites: showConnectOnlyFavorites
+          #showConnectOnlyFavorites: showConnectOnlyFavorites,
+        if (lastVersion != $none) #lastVersion: lastVersion
       }));
   @override
   QuokkaSettings $make(CopyWithData data) => QuokkaSettings(
@@ -179,7 +187,8 @@ class _QuokkaSettingsCopyWithImpl<$R, $Out>
       showConnectCustom:
           data.get(#showConnectCustom, or: $value.showConnectCustom),
       showConnectOnlyFavorites: data.get(#showConnectOnlyFavorites,
-          or: $value.showConnectOnlyFavorites));
+          or: $value.showConnectOnlyFavorites),
+      lastVersion: data.get(#lastVersion, or: $value.lastVersion));
 
   @override
   QuokkaSettingsCopyWith<$R2, QuokkaSettings, $Out2> $chain<$R2, $Out2>(

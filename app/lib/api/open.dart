@@ -9,3 +9,13 @@ Future<bool> openReleaseNotes() {
           pathSegments: ['quokka', applicationMinorVersion]),
       mode: LaunchMode.externalApplication);
 }
+
+Future<bool> openHelp(List<String> pageLocation, [String? fragment]) {
+  return launchUrl(
+    Uri(
+        scheme: 'https',
+        host: 'quokka.linwood.dev',
+        fragment: fragment,
+        pathSegments: ['docs', 'v0', ...pageLocation]),
+  );
+}

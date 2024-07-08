@@ -24,6 +24,7 @@ class _PacksDialogState extends State<PacksDialog>
     vsync: this,
     duration: const Duration(milliseconds: 100),
   );
+  late final PackService _service = context.read<PackService>();
   late final TabController _tabController;
   Future<Map<String, PackData>>? _packsFuture;
   (PackData, String, bool)? _selectedPack;
@@ -40,13 +41,21 @@ class _PacksDialogState extends State<PacksDialog>
         });
       }
     });
-    _packsFuture = context.read<PackService>().getPacks();
+    _packsFuture = _service.getPacks();
   }
 
   @override
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  void _reloadPacks() {
+    if (mounted) {
+      setState(() {
+        _packsFuture = _service.getPacks();
+      });
+    }
   }
 
   List<Widget> _buildDetailsChildren(PackData pack, PackMetadata? metadata) {
@@ -91,6 +100,14 @@ class _PacksDialogState extends State<PacksDialog>
 
   void _deselectPack() => _controller.reverse();
 
+  Future<void> _removePack() async {
+    _deselectPack();
+    final pack = _selectedPack?.$2;
+    if (pack == null) return;
+    await _service.fileSystem.deleteFile(pack);
+    _reloadPacks();
+  }
+
   @override
   Widget build(BuildContext context) {
     final currentSize = MediaQuery.sizeOf(context).width;
@@ -98,7 +115,7 @@ class _PacksDialogState extends State<PacksDialog>
     final onInstall = _selectedPack?.$3 ?? false ? null : _deselectPack;
     final onRemove =
         (_selectedPack?.$3 ?? false) && (_selectedPack?.$2.isNotEmpty ?? true)
-            ? _deselectPack
+            ? _removePack
             : null;
     Future<void> selectPack(PackData pack, String id, bool installed) async {
       _controller.forward();
@@ -152,35 +169,36 @@ class _PacksDialogState extends State<PacksDialog>
               future: _packsFuture,
               builder: (context, snapshot) {
                 final packs = snapshot.data?.entries.toList() ?? [];
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Column(
+                      children: [
+                        Text(AppLocalizations.of(context).error,
+                            style: Theme.of(context).textTheme.headlineMedium),
+                        const SizedBox(height: 8),
+                        Text(snapshot.error.toString()),
+                      ],
+                    ),
+                  );
+                }
                 final view = TabBarView(
                   controller: _tabController,
                   children: [
-                    Stack(
-                      children: [
-                        ListView.builder(
-                          itemCount: packs.length,
-                          itemBuilder: (context, index) {
-                            final key = packs[index].key;
-                            final pack = packs[index].value;
-                            final metadata = pack.getMetadata();
-                            return ListTile(
-                              title: Text(metadata?.name ??
-                                  AppLocalizations.of(context).unnamed),
-                              selected: _selectedPack?.$1 == pack &&
-                                  (!isMobile || _isMobileOpen),
-                              onTap: () => selectPack(pack, key, true),
-                            );
-                          },
-                        ),
-                        Align(
-                          alignment: Alignment.bottomRight,
-                          child: FloatingActionButton(
-                            tooltip: AppLocalizations.of(context).import,
-                            onPressed: _importPack,
-                            child: const Icon(PhosphorIconsLight.arrowSquareIn),
-                          ),
-                        ),
-                      ],
+                    ListView.builder(
+                      itemCount: packs.length,
+                      itemBuilder: (context, index) {
+                        final key = packs[index].key;
+                        final pack = packs[index].value;
+                        final metadata = pack.getMetadata();
+                        return ListTile(
+                          title: Text(metadata?.name ??
+                              AppLocalizations.of(context).unnamed),
+                          subtitle: Text(key),
+                          selected: _selectedPack?.$1 == pack &&
+                              (!isMobile || _isMobileOpen),
+                          onTap: () => selectPack(pack, key, true),
+                        );
+                      },
                     ),
                     Center(
                       child: Text(AppLocalizations.of(context).comingSoon),
@@ -265,15 +283,15 @@ class _PacksDialogState extends State<PacksDialog>
         ),
         const SizedBox(height: 32, child: VerticalDivider()),
         IconButton(
-          icon: const Icon(PhosphorIconsBold.arrowSquareIn),
-          onPressed: () => Navigator.of(context).pop(),
+          tooltip: AppLocalizations.of(context).import,
+          onPressed: _importPack,
+          icon: const Icon(PhosphorIconsLight.arrowSquareIn),
         ),
       ],
     );
   }
 
   Future<void> _importPack() async {
-    final service = context.read<PackService>();
     final result = await fs.openFile(
       acceptedTypeGroups: [
         fs.XTypeGroup(
@@ -292,13 +310,11 @@ class _PacksDialogState extends State<PacksDialog>
       name = name.substring(0, name.length - qka.length);
     }
     final pack = PackData.fromData(data);
-    await service.fileSystem.updateFile(
+    await _service.fileSystem.updateFile(
       name,
       pack,
     );
 
-    setState(() {
-      _packsFuture = service.getPacks();
-    });
+    _reloadPacks();
   }
 }

@@ -27,7 +27,8 @@ class GamePage extends StatelessWidget {
                     children: [
                       ListTile(
                         leading: const Icon(PhosphorIconsLight.arrowLeft),
-                        title: Text(AppLocalizations.of(context).game),
+                        title: Text(MaterialLocalizations.of(context)
+                            .backButtonTooltip),
                         onTap: () => Scaffold.of(context).closeDrawer(),
                       ),
                       ListTile(
