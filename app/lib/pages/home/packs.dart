@@ -104,7 +104,7 @@ class _PacksDialogState extends State<PacksDialog>
     _deselectPack();
     final pack = _selectedPack?.$2;
     if (pack == null) return;
-    await _service.fileSystem.deleteFile(pack);
+    await _service.removePack(pack);
     _reloadPacks();
   }
 

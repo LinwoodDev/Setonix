@@ -97,5 +97,7 @@
   "import": "Import",
   "whatsNew": "What's new?",
   "welcome": "Hey, this is Linwood Quokka",
-  "welcomeContent": "A free and open-source tabletop simulator"
+  "welcomeContent": "A free and open-source tabletop simulator",
+  "objects": "Objects",
+  "figures": "Figures"
 }

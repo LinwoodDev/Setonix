@@ -6,6 +6,7 @@ import 'package:flame/sprite.dart';
 import 'package:flutter/painting.dart';
 import 'package:quokka/game/board/cell.dart';
 import 'package:quokka/game/board/grid.dart';
+import 'package:quokka/game/board/hand/view.dart';
 import 'package:quokka/models/definitions/pack.dart';
 import 'package:quokka/models/table.dart';
 import 'package:quokka/services/pack.dart';
@@ -16,6 +17,7 @@ class BoardGame extends FlameGame with ScrollDetector, ScaleDetector {
   final Map<String, PackData> _loadedPacks = {};
   Vector2? selectedCell;
   late final Sprite gridSprite;
+  late final GameHand _hand;
 
   BoardGame({
     required this.packService,
@@ -28,12 +30,14 @@ class BoardGame extends FlameGame with ScrollDetector, ScaleDetector {
     if (pack == null) {
       return;
     }
-    final data = pack.getAsset('textures/backgrounds/cards.png');
+    final data = pack.getAsset('textures/backgrounds/grid.png');
     if (data == null) {
       return;
     }
     final image = await decodeImageFromList(data);
     gridSprite = Sprite(image);
+    _hand = GameHand();
+    camera.viewport.add(_hand);
     world.add(BoardGrid(cellSize: Vector2.all(256), createCell: GameCell.new));
   }
 
@@ -69,6 +73,8 @@ class BoardGame extends FlameGame with ScrollDetector, ScaleDetector {
     }
   }
 
+  Iterable<MapEntry<String, PackData>> get packs => _loadedPacks.entries;
+
   Future<PackData?> loadPack(String packId) async {
     var pack = _loadedPacks[packId];
     if (pack != null) {
@@ -81,5 +87,9 @@ class BoardGame extends FlameGame with ScrollDetector, ScaleDetector {
     }
     _loadedPacks[packId] = pack;
     return pack;
+  }
+
+  void showAdd() {
+    selectedCell = null;
   }
 }

@@ -7,10 +7,12 @@ part 'deck.mapper.dart';
 class DeckDefinition with DeckDefinitionMappable {
   final String? name;
   final String? description;
+  final List<FigureDeckDefinition> figures;
 
   DeckDefinition({
     this.name,
     this.description,
+    this.figures = const [],
   });
 }
 

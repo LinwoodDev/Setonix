@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:archive/archive.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/services.dart';
 import 'package:quokka/models/definitions/deck.dart';
 import 'package:quokka/models/definitions/meta.dart';
@@ -8,7 +9,7 @@ import 'package:quokka/models/definitions/object.dart';
 
 const kPackMetadataPath = 'pack.json';
 const kPackDecksPath = 'decks';
-const kPackFiguresPath = 'decks';
+const kPackFiguresPath = 'figures';
 const kPackBoardsPath = 'boards';
 const kPackTexturesPath = 'textures';
 const kPackTranslationsPath = 'translations';
@@ -57,7 +58,18 @@ class PackData {
     return DeckDefinitionMapper.fromJson(content);
   }
 
-  Iterable<String> getFigures() => getAssets(kPackFiguresPath);
+  PackItem<DeckDefinition>? getDeckItem(String id, [String namespace = '']) =>
+      PackItem.wrap(
+        pack: this,
+        namespace: namespace,
+        id: id,
+        item: getDeck(id),
+      );
+
+  Iterable<PackItem<DeckDefinition>> getDeckItems([String namespace = '']) =>
+      getDecks().map((e) => getDeckItem(e, namespace)).whereNotNull();
+
+  Iterable<String> getFigures() => getAssets('$kPackFiguresPath/', true);
 
   FigureDefinition? getFigure(String id) {
     final data = getAsset('$kPackFiguresPath/$id.json');
@@ -66,7 +78,20 @@ class PackData {
     return FigureDefinitionMapper.fromJson(content);
   }
 
-  Iterable<String> getBoards() => getAssets(kPackBoardsPath);
+  PackItem<FigureDefinition>? getFigureItem(String id,
+          [String namespace = '']) =>
+      PackItem.wrap(
+        pack: this,
+        namespace: namespace,
+        id: id,
+        item: getFigure(id),
+      );
+
+  Iterable<PackItem<FigureDefinition>>? getFigureItems(
+          [String namespace = '']) =>
+      getDecks().map((e) => getFigureItem(e, namespace)).whereNotNull();
+
+  Iterable<String> getBoards() => getAssets(kPackBoardsPath, true);
 
   BoardDefinition? getBoard(String id) {
     try {
@@ -97,4 +122,32 @@ class PackData {
       getTranslation(path, key) ?? key;
 
   Uint8List export() => Uint8List.fromList(ZipEncoder().encode(archive) ?? []);
+}
+
+final class PackItem<T> {
+  final PackData pack;
+  final String namespace;
+  final T item;
+  final String id;
+
+  PackItem({
+    required this.pack,
+    required this.namespace,
+    required this.item,
+    required this.id,
+  });
+
+  static PackItem<T>? wrap<T>(
+      {required PackData pack,
+      required String namespace,
+      T? item,
+      String? id}) {
+    if (item == null || id == null) return null;
+    return PackItem(
+      pack: pack,
+      namespace: namespace,
+      id: id,
+      item: item,
+    );
+  }
 }

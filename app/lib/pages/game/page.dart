@@ -1,6 +1,5 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_leap/material_leap.dart';
@@ -15,9 +14,19 @@ class GamePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final BoardGame game = BoardGame(
+      packService: PackService(),
+    );
     return Scaffold(
       appBar: WindowTitleBar<SettingsCubit, QuokkaSettings>(
         title: Text(AppLocalizations.of(context).game),
+        actions: [
+          IconButton(
+            icon: const PhosphorIcon(PhosphorIconsLight.plusCircle),
+            tooltip: AppLocalizations.of(context).addDeck,
+            onPressed: () => game.showAdd(),
+          )
+        ],
       ),
       drawer: Drawer(
         child: Center(
@@ -46,9 +55,7 @@ class GamePage extends StatelessWidget {
         ),
       ),
       body: GameWidget(
-        game: BoardGame(
-          packService: context.read<PackService>(),
-        ),
+        game: game,
       ),
     );
   }
