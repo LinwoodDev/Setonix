@@ -49,7 +49,7 @@ class PackData {
         return e.substring(0, startExtension);
       });
 
-  Iterable<String> getDecks() => getAssets(kPackDecksPath);
+  Iterable<String> getDecks() => getAssets(kPackDecksPath, true);
 
   DeckDefinition? getDeck(String id) {
     final data = getAsset('$kPackDecksPath/$id.json');

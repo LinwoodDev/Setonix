@@ -19,10 +19,12 @@ class DeckDefinition with DeckDefinitionMappable {
 @MappableClass()
 class FigureDeckDefinition with FigureDeckDefinitionMappable {
   final String name;
+  final String? variation;
   final VectorDefinition location;
 
   FigureDeckDefinition({
     required this.name,
+    this.variation,
     this.location = VectorDefinition.zero,
   });
 }

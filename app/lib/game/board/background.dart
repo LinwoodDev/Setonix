@@ -6,7 +6,7 @@ import 'package:quokka/game/board/game.dart';
 class GameBoardBackground extends SpriteComponent
     with HasGameReference<BoardGame> {
   GameBoardBackground({super.size})
-      : super(paint: Paint()..isAntiAlias = true);
+      : super(paint: Paint()..isAntiAlias = false);
   @override
   void onLoad() {
     sprite = game.gridSprite;

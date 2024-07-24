@@ -15,15 +15,15 @@ version: 0.1.0+1
 publish_to: none
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  flutter_localizations: 
+  flutter_localizations:
     sdk: flutter
   flutter_web_plugins:
-    sdk: flutter  
+    sdk: flutter
   intl: any
   flutter_localized_locales: ^2.0.5
   # Engine
@@ -34,19 +34,22 @@ dependencies:
   lw_file_system:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 4f0bb758887b0ca5c0b4b9c59092211194725115
+      ref: b8c77d09288aa1bf31b2de527cfca881352b2cbf
       path: packages/lw_file_system
   material_leap:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 0e04c453c2b6d4aa499f79e54bb1c0b7a9b2c42c
+      ref: a2b169be76ddafffc0fd156e2d192dec64378994
       path: packages/material_leap
   lw_sysapi:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 0e04c453c2b6d4aa499f79e54bb1c0b7a9b2c42c
+      ref: d3636613e173e52e618ea46f3a366d5c76c61874
       path: packages/lw_sysapi
-  flex_color_scheme: ^7.2.0
+  flex_color_scheme:
+    git:
+      url: https://github.com/rydmike/flex_color_scheme
+      ref: 6b34ee7d2efcf0d964163e925ba946a7bf454d72
   flutter_svg: ^2.0.10+1
   window_manager: ^0.3.8
   # Database

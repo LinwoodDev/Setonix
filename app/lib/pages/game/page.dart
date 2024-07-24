@@ -20,6 +20,7 @@ class GamePage extends StatelessWidget {
     return Scaffold(
       appBar: WindowTitleBar<SettingsCubit, QuokkaSettings>(
         title: Text(AppLocalizations.of(context).game),
+        height: 50,
         actions: [
           IconButton(
             icon: const PhosphorIcon(PhosphorIconsLight.plusCircle),

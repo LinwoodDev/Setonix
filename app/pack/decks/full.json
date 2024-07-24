@@ -4,223 +4,278 @@
   "figures": [
     {
       "position": [0, 0],
-      "name": "heart-ace"
+      "name": "cards",
+      "variation": "heart-ace"
     },
     {
       "position": [0, 0],
-      "name": "heart-2"
+      "name": "cards",
+      "variation": "heart-2"
     },
     {
       "position": [0, 0],
-      "name": "heart-3"
+      "name": "cards",
+      "variation": "heart-3"
     },
     {
       "position": [0, 0],
-      "name": "heart-4"
+      "name": "cards",
+      "variation": "heart-4"
     },
     {
       "position": [0, 0],
-      "name": "heart-5"
+      "name": "cards",
+      "variation": "heart-5"
     },
     {
       "position": [0, 0],
-      "name": "heart-6"
+      "name": "cards",
+      "variation": "heart-6"
     },
     {
       "position": [0, 0],
-      "name": "heart-7"
+      "name": "cards",
+      "variation": "heart-7"
     },
     {
       "position": [0, 0],
-      "name": "heart-8"
+      "name": "cards",
+      "variation": "heart-8"
     },
     {
       "position": [0, 0],
-      "name": "heart-9"
+      "name": "cards",
+      "variation": "heart-9"
     },
     {
       "position": [0, 0],
-      "name": "heart-10"
+      "name": "cards",
+      "variation": "heart-10"
     },
     {
       "position": [0, 0],
-      "name": "heart-jack"
+      "name": "cards",
+      "variation": "heart-jack"
     },
     {
       "position": [0, 0],
-      "name": "heart-queen"
+      "name": "cards",
+      "variation": "heart-queen"
     },
     {
       "position": [0, 0],
-      "name": "heart-king"
+      "name": "cards",
+      "variation": "heart-king"
     },
     {
       "position": [0, 0],
-      "name": "diamond-ace"
+      "name": "cards",
+      "variation": "diamond-ace"
     },
     {
       "position": [0, 0],
-      "name": "diamond-2"
+      "name": "cards",
+      "variation": "diamond-2"
     },
     {
       "position": [0, 0],
-      "name": "diamond-3"
+      "name": "cards",
+      "variation": "diamond-3"
     },
     {
       "position": [0, 0],
-      "name": "diamond-4"
+      "name": "cards",
+      "variation": "diamond-4"
     },
     {
       "position": [0, 0],
-      "name": "diamond-5"
+      "name": "cards",
+      "variation": "diamond-5"
     },
     {
       "position": [0, 0],
-      "name": "diamond-6"
+      "name": "cards",
+      "variation": "diamond-6"
     },
     {
       "position": [0, 0],
-      "name": "diamond-7"
+      "name": "cards",
+      "variation": "diamond-7"
     },
     {
       "position": [0, 0],
-      "name": "diamond-8"
+      "name": "cards",
+      "variation": "diamond-8"
     },
     {
       "position": [0, 0],
-      "name": "diamond-9"
+      "name": "cards",
+      "variation": "diamond-9"
     },
     {
       "position": [0, 0],
-      "name": "diamond-10"
+      "name": "cards",
+      "variation": "diamond-10"
     },
     {
       "position": [0, 0],
-      "name": "diamond-jack"
+      "name": "cards",
+      "variation": "diamond-jack"
     },
     {
       "position": [0, 0],
-      "name": "diamond-queen"
+      "name": "cards",
+      "variation": "diamond-queen"
     },
     {
       "position": [0, 0],
-      "name": "diamond-king"
+      "name": "cards",
+      "variation": "diamond-king"
     },
     {
       "position": [0, 0],
-      "name": "club-ace"
+      "name": "cards",
+      "variation": "club-ace"
     },
     {
       "position": [0, 0],
-      "name": "club-2"
+      "name": "cards",
+      "variation": "club-2"
     },
     {
       "position": [0, 0],
-      "name": "club-3"
+      "name": "cards",
+      "variation": "club-3"
     },
     {
       "position": [0, 0],
-      "name": "club-4"
+      "name": "cards",
+      "variation": "club-4"
     },
     {
       "position": [0, 0],
-      "name": "club-5"
+      "name": "cards",
+      "variation": "club-5"
     },
     {
       "position": [0, 0],
-      "name": "club-6"
+      "name": "cards",
+      "variation": "club-6"
     },
     {
       "position": [0, 0],
-      "name": "club-7"
+      "name": "cards",
+      "variation": "club-7"
     },
     {
       "position": [0, 0],
-      "name": "club-8"
+      "name": "cards",
+      "variation": "club-8"
     },
     {
       "position": [0, 0],
-      "name": "club-9"
+      "name": "cards",
+      "variation": "club-9"
     },
     {
       "position": [0, 0],
-      "name": "club-10"
+      "name": "cards",
+      "variation": "club-10"
     },
     {
       "position": [0, 0],
-      "name": "club-jack"
+      "name": "cards",
+      "variation": "club-jack"
     },
     {
       "position": [0, 0],
-      "name": "club-queen"
+      "name": "cards",
+      "variation": "club-queen"
     },
     {
       "position": [0, 0],
-      "name": "club-king"
+      "name": "cards",
+      "variation": "club-king"
     },
     {
       "position": [0, 0],
-      "name": "spade-ace"
+      "name": "cards",
+      "variation": "spade-ace"
     },
     {
       "position": [0, 0],
-      "name": "spade-2"
+      "name": "cards",
+      "variation": "spade-2"
     },
     {
       "position": [0, 0],
-      "name": "spade-3"
+      "name": "cards",
+      "variation": "spade-3"
     },
     {
       "position": [0, 0],
-      "name": "spade-4"
+      "name": "cards",
+      "variation": "spade-4"
     },
     {
       "position": [0, 0],
-      "name": "spade-5"
+      "name": "cards",
+      "variation": "spade-5"
     },
     {
       "position": [0, 0],
-      "name": "spade-6"
+      "name": "cards",
+      "variation": "spade-6"
     },
     {
       "position": [0, 0],
-      "name": "spade-7"
+      "name": "cards",
+      "variation": "spade-7"
     },
     {
       "position": [0, 0],
-      "name": "spade-8"
+      "name": "cards",
+      "variation": "spade-8"
     },
     {
       "position": [0, 0],
-      "name": "spade-9"
+      "name": "cards",
+      "variation": "spade-9"
     },
     {
       "position": [0, 0],
-      "name": "spade-10"
+      "name": "cards",
+      "variation": "spade-10"
     },
     {
       "position": [0, 0],
-      "name": "spade-jack"
+      "name": "cards",
+      "variation": "spade-jack"
     },
     {
       "position": [0, 0],
-      "name": "spade-queen"
+      "name": "cards",
+      "variation": "spade-queen"
     },
     {
       "position": [0, 0],
-      "name": "spade-king"
+      "name": "cards",
+      "variation": "spade-king"
     },
     {
       "position": [0, 0],
-      "name": "joker-red"
+      "name": "cards",
+      "variation": "joker-red"
     },
     {
       "position": [0, 0],
-      "name": "joker-black"
+      "name": "cards",
+      "variation": "joker-black"
     },
     {
       "position": [0, 0],
-      "name": "joker-mixed"
+      "name": "cards",
+      "variation": "joker-mixed"
     }
   ]
 }

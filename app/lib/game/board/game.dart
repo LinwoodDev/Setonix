@@ -16,7 +16,7 @@ class BoardGame extends FlameGame with ScrollDetector, ScaleDetector {
   final GameTable table;
   final Map<String, PackData> _loadedPacks = {};
   Vector2? selectedCell;
-  late final Sprite gridSprite;
+  late final Sprite gridSprite, selectionSprite;
   late final GameHand _hand;
 
   BoardGame({
@@ -36,6 +36,7 @@ class BoardGame extends FlameGame with ScrollDetector, ScaleDetector {
     }
     final image = await decodeImageFromList(data);
     gridSprite = Sprite(image);
+    selectionSprite = await Sprite.load('selection.png');
     _hand = GameHand();
     camera.viewport.add(_hand);
     world.add(BoardGrid(cellSize: Vector2.all(256), createCell: GameCell.new));
@@ -91,5 +92,6 @@ class BoardGame extends FlameGame with ScrollDetector, ScaleDetector {
 
   void showAdd() {
     selectedCell = null;
+    _hand.show();
   }
 }

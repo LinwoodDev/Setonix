@@ -30,7 +30,7 @@ class GameCell extends PositionComponent
   Future<void> onLoad() async {
     add(GameBoardBackground(size: size));
     _selectionComponent = SpriteComponent(
-      sprite: await Sprite.load('selection.png'),
+      sprite: game.selectionSprite,
       size: size,
     );
     add(_selectionComponent..opacity = 0);
@@ -72,7 +72,6 @@ class GameCell extends PositionComponent
   @override
   void update(double dt) {
     if (_selected == (game.selectedCell == position)) return;
-
     _selected = !_selected;
     final controller = EffectController(
       duration: 0.1,

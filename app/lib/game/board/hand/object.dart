@@ -3,4 +3,7 @@ import 'package:quokka/models/table.dart';
 
 class GameObjectHandItem extends HandItem<MapEntry<GridLocation, GameObject>> {
   GameObjectHandItem({required super.item});
+
+  @override
+  String get label => item.value.asset.id;
 }

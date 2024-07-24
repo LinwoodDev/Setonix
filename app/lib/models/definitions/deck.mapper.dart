@@ -164,6 +164,9 @@ class FigureDeckDefinitionMapper extends ClassMapperBase<FigureDeckDefinition> {
   static String _$name(FigureDeckDefinition v) => v.name;
   static const Field<FigureDeckDefinition, String> _f$name =
       Field('name', _$name);
+  static String? _$variation(FigureDeckDefinition v) => v.variation;
+  static const Field<FigureDeckDefinition, String> _f$variation =
+      Field('variation', _$variation, opt: true);
   static VectorDefinition _$location(FigureDeckDefinition v) => v.location;
   static const Field<FigureDeckDefinition, VectorDefinition> _f$location =
       Field('location', _$location, opt: true, def: VectorDefinition.zero);
@@ -171,12 +174,15 @@ class FigureDeckDefinitionMapper extends ClassMapperBase<FigureDeckDefinition> {
   @override
   final MappableFields<FigureDeckDefinition> fields = const {
     #name: _f$name,
+    #variation: _f$variation,
     #location: _f$location,
   };
 
   static FigureDeckDefinition _instantiate(DecodingData data) {
     return FigureDeckDefinition(
-        name: data.dec(_f$name), location: data.dec(_f$location));
+        name: data.dec(_f$name),
+        variation: data.dec(_f$variation),
+        location: data.dec(_f$location));
   }
 
   @override
@@ -237,7 +243,7 @@ abstract class FigureDeckDefinitionCopyWith<
     $In extends FigureDeckDefinition,
     $Out> implements ClassCopyWith<$R, $In, $Out> {
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get location;
-  $R call({String? name, VectorDefinition? location});
+  $R call({String? name, String? variation, VectorDefinition? location});
   FigureDeckDefinitionCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -254,14 +260,19 @@ class _FigureDeckDefinitionCopyWithImpl<$R, $Out>
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>
       get location => $value.location.copyWith.$chain((v) => call(location: v));
   @override
-  $R call({String? name, VectorDefinition? location}) =>
+  $R call(
+          {String? name,
+          Object? variation = $none,
+          VectorDefinition? location}) =>
       $apply(FieldCopyWithData({
         if (name != null) #name: name,
+        if (variation != $none) #variation: variation,
         if (location != null) #location: location
       }));
   @override
   FigureDeckDefinition $make(CopyWithData data) => FigureDeckDefinition(
       name: data.get(#name, or: $value.name),
+      variation: data.get(#variation, or: $value.variation),
       location: data.get(#location, or: $value.location));
 
   @override
