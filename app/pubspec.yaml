@@ -34,7 +34,7 @@ dependencies:
   lw_file_system:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: b8c77d09288aa1bf31b2de527cfca881352b2cbf
+      ref: 509b5800dcf8bad400ab6ae12184631a3db1e189
       path: packages/lw_file_system
   material_leap:
     git:
@@ -44,7 +44,7 @@ dependencies:
   lw_sysapi:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: d3636613e173e52e618ea46f3a366d5c76c61874
+      ref: bf247737e215187d1f643f76d0b3a29ed934ecbd
       path: packages/lw_sysapi
   flex_color_scheme:
     git:

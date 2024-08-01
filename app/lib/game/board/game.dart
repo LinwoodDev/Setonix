@@ -11,7 +11,7 @@ import 'package:quokka/models/definitions/pack.dart';
 import 'package:quokka/models/table.dart';
 import 'package:quokka/services/pack.dart';
 
-class BoardGame extends FlameGame with ScrollDetector, ScaleDetector {
+class BoardGame extends FlameGame with ScrollDetector {
   final PackService packService;
   final GameTable table;
   final Map<String, PackData> _loadedPacks = {};
@@ -39,7 +39,7 @@ class BoardGame extends FlameGame with ScrollDetector, ScaleDetector {
     selectionSprite = await Sprite.load('selection.png');
     _hand = GameHand();
     camera.viewport.add(_hand);
-    world.add(BoardGrid(cellSize: Vector2.all(256), createCell: GameCell.new));
+    world.add(BoardGrid(cellSize: Vector2.all(128), createCell: GameCell.new));
   }
 
   void clampZoom(double zoom) {
@@ -52,26 +52,6 @@ class BoardGame extends FlameGame with ScrollDetector, ScaleDetector {
   void onScroll(PointerScrollInfo info) {
     clampZoom(camera.viewfinder.zoom +
         info.scrollDelta.global.y.sign * zoomPerScrollUnit);
-  }
-
-  late double startZoom;
-
-  @override
-  void onScaleStart(ScaleStartInfo info) {
-    startZoom = camera.viewfinder.zoom;
-  }
-
-  @override
-  void onScaleUpdate(ScaleUpdateInfo info) {
-    final currentScale = info.scale.global;
-    if (!currentScale.isIdentity()) {
-      clampZoom(startZoom * currentScale.y);
-    } else {
-      final delta = info.delta.global
-        ..negate()
-        ..divide(Vector2.all(camera.viewfinder.zoom));
-      camera.moveBy(delta);
-    }
   }
 
   Iterable<MapEntry<String, PackData>> get packs => _loadedPacks.entries;

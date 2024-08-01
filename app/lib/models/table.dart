@@ -84,4 +84,11 @@ class AssetLocation with AssetLocationMappable {
   final String namespace, id;
 
   AssetLocation(this.namespace, this.id);
+  factory AssetLocation.fromString(String location) {
+    final splitted = location.split(':');
+    return AssetLocation(splitted[0], splitted[1]);
+  }
+
+  @override
+  String toString() => '$namespace:$id';
 }

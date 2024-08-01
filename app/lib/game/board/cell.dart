@@ -8,7 +8,7 @@ import 'package:quokka/game/board/background.dart';
 import 'package:quokka/game/board/game.dart';
 
 class GameCell extends PositionComponent
-    with HasGameRef<BoardGame>, HoverCallbacks, TapCallbacks {
+    with HasGameRef<BoardGame>, HoverCallbacks, TapCallbacks, DragCallbacks {
   late final SpriteComponent _selectionComponent;
   final List<Effect> _effects = [];
   bool _selected = false;
@@ -90,5 +90,22 @@ class GameCell extends PositionComponent
         ColorEffect(color, controller, opacityFrom: 1, opacityTo: 0),
       ]);
     }
+  }
+
+  late double startZoom;
+
+  @override
+  void onDragStart(DragStartEvent event) {
+    super.onDragStart(event);
+    startZoom = game.camera.viewfinder.zoom;
+  }
+
+  @override
+  void onDragUpdate(DragUpdateEvent event) {
+    super.onDragUpdate(event);
+    final delta = event.localDelta
+      ..negate()
+      ..divide(Vector2.all(game.camera.viewfinder.zoom));
+    game.camera.moveBy(delta);
   }
 }

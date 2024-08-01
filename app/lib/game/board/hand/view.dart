@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:flame/components.dart';
+import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 import 'package:quokka/game/board/game.dart';
 import 'package:quokka/game/board/hand/deck.dart';
@@ -29,11 +30,13 @@ class GameHandCustomPainter extends CustomPainter {
   }
 }
 
-class GameHand extends CustomPainterComponent with HasGameRef<BoardGame> {
+class GameHand extends CustomPainterComponent
+    with HasGameRef<BoardGame>, DragCallbacks {
   Vector2? _lastPosition;
-  double _delta = 0, _nextItemPos = 0;
+  double _nextItemPos = 0;
   bool _showing = false, _lastShowing = false;
   PackItem<DeckDefinition>? _selectedDeck;
+  final _itemsChild = PositionComponent();
 
   GameHand()
       : super(
@@ -43,14 +46,14 @@ class GameHand extends CustomPainterComponent with HasGameRef<BoardGame> {
 
   @override
   void onLoad() {
-    _updatePosition();
+    add(_itemsChild);
+    _buildHand();
   }
 
   @override
   void update(double dt) {
     super.update(dt);
     if (_showing != _lastShowing) {
-      _updatePosition();
       _lastShowing = _showing;
     }
     if (_lastPosition == game.selectedCell) {
@@ -62,26 +65,10 @@ class GameHand extends CustomPainterComponent with HasGameRef<BoardGame> {
 
   @override
   void onParentResize(Vector2 maxSize) {
-    _updatePosition();
-  }
-
-  void _updatePosition() {
-    final game = gameRef;
-    final size = game.canvasSize;
-    width = size.x;
-    height = min(size.y / 3, 256) * (_showing ? 1 : 0.5);
-    position = Vector2(0, size.y - height);
-  }
-
-  void _repositionChildren() {
-    _nextItemPos = _delta;
-    for (final child in children) {
-      if (child is! PositionComponent) {
-        continue;
-      }
-      child.position = Vector2(_nextItemPos, 0);
-      _nextItemPos += child.width;
-    }
+    width = maxSize.x;
+    height = min(maxSize.y / 3, 256) * (_showing ? 1 : 0.5);
+    position = Vector2(0, maxSize.y - height);
+    _itemsChild.height = height;
   }
 
   void _buildHand() {
@@ -95,7 +82,6 @@ class GameHand extends CustomPainterComponent with HasGameRef<BoardGame> {
     } else {
       _buildCellHand(_lastPosition!);
     }
-    _repositionChildren();
   }
 
   void _buildFreeHand() {
@@ -134,14 +120,13 @@ class GameHand extends CustomPainterComponent with HasGameRef<BoardGame> {
   }
 
   void _addChild(HandItem item) {
-    add(item);
+    _itemsChild.add(item);
     item.position = Vector2(_nextItemPos, 0);
     _nextItemPos += item.size.x;
   }
 
   void show() {
     _showing = true;
-    _delta = 0;
     _selectedDeck = null;
   }
 
@@ -152,5 +137,10 @@ class GameHand extends CustomPainterComponent with HasGameRef<BoardGame> {
   void selectDeck(PackItem<DeckDefinition> item) {
     _selectedDeck = item;
     _buildHand();
+  }
+
+  @override
+  void onDragUpdate(DragUpdateEvent event) {
+    _itemsChild.position.x += event.localDelta.x;
   }
 }

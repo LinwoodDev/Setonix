@@ -1,7 +1,7 @@
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 
-class BoardGrid extends Component with HasGameRef {
+class BoardGrid extends PositionComponent with HasGameRef {
   final Vector2 cellSize;
   static const _padding = 16.0;
   Rect? _lastViewport;
