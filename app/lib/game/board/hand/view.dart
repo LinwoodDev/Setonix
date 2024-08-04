@@ -72,7 +72,9 @@ class GameHand extends CustomPainterComponent
   }
 
   void _buildHand() {
-    removeAll(children.whereType<HandItem>());
+    _itemsChild.children
+        .whereType<HandItem>()
+        .forEach((e) => e.removeFromParent());
     if (_lastPosition == null) {
       if (_selectedDeck != null) {
         _buildDeckHand(_selectedDeck!);
@@ -86,7 +88,7 @@ class GameHand extends CustomPainterComponent
 
   void _buildFreeHand() {
     final game = gameRef;
-    final decks = game.packs.expand((e) => e.value.getDeckItems());
+    final decks = game.assetManager.packs.expand((e) => e.value.getDeckItems());
     _nextItemPos = 0;
     for (final deck in decks) {
       _addChild(DeckDefinitionHandItem(item: deck));
@@ -128,6 +130,8 @@ class GameHand extends CustomPainterComponent
   void show() {
     _showing = true;
     _selectedDeck = null;
+    _itemsChild.x = 0;
+    _buildHand();
   }
 
   void hide() {
@@ -136,11 +140,17 @@ class GameHand extends CustomPainterComponent
 
   void selectDeck(PackItem<DeckDefinition> item) {
     _selectedDeck = item;
+    _itemsChild.x = 0;
     _buildHand();
+  }
+
+  void scroll(double delta) {
+    _itemsChild.position.x =
+        (delta + _itemsChild.position.x).clamp(min(width - _nextItemPos, 0), 0);
   }
 
   @override
   void onDragUpdate(DragUpdateEvent event) {
-    _itemsChild.position.x += event.localDelta.x;
+    scroll(event.localDelta.x);
   }
 }

@@ -84,9 +84,9 @@ class PackService {
         .expand((e) => e.value.getFigures().map((f) {
               final item = e.value.getFigure(f);
               if (item == null) return null;
-              return PackItem(
+              return PackItem.fromRaw(
                 pack: e.value,
-                id: f,
+                path: f,
                 namespace: e.key,
                 item: item,
               );

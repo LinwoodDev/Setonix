@@ -7,30 +7,27 @@ import 'package:flutter/painting.dart';
 import 'package:quokka/game/board/cell.dart';
 import 'package:quokka/game/board/grid.dart';
 import 'package:quokka/game/board/hand/view.dart';
-import 'package:quokka/models/definitions/pack.dart';
+import 'package:quokka/game/helpers/asset.dart';
 import 'package:quokka/models/table.dart';
 import 'package:quokka/services/pack.dart';
 
 class BoardGame extends FlameGame with ScrollDetector {
-  final PackService packService;
+  final AssetManager assetManager;
   final GameTable table;
-  final Map<String, PackData> _loadedPacks = {};
   Vector2? selectedCell;
   late final Sprite gridSprite, selectionSprite;
   late final GameHand _hand;
 
   BoardGame({
-    required this.packService,
+    required PackService packService,
     this.table = const GameTable(),
-  });
+  }) : assetManager = AssetManager(packService: packService);
 
   @override
   FutureOr<void> onLoad() async {
-    final pack = await loadPack('');
-    if (pack == null) {
-      return;
-    }
-    final data = pack.getAsset('textures/backgrounds/grid.png');
+    const packName = '';
+    await assetManager.loadPack(packName);
+    final data = assetManager.getTexture('backgrounds/grid.png');
     if (data == null) {
       return;
     }
@@ -52,22 +49,6 @@ class BoardGame extends FlameGame with ScrollDetector {
   void onScroll(PointerScrollInfo info) {
     clampZoom(camera.viewfinder.zoom +
         info.scrollDelta.global.y.sign * zoomPerScrollUnit);
-  }
-
-  Iterable<MapEntry<String, PackData>> get packs => _loadedPacks.entries;
-
-  Future<PackData?> loadPack(String packId) async {
-    var pack = _loadedPacks[packId];
-    if (pack != null) {
-      return pack;
-    }
-
-    pack = await packService.getPack(packId);
-    if (pack == null) {
-      return null;
-    }
-    _loadedPacks[packId] = pack;
-    return pack;
   }
 
   void showAdd() {

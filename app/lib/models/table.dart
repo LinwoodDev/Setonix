@@ -86,6 +86,9 @@ class AssetLocation with AssetLocationMappable {
   AssetLocation(this.namespace, this.id);
   factory AssetLocation.fromString(String location) {
     final splitted = location.split(':');
+    if (splitted.length < 2) {
+      return AssetLocation('', splitted[0]);
+    }
     return AssetLocation(splitted[0], splitted[1]);
   }
 

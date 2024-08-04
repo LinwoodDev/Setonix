@@ -1,6 +1,7 @@
 import 'package:flame/events.dart';
+import 'package:flutter/foundation.dart';
 
-mixin LongDragCallbacks implements DragCallbacks {
+mixin LongDragCallbacks on DragCallbacks {
   int get longThresholdPixels => 8;
   Duration get longThresholdDuration => const Duration(milliseconds: 800);
 
@@ -10,31 +11,40 @@ mixin LongDragCallbacks implements DragCallbacks {
   bool get isLongPressing => _isLongPressing;
 
   @override
+  @mustCallSuper
   void onDragStart(DragStartEvent event) {
+    super.onDragStart(event);
     _start = DateTime.now();
+    _isLongPressing = false;
   }
 
   @override
+  @mustCallSuper
   void onDragUpdate(DragUpdateEvent event) {
     final delta = event.localDelta.length;
-    if (longThresholdPixels > delta) {
-      _start = null;
-    }
     final start = _start;
-    if (start != null && !_isLongPressing) {
-      final duration = DateTime.now().difference(start);
-      _isLongPressing = duration >= longThresholdDuration;
+    if (start == null) return;
+    final duration = DateTime.now().difference(start);
+    if (duration > longThresholdDuration) return;
+    if (delta > longThresholdPixels) {
+      _start = null;
+    } else {
+      _isLongPressing = true;
     }
   }
 
   @override
+  @mustCallSuper
   void onDragEnd(DragEndEvent event) {
+    super.onDragEnd(event);
     _start = null;
     _isLongPressing = false;
   }
 
   @override
+  @mustCallSuper
   void onDragCancel(DragCancelEvent event) {
+    super.onDragCancel(event);
     _start = null;
     _isLongPressing = false;
   }

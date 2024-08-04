@@ -1,4 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:flame/components.dart';
 
 part 'vector.mapper.dart';
 
@@ -10,6 +11,8 @@ class VectorDefinition with VectorDefinitionMappable {
 
   static const zero = VectorDefinition(0, 0);
   static const one = VectorDefinition(1, 1);
+
+  Vector2 toVector() => Vector2(x.toDouble(), y.toDouble());
 }
 
 class VectorDefinitionHook extends MappingHook {

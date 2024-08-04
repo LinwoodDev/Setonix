@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:quokka/models/definitions/deck.dart';
 import 'package:quokka/models/definitions/meta.dart';
 import 'package:quokka/models/definitions/object.dart';
+import 'package:quokka/models/table.dart';
 
 const kPackMetadataPath = 'pack.json';
 const kPackDecksPath = 'decks';
@@ -126,16 +127,25 @@ class PackData {
 
 final class PackItem<T> {
   final PackData pack;
-  final String namespace;
+  final AssetLocation location;
   final T item;
-  final String id;
 
   PackItem({
     required this.pack,
-    required this.namespace,
+    required this.location,
     required this.item,
-    required this.id,
   });
+
+  factory PackItem.fromRaw(
+          {required PackData pack,
+          required String namespace,
+          required String path,
+          required T item}) =>
+      PackItem(
+        item: item,
+        pack: pack,
+        location: AssetLocation(namespace, path),
+      );
 
   static PackItem<T>? wrap<T>(
       {required PackData pack,
@@ -145,9 +155,11 @@ final class PackItem<T> {
     if (item == null || id == null) return null;
     return PackItem(
       pack: pack,
-      namespace: namespace,
-      id: id,
+      location: AssetLocation(namespace, id),
       item: item,
     );
   }
+
+  String get namespace => location.namespace;
+  String get id => location.id;
 }

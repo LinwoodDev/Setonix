@@ -6,14 +6,20 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:quokka/models/definitions/pack.dart';
 import 'package:quokka/models/table.dart';
+import 'package:quokka/services/pack.dart';
 
-class PackAssetBundle {
+class AssetManager {
+  final PackService packService;
   final Map<String, PackData> _loadedPacks = {};
   final Map<AssetLocation, Image> _cachedImages = {};
 
   Iterable<MapEntry<String, PackData>> get loadedPacks => _loadedPacks.entries;
 
-  PackAssetBundle();
+  AssetManager({
+    required this.packService,
+  });
+
+  Iterable<MapEntry<String, PackData>> get packs => _loadedPacks.entries;
 
   Uint8List? getTexture(String key) =>
       getTextureFromLocation(AssetLocation.fromString(key));
@@ -26,8 +32,16 @@ class PackAssetBundle {
     return asset;
   }
 
-  Future<Sprite?> loadSprite(String key) =>
-      loadSpriteFromLocation(AssetLocation.fromString(key));
+  Future<Sprite?> loadSprite(
+    String key, {
+    Vector2? srcPosition,
+    Vector2? srcSize,
+  }) =>
+      loadSpriteFromLocation(
+        AssetLocation.fromString(key),
+        srcPosition: srcPosition,
+        srcSize: srcSize,
+      );
 
   Future<Sprite?> loadSpriteFromLocation(
     AssetLocation location, {
@@ -47,9 +61,32 @@ class PackAssetBundle {
     );
   }
 
-  void loadPack(String key, PackData pack) {
+  Future<Sprite?> loadFigureSprite(String key, [String? variation]) =>
+      loadFigureSpriteFromLocation(AssetLocation.fromString(key), variation);
+
+  Future<Sprite?> loadFigureSpriteFromLocation(AssetLocation location,
+      [String? variation]) async {
+    final figure = (await loadPack(location.namespace))?.getFigure(location.id);
+    if (figure == null) return null;
+    final definition = figure.variations[variation] ?? figure.back;
+    return loadSprite(
+      definition.texture,
+      srcPosition: definition.offset.toVector(),
+      srcSize: definition.size?.toVector(),
+    );
+  }
+
+  PackData? getPack(String key) => _loadedPacks[key];
+
+  Future<PackData?> loadPack(String key,
+      {PackData? pack, bool force = false}) async {
+    final oldPack = _loadedPacks[key];
+    if (!force && oldPack != null) return oldPack;
+    pack ??= await packService.loadPack(key);
+    if (pack == null) return null;
     unloadPack(key);
     _loadedPacks[key] = pack;
+    return pack;
   }
 
   void unloadPack(String key) {
