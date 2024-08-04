@@ -5,7 +5,7 @@ import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:quokka/api/open.dart';
 import 'package:quokka/api/settings.dart';
-import 'package:quokka/cubits/settings.dart';
+import 'package:quokka/bloc/settings.dart';
 
 class HeaderHomeView extends StatefulWidget {
   const HeaderHomeView({super.key});

@@ -127,7 +127,7 @@ class PackData {
 
 final class PackItem<T> {
   final PackData pack;
-  final AssetLocation location;
+  final ItemLocation location;
   final T item;
 
   PackItem({
@@ -144,7 +144,7 @@ final class PackItem<T> {
       PackItem(
         item: item,
         pack: pack,
-        location: AssetLocation(namespace, path),
+        location: ItemLocation(namespace, path),
       );
 
   static PackItem<T>? wrap<T>(
@@ -155,7 +155,7 @@ final class PackItem<T> {
     if (item == null || id == null) return null;
     return PackItem(
       pack: pack,
-      location: AssetLocation(namespace, id),
+      location: ItemLocation(namespace, id),
       item: item,
     );
   }

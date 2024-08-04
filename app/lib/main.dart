@@ -19,7 +19,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'cubits/settings.dart';
+import 'bloc/settings.dart';
 import 'pages/settings/page.dart';
 
 import 'setup.dart'

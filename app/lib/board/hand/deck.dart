@@ -1,5 +1,7 @@
 import 'package:flame/components.dart';
-import 'package:quokka/game/board/hand/item.dart';
+import 'package:quokka/bloc/board_event.dart';
+import 'package:quokka/board/cell.dart';
+import 'package:quokka/board/hand/item.dart';
 import 'package:quokka/models/definitions/deck.dart';
 import 'package:quokka/models/definitions/pack.dart';
 
@@ -11,7 +13,7 @@ class DeckDefinitionHandItem extends HandItem<PackItem<DeckDefinition>> {
 
   @override
   void onTapUp(event) {
-    hand.selectDeck(item);
+    bloc.add(ChangeHandEvent(deck: item.location));
   }
 
   @override
@@ -20,4 +22,7 @@ class DeckDefinitionHandItem extends HandItem<PackItem<DeckDefinition>> {
     if (front == null) return null;
     return assetManager.loadFigureSprite(front.name, front.variation);
   }
+
+  @override
+  void moveItem(GameCell cell) {}
 }

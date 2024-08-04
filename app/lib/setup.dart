@@ -1,3 +1,3 @@
-import 'cubits/settings.dart';
+import 'bloc/settings.dart';
 
 Future<void> setup(SettingsCubit settingsCubit) async {}

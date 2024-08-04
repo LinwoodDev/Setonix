@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flame/components.dart';
-import 'package:quokka/game/board/game.dart';
+import 'package:quokka/board/game.dart';
 
 class GameBoardBackground extends SpriteComponent
     with HasGameReference<BoardGame> {

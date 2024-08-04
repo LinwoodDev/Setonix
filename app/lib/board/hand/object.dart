@@ -1,8 +1,10 @@
 import 'package:flame/components.dart';
-import 'package:quokka/game/board/hand/item.dart';
+import 'package:quokka/board/hand/item.dart';
 import 'package:quokka/models/table.dart';
+import 'package:quokka/models/vector.dart';
 
-class GameObjectHandItem extends HandItem<MapEntry<GridLocation, GameObject>> {
+class GameObjectHandItem
+    extends HandItem<MapEntry<VectorDefinition, GameObject>> {
   GameObjectHandItem({required super.item});
 
   @override

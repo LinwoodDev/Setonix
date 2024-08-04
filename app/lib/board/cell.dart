@@ -3,15 +3,25 @@ import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
+import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:quokka/game/board/background.dart';
-import 'package:quokka/game/board/game.dart';
+import 'package:quokka/bloc/board.dart';
+import 'package:quokka/bloc/board_event.dart';
+import 'package:quokka/bloc/board_state.dart';
+import 'package:quokka/board/background.dart';
+import 'package:quokka/board/game.dart';
+import 'package:quokka/helpers/vector.dart';
+import 'package:quokka/models/vector.dart';
 
 class GameCell extends PositionComponent
-    with HasGameRef<BoardGame>, HoverCallbacks, TapCallbacks, DragCallbacks {
+    with
+        HasGameRef<BoardGame>,
+        HoverCallbacks,
+        TapCallbacks,
+        DragCallbacks,
+        FlameBlocListenable<BoardBloc, BoardState> {
   late final SpriteComponent _selectionComponent;
   final List<Effect> _effects = [];
-  bool _selected = false;
 
   GameCell({super.size, super.position});
 
@@ -28,6 +38,7 @@ class GameCell extends PositionComponent
 
   @override
   Future<void> onLoad() async {
+    super.onLoad();
     add(GameBoardBackground(size: size));
     _selectionComponent = SpriteComponent(
       sprite: game.selectionSprite,
@@ -37,8 +48,17 @@ class GameCell extends PositionComponent
   }
 
   @override
+  bool listenWhen(BoardState previousState, BoardState newState) {
+    final definition = toDefinition();
+    return (previousState.selectedCell == definition) !=
+        (newState.selectedCell == definition);
+  }
+
+  bool get isSelected => bloc.state.selectedCell == toDefinition();
+
+  @override
   void onHoverEnter() {
-    if (!_selected) {
+    if (!isSelected) {
       _updateEffects([
         OpacityEffect.to(
           1,
@@ -52,7 +72,7 @@ class GameCell extends PositionComponent
 
   @override
   void onHoverExit() {
-    if (!_selected) {
+    if (!isSelected) {
       _updateEffects([
         OpacityEffect.to(
           0,
@@ -66,20 +86,21 @@ class GameCell extends PositionComponent
 
   @override
   void onTapUp(TapUpEvent event) {
-    game.selectedCell = _selected ? null : position;
+    bloc.add(SwitchCellEvent(position.toDefinition(), toggle: true));
   }
 
+  VectorDefinition toDefinition() => position.toDefinition();
+
   @override
-  void update(double dt) {
-    if (_selected == (game.selectedCell == position)) return;
-    _selected = !_selected;
+  void onNewState(BoardState state) {
+    final selected = state.selectedCell == toDefinition();
     final controller = EffectController(
       duration: 0.1,
     );
     final context = game.buildContext;
     final color =
         context == null ? Colors.green : Theme.of(context).colorScheme.primary;
-    if (_selected) {
+    if (selected) {
       _updateEffects([
         OpacityEffect.to(1, controller),
         ColorEffect(color, controller),

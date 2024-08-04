@@ -3,28 +3,30 @@ import 'dart:async';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/sprite.dart';
+import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/painting.dart';
-import 'package:quokka/game/board/cell.dart';
-import 'package:quokka/game/board/grid.dart';
-import 'package:quokka/game/board/hand/view.dart';
-import 'package:quokka/game/helpers/asset.dart';
-import 'package:quokka/models/table.dart';
+import 'package:quokka/bloc/board.dart';
+import 'package:quokka/board/cell.dart';
+import 'package:quokka/board/grid.dart';
+import 'package:quokka/board/hand/view.dart';
+import 'package:quokka/helpers/asset.dart';
 import 'package:quokka/services/pack.dart';
 
 class BoardGame extends FlameGame with ScrollDetector {
   final AssetManager assetManager;
-  final GameTable table;
-  Vector2? selectedCell;
   late final Sprite gridSprite, selectionSprite;
   late final GameHand _hand;
+  late final BoardGrid grid;
+  final BoardBloc bloc;
 
   BoardGame({
-    required PackService packService,
-    this.table = const GameTable(),
-  }) : assetManager = AssetManager(packService: packService);
+    PackService? packService,
+    required this.bloc,
+  }) : assetManager = AssetManager(packService: packService ?? PackService());
 
   @override
   FutureOr<void> onLoad() async {
+    await add(FlameBlocProvider.value(value: bloc, children: [camera, world]));
     const packName = '';
     await assetManager.loadPack(packName);
     final data = assetManager.getTexture('backgrounds/grid.png');
@@ -36,7 +38,8 @@ class BoardGame extends FlameGame with ScrollDetector {
     selectionSprite = await Sprite.load('selection.png');
     _hand = GameHand();
     camera.viewport.add(_hand);
-    world.add(BoardGrid(cellSize: Vector2.all(128), createCell: GameCell.new));
+    grid = BoardGrid(cellSize: Vector2.all(128), createCell: GameCell.new);
+    world.add(grid);
   }
 
   void clampZoom(double zoom) {
@@ -49,10 +52,5 @@ class BoardGame extends FlameGame with ScrollDetector {
   void onScroll(PointerScrollInfo info) {
     clampZoom(camera.viewfinder.zoom +
         info.scrollDelta.global.y.sign * zoomPerScrollUnit);
-  }
-
-  void showAdd() {
-    selectedCell = null;
-    _hand.show();
   }
 }

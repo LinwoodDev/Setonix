@@ -423,7 +423,7 @@ class GameObjectMapper extends ClassMapperBase<GameObject> {
   static GameObjectMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = GameObjectMapper._());
-      AssetLocationMapper.ensureInitialized();
+      ItemLocationMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -431,8 +431,8 @@ class GameObjectMapper extends ClassMapperBase<GameObject> {
   @override
   final String id = 'GameObject';
 
-  static AssetLocation _$asset(GameObject v) => v.asset;
-  static const Field<GameObject, AssetLocation> _f$asset =
+  static ItemLocation _$asset(GameObject v) => v.asset;
+  static const Field<GameObject, ItemLocation> _f$asset =
       Field('asset', _$asset);
   static String? _$variation(GameObject v) => v.variation;
   static const Field<GameObject, String> _f$variation =
@@ -500,8 +500,8 @@ extension GameObjectValueCopy<$R, $Out>
 
 abstract class GameObjectCopyWith<$R, $In extends GameObject, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  AssetLocationCopyWith<$R, AssetLocation, AssetLocation> get asset;
-  $R call({AssetLocation? asset, String? variation});
+  ItemLocationCopyWith<$R, ItemLocation, ItemLocation> get asset;
+  $R call({ItemLocation? asset, String? variation});
   GameObjectCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -514,10 +514,10 @@ class _GameObjectCopyWithImpl<$R, $Out>
   late final ClassMapperBase<GameObject> $mapper =
       GameObjectMapper.ensureInitialized();
   @override
-  AssetLocationCopyWith<$R, AssetLocation, AssetLocation> get asset =>
+  ItemLocationCopyWith<$R, ItemLocation, ItemLocation> get asset =>
       $value.asset.copyWith.$chain((v) => call(asset: v));
   @override
-  $R call({AssetLocation? asset, Object? variation = $none}) =>
+  $R call({ItemLocation? asset, Object? variation = $none}) =>
       $apply(FieldCopyWithData({
         if (asset != null) #asset: asset,
         if (variation != $none) #variation: variation
@@ -533,112 +533,111 @@ class _GameObjectCopyWithImpl<$R, $Out>
       _GameObjectCopyWithImpl($value, $cast, t);
 }
 
-class AssetLocationMapper extends ClassMapperBase<AssetLocation> {
-  AssetLocationMapper._();
+class ItemLocationMapper extends ClassMapperBase<ItemLocation> {
+  ItemLocationMapper._();
 
-  static AssetLocationMapper? _instance;
-  static AssetLocationMapper ensureInitialized() {
+  static ItemLocationMapper? _instance;
+  static ItemLocationMapper ensureInitialized() {
     if (_instance == null) {
-      MapperContainer.globals.use(_instance = AssetLocationMapper._());
+      MapperContainer.globals.use(_instance = ItemLocationMapper._());
     }
     return _instance!;
   }
 
   @override
-  final String id = 'AssetLocation';
+  final String id = 'ItemLocation';
 
-  static String _$namespace(AssetLocation v) => v.namespace;
-  static const Field<AssetLocation, String> _f$namespace =
+  static String _$namespace(ItemLocation v) => v.namespace;
+  static const Field<ItemLocation, String> _f$namespace =
       Field('namespace', _$namespace);
-  static String _$id(AssetLocation v) => v.id;
-  static const Field<AssetLocation, String> _f$id = Field('id', _$id);
+  static String _$id(ItemLocation v) => v.id;
+  static const Field<ItemLocation, String> _f$id = Field('id', _$id);
 
   @override
-  final MappableFields<AssetLocation> fields = const {
+  final MappableFields<ItemLocation> fields = const {
     #namespace: _f$namespace,
     #id: _f$id,
   };
 
-  static AssetLocation _instantiate(DecodingData data) {
-    return AssetLocation(data.dec(_f$namespace), data.dec(_f$id));
+  static ItemLocation _instantiate(DecodingData data) {
+    return ItemLocation(data.dec(_f$namespace), data.dec(_f$id));
   }
 
   @override
   final Function instantiate = _instantiate;
 
-  static AssetLocation fromMap(Map<String, dynamic> map) {
-    return ensureInitialized().decodeMap<AssetLocation>(map);
+  static ItemLocation fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<ItemLocation>(map);
   }
 
-  static AssetLocation fromJson(String json) {
-    return ensureInitialized().decodeJson<AssetLocation>(json);
+  static ItemLocation fromJson(String json) {
+    return ensureInitialized().decodeJson<ItemLocation>(json);
   }
 }
 
-mixin AssetLocationMappable {
+mixin ItemLocationMappable {
   String toJson() {
-    return AssetLocationMapper.ensureInitialized()
-        .encodeJson<AssetLocation>(this as AssetLocation);
+    return ItemLocationMapper.ensureInitialized()
+        .encodeJson<ItemLocation>(this as ItemLocation);
   }
 
   Map<String, dynamic> toMap() {
-    return AssetLocationMapper.ensureInitialized()
-        .encodeMap<AssetLocation>(this as AssetLocation);
+    return ItemLocationMapper.ensureInitialized()
+        .encodeMap<ItemLocation>(this as ItemLocation);
   }
 
-  AssetLocationCopyWith<AssetLocation, AssetLocation, AssetLocation>
-      get copyWith => _AssetLocationCopyWithImpl(
-          this as AssetLocation, $identity, $identity);
+  ItemLocationCopyWith<ItemLocation, ItemLocation, ItemLocation> get copyWith =>
+      _ItemLocationCopyWithImpl(this as ItemLocation, $identity, $identity);
   @override
   String toString() {
-    return AssetLocationMapper.ensureInitialized()
-        .stringifyValue(this as AssetLocation);
+    return ItemLocationMapper.ensureInitialized()
+        .stringifyValue(this as ItemLocation);
   }
 
   @override
   bool operator ==(Object other) {
-    return AssetLocationMapper.ensureInitialized()
-        .equalsValue(this as AssetLocation, other);
+    return ItemLocationMapper.ensureInitialized()
+        .equalsValue(this as ItemLocation, other);
   }
 
   @override
   int get hashCode {
-    return AssetLocationMapper.ensureInitialized()
-        .hashValue(this as AssetLocation);
+    return ItemLocationMapper.ensureInitialized()
+        .hashValue(this as ItemLocation);
   }
 }
 
-extension AssetLocationValueCopy<$R, $Out>
-    on ObjectCopyWith<$R, AssetLocation, $Out> {
-  AssetLocationCopyWith<$R, AssetLocation, $Out> get $asAssetLocation =>
-      $base.as((v, t, t2) => _AssetLocationCopyWithImpl(v, t, t2));
+extension ItemLocationValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, ItemLocation, $Out> {
+  ItemLocationCopyWith<$R, ItemLocation, $Out> get $asItemLocation =>
+      $base.as((v, t, t2) => _ItemLocationCopyWithImpl(v, t, t2));
 }
 
-abstract class AssetLocationCopyWith<$R, $In extends AssetLocation, $Out>
+abstract class ItemLocationCopyWith<$R, $In extends ItemLocation, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call({String? namespace, String? id});
-  AssetLocationCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+  ItemLocationCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
-class _AssetLocationCopyWithImpl<$R, $Out>
-    extends ClassCopyWithBase<$R, AssetLocation, $Out>
-    implements AssetLocationCopyWith<$R, AssetLocation, $Out> {
-  _AssetLocationCopyWithImpl(super.value, super.then, super.then2);
+class _ItemLocationCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, ItemLocation, $Out>
+    implements ItemLocationCopyWith<$R, ItemLocation, $Out> {
+  _ItemLocationCopyWithImpl(super.value, super.then, super.then2);
 
   @override
-  late final ClassMapperBase<AssetLocation> $mapper =
-      AssetLocationMapper.ensureInitialized();
+  late final ClassMapperBase<ItemLocation> $mapper =
+      ItemLocationMapper.ensureInitialized();
   @override
   $R call({String? namespace, String? id}) => $apply(FieldCopyWithData(
       {if (namespace != null) #namespace: namespace, if (id != null) #id: id}));
   @override
-  AssetLocation $make(CopyWithData data) => AssetLocation(
+  ItemLocation $make(CopyWithData data) => ItemLocation(
       data.get(#namespace, or: $value.namespace), data.get(#id, or: $value.id));
 
   @override
-  AssetLocationCopyWith<$R2, AssetLocation, $Out2> $chain<$R2, $Out2>(
+  ItemLocationCopyWith<$R2, ItemLocation, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _AssetLocationCopyWithImpl($value, $cast, t);
+      _ItemLocationCopyWithImpl($value, $cast, t);
 }
 
 class GameBoardMapper extends ClassMapperBase<GameBoard> {
@@ -648,7 +647,7 @@ class GameBoardMapper extends ClassMapperBase<GameBoard> {
   static GameBoardMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = GameBoardMapper._());
-      AssetLocationMapper.ensureInitialized();
+      ItemLocationMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -656,8 +655,8 @@ class GameBoardMapper extends ClassMapperBase<GameBoard> {
   @override
   final String id = 'GameBoard';
 
-  static AssetLocation _$asset(GameBoard v) => v.asset;
-  static const Field<GameBoard, AssetLocation> _f$asset =
+  static ItemLocation _$asset(GameBoard v) => v.asset;
+  static const Field<GameBoard, ItemLocation> _f$asset =
       Field('asset', _$asset);
 
   @override
@@ -719,8 +718,8 @@ extension GameBoardValueCopy<$R, $Out> on ObjectCopyWith<$R, GameBoard, $Out> {
 
 abstract class GameBoardCopyWith<$R, $In extends GameBoard, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  AssetLocationCopyWith<$R, AssetLocation, AssetLocation> get asset;
-  $R call({AssetLocation? asset});
+  ItemLocationCopyWith<$R, ItemLocation, ItemLocation> get asset;
+  $R call({ItemLocation? asset});
   GameBoardCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -733,10 +732,10 @@ class _GameBoardCopyWithImpl<$R, $Out>
   late final ClassMapperBase<GameBoard> $mapper =
       GameBoardMapper.ensureInitialized();
   @override
-  AssetLocationCopyWith<$R, AssetLocation, AssetLocation> get asset =>
+  ItemLocationCopyWith<$R, ItemLocation, ItemLocation> get asset =>
       $value.asset.copyWith.$chain((v) => call(asset: v));
   @override
-  $R call({AssetLocation? asset}) =>
+  $R call({ItemLocation? asset}) =>
       $apply(FieldCopyWithData({if (asset != null) #asset: asset}));
   @override
   GameBoard $make(CopyWithData data) =>

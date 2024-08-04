@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:quokka/cubits/settings.dart';
+import 'package:quokka/bloc/settings.dart';
 import 'package:quokka/main.dart';
 import 'package:quokka/pages/home/connect.dart';
 import 'package:quokka/pages/home/packs.dart';

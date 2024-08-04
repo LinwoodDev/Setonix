@@ -1,15 +1,26 @@
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
+import 'package:flame_bloc/flame_bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/painting.dart';
-import 'package:quokka/game/board/game.dart';
-import 'package:quokka/game/board/hand/view.dart';
-import 'package:quokka/game/helpers/asset.dart';
-import 'package:quokka/game/helpers/drag.dart';
+import 'package:quokka/bloc/board.dart';
+import 'package:quokka/bloc/board_state.dart';
+import 'package:quokka/board/cell.dart';
+import 'package:quokka/board/game.dart';
+import 'package:quokka/board/hand/view.dart';
+import 'package:quokka/helpers/asset.dart';
+import 'package:quokka/helpers/drag.dart';
 
 abstract class HandItem<T> extends PositionComponent
-    with TapCallbacks, HasGameRef<BoardGame>, DragCallbacks, LongDragCallbacks {
+    with
+        TapCallbacks,
+        HasGameRef<BoardGame>,
+        DragCallbacks,
+        LongDragCallbacks,
+        FlameBlocReader<BoardBloc, BoardState> {
   final T item;
   late final SpriteComponent _sprite;
+  Vector2 _lastPos = Vector2.zero();
 
   HandItem({required this.item}) : super(size: Vector2(100, 0));
 
@@ -25,6 +36,7 @@ abstract class HandItem<T> extends PositionComponent
 
   @override
   Future<void> onLoad() async {
+    super.onLoad();
     add(TextComponent(
       text: label,
       size: Vector2(0, labelHeight),
@@ -54,6 +66,23 @@ abstract class HandItem<T> extends PositionComponent
     if (!isLongPressing) {
       hand.scroll(event.localDelta.x);
       return;
+    }
+    _lastPos = event.canvasEndPosition;
+  }
+
+  @override
+  void onDragEnd(DragEndEvent event) {
+    super.onDragEnd(event);
+    if (!isLongPressing) return;
+    final cell =
+        game.grid.componentsAtPoint(_lastPos).whereType<GameCell>().firstOrNull;
+    if (cell == null) return;
+    moveItem(cell);
+  }
+
+  void moveItem(GameCell cell) {
+    if (kDebugMode) {
+      print('Pasted at ${cell.position}');
     }
   }
 }

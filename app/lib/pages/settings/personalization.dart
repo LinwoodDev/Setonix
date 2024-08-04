@@ -8,7 +8,7 @@ import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-import '../../cubits/settings.dart';
+import '../../bloc/settings.dart';
 import '../../main.dart';
 import '../../theme.dart';
 

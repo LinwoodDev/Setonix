@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:quokka/cubits/settings.dart';
+import 'package:quokka/bloc/settings.dart';
 import 'package:quokka/widgets/search.dart';
 
 class ConnectDialog extends StatefulWidget {

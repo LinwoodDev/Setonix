@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:quokka/main.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'cubits/settings.dart';
+import 'bloc/settings.dart';
 import 'setup.dart' as general_setup;
 
 Future<void> setup(SettingsCubit settingsCubit) async {

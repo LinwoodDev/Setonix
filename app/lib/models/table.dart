@@ -1,18 +1,12 @@
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:quokka/models/vector.dart';
 
 part 'table.mapper.dart';
 
 @MappableClass()
-class GridLocation with GridLocationMappable {
-  final int x, y;
-
-  GridLocation(this.x, this.y);
-}
-
-@MappableClass()
 class GameTable with GameTableMappable {
-  final Map<GridLocation, TableCell> cells;
-  final Map<GridLocation, GameBoard> boards;
+  final Map<VectorDefinition, TableCell> cells;
+  final Map<VectorDefinition, GameBoard> boards;
   final Map<String, GameSeat> seats;
   final Map<String, GamePlayer> players;
 
@@ -63,14 +57,14 @@ class TableCell with TableCellMappable {
 
 @MappableClass()
 class GameBoard with GameBoardMappable {
-  final AssetLocation asset;
+  final ItemLocation asset;
 
   GameBoard(this.asset);
 }
 
 @MappableClass()
 class GameObject with GameObjectMappable {
-  final AssetLocation asset;
+  final ItemLocation asset;
   final String? variation;
 
   GameObject({
@@ -80,16 +74,16 @@ class GameObject with GameObjectMappable {
 }
 
 @MappableClass()
-class AssetLocation with AssetLocationMappable {
+class ItemLocation with ItemLocationMappable {
   final String namespace, id;
 
-  AssetLocation(this.namespace, this.id);
-  factory AssetLocation.fromString(String location) {
+  ItemLocation(this.namespace, this.id);
+  factory ItemLocation.fromString(String location) {
     final splitted = location.split(':');
     if (splitted.length < 2) {
-      return AssetLocation('', splitted[0]);
+      return ItemLocation('', splitted[0]);
     }
-    return AssetLocation(splitted[0], splitted[1]);
+    return ItemLocation(splitted[0], splitted[1]);
   }
 
   @override

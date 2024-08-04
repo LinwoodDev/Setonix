@@ -11,7 +11,7 @@ import 'package:quokka/services/pack.dart';
 class AssetManager {
   final PackService packService;
   final Map<String, PackData> _loadedPacks = {};
-  final Map<AssetLocation, Image> _cachedImages = {};
+  final Map<ItemLocation, Image> _cachedImages = {};
 
   Iterable<MapEntry<String, PackData>> get loadedPacks => _loadedPacks.entries;
 
@@ -22,9 +22,9 @@ class AssetManager {
   Iterable<MapEntry<String, PackData>> get packs => _loadedPacks.entries;
 
   Uint8List? getTexture(String key) =>
-      getTextureFromLocation(AssetLocation.fromString(key));
+      getTextureFromLocation(ItemLocation.fromString(key));
 
-  Uint8List? getTextureFromLocation(AssetLocation location) {
+  Uint8List? getTextureFromLocation(ItemLocation location) {
     final pack = _loadedPacks[location.namespace];
     if (pack == null) return null;
     final asset = pack.getTexture(location.id);
@@ -38,13 +38,13 @@ class AssetManager {
     Vector2? srcSize,
   }) =>
       loadSpriteFromLocation(
-        AssetLocation.fromString(key),
+        ItemLocation.fromString(key),
         srcPosition: srcPosition,
         srcSize: srcSize,
       );
 
   Future<Sprite?> loadSpriteFromLocation(
-    AssetLocation location, {
+    ItemLocation location, {
     Vector2? srcPosition,
     Vector2? srcSize,
   }) async {
@@ -62,9 +62,9 @@ class AssetManager {
   }
 
   Future<Sprite?> loadFigureSprite(String key, [String? variation]) =>
-      loadFigureSpriteFromLocation(AssetLocation.fromString(key), variation);
+      loadFigureSpriteFromLocation(ItemLocation.fromString(key), variation);
 
-  Future<Sprite?> loadFigureSpriteFromLocation(AssetLocation location,
+  Future<Sprite?> loadFigureSpriteFromLocation(ItemLocation location,
       [String? variation]) async {
     final figure = (await loadPack(location.namespace))?.getFigure(location.id);
     if (figure == null) return null;
