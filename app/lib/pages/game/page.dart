@@ -29,7 +29,7 @@ class GamePage extends StatelessWidget {
                       icon: const PhosphorIcon(PhosphorIconsLight.plusCircle),
                       tooltip: AppLocalizations.of(context).addDeck,
                       onPressed: () =>
-                          context.read<BoardBloc>().add(ChangeHandEvent()),
+                          context.read<BoardBloc>().add(HandChanged()),
                     ))
           ],
         ),

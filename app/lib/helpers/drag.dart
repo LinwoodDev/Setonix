@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 
 mixin LongDragCallbacks on DragCallbacks {
   int get longThresholdPixels => 8;
-  Duration get longThresholdDuration => const Duration(milliseconds: 800);
+  Duration get longThresholdDuration => const Duration(milliseconds: 600);
 
   DateTime? _start;
   bool _isLongPressing = false;
@@ -38,7 +38,6 @@ mixin LongDragCallbacks on DragCallbacks {
   void onDragEnd(DragEndEvent event) {
     super.onDragEnd(event);
     _start = null;
-    _isLongPressing = false;
   }
 
   @override
@@ -46,6 +45,5 @@ mixin LongDragCallbacks on DragCallbacks {
   void onDragCancel(DragCancelEvent event) {
     super.onDragCancel(event);
     _start = null;
-    _isLongPressing = false;
   }
 }

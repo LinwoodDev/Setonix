@@ -4,6 +4,7 @@ import 'package:quokka/board/cell.dart';
 import 'package:quokka/board/hand/item.dart';
 import 'package:quokka/models/definitions/deck.dart';
 import 'package:quokka/models/definitions/pack.dart';
+import 'package:quokka/models/table.dart';
 
 class DeckDefinitionHandItem extends HandItem<PackItem<DeckDefinition>> {
   DeckDefinitionHandItem({required super.item});
@@ -13,7 +14,7 @@ class DeckDefinitionHandItem extends HandItem<PackItem<DeckDefinition>> {
 
   @override
   void onTapUp(event) {
-    bloc.add(ChangeHandEvent(deck: item.location));
+    bloc.add(HandChanged(deck: item.location));
   }
 
   @override
@@ -24,5 +25,13 @@ class DeckDefinitionHandItem extends HandItem<PackItem<DeckDefinition>> {
   }
 
   @override
-  void moveItem(GameCell cell) {}
+  void moveItem(GameCell cell) {
+    bloc.add(ObjectsSpawned(
+        cell.toDefinition(),
+        item.item.figures
+            .map((e) => GameObject(
+                asset: ItemLocation(item.namespace, e.name),
+                variation: e.variation))
+            .toList()));
+  }
 }

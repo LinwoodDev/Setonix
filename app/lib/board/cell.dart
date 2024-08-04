@@ -10,6 +10,7 @@ import 'package:quokka/bloc/board_event.dart';
 import 'package:quokka/bloc/board_state.dart';
 import 'package:quokka/board/background.dart';
 import 'package:quokka/board/game.dart';
+import 'package:quokka/board/grid.dart';
 import 'package:quokka/helpers/vector.dart';
 import 'package:quokka/models/vector.dart';
 
@@ -22,8 +23,12 @@ class GameCell extends PositionComponent
         FlameBlocListenable<BoardBloc, BoardState> {
   late final SpriteComponent _selectionComponent;
   final List<Effect> _effects = [];
+  late final BoardGrid grid;
 
-  GameCell({super.size, super.position});
+  GameCell({
+    super.size,
+    super.position,
+  });
 
   void _updateEffects(List<Effect> effects) {
     for (final e in _effects) {
@@ -39,6 +44,7 @@ class GameCell extends PositionComponent
   @override
   Future<void> onLoad() async {
     super.onLoad();
+    grid = findParent<BoardGrid>()!;
     add(GameBoardBackground(size: size));
     _selectionComponent = SpriteComponent(
       sprite: game.selectionSprite,
@@ -86,10 +92,11 @@ class GameCell extends PositionComponent
 
   @override
   void onTapUp(TapUpEvent event) {
-    bloc.add(SwitchCellEvent(position.toDefinition(), toggle: true));
+    bloc.add(CellSwitched(toDefinition(), toggle: true));
   }
 
-  VectorDefinition toDefinition() => position.toDefinition();
+  VectorDefinition toDefinition() =>
+      (position.clone()..divide(grid.cellSize)).toDefinition();
 
   @override
   void onNewState(BoardState state) {

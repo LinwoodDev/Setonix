@@ -6,112 +6,6 @@
 
 part of 'table.dart';
 
-class GridLocationMapper extends ClassMapperBase<GridLocation> {
-  GridLocationMapper._();
-
-  static GridLocationMapper? _instance;
-  static GridLocationMapper ensureInitialized() {
-    if (_instance == null) {
-      MapperContainer.globals.use(_instance = GridLocationMapper._());
-    }
-    return _instance!;
-  }
-
-  @override
-  final String id = 'GridLocation';
-
-  static int _$x(GridLocation v) => v.x;
-  static const Field<GridLocation, int> _f$x = Field('x', _$x);
-  static int _$y(GridLocation v) => v.y;
-  static const Field<GridLocation, int> _f$y = Field('y', _$y);
-
-  @override
-  final MappableFields<GridLocation> fields = const {
-    #x: _f$x,
-    #y: _f$y,
-  };
-
-  static GridLocation _instantiate(DecodingData data) {
-    return GridLocation(data.dec(_f$x), data.dec(_f$y));
-  }
-
-  @override
-  final Function instantiate = _instantiate;
-
-  static GridLocation fromMap(Map<String, dynamic> map) {
-    return ensureInitialized().decodeMap<GridLocation>(map);
-  }
-
-  static GridLocation fromJson(String json) {
-    return ensureInitialized().decodeJson<GridLocation>(json);
-  }
-}
-
-mixin GridLocationMappable {
-  String toJson() {
-    return GridLocationMapper.ensureInitialized()
-        .encodeJson<GridLocation>(this as GridLocation);
-  }
-
-  Map<String, dynamic> toMap() {
-    return GridLocationMapper.ensureInitialized()
-        .encodeMap<GridLocation>(this as GridLocation);
-  }
-
-  GridLocationCopyWith<GridLocation, GridLocation, GridLocation> get copyWith =>
-      _GridLocationCopyWithImpl(this as GridLocation, $identity, $identity);
-  @override
-  String toString() {
-    return GridLocationMapper.ensureInitialized()
-        .stringifyValue(this as GridLocation);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return GridLocationMapper.ensureInitialized()
-        .equalsValue(this as GridLocation, other);
-  }
-
-  @override
-  int get hashCode {
-    return GridLocationMapper.ensureInitialized()
-        .hashValue(this as GridLocation);
-  }
-}
-
-extension GridLocationValueCopy<$R, $Out>
-    on ObjectCopyWith<$R, GridLocation, $Out> {
-  GridLocationCopyWith<$R, GridLocation, $Out> get $asGridLocation =>
-      $base.as((v, t, t2) => _GridLocationCopyWithImpl(v, t, t2));
-}
-
-abstract class GridLocationCopyWith<$R, $In extends GridLocation, $Out>
-    implements ClassCopyWith<$R, $In, $Out> {
-  $R call({int? x, int? y});
-  GridLocationCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
-}
-
-class _GridLocationCopyWithImpl<$R, $Out>
-    extends ClassCopyWithBase<$R, GridLocation, $Out>
-    implements GridLocationCopyWith<$R, GridLocation, $Out> {
-  _GridLocationCopyWithImpl(super.value, super.then, super.then2);
-
-  @override
-  late final ClassMapperBase<GridLocation> $mapper =
-      GridLocationMapper.ensureInitialized();
-  @override
-  $R call({int? x, int? y}) =>
-      $apply(FieldCopyWithData({if (x != null) #x: x, if (y != null) #y: y}));
-  @override
-  GridLocation $make(CopyWithData data) =>
-      GridLocation(data.get(#x, or: $value.x), data.get(#y, or: $value.y));
-
-  @override
-  GridLocationCopyWith<$R2, GridLocation, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _GridLocationCopyWithImpl($value, $cast, t);
-}
-
 class GameTableMapper extends ClassMapperBase<GameTable> {
   GameTableMapper._();
 
@@ -119,7 +13,7 @@ class GameTableMapper extends ClassMapperBase<GameTable> {
   static GameTableMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = GameTableMapper._());
-      GridLocationMapper.ensureInitialized();
+      VectorDefinitionMapper.ensureInitialized();
       TableCellMapper.ensureInitialized();
       GameBoardMapper.ensureInitialized();
       GameSeatMapper.ensureInitialized();
@@ -131,11 +25,11 @@ class GameTableMapper extends ClassMapperBase<GameTable> {
   @override
   final String id = 'GameTable';
 
-  static Map<GridLocation, TableCell> _$cells(GameTable v) => v.cells;
-  static const Field<GameTable, Map<GridLocation, TableCell>> _f$cells =
+  static Map<VectorDefinition, TableCell> _$cells(GameTable v) => v.cells;
+  static const Field<GameTable, Map<VectorDefinition, TableCell>> _f$cells =
       Field('cells', _$cells, opt: true, def: const {});
-  static Map<GridLocation, GameBoard> _$boards(GameTable v) => v.boards;
-  static const Field<GameTable, Map<GridLocation, GameBoard>> _f$boards =
+  static Map<VectorDefinition, GameBoard> _$boards(GameTable v) => v.boards;
+  static const Field<GameTable, Map<VectorDefinition, GameBoard>> _f$boards =
       Field('boards', _$boards, opt: true, def: const {});
   static Map<String, GameSeat> _$seats(GameTable v) => v.seats;
   static const Field<GameTable, Map<String, GameSeat>> _f$seats =
@@ -210,17 +104,17 @@ extension GameTableValueCopy<$R, $Out> on ObjectCopyWith<$R, GameTable, $Out> {
 
 abstract class GameTableCopyWith<$R, $In extends GameTable, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  MapCopyWith<$R, GridLocation, TableCell,
+  MapCopyWith<$R, VectorDefinition, TableCell,
       TableCellCopyWith<$R, TableCell, TableCell>> get cells;
-  MapCopyWith<$R, GridLocation, GameBoard,
+  MapCopyWith<$R, VectorDefinition, GameBoard,
       GameBoardCopyWith<$R, GameBoard, GameBoard>> get boards;
   MapCopyWith<$R, String, GameSeat, GameSeatCopyWith<$R, GameSeat, GameSeat>>
       get seats;
   MapCopyWith<$R, String, GamePlayer,
       GamePlayerCopyWith<$R, GamePlayer, GamePlayer>> get players;
   $R call(
-      {Map<GridLocation, TableCell>? cells,
-      Map<GridLocation, GameBoard>? boards,
+      {Map<VectorDefinition, TableCell>? cells,
+      Map<VectorDefinition, GameBoard>? boards,
       Map<String, GameSeat>? seats,
       Map<String, GamePlayer>? players});
   GameTableCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -235,12 +129,12 @@ class _GameTableCopyWithImpl<$R, $Out>
   late final ClassMapperBase<GameTable> $mapper =
       GameTableMapper.ensureInitialized();
   @override
-  MapCopyWith<$R, GridLocation, TableCell,
+  MapCopyWith<$R, VectorDefinition, TableCell,
           TableCellCopyWith<$R, TableCell, TableCell>>
       get cells => MapCopyWith(
           $value.cells, (v, t) => v.copyWith.$chain(t), (v) => call(cells: v));
   @override
-  MapCopyWith<$R, GridLocation, GameBoard,
+  MapCopyWith<$R, VectorDefinition, GameBoard,
           GameBoardCopyWith<$R, GameBoard, GameBoard>>
       get boards => MapCopyWith($value.boards, (v, t) => v.copyWith.$chain(t),
           (v) => call(boards: v));
@@ -255,8 +149,8 @@ class _GameTableCopyWithImpl<$R, $Out>
           (v) => call(players: v));
   @override
   $R call(
-          {Map<GridLocation, TableCell>? cells,
-          Map<GridLocation, GameBoard>? boards,
+          {Map<VectorDefinition, TableCell>? cells,
+          Map<VectorDefinition, GameBoard>? boards,
           Map<String, GameSeat>? seats,
           Map<String, GamePlayer>? players}) =>
       $apply(FieldCopyWithData({

@@ -13,8 +13,9 @@ class BoardEventMapper extends ClassMapperBase<BoardEvent> {
   static BoardEventMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = BoardEventMapper._());
-      SwitchCellEventMapper.ensureInitialized();
-      ChangeHandEventMapper.ensureInitialized();
+      CellSwitchedMapper.ensureInitialized();
+      HandChangedMapper.ensureInitialized();
+      ObjectsSpawnedMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -53,13 +54,13 @@ abstract class BoardEventCopyWith<$R, $In extends BoardEvent, $Out>
   BoardEventCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
-class SwitchCellEventMapper extends ClassMapperBase<SwitchCellEvent> {
-  SwitchCellEventMapper._();
+class CellSwitchedMapper extends ClassMapperBase<CellSwitched> {
+  CellSwitchedMapper._();
 
-  static SwitchCellEventMapper? _instance;
-  static SwitchCellEventMapper ensureInitialized() {
+  static CellSwitchedMapper? _instance;
+  static CellSwitchedMapper ensureInitialized() {
     if (_instance == null) {
-      MapperContainer.globals.use(_instance = SwitchCellEventMapper._());
+      MapperContainer.globals.use(_instance = CellSwitchedMapper._());
       BoardEventMapper.ensureInitialized();
       VectorDefinitionMapper.ensureInitialized();
     }
@@ -67,112 +68,115 @@ class SwitchCellEventMapper extends ClassMapperBase<SwitchCellEvent> {
   }
 
   @override
-  final String id = 'SwitchCellEvent';
+  final String id = 'CellSwitched';
 
-  static VectorDefinition? _$cell(SwitchCellEvent v) => v.cell;
-  static const Field<SwitchCellEvent, VectorDefinition> _f$cell =
+  static VectorDefinition? _$cell(CellSwitched v) => v.cell;
+  static const Field<CellSwitched, VectorDefinition> _f$cell =
       Field('cell', _$cell);
+  static bool _$toggle(CellSwitched v) => v.toggle;
+  static const Field<CellSwitched, bool> _f$toggle =
+      Field('toggle', _$toggle, opt: true, def: false);
 
   @override
-  final MappableFields<SwitchCellEvent> fields = const {
+  final MappableFields<CellSwitched> fields = const {
     #cell: _f$cell,
+    #toggle: _f$toggle,
   };
 
-  static SwitchCellEvent _instantiate(DecodingData data) {
-    return SwitchCellEvent(data.dec(_f$cell));
+  static CellSwitched _instantiate(DecodingData data) {
+    return CellSwitched(data.dec(_f$cell), toggle: data.dec(_f$toggle));
   }
 
   @override
   final Function instantiate = _instantiate;
 
-  static SwitchCellEvent fromMap(Map<String, dynamic> map) {
-    return ensureInitialized().decodeMap<SwitchCellEvent>(map);
+  static CellSwitched fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<CellSwitched>(map);
   }
 
-  static SwitchCellEvent fromJson(String json) {
-    return ensureInitialized().decodeJson<SwitchCellEvent>(json);
+  static CellSwitched fromJson(String json) {
+    return ensureInitialized().decodeJson<CellSwitched>(json);
   }
 }
 
-mixin SwitchCellEventMappable {
+mixin CellSwitchedMappable {
   String toJson() {
-    return SwitchCellEventMapper.ensureInitialized()
-        .encodeJson<SwitchCellEvent>(this as SwitchCellEvent);
+    return CellSwitchedMapper.ensureInitialized()
+        .encodeJson<CellSwitched>(this as CellSwitched);
   }
 
   Map<String, dynamic> toMap() {
-    return SwitchCellEventMapper.ensureInitialized()
-        .encodeMap<SwitchCellEvent>(this as SwitchCellEvent);
+    return CellSwitchedMapper.ensureInitialized()
+        .encodeMap<CellSwitched>(this as CellSwitched);
   }
 
-  SwitchCellEventCopyWith<SwitchCellEvent, SwitchCellEvent, SwitchCellEvent>
-      get copyWith => _SwitchCellEventCopyWithImpl(
-          this as SwitchCellEvent, $identity, $identity);
+  CellSwitchedCopyWith<CellSwitched, CellSwitched, CellSwitched> get copyWith =>
+      _CellSwitchedCopyWithImpl(this as CellSwitched, $identity, $identity);
   @override
   String toString() {
-    return SwitchCellEventMapper.ensureInitialized()
-        .stringifyValue(this as SwitchCellEvent);
+    return CellSwitchedMapper.ensureInitialized()
+        .stringifyValue(this as CellSwitched);
   }
 
   @override
   bool operator ==(Object other) {
-    return SwitchCellEventMapper.ensureInitialized()
-        .equalsValue(this as SwitchCellEvent, other);
+    return CellSwitchedMapper.ensureInitialized()
+        .equalsValue(this as CellSwitched, other);
   }
 
   @override
   int get hashCode {
-    return SwitchCellEventMapper.ensureInitialized()
-        .hashValue(this as SwitchCellEvent);
+    return CellSwitchedMapper.ensureInitialized()
+        .hashValue(this as CellSwitched);
   }
 }
 
-extension SwitchCellEventValueCopy<$R, $Out>
-    on ObjectCopyWith<$R, SwitchCellEvent, $Out> {
-  SwitchCellEventCopyWith<$R, SwitchCellEvent, $Out> get $asSwitchCellEvent =>
-      $base.as((v, t, t2) => _SwitchCellEventCopyWithImpl(v, t, t2));
+extension CellSwitchedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, CellSwitched, $Out> {
+  CellSwitchedCopyWith<$R, CellSwitched, $Out> get $asCellSwitched =>
+      $base.as((v, t, t2) => _CellSwitchedCopyWithImpl(v, t, t2));
 }
 
-abstract class SwitchCellEventCopyWith<$R, $In extends SwitchCellEvent, $Out>
+abstract class CellSwitchedCopyWith<$R, $In extends CellSwitched, $Out>
     implements BoardEventCopyWith<$R, $In, $Out> {
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>? get cell;
   @override
-  $R call({VectorDefinition? cell});
-  SwitchCellEventCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+  $R call({VectorDefinition? cell, bool? toggle});
+  CellSwitchedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
-class _SwitchCellEventCopyWithImpl<$R, $Out>
-    extends ClassCopyWithBase<$R, SwitchCellEvent, $Out>
-    implements SwitchCellEventCopyWith<$R, SwitchCellEvent, $Out> {
-  _SwitchCellEventCopyWithImpl(super.value, super.then, super.then2);
+class _CellSwitchedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, CellSwitched, $Out>
+    implements CellSwitchedCopyWith<$R, CellSwitched, $Out> {
+  _CellSwitchedCopyWithImpl(super.value, super.then, super.then2);
 
   @override
-  late final ClassMapperBase<SwitchCellEvent> $mapper =
-      SwitchCellEventMapper.ensureInitialized();
+  late final ClassMapperBase<CellSwitched> $mapper =
+      CellSwitchedMapper.ensureInitialized();
   @override
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>? get cell =>
       $value.cell?.copyWith.$chain((v) => call(cell: v));
   @override
-  $R call({Object? cell = $none}) =>
-      $apply(FieldCopyWithData({if (cell != $none) #cell: cell}));
+  $R call({Object? cell = $none, bool? toggle}) => $apply(FieldCopyWithData(
+      {if (cell != $none) #cell: cell, if (toggle != null) #toggle: toggle}));
   @override
-  SwitchCellEvent $make(CopyWithData data) =>
-      SwitchCellEvent(data.get(#cell, or: $value.cell));
+  CellSwitched $make(CopyWithData data) =>
+      CellSwitched(data.get(#cell, or: $value.cell),
+          toggle: data.get(#toggle, or: $value.toggle));
 
   @override
-  SwitchCellEventCopyWith<$R2, SwitchCellEvent, $Out2> $chain<$R2, $Out2>(
+  CellSwitchedCopyWith<$R2, CellSwitched, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _SwitchCellEventCopyWithImpl($value, $cast, t);
+      _CellSwitchedCopyWithImpl($value, $cast, t);
 }
 
-class ChangeHandEventMapper extends ClassMapperBase<ChangeHandEvent> {
-  ChangeHandEventMapper._();
+class HandChangedMapper extends ClassMapperBase<HandChanged> {
+  HandChangedMapper._();
 
-  static ChangeHandEventMapper? _instance;
-  static ChangeHandEventMapper ensureInitialized() {
+  static HandChangedMapper? _instance;
+  static HandChangedMapper ensureInitialized() {
     if (_instance == null) {
-      MapperContainer.globals.use(_instance = ChangeHandEventMapper._());
+      MapperContainer.globals.use(_instance = HandChangedMapper._());
       BoardEventMapper.ensureInitialized();
       ItemLocationMapper.ensureInitialized();
     }
@@ -180,93 +184,90 @@ class ChangeHandEventMapper extends ClassMapperBase<ChangeHandEvent> {
   }
 
   @override
-  final String id = 'ChangeHandEvent';
+  final String id = 'HandChanged';
 
-  static ItemLocation? _$deck(ChangeHandEvent v) => v.deck;
-  static const Field<ChangeHandEvent, ItemLocation> _f$deck =
+  static ItemLocation? _$deck(HandChanged v) => v.deck;
+  static const Field<HandChanged, ItemLocation> _f$deck =
       Field('deck', _$deck, opt: true);
-  static bool? _$show(ChangeHandEvent v) => v.show;
-  static const Field<ChangeHandEvent, bool> _f$show =
+  static bool? _$show(HandChanged v) => v.show;
+  static const Field<HandChanged, bool> _f$show =
       Field('show', _$show, opt: true, def: true);
 
   @override
-  final MappableFields<ChangeHandEvent> fields = const {
+  final MappableFields<HandChanged> fields = const {
     #deck: _f$deck,
     #show: _f$show,
   };
 
-  static ChangeHandEvent _instantiate(DecodingData data) {
-    return ChangeHandEvent(deck: data.dec(_f$deck), show: data.dec(_f$show));
+  static HandChanged _instantiate(DecodingData data) {
+    return HandChanged(deck: data.dec(_f$deck), show: data.dec(_f$show));
   }
 
   @override
   final Function instantiate = _instantiate;
 
-  static ChangeHandEvent fromMap(Map<String, dynamic> map) {
-    return ensureInitialized().decodeMap<ChangeHandEvent>(map);
+  static HandChanged fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<HandChanged>(map);
   }
 
-  static ChangeHandEvent fromJson(String json) {
-    return ensureInitialized().decodeJson<ChangeHandEvent>(json);
+  static HandChanged fromJson(String json) {
+    return ensureInitialized().decodeJson<HandChanged>(json);
   }
 }
 
-mixin ChangeHandEventMappable {
+mixin HandChangedMappable {
   String toJson() {
-    return ChangeHandEventMapper.ensureInitialized()
-        .encodeJson<ChangeHandEvent>(this as ChangeHandEvent);
+    return HandChangedMapper.ensureInitialized()
+        .encodeJson<HandChanged>(this as HandChanged);
   }
 
   Map<String, dynamic> toMap() {
-    return ChangeHandEventMapper.ensureInitialized()
-        .encodeMap<ChangeHandEvent>(this as ChangeHandEvent);
+    return HandChangedMapper.ensureInitialized()
+        .encodeMap<HandChanged>(this as HandChanged);
   }
 
-  ChangeHandEventCopyWith<ChangeHandEvent, ChangeHandEvent, ChangeHandEvent>
-      get copyWith => _ChangeHandEventCopyWithImpl(
-          this as ChangeHandEvent, $identity, $identity);
+  HandChangedCopyWith<HandChanged, HandChanged, HandChanged> get copyWith =>
+      _HandChangedCopyWithImpl(this as HandChanged, $identity, $identity);
   @override
   String toString() {
-    return ChangeHandEventMapper.ensureInitialized()
-        .stringifyValue(this as ChangeHandEvent);
+    return HandChangedMapper.ensureInitialized()
+        .stringifyValue(this as HandChanged);
   }
 
   @override
   bool operator ==(Object other) {
-    return ChangeHandEventMapper.ensureInitialized()
-        .equalsValue(this as ChangeHandEvent, other);
+    return HandChangedMapper.ensureInitialized()
+        .equalsValue(this as HandChanged, other);
   }
 
   @override
   int get hashCode {
-    return ChangeHandEventMapper.ensureInitialized()
-        .hashValue(this as ChangeHandEvent);
+    return HandChangedMapper.ensureInitialized().hashValue(this as HandChanged);
   }
 }
 
-extension ChangeHandEventValueCopy<$R, $Out>
-    on ObjectCopyWith<$R, ChangeHandEvent, $Out> {
-  ChangeHandEventCopyWith<$R, ChangeHandEvent, $Out> get $asChangeHandEvent =>
-      $base.as((v, t, t2) => _ChangeHandEventCopyWithImpl(v, t, t2));
+extension HandChangedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, HandChanged, $Out> {
+  HandChangedCopyWith<$R, HandChanged, $Out> get $asHandChanged =>
+      $base.as((v, t, t2) => _HandChangedCopyWithImpl(v, t, t2));
 }
 
-abstract class ChangeHandEventCopyWith<$R, $In extends ChangeHandEvent, $Out>
+abstract class HandChangedCopyWith<$R, $In extends HandChanged, $Out>
     implements BoardEventCopyWith<$R, $In, $Out> {
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get deck;
   @override
   $R call({ItemLocation? deck, bool? show});
-  ChangeHandEventCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+  HandChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
-class _ChangeHandEventCopyWithImpl<$R, $Out>
-    extends ClassCopyWithBase<$R, ChangeHandEvent, $Out>
-    implements ChangeHandEventCopyWith<$R, ChangeHandEvent, $Out> {
-  _ChangeHandEventCopyWithImpl(super.value, super.then, super.then2);
+class _HandChangedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, HandChanged, $Out>
+    implements HandChangedCopyWith<$R, HandChanged, $Out> {
+  _HandChangedCopyWithImpl(super.value, super.then, super.then2);
 
   @override
-  late final ClassMapperBase<ChangeHandEvent> $mapper =
-      ChangeHandEventMapper.ensureInitialized();
+  late final ClassMapperBase<HandChanged> $mapper =
+      HandChangedMapper.ensureInitialized();
   @override
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get deck =>
       $value.deck?.copyWith.$chain((v) => call(deck: v));
@@ -274,12 +275,139 @@ class _ChangeHandEventCopyWithImpl<$R, $Out>
   $R call({Object? deck = $none, bool? show}) => $apply(FieldCopyWithData(
       {if (deck != $none) #deck: deck, if (show != null) #show: show}));
   @override
-  ChangeHandEvent $make(CopyWithData data) => ChangeHandEvent(
+  HandChanged $make(CopyWithData data) => HandChanged(
       deck: data.get(#deck, or: $value.deck),
       show: data.get(#show, or: $value.show));
 
   @override
-  ChangeHandEventCopyWith<$R2, ChangeHandEvent, $Out2> $chain<$R2, $Out2>(
+  HandChangedCopyWith<$R2, HandChanged, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _ChangeHandEventCopyWithImpl($value, $cast, t);
+      _HandChangedCopyWithImpl($value, $cast, t);
+}
+
+class ObjectsSpawnedMapper extends ClassMapperBase<ObjectsSpawned> {
+  ObjectsSpawnedMapper._();
+
+  static ObjectsSpawnedMapper? _instance;
+  static ObjectsSpawnedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = ObjectsSpawnedMapper._());
+      BoardEventMapper.ensureInitialized();
+      VectorDefinitionMapper.ensureInitialized();
+      GameObjectMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'ObjectsSpawned';
+
+  static VectorDefinition _$cell(ObjectsSpawned v) => v.cell;
+  static const Field<ObjectsSpawned, VectorDefinition> _f$cell =
+      Field('cell', _$cell);
+  static List<GameObject> _$objects(ObjectsSpawned v) => v.objects;
+  static const Field<ObjectsSpawned, List<GameObject>> _f$objects =
+      Field('objects', _$objects);
+
+  @override
+  final MappableFields<ObjectsSpawned> fields = const {
+    #cell: _f$cell,
+    #objects: _f$objects,
+  };
+
+  static ObjectsSpawned _instantiate(DecodingData data) {
+    return ObjectsSpawned(data.dec(_f$cell), data.dec(_f$objects));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static ObjectsSpawned fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<ObjectsSpawned>(map);
+  }
+
+  static ObjectsSpawned fromJson(String json) {
+    return ensureInitialized().decodeJson<ObjectsSpawned>(json);
+  }
+}
+
+mixin ObjectsSpawnedMappable {
+  String toJson() {
+    return ObjectsSpawnedMapper.ensureInitialized()
+        .encodeJson<ObjectsSpawned>(this as ObjectsSpawned);
+  }
+
+  Map<String, dynamic> toMap() {
+    return ObjectsSpawnedMapper.ensureInitialized()
+        .encodeMap<ObjectsSpawned>(this as ObjectsSpawned);
+  }
+
+  ObjectsSpawnedCopyWith<ObjectsSpawned, ObjectsSpawned, ObjectsSpawned>
+      get copyWith => _ObjectsSpawnedCopyWithImpl(
+          this as ObjectsSpawned, $identity, $identity);
+  @override
+  String toString() {
+    return ObjectsSpawnedMapper.ensureInitialized()
+        .stringifyValue(this as ObjectsSpawned);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return ObjectsSpawnedMapper.ensureInitialized()
+        .equalsValue(this as ObjectsSpawned, other);
+  }
+
+  @override
+  int get hashCode {
+    return ObjectsSpawnedMapper.ensureInitialized()
+        .hashValue(this as ObjectsSpawned);
+  }
+}
+
+extension ObjectsSpawnedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, ObjectsSpawned, $Out> {
+  ObjectsSpawnedCopyWith<$R, ObjectsSpawned, $Out> get $asObjectsSpawned =>
+      $base.as((v, t, t2) => _ObjectsSpawnedCopyWithImpl(v, t, t2));
+}
+
+abstract class ObjectsSpawnedCopyWith<$R, $In extends ObjectsSpawned, $Out>
+    implements BoardEventCopyWith<$R, $In, $Out> {
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell;
+  ListCopyWith<$R, GameObject, GameObjectCopyWith<$R, GameObject, GameObject>>
+      get objects;
+  @override
+  $R call({VectorDefinition? cell, List<GameObject>? objects});
+  ObjectsSpawnedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class _ObjectsSpawnedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, ObjectsSpawned, $Out>
+    implements ObjectsSpawnedCopyWith<$R, ObjectsSpawned, $Out> {
+  _ObjectsSpawnedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<ObjectsSpawned> $mapper =
+      ObjectsSpawnedMapper.ensureInitialized();
+  @override
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell =>
+      $value.cell.copyWith.$chain((v) => call(cell: v));
+  @override
+  ListCopyWith<$R, GameObject, GameObjectCopyWith<$R, GameObject, GameObject>>
+      get objects => ListCopyWith($value.objects,
+          (v, t) => v.copyWith.$chain(t), (v) => call(objects: v));
+  @override
+  $R call({VectorDefinition? cell, List<GameObject>? objects}) =>
+      $apply(FieldCopyWithData({
+        if (cell != null) #cell: cell,
+        if (objects != null) #objects: objects
+      }));
+  @override
+  ObjectsSpawned $make(CopyWithData data) => ObjectsSpawned(
+      data.get(#cell, or: $value.cell), data.get(#objects, or: $value.objects));
+
+  @override
+  ObjectsSpawnedCopyWith<$R2, ObjectsSpawned, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _ObjectsSpawnedCopyWithImpl($value, $cast, t);
 }

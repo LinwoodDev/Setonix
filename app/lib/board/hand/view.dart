@@ -63,7 +63,7 @@ class GameHand extends CustomPainterComponent
   @override
   void onParentResize(Vector2 maxSize) {
     width = maxSize.x;
-    height = min(maxSize.y / 3, 256);
+    height = min(maxSize.y / 3, 128);
     position = Vector2(0, maxSize.y - height);
     _itemsChild.height = height;
   }
@@ -80,7 +80,7 @@ class GameHand extends CustomPainterComponent
         .forEach((e) => e.removeFromParent());
     final selected = state.selectedCell;
     final cell = state.table.cells[selected];
-    if (cell == null || selected == null) {
+    if (selected == null) {
       final deck = state.selectedDeck;
       final packItem = deck != null
           ? game.assetManager
@@ -124,9 +124,9 @@ class GameHand extends CustomPainterComponent
     _addFigures(figures);
   }
 
-  void _buildCellHand(VectorDefinition location, TableCell cell) {
+  void _buildCellHand(VectorDefinition location, TableCell? cell) {
     _nextItemPos = 0;
-    for (final object in cell.objects) {
+    for (final object in cell?.objects ?? []) {
       _addChild(GameObjectHandItem(item: MapEntry(location, object)));
     }
   }

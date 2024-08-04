@@ -6,6 +6,7 @@ import 'package:flame/sprite.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/painting.dart';
 import 'package:quokka/bloc/board.dart';
+import 'package:quokka/bloc/board_state.dart';
 import 'package:quokka/board/cell.dart';
 import 'package:quokka/board/grid.dart';
 import 'package:quokka/board/hand/view.dart';
@@ -26,7 +27,10 @@ class BoardGame extends FlameGame with ScrollDetector {
 
   @override
   FutureOr<void> onLoad() async {
-    await add(FlameBlocProvider.value(value: bloc, children: [camera, world]));
+    final provider =
+        FlameBlocProvider<BoardBloc, BoardState>.value(value: bloc);
+    await add(provider);
+    provider.addAll([camera, world]);
     const packName = '';
     await assetManager.loadPack(packName);
     final data = assetManager.getTexture('backgrounds/grid.png');

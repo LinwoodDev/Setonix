@@ -8,24 +8,32 @@ part 'board_event.mapper.dart';
 sealed class BoardEvent with BoardEventMappable {}
 
 @MappableClass()
-final class SwitchCellEvent extends BoardEvent with SwitchCellEventMappable {
+final class CellSwitched extends BoardEvent with CellSwitchedMappable {
   final VectorDefinition? cell;
   final bool toggle;
 
-  SwitchCellEvent(this.cell, {this.toggle = false});
+  CellSwitched(this.cell, {this.toggle = false});
 }
 
 @MappableClass()
-final class ChangeHandEvent extends BoardEvent with ChangeHandEventMappable {
+final class HandChanged extends BoardEvent with HandChangedMappable {
   final ItemLocation? deck;
   final bool? show;
 
-  ChangeHandEvent({
+  HandChanged({
     this.deck,
     bool this.show = true,
   });
-  ChangeHandEvent.hide()
+  HandChanged.hide()
       : deck = null,
         show = false;
-  ChangeHandEvent.toggle({this.deck}) : show = null;
+  HandChanged.toggle({this.deck}) : show = null;
+}
+
+@MappableClass()
+final class ObjectsSpawned extends BoardEvent with ObjectsSpawnedMappable {
+  final VectorDefinition cell;
+  final List<GameObject> objects;
+
+  ObjectsSpawned(this.cell, this.objects);
 }
