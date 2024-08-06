@@ -1,7 +1,6 @@
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame_bloc/flame_bloc.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/painting.dart';
 import 'package:quokka/bloc/board.dart';
 import 'package:quokka/bloc/board_state.dart';
@@ -74,15 +73,12 @@ abstract class HandItem<T> extends PositionComponent
   void onDragEnd(DragEndEvent event) {
     super.onDragEnd(event);
     if (!isLongPressing) return;
+    final pos = game.camera.globalToLocal(_lastPos);
     final cell =
-        game.grid.componentsAtPoint(_lastPos).whereType<GameCell>().firstOrNull;
+        game.grid.componentsAtPoint(pos).whereType<GameCell>().firstOrNull;
     if (cell == null) return;
     moveItem(cell);
   }
 
-  void moveItem(GameCell cell) {
-    if (kDebugMode) {
-      print('Pasted at ${cell.position}');
-    }
-  }
+  void moveItem(GameCell cell) {}
 }

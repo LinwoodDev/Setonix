@@ -37,3 +37,11 @@ final class ObjectsSpawned extends BoardEvent with ObjectsSpawnedMappable {
 
   ObjectsSpawned(this.cell, this.objects);
 }
+
+@MappableClass()
+final class ObjectsMoved extends BoardEvent with ObjectsMovedMappable {
+  final List<int> objects;
+  final VectorDefinition from, to;
+
+  ObjectsMoved(this.objects, this.from, this.to);
+}

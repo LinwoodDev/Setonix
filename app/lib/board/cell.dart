@@ -22,6 +22,7 @@ class GameCell extends PositionComponent
         DragCallbacks,
         FlameBlocListenable<BoardBloc, BoardState> {
   late final SpriteComponent _selectionComponent;
+  SpriteComponent? _cardComponent;
   final List<Effect> _effects = [];
   late final BoardGrid grid;
 
@@ -57,7 +58,9 @@ class GameCell extends PositionComponent
   bool listenWhen(BoardState previousState, BoardState newState) {
     final definition = toDefinition();
     return (previousState.selectedCell == definition) !=
-        (newState.selectedCell == definition);
+            (newState.selectedCell == definition) ||
+        newState.table.cells[definition] !=
+            previousState.table.cells[definition];
   }
 
   bool get isSelected => bloc.state.selectedCell == toDefinition();
@@ -99,7 +102,7 @@ class GameCell extends PositionComponent
       (position.clone()..divide(grid.cellSize)).toDefinition();
 
   @override
-  void onNewState(BoardState state) {
+  Future<void> onNewState(BoardState state) async {
     final selected = state.selectedCell == toDefinition();
     final controller = EffectController(
       duration: 0.1,
@@ -117,6 +120,18 @@ class GameCell extends PositionComponent
         OpacityEffect.to(0, controller),
         ColorEffect(color, controller, opacityFrom: 1, opacityTo: 0),
       ]);
+    }
+    final top = state.table.cells[toDefinition()]?.objects.firstOrNull;
+    if (_cardComponent != null) {
+      remove(_cardComponent!);
+      _cardComponent = null;
+    }
+    if (top != null) {
+      _cardComponent = SpriteComponent(
+          sprite: await game.assetManager
+              .loadFigureSpriteFromLocation(top.asset, top.variation),
+          size: size);
+      add(_cardComponent!);
     }
   }
 

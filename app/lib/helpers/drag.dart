@@ -2,8 +2,8 @@ import 'package:flame/events.dart';
 import 'package:flutter/foundation.dart';
 
 mixin LongDragCallbacks on DragCallbacks {
-  int get longThresholdPixels => 8;
-  Duration get longThresholdDuration => const Duration(milliseconds: 600);
+  int get longThresholdPixels => 12;
+  Duration get longThresholdDuration => const Duration(seconds: 1);
 
   DateTime? _start;
   bool _isLongPressing = false;

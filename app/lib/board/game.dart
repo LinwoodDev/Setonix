@@ -11,6 +11,7 @@ import 'package:quokka/board/cell.dart';
 import 'package:quokka/board/grid.dart';
 import 'package:quokka/board/hand/view.dart';
 import 'package:quokka/helpers/asset.dart';
+import 'package:quokka/helpers/scroll.dart';
 import 'package:quokka/services/pack.dart';
 
 class BoardGame extends FlameGame with ScrollDetector {
@@ -54,7 +55,11 @@ class BoardGame extends FlameGame with ScrollDetector {
 
   @override
   void onScroll(PointerScrollInfo info) {
-    clampZoom(camera.viewfinder.zoom +
-        info.scrollDelta.global.y.sign * zoomPerScrollUnit);
+    final component = componentsAtPoint(info.eventPosition.global)
+        .whereType<ScrollCallbacks>()
+        .firstOrNull;
+    component?.onScroll(info);
+    /*clampZoom(camera.viewfinder.zoom +
+        info.scrollDelta.global.y.sign * zoomPerScrollUnit);*/
   }
 }

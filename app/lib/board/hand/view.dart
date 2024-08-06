@@ -13,6 +13,7 @@ import 'package:quokka/board/hand/deck.dart';
 import 'package:quokka/board/hand/figure.dart';
 import 'package:quokka/board/hand/item.dart';
 import 'package:quokka/board/hand/object.dart';
+import 'package:quokka/helpers/scroll.dart';
 import 'package:quokka/models/definitions/deck.dart';
 import 'package:quokka/models/definitions/object.dart';
 import 'package:quokka/models/definitions/pack.dart';
@@ -39,7 +40,9 @@ class GameHand extends CustomPainterComponent
     with
         HasGameRef<BoardGame>,
         DragCallbacks,
-        FlameBlocListenable<BoardBloc, BoardState> {
+        FlameBlocListenable<BoardBloc, BoardState>,
+        TapCallbacks,
+        ScrollCallbacks {
   double _nextItemPos = 0;
   final _itemsChild = PositionComponent();
 
@@ -72,7 +75,9 @@ class GameHand extends CustomPainterComponent
   bool listenWhen(BoardState previousState, BoardState newState) =>
       previousState.showHand != newState.showHand ||
       previousState.selectedDeck != newState.selectedDeck ||
-      previousState.selectedCell != newState.selectedCell;
+      previousState.selectedCell != newState.selectedCell ||
+      previousState.table.cells[previousState.selectedCell] !=
+          newState.table.cells[newState.selectedCell];
 
   void _buildHand(BoardState state) {
     _itemsChild.children
@@ -126,8 +131,9 @@ class GameHand extends CustomPainterComponent
 
   void _buildCellHand(VectorDefinition location, TableCell? cell) {
     _nextItemPos = 0;
-    for (final object in cell?.objects ?? []) {
-      _addChild(GameObjectHandItem(item: MapEntry(location, object)));
+    for (final object
+        in cell?.objects.asMap().entries ?? const Iterable.empty()) {
+      _addChild(GameObjectHandItem(item: (location, object.key, object.value)));
     }
   }
 
@@ -145,5 +151,15 @@ class GameHand extends CustomPainterComponent
   @override
   void onDragUpdate(DragUpdateEvent event) {
     scroll(event.localDelta.x);
+  }
+
+  @override
+  void onScroll(PointerScrollInfo info) {
+    var delta = info.scrollDelta.global.x;
+    if (delta == 0) {
+      delta = info.scrollDelta.global.y;
+    }
+    delta /= 4;
+    scroll(-delta);
   }
 }

@@ -16,6 +16,7 @@ class BoardEventMapper extends ClassMapperBase<BoardEvent> {
       CellSwitchedMapper.ensureInitialized();
       HandChangedMapper.ensureInitialized();
       ObjectsSpawnedMapper.ensureInitialized();
+      ObjectsMovedMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -410,4 +411,138 @@ class _ObjectsSpawnedCopyWithImpl<$R, $Out>
   ObjectsSpawnedCopyWith<$R2, ObjectsSpawned, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
       _ObjectsSpawnedCopyWithImpl($value, $cast, t);
+}
+
+class ObjectsMovedMapper extends ClassMapperBase<ObjectsMoved> {
+  ObjectsMovedMapper._();
+
+  static ObjectsMovedMapper? _instance;
+  static ObjectsMovedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = ObjectsMovedMapper._());
+      BoardEventMapper.ensureInitialized();
+      VectorDefinitionMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'ObjectsMoved';
+
+  static List<int> _$objects(ObjectsMoved v) => v.objects;
+  static const Field<ObjectsMoved, List<int>> _f$objects =
+      Field('objects', _$objects);
+  static VectorDefinition _$from(ObjectsMoved v) => v.from;
+  static const Field<ObjectsMoved, VectorDefinition> _f$from =
+      Field('from', _$from);
+  static VectorDefinition _$to(ObjectsMoved v) => v.to;
+  static const Field<ObjectsMoved, VectorDefinition> _f$to = Field('to', _$to);
+
+  @override
+  final MappableFields<ObjectsMoved> fields = const {
+    #objects: _f$objects,
+    #from: _f$from,
+    #to: _f$to,
+  };
+
+  static ObjectsMoved _instantiate(DecodingData data) {
+    return ObjectsMoved(
+        data.dec(_f$objects), data.dec(_f$from), data.dec(_f$to));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static ObjectsMoved fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<ObjectsMoved>(map);
+  }
+
+  static ObjectsMoved fromJson(String json) {
+    return ensureInitialized().decodeJson<ObjectsMoved>(json);
+  }
+}
+
+mixin ObjectsMovedMappable {
+  String toJson() {
+    return ObjectsMovedMapper.ensureInitialized()
+        .encodeJson<ObjectsMoved>(this as ObjectsMoved);
+  }
+
+  Map<String, dynamic> toMap() {
+    return ObjectsMovedMapper.ensureInitialized()
+        .encodeMap<ObjectsMoved>(this as ObjectsMoved);
+  }
+
+  ObjectsMovedCopyWith<ObjectsMoved, ObjectsMoved, ObjectsMoved> get copyWith =>
+      _ObjectsMovedCopyWithImpl(this as ObjectsMoved, $identity, $identity);
+  @override
+  String toString() {
+    return ObjectsMovedMapper.ensureInitialized()
+        .stringifyValue(this as ObjectsMoved);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return ObjectsMovedMapper.ensureInitialized()
+        .equalsValue(this as ObjectsMoved, other);
+  }
+
+  @override
+  int get hashCode {
+    return ObjectsMovedMapper.ensureInitialized()
+        .hashValue(this as ObjectsMoved);
+  }
+}
+
+extension ObjectsMovedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, ObjectsMoved, $Out> {
+  ObjectsMovedCopyWith<$R, ObjectsMoved, $Out> get $asObjectsMoved =>
+      $base.as((v, t, t2) => _ObjectsMovedCopyWithImpl(v, t, t2));
+}
+
+abstract class ObjectsMovedCopyWith<$R, $In extends ObjectsMoved, $Out>
+    implements BoardEventCopyWith<$R, $In, $Out> {
+  ListCopyWith<$R, int, ObjectCopyWith<$R, int, int>> get objects;
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get from;
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get to;
+  @override
+  $R call({List<int>? objects, VectorDefinition? from, VectorDefinition? to});
+  ObjectsMovedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _ObjectsMovedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, ObjectsMoved, $Out>
+    implements ObjectsMovedCopyWith<$R, ObjectsMoved, $Out> {
+  _ObjectsMovedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<ObjectsMoved> $mapper =
+      ObjectsMovedMapper.ensureInitialized();
+  @override
+  ListCopyWith<$R, int, ObjectCopyWith<$R, int, int>> get objects =>
+      ListCopyWith($value.objects, (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(objects: v));
+  @override
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get from =>
+      $value.from.copyWith.$chain((v) => call(from: v));
+  @override
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get to =>
+      $value.to.copyWith.$chain((v) => call(to: v));
+  @override
+  $R call({List<int>? objects, VectorDefinition? from, VectorDefinition? to}) =>
+      $apply(FieldCopyWithData({
+        if (objects != null) #objects: objects,
+        if (from != null) #from: from,
+        if (to != null) #to: to
+      }));
+  @override
+  ObjectsMoved $make(CopyWithData data) => ObjectsMoved(
+      data.get(#objects, or: $value.objects),
+      data.get(#from, or: $value.from),
+      data.get(#to, or: $value.to));
+
+  @override
+  ObjectsMovedCopyWith<$R2, ObjectsMoved, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _ObjectsMovedCopyWithImpl($value, $cast, t);
 }
