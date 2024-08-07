@@ -8,17 +8,53 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:quokka/api/settings.dart';
 import 'package:quokka/bloc/board.dart';
 import 'package:quokka/bloc/board_event.dart';
+import 'package:quokka/bloc/board_state.dart';
 import 'package:quokka/bloc/settings.dart';
 import 'package:quokka/board/game.dart';
+import 'package:quokka/models/data.dart';
 import 'package:quokka/services/file_system.dart';
 
-class GamePage extends StatelessWidget {
-  const GamePage({super.key});
+class GamePage extends StatefulWidget {
+  final String? name;
+  final QuokkaData? data;
+
+  const GamePage({super.key, this.name, this.data});
+
+  @override
+  State<GamePage> createState() => _GamePageState();
+}
+
+class _GamePageState extends State<GamePage> {
+  QuokkaData? _data;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTable();
+  }
+
+  Future<void> _loadTable() async {
+    final worldSystem = context.read<QuokkaFileSystem>().worldSystem;
+    final name = widget.name;
+    final data = (widget.data ??
+            (name == null ? null : await worldSystem.getFile(name))) ??
+        QuokkaData.empty();
+    setState(() {
+      _data = data;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (_data == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
     return BlocProvider(
-      create: (context) => BoardBloc(),
+      create: (context) => BoardBloc(
+        fileSystem: context.read<QuokkaFileSystem>(),
+        name: widget.name,
+        data: _data!,
+      ),
       child: Scaffold(
         appBar: WindowTitleBar<SettingsCubit, QuokkaSettings>(
           title: Text(AppLocalizations.of(context).game),
@@ -39,6 +75,16 @@ class GamePage extends StatelessWidget {
                 builder: (context) => ListView(
                       shrinkWrap: true,
                       children: [
+                        BlocBuilder<BoardBloc, BoardState>(
+                          buildWhen: (previous, current) =>
+                              previous.name != current.name,
+                          builder: (context, state) => Text(
+                            state.name ?? '',
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ),
+                        ),
+                        const Divider(),
                         ListTile(
                           leading: const Icon(PhosphorIconsLight.arrowLeft),
                           title: Text(MaterialLocalizations.of(context)
@@ -62,7 +108,6 @@ class GamePage extends StatelessWidget {
         body: Builder(
             builder: (context) => GameWidget(
                     game: BoardGame(
-                  fileSystem: context.read<QuokkaFileSystem>(),
                   bloc: context.read<BoardBloc>(),
                 ))),
       ),

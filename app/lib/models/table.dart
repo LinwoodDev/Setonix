@@ -3,17 +3,44 @@ import 'package:quokka/models/vector.dart';
 
 part 'table.mapper.dart';
 
+class VectorMapHook extends MappingHook {
+  const VectorMapHook();
+
+  @override
+  Object? beforeDecode(Object? value) {
+    if (value is! List<dynamic>) {
+      return value;
+    }
+    return Map.fromEntries(value.map((entry) => MapEntry(entry, entry)));
+  }
+
+  @override
+  Object? afterEncode(Object? value) {
+    if (value is! Map) {
+      return value;
+    }
+    return value.entries.map((entry) {
+      final key = entry.key;
+      final value = entry.value;
+      return {
+        if (key is Map) ...key,
+        if (value is Map) ...value,
+      };
+    }).toList();
+  }
+}
+
 @MappableClass()
 class GameTable with GameTableMappable {
+  @MappableField(hook: VectorMapHook())
   final Map<VectorDefinition, TableCell> cells;
+  @MappableField(hook: VectorMapHook())
   final Map<VectorDefinition, GameBoard> boards;
-  final Map<String, GameSeat> seats;
   final Map<String, GamePlayer> players;
 
   const GameTable({
     this.cells = const {},
     this.boards = const {},
-    this.seats = const {},
     this.players = const {},
   });
 }

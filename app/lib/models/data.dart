@@ -36,7 +36,10 @@ class QuokkaData extends ArchiveData<QuokkaData> {
     return GameTableMapper.fromJson(content);
   }
 
-  void setTable(GameTable table) {}
+  QuokkaData setTable(GameTable table) => setAsset(
+        '$kGameTablePath/.json',
+        utf8.encode(table.toJson()),
+      );
 
   FileMetadata? getMetadata() {
     final data = getAsset(kPackMetadataPath);
@@ -134,7 +137,7 @@ class QuokkaData extends ArchiveData<QuokkaData> {
 
   QuokkaData setFileMetadata(FileMetadata metadata) => setAsset(
         kPackMetadataPath,
-        utf8.encode(json.encode(metadata)),
+        utf8.encode(metadata.toJson()),
       );
 
   @override

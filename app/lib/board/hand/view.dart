@@ -21,8 +21,13 @@ import 'package:quokka/models/table.dart';
 import 'package:quokka/models/vector.dart';
 
 class GameHandCustomPainter extends CustomPainter {
+  final bool showHand;
+
+  GameHandCustomPainter({this.showHand = false});
+
   @override
   void paint(Canvas canvas, Size size) {
+    if (!showHand) return;
     final paint = Paint()
       ..color = Colors.black
       ..style = PaintingStyle.fill
@@ -31,9 +36,8 @@ class GameHandCustomPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
-  }
+  bool shouldRepaint(GameHandCustomPainter oldDelegate) =>
+      showHand != oldDelegate.showHand;
 }
 
 class GameHand extends CustomPainterComponent
@@ -83,6 +87,9 @@ class GameHand extends CustomPainterComponent
     _itemsChild.children
         .whereType<HandItem>()
         .forEach((e) => e.removeFromParent());
+    painter = GameHandCustomPainter(showHand: state.showHand);
+    if (!state.showHand) return;
+    _itemsChild.x = 0;
     final selected = state.selectedCell;
     final cell = state.table.cells[selected];
     if (selected == null) {
@@ -148,18 +155,52 @@ class GameHand extends CustomPainterComponent
         (delta + _itemsChild.position.x).clamp(min(width - _nextItemPos, 0), 0);
   }
 
+  bool get isShowing => bloc.state.showHand;
+
+  @override
+  void onDragStart(DragStartEvent event) {
+    if (!isShowing) {
+      event
+        ..handled = false
+        ..continuePropagation = true;
+      return;
+    }
+    super.onDragStart(event);
+  }
+
   @override
   void onDragUpdate(DragUpdateEvent event) {
+    if (!isShowing) {
+      event
+        ..handled = false
+        ..continuePropagation = true;
+      return;
+    }
     scroll(event.localDelta.x);
   }
 
   @override
-  void onScroll(PointerScrollInfo info) {
+  bool onScroll(PointerScrollInfo info) {
+    if (!isShowing) {
+      return false;
+    }
     var delta = info.scrollDelta.global.x;
     if (delta == 0) {
       delta = info.scrollDelta.global.y;
     }
     delta /= 4;
     scroll(-delta);
+    return true;
+  }
+
+  @override
+  void onDragEnd(DragEndEvent event) {
+    if (!isShowing) {
+      event
+        ..handled = false
+        ..continuePropagation = true;
+      return;
+    }
+    super.onDragEnd(event);
   }
 }

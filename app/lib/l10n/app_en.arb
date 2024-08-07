@@ -103,5 +103,11 @@
   "noGames": "There are no games available",
   "blank": "Blank",
   "enterName": "Enter a name",
-  "enterDescription": "Enter a description"
+  "enterDescription": "Enter a description",
+  "next": "Next",
+  "back": "Back",
+  "delete": "Delete",
+  "deleteGame": "Delete game",
+  "deleteGameMessage": "Are you sure you want to delete the game?",
+  "selectGame": "Select a game"
 }

@@ -185,7 +185,7 @@ class _CreateDialogState extends State<CreateDialog>
           decoration: InputDecoration(
             labelText: AppLocalizations.of(context).description,
             hintText: AppLocalizations.of(context).enterDescription,
-            border: OutlineInputBorder(),
+            border: const OutlineInputBorder(),
           ),
           controller: _descriptionController,
           minLines: 3,
@@ -226,13 +226,13 @@ class _CreateDialogState extends State<CreateDialog>
       actions: [
         TextButton.icon(
           onPressed: () => Navigator.of(context).pop(),
-          label: const Text('Cancel'),
+          label: Text(AppLocalizations.of(context).cancel),
           icon: const Icon(PhosphorIconsLight.prohibit),
         ),
         if (isMobile && !_infoView) ...[
           FilledButton.icon(
             icon: const Icon(PhosphorIconsBold.arrowRight),
-            label: const Text('Next'),
+            label: Text(AppLocalizations.of(context).next),
             onPressed: () => _pageController.nextPage(
               duration: const Duration(milliseconds: 200),
               curve: Curves.easeInOut,
@@ -242,7 +242,7 @@ class _CreateDialogState extends State<CreateDialog>
           if (isMobile)
             ElevatedButton.icon(
               icon: const Icon(PhosphorIconsBold.arrowLeft),
-              label: const Text('Back'),
+              label: Text(AppLocalizations.of(context).back),
               onPressed: () => _pageController.previousPage(
                 duration: const Duration(milliseconds: 200),
                 curve: Curves.easeInOut,
@@ -264,7 +264,7 @@ class _CreateDialogState extends State<CreateDialog>
               );
               await _worldSystem.createFile(name, template);
 
-              if (mounted) {
+              if (context.mounted) {
                 Navigator.of(context).pop();
               }
             },

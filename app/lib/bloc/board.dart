@@ -2,16 +2,29 @@ import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quokka/bloc/board_event.dart';
 import 'package:quokka/bloc/board_state.dart';
+import 'package:quokka/models/data.dart';
 import 'package:quokka/models/table.dart';
+import 'package:quokka/services/file_system.dart';
 
 class BoardBloc extends Bloc<BoardEvent, BoardState> {
-  BoardBloc() : super(const BoardState()) {
+  BoardBloc({
+    required QuokkaFileSystem fileSystem,
+    String? name,
+    QuokkaData? data,
+    GameTable? table,
+  }) : super(BoardState(
+          fileSystem: fileSystem,
+          name: name,
+          data: data ?? QuokkaData.empty(),
+          table: table ?? data?.getTable() ?? GameTable(),
+        )) {
     on<HandChanged>((event, emit) {
       emit(state.copyWith(
         showHand: event.show ?? (!state.showHand),
         selectedDeck: event.deck,
         selectedCell: null,
       ));
+      return save();
     });
     on<CellSwitched>((event, emit) {
       emit(state.copyWith(
@@ -19,6 +32,7 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
         selectedDeck: null,
         showHand: true,
       ));
+      return save();
     });
     on<ObjectsSpawned>((event, emit) {
       emit(state.copyWith.table.cells.replace(
@@ -27,6 +41,7 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
               .copyWith
               .objects
               .addAll(event.objects)));
+      return save();
     });
     on<ObjectsMoved>((event, emit) {
       var from = state.table.cells[event.from] ?? TableCell();
@@ -44,6 +59,14 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
         event.from: from,
         event.to: to,
       }));
+      return save();
     });
+  }
+
+  Future<void> save() async {
+    final data = state.data.setTable(state.table);
+    final name = state.name;
+    if (name == null) return;
+    return state.fileSystem.worldSystem.updateFile(name, data);
   }
 }

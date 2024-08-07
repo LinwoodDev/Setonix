@@ -95,11 +95,18 @@ class GameCell extends PositionComponent
 
   @override
   void onTapUp(TapUpEvent event) {
-    bloc.add(CellSwitched(toDefinition(), toggle: true));
+    if (isSelected) {
+      bloc.add(HandChanged.hide());
+    } else {
+      bloc.add(CellSwitched(toDefinition(), toggle: true));
+    }
   }
 
   VectorDefinition toDefinition() =>
       (position.clone()..divide(grid.cellSize)).toDefinition();
+
+  @override
+  void onInitialState(BoardState state) => _updateTop(state);
 
   @override
   Future<void> onNewState(BoardState state) async {
@@ -121,6 +128,10 @@ class GameCell extends PositionComponent
         ColorEffect(color, controller, opacityFrom: 1, opacityTo: 0),
       ]);
     }
+    _updateTop(state);
+  }
+
+  Future<void> _updateTop(BoardState state) async {
     final top = state.table.cells[toDefinition()]?.objects.firstOrNull;
     if (_cardComponent != null) {
       remove(_cardComponent!);

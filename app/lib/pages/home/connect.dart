@@ -125,55 +125,52 @@ class _ConnectDialogState extends State<ConnectDialog> {
               maxWidth: LeapBreakpoints.expanded,
               maxHeight: 700,
             ),
-            content: DefaultTabController(
-              length: 2,
-              child: Column(
-                children: [
-                  RowSearchView(children: [
-                    InputChip(
-                      label: Text(AppLocalizations.of(context).official),
-                      avatar: const Icon(PhosphorIconsLight.star),
-                      showCheckmark: false,
-                      selected: settings.showConnectOfficial,
-                      onPressed: () => context
-                          .read<SettingsCubit>()
-                          .changeShowConnectOfficial(
-                              !settings.showConnectOfficial),
-                    ),
-                    InputChip(
-                      label: Text(AppLocalizations.of(context).custom),
-                      avatar: const Icon(PhosphorIconsLight.puzzlePiece),
-                      showCheckmark: false,
-                      selected: settings.showConnectCustom,
-                      onPressed: () => context
-                          .read<SettingsCubit>()
-                          .changeShowConnectCustom(!settings.showConnectCustom),
-                    ),
-                    InputChip(
-                      label: Text(AppLocalizations.of(context).onlyFavorites),
-                      avatar: const Icon(PhosphorIconsLight.listHeart),
-                      showCheckmark: false,
-                      selected: settings.showConnectOnlyFavorites,
-                      onPressed: () => context
-                          .read<SettingsCubit>()
-                          .changeShowConnectOnlyFavorites(
-                              !settings.showConnectOnlyFavorites),
-                    ),
-                  ]),
-                  const SizedBox(height: 8),
-                  Expanded(
-                    child: Row(
-                      children: [
-                        Expanded(child: listView),
-                        if (!isMobile) ...[
-                          const VerticalDivider(),
-                          Expanded(child: details),
-                        ],
-                      ],
-                    ),
+            content: Column(
+              children: [
+                RowSearchView(children: [
+                  InputChip(
+                    label: Text(AppLocalizations.of(context).official),
+                    avatar: const Icon(PhosphorIconsLight.star),
+                    showCheckmark: false,
+                    selected: settings.showConnectOfficial,
+                    onPressed: () => context
+                        .read<SettingsCubit>()
+                        .changeShowConnectOfficial(
+                            !settings.showConnectOfficial),
                   ),
-                ],
-              ),
+                  InputChip(
+                    label: Text(AppLocalizations.of(context).custom),
+                    avatar: const Icon(PhosphorIconsLight.puzzlePiece),
+                    showCheckmark: false,
+                    selected: settings.showConnectCustom,
+                    onPressed: () => context
+                        .read<SettingsCubit>()
+                        .changeShowConnectCustom(!settings.showConnectCustom),
+                  ),
+                  InputChip(
+                    label: Text(AppLocalizations.of(context).onlyFavorites),
+                    avatar: const Icon(PhosphorIconsLight.listHeart),
+                    showCheckmark: false,
+                    selected: settings.showConnectOnlyFavorites,
+                    onPressed: () => context
+                        .read<SettingsCubit>()
+                        .changeShowConnectOnlyFavorites(
+                            !settings.showConnectOnlyFavorites),
+                  ),
+                ]),
+                const SizedBox(height: 8),
+                Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(child: listView),
+                      if (!isMobile) ...[
+                        const VerticalDivider(),
+                        Expanded(child: details),
+                      ],
+                    ],
+                  ),
+                ),
+              ],
             ),
           );
         });

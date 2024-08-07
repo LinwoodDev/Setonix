@@ -23,6 +23,12 @@ class BoardStateMapper extends ClassMapperBase<BoardState> {
   @override
   final String id = 'BoardState';
 
+  static QuokkaFileSystem _$fileSystem(BoardState v) => v.fileSystem;
+  static const Field<BoardState, QuokkaFileSystem> _f$fileSystem =
+      Field('fileSystem', _$fileSystem);
+  static String? _$name(BoardState v) => v.name;
+  static const Field<BoardState, String> _f$name =
+      Field('name', _$name, opt: true);
   static GameTable _$table(BoardState v) => v.table;
   static const Field<BoardState, GameTable> _f$table =
       Field('table', _$table, opt: true, def: const GameTable());
@@ -35,21 +41,29 @@ class BoardStateMapper extends ClassMapperBase<BoardState> {
   static bool _$showHand(BoardState v) => v.showHand;
   static const Field<BoardState, bool> _f$showHand =
       Field('showHand', _$showHand, opt: true, def: false);
+  static QuokkaData _$data(BoardState v) => v.data;
+  static const Field<BoardState, QuokkaData> _f$data = Field('data', _$data);
 
   @override
   final MappableFields<BoardState> fields = const {
+    #fileSystem: _f$fileSystem,
+    #name: _f$name,
     #table: _f$table,
     #selectedCell: _f$selectedCell,
     #selectedDeck: _f$selectedDeck,
     #showHand: _f$showHand,
+    #data: _f$data,
   };
 
   static BoardState _instantiate(DecodingData data) {
     return BoardState(
+        fileSystem: data.dec(_f$fileSystem),
+        name: data.dec(_f$name),
         table: data.dec(_f$table),
         selectedCell: data.dec(_f$selectedCell),
         selectedDeck: data.dec(_f$selectedDeck),
-        showHand: data.dec(_f$showHand));
+        showHand: data.dec(_f$showHand),
+        data: data.dec(_f$data));
   }
 
   @override
@@ -108,10 +122,13 @@ abstract class BoardStateCopyWith<$R, $In extends BoardState, $Out>
       get selectedCell;
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get selectedDeck;
   $R call(
-      {GameTable? table,
+      {QuokkaFileSystem? fileSystem,
+      String? name,
+      GameTable? table,
       VectorDefinition? selectedCell,
       ItemLocation? selectedDeck,
-      bool? showHand});
+      bool? showHand,
+      QuokkaData? data});
   BoardStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -135,22 +152,31 @@ class _BoardStateCopyWithImpl<$R, $Out>
       $value.selectedDeck?.copyWith.$chain((v) => call(selectedDeck: v));
   @override
   $R call(
-          {GameTable? table,
+          {QuokkaFileSystem? fileSystem,
+          Object? name = $none,
+          GameTable? table,
           Object? selectedCell = $none,
           Object? selectedDeck = $none,
-          bool? showHand}) =>
+          bool? showHand,
+          QuokkaData? data}) =>
       $apply(FieldCopyWithData({
+        if (fileSystem != null) #fileSystem: fileSystem,
+        if (name != $none) #name: name,
         if (table != null) #table: table,
         if (selectedCell != $none) #selectedCell: selectedCell,
         if (selectedDeck != $none) #selectedDeck: selectedDeck,
-        if (showHand != null) #showHand: showHand
+        if (showHand != null) #showHand: showHand,
+        if (data != null) #data: data
       }));
   @override
   BoardState $make(CopyWithData data) => BoardState(
+      fileSystem: data.get(#fileSystem, or: $value.fileSystem),
+      name: data.get(#name, or: $value.name),
       table: data.get(#table, or: $value.table),
       selectedCell: data.get(#selectedCell, or: $value.selectedCell),
       selectedDeck: data.get(#selectedDeck, or: $value.selectedDeck),
-      showHand: data.get(#showHand, or: $value.showHand));
+      showHand: data.get(#showHand, or: $value.showHand),
+      data: data.get(#data, or: $value.data));
 
   @override
   BoardStateCopyWith<$R2, BoardState, $Out2> $chain<$R2, $Out2>(

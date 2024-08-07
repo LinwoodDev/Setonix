@@ -51,7 +51,7 @@ class RowSearchView extends StatefulWidget {
 
   const RowSearchView({
     super.key,
-    required this.children,
+    this.children = const [],
     this.onSearchChanged,
     this.onSearchSubmitted,
     this.onTabTap,

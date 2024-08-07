@@ -4,20 +4,23 @@ import 'package:flame/game.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:quokka/bloc/board.dart';
 import 'package:quokka/models/data.dart';
 import 'package:quokka/models/table.dart';
 import 'package:quokka/services/file_system.dart';
 
 class AssetManager {
-  final QuokkaFileSystem fileSystem;
+  final BoardBloc bloc;
   final Map<String, QuokkaData> _loadedPacks = {};
   final Map<ItemLocation, Image> _cachedImages = {};
+
+  QuokkaFileSystem get fileSystem => bloc.state.fileSystem;
 
   Iterable<MapEntry<String, QuokkaData>> get loadedPacks =>
       _loadedPacks.entries;
 
   AssetManager({
-    required this.fileSystem,
+    required this.bloc,
   });
 
   Iterable<MapEntry<String, QuokkaData>> get packs => _loadedPacks.entries;
