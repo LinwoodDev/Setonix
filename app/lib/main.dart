@@ -13,7 +13,7 @@ import 'package:quokka/pages/home/page.dart';
 import 'package:quokka/pages/settings/data.dart';
 import 'package:quokka/pages/settings/general.dart';
 import 'package:quokka/pages/settings/personalization.dart';
-import 'package:quokka/services/pack.dart';
+import 'package:quokka/services/file_system.dart';
 import 'package:quokka/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
@@ -50,7 +50,7 @@ Future<void> main(List<String> args) async {
       ],
       child: MultiRepositoryProvider(
         providers: [
-          RepositoryProvider(create: (context) => PackService()),
+          RepositoryProvider(create: (context) => QuokkaFileSystem()),
         ],
         child: QuokkaApp(),
       ),

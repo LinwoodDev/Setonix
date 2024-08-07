@@ -14,9 +14,9 @@ import 'package:quokka/board/hand/figure.dart';
 import 'package:quokka/board/hand/item.dart';
 import 'package:quokka/board/hand/object.dart';
 import 'package:quokka/helpers/scroll.dart';
-import 'package:quokka/models/definitions/deck.dart';
-import 'package:quokka/models/definitions/object.dart';
-import 'package:quokka/models/definitions/pack.dart';
+import 'package:quokka/models/deck.dart';
+import 'package:quokka/models/object.dart';
+import 'package:quokka/models/data.dart';
 import 'package:quokka/models/table.dart';
 import 'package:quokka/models/vector.dart';
 

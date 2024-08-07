@@ -14,7 +14,11 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
       ));
     });
     on<CellSwitched>((event, emit) {
-      emit(state.copyWith(selectedCell: event.cell));
+      emit(state.copyWith(
+        selectedCell: event.cell,
+        selectedDeck: null,
+        showHand: true,
+      ));
     });
     on<ObjectsSpawned>((event, emit) {
       emit(state.copyWith.table.cells.replace(

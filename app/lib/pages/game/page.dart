@@ -10,7 +10,7 @@ import 'package:quokka/bloc/board.dart';
 import 'package:quokka/bloc/board_event.dart';
 import 'package:quokka/bloc/settings.dart';
 import 'package:quokka/board/game.dart';
-import 'package:quokka/services/pack.dart';
+import 'package:quokka/services/file_system.dart';
 
 class GamePage extends StatelessWidget {
   const GamePage({super.key});
@@ -62,7 +62,7 @@ class GamePage extends StatelessWidget {
         body: Builder(
             builder: (context) => GameWidget(
                     game: BoardGame(
-                  packService: PackService(),
+                  fileSystem: context.read<QuokkaFileSystem>(),
                   bloc: context.read<BoardBloc>(),
                 ))),
       ),

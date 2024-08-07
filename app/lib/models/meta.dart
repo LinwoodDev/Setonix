@@ -2,17 +2,28 @@ import 'package:dart_mappable/dart_mappable.dart';
 
 part 'meta.mapper.dart';
 
+@MappableEnum()
+enum FileType {
+  pack,
+  game,
+  template,
+}
+
 @MappableClass()
-class PackMetadata with PackMetadataMappable {
+final class FileMetadata with FileMetadataMappable {
+  final FileType type;
   final String name;
   final String description;
   final String author;
   final String version;
+  final Set<String> dependencies;
 
-  PackMetadata({
+  const FileMetadata({
+    this.type = FileType.pack,
     this.name = '',
     this.description = '',
     this.author = '',
     this.version = '',
+    this.dependencies = const {},
   });
 }

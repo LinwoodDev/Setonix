@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:quokka/models/definitions/meta.dart';
-import 'package:quokka/models/definitions/pack.dart';
-import 'package:quokka/services/pack.dart';
+import 'package:quokka/models/data.dart';
+import 'package:quokka/models/meta.dart';
+import 'package:quokka/services/file_system.dart';
 import 'package:quokka/widgets/search.dart';
 
 class PacksDialog extends StatefulWidget {
@@ -24,10 +24,10 @@ class _PacksDialogState extends State<PacksDialog>
     vsync: this,
     duration: const Duration(milliseconds: 100),
   );
-  late final PackService _service = context.read<PackService>();
+  late final QuokkaFileSystem _service = context.read<QuokkaFileSystem>();
   late final TabController _tabController;
-  Future<Map<String, PackData>>? _packsFuture;
-  (PackData, String, bool)? _selectedPack;
+  Future<Map<String, QuokkaData>>? _packsFuture;
+  (QuokkaData, String, bool)? _selectedPack;
 
   @override
   void initState() {
@@ -58,7 +58,7 @@ class _PacksDialogState extends State<PacksDialog>
     }
   }
 
-  List<Widget> _buildDetailsChildren(PackData pack, PackMetadata? metadata) {
+  List<Widget> _buildDetailsChildren(QuokkaData pack, FileMetadata? metadata) {
     if (metadata == null) {
       return [];
     }
@@ -71,7 +71,7 @@ class _PacksDialogState extends State<PacksDialog>
   }
 
   List<Widget> _buildActionsChildren(
-    PackData pack, {
+    QuokkaData pack, {
     VoidCallback? onInstall,
     VoidCallback? onRemove,
   }) =>
@@ -104,7 +104,7 @@ class _PacksDialogState extends State<PacksDialog>
     _deselectPack();
     final pack = _selectedPack?.$2;
     if (pack == null) return;
-    await _service.removePack(pack);
+    await _service.packSystem.deleteFile(pack);
     _reloadPacks();
   }
 
@@ -117,7 +117,7 @@ class _PacksDialogState extends State<PacksDialog>
         (_selectedPack?.$3 ?? false) && (_selectedPack?.$2.isNotEmpty ?? true)
             ? _removePack
             : null;
-    Future<void> selectPack(PackData pack, String id, bool installed) async {
+    Future<void> selectPack(QuokkaData pack, String id, bool installed) async {
       _controller.forward();
       setState(() {
         _selectedPack = (pack, id, installed);
@@ -165,7 +165,7 @@ class _PacksDialogState extends State<PacksDialog>
           ),
           const SizedBox(height: 8),
           Expanded(
-            child: FutureBuilder<Map<String, PackData>>(
+            child: FutureBuilder<Map<String, QuokkaData>>(
               future: _packsFuture,
               builder: (context, snapshot) {
                 final packs = snapshot.data?.entries.toList() ?? [];
@@ -309,8 +309,8 @@ class _PacksDialogState extends State<PacksDialog>
     if (name.endsWith(qka)) {
       name = name.substring(0, name.length - qka.length);
     }
-    final pack = PackData.fromData(data);
-    await _service.fileSystem.updateFile(
+    final pack = QuokkaData.fromData(data);
+    await _service.packSystem.updateFile(
       name,
       pack,
     );

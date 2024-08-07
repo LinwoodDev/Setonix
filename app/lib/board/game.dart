@@ -12,7 +12,7 @@ import 'package:quokka/board/grid.dart';
 import 'package:quokka/board/hand/view.dart';
 import 'package:quokka/helpers/asset.dart';
 import 'package:quokka/helpers/scroll.dart';
-import 'package:quokka/services/pack.dart';
+import 'package:quokka/services/file_system.dart';
 
 class BoardGame extends FlameGame with ScrollDetector {
   final AssetManager assetManager;
@@ -22,9 +22,10 @@ class BoardGame extends FlameGame with ScrollDetector {
   final BoardBloc bloc;
 
   BoardGame({
-    PackService? packService,
+    QuokkaFileSystem? fileSystem,
     required this.bloc,
-  }) : assetManager = AssetManager(packService: packService ?? PackService());
+  }) : assetManager =
+            AssetManager(fileSystem: fileSystem ?? QuokkaFileSystem());
 
   @override
   FutureOr<void> onLoad() async {
@@ -59,7 +60,5 @@ class BoardGame extends FlameGame with ScrollDetector {
         .whereType<ScrollCallbacks>()
         .firstOrNull;
     component?.onScroll(info);
-    /*clampZoom(camera.viewfinder.zoom +
-        info.scrollDelta.global.y.sign * zoomPerScrollUnit);*/
   }
 }

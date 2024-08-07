@@ -110,4 +110,10 @@ class BoardGrid extends PositionComponent with HasGameRef {
     super.update(dt);
     _updateGrid();
   }
+
+  @override
+  void onParentResize(Vector2 maxSize) {
+    super.onParentResize(maxSize);
+    _updateGrid();
+  }
 }

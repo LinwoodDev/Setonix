@@ -4,22 +4,23 @@ import 'package:flame/game.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:quokka/models/definitions/pack.dart';
+import 'package:quokka/models/data.dart';
 import 'package:quokka/models/table.dart';
-import 'package:quokka/services/pack.dart';
+import 'package:quokka/services/file_system.dart';
 
 class AssetManager {
-  final PackService packService;
-  final Map<String, PackData> _loadedPacks = {};
+  final QuokkaFileSystem fileSystem;
+  final Map<String, QuokkaData> _loadedPacks = {};
   final Map<ItemLocation, Image> _cachedImages = {};
 
-  Iterable<MapEntry<String, PackData>> get loadedPacks => _loadedPacks.entries;
+  Iterable<MapEntry<String, QuokkaData>> get loadedPacks =>
+      _loadedPacks.entries;
 
   AssetManager({
-    required this.packService,
+    required this.fileSystem,
   });
 
-  Iterable<MapEntry<String, PackData>> get packs => _loadedPacks.entries;
+  Iterable<MapEntry<String, QuokkaData>> get packs => _loadedPacks.entries;
 
   Uint8List? getTexture(String key) =>
       getTextureFromLocation(ItemLocation.fromString(key));
@@ -76,13 +77,13 @@ class AssetManager {
     );
   }
 
-  PackData? getPack(String key) => _loadedPacks[key];
+  QuokkaData? getPack(String key) => _loadedPacks[key];
 
-  Future<PackData?> loadPack(String key,
-      {PackData? pack, bool force = false}) async {
+  Future<QuokkaData?> loadPack(String key,
+      {QuokkaData? pack, bool force = false}) async {
     final oldPack = _loadedPacks[key];
     if (!force && oldPack != null) return oldPack;
-    pack ??= await packService.loadPack(key);
+    pack ??= await fileSystem.getPack(key);
     if (pack == null) return null;
     unloadPack(key);
     _loadedPacks[key] = pack;

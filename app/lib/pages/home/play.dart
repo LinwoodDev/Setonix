@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lw_file_system/lw_file_system.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:quokka/models/data.dart';
 import 'package:quokka/pages/home/create.dart';
+import 'package:quokka/services/file_system.dart';
 import 'package:quokka/widgets/loading.dart';
 
 class PlayDialog extends StatefulWidget {
@@ -14,11 +18,22 @@ class PlayDialog extends StatefulWidget {
 }
 
 class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
-  int? _selectedGame;
+  String? _selectedGame;
+  late final TypedKeyFileSystem<QuokkaData> worldSystem;
+  late Stream<Map<String, QuokkaData>> _gamesStream;
+
+  @override
+  void initState() {
+    super.initState();
+    worldSystem = context.read<QuokkaFileSystem>().worldSystem;
+    _gamesStream = () async* {
+      await worldSystem.initialize();
+      yield* worldSystem.fetchFiles();
+    }();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final games = List.generate(30, (index) => 'Game ${index + 1}');
     return ResponsiveAlertDialog(
       title: Text(AppLocalizations.of(context).play),
       constraints: const BoxConstraints(
@@ -31,17 +46,32 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
           Flexible(
             child: Material(
               type: MaterialType.transparency,
-              child: ListView.builder(
-                itemCount: games.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(games[index]),
-                    selected: _selectedGame == index,
-                    onTap: () => setState(() =>
-                        _selectedGame = index == _selectedGame ? null : index),
-                  );
-                },
-              ),
+              child: StreamBuilder(
+                  stream: _gamesStream,
+                  builder: (context, snapshot) {
+                    final games = snapshot.data?.entries.toList();
+                    if (games == null) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (games.isEmpty) {
+                      return Center(
+                        child: Text(AppLocalizations.of(context).noGames),
+                      );
+                    }
+                    return ListView.builder(
+                      itemCount: games.length,
+                      itemBuilder: (context, index) {
+                        final entry = games[index];
+                        final name = entry.key;
+                        final selected = _selectedGame == name;
+                        return ListTile(
+                          title: Text(name),
+                          selected: selected,
+                          onTap: () => setState(() => selected ? null : name),
+                        );
+                      },
+                    );
+                  }),
             ),
           ),
           const Divider(),
@@ -75,7 +105,7 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
                               GoRouter.of(context).go('/game');
                             }
                           },
-                          label: Text('Play ${games[_selectedGame!]}'),
+                          label: Text('Play $_selectedGame'),
                           icon: const Icon(PhosphorIconsLight.play),
                         ),
                       ),

@@ -3,9 +3,10 @@ import 'dart:convert';
 import 'package:archive/archive.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/services.dart';
-import 'package:quokka/models/definitions/deck.dart';
-import 'package:quokka/models/definitions/meta.dart';
-import 'package:quokka/models/definitions/object.dart';
+import 'package:lw_file_system/lw_file_system.dart';
+import 'package:quokka/models/deck.dart';
+import 'package:quokka/models/meta.dart';
+import 'package:quokka/models/object.dart';
 import 'package:quokka/models/table.dart';
 
 const kPackMetadataPath = 'pack.json';
@@ -15,26 +16,38 @@ const kPackBoardsPath = 'boards';
 const kPackTexturesPath = 'textures';
 const kPackTranslationsPath = 'translations';
 
-class PackData {
-  final Archive archive;
+const kGameTablePath = 'tables';
 
-  PackData(this.archive);
+class QuokkaData extends ArchiveData<QuokkaData> {
+  QuokkaData(super.archive, {super.state});
 
-  factory PackData.fromData(Uint8List data) {
-    return PackData(ZipDecoder().decodeBytes(data));
+  factory QuokkaData.fromData(Uint8List data) {
+    return QuokkaData(ZipDecoder().decodeBytes(data));
   }
-  static Future<PackData?> getCorePack() async => PackData.fromData(
+  static Future<QuokkaData?> getCorePack() async => QuokkaData.fromData(
       (await rootBundle.load('assets/pack.qka')).buffer.asUint8List());
 
   Uint8List? getAsset(String path) => archive.findFile(path)?.content;
+  void setAsset(String path, Uint8List data) {
+    archive.addFile(ArchiveFile(path, data.length, data));
+  }
 
-  PackMetadata? getMetadata() {
+  GameTable? getTable() {
+    final data = getAsset('$kGameTablePath/.json');
+    if (data == null) return null;
+    final content = utf8.decode(data);
+    return GameTableMapper.fromJson(content);
+  }
+
+  void setTable(GameTable table) {}
+
+  FileMetadata? getMetadata() {
     final data = getAsset(kPackMetadataPath);
     if (data == null) {
       return null;
     }
     final content = utf8.decode(data);
-    return PackMetadataMapper.fromJson(content);
+    return FileMetadataMapper.fromJson(content);
   }
 
   Iterable<String> getAssets(String path, [bool removeExtension = false]) => {
@@ -121,12 +134,10 @@ class PackData {
 
   String getTranslationOrKey(String path, String key) =>
       getTranslation(path, key) ?? key;
-
-  Uint8List export() => Uint8List.fromList(ZipEncoder().encode(archive) ?? []);
 }
 
 final class PackItem<T> {
-  final PackData pack;
+  final QuokkaData pack;
   final ItemLocation location;
   final T item;
 
@@ -137,7 +148,7 @@ final class PackItem<T> {
   });
 
   factory PackItem.fromRaw(
-          {required PackData pack,
+          {required QuokkaData pack,
           required String namespace,
           required String path,
           required T item}) =>
@@ -148,7 +159,7 @@ final class PackItem<T> {
       );
 
   static PackItem<T>? wrap<T>(
-      {required PackData pack,
+      {required QuokkaData pack,
       required String namespace,
       T? item,
       String? id}) {

@@ -99,5 +99,6 @@
   "welcome": "Hey, this is Linwood Quokka",
   "welcomeContent": "A free and open-source tabletop simulator",
   "objects": "Objects",
-  "figures": "Figures"
+  "figures": "Figures",
+  "noGames": "There are no games available"
 }

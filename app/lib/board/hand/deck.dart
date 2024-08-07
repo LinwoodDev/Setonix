@@ -2,8 +2,8 @@ import 'package:flame/components.dart';
 import 'package:quokka/bloc/board_event.dart';
 import 'package:quokka/board/cell.dart';
 import 'package:quokka/board/hand/item.dart';
-import 'package:quokka/models/definitions/deck.dart';
-import 'package:quokka/models/definitions/pack.dart';
+import 'package:quokka/models/deck.dart';
+import 'package:quokka/models/data.dart';
 import 'package:quokka/models/table.dart';
 
 class DeckDefinitionHandItem extends HandItem<PackItem<DeckDefinition>> {
