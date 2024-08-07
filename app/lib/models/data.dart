@@ -20,17 +20,14 @@ const kGameTablePath = 'tables';
 
 class QuokkaData extends ArchiveData<QuokkaData> {
   QuokkaData(super.archive, {super.state});
+  QuokkaData.empty() : super.empty();
 
   factory QuokkaData.fromData(Uint8List data) {
     return QuokkaData(ZipDecoder().decodeBytes(data));
   }
+
   static Future<QuokkaData?> getCorePack() async => QuokkaData.fromData(
       (await rootBundle.load('assets/pack.qka')).buffer.asUint8List());
-
-  Uint8List? getAsset(String path) => archive.findFile(path)?.content;
-  void setAsset(String path, Uint8List data) {
-    archive.addFile(ArchiveFile(path, data.length, data));
-  }
 
   GameTable? getTable() {
     final data = getAsset('$kGameTablePath/.json');
@@ -134,6 +131,15 @@ class QuokkaData extends ArchiveData<QuokkaData> {
 
   String getTranslationOrKey(String path, String key) =>
       getTranslation(path, key) ?? key;
+
+  QuokkaData setFileMetadata(FileMetadata metadata) => setAsset(
+        kPackMetadataPath,
+        utf8.encode(json.encode(metadata)),
+      );
+
+  @override
+  QuokkaData updateState(ArchiveState state) =>
+      QuokkaData(archive, state: state);
 }
 
 final class PackItem<T> {

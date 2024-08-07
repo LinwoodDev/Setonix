@@ -100,5 +100,8 @@
   "welcomeContent": "A free and open-source tabletop simulator",
   "objects": "Objects",
   "figures": "Figures",
-  "noGames": "There are no games available"
+  "noGames": "There are no games available",
+  "blank": "Blank",
+  "enterName": "Enter a name",
+  "enterDescription": "Enter a description"
 }

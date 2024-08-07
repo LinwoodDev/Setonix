@@ -34,7 +34,7 @@ dependencies:
   lw_file_system:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: e5214800f59a8f719ed8ed7a695f8835f8454106
+      ref: e8ac49cdfb84557edfd759534ffa96d9df31cb2b
       path: packages/lw_file_system
   material_leap:
     git:

@@ -4,7 +4,7 @@ import 'package:quokka/models/data.dart';
 
 class QuokkaFileSystem {
   QuokkaData? _corePack;
-  final TypedKeyFileSystem<QuokkaData> packSystem, worldSystem;
+  final TypedKeyFileSystem<QuokkaData> packSystem, templateSystem, worldSystem;
 
   QuokkaFileSystem({
     QuokkaData? corePack,
@@ -15,6 +15,19 @@ class QuokkaFileSystem {
             storeName: 'packs',
             getDirectory: (storage) async =>
                 '${await getQuokkaDirectory()}/Packs',
+            database: 'quokka.db',
+            databaseVersion: 1,
+            keySuffix: '.qka',
+          ),
+          onDecode: QuokkaData.fromData,
+          onEncode: (data) => data.exportAsBytes(),
+        ),
+        templateSystem = TypedKeyFileSystem.build(
+          FileSystemConfig(
+            passwordStorage: SecureStoragePasswordStorage(),
+            storeName: 'templates',
+            getDirectory: (storage) async =>
+                '${await getQuokkaDirectory()}/Templates',
             database: 'quokka.db',
             databaseVersion: 1,
             keySuffix: '.qka',

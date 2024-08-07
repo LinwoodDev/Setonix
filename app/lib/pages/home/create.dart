@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:lw_file_system/lw_file_system.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:quokka/models/data.dart';
+import 'package:quokka/models/meta.dart';
+import 'package:quokka/services/file_system.dart';
 
 class CreateDialog extends StatefulWidget {
   const CreateDialog({super.key});
@@ -12,22 +17,37 @@ class CreateDialog extends StatefulWidget {
 
 class _CreateDialogState extends State<CreateDialog>
     with TickerProviderStateMixin {
-  late final TabController _tabController, _customTabController;
+  //late final TabController _tabController, _customTabController;
   final PageController _pageController = PageController(keepPage: true);
   final GlobalKey _pageKey = GlobalKey();
+  final TextEditingController _nameController = TextEditingController(),
+      _descriptionController = TextEditingController();
+  late final TypedKeyFileSystem<QuokkaData> _templateSystem, _worldSystem;
+  late final Stream<Map<String, QuokkaData>> _templatesStream;
+
+  String? _selectedTemplate;
+
   bool _infoView = false;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-    _customTabController = TabController(length: 2, vsync: this);
+    final fileSystem = context.read<QuokkaFileSystem>();
+    _worldSystem = fileSystem.worldSystem;
+    _templateSystem = fileSystem.templateSystem;
+    _templatesStream = () async* {
+      await _templateSystem.initialize();
+      yield* _templateSystem.fetchFiles();
+    }()
+        .asBroadcastStream();
+    //_tabController = TabController(length: 2, vsync: this);
+    //_customTabController = TabController(length: 2, vsync: this);
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
-    _customTabController.dispose();
+    //_tabController.dispose();
+    //_customTabController.dispose();
     _pageController.dispose();
     super.dispose();
   }
@@ -35,7 +55,7 @@ class _CreateDialogState extends State<CreateDialog>
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.sizeOf(context).width < LeapBreakpoints.medium;
-    final selections = Column(
+    final selections = /*Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         TabBar(
@@ -56,20 +76,40 @@ class _CreateDialogState extends State<CreateDialog>
         Expanded(
           child: TabBarView(
             controller: _tabController,
-            children: [
-              Material(
-                type: MaterialType.transparency,
-                child: ListView.builder(
-                  itemCount: 30,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text('Template ${index + 1}'),
-                      onTap: () => Navigator.of(context).pop(),
-                    );
-                  },
-                ),
-              ),
-              Column(children: [
+            children: [*/
+        Material(
+      type: MaterialType.transparency,
+      child: StreamBuilder(
+        stream: _templatesStream,
+        builder: (context, snapshot) {
+          final templates = snapshot.data?.entries.toList();
+          if (templates == null) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          return ListView.builder(
+            itemCount: templates.length + 1,
+            itemBuilder: (context, index) {
+              if (index == 0) {
+                return ListTile(
+                  title: Text(AppLocalizations.of(context).blank),
+                  selected: _selectedTemplate == null,
+                  onTap: () => setState(() => _selectedTemplate = null),
+                );
+              }
+              index--;
+              final entry = templates[index];
+              final name = entry.key;
+              return ListTile(
+                title: Text(name),
+                selected: _selectedTemplate == name,
+                onTap: () => setState(() => _selectedTemplate = name),
+              );
+            },
+          );
+        },
+      ),
+    )
+        /*Column(children: [
                 TabBar.secondary(
                   tabs: [
                     HorizontalTab(
@@ -125,29 +165,36 @@ class _CreateDialogState extends State<CreateDialog>
           ),
         ),
       ],
-    );
+    )*/
+        ;
     final details = ListView(
       children: [
-        Text('Details', style: Theme.of(context).textTheme.headlineMedium),
+        Text(AppLocalizations.of(context).details,
+            style: Theme.of(context).textTheme.headlineMedium),
         const SizedBox(height: 16),
         TextFormField(
-          decoration: const InputDecoration(
-              labelText: 'Name', hintText: 'Enter a name', filled: true),
+          decoration: InputDecoration(
+            labelText: AppLocalizations.of(context).name,
+            hintText: AppLocalizations.of(context).enterName,
+            filled: true,
+          ),
+          controller: _nameController,
         ),
         const SizedBox(height: 16),
         TextFormField(
-          decoration: const InputDecoration(
-            labelText: 'Description',
-            hintText: 'Enter a description',
+          decoration: InputDecoration(
+            labelText: AppLocalizations.of(context).description,
+            hintText: AppLocalizations.of(context).enterDescription,
             border: OutlineInputBorder(),
           ),
+          controller: _descriptionController,
           minLines: 3,
           maxLines: 5,
         ),
       ],
     );
     return ResponsiveAlertDialog(
-      title: const Text('Create'),
+      title: Text(AppLocalizations.of(context).create),
       constraints: const BoxConstraints(
         maxWidth: LeapBreakpoints.expanded,
         maxHeight: 700,
@@ -202,7 +249,25 @@ class _CreateDialogState extends State<CreateDialog>
               ),
             ),
           FilledButton.icon(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () async {
+              final name = _nameController.text;
+              final description = _descriptionController.text;
+              var template = _selectedTemplate == null
+                  ? null
+                  : await _templateSystem.getFile(_selectedTemplate!);
+              template ??= QuokkaData.empty();
+              template = template.setFileMetadata(
+                FileMetadata(
+                  name: name,
+                  description: description,
+                ),
+              );
+              await _worldSystem.createFile(name, template);
+
+              if (mounted) {
+                Navigator.of(context).pop();
+              }
+            },
             label: const Text('Create'),
             icon: const Icon(PhosphorIconsLight.plus),
           ),

@@ -19,16 +19,16 @@ class PlayDialog extends StatefulWidget {
 
 class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
   String? _selectedGame;
-  late final TypedKeyFileSystem<QuokkaData> worldSystem;
+  late final TypedKeyFileSystem<QuokkaData> _worldSystem;
   late Stream<Map<String, QuokkaData>> _gamesStream;
 
   @override
   void initState() {
     super.initState();
-    worldSystem = context.read<QuokkaFileSystem>().worldSystem;
+    _worldSystem = context.read<QuokkaFileSystem>().worldSystem;
     _gamesStream = () async* {
-      await worldSystem.initialize();
-      yield* worldSystem.fetchFiles();
+      await _worldSystem.initialize();
+      yield* _worldSystem.fetchFiles();
     }();
   }
 
@@ -67,7 +67,8 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
                         return ListTile(
                           title: Text(name),
                           selected: selected,
-                          onTap: () => setState(() => selected ? null : name),
+                          onTap: () => setState(
+                              () => _selectedGame = selected ? null : name),
                         );
                       },
                     );
