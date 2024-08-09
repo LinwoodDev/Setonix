@@ -16,7 +16,7 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
           fileSystem: fileSystem,
           name: name,
           data: data ?? QuokkaData.empty(),
-          table: table ?? data?.getTable() ?? GameTable(),
+          table: table ?? data?.getTable() ?? const GameTable(),
         )) {
     on<HandChanged>((event, emit) {
       emit(state.copyWith(

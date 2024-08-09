@@ -252,10 +252,17 @@ class _PacksDialogState extends State<PacksDialog>
                                           ),
                                         ),
                                       ),
-                                      ..._buildActionsChildren(
-                                        pack,
-                                        onInstall: onInstall,
-                                        onRemove: onRemove,
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
+                                          children: _buildActionsChildren(
+                                            pack,
+                                            onInstall: onInstall,
+                                            onRemove: onRemove,
+                                          ),
+                                        ),
                                       ),
                                     ],
                             );

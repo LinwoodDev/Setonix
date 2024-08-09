@@ -268,7 +268,7 @@ class _CreateDialogState extends State<CreateDialog>
                 Navigator.of(context).pop();
               }
             },
-            label: const Text('Create'),
+            label: Text(AppLocalizations.of(context).create),
             icon: const Icon(PhosphorIconsLight.plus),
           ),
         ]

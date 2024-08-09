@@ -2,20 +2,31 @@
 
 ## Supported Versions
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+| Version | Supported |                                                |
+| ------- | --------- | ---------------------------------------------- |
+| -       | :warning: | [Docs](https://qeck.linwood.dev/docs/v0/intro) |
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+Currently there is no version released yet.
+Because of that, there is also no main branch.
+Stay tuned for the first release!
 
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
+Please use [the bug tracker](https://github.com/LinwoodDev/butterfly/issues) for reporting bugs. Please make sure you are on the latest stable or nightly release.
 
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+Use [security@linwood.dev](mailto:security@linwood.dev) or [the github security advisory](https://github.com/LinwoodDev/butterfly/security/advisories) if you want to report a security vulnerability.
+**Don't use the bug tracker for security vulnerabilities!**
+
+## Version scheme
+
+The version scheme is based on [Semantic Versioning](https://semver.org/spec/v2.0.0.html). All stable versions will be released in stable branch while all alpha, beta and release candidates will be released in the nightly branch.
+There will be alphas, betas and release candidates on every major release, betas and release candidates on every minor release and release candidates on every patch release.
+
+## Branches
+
+| Name    | Support |                                                                                                  Description | Tag     |
+| :------ | :-----: | -----------------------------------------------------------------------------------------------------------: | ------- |
+| main    |    ✅    |                   This branch is production ready. It will be updated when a new stable version is released! | Stable  |
+| develop |    ⚠️    | This branch is only for testing and developing. Pull request for feature requests should only be added here! | Nightly |
+
+Read more about nightly [here](https://butterfly.linwood.dev/community/nightly).
