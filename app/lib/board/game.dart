@@ -9,7 +9,6 @@ import 'package:flutter/services.dart';
 import 'package:quokka/bloc/board.dart';
 import 'package:quokka/bloc/board_event.dart';
 import 'package:quokka/bloc/board_state.dart';
-import 'package:quokka/board/cell.dart';
 import 'package:quokka/board/grid.dart';
 import 'package:quokka/board/hand/view.dart';
 import 'package:quokka/helpers/asset.dart';
@@ -24,7 +23,9 @@ class BoardGame extends FlameGame with ScrollDetector, KeyboardEvents {
 
   BoardGame({
     required this.bloc,
-  }) : assetManager = AssetManager(bloc: bloc);
+  }) : assetManager = AssetManager(
+          bloc: bloc,
+        );
 
   @override
   FutureOr<void> onLoad() async {
@@ -43,8 +44,20 @@ class BoardGame extends FlameGame with ScrollDetector, KeyboardEvents {
     selectionSprite = await Sprite.load('selection.png');
     _hand = GameHand();
     camera.viewport.add(_hand);
-    grid = BoardGrid(cellSize: Vector2.all(128), createCell: GameCell.new);
+    grid = BoardGrid(cellSize: Vector2.all(128));
     world.add(grid);
+    _updateLocale();
+  }
+
+  @override
+  void onMount() {
+    _updateLocale();
+  }
+
+  void _updateLocale() {
+    final context = buildContext;
+    if (context == null) return;
+    assetManager.currentLocale = Localizations.localeOf(context).languageCode;
   }
 
   void clampZoom(double zoom) {

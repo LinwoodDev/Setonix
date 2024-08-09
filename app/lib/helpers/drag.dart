@@ -1,21 +1,29 @@
+import 'dart:ui';
+
 import 'package:flame/events.dart';
 import 'package:flutter/foundation.dart';
 
-mixin LongDragCallbacks on DragCallbacks {
+mixin LongDragCallbacks on DragCallbacks, TapCallbacks {
   int get longThresholdPixels => 12;
-  Duration get longThresholdDuration => const Duration(seconds: 1);
+  Duration get longThresholdDuration => const Duration(milliseconds: 600);
 
   DateTime? _start;
-  bool _isLongPressing = false;
+  bool _isMouse = false;
+  bool? _isLongPressing;
 
-  bool get isLongPressing => _isLongPressing;
+  bool? get isLongPressing => _isLongPressing;
+  bool? get isMouseOrLongPressing {
+    if (_isMouse) return true;
+    return _isLongPressing;
+  }
 
   @override
   @mustCallSuper
-  void onDragStart(DragStartEvent event) {
-    super.onDragStart(event);
+  void onTapDown(TapDownEvent event) {
+    super.onTapDown(event);
     _start = DateTime.now();
-    _isLongPressing = false;
+    _isMouse = event.deviceKind == PointerDeviceKind.mouse;
+    _isLongPressing = null;
   }
 
   @override
@@ -25,11 +33,12 @@ mixin LongDragCallbacks on DragCallbacks {
     final start = _start;
     if (start == null) return;
     final duration = DateTime.now().difference(start);
-    if (duration > longThresholdDuration) return;
+    if (duration > longThresholdDuration) {
+      _isLongPressing ??= true;
+      return;
+    }
     if (delta > longThresholdPixels) {
-      _start = null;
-    } else {
-      _isLongPressing = true;
+      _isLongPressing = false;
     }
   }
 
@@ -38,6 +47,7 @@ mixin LongDragCallbacks on DragCallbacks {
   void onDragEnd(DragEndEvent event) {
     super.onDragEnd(event);
     _start = null;
+    _isLongPressing = null;
   }
 
   @override

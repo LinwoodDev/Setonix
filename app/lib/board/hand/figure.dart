@@ -11,7 +11,16 @@ class FigureDefinitionHandItem
   FigureDefinitionHandItem({required super.item});
 
   @override
-  String get label => item.$2 ?? item.$1.id;
+  String get label {
+    final translation = game.assetManager.getTranslations(item.$1.namespace);
+    final variation = item.$2;
+    if (variation != null) {
+      return translation
+          .getFigureVariationTranslation(item.$1.id, variation)
+          .name;
+    }
+    return translation.getFigureTranslation(item.$1.id).name;
+  }
 
   @override
   Future<Sprite?> loadIcon() =>

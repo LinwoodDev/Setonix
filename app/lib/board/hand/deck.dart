@@ -10,7 +10,10 @@ class DeckDefinitionHandItem extends HandItem<PackItem<DeckDefinition>> {
   DeckDefinitionHandItem({required super.item});
 
   @override
-  String get label => item.id;
+  String get label => game.assetManager
+      .getTranslations(item.namespace)
+      .getDeckTranslation(item.id)
+      .name;
 
   @override
   void onTapUp(event) {

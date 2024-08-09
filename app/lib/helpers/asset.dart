@@ -7,11 +7,14 @@ import 'package:flutter/services.dart';
 import 'package:quokka/bloc/board.dart';
 import 'package:quokka/models/data.dart';
 import 'package:quokka/models/table.dart';
+import 'package:quokka/models/translation.dart';
 import 'package:quokka/services/file_system.dart';
 
 class AssetManager {
+  String currentLocale;
   final BoardBloc bloc;
   final Map<String, QuokkaData> _loadedPacks = {};
+  final Map<String, TranslationsStore> _loadedTranslations = {};
   final Map<ItemLocation, Image> _cachedImages = {};
 
   QuokkaFileSystem get fileSystem => bloc.state.fileSystem;
@@ -21,6 +24,7 @@ class AssetManager {
 
   AssetManager({
     required this.bloc,
+    this.currentLocale = 'en',
   });
 
   Iterable<MapEntry<String, QuokkaData>> get packs => _loadedPacks.entries;
@@ -90,10 +94,19 @@ class AssetManager {
     if (pack == null) return null;
     unloadPack(key);
     _loadedPacks[key] = pack;
+    _loadedTranslations[key] = TranslationsStore(
+      translations: pack.getAllTranslations(),
+      getLocale: () => currentLocale,
+    );
     return pack;
   }
 
+  TranslationsStore getTranslations(String key) =>
+      _loadedTranslations[key] ??
+      TranslationsStore(getLocale: () => currentLocale);
+
   void unloadPack(String key) {
+    _loadedTranslations.remove(key);
     if (_loadedPacks.remove(key) != null) clearImagesFromNamespace(key);
   }
 

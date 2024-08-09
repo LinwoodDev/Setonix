@@ -62,7 +62,7 @@ abstract class HandItem<T> extends PositionComponent
   @override
   void onDragUpdate(DragUpdateEvent event) {
     super.onDragUpdate(event);
-    if (!isLongPressing) {
+    if (!(isMouseOrLongPressing ?? false)) {
       hand.scroll(event.localDelta.x);
       return;
     }
@@ -72,7 +72,7 @@ abstract class HandItem<T> extends PositionComponent
   @override
   void onDragEnd(DragEndEvent event) {
     super.onDragEnd(event);
-    if (!isLongPressing) return;
+    if (!(isMouseOrLongPressing ?? true)) return;
     final pos = game.camera.globalToLocal(_lastPos);
     final cell =
         game.grid.componentsAtPoint(pos).whereType<GameCell>().firstOrNull;

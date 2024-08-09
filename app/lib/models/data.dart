@@ -8,6 +8,7 @@ import 'package:quokka/models/deck.dart';
 import 'package:quokka/models/meta.dart';
 import 'package:quokka/models/object.dart';
 import 'package:quokka/models/table.dart';
+import 'package:quokka/models/translation.dart';
 
 const kPackMetadataPath = 'pack.json';
 const kPackDecksPath = 'decks';
@@ -120,20 +121,19 @@ class QuokkaData extends ArchiveData<QuokkaData> {
 
   Uint8List? getTexture(String path) => getAsset('$kPackTexturesPath/$path');
 
-  String? getTranslation(String path, String key) {
-    try {
-      final data = getAsset('$kPackTranslationsPath/$path.json');
-      if (data == null) return null;
-      final content = utf8.decode(data);
-      final map = json.decode(content);
-      return map[key];
-    } catch (e) {
-      return null;
-    }
-  }
+  Iterable<MapEntry<String, PackTranslation>> getAllTranslations() =>
+      getAssets(kPackTranslationsPath, true).map((e) {
+        final translation = getTranslation(e);
+        if (translation == null) return null;
+        return MapEntry(e, translation);
+      }).nonNulls;
 
-  String getTranslationOrKey(String path, String key) =>
-      getTranslation(path, key) ?? key;
+  PackTranslation? getTranslation(String id) {
+    final data = getAsset('$kPackTranslationsPath/$id.json');
+    if (data == null) return null;
+    final content = utf8.decode(data);
+    return PackTranslationMapper.fromJson(content);
+  }
 
   QuokkaData setFileMetadata(FileMetadata metadata) => setAsset(
         kPackMetadataPath,
