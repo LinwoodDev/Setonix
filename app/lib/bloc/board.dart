@@ -18,6 +18,10 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
           data: data ?? QuokkaData.empty(),
           table: table ?? data?.getTable() ?? const GameTable(),
         )) {
+    on<ColorSchemeChanged>((event, emit) {
+      emit(state.copyWith(colorScheme: event.colorScheme));
+      return save();
+    });
     on<HandChanged>((event, emit) {
       emit(state.copyWith(
         showHand: event.show ?? (!state.showHand),

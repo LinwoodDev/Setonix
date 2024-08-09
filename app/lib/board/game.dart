@@ -50,7 +50,7 @@ class BoardGame extends FlameGame with ScrollDetector, KeyboardEvents {
   }
 
   @override
-  void onMount() {
+  void onAttach() {
     _updateLocale();
   }
 
@@ -81,6 +81,11 @@ class BoardGame extends FlameGame with ScrollDetector, KeyboardEvents {
 
     if (!_currentCameraVelocity.isZero()) {
       camera.moveBy(_currentCameraVelocity * dt * 60);
+    }
+    final nextColorScheme =
+        buildContext != null ? Theme.of(buildContext!).colorScheme : null;
+    if (nextColorScheme != bloc.state.colorScheme) {
+      bloc.add(ColorSchemeChanged(nextColorScheme));
     }
   }
 

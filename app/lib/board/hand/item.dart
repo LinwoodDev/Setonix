@@ -1,6 +1,7 @@
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame_bloc/flame_bloc.dart';
+import 'package:flutter/material.dart' show Colors;
 import 'package:flutter/painting.dart';
 import 'package:quokka/bloc/board.dart';
 import 'package:quokka/bloc/board_state.dart';
@@ -16,9 +17,10 @@ abstract class HandItem<T> extends PositionComponent
         HasGameRef<BoardGame>,
         DragCallbacks,
         LongDragCallbacks,
-        FlameBlocReader<BoardBloc, BoardState> {
+        FlameBlocListenable<BoardBloc, BoardState> {
   final T item;
   late final SpriteComponent _sprite;
+  late final TextComponent<TextPaint> _label;
   Vector2 _lastPos = Vector2.zero();
 
   HandItem({required this.item}) : super(size: Vector2(100, 0));
@@ -36,21 +38,36 @@ abstract class HandItem<T> extends PositionComponent
   @override
   Future<void> onLoad() async {
     super.onLoad();
-    add(TextComponent(
-      text: label,
-      size: Vector2(0, labelHeight),
-      position: Vector2(50, 0),
-      anchor: Anchor.topCenter,
-      textRenderer: TextPaint(
-        style: const TextStyle(fontSize: 14),
-      ),
-    ));
     _sprite = SpriteComponent(
       position: Vector2(0, labelHeight),
       size: Vector2(100, 0),
       sprite: await loadIcon(),
     );
     add(_sprite);
+  }
+
+  @override
+  bool listenWhen(BoardState previousState, BoardState newState) =>
+      previousState.colorScheme != newState.colorScheme;
+
+  @override
+  void onInitialState(BoardState state) {
+    add(_label = TextComponent(
+        text: label,
+        size: Vector2(0, labelHeight),
+        position: Vector2(50, 0),
+        anchor: Anchor.topCenter,
+        textRenderer: _buildPaint(state)));
+  }
+
+  _buildPaint([BoardState? state]) => TextPaint(
+        style: TextStyle(
+            fontSize: 14, color: state?.colorScheme?.onSurface ?? Colors.white),
+      );
+
+  @override
+  void onNewState(BoardState state) {
+    _label.textRenderer = _buildPaint(state);
   }
 
   @override

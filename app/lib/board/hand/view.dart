@@ -5,7 +5,7 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/material.dart'
-    show CustomPainter, Colors, Canvas, Size, Paint, PaintingStyle, Rect;
+    show Canvas, Color, Colors, CustomPainter, Paint, PaintingStyle, Rect, Size;
 import 'package:quokka/bloc/board.dart';
 import 'package:quokka/bloc/board_state.dart';
 import 'package:quokka/board/game.dart';
@@ -22,14 +22,15 @@ import 'package:quokka/models/vector.dart';
 
 class GameHandCustomPainter extends CustomPainter {
   final bool showHand;
+  final Color color;
 
-  GameHandCustomPainter({this.showHand = false});
+  GameHandCustomPainter({this.showHand = false, this.color = Colors.black});
 
   @override
   void paint(Canvas canvas, Size size) {
     if (!showHand) return;
     final paint = Paint()
-      ..color = Colors.black
+      ..color = color
       ..style = PaintingStyle.fill
       ..strokeWidth = 2;
     canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), paint);
@@ -37,7 +38,7 @@ class GameHandCustomPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(GameHandCustomPainter oldDelegate) =>
-      showHand != oldDelegate.showHand;
+      showHand != oldDelegate.showHand || color != oldDelegate.color;
 }
 
 class GameHand extends CustomPainterComponent
@@ -50,11 +51,7 @@ class GameHand extends CustomPainterComponent
   double _nextItemPos = 0;
   final _itemsChild = PositionComponent();
 
-  GameHand()
-      : super(
-          anchor: Anchor.topLeft,
-          painter: GameHandCustomPainter(),
-        );
+  GameHand() : super(anchor: Anchor.topLeft, painter: GameHandCustomPainter());
 
   @override
   void onLoad() {
@@ -81,13 +78,16 @@ class GameHand extends CustomPainterComponent
       previousState.selectedDeck != newState.selectedDeck ||
       previousState.selectedCell != newState.selectedCell ||
       previousState.table.cells[previousState.selectedCell] !=
-          newState.table.cells[newState.selectedCell];
+          newState.table.cells[newState.selectedCell] ||
+      previousState.colorScheme != newState.colorScheme;
 
   void _buildHand(BoardState state) {
     _itemsChild.children
         .whereType<HandItem>()
         .forEach((e) => e.removeFromParent());
-    painter = GameHandCustomPainter(showHand: state.showHand);
+    painter = GameHandCustomPainter(
+        showHand: state.showHand,
+        color: state.colorScheme?.surface ?? Colors.black);
     if (!state.showHand) return;
     _itemsChild.x = 0;
     final selected = state.selectedCell;

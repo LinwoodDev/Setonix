@@ -14,6 +14,7 @@ class BoardEventMapper extends ClassMapperBase<BoardEvent> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = BoardEventMapper._());
       CellSwitchedMapper.ensureInitialized();
+      ColorSchemeChangedMapper.ensureInitialized();
       HandChangedMapper.ensureInitialized();
       ObjectsSpawnedMapper.ensureInitialized();
       ObjectsMovedMapper.ensureInitialized();
@@ -169,6 +170,116 @@ class _CellSwitchedCopyWithImpl<$R, $Out>
   CellSwitchedCopyWith<$R2, CellSwitched, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
       _CellSwitchedCopyWithImpl($value, $cast, t);
+}
+
+class ColorSchemeChangedMapper extends ClassMapperBase<ColorSchemeChanged> {
+  ColorSchemeChangedMapper._();
+
+  static ColorSchemeChangedMapper? _instance;
+  static ColorSchemeChangedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = ColorSchemeChangedMapper._());
+      BoardEventMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'ColorSchemeChanged';
+
+  static ColorScheme? _$colorScheme(ColorSchemeChanged v) => v.colorScheme;
+  static const Field<ColorSchemeChanged, ColorScheme> _f$colorScheme =
+      Field('colorScheme', _$colorScheme);
+
+  @override
+  final MappableFields<ColorSchemeChanged> fields = const {
+    #colorScheme: _f$colorScheme,
+  };
+
+  static ColorSchemeChanged _instantiate(DecodingData data) {
+    return ColorSchemeChanged(data.dec(_f$colorScheme));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static ColorSchemeChanged fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<ColorSchemeChanged>(map);
+  }
+
+  static ColorSchemeChanged fromJson(String json) {
+    return ensureInitialized().decodeJson<ColorSchemeChanged>(json);
+  }
+}
+
+mixin ColorSchemeChangedMappable {
+  String toJson() {
+    return ColorSchemeChangedMapper.ensureInitialized()
+        .encodeJson<ColorSchemeChanged>(this as ColorSchemeChanged);
+  }
+
+  Map<String, dynamic> toMap() {
+    return ColorSchemeChangedMapper.ensureInitialized()
+        .encodeMap<ColorSchemeChanged>(this as ColorSchemeChanged);
+  }
+
+  ColorSchemeChangedCopyWith<ColorSchemeChanged, ColorSchemeChanged,
+          ColorSchemeChanged>
+      get copyWith => _ColorSchemeChangedCopyWithImpl(
+          this as ColorSchemeChanged, $identity, $identity);
+  @override
+  String toString() {
+    return ColorSchemeChangedMapper.ensureInitialized()
+        .stringifyValue(this as ColorSchemeChanged);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return ColorSchemeChangedMapper.ensureInitialized()
+        .equalsValue(this as ColorSchemeChanged, other);
+  }
+
+  @override
+  int get hashCode {
+    return ColorSchemeChangedMapper.ensureInitialized()
+        .hashValue(this as ColorSchemeChanged);
+  }
+}
+
+extension ColorSchemeChangedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, ColorSchemeChanged, $Out> {
+  ColorSchemeChangedCopyWith<$R, ColorSchemeChanged, $Out>
+      get $asColorSchemeChanged =>
+          $base.as((v, t, t2) => _ColorSchemeChangedCopyWithImpl(v, t, t2));
+}
+
+abstract class ColorSchemeChangedCopyWith<$R, $In extends ColorSchemeChanged,
+    $Out> implements BoardEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({ColorScheme? colorScheme});
+  ColorSchemeChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class _ColorSchemeChangedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, ColorSchemeChanged, $Out>
+    implements ColorSchemeChangedCopyWith<$R, ColorSchemeChanged, $Out> {
+  _ColorSchemeChangedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<ColorSchemeChanged> $mapper =
+      ColorSchemeChangedMapper.ensureInitialized();
+  @override
+  $R call({Object? colorScheme = $none}) => $apply(
+      FieldCopyWithData({if (colorScheme != $none) #colorScheme: colorScheme}));
+  @override
+  ColorSchemeChanged $make(CopyWithData data) =>
+      ColorSchemeChanged(data.get(#colorScheme, or: $value.colorScheme));
+
+  @override
+  ColorSchemeChangedCopyWith<$R2, ColorSchemeChanged, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _ColorSchemeChangedCopyWithImpl($value, $cast, t);
 }
 
 class HandChangedMapper extends ClassMapperBase<HandChanged> {

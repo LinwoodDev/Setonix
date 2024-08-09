@@ -1,4 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:flutter/material.dart';
 import 'package:quokka/models/table.dart';
 import 'package:quokka/models/vector.dart';
 
@@ -13,6 +14,14 @@ final class CellSwitched extends BoardEvent with CellSwitchedMappable {
   final bool toggle;
 
   CellSwitched(this.cell, {this.toggle = false});
+}
+
+@MappableClass()
+final class ColorSchemeChanged extends BoardEvent
+    with ColorSchemeChangedMappable {
+  final ColorScheme? colorScheme;
+
+  ColorSchemeChanged(this.colorScheme);
 }
 
 @MappableClass()

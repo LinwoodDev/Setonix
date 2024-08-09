@@ -114,9 +114,7 @@ class GameCell extends PositionComponent
     final controller = EffectController(
       duration: 0.1,
     );
-    final context = game.buildContext;
-    final color =
-        context == null ? Colors.green : Theme.of(context).colorScheme.primary;
+    final color = state.colorScheme?.primary ?? Colors.green.withOpacity(0.5);
     if (selected) {
       _updateEffects([
         OpacityEffect.to(1, controller),

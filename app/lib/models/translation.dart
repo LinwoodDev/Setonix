@@ -13,7 +13,7 @@ class TranslationsStore {
 
   PackTranslation getTranslation([String? locale]) =>
       (locale == null ? null : translations[locale]) ??
-      translations[this.getLocale()] ??
+      translations[getLocale()] ??
       PackTranslation();
 
   T findTranslation<T>(T? Function(PackTranslation) finder, T fallback,

@@ -1,4 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:flutter/material.dart';
 import 'package:quokka/models/data.dart';
 import 'package:quokka/models/table.dart';
 import 'package:quokka/models/vector.dart';
@@ -8,6 +9,7 @@ part 'board_state.mapper.dart';
 
 @MappableClass()
 class BoardState with BoardStateMappable {
+  final ColorScheme? colorScheme;
   final QuokkaFileSystem fileSystem;
   final GameTable table;
   final VectorDefinition? selectedCell;
@@ -19,6 +21,7 @@ class BoardState with BoardStateMappable {
   const BoardState({
     required this.fileSystem,
     this.name,
+    this.colorScheme,
     this.table = const GameTable(),
     this.selectedCell,
     this.selectedDeck,
