@@ -13,6 +13,7 @@ import 'package:quokka/board/background.dart';
 import 'package:quokka/board/game.dart';
 import 'package:quokka/board/grid.dart';
 import 'package:quokka/board/hand/item.dart';
+import 'package:quokka/helpers/scroll.dart';
 import 'package:quokka/helpers/secondary.dart';
 import 'package:quokka/helpers/vector.dart';
 import 'package:quokka/models/vector.dart';
@@ -26,7 +27,8 @@ class GameCell extends HandItemDropZone
         DoubleTapCallbacks,
         SecondaryTapCallbacks,
         DetailsTapCallbacks,
-        FlameBlocListenable<BoardBloc, BoardState> {
+        FlameBlocListenable<BoardBloc, BoardState>,
+        ScrollCallbacks {
   late final SpriteComponent _selectionComponent;
   SpriteComponent? _cardComponent;
   final List<Effect> _effects = [];
@@ -132,7 +134,7 @@ class GameCell extends HandItemDropZone
         ColorEffect(color, controller, opacityFrom: 1, opacityTo: 0),
       ]);
     }
-    _updateTop(state);
+    await _updateTop(state);
   }
 
   Future<void> _updateTop(BoardState state) async {
@@ -146,7 +148,7 @@ class GameCell extends HandItemDropZone
           sprite: await game.assetManager.loadFigureSpriteFromLocation(
               top.asset, top.hidden ? null : top.variation),
           size: size);
-      add(_cardComponent!);
+      await add(_cardComponent!);
     }
   }
 
@@ -190,5 +192,15 @@ class GameCell extends HandItemDropZone
                 ],
                 anchors: TextSelectionToolbarAnchors(
                     primaryAnchor: position.toOffset())));
+  }
+
+  @override
+  bool onScroll(PointerScrollInfo info) {
+    var delta = info.scrollDelta.global.clone()..divide(Vector2.all(4));
+    if (game.isShifting) {
+      delta = Vector2(delta.y, delta.x);
+    }
+    game.camera.moveBy(delta);
+    return false;
   }
 }

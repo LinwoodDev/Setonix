@@ -24,6 +24,10 @@ class BoardGame extends FlameGame
   late final BoardGrid grid;
   final BoardBloc bloc;
 
+  bool _isShifting = false;
+
+  bool get isShifting => _isShifting;
+
   BoardGame({
     required this.bloc,
     required this.contextMenuController,
@@ -110,6 +114,10 @@ class BoardGame extends FlameGame
         handled = true;
       case LogicalKeyboardKey.tab:
         if (event is KeyDownEvent) bloc.add(HandChanged.toggle());
+        handled = true;
+      case LogicalKeyboardKey.shiftLeft:
+        if (event is KeyDownEvent) _isShifting = true;
+        if (event is KeyUpEvent) _isShifting = false;
         handled = true;
       case LogicalKeyboardKey.keyW:
       case LogicalKeyboardKey.keyS:

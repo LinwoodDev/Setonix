@@ -20,7 +20,6 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
         )) {
     on<ColorSchemeChanged>((event, emit) {
       emit(state.copyWith(colorScheme: event.colorScheme));
-      return save();
     });
     on<HandChanged>((event, emit) {
       emit(state.copyWith(
@@ -28,7 +27,6 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
         selectedDeck: event.deck,
         selectedCell: null,
       ));
-      return save();
     });
     on<CellSwitched>((event, emit) {
       emit(state.copyWith(
@@ -36,15 +34,11 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
         selectedDeck: null,
         showHand: true,
       ));
-      return save();
     });
     on<ObjectsSpawned>((event, emit) {
-      emit(state.copyWith.table.cells.replace(
-          event.cell,
-          (state.table.cells[event.cell] ?? TableCell())
-              .copyWith
-              .objects
-              .addAll(event.objects)));
+      final cell = (state.table.cells[event.cell] ?? TableCell());
+      emit(state.copyWith.table.cells.replace(event.cell,
+          cell.copyWith(objects: [...cell.objects, ...event.objects])));
       return save();
     });
     on<ObjectsMoved>((event, emit) {
@@ -57,7 +51,10 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
         newObjects.removeAt(i);
       }
       from = from.copyWith(objects: newObjects);
-      to = to.copyWith.objects.addAll(toAdd);
+      to = to.copyWith(objects: [
+        ...to.objects,
+        ...toAdd,
+      ]);
       emit(state.copyWith.table(cells: {
         ...state.table.cells,
         event.from: from,
@@ -97,8 +94,9 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
     });
     on<ObjectIndexChanged>((event, emit) {
       final cell = state.table.cells[event.cell] ?? TableCell();
+      final object = cell.objects[event.object];
       final newObjects = List<GameObject>.from(cell.objects);
-      final object = newObjects.removeAt(event.object);
+      newObjects.removeAt(event.object);
       newObjects.insert(event.index, object);
       emit(state.copyWith.table.cells
           .replace(event.cell, cell.copyWith(objects: newObjects)));

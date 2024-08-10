@@ -112,7 +112,7 @@ class BoardGrid extends PositionComponent with HasGameRef {
   @override
   void onParentResize(Vector2 maxSize) {
     super.onParentResize(maxSize);
-    _updateGrid();
+    _lastViewport = null;
   }
 
   Component _createCell({required Vector2 position, required Vector2 size}) =>

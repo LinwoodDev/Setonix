@@ -64,12 +64,19 @@ class _GamePageState extends State<GamePage> {
             title: Text(AppLocalizations.of(context).game),
             height: 50,
             actions: [
-              Builder(
-                  builder: (context) => IconButton(
+              BlocBuilder<BoardBloc, BoardState>(
+                  buildWhen: (previous, current) =>
+                      previous.showHand != current.showHand ||
+                      previous.selectedCell != current.selectedCell,
+                  builder: (context, state) => IconButton(
                         icon: const PhosphorIcon(PhosphorIconsLight.plusCircle),
+                        selectedIcon:
+                            const PhosphorIcon(PhosphorIconsFill.plusCircle),
+                        isSelected:
+                            state.showHand && state.selectedCell == null,
                         tooltip: AppLocalizations.of(context).addDeck,
                         onPressed: () =>
-                            context.read<BoardBloc>().add(HandChanged()),
+                            context.read<BoardBloc>().add(HandChanged.toggle()),
                       ))
             ],
           ),
