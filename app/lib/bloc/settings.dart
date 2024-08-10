@@ -138,4 +138,9 @@ class SettingsCubit extends Cubit<QuokkaSettings>
     final info = await PackageInfo.fromPlatform();
     return state.lastVersion != info.version;
   }
+
+  Future<void> changeDataDirectory(String newPath) {
+    emit(state.copyWith(dataDirectory: newPath));
+    return save();
+  }
 }

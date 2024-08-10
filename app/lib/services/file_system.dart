@@ -6,6 +6,9 @@ class QuokkaFileSystem {
   QuokkaData? _corePack;
   final TypedKeyFileSystem<QuokkaData> packSystem, templateSystem, worldSystem;
 
+  static _onDatabaseUpgrade(event) =>
+      initStores(event, ['packs', 'templates', 'worlds']);
+
   QuokkaFileSystem({
     QuokkaData? corePack,
   })  : _corePack = corePack,
@@ -18,6 +21,7 @@ class QuokkaFileSystem {
             database: 'quokka.db',
             databaseVersion: 1,
             keySuffix: '.qka',
+            onDatabaseUpgrade: _onDatabaseUpgrade,
           ),
           onDecode: QuokkaData.fromData,
           onEncode: (data) => data.exportAsBytes(),
@@ -31,6 +35,7 @@ class QuokkaFileSystem {
             database: 'quokka.db',
             databaseVersion: 1,
             keySuffix: '.qka',
+            onDatabaseUpgrade: _onDatabaseUpgrade,
           ),
           onDecode: QuokkaData.fromData,
           onEncode: (data) => data.exportAsBytes(),
@@ -44,6 +49,7 @@ class QuokkaFileSystem {
             database: 'quokka.db',
             databaseVersion: 1,
             keySuffix: '.qka',
+            onDatabaseUpgrade: _onDatabaseUpgrade,
           ),
           onDecode: QuokkaData.fromData,
           onEncode: (data) => data.exportAsBytes(),

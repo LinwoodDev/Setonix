@@ -18,7 +18,6 @@ class PacksDialog extends StatefulWidget {
 
 class _PacksDialogState extends State<PacksDialog>
     with TickerProviderStateMixin {
-  bool _gridView = false;
   bool _isMobileOpen = false;
   late final AnimationController _controller = AnimationController(
     vsync: this,
@@ -282,13 +281,13 @@ class _PacksDialogState extends State<PacksDialog>
         onPressed: () => Navigator.of(context).pop(),
       ),
       headerActions: [
-        IconButton(
+        /*IconButton(
           icon: Icon(_gridView
               ? PhosphorIconsLight.list
               : PhosphorIconsLight.gridFour),
           onPressed: () => setState(() => _gridView = !_gridView),
         ),
-        const SizedBox(height: 32, child: VerticalDivider()),
+        const SizedBox(height: 32, child: VerticalDivider()),*/
         IconButton(
           tooltip: AppLocalizations.of(context).import,
           onPressed: _importPack,

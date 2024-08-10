@@ -110,5 +110,6 @@
   "deleteGame": "Delete game",
   "deleteGameMessage": "Are you sure you want to delete the game?",
   "selectGame": "Select a game",
-  "toggleHide": "Toggle hide"
+  "toggleHide": "Toggle hide",
+  "defaultPath": "Default path"
 }
