@@ -79,15 +79,29 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
             !(event.hide ?? cell.objects.firstOrNull?.hidden ?? false);
         emit(state.copyWith.table.cells.replace(
             event.cell,
-            cell.copyWith.objects.$update(
-                (e) => e.map((o) => o.copyWith(hidden: hidden)).toList())));
+            cell.copyWith(
+              objects:
+                  cell.objects.map((e) => e.copyWith(hidden: hidden)).toList(),
+            )));
       }
       return save();
     });
     on<CellShuffled>((event, emit) {
       final cell = state.table.cells[event.cell] ?? TableCell();
-      emit(state.copyWith.table.cells.replace(event.cell,
-          cell.copyWith.objects.$update((e) => e.toList()..shuffle())));
+      emit(state.copyWith.table.cells.replace(
+          event.cell,
+          cell.copyWith(
+            objects: cell.objects.toList()..shuffle(),
+          )));
+      return save();
+    });
+    on<ObjectIndexChanged>((event, emit) {
+      final cell = state.table.cells[event.cell] ?? TableCell();
+      final newObjects = List<GameObject>.from(cell.objects);
+      final object = newObjects.removeAt(event.object);
+      newObjects.insert(event.index, object);
+      emit(state.copyWith.table.cells
+          .replace(event.cell, cell.copyWith(objects: newObjects)));
       return save();
     });
   }

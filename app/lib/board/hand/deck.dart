@@ -28,9 +28,10 @@ class DeckDefinitionHandItem extends HandItem<PackItem<DeckDefinition>> {
   }
 
   @override
-  void moveItem(GameCell cell) {
+  void moveItem(HandItemDropZone zone) {
+    if (zone is! GameCell) return;
     bloc.add(ObjectsSpawned(
-        cell.toDefinition(),
+        zone.toDefinition(),
         item.item.figures
             .map((e) => GameObject(
                 asset: ItemLocation(item.namespace, e.name),

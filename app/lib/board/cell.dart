@@ -12,11 +12,12 @@ import 'package:quokka/bloc/board_state.dart';
 import 'package:quokka/board/background.dart';
 import 'package:quokka/board/game.dart';
 import 'package:quokka/board/grid.dart';
+import 'package:quokka/board/hand/item.dart';
 import 'package:quokka/helpers/secondary.dart';
 import 'package:quokka/helpers/vector.dart';
 import 'package:quokka/models/vector.dart';
 
-class GameCell extends PositionComponent
+class GameCell extends HandItemDropZone
     with
         HasGameRef<BoardGame>,
         HoverCallbacks,

@@ -72,3 +72,13 @@ final class CellShuffled extends BoardEvent with CellShuffledMappable {
 
   CellShuffled(this.cell);
 }
+
+@MappableClass()
+final class ObjectIndexChanged extends BoardEvent
+    with ObjectIndexChangedMappable {
+  final VectorDefinition cell;
+  final int object;
+  final int index;
+
+  ObjectIndexChanged(this.cell, this.object, this.index);
+}

@@ -9,17 +9,19 @@ import 'package:flutter/material.dart'
         ContextMenuButtonItem,
         TextSelectionToolbarAnchors;
 import 'package:flutter/painting.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:quokka/bloc/board.dart';
 import 'package:quokka/bloc/board_state.dart';
-import 'package:quokka/board/cell.dart';
 import 'package:quokka/board/game.dart';
 import 'package:quokka/board/hand/view.dart';
 import 'package:quokka/helpers/asset.dart';
 import 'package:quokka/helpers/secondary.dart';
 import 'package:quokka/helpers/drag.dart';
 
-abstract class HandItem<T> extends PositionComponent
+abstract class HandItemDropZone extends PositionComponent {
+  HandItemDropZone({super.size, super.position});
+}
+
+abstract class HandItem<T> extends HandItemDropZone
     with
         HasGameRef<BoardGame>,
         DragCallbacks,
@@ -101,21 +103,22 @@ abstract class HandItem<T> extends PositionComponent
   void onDragEnd(DragEndEvent event) {
     super.onDragEnd(event);
     if (!(isMouseOrLongPressing ?? true)) return;
-    final pos = game.camera.globalToLocal(_lastPos);
-    final cell =
-        game.grid.componentsAtPoint(pos).whereType<GameCell>().firstOrNull;
-    if (cell == null) return;
-    moveItem(cell);
+    final zone = game
+        .componentsAtPoint(_lastPos)
+        .whereType<HandItemDropZone>()
+        .firstOrNull;
+    if (zone != null) moveItem(zone);
   }
 
   @override
-  void onContextMenu(Vector2 pos) {
+  void onContextMenu(Vector2 position) {
     final items = contextItemsBuilder;
     if (items == null) return;
     game.showContextMenu(
       contextMenuBuilder: (context, onClose) =>
           AdaptiveTextSelectionToolbar.buttonItems(
-        anchors: TextSelectionToolbarAnchors(primaryAnchor: pos.toOffset()),
+        anchors:
+            TextSelectionToolbarAnchors(primaryAnchor: position.toOffset()),
         buttonItems: items(context, onClose),
       ),
     );
@@ -124,5 +127,5 @@ abstract class HandItem<T> extends PositionComponent
   List<ContextMenuButtonItem> Function(BuildContext, VoidCallback onClose)?
       contextItemsBuilder;
 
-  void moveItem(GameCell cell) {}
+  void moveItem(HandItemDropZone zone) {}
 }

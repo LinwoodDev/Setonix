@@ -20,6 +20,7 @@ class BoardEventMapper extends ClassMapperBase<BoardEvent> {
       ObjectsMovedMapper.ensureInitialized();
       CellHideChangedMapper.ensureInitialized();
       CellShuffledMapper.ensureInitialized();
+      ObjectIndexChangedMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -900,4 +901,134 @@ class _CellShuffledCopyWithImpl<$R, $Out>
   CellShuffledCopyWith<$R2, CellShuffled, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
       _CellShuffledCopyWithImpl($value, $cast, t);
+}
+
+class ObjectIndexChangedMapper extends ClassMapperBase<ObjectIndexChanged> {
+  ObjectIndexChangedMapper._();
+
+  static ObjectIndexChangedMapper? _instance;
+  static ObjectIndexChangedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = ObjectIndexChangedMapper._());
+      BoardEventMapper.ensureInitialized();
+      VectorDefinitionMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'ObjectIndexChanged';
+
+  static VectorDefinition _$cell(ObjectIndexChanged v) => v.cell;
+  static const Field<ObjectIndexChanged, VectorDefinition> _f$cell =
+      Field('cell', _$cell);
+  static int _$object(ObjectIndexChanged v) => v.object;
+  static const Field<ObjectIndexChanged, int> _f$object =
+      Field('object', _$object);
+  static int _$index(ObjectIndexChanged v) => v.index;
+  static const Field<ObjectIndexChanged, int> _f$index =
+      Field('index', _$index);
+
+  @override
+  final MappableFields<ObjectIndexChanged> fields = const {
+    #cell: _f$cell,
+    #object: _f$object,
+    #index: _f$index,
+  };
+
+  static ObjectIndexChanged _instantiate(DecodingData data) {
+    return ObjectIndexChanged(
+        data.dec(_f$cell), data.dec(_f$object), data.dec(_f$index));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static ObjectIndexChanged fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<ObjectIndexChanged>(map);
+  }
+
+  static ObjectIndexChanged fromJson(String json) {
+    return ensureInitialized().decodeJson<ObjectIndexChanged>(json);
+  }
+}
+
+mixin ObjectIndexChangedMappable {
+  String toJson() {
+    return ObjectIndexChangedMapper.ensureInitialized()
+        .encodeJson<ObjectIndexChanged>(this as ObjectIndexChanged);
+  }
+
+  Map<String, dynamic> toMap() {
+    return ObjectIndexChangedMapper.ensureInitialized()
+        .encodeMap<ObjectIndexChanged>(this as ObjectIndexChanged);
+  }
+
+  ObjectIndexChangedCopyWith<ObjectIndexChanged, ObjectIndexChanged,
+          ObjectIndexChanged>
+      get copyWith => _ObjectIndexChangedCopyWithImpl(
+          this as ObjectIndexChanged, $identity, $identity);
+  @override
+  String toString() {
+    return ObjectIndexChangedMapper.ensureInitialized()
+        .stringifyValue(this as ObjectIndexChanged);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return ObjectIndexChangedMapper.ensureInitialized()
+        .equalsValue(this as ObjectIndexChanged, other);
+  }
+
+  @override
+  int get hashCode {
+    return ObjectIndexChangedMapper.ensureInitialized()
+        .hashValue(this as ObjectIndexChanged);
+  }
+}
+
+extension ObjectIndexChangedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, ObjectIndexChanged, $Out> {
+  ObjectIndexChangedCopyWith<$R, ObjectIndexChanged, $Out>
+      get $asObjectIndexChanged =>
+          $base.as((v, t, t2) => _ObjectIndexChangedCopyWithImpl(v, t, t2));
+}
+
+abstract class ObjectIndexChangedCopyWith<$R, $In extends ObjectIndexChanged,
+    $Out> implements BoardEventCopyWith<$R, $In, $Out> {
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell;
+  @override
+  $R call({VectorDefinition? cell, int? object, int? index});
+  ObjectIndexChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class _ObjectIndexChangedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, ObjectIndexChanged, $Out>
+    implements ObjectIndexChangedCopyWith<$R, ObjectIndexChanged, $Out> {
+  _ObjectIndexChangedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<ObjectIndexChanged> $mapper =
+      ObjectIndexChangedMapper.ensureInitialized();
+  @override
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell =>
+      $value.cell.copyWith.$chain((v) => call(cell: v));
+  @override
+  $R call({VectorDefinition? cell, int? object, int? index}) =>
+      $apply(FieldCopyWithData({
+        if (cell != null) #cell: cell,
+        if (object != null) #object: object,
+        if (index != null) #index: index
+      }));
+  @override
+  ObjectIndexChanged $make(CopyWithData data) => ObjectIndexChanged(
+      data.get(#cell, or: $value.cell),
+      data.get(#object, or: $value.object),
+      data.get(#index, or: $value.index));
+
+  @override
+  ObjectIndexChangedCopyWith<$R2, ObjectIndexChanged, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _ObjectIndexChangedCopyWithImpl($value, $cast, t);
 }

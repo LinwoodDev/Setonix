@@ -26,8 +26,9 @@ class FigureDefinitionHandItem
   Future<Sprite?> loadIcon() =>
       assetManager.loadFigureSpriteFromLocation(item.$1.location, item.$2);
   @override
-  void moveItem(GameCell cell) {
-    bloc.add(ObjectsSpawned(cell.toDefinition(), [
+  void moveItem(HandItemDropZone zone) {
+    if (zone is! GameCell) return;
+    bloc.add(ObjectsSpawned(zone.toDefinition(), [
       GameObject(
           asset: ItemLocation(item.$1.namespace, item.$1.id),
           variation: item.$2)
