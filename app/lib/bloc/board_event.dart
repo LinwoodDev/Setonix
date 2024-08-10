@@ -54,3 +54,21 @@ final class ObjectsMoved extends BoardEvent with ObjectsMovedMappable {
 
   ObjectsMoved(this.objects, this.from, this.to);
 }
+
+@MappableClass()
+final class CellHideChanged extends BoardEvent with CellHideChangedMappable {
+  final VectorDefinition cell;
+  final int? object;
+  final bool? hide;
+
+  CellHideChanged(this.cell, [this.object, this.hide]);
+  CellHideChanged.show(this.cell, [this.object]) : hide = false;
+  CellHideChanged.hide(this.cell, [this.object]) : hide = true;
+}
+
+@MappableClass()
+final class CellShuffled extends BoardEvent with CellShuffledMappable {
+  final VectorDefinition cell;
+
+  CellShuffled(this.cell);
+}

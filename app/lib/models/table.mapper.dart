@@ -316,16 +316,22 @@ class GameObjectMapper extends ClassMapperBase<GameObject> {
   static String? _$variation(GameObject v) => v.variation;
   static const Field<GameObject, String> _f$variation =
       Field('variation', _$variation, opt: true);
+  static bool _$hidden(GameObject v) => v.hidden;
+  static const Field<GameObject, bool> _f$hidden =
+      Field('hidden', _$hidden, opt: true, def: false);
 
   @override
   final MappableFields<GameObject> fields = const {
     #asset: _f$asset,
     #variation: _f$variation,
+    #hidden: _f$hidden,
   };
 
   static GameObject _instantiate(DecodingData data) {
     return GameObject(
-        asset: data.dec(_f$asset), variation: data.dec(_f$variation));
+        asset: data.dec(_f$asset),
+        variation: data.dec(_f$variation),
+        hidden: data.dec(_f$hidden));
   }
 
   @override
@@ -380,7 +386,7 @@ extension GameObjectValueCopy<$R, $Out>
 abstract class GameObjectCopyWith<$R, $In extends GameObject, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation> get asset;
-  $R call({ItemLocation? asset, String? variation});
+  $R call({ItemLocation? asset, String? variation, bool? hidden});
   GameObjectCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -396,15 +402,17 @@ class _GameObjectCopyWithImpl<$R, $Out>
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation> get asset =>
       $value.asset.copyWith.$chain((v) => call(asset: v));
   @override
-  $R call({ItemLocation? asset, Object? variation = $none}) =>
+  $R call({ItemLocation? asset, Object? variation = $none, bool? hidden}) =>
       $apply(FieldCopyWithData({
         if (asset != null) #asset: asset,
-        if (variation != $none) #variation: variation
+        if (variation != $none) #variation: variation,
+        if (hidden != null) #hidden: hidden
       }));
   @override
   GameObject $make(CopyWithData data) => GameObject(
       asset: data.get(#asset, or: $value.asset),
-      variation: data.get(#variation, or: $value.variation));
+      variation: data.get(#variation, or: $value.variation),
+      hidden: data.get(#hidden, or: $value.hidden));
 
   @override
   GameObjectCopyWith<$R2, GameObject, $Out2> $chain<$R2, $Out2>(

@@ -25,6 +25,7 @@ class GamePage extends StatefulWidget {
 }
 
 class _GamePageState extends State<GamePage> {
+  final ContextMenuController _contextMenuController = ContextMenuController();
   QuokkaData? _data;
 
   @override
@@ -49,67 +50,72 @@ class _GamePageState extends State<GamePage> {
     if (_data == null) {
       return const Center(child: CircularProgressIndicator());
     }
-    return BlocProvider(
-      create: (context) => BoardBloc(
-        fileSystem: context.read<QuokkaFileSystem>(),
-        name: widget.name,
-        data: _data!,
-      ),
-      child: Scaffold(
-        appBar: WindowTitleBar<SettingsCubit, QuokkaSettings>(
-          title: Text(AppLocalizations.of(context).game),
-          height: 50,
-          actions: [
-            Builder(
-                builder: (context) => IconButton(
-                      icon: const PhosphorIcon(PhosphorIconsLight.plusCircle),
-                      tooltip: AppLocalizations.of(context).addDeck,
-                      onPressed: () =>
-                          context.read<BoardBloc>().add(HandChanged()),
-                    ))
-          ],
+    return Listener(
+      behavior: HitTestBehavior.translucent,
+      onPointerDown: (_) => _contextMenuController.remove(),
+      child: BlocProvider(
+        create: (context) => BoardBloc(
+          fileSystem: context.read<QuokkaFileSystem>(),
+          name: widget.name,
+          data: _data!,
         ),
-        drawer: Drawer(
-          child: Center(
-            child: Builder(
-                builder: (context) => ListView(
-                      shrinkWrap: true,
-                      children: [
-                        BlocBuilder<BoardBloc, BoardState>(
-                          buildWhen: (previous, current) =>
-                              previous.name != current.name,
-                          builder: (context, state) => Text(
-                            state.name ?? '',
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.headlineSmall,
-                          ),
-                        ),
-                        const Divider(),
-                        ListTile(
-                          leading: const Icon(PhosphorIconsLight.arrowLeft),
-                          title: Text(MaterialLocalizations.of(context)
-                              .backButtonTooltip),
-                          onTap: () => Scaffold.of(context).closeDrawer(),
-                        ),
-                        ListTile(
-                          leading: const Icon(PhosphorIconsLight.gear),
-                          title: Text(AppLocalizations.of(context).settings),
-                          onTap: () => openSettings(context),
-                        ),
-                        ListTile(
-                          leading: const Icon(PhosphorIconsLight.door),
-                          title: Text(AppLocalizations.of(context).home),
-                          onTap: () => GoRouter.of(context).go('/'),
-                        ),
-                      ],
-                    )),
+        child: Scaffold(
+          appBar: WindowTitleBar<SettingsCubit, QuokkaSettings>(
+            title: Text(AppLocalizations.of(context).game),
+            height: 50,
+            actions: [
+              Builder(
+                  builder: (context) => IconButton(
+                        icon: const PhosphorIcon(PhosphorIconsLight.plusCircle),
+                        tooltip: AppLocalizations.of(context).addDeck,
+                        onPressed: () =>
+                            context.read<BoardBloc>().add(HandChanged()),
+                      ))
+            ],
           ),
+          drawer: Drawer(
+            child: Center(
+              child: Builder(
+                  builder: (context) => ListView(
+                        shrinkWrap: true,
+                        children: [
+                          BlocBuilder<BoardBloc, BoardState>(
+                            buildWhen: (previous, current) =>
+                                previous.name != current.name,
+                            builder: (context, state) => Text(
+                              state.name ?? '',
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.headlineSmall,
+                            ),
+                          ),
+                          const Divider(),
+                          ListTile(
+                            leading: const Icon(PhosphorIconsLight.arrowLeft),
+                            title: Text(MaterialLocalizations.of(context)
+                                .backButtonTooltip),
+                            onTap: () => Scaffold.of(context).closeDrawer(),
+                          ),
+                          ListTile(
+                            leading: const Icon(PhosphorIconsLight.gear),
+                            title: Text(AppLocalizations.of(context).settings),
+                            onTap: () => openSettings(context),
+                          ),
+                          ListTile(
+                            leading: const Icon(PhosphorIconsLight.door),
+                            title: Text(AppLocalizations.of(context).home),
+                            onTap: () => GoRouter.of(context).go('/'),
+                          ),
+                        ],
+                      )),
+            ),
+          ),
+          body: Builder(
+              builder: (context) => GameWidget(
+                      game: BoardGame(
+                    bloc: context.read<BoardBloc>(),
+                    contextMenuController: _contextMenuController,
+                  ))),
         ),
-        body: Builder(
-            builder: (context) => GameWidget(
-                    game: BoardGame(
-                  bloc: context.read<BoardBloc>(),
-                ))),
       ),
     );
   }

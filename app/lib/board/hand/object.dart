@@ -1,4 +1,9 @@
+import 'dart:ui';
+
 import 'package:flame/components.dart';
+import 'package:flutter/src/widgets/context_menu_button_item.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:quokka/bloc/board_event.dart';
 import 'package:quokka/board/cell.dart';
 import 'package:quokka/board/hand/item.dart';
@@ -14,7 +19,7 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
     final translation =
         game.assetManager.getTranslations(object.asset.namespace);
     final variation = object.variation;
-    if (variation != null) {
+    if (variation != null && !item.$3.hidden) {
       return translation
           .getFigureVariationTranslation(object.asset.id, variation)
           .name;
@@ -23,8 +28,8 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
   }
 
   @override
-  Future<Sprite?> loadIcon() => game.assetManager
-      .loadFigureSpriteFromLocation(item.$3.asset, item.$3.variation);
+  Future<Sprite?> loadIcon() => game.assetManager.loadFigureSpriteFromLocation(
+      item.$3.asset, item.$3.hidden ? null : item.$3.variation);
 
   @override
   void moveItem(GameCell cell) {
@@ -34,4 +39,15 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
       cell.toDefinition(),
     ));
   }
+
+  @override
+  get contextItemsBuilder => (context, onClose) => [
+        ContextMenuButtonItem(
+          label: AppLocalizations.of(game.buildContext!).toggleHide,
+          onPressed: () {
+            game.bloc.add(CellHideChanged(item.$1, item.$2));
+            onClose();
+          },
+        ),
+      ];
 }

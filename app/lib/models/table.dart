@@ -93,10 +93,12 @@ class GameBoard with GameBoardMappable {
 class GameObject with GameObjectMappable {
   final ItemLocation asset;
   final String? variation;
+  final bool hidden;
 
   GameObject({
     required this.asset,
     this.variation,
+    this.hidden = false,
   });
 }
 

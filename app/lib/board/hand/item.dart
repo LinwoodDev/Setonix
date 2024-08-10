@@ -1,22 +1,33 @@
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame_bloc/flame_bloc.dart';
-import 'package:flutter/material.dart' show Colors;
+import 'package:flutter/material.dart'
+    show
+        AdaptiveTextSelectionToolbar,
+        BuildContext,
+        Colors,
+        ContextMenuButtonItem,
+        TextSelectionToolbarAnchors;
 import 'package:flutter/painting.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:quokka/bloc/board.dart';
 import 'package:quokka/bloc/board_state.dart';
 import 'package:quokka/board/cell.dart';
 import 'package:quokka/board/game.dart';
 import 'package:quokka/board/hand/view.dart';
 import 'package:quokka/helpers/asset.dart';
+import 'package:quokka/helpers/secondary.dart';
 import 'package:quokka/helpers/drag.dart';
 
 abstract class HandItem<T> extends PositionComponent
     with
-        TapCallbacks,
         HasGameRef<BoardGame>,
         DragCallbacks,
+        TapCallbacks,
         LongDragCallbacks,
+        DoubleTapCallbacks,
+        SecondaryTapCallbacks,
+        DetailsTapCallbacks,
         FlameBlocListenable<BoardBloc, BoardState> {
   final T item;
   late final SpriteComponent _sprite;
@@ -96,6 +107,22 @@ abstract class HandItem<T> extends PositionComponent
     if (cell == null) return;
     moveItem(cell);
   }
+
+  @override
+  void onContextMenu(Vector2 pos) {
+    final items = contextItemsBuilder;
+    if (items == null) return;
+    game.showContextMenu(
+      contextMenuBuilder: (context, onClose) =>
+          AdaptiveTextSelectionToolbar.buttonItems(
+        anchors: TextSelectionToolbarAnchors(primaryAnchor: pos.toOffset()),
+        buttonItems: items(context, onClose),
+      ),
+    );
+  }
+
+  List<ContextMenuButtonItem> Function(BuildContext, VoidCallback onClose)?
+      contextItemsBuilder;
 
   void moveItem(GameCell cell) {}
 }

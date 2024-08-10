@@ -5,12 +5,14 @@ import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:quokka/bloc/board.dart';
 import 'package:quokka/bloc/board_event.dart';
 import 'package:quokka/bloc/board_state.dart';
 import 'package:quokka/board/background.dart';
 import 'package:quokka/board/game.dart';
 import 'package:quokka/board/grid.dart';
+import 'package:quokka/helpers/secondary.dart';
 import 'package:quokka/helpers/vector.dart';
 import 'package:quokka/models/vector.dart';
 
@@ -20,6 +22,9 @@ class GameCell extends PositionComponent
         HoverCallbacks,
         TapCallbacks,
         DragCallbacks,
+        DoubleTapCallbacks,
+        SecondaryTapCallbacks,
+        DetailsTapCallbacks,
         FlameBlocListenable<BoardBloc, BoardState> {
   late final SpriteComponent _selectionComponent;
   SpriteComponent? _cardComponent;
@@ -137,8 +142,8 @@ class GameCell extends PositionComponent
     }
     if (top != null) {
       _cardComponent = SpriteComponent(
-          sprite: await game.assetManager
-              .loadFigureSpriteFromLocation(top.asset, top.variation),
+          sprite: await game.assetManager.loadFigureSpriteFromLocation(
+              top.asset, top.hidden ? null : top.variation),
           size: size);
       add(_cardComponent!);
     }
@@ -159,5 +164,30 @@ class GameCell extends PositionComponent
       ..negate()
       ..divide(Vector2.all(game.camera.viewfinder.zoom));
     game.camera.moveBy(delta);
+  }
+
+  @override
+  void onContextMenu(Vector2 position) {
+    game.showContextMenu(
+        contextMenuBuilder: (context, onClose) =>
+            AdaptiveTextSelectionToolbar.buttonItems(
+                buttonItems: [
+                  ContextMenuButtonItem(
+                    label: AppLocalizations.of(context).toggleHide,
+                    onPressed: () {
+                      bloc.add(CellHideChanged(toDefinition()));
+                      onClose();
+                    },
+                  ),
+                  ContextMenuButtonItem(
+                    label: AppLocalizations.of(context).shuffle,
+                    onPressed: () {
+                      bloc.add(CellShuffled(toDefinition()));
+                      onClose();
+                    },
+                  ),
+                ],
+                anchors: TextSelectionToolbarAnchors(
+                    primaryAnchor: position.toOffset())));
   }
 }

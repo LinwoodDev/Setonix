@@ -13,8 +13,11 @@ import 'package:quokka/board/grid.dart';
 import 'package:quokka/board/hand/view.dart';
 import 'package:quokka/helpers/asset.dart';
 import 'package:quokka/helpers/scroll.dart';
+import 'package:quokka/helpers/secondary.dart';
 
-class BoardGame extends FlameGame with ScrollDetector, KeyboardEvents {
+class BoardGame extends FlameGame
+    with ScrollDetector, KeyboardEvents, SecondaryTapDetector {
+  final ContextMenuController contextMenuController;
   final AssetManager assetManager;
   late final Sprite gridSprite, selectionSprite;
   late final GameHand _hand;
@@ -23,6 +26,7 @@ class BoardGame extends FlameGame with ScrollDetector, KeyboardEvents {
 
   BoardGame({
     required this.bloc,
+    required this.contextMenuController,
   }) : assetManager = AssetManager(
           bloc: bloc,
         );
@@ -68,9 +72,16 @@ class BoardGame extends FlameGame with ScrollDetector, KeyboardEvents {
 
   @override
   void onScroll(PointerScrollInfo info) {
-    componentsAtPoint(info.eventPosition.global)
+    componentsAtPoint(info.eventPosition.widget)
         .whereType<ScrollCallbacks>()
         .any((element) => element.onScroll(info));
+  }
+
+  @override
+  void onSecondaryTapUp(TapUpInfo info) {
+    componentsAtPoint(info.eventPosition.widget)
+        .whereType<SecondaryTapCallbacks>()
+        .any((element) => element.onSecondaryTapUp(info));
   }
 
   Vector2 _currentCameraVelocity = Vector2.zero();
@@ -123,5 +134,17 @@ class BoardGame extends FlameGame with ScrollDetector, KeyboardEvents {
       _currentCameraVelocity = nextCameraVelocity;
     }
     return handled ? KeyEventResult.handled : KeyEventResult.ignored;
+  }
+
+  void showContextMenu(
+      {required Widget Function(BuildContext, VoidCallback onClose)
+          contextMenuBuilder}) {
+    final context = buildContext;
+    if (context == null) return;
+    contextMenuController.show(
+      context: context,
+      contextMenuBuilder: (context) =>
+          contextMenuBuilder(context, contextMenuController.remove),
+    );
   }
 }

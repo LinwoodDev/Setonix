@@ -18,6 +18,8 @@ class BoardEventMapper extends ClassMapperBase<BoardEvent> {
       HandChangedMapper.ensureInitialized();
       ObjectsSpawnedMapper.ensureInitialized();
       ObjectsMovedMapper.ensureInitialized();
+      CellHideChangedMapper.ensureInitialized();
+      CellShuffledMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -656,4 +658,246 @@ class _ObjectsMovedCopyWithImpl<$R, $Out>
   ObjectsMovedCopyWith<$R2, ObjectsMoved, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
       _ObjectsMovedCopyWithImpl($value, $cast, t);
+}
+
+class CellHideChangedMapper extends ClassMapperBase<CellHideChanged> {
+  CellHideChangedMapper._();
+
+  static CellHideChangedMapper? _instance;
+  static CellHideChangedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = CellHideChangedMapper._());
+      BoardEventMapper.ensureInitialized();
+      VectorDefinitionMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'CellHideChanged';
+
+  static VectorDefinition _$cell(CellHideChanged v) => v.cell;
+  static const Field<CellHideChanged, VectorDefinition> _f$cell =
+      Field('cell', _$cell);
+  static int? _$object(CellHideChanged v) => v.object;
+  static const Field<CellHideChanged, int> _f$object =
+      Field('object', _$object, opt: true);
+  static bool? _$hide(CellHideChanged v) => v.hide;
+  static const Field<CellHideChanged, bool> _f$hide =
+      Field('hide', _$hide, opt: true);
+
+  @override
+  final MappableFields<CellHideChanged> fields = const {
+    #cell: _f$cell,
+    #object: _f$object,
+    #hide: _f$hide,
+  };
+
+  static CellHideChanged _instantiate(DecodingData data) {
+    return CellHideChanged(
+        data.dec(_f$cell), data.dec(_f$object), data.dec(_f$hide));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static CellHideChanged fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<CellHideChanged>(map);
+  }
+
+  static CellHideChanged fromJson(String json) {
+    return ensureInitialized().decodeJson<CellHideChanged>(json);
+  }
+}
+
+mixin CellHideChangedMappable {
+  String toJson() {
+    return CellHideChangedMapper.ensureInitialized()
+        .encodeJson<CellHideChanged>(this as CellHideChanged);
+  }
+
+  Map<String, dynamic> toMap() {
+    return CellHideChangedMapper.ensureInitialized()
+        .encodeMap<CellHideChanged>(this as CellHideChanged);
+  }
+
+  CellHideChangedCopyWith<CellHideChanged, CellHideChanged, CellHideChanged>
+      get copyWith => _CellHideChangedCopyWithImpl(
+          this as CellHideChanged, $identity, $identity);
+  @override
+  String toString() {
+    return CellHideChangedMapper.ensureInitialized()
+        .stringifyValue(this as CellHideChanged);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return CellHideChangedMapper.ensureInitialized()
+        .equalsValue(this as CellHideChanged, other);
+  }
+
+  @override
+  int get hashCode {
+    return CellHideChangedMapper.ensureInitialized()
+        .hashValue(this as CellHideChanged);
+  }
+}
+
+extension CellHideChangedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, CellHideChanged, $Out> {
+  CellHideChangedCopyWith<$R, CellHideChanged, $Out> get $asCellHideChanged =>
+      $base.as((v, t, t2) => _CellHideChangedCopyWithImpl(v, t, t2));
+}
+
+abstract class CellHideChangedCopyWith<$R, $In extends CellHideChanged, $Out>
+    implements BoardEventCopyWith<$R, $In, $Out> {
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell;
+  @override
+  $R call({VectorDefinition? cell, int? object, bool? hide});
+  CellHideChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class _CellHideChangedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, CellHideChanged, $Out>
+    implements CellHideChangedCopyWith<$R, CellHideChanged, $Out> {
+  _CellHideChangedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<CellHideChanged> $mapper =
+      CellHideChangedMapper.ensureInitialized();
+  @override
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell =>
+      $value.cell.copyWith.$chain((v) => call(cell: v));
+  @override
+  $R call(
+          {VectorDefinition? cell,
+          Object? object = $none,
+          Object? hide = $none}) =>
+      $apply(FieldCopyWithData({
+        if (cell != null) #cell: cell,
+        if (object != $none) #object: object,
+        if (hide != $none) #hide: hide
+      }));
+  @override
+  CellHideChanged $make(CopyWithData data) => CellHideChanged(
+      data.get(#cell, or: $value.cell),
+      data.get(#object, or: $value.object),
+      data.get(#hide, or: $value.hide));
+
+  @override
+  CellHideChangedCopyWith<$R2, CellHideChanged, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _CellHideChangedCopyWithImpl($value, $cast, t);
+}
+
+class CellShuffledMapper extends ClassMapperBase<CellShuffled> {
+  CellShuffledMapper._();
+
+  static CellShuffledMapper? _instance;
+  static CellShuffledMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = CellShuffledMapper._());
+      BoardEventMapper.ensureInitialized();
+      VectorDefinitionMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'CellShuffled';
+
+  static VectorDefinition _$cell(CellShuffled v) => v.cell;
+  static const Field<CellShuffled, VectorDefinition> _f$cell =
+      Field('cell', _$cell);
+
+  @override
+  final MappableFields<CellShuffled> fields = const {
+    #cell: _f$cell,
+  };
+
+  static CellShuffled _instantiate(DecodingData data) {
+    return CellShuffled(data.dec(_f$cell));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static CellShuffled fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<CellShuffled>(map);
+  }
+
+  static CellShuffled fromJson(String json) {
+    return ensureInitialized().decodeJson<CellShuffled>(json);
+  }
+}
+
+mixin CellShuffledMappable {
+  String toJson() {
+    return CellShuffledMapper.ensureInitialized()
+        .encodeJson<CellShuffled>(this as CellShuffled);
+  }
+
+  Map<String, dynamic> toMap() {
+    return CellShuffledMapper.ensureInitialized()
+        .encodeMap<CellShuffled>(this as CellShuffled);
+  }
+
+  CellShuffledCopyWith<CellShuffled, CellShuffled, CellShuffled> get copyWith =>
+      _CellShuffledCopyWithImpl(this as CellShuffled, $identity, $identity);
+  @override
+  String toString() {
+    return CellShuffledMapper.ensureInitialized()
+        .stringifyValue(this as CellShuffled);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return CellShuffledMapper.ensureInitialized()
+        .equalsValue(this as CellShuffled, other);
+  }
+
+  @override
+  int get hashCode {
+    return CellShuffledMapper.ensureInitialized()
+        .hashValue(this as CellShuffled);
+  }
+}
+
+extension CellShuffledValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, CellShuffled, $Out> {
+  CellShuffledCopyWith<$R, CellShuffled, $Out> get $asCellShuffled =>
+      $base.as((v, t, t2) => _CellShuffledCopyWithImpl(v, t, t2));
+}
+
+abstract class CellShuffledCopyWith<$R, $In extends CellShuffled, $Out>
+    implements BoardEventCopyWith<$R, $In, $Out> {
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell;
+  @override
+  $R call({VectorDefinition? cell});
+  CellShuffledCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _CellShuffledCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, CellShuffled, $Out>
+    implements CellShuffledCopyWith<$R, CellShuffled, $Out> {
+  _CellShuffledCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<CellShuffled> $mapper =
+      CellShuffledMapper.ensureInitialized();
+  @override
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell =>
+      $value.cell.copyWith.$chain((v) => call(cell: v));
+  @override
+  $R call({VectorDefinition? cell}) =>
+      $apply(FieldCopyWithData({if (cell != null) #cell: cell}));
+  @override
+  CellShuffled $make(CopyWithData data) =>
+      CellShuffled(data.get(#cell, or: $value.cell));
+
+  @override
+  CellShuffledCopyWith<$R2, CellShuffled, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _CellShuffledCopyWithImpl($value, $cast, t);
 }
