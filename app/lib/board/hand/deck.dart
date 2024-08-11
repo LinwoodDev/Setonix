@@ -17,7 +17,7 @@ class DeckDefinitionHandItem extends HandItem<PackItem<DeckDefinition>> {
 
   @override
   void onTapUp(event) {
-    bloc.add(HandChanged(deck: item.location));
+    bloc.send(HandChanged(deck: item.location));
   }
 
   @override
@@ -30,7 +30,7 @@ class DeckDefinitionHandItem extends HandItem<PackItem<DeckDefinition>> {
   @override
   void moveItem(HandItemDropZone zone) {
     if (zone is! GameCell) return;
-    bloc.add(ObjectsSpawned(
+    bloc.send(ObjectsSpawned(
         zone.toDefinition(),
         item.item.figures
             .map((e) => GameObject(

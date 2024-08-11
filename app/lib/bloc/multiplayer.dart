@@ -33,7 +33,9 @@ final class MultiplayerConnectedState extends MultiplayerState
 
   MultiplayerConnectedState(this.networker, this.transformer);
 
+  @override
   bool get isClient => networker is NetworkerClient;
+  @override
   bool get isServer => networker is NetworkerServer;
 }
 
@@ -62,11 +64,11 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
     emit(MultiplayerConnectedState(base, transformer));
     transformer.read.listen((event) {
       if (event.data.isMultiplayer) {
-        print('Received multiplayer event: ${event.data.runtimeType}');
         _eventController.add(event.data.copyWith(isRemoteEvent: true));
       }
     });
     if (base is NetworkerServer) {
+      base.connect(EchoPipe(toChannel: kAnyChannel));
       base.clientConnect.pipe(_initController);
     }
   }

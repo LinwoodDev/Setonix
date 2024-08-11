@@ -27,13 +27,15 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
       ..events.listen(add)
       ..inits.listen((e) {
         if (e == 0) return;
-        print('$e has joined');
         state.multiplayer.send(TableChanged(state.table), e);
       });
 
     on<TableChanged>((event, emit) {
       emit(state.copyWith(table: event.table));
       return save();
+    });
+    on<BackgroundChanged>((event, emit) {
+      emit(state.copyWith.table(background: event.background));
     });
     on<ColorSchemeChanged>((event, emit) {
       emit(state.copyWith(colorScheme: event.colorScheme));
@@ -63,6 +65,7 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
       var from = state.table.cells[event.from] ?? TableCell();
       var to = state.table.cells[event.to] ?? TableCell();
       final toRemove = event.objects;
+      if (event.objects.any((e) => e >= from.objects.length)) return null;
       final toAdd = toRemove.map((e) => from.objects[e]).toList();
       final newObjects = List<GameObject>.from(from.objects);
       for (final i in toRemove.sorted((a, b) => b.compareTo(a))) {
@@ -134,5 +137,14 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
   void onEvent(BoardEvent event) {
     super.onEvent(event);
     if (event.isMultiplayer) state.multiplayer.send(event);
+  }
+
+  void send(BoardEvent event) {
+    if (event.isMultiplayer && state.multiplayer.isConnected) {
+      if (state.multiplayer.isServer) add(event);
+      state.multiplayer.send(event);
+    } else {
+      add(event);
+    }
   }
 }

@@ -104,9 +104,9 @@ class GameCell extends HandItemDropZone
   @override
   void onTapUp(TapUpEvent event) {
     if (isSelected) {
-      bloc.add(HandChanged.hide());
+      bloc.send(HandChanged.hide());
     } else {
-      bloc.add(CellSwitched(toDefinition(), toggle: true));
+      bloc.send(CellSwitched(toDefinition(), toggle: true));
     }
   }
 
@@ -178,14 +178,14 @@ class GameCell extends HandItemDropZone
                   ContextMenuButtonItem(
                     label: AppLocalizations.of(context).toggleHide,
                     onPressed: () {
-                      bloc.add(CellHideChanged(toDefinition()));
+                      bloc.send(CellHideChanged(toDefinition()));
                       onClose();
                     },
                   ),
                   ContextMenuButtonItem(
                     label: AppLocalizations.of(context).shuffle,
                     onPressed: () {
-                      bloc.add(CellShuffled.random(toDefinition()));
+                      bloc.send(CellShuffled.random(toDefinition()));
                       onClose();
                     },
                   ),

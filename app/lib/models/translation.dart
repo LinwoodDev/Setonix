@@ -42,16 +42,26 @@ class TranslationsStore {
         FigureVariationTranslation(name: key),
         locale,
       );
+
+  BackgroundTranslation getBackgroundTranslation(String key,
+          [String? locale]) =>
+      findTranslation(
+        (t) => t.backgrounds[key],
+        BackgroundTranslation(name: key),
+        locale,
+      );
 }
 
 @MappableClass()
 class PackTranslation with PackTranslationMappable {
   final Map<String, DeckTranslation> decks;
+  final Map<String, BackgroundTranslation> backgrounds;
   final Map<String, FigureTranslation> figures;
 
   PackTranslation({
     this.decks = const {},
     this.figures = const {},
+    this.backgrounds = const {},
   });
 }
 
@@ -70,6 +80,15 @@ sealed class DescriptiveTranslation with DescriptiveTranslationMappable {
 class DeckTranslation extends DescriptiveTranslation
     with DeckTranslationMappable {
   DeckTranslation({
+    required super.name,
+    super.description,
+  });
+}
+
+@MappableClass()
+class BackgroundTranslation extends DescriptiveTranslation
+    with BackgroundTranslationMappable {
+  BackgroundTranslation({
     required super.name,
     super.description,
   });

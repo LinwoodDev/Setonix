@@ -28,7 +28,7 @@ class FigureDefinitionHandItem
   @override
   void moveItem(HandItemDropZone zone) {
     if (zone is! GameCell) return;
-    bloc.add(ObjectsSpawned(zone.toDefinition(), [
+    bloc.send(ObjectsSpawned(zone.toDefinition(), [
       GameObject(
           asset: ItemLocation(item.$1.namespace, item.$1.id),
           variation: item.$2)

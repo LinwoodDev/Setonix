@@ -19,9 +19,6 @@ class AssetManager {
 
   QuokkaFileSystem get fileSystem => bloc.state.fileSystem;
 
-  Iterable<MapEntry<String, QuokkaData>> get loadedPacks =>
-      _loadedPacks.entries;
-
   AssetManager({
     required this.bloc,
     this.currentLocale = 'en',

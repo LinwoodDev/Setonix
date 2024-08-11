@@ -37,11 +37,13 @@ class GameTable with GameTableMappable {
   @MappableField(hook: VectorMapHook())
   final Map<VectorDefinition, GameBoard> boards;
   final Map<String, GamePlayer> players;
+  final ItemLocation? background;
 
   const GameTable({
     this.cells = const {},
     this.boards = const {},
     this.players = const {},
+    this.background,
   });
 }
 
@@ -116,5 +118,5 @@ class ItemLocation with ItemLocationMappable {
   }
 
   @override
-  String toString() => '$namespace:$id';
+  String toString() => namespace.isEmpty ? id : '$namespace:$id';
 }

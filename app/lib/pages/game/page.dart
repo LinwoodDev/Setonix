@@ -12,6 +12,7 @@ import 'package:quokka/bloc/board_state.dart';
 import 'package:quokka/bloc/multiplayer.dart';
 import 'package:quokka/bloc/settings.dart';
 import 'package:quokka/board/game.dart';
+import 'package:quokka/helpers/asset.dart';
 import 'package:quokka/models/data.dart';
 import 'package:quokka/pages/game/multiplayer.dart';
 import 'package:quokka/services/file_system.dart';
@@ -88,6 +89,11 @@ class _GamePageState extends State<GamePage> {
               data: _data!,
             ),
           ),
+          RepositoryProvider(
+            create: (context) => AssetManager(
+              bloc: context.read<BoardBloc>(),
+            ),
+          ),
         ],
         child: Scaffold(
           appBar: WindowTitleBar<SettingsCubit, QuokkaSettings>(
@@ -105,67 +111,105 @@ class _GamePageState extends State<GamePage> {
                         isSelected:
                             state.showHand && state.selectedCell == null,
                         tooltip: AppLocalizations.of(context).addDeck,
-                        onPressed: () =>
-                            context.read<BoardBloc>().add(HandChanged.toggle()),
+                        onPressed: () => context
+                            .read<BoardBloc>()
+                            .send(HandChanged.toggle()),
                       ))
             ],
           ),
           drawer: Drawer(
             child: Center(
-              child: Builder(
-                  builder: (context) => ListView(
-                        shrinkWrap: true,
-                        children: [
-                          BlocBuilder<BoardBloc, BoardState>(
-                            buildWhen: (previous, current) =>
-                                previous.name != current.name,
-                            builder: (context, state) => Text(
-                              state.name ?? '',
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context).textTheme.headlineSmall,
-                            ),
-                          ),
-                          const Divider(),
-                          ListTile(
-                            leading: const Icon(PhosphorIconsLight.arrowLeft),
-                            title: Text(MaterialLocalizations.of(context)
-                                .backButtonTooltip),
-                            onTap: () => Scaffold.of(context).closeDrawer(),
-                          ),
-                          ListTile(
-                            leading: const Icon(PhosphorIconsLight.users),
-                            title:
-                                Text(AppLocalizations.of(context).multiplayer),
-                            onTap: () {
-                              Scaffold.of(context).closeDrawer();
-                              final multiplayer =
-                                  context.read<MultiplayerCubit>();
-                              showDialog(
-                                context: context,
-                                builder: (context) => BlocProvider.value(
-                                    value: multiplayer,
-                                    child: const MultiplayerDialog()),
-                              );
-                            },
-                          ),
-                          ListTile(
-                            leading: const Icon(PhosphorIconsLight.gear),
-                            title: Text(AppLocalizations.of(context).settings),
-                            onTap: () => openSettings(context),
-                          ),
-                          ListTile(
-                            leading: const Icon(PhosphorIconsLight.door),
-                            title: Text(AppLocalizations.of(context).home),
-                            onTap: () => GoRouter.of(context).go('/'),
-                          ),
-                        ],
-                      )),
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  BlocBuilder<BoardBloc, BoardState>(
+                    buildWhen: (previous, current) =>
+                        previous.name != current.name,
+                    builder: (context, state) => Text(
+                      state.name ?? '',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                  ),
+                  const Divider(),
+                  ListTile(
+                    leading: const Icon(PhosphorIconsLight.arrowLeft),
+                    title: Text(
+                        MaterialLocalizations.of(context).backButtonTooltip),
+                    onTap: () => Scaffold.of(context).closeDrawer(),
+                  ),
+                  BlocBuilder<BoardBloc, BoardState>(
+                    buildWhen: (previous, current) =>
+                        previous.table.background != current.table.background,
+                    builder: (context, state) {
+                      final assetManager = context.read<AssetManager>();
+                      final background = state.table.background;
+                      return ListTile(
+                          leading: const Icon(PhosphorIconsLight.image),
+                          title: Text(AppLocalizations.of(context).background),
+                          subtitle: background == null
+                              ? null
+                              : Text(assetManager
+                                  .getTranslations(background.namespace)
+                                  .getBackgroundTranslation(background.id)
+                                  .name),
+                          onTap: () => showLeapBottomSheet(
+                              context: context,
+                              title: AppLocalizations.of(context).background,
+                              childrenBuilder: (_) => assetManager.packs
+                                      .expand((e) =>
+                                          e.value.getBackgroundItems(e.key))
+                                      .map((entry) {
+                                    final translation = assetManager
+                                        .getTranslations(entry.namespace)
+                                        .getBackgroundTranslation(entry.id);
+                                    return ListTile(
+                                      title: Text(translation.name),
+                                      subtitle: translation.description == null
+                                          ? null
+                                          : Text(translation.description!),
+                                      onTap: () {
+                                        context.read<BoardBloc>().send(
+                                            BackgroundChanged(entry.location));
+                                        Navigator.of(context).pop();
+                                      },
+                                    );
+                                  }).toList()));
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(PhosphorIconsLight.users),
+                    title: Text(AppLocalizations.of(context).multiplayer),
+                    onTap: () {
+                      Scaffold.of(context).closeDrawer();
+                      final multiplayer = context.read<MultiplayerCubit>();
+                      showDialog(
+                        context: context,
+                        builder: (context) => BlocProvider.value(
+                            value: multiplayer,
+                            child: const MultiplayerDialog()),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(PhosphorIconsLight.gear),
+                    title: Text(AppLocalizations.of(context).settings),
+                    onTap: () => openSettings(context),
+                  ),
+                  ListTile(
+                    leading: const Icon(PhosphorIconsLight.door),
+                    title: Text(AppLocalizations.of(context).home),
+                    onTap: () => GoRouter.of(context).go('/'),
+                  ),
+                ],
+              ),
             ),
           ),
           body: Builder(
               builder: (context) => GameWidget(
                       game: BoardGame(
                     bloc: context.read<BoardBloc>(),
+                    assetManager: context.read<AssetManager>(),
                     contextMenuController: _contextMenuController,
                   ))),
         ),

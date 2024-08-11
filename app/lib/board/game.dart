@@ -19,7 +19,7 @@ class BoardGame extends FlameGame
     with ScrollDetector, KeyboardEvents, SecondaryTapDetector {
   final ContextMenuController contextMenuController;
   final AssetManager assetManager;
-  late final Sprite gridSprite, selectionSprite;
+  late final Sprite selectionSprite;
   late final GameHand _hand;
   late final BoardGrid grid;
   final BoardBloc bloc;
@@ -30,10 +30,9 @@ class BoardGame extends FlameGame
 
   BoardGame({
     required this.bloc,
+    required this.assetManager,
     required this.contextMenuController,
-  }) : assetManager = AssetManager(
-          bloc: bloc,
-        );
+  });
 
   @override
   FutureOr<void> onLoad() async {
@@ -43,12 +42,6 @@ class BoardGame extends FlameGame
     provider.addAll([camera, world]);
     const packName = '';
     await assetManager.loadPack(packName);
-    final data = assetManager.getTexture('backgrounds/grid.png');
-    if (data == null) {
-      return;
-    }
-    final image = await decodeImageFromList(data);
-    gridSprite = Sprite(image);
     selectionSprite = await Sprite.load('selection.png');
     _hand = GameHand();
     camera.viewport.add(_hand);
@@ -100,7 +93,7 @@ class BoardGame extends FlameGame
     final nextColorScheme =
         buildContext != null ? Theme.of(buildContext!).colorScheme : null;
     if (nextColorScheme != bloc.state.colorScheme) {
-      bloc.add(ColorSchemeChanged(nextColorScheme));
+      bloc.send(ColorSchemeChanged(nextColorScheme));
     }
   }
 

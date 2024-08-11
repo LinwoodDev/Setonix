@@ -15,6 +15,7 @@ class PackTranslationMapper extends ClassMapperBase<PackTranslation> {
       MapperContainer.globals.use(_instance = PackTranslationMapper._());
       DeckTranslationMapper.ensureInitialized();
       FigureTranslationMapper.ensureInitialized();
+      BackgroundTranslationMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -29,16 +30,24 @@ class PackTranslationMapper extends ClassMapperBase<PackTranslation> {
       v.figures;
   static const Field<PackTranslation, Map<String, FigureTranslation>>
       _f$figures = Field('figures', _$figures, opt: true, def: const {});
+  static Map<String, BackgroundTranslation> _$backgrounds(PackTranslation v) =>
+      v.backgrounds;
+  static const Field<PackTranslation, Map<String, BackgroundTranslation>>
+      _f$backgrounds =
+      Field('backgrounds', _$backgrounds, opt: true, def: const {});
 
   @override
   final MappableFields<PackTranslation> fields = const {
     #decks: _f$decks,
     #figures: _f$figures,
+    #backgrounds: _f$backgrounds,
   };
 
   static PackTranslation _instantiate(DecodingData data) {
     return PackTranslation(
-        decks: data.dec(_f$decks), figures: data.dec(_f$figures));
+        decks: data.dec(_f$decks),
+        figures: data.dec(_f$figures),
+        backgrounds: data.dec(_f$backgrounds));
   }
 
   @override
@@ -99,9 +108,16 @@ abstract class PackTranslationCopyWith<$R, $In extends PackTranslation, $Out>
   MapCopyWith<$R, String, FigureTranslation,
           FigureTranslationCopyWith<$R, FigureTranslation, FigureTranslation>>
       get figures;
+  MapCopyWith<
+      $R,
+      String,
+      BackgroundTranslation,
+      BackgroundTranslationCopyWith<$R, BackgroundTranslation,
+          BackgroundTranslation>> get backgrounds;
   $R call(
       {Map<String, DeckTranslation>? decks,
-      Map<String, FigureTranslation>? figures});
+      Map<String, FigureTranslation>? figures,
+      Map<String, BackgroundTranslation>? backgrounds});
   PackTranslationCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -125,17 +141,30 @@ class _PackTranslationCopyWithImpl<$R, $Out>
       get figures => MapCopyWith($value.figures, (v, t) => v.copyWith.$chain(t),
           (v) => call(figures: v));
   @override
+  MapCopyWith<
+      $R,
+      String,
+      BackgroundTranslation,
+      BackgroundTranslationCopyWith<$R, BackgroundTranslation,
+          BackgroundTranslation>> get backgrounds => MapCopyWith(
+      $value.backgrounds,
+      (v, t) => v.copyWith.$chain(t),
+      (v) => call(backgrounds: v));
+  @override
   $R call(
           {Map<String, DeckTranslation>? decks,
-          Map<String, FigureTranslation>? figures}) =>
+          Map<String, FigureTranslation>? figures,
+          Map<String, BackgroundTranslation>? backgrounds}) =>
       $apply(FieldCopyWithData({
         if (decks != null) #decks: decks,
-        if (figures != null) #figures: figures
+        if (figures != null) #figures: figures,
+        if (backgrounds != null) #backgrounds: backgrounds
       }));
   @override
   PackTranslation $make(CopyWithData data) => PackTranslation(
       decks: data.get(#decks, or: $value.decks),
-      figures: data.get(#figures, or: $value.figures));
+      figures: data.get(#figures, or: $value.figures),
+      backgrounds: data.get(#backgrounds, or: $value.backgrounds));
 
   @override
   PackTranslationCopyWith<$R2, PackTranslation, $Out2> $chain<$R2, $Out2>(
@@ -270,6 +299,7 @@ class DescriptiveTranslationMapper
       DeckTranslationMapper.ensureInitialized();
       FigureTranslationMapper.ensureInitialized();
       FigureVariationTranslationMapper.ensureInitialized();
+      BackgroundTranslationMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -600,4 +630,126 @@ class _FigureVariationTranslationCopyWithImpl<$R, $Out>
   FigureVariationTranslationCopyWith<$R2, FigureVariationTranslation, $Out2>
       $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
           _FigureVariationTranslationCopyWithImpl($value, $cast, t);
+}
+
+class BackgroundTranslationMapper
+    extends ClassMapperBase<BackgroundTranslation> {
+  BackgroundTranslationMapper._();
+
+  static BackgroundTranslationMapper? _instance;
+  static BackgroundTranslationMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = BackgroundTranslationMapper._());
+      DescriptiveTranslationMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'BackgroundTranslation';
+
+  static String _$name(BackgroundTranslation v) => v.name;
+  static const Field<BackgroundTranslation, String> _f$name =
+      Field('name', _$name);
+  static String? _$description(BackgroundTranslation v) => v.description;
+  static const Field<BackgroundTranslation, String> _f$description =
+      Field('description', _$description, opt: true);
+
+  @override
+  final MappableFields<BackgroundTranslation> fields = const {
+    #name: _f$name,
+    #description: _f$description,
+  };
+
+  static BackgroundTranslation _instantiate(DecodingData data) {
+    return BackgroundTranslation(
+        name: data.dec(_f$name), description: data.dec(_f$description));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static BackgroundTranslation fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<BackgroundTranslation>(map);
+  }
+
+  static BackgroundTranslation fromJson(String json) {
+    return ensureInitialized().decodeJson<BackgroundTranslation>(json);
+  }
+}
+
+mixin BackgroundTranslationMappable {
+  String toJson() {
+    return BackgroundTranslationMapper.ensureInitialized()
+        .encodeJson<BackgroundTranslation>(this as BackgroundTranslation);
+  }
+
+  Map<String, dynamic> toMap() {
+    return BackgroundTranslationMapper.ensureInitialized()
+        .encodeMap<BackgroundTranslation>(this as BackgroundTranslation);
+  }
+
+  BackgroundTranslationCopyWith<BackgroundTranslation, BackgroundTranslation,
+          BackgroundTranslation>
+      get copyWith => _BackgroundTranslationCopyWithImpl(
+          this as BackgroundTranslation, $identity, $identity);
+  @override
+  String toString() {
+    return BackgroundTranslationMapper.ensureInitialized()
+        .stringifyValue(this as BackgroundTranslation);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return BackgroundTranslationMapper.ensureInitialized()
+        .equalsValue(this as BackgroundTranslation, other);
+  }
+
+  @override
+  int get hashCode {
+    return BackgroundTranslationMapper.ensureInitialized()
+        .hashValue(this as BackgroundTranslation);
+  }
+}
+
+extension BackgroundTranslationValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, BackgroundTranslation, $Out> {
+  BackgroundTranslationCopyWith<$R, BackgroundTranslation, $Out>
+      get $asBackgroundTranslation =>
+          $base.as((v, t, t2) => _BackgroundTranslationCopyWithImpl(v, t, t2));
+}
+
+abstract class BackgroundTranslationCopyWith<
+    $R,
+    $In extends BackgroundTranslation,
+    $Out> implements DescriptiveTranslationCopyWith<$R, $In, $Out> {
+  @override
+  $R call({String? name, String? description});
+  BackgroundTranslationCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class _BackgroundTranslationCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, BackgroundTranslation, $Out>
+    implements BackgroundTranslationCopyWith<$R, BackgroundTranslation, $Out> {
+  _BackgroundTranslationCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<BackgroundTranslation> $mapper =
+      BackgroundTranslationMapper.ensureInitialized();
+  @override
+  $R call({String? name, Object? description = $none}) =>
+      $apply(FieldCopyWithData({
+        if (name != null) #name: name,
+        if (description != $none) #description: description
+      }));
+  @override
+  BackgroundTranslation $make(CopyWithData data) => BackgroundTranslation(
+      name: data.get(#name, or: $value.name),
+      description: data.get(#description, or: $value.description));
+
+  @override
+  BackgroundTranslationCopyWith<$R2, BackgroundTranslation, $Out2>
+      $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+          _BackgroundTranslationCopyWithImpl($value, $cast, t);
 }

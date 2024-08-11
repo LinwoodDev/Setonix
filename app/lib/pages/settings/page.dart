@@ -1,12 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:quokka/pages/settings/data.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'general.dart';
 import 'personalization.dart';
@@ -75,7 +72,7 @@ class _SettingsPageState extends State<SettingsPage> {
           var navigation = Column(children: [
             Header(
               title: Text(AppLocalizations.of(context).settings),
-              leading: IconButton(
+              leading: IconButton.outlined(
                 icon: const PhosphorIcon(PhosphorIconsLight.x),
                 onPressed: () => Navigator.of(context).pop(),
               ),
@@ -110,33 +107,6 @@ class _SettingsPageState extends State<SettingsPage> {
                           selected: selected,
                         );
                       }),
-                      if (kIsWeb) ...[
-                        const Divider(),
-                        Padding(
-                            padding: const EdgeInsets.all(5),
-                            child: InkWell(
-                                onTap: () => launchUrl(
-                                    Uri.https('vercel.com', '', {
-                                      'utm_source': 'Linwood',
-                                      'utm_campaign': 'oss'
-                                    }),
-                                    mode: LaunchMode.externalApplication),
-                                child: Material(
-                                  color: Colors.transparent,
-                                  child: SizedBox(
-                                      height: 50,
-                                      child: SvgPicture.asset(
-                                          'assets/images/powered-by-vercel.svg',
-                                          placeholderBuilder: (BuildContext
-                                                  context) =>
-                                              Container(
-                                                  padding: const EdgeInsets.all(
-                                                      30.0),
-                                                  child:
-                                                      const CircularProgressIndicator()),
-                                          semanticsLabel: 'Powered by Vercel')),
-                                )))
-                      ],
                     ]),
               ),
             )

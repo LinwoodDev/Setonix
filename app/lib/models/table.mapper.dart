@@ -17,6 +17,7 @@ class GameTableMapper extends ClassMapperBase<GameTable> {
       TableCellMapper.ensureInitialized();
       GameBoardMapper.ensureInitialized();
       GamePlayerMapper.ensureInitialized();
+      ItemLocationMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -34,19 +35,24 @@ class GameTableMapper extends ClassMapperBase<GameTable> {
   static Map<String, GamePlayer> _$players(GameTable v) => v.players;
   static const Field<GameTable, Map<String, GamePlayer>> _f$players =
       Field('players', _$players, opt: true, def: const {});
+  static ItemLocation? _$background(GameTable v) => v.background;
+  static const Field<GameTable, ItemLocation> _f$background =
+      Field('background', _$background, opt: true);
 
   @override
   final MappableFields<GameTable> fields = const {
     #cells: _f$cells,
     #boards: _f$boards,
     #players: _f$players,
+    #background: _f$background,
   };
 
   static GameTable _instantiate(DecodingData data) {
     return GameTable(
         cells: data.dec(_f$cells),
         boards: data.dec(_f$boards),
-        players: data.dec(_f$players));
+        players: data.dec(_f$players),
+        background: data.dec(_f$background));
   }
 
   @override
@@ -105,10 +111,12 @@ abstract class GameTableCopyWith<$R, $In extends GameTable, $Out>
       GameBoardCopyWith<$R, GameBoard, GameBoard>> get boards;
   MapCopyWith<$R, String, GamePlayer,
       GamePlayerCopyWith<$R, GamePlayer, GamePlayer>> get players;
+  ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get background;
   $R call(
       {Map<VectorDefinition, TableCell>? cells,
       Map<VectorDefinition, GameBoard>? boards,
-      Map<String, GamePlayer>? players});
+      Map<String, GamePlayer>? players,
+      ItemLocation? background});
   GameTableCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -136,20 +144,26 @@ class _GameTableCopyWithImpl<$R, $Out>
       get players => MapCopyWith($value.players, (v, t) => v.copyWith.$chain(t),
           (v) => call(players: v));
   @override
+  ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get background =>
+      $value.background?.copyWith.$chain((v) => call(background: v));
+  @override
   $R call(
           {Map<VectorDefinition, TableCell>? cells,
           Map<VectorDefinition, GameBoard>? boards,
-          Map<String, GamePlayer>? players}) =>
+          Map<String, GamePlayer>? players,
+          Object? background = $none}) =>
       $apply(FieldCopyWithData({
         if (cells != null) #cells: cells,
         if (boards != null) #boards: boards,
-        if (players != null) #players: players
+        if (players != null) #players: players,
+        if (background != $none) #background: background
       }));
   @override
   GameTable $make(CopyWithData data) => GameTable(
       cells: data.get(#cells, or: $value.cells),
       boards: data.get(#boards, or: $value.boards),
-      players: data.get(#players, or: $value.players));
+      players: data.get(#players, or: $value.players),
+      background: data.get(#background, or: $value.background));
 
   @override
   GameTableCopyWith<$R2, GameTable, $Out2> $chain<$R2, $Out2>(

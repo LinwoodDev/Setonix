@@ -16,6 +16,14 @@
       "name": "Skat"
     }
   },
+  "backgrounds": {
+    "grid": {
+      "name": "Grid"
+    },
+    "cards": {
+      "name": "Cards"
+    }
+  },
   "figures": {
     "cards": {
       "name": "Cards",

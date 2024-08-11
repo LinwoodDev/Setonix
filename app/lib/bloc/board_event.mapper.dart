@@ -16,6 +16,7 @@ class BoardEventMapper extends ClassMapperBase<BoardEvent> {
       TableChangedMapper.ensureInitialized();
       CellSwitchedMapper.ensureInitialized();
       ColorSchemeChangedMapper.ensureInitialized();
+      BackgroundChangedMapper.ensureInitialized();
       HandChangedMapper.ensureInitialized();
       ObjectsSpawnedMapper.ensureInitialized();
       ObjectsMovedMapper.ensureInitialized();
@@ -461,6 +462,140 @@ class _ColorSchemeChangedCopyWithImpl<$R, $Out>
   ColorSchemeChangedCopyWith<$R2, ColorSchemeChanged, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
       _ColorSchemeChangedCopyWithImpl($value, $cast, t);
+}
+
+class BackgroundChangedMapper extends SubClassMapperBase<BackgroundChanged> {
+  BackgroundChangedMapper._();
+
+  static BackgroundChangedMapper? _instance;
+  static BackgroundChangedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = BackgroundChangedMapper._());
+      BoardEventMapper.ensureInitialized().addSubMapper(_instance!);
+      ItemLocationMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'BackgroundChanged';
+
+  static ItemLocation _$background(BackgroundChanged v) => v.background;
+  static const Field<BackgroundChanged, ItemLocation> _f$background =
+      Field('background', _$background);
+  static bool _$isRemoteEvent(BackgroundChanged v) => v.isRemoteEvent;
+  static const Field<BackgroundChanged, bool> _f$isRemoteEvent =
+      Field('isRemoteEvent', _$isRemoteEvent, opt: true, def: false);
+
+  @override
+  final MappableFields<BackgroundChanged> fields = const {
+    #background: _f$background,
+    #isRemoteEvent: _f$isRemoteEvent,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'BackgroundChanged';
+  @override
+  late final ClassMapperBase superMapper = BoardEventMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = const IgnoreKeysHook({'isRemoteEvent'});
+
+  static BackgroundChanged _instantiate(DecodingData data) {
+    return BackgroundChanged(data.dec(_f$background),
+        isRemoteEvent: data.dec(_f$isRemoteEvent));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static BackgroundChanged fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<BackgroundChanged>(map);
+  }
+
+  static BackgroundChanged fromJson(String json) {
+    return ensureInitialized().decodeJson<BackgroundChanged>(json);
+  }
+}
+
+mixin BackgroundChangedMappable {
+  String toJson() {
+    return BackgroundChangedMapper.ensureInitialized()
+        .encodeJson<BackgroundChanged>(this as BackgroundChanged);
+  }
+
+  Map<String, dynamic> toMap() {
+    return BackgroundChangedMapper.ensureInitialized()
+        .encodeMap<BackgroundChanged>(this as BackgroundChanged);
+  }
+
+  BackgroundChangedCopyWith<BackgroundChanged, BackgroundChanged,
+          BackgroundChanged>
+      get copyWith => _BackgroundChangedCopyWithImpl(
+          this as BackgroundChanged, $identity, $identity);
+  @override
+  String toString() {
+    return BackgroundChangedMapper.ensureInitialized()
+        .stringifyValue(this as BackgroundChanged);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return BackgroundChangedMapper.ensureInitialized()
+        .equalsValue(this as BackgroundChanged, other);
+  }
+
+  @override
+  int get hashCode {
+    return BackgroundChangedMapper.ensureInitialized()
+        .hashValue(this as BackgroundChanged);
+  }
+}
+
+extension BackgroundChangedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, BackgroundChanged, $Out> {
+  BackgroundChangedCopyWith<$R, BackgroundChanged, $Out>
+      get $asBackgroundChanged =>
+          $base.as((v, t, t2) => _BackgroundChangedCopyWithImpl(v, t, t2));
+}
+
+abstract class BackgroundChangedCopyWith<$R, $In extends BackgroundChanged,
+    $Out> implements BoardEventCopyWith<$R, $In, $Out> {
+  ItemLocationCopyWith<$R, ItemLocation, ItemLocation> get background;
+  @override
+  $R call({ItemLocation? background, bool? isRemoteEvent});
+  BackgroundChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class _BackgroundChangedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, BackgroundChanged, $Out>
+    implements BackgroundChangedCopyWith<$R, BackgroundChanged, $Out> {
+  _BackgroundChangedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<BackgroundChanged> $mapper =
+      BackgroundChangedMapper.ensureInitialized();
+  @override
+  ItemLocationCopyWith<$R, ItemLocation, ItemLocation> get background =>
+      $value.background.copyWith.$chain((v) => call(background: v));
+  @override
+  $R call({ItemLocation? background, bool? isRemoteEvent}) =>
+      $apply(FieldCopyWithData({
+        if (background != null) #background: background,
+        if (isRemoteEvent != null) #isRemoteEvent: isRemoteEvent
+      }));
+  @override
+  BackgroundChanged $make(CopyWithData data) =>
+      BackgroundChanged(data.get(#background, or: $value.background),
+          isRemoteEvent: data.get(#isRemoteEvent, or: $value.isRemoteEvent));
+
+  @override
+  BackgroundChangedCopyWith<$R2, BackgroundChanged, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _BackgroundChangedCopyWithImpl($value, $cast, t);
 }
 
 class HandChangedMapper extends SubClassMapperBase<HandChanged> {

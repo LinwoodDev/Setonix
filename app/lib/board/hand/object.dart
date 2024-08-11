@@ -32,13 +32,13 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
   void moveItem(HandItemDropZone zone) {
     switch (zone) {
       case GameCell e:
-        game.bloc.add(ObjectsMoved(
+        game.bloc.send(ObjectsMoved(
           [item.$2],
           item.$1,
           e.toDefinition(),
         ));
       case GameObjectHandItem e:
-        game.bloc.add(ObjectIndexChanged(
+        game.bloc.send(ObjectIndexChanged(
           item.$1,
           item.$2,
           e.item.$2,
@@ -53,7 +53,7 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
         ContextMenuButtonItem(
           label: AppLocalizations.of(game.buildContext!).toggleHide,
           onPressed: () {
-            game.bloc.add(CellHideChanged(item.$1, object: item.$2));
+            game.bloc.send(CellHideChanged(item.$1, object: item.$2));
             onClose();
           },
         ),

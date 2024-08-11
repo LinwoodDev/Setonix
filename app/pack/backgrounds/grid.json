@@ -1,3 +1,4 @@
 {
-  "texture": "backgrounds/grid.png"
+  "texture": "backgrounds/grid.png",
+  "priority": 1
 }

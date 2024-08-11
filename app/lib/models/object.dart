@@ -1,21 +1,10 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:quokka/models/vector.dart';
+import 'package:quokka/models/visual.dart';
 
 part 'object.mapper.dart';
 
 sealed class GameObjectDefinition {}
-
-abstract class VisualDefinition {
-  final String texture;
-  final VectorDefinition offset;
-  final VectorDefinition? size;
-
-  VisualDefinition({
-    required this.texture,
-    this.offset = VectorDefinition.zero,
-    this.size,
-  });
-}
 
 @MappableClass()
 class FigureDefinition extends GameObjectDefinition
@@ -42,9 +31,7 @@ class BoardDefinition extends GameObjectDefinition
 }
 
 @MappableClass()
-class VariationDefinition
-    with VariationDefinitionMappable
-    implements VisualDefinition {
+class VariationDefinition with VariationDefinitionMappable, VisualDefinition {
   final String? category;
   @override
   final String texture;
@@ -62,9 +49,7 @@ class VariationDefinition
 }
 
 @MappableClass()
-class FigureBackDefinition
-    with FigureBackDefinitionMappable
-    implements VisualDefinition {
+class FigureBackDefinition with FigureBackDefinitionMappable, VisualDefinition {
   @override
   final String texture;
   @override

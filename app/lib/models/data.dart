@@ -4,6 +4,7 @@ import 'package:archive/archive.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/services.dart';
 import 'package:lw_file_system/lw_file_system.dart';
+import 'package:quokka/models/background.dart';
 import 'package:quokka/models/deck.dart';
 import 'package:quokka/models/meta.dart';
 import 'package:quokka/models/object.dart';
@@ -16,6 +17,7 @@ const kPackFiguresPath = 'figures';
 const kPackBoardsPath = 'boards';
 const kPackTexturesPath = 'textures';
 const kPackTranslationsPath = 'translations';
+const kPackBackgroundsPath = 'backgrounds';
 
 const kGameTablePath = 'tables';
 
@@ -102,7 +104,7 @@ class QuokkaData extends ArchiveData<QuokkaData> {
         item: getFigure(id),
       );
 
-  Iterable<PackItem<FigureDefinition>>? getFigureItems(
+  Iterable<PackItem<FigureDefinition>> getFigureItems(
           [String namespace = '']) =>
       getDecks().map((e) => getFigureItem(e, namespace)).whereNotNull();
 
@@ -118,6 +120,31 @@ class QuokkaData extends ArchiveData<QuokkaData> {
       return null;
     }
   }
+
+  Iterable<String> getBackgrounds() =>
+      getAssets('$kPackBackgroundsPath/', true);
+
+  BackgroundDefinition? getBackground(String id) {
+    final data = getAsset('$kPackBackgroundsPath/$id.json');
+    if (data == null) return null;
+    final content = utf8.decode(data);
+    return BackgroundDefinitionMapper.fromJson(content);
+  }
+
+  PackItem<BackgroundDefinition>? getBackgroundItem(String id,
+          [String namespace = '']) =>
+      PackItem.wrap(
+        pack: this,
+        namespace: namespace,
+        id: id,
+        item: getBackground(id),
+      );
+
+  Iterable<PackItem<BackgroundDefinition>> getBackgroundItems(
+          [String namespace = '']) =>
+      getBackgrounds()
+          .map((e) => getBackgroundItem(e, namespace))
+          .whereNotNull();
 
   Uint8List? getTexture(String path) => getAsset('$kPackTexturesPath/$path');
 

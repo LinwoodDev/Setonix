@@ -41,6 +41,7 @@ final class TableChanged extends BoardEvent with TableChangedMappable {
 
   TableChanged(this.table, {super.isRemoteEvent});
 
+  @override
   bool get isMultiplayer => true;
 }
 
@@ -58,6 +59,14 @@ final class ColorSchemeChanged extends BoardEvent
   final ColorScheme? colorScheme;
 
   ColorSchemeChanged(this.colorScheme, {super.isRemoteEvent});
+}
+
+@MappableClass()
+final class BackgroundChanged extends BoardEvent
+    with BackgroundChangedMappable {
+  final ItemLocation background;
+
+  BackgroundChanged(this.background, {super.isRemoteEvent});
 }
 
 @MappableClass()
@@ -83,6 +92,7 @@ final class ObjectsSpawned extends BoardEvent with ObjectsSpawnedMappable {
 
   ObjectsSpawned(this.cell, this.objects, {super.isRemoteEvent});
 
+  @override
   bool get isMultiplayer => true;
 }
 
@@ -93,6 +103,7 @@ final class ObjectsMoved extends BoardEvent with ObjectsMovedMappable {
 
   ObjectsMoved(this.objects, this.from, this.to, {super.isRemoteEvent});
 
+  @override
   bool get isMultiplayer => true;
 }
 
@@ -108,6 +119,7 @@ final class CellHideChanged extends BoardEvent with CellHideChangedMappable {
   CellHideChanged.hide(this.cell, {this.object, super.isRemoteEvent})
       : hide = true;
 
+  @override
   bool get isMultiplayer => true;
 }
 
@@ -120,6 +132,7 @@ final class CellShuffled extends BoardEvent with CellShuffledMappable {
   CellShuffled.random(this.cell, {super.isRemoteEvent})
       : seed = DateTime.now().millisecondsSinceEpoch;
 
+  @override
   bool get isMultiplayer => true;
 }
 
@@ -132,5 +145,6 @@ final class ObjectIndexChanged extends BoardEvent
 
   ObjectIndexChanged(this.cell, this.object, this.index, {super.isRemoteEvent});
 
+  @override
   bool get isMultiplayer => true;
 }
