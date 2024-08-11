@@ -53,7 +53,7 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
         ContextMenuButtonItem(
           label: AppLocalizations.of(game.buildContext!).toggleHide,
           onPressed: () {
-            game.bloc.add(CellHideChanged(item.$1, item.$2));
+            game.bloc.add(CellHideChanged(item.$1, object: item.$2));
             onClose();
           },
         ),

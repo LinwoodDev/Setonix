@@ -1,10 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:quokka/bloc/settings.dart';
 import 'package:quokka/widgets/search.dart';
+
+class AddConnectDialog extends StatelessWidget {
+  final TextEditingController _controller = TextEditingController();
+
+  AddConnectDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ResponsiveAlertDialog(
+      title: Text(AppLocalizations.of(context).connect),
+      leading: IconButton.outlined(
+        icon: const Icon(PhosphorIconsLight.x),
+        onPressed: () => Navigator.of(context).pop(),
+      ),
+      constraints: const BoxConstraints(maxWidth: LeapBreakpoints.compact),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(AppLocalizations.of(context).connectNote),
+          const SizedBox(height: 16),
+          TextField(
+            controller: _controller,
+            decoration: InputDecoration(
+              labelText: AppLocalizations.of(context).address,
+              filled: true,
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        ElevatedButton.icon(
+          onPressed: () {
+            Navigator.of(context).pop();
+            GoRouter.of(context).goNamed('connect', queryParameters: {
+              'address': _controller.text,
+            });
+          },
+          label: Text(AppLocalizations.of(context).connect),
+          icon: const Icon(PhosphorIconsLight.link),
+        ),
+      ],
+    );
+  }
+}
 
 class ConnectDialog extends StatefulWidget {
   const ConnectDialog({super.key});

@@ -9,16 +9,24 @@ import 'package:quokka/api/settings.dart';
 import 'package:quokka/bloc/board.dart';
 import 'package:quokka/bloc/board_event.dart';
 import 'package:quokka/bloc/board_state.dart';
+import 'package:quokka/bloc/multiplayer.dart';
 import 'package:quokka/bloc/settings.dart';
 import 'package:quokka/board/game.dart';
 import 'package:quokka/models/data.dart';
+import 'package:quokka/pages/game/multiplayer.dart';
 import 'package:quokka/services/file_system.dart';
 
 class GamePage extends StatefulWidget {
   final String? name;
+  final String? address;
   final QuokkaData? data;
 
-  const GamePage({super.key, this.name, this.data});
+  const GamePage({
+    super.key,
+    this.name,
+    this.data,
+    this.address,
+  });
 
   @override
   State<GamePage> createState() => _GamePageState();
@@ -35,6 +43,13 @@ class _GamePageState extends State<GamePage> {
   }
 
   Future<void> _loadTable() async {
+    final address = widget.address;
+    if (address != null) {
+      setState(() {
+        _data = QuokkaData.empty();
+      });
+      return;
+    }
     final worldSystem = context.read<QuokkaFileSystem>().worldSystem;
     final name = widget.name;
     final data = (widget.data ??
@@ -53,12 +68,27 @@ class _GamePageState extends State<GamePage> {
     return Listener(
       behavior: HitTestBehavior.translucent,
       onPointerDown: (_) => _contextMenuController.remove(),
-      child: BlocProvider(
-        create: (context) => BoardBloc(
-          fileSystem: context.read<QuokkaFileSystem>(),
-          name: widget.name,
-          data: _data!,
-        ),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) {
+              final cubit = MultiplayerCubit();
+              final address = widget.address;
+              if (address != null) {
+                cubit.connect(address);
+              }
+              return cubit;
+            },
+          ),
+          BlocProvider(
+            create: (context) => BoardBloc(
+              multiplayer: context.read<MultiplayerCubit>(),
+              fileSystem: context.read<QuokkaFileSystem>(),
+              name: widget.name,
+              data: _data!,
+            ),
+          ),
+        ],
         child: Scaffold(
           appBar: WindowTitleBar<SettingsCubit, QuokkaSettings>(
             title: Text(AppLocalizations.of(context).game),
@@ -101,6 +131,22 @@ class _GamePageState extends State<GamePage> {
                             title: Text(MaterialLocalizations.of(context)
                                 .backButtonTooltip),
                             onTap: () => Scaffold.of(context).closeDrawer(),
+                          ),
+                          ListTile(
+                            leading: const Icon(PhosphorIconsLight.users),
+                            title:
+                                Text(AppLocalizations.of(context).multiplayer),
+                            onTap: () {
+                              Scaffold.of(context).closeDrawer();
+                              final multiplayer =
+                                  context.read<MultiplayerCubit>();
+                              showDialog(
+                                context: context,
+                                builder: (context) => BlocProvider.value(
+                                    value: multiplayer,
+                                    child: const MultiplayerDialog()),
+                              );
+                            },
                           ),
                           ListTile(
                             leading: const Icon(PhosphorIconsLight.gear),

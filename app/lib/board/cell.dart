@@ -185,7 +185,7 @@ class GameCell extends HandItemDropZone
                   ContextMenuButtonItem(
                     label: AppLocalizations.of(context).shuffle,
                     onPressed: () {
-                      bloc.add(CellShuffled(toDefinition()));
+                      bloc.add(CellShuffled.random(toDefinition()));
                       onClose();
                     },
                   ),

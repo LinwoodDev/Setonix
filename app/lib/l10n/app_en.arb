@@ -111,5 +111,10 @@
   "deleteGameMessage": "Are you sure you want to delete the game?",
   "selectGame": "Select a game",
   "toggleHide": "Toggle hide",
-  "defaultPath": "Default path"
+  "defaultPath": "Default path",
+  "multiplayer": "Multiplayer",
+  "multiplayerNote": "Multiplayer is an experimental feature and may not work as expected. Please report any issues you encounter. Please make sure you have the necessary ports open and forwarded or be in the same network.",
+  "connectNote": "Only connect to servers you trust. Be sure to open necessary ports and connect to the same network. Both clients need to be on the same version of Quokka.",
+  "start": "Start",
+  "stop": "Stop"
 }

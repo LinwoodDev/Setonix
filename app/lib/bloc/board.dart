@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quokka/bloc/board_event.dart';
@@ -5,19 +7,34 @@ import 'package:quokka/bloc/board_state.dart';
 import 'package:quokka/models/data.dart';
 import 'package:quokka/models/table.dart';
 import 'package:quokka/services/file_system.dart';
+import 'package:quokka/bloc/multiplayer.dart';
 
 class BoardBloc extends Bloc<BoardEvent, BoardState> {
   BoardBloc({
+    required MultiplayerCubit multiplayer,
     required QuokkaFileSystem fileSystem,
     String? name,
     QuokkaData? data,
     GameTable? table,
   }) : super(BoardState(
+          multiplayer: multiplayer,
           fileSystem: fileSystem,
           name: name,
           data: data ?? QuokkaData.empty(),
           table: table ?? data?.getTable() ?? const GameTable(),
         )) {
+    state.multiplayer
+      ..events.listen(add)
+      ..inits.listen((e) {
+        if (e == 0) return;
+        print('$e has joined');
+        state.multiplayer.send(TableChanged(state.table), e);
+      });
+
+    on<TableChanged>((event, emit) {
+      emit(state.copyWith(table: event.table));
+      return save();
+    });
     on<ColorSchemeChanged>((event, emit) {
       emit(state.copyWith(colorScheme: event.colorScheme));
     });
@@ -42,6 +59,7 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
       return save();
     });
     on<ObjectsMoved>((event, emit) {
+      if (event.from == event.to) return null;
       var from = state.table.cells[event.from] ?? TableCell();
       var to = state.table.cells[event.to] ?? TableCell();
       final toRemove = event.objects;
@@ -85,10 +103,11 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
     });
     on<CellShuffled>((event, emit) {
       final cell = state.table.cells[event.cell] ?? TableCell();
+      final random = Random(event.seed);
       emit(state.copyWith.table.cells.replace(
           event.cell,
           cell.copyWith(
-            objects: cell.objects.toList()..shuffle(),
+            objects: cell.objects.toList()..shuffle(random),
           )));
       return save();
     });
@@ -109,5 +128,11 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
     final name = state.name;
     if (name == null) return;
     return state.fileSystem.worldSystem.updateFile(name, data);
+  }
+
+  @override
+  void onEvent(BoardEvent event) {
+    super.onEvent(event);
+    if (event.isMultiplayer) state.multiplayer.send(event);
   }
 }

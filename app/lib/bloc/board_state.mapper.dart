@@ -23,6 +23,9 @@ class BoardStateMapper extends ClassMapperBase<BoardState> {
   @override
   final String id = 'BoardState';
 
+  static MultiplayerCubit _$multiplayer(BoardState v) => v.multiplayer;
+  static const Field<BoardState, MultiplayerCubit> _f$multiplayer =
+      Field('multiplayer', _$multiplayer);
   static QuokkaFileSystem _$fileSystem(BoardState v) => v.fileSystem;
   static const Field<BoardState, QuokkaFileSystem> _f$fileSystem =
       Field('fileSystem', _$fileSystem);
@@ -49,6 +52,7 @@ class BoardStateMapper extends ClassMapperBase<BoardState> {
 
   @override
   final MappableFields<BoardState> fields = const {
+    #multiplayer: _f$multiplayer,
     #fileSystem: _f$fileSystem,
     #name: _f$name,
     #colorScheme: _f$colorScheme,
@@ -61,6 +65,7 @@ class BoardStateMapper extends ClassMapperBase<BoardState> {
 
   static BoardState _instantiate(DecodingData data) {
     return BoardState(
+        multiplayer: data.dec(_f$multiplayer),
         fileSystem: data.dec(_f$fileSystem),
         name: data.dec(_f$name),
         colorScheme: data.dec(_f$colorScheme),
@@ -127,7 +132,8 @@ abstract class BoardStateCopyWith<$R, $In extends BoardState, $Out>
       get selectedCell;
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get selectedDeck;
   $R call(
-      {QuokkaFileSystem? fileSystem,
+      {MultiplayerCubit? multiplayer,
+      QuokkaFileSystem? fileSystem,
       String? name,
       ColorScheme? colorScheme,
       GameTable? table,
@@ -158,7 +164,8 @@ class _BoardStateCopyWithImpl<$R, $Out>
       $value.selectedDeck?.copyWith.$chain((v) => call(selectedDeck: v));
   @override
   $R call(
-          {QuokkaFileSystem? fileSystem,
+          {MultiplayerCubit? multiplayer,
+          QuokkaFileSystem? fileSystem,
           Object? name = $none,
           Object? colorScheme = $none,
           GameTable? table,
@@ -167,6 +174,7 @@ class _BoardStateCopyWithImpl<$R, $Out>
           bool? showHand,
           QuokkaData? data}) =>
       $apply(FieldCopyWithData({
+        if (multiplayer != null) #multiplayer: multiplayer,
         if (fileSystem != null) #fileSystem: fileSystem,
         if (name != $none) #name: name,
         if (colorScheme != $none) #colorScheme: colorScheme,
@@ -178,6 +186,7 @@ class _BoardStateCopyWithImpl<$R, $Out>
       }));
   @override
   BoardState $make(CopyWithData data) => BoardState(
+      multiplayer: data.get(#multiplayer, or: $value.multiplayer),
       fileSystem: data.get(#fileSystem, or: $value.fileSystem),
       name: data.get(#name, or: $value.name),
       colorScheme: data.get(#colorScheme, or: $value.colorScheme),
