@@ -111,7 +111,7 @@ class QuokkaApp extends StatelessWidget {
     routes: <RouteBase>[
       GoRoute(
         path: '/',
-        builder: (context, state) => const HomePage(),
+        builder: (context, state) => HomePage(),
         routes: [
           GoRoute(
             name: 'game',
