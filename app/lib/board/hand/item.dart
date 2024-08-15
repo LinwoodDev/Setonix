@@ -5,7 +5,6 @@ import 'package:flutter/material.dart'
     show
         AdaptiveTextSelectionToolbar,
         BuildContext,
-        Colors,
         ContextMenuButtonItem,
         TextSelectionToolbarAnchors;
 import 'package:flutter/painting.dart';
@@ -73,9 +72,8 @@ abstract class HandItem<T> extends HandItemDropZone
         textRenderer: _buildPaint(state)));
   }
 
-  _buildPaint([BoardState? state]) => TextPaint(
-        style: TextStyle(
-            fontSize: 14, color: state?.colorScheme?.onSurface ?? Colors.white),
+  _buildPaint(BoardState state) => TextPaint(
+        style: TextStyle(fontSize: 14, color: state.colorScheme.onSurface),
       );
 
   @override

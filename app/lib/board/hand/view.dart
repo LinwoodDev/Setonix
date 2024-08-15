@@ -86,8 +86,7 @@ class GameHand extends CustomPainterComponent
         .whereType<HandItem>()
         .forEach((e) => e.removeFromParent());
     painter = GameHandCustomPainter(
-        showHand: state.showHand,
-        color: state.colorScheme?.surface ?? Colors.black);
+        showHand: state.showHand, color: state.colorScheme.surface);
     if (!state.showHand) return;
     _itemsChild.x = 0;
     final selected = state.selectedCell;

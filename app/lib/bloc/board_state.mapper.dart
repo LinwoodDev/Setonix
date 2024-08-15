@@ -29,12 +29,12 @@ class BoardStateMapper extends ClassMapperBase<BoardState> {
   static QuokkaFileSystem _$fileSystem(BoardState v) => v.fileSystem;
   static const Field<BoardState, QuokkaFileSystem> _f$fileSystem =
       Field('fileSystem', _$fileSystem);
+  static ColorScheme _$colorScheme(BoardState v) => v.colorScheme;
+  static const Field<BoardState, ColorScheme> _f$colorScheme =
+      Field('colorScheme', _$colorScheme);
   static String? _$name(BoardState v) => v.name;
   static const Field<BoardState, String> _f$name =
       Field('name', _$name, opt: true);
-  static ColorScheme? _$colorScheme(BoardState v) => v.colorScheme;
-  static const Field<BoardState, ColorScheme> _f$colorScheme =
-      Field('colorScheme', _$colorScheme, opt: true);
   static GameTable _$table(BoardState v) => v.table;
   static const Field<BoardState, GameTable> _f$table =
       Field('table', _$table, opt: true, def: const GameTable());
@@ -54,8 +54,8 @@ class BoardStateMapper extends ClassMapperBase<BoardState> {
   final MappableFields<BoardState> fields = const {
     #multiplayer: _f$multiplayer,
     #fileSystem: _f$fileSystem,
-    #name: _f$name,
     #colorScheme: _f$colorScheme,
+    #name: _f$name,
     #table: _f$table,
     #selectedCell: _f$selectedCell,
     #selectedDeck: _f$selectedDeck,
@@ -67,8 +67,8 @@ class BoardStateMapper extends ClassMapperBase<BoardState> {
     return BoardState(
         multiplayer: data.dec(_f$multiplayer),
         fileSystem: data.dec(_f$fileSystem),
-        name: data.dec(_f$name),
         colorScheme: data.dec(_f$colorScheme),
+        name: data.dec(_f$name),
         table: data.dec(_f$table),
         selectedCell: data.dec(_f$selectedCell),
         selectedDeck: data.dec(_f$selectedDeck),
@@ -134,8 +134,8 @@ abstract class BoardStateCopyWith<$R, $In extends BoardState, $Out>
   $R call(
       {MultiplayerCubit? multiplayer,
       QuokkaFileSystem? fileSystem,
-      String? name,
       ColorScheme? colorScheme,
+      String? name,
       GameTable? table,
       VectorDefinition? selectedCell,
       ItemLocation? selectedDeck,
@@ -166,8 +166,8 @@ class _BoardStateCopyWithImpl<$R, $Out>
   $R call(
           {MultiplayerCubit? multiplayer,
           QuokkaFileSystem? fileSystem,
+          ColorScheme? colorScheme,
           Object? name = $none,
-          Object? colorScheme = $none,
           GameTable? table,
           Object? selectedCell = $none,
           Object? selectedDeck = $none,
@@ -176,8 +176,8 @@ class _BoardStateCopyWithImpl<$R, $Out>
       $apply(FieldCopyWithData({
         if (multiplayer != null) #multiplayer: multiplayer,
         if (fileSystem != null) #fileSystem: fileSystem,
+        if (colorScheme != null) #colorScheme: colorScheme,
         if (name != $none) #name: name,
-        if (colorScheme != $none) #colorScheme: colorScheme,
         if (table != null) #table: table,
         if (selectedCell != $none) #selectedCell: selectedCell,
         if (selectedDeck != $none) #selectedDeck: selectedDeck,
@@ -188,8 +188,8 @@ class _BoardStateCopyWithImpl<$R, $Out>
   BoardState $make(CopyWithData data) => BoardState(
       multiplayer: data.get(#multiplayer, or: $value.multiplayer),
       fileSystem: data.get(#fileSystem, or: $value.fileSystem),
-      name: data.get(#name, or: $value.name),
       colorScheme: data.get(#colorScheme, or: $value.colorScheme),
+      name: data.get(#name, or: $value.name),
       table: data.get(#table, or: $value.table),
       selectedCell: data.get(#selectedCell, or: $value.selectedCell),
       selectedDeck: data.get(#selectedDeck, or: $value.selectedDeck),

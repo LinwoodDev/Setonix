@@ -122,7 +122,7 @@ class GameCell extends HandItemDropZone
     final controller = EffectController(
       duration: 0.1,
     );
-    final color = state.colorScheme?.primary ?? Colors.green.withOpacity(0.5);
+    final color = state.colorScheme.primary;
     if (selected) {
       _updateEffects([
         OpacityEffect.to(1, controller),

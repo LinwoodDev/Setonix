@@ -1,7 +1,9 @@
 import 'dart:math';
 
 import 'package:collection/collection.dart';
+import 'package:flutter/material.dart' show ColorScheme;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_leap/helpers.dart';
 import 'package:quokka/bloc/board_event.dart';
 import 'package:quokka/bloc/board_state.dart';
 import 'package:quokka/models/data.dart';
@@ -13,6 +15,7 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
   BoardBloc({
     required MultiplayerCubit multiplayer,
     required QuokkaFileSystem fileSystem,
+    required ColorScheme colorScheme,
     String? name,
     QuokkaData? data,
     GameTable? table,
@@ -21,6 +24,7 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
           fileSystem: fileSystem,
           name: name,
           data: data ?? QuokkaData.empty(),
+          colorScheme: colorScheme,
           table: table ?? data?.getTable() ?? const GameTable(),
         )) {
     state.multiplayer
@@ -42,7 +46,10 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
     });
     on<HandChanged>((event, emit) {
       emit(state.copyWith(
-        showHand: event.show ?? (!state.showHand),
+        showHand: event.show ??
+            (!state.showHand ||
+                state.selectedDeck != event.deck ||
+                state.selectedCell != null),
         selectedDeck: event.deck,
         selectedCell: null,
       ));
@@ -87,6 +94,7 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
       final cell = state.table.cells[event.cell] ?? TableCell();
       final objectIndex = event.object;
       if (objectIndex != null) {
+        if (!objectIndex.inRange(0, cell.objects.length - 1)) return null;
         final object = cell.objects[objectIndex];
         emit(state.copyWith.table.cells.replace(
             event.cell,

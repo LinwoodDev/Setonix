@@ -34,21 +34,37 @@ class GamePage extends StatefulWidget {
 }
 
 class _GamePageState extends State<GamePage> {
+  (MultiplayerCubit, BoardBloc)? _bloc;
   final ContextMenuController _contextMenuController = ContextMenuController();
-  QuokkaData? _data;
 
   @override
   void initState() {
     super.initState();
-    _loadTable();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _loadTable());
   }
+
+  void _initBloc([QuokkaData? data]) => setState(() {
+        final cubit = MultiplayerCubit();
+        final address = widget.address;
+        if (address != null) {
+          cubit.connect(address);
+        }
+        _bloc = (
+          cubit,
+          BoardBloc(
+            multiplayer: cubit,
+            fileSystem: context.read<QuokkaFileSystem>(),
+            name: widget.name,
+            data: data,
+            colorScheme: Theme.of(context).colorScheme,
+          )
+        );
+      });
 
   Future<void> _loadTable() async {
     final address = widget.address;
     if (address != null) {
-      setState(() {
-        _data = QuokkaData.empty();
-      });
+      _initBloc();
       return;
     }
     final worldSystem = context.read<QuokkaFileSystem>().worldSystem;
@@ -56,14 +72,22 @@ class _GamePageState extends State<GamePage> {
     final data = (widget.data ??
             (name == null ? null : await worldSystem.getFile(name))) ??
         QuokkaData.empty();
-    setState(() {
-      _data = data;
-    });
+    _initBloc(data);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final nextColorScheme = Theme.of(context).colorScheme;
+    if (nextColorScheme != _bloc?.$2.state.colorScheme) {
+      _bloc?.$2.send(ColorSchemeChanged(nextColorScheme));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_data == null) {
+    if (_bloc == null) {
       return const Center(child: CircularProgressIndicator());
     }
     return Listener(
@@ -71,24 +95,8 @@ class _GamePageState extends State<GamePage> {
       onPointerDown: (_) => _contextMenuController.remove(),
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(
-            create: (context) {
-              final cubit = MultiplayerCubit();
-              final address = widget.address;
-              if (address != null) {
-                cubit.connect(address);
-              }
-              return cubit;
-            },
-          ),
-          BlocProvider(
-            create: (context) => BoardBloc(
-              multiplayer: context.read<MultiplayerCubit>(),
-              fileSystem: context.read<QuokkaFileSystem>(),
-              name: widget.name,
-              data: _data!,
-            ),
-          ),
+          BlocProvider.value(value: _bloc!.$1),
+          BlocProvider.value(value: _bloc!.$2),
           RepositoryProvider(
             create: (context) => AssetManager(
               bloc: context.read<BoardBloc>(),
@@ -173,24 +181,28 @@ class _GamePageState extends State<GamePage> {
                                             BackgroundChanged(entry.location));
                                         Navigator.of(context).pop();
                                       },
+                                      selected: background == entry.location,
                                     );
                                   }).toList()));
                     },
                   ),
-                  ListTile(
-                    leading: const Icon(PhosphorIconsLight.users),
-                    title: Text(AppLocalizations.of(context).multiplayer),
-                    onTap: () {
-                      Scaffold.of(context).closeDrawer();
-                      final multiplayer = context.read<MultiplayerCubit>();
-                      showDialog(
-                        context: context,
-                        builder: (context) => BlocProvider.value(
-                            value: multiplayer,
-                            child: const MultiplayerDialog()),
-                      );
-                    },
-                  ),
+                  Builder(
+                      builder: (context) => ListTile(
+                            leading: const Icon(PhosphorIconsLight.users),
+                            title:
+                                Text(AppLocalizations.of(context).multiplayer),
+                            onTap: () {
+                              Scaffold.of(context).closeDrawer();
+                              final multiplayer =
+                                  context.read<MultiplayerCubit>();
+                              showDialog(
+                                context: context,
+                                builder: (context) => BlocProvider.value(
+                                    value: multiplayer,
+                                    child: const MultiplayerDialog()),
+                              );
+                            },
+                          )),
                   ListTile(
                     leading: const Icon(PhosphorIconsLight.gear),
                     title: Text(AppLocalizations.of(context).settings),
@@ -211,6 +223,7 @@ class _GamePageState extends State<GamePage> {
                     bloc: context.read<BoardBloc>(),
                     assetManager: context.read<AssetManager>(),
                     contextMenuController: _contextMenuController,
+                    onEscape: () => Scaffold.of(context).openDrawer(),
                   ))),
         ),
       ),

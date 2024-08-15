@@ -11,7 +11,7 @@ part 'board_state.mapper.dart';
 @MappableClass()
 class BoardState with BoardStateMappable {
   final MultiplayerCubit multiplayer;
-  final ColorScheme? colorScheme;
+  final ColorScheme colorScheme;
   final QuokkaFileSystem fileSystem;
   final GameTable table;
   final VectorDefinition? selectedCell;
@@ -23,8 +23,8 @@ class BoardState with BoardStateMappable {
   const BoardState({
     required this.multiplayer,
     required this.fileSystem,
+    required this.colorScheme,
     this.name,
-    this.colorScheme,
     this.table = const GameTable(),
     this.selectedCell,
     this.selectedDeck,
