@@ -1,13 +1,15 @@
+import 'dart:async';
+
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/material.dart'
     show
         AdaptiveTextSelectionToolbar,
-        BuildContext,
         ContextMenuButtonItem,
         TextSelectionToolbarAnchors;
-import 'package:flutter/painting.dart';
+import 'package:flutter/widgets.dart';
 import 'package:quokka/bloc/world.dart';
 import 'package:quokka/bloc/world_state.dart';
 import 'package:quokka/board/game.dart';
@@ -16,13 +18,76 @@ import 'package:quokka/helpers/asset.dart';
 import 'package:quokka/helpers/secondary.dart';
 import 'package:quokka/helpers/drag.dart';
 
-abstract class HandItemDropZone extends PositionComponent {
-  HandItemDropZone({super.size, super.position});
+class HandItemDragCursorHitbox extends PositionComponent
+    with CollisionCallbacks {
+  final HandItem item;
+
+  HandItemDropZone? _lastZone;
+
+  HandItemDropZone? get lastHit => _lastZone;
+
+  HandItemDragCursorHitbox({required this.item, super.position});
+
+  @override
+  void onLoad() {
+    add(CircleHitbox(
+      collisionType: CollisionType.passive,
+      radius: 0.5,
+    ));
+  }
+
+  @override
+  void onCollisionStart(
+      Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollisionStart(intersectionPoints, other);
+    if (other is HandItemDropZone) {
+      _lastZone = other;
+    }
+  }
+
+  @override
+  void onCollisionEnd(PositionComponent other) {
+    super.onCollisionEnd(other);
+    if (other == _lastZone) {
+      _lastZone = null;
+    }
+  }
 }
 
-abstract class HandItem<T> extends HandItemDropZone
+mixin HandItemDropZone on PositionComponent, CollisionCallbacks {
+  Component get hitbox => RectangleHitbox(
+      collisionType: CollisionType.passive, isSolid: true, size: size);
+
+  @override
+  @mustCallSuper
+  FutureOr<void> onLoad() {
+    add(hitbox);
+  }
+
+  @override
+  @mustCallSuper
+  void onCollisionStart(
+      Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollisionStart(intersectionPoints, other);
+    if (other is HandItemDragCursorHitbox) onDragOver(other.item);
+  }
+
+  @override
+  @mustCallSuper
+  void onCollisionEnd(PositionComponent other) {
+    super.onCollisionEnd(other);
+    if (other is HandItemDragCursorHitbox) onDragOverEnd(other.item);
+  }
+
+  void onDragOverEnd(HandItem handItem) {}
+  void onDragOver(HandItem handItem) {}
+}
+
+abstract class HandItem<T> extends PositionComponent
     with
         HasGameRef<BoardGame>,
+        CollisionCallbacks,
+        HandItemDropZone,
         DragCallbacks,
         TapCallbacks,
         LongDragCallbacks,
@@ -58,6 +123,14 @@ abstract class HandItem<T> extends HandItemDropZone
     add(_sprite);
   }
 
+  void _resetPosition() {
+    _sprite.position = Vector2(0, labelHeight);
+    if (!_label.isMounted) add(_label);
+    final cursor = _cursorHitbox;
+    if (cursor != null) cursor.removeFromParent();
+    _cursorHitbox = null;
+  }
+
   @override
   bool listenWhen(WorldState previousState, WorldState newState) =>
       previousState.colorScheme != newState.colorScheme;
@@ -88,24 +161,43 @@ abstract class HandItem<T> extends HandItemDropZone
   }
 
   @override
+  void onDragStart(DragStartEvent event) {
+    super.onDragStart(event);
+    remove(_label);
+    game.add(_cursorHitbox =
+        HandItemDragCursorHitbox(item: this, position: event.localPosition));
+  }
+
+  HandItemDragCursorHitbox? _cursorHitbox;
+
+  @override
   void onDragUpdate(DragUpdateEvent event) {
     super.onDragUpdate(event);
     if (!(isMouseOrLongPressing ?? false)) {
       hand.scroll(event.localDelta.x);
       return;
     }
+    _sprite.position += event.localDelta;
+    final delta = event.canvasEndPosition - _lastPos;
+    _cursorHitbox?.position = event.canvasEndPosition;
     _lastPos = event.canvasEndPosition;
+    if (delta.length < 1) return;
   }
 
   @override
   void onDragEnd(DragEndEvent event) {
     super.onDragEnd(event);
     if (!(isMouseOrLongPressing ?? true)) return;
-    final zone = game
-        .componentsAtPoint(_lastPos)
-        .whereType<HandItemDropZone>()
-        .firstOrNull;
+
+    final zone = _cursorHitbox?.lastHit;
     if (zone != null) moveItem(zone);
+    _resetPosition();
+  }
+
+  @override
+  void onDragCancel(DragCancelEvent event) {
+    super.onDragCancel(event);
+    _resetPosition();
   }
 
   @override

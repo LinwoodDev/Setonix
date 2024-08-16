@@ -122,7 +122,7 @@ class _GamePageState extends State<GamePage> {
                   body: Stack(
                     alignment: Alignment.center,
                     children: [
-                      DotsBackground(),
+                      const DotsBackground(),
                       Card.filled(
                         child: Container(
                           constraints: const BoxConstraints(

@@ -4,7 +4,7 @@ class DotsBackground extends StatefulWidget {
   final double spacing, size, offset;
   const DotsBackground({
     super.key,
-    this.spacing = 64.0,
+    this.spacing = 48.0,
     this.size = 2,
     this.offset = 0,
   });

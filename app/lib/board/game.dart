@@ -1,8 +1,8 @@
 import 'dart:async';
 
+import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
-import 'package:flame/sprite.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';

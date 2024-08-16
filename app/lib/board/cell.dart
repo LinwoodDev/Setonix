@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
@@ -18,7 +19,7 @@ import 'package:quokka/helpers/secondary.dart';
 import 'package:quokka/helpers/vector.dart';
 import 'package:quokka/models/vector.dart';
 
-class GameCell extends HandItemDropZone
+class GameCell extends PositionComponent
     with
         HasGameRef<BoardGame>,
         HoverCallbacks,
@@ -27,6 +28,8 @@ class GameCell extends HandItemDropZone
         DoubleTapCallbacks,
         SecondaryTapCallbacks,
         DetailsTapCallbacks,
+        CollisionCallbacks,
+        HandItemDropZone,
         FlameBlocListenable<WorldBloc, WorldState>,
         ScrollCallbacks {
   late final SpriteComponent _selectionComponent;
@@ -59,7 +62,7 @@ class GameCell extends HandItemDropZone
       sprite: game.selectionSprite,
       size: size,
     );
-    add(_selectionComponent..opacity = 0);
+    add(_selectionComponent);
   }
 
   @override
@@ -67,39 +70,54 @@ class GameCell extends HandItemDropZone
     final definition = toDefinition();
     return (previousState.selectedCell == definition) !=
             (newState.selectedCell == definition) ||
-        newState.table.cells[definition] !=
-            previousState.table.cells[definition];
+        previousState.table.cells[definition] !=
+            newState.table.cells[definition] ||
+        previousState.colorScheme != newState.colorScheme;
   }
 
   bool get isSelected => bloc.state.selectedCell == toDefinition();
 
-  @override
-  void onHoverEnter() {
-    if (!isSelected) {
-      _updateEffects([
-        OpacityEffect.to(
-          1,
+  void _fadeIn() => _updateEffects([
+        OpacityEffect.fadeIn(
           EffectController(
             duration: 0.1,
           ),
+          target: _selectionComponent,
         )
       ]);
+  @override
+  void onHoverEnter() {
+    if (!isSelected) {
+      _fadeIn();
     }
   }
 
   @override
-  void onHoverExit() {
-    if (!isSelected) {
-      _updateEffects([
-        OpacityEffect.to(
-          0,
+  void onDragOver(HandItem handItem) => _fadeIn();
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+  }
+
+  void _fadeOut() => _updateEffects([
+        OpacityEffect.fadeOut(
           EffectController(
             duration: 0.1,
           ),
+          target: _selectionComponent,
         )
       ]);
+
+  @override
+  void onHoverExit() {
+    if (!isSelected) {
+      _fadeOut();
     }
   }
+
+  @override
+  void onDragOverEnd(HandItem handItem) => _fadeOut();
 
   @override
   void onTapUp(TapUpEvent event) {
@@ -114,7 +132,10 @@ class GameCell extends HandItemDropZone
       (position.clone()..divide(grid.cellSize)).toDefinition();
 
   @override
-  void onInitialState(WorldState state) => _updateTop(state);
+  void onInitialState(WorldState state) {
+    if (state.selectedCell != toDefinition()) _selectionComponent.opacity = 0;
+    _updateTop(state);
+  }
 
   @override
   Future<void> onNewState(WorldState state) async {
@@ -125,12 +146,12 @@ class GameCell extends HandItemDropZone
     final color = state.colorScheme.primary;
     if (selected) {
       _updateEffects([
-        OpacityEffect.to(1, controller),
+        OpacityEffect.fadeIn(controller, target: _selectionComponent),
         ColorEffect(color, controller),
       ]);
     } else {
       _updateEffects([
-        OpacityEffect.to(0, controller),
+        OpacityEffect.fadeOut(controller, target: _selectionComponent),
         ColorEffect(color, controller, opacityFrom: 1, opacityTo: 0),
       ]);
     }

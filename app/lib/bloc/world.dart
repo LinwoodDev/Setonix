@@ -56,7 +56,9 @@ class WorldBloc extends Bloc<BoardEvent, WorldState> {
     });
     on<CellSwitched>((event, emit) {
       emit(state.copyWith(
-        selectedCell: event.cell,
+        selectedCell: event.toggle && state.selectedCell == event.cell
+            ? null
+            : event.cell,
         selectedDeck: null,
         showHand: true,
       ));

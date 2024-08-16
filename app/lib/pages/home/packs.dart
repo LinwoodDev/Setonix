@@ -195,7 +195,7 @@ class _PacksDialogState extends State<PacksDialog>
                           title: Text(metadata?.name ??
                               AppLocalizations.of(context).unnamed),
                           subtitle: Text(key),
-                          selected: _selectedPack?.$1 == pack &&
+                          selected: _selectedPack?.$1 == data &&
                               (!isMobile || _isMobileOpen),
                           onTap: () => selectPack(data, key, true),
                         );
