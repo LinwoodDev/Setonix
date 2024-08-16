@@ -75,7 +75,7 @@ class GameCell extends PositionComponent
         previousState.colorScheme != newState.colorScheme;
   }
 
-  bool get isSelected => bloc.state.selectedCell == toDefinition();
+  bool get isSelected => isMounted && bloc.state.selectedCell == toDefinition();
 
   void _fadeIn() => _updateEffects([
         OpacityEffect.fadeIn(
@@ -94,11 +94,6 @@ class GameCell extends PositionComponent
 
   @override
   void onDragOver(HandItem handItem) => _fadeIn();
-
-  @override
-  void update(double dt) {
-    super.update(dt);
-  }
 
   void _fadeOut() => _updateEffects([
         OpacityEffect.fadeOut(
@@ -184,7 +179,7 @@ class GameCell extends PositionComponent
   @override
   void onDragUpdate(DragUpdateEvent event) {
     super.onDragUpdate(event);
-    final delta = event.localDelta
+    final delta = event.canvasDelta
       ..negate()
       ..divide(Vector2.all(game.camera.viewfinder.zoom));
     game.camera.moveBy(delta);
