@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:quokka/models/table.dart';
 import 'package:quokka/models/vector.dart';
 
-part 'board_event.mapper.dart';
+part 'world_event.mapper.dart';
 
 class IgnoreKeysHook extends MappingHook {
   final Set<String> keys;

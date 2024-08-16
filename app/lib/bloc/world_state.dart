@@ -6,10 +6,10 @@ import 'package:quokka/models/vector.dart';
 import 'package:quokka/services/file_system.dart';
 import 'package:quokka/bloc/multiplayer.dart';
 
-part 'board_state.mapper.dart';
+part 'world_state.mapper.dart';
 
 @MappableClass()
-class BoardState with BoardStateMappable {
+class WorldState with WorldStateMappable {
   final MultiplayerCubit multiplayer;
   final ColorScheme colorScheme;
   final QuokkaFileSystem fileSystem;
@@ -20,7 +20,7 @@ class BoardState with BoardStateMappable {
   final String? name;
   final QuokkaData data;
 
-  const BoardState({
+  const WorldState({
     required this.multiplayer,
     required this.fileSystem,
     required this.colorScheme,

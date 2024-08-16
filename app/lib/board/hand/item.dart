@@ -8,8 +8,8 @@ import 'package:flutter/material.dart'
         ContextMenuButtonItem,
         TextSelectionToolbarAnchors;
 import 'package:flutter/painting.dart';
-import 'package:quokka/bloc/board.dart';
-import 'package:quokka/bloc/board_state.dart';
+import 'package:quokka/bloc/world.dart';
+import 'package:quokka/bloc/world_state.dart';
 import 'package:quokka/board/game.dart';
 import 'package:quokka/board/hand/view.dart';
 import 'package:quokka/helpers/asset.dart';
@@ -29,7 +29,7 @@ abstract class HandItem<T> extends HandItemDropZone
         DoubleTapCallbacks,
         SecondaryTapCallbacks,
         DetailsTapCallbacks,
-        FlameBlocListenable<BoardBloc, BoardState> {
+        FlameBlocListenable<WorldBloc, WorldState> {
   final T item;
   late final SpriteComponent _sprite;
   late final TextComponent<TextPaint> _label;
@@ -59,11 +59,11 @@ abstract class HandItem<T> extends HandItemDropZone
   }
 
   @override
-  bool listenWhen(BoardState previousState, BoardState newState) =>
+  bool listenWhen(WorldState previousState, WorldState newState) =>
       previousState.colorScheme != newState.colorScheme;
 
   @override
-  void onInitialState(BoardState state) {
+  void onInitialState(WorldState state) {
     add(_label = TextComponent(
         text: label,
         size: Vector2(0, labelHeight),
@@ -72,12 +72,12 @@ abstract class HandItem<T> extends HandItemDropZone
         textRenderer: _buildPaint(state)));
   }
 
-  _buildPaint(BoardState state) => TextPaint(
+  _buildPaint(WorldState state) => TextPaint(
         style: TextStyle(fontSize: 14, color: state.colorScheme.onSurface),
       );
 
   @override
-  void onNewState(BoardState state) {
+  void onNewState(WorldState state) {
     _label.textRenderer = _buildPaint(state);
   }
 

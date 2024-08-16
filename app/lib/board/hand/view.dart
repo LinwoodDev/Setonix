@@ -6,8 +6,8 @@ import 'package:flame/events.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/material.dart'
     show Canvas, Color, Colors, CustomPainter, Paint, PaintingStyle, Rect, Size;
-import 'package:quokka/bloc/board.dart';
-import 'package:quokka/bloc/board_state.dart';
+import 'package:quokka/bloc/world.dart';
+import 'package:quokka/bloc/world_state.dart';
 import 'package:quokka/board/game.dart';
 import 'package:quokka/board/hand/deck.dart';
 import 'package:quokka/board/hand/figure.dart';
@@ -45,7 +45,7 @@ class GameHand extends CustomPainterComponent
     with
         HasGameRef<BoardGame>,
         DragCallbacks,
-        FlameBlocListenable<BoardBloc, BoardState>,
+        FlameBlocListenable<WorldBloc, WorldState>,
         TapCallbacks,
         ScrollCallbacks {
   double _nextItemPos = 0;
@@ -59,10 +59,10 @@ class GameHand extends CustomPainterComponent
   }
 
   @override
-  void onInitialState(BoardState state) => _buildHand(state);
+  void onInitialState(WorldState state) => _buildHand(state);
 
   @override
-  void onNewState(BoardState state) => _buildHand(state);
+  void onNewState(WorldState state) => _buildHand(state);
 
   @override
   void onParentResize(Vector2 maxSize) {
@@ -73,7 +73,7 @@ class GameHand extends CustomPainterComponent
   }
 
   @override
-  bool listenWhen(BoardState previousState, BoardState newState) =>
+  bool listenWhen(WorldState previousState, WorldState newState) =>
       previousState.showHand != newState.showHand ||
       previousState.selectedDeck != newState.selectedDeck ||
       previousState.selectedCell != newState.selectedCell ||
@@ -81,7 +81,7 @@ class GameHand extends CustomPainterComponent
           newState.table.cells[newState.selectedCell] ||
       previousState.colorScheme != newState.colorScheme;
 
-  void _buildHand(BoardState state) {
+  void _buildHand(WorldState state) {
     _itemsChild.children
         .whereType<HandItem>()
         .forEach((e) => e.removeFromParent());

@@ -1,5 +1,5 @@
 import 'package:flame/components.dart';
-import 'package:quokka/bloc/board_event.dart';
+import 'package:quokka/bloc/world_event.dart';
 import 'package:quokka/board/cell.dart';
 import 'package:quokka/board/hand/item.dart';
 import 'package:quokka/models/deck.dart';

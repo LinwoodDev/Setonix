@@ -6,9 +6,9 @@ import 'package:flame/sprite.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:quokka/bloc/board.dart';
-import 'package:quokka/bloc/board_event.dart';
-import 'package:quokka/bloc/board_state.dart';
+import 'package:quokka/bloc/world.dart';
+import 'package:quokka/bloc/world_event.dart';
+import 'package:quokka/bloc/world_state.dart';
 import 'package:quokka/board/grid.dart';
 import 'package:quokka/board/hand/view.dart';
 import 'package:quokka/helpers/asset.dart';
@@ -23,7 +23,7 @@ class BoardGame extends FlameGame
   late final Sprite selectionSprite;
   late final GameHand _hand;
   late final BoardGrid grid;
-  final BoardBloc bloc;
+  final WorldBloc bloc;
 
   bool _isShifting = false;
 
@@ -39,7 +39,7 @@ class BoardGame extends FlameGame
   @override
   FutureOr<void> onLoad() async {
     final provider =
-        FlameBlocProvider<BoardBloc, BoardState>.value(value: bloc);
+        FlameBlocProvider<WorldBloc, WorldState>.value(value: bloc);
     await add(provider);
     provider.addAll([camera, world]);
     const packName = '';

@@ -3,14 +3,14 @@ import 'dart:ui';
 
 import 'package:flame/components.dart';
 import 'package:flame_bloc/flame_bloc.dart';
-import 'package:quokka/bloc/board.dart';
-import 'package:quokka/bloc/board_state.dart';
+import 'package:quokka/bloc/world.dart';
+import 'package:quokka/bloc/world_state.dart';
 import 'package:quokka/board/game.dart';
 
 class GameBoardBackground extends SpriteComponent
     with
         HasGameReference<BoardGame>,
-        FlameBlocListenable<BoardBloc, BoardState> {
+        FlameBlocListenable<WorldBloc, WorldState> {
   GameBoardBackground({super.size})
       : super(paint: Paint()..isAntiAlias = false);
 
@@ -20,12 +20,12 @@ class GameBoardBackground extends SpriteComponent
   }
 
   @override
-  void onInitialState(BoardState state) => updateBackground(state);
+  void onInitialState(WorldState state) => updateBackground(state);
 
   @override
-  void onNewState(BoardState state) => updateBackground(state);
+  void onNewState(WorldState state) => updateBackground(state);
 
-  Future<void> updateBackground(BoardState state) async {
+  Future<void> updateBackground(WorldState state) async {
     final backgroundLocation = state.table.background;
     var background = backgroundLocation == null
         ? null

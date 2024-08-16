@@ -116,5 +116,7 @@
   "multiplayerNote": "Multiplayer is an experimental feature and may not work as expected. Please report any issues you encounter. Please make sure you have the necessary ports open and forwarded or be in the same network.",
   "connectNote": "Only connect to servers you trust. Be sure to open necessary ports and connect to the same network. Both clients need to be on the same version of Quokka.",
   "start": "Start",
-  "stop": "Stop"
+  "stop": "Stop",
+  "disconnected": "Disconnected",
+  "disconnectedMessage": "You have been disconnected from the server. Please check your connection and try again."
 }

@@ -4,7 +4,7 @@ import 'package:flame/game.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:quokka/bloc/board.dart';
+import 'package:quokka/bloc/world.dart';
 import 'package:quokka/models/data.dart';
 import 'package:quokka/models/table.dart';
 import 'package:quokka/models/translation.dart';
@@ -12,7 +12,7 @@ import 'package:quokka/services/file_system.dart';
 
 class AssetManager {
   String currentLocale;
-  final BoardBloc bloc;
+  final WorldBloc bloc;
   final Map<String, QuokkaData> _loadedPacks = {};
   final Map<String, TranslationsStore> _loadedTranslations = {};
   final Map<ItemLocation, Image> _cachedImages = {};

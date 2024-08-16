@@ -6,9 +6,9 @@ import 'package:flame/events.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:quokka/bloc/board.dart';
-import 'package:quokka/bloc/board_event.dart';
-import 'package:quokka/bloc/board_state.dart';
+import 'package:quokka/bloc/world.dart';
+import 'package:quokka/bloc/world_event.dart';
+import 'package:quokka/bloc/world_state.dart';
 import 'package:quokka/board/background.dart';
 import 'package:quokka/board/game.dart';
 import 'package:quokka/board/grid.dart';
@@ -27,7 +27,7 @@ class GameCell extends HandItemDropZone
         DoubleTapCallbacks,
         SecondaryTapCallbacks,
         DetailsTapCallbacks,
-        FlameBlocListenable<BoardBloc, BoardState>,
+        FlameBlocListenable<WorldBloc, WorldState>,
         ScrollCallbacks {
   late final SpriteComponent _selectionComponent;
   SpriteComponent? _cardComponent;
@@ -63,7 +63,7 @@ class GameCell extends HandItemDropZone
   }
 
   @override
-  bool listenWhen(BoardState previousState, BoardState newState) {
+  bool listenWhen(WorldState previousState, WorldState newState) {
     final definition = toDefinition();
     return (previousState.selectedCell == definition) !=
             (newState.selectedCell == definition) ||
@@ -114,10 +114,10 @@ class GameCell extends HandItemDropZone
       (position.clone()..divide(grid.cellSize)).toDefinition();
 
   @override
-  void onInitialState(BoardState state) => _updateTop(state);
+  void onInitialState(WorldState state) => _updateTop(state);
 
   @override
-  Future<void> onNewState(BoardState state) async {
+  Future<void> onNewState(WorldState state) async {
     final selected = state.selectedCell == toDefinition();
     final controller = EffectController(
       duration: 0.1,
@@ -137,7 +137,7 @@ class GameCell extends HandItemDropZone
     await _updateTop(state);
   }
 
-  Future<void> _updateTop(BoardState state) async {
+  Future<void> _updateTop(WorldState state) async {
     final top = state.table.cells[toDefinition()]?.objects.firstOrNull;
     if (_cardComponent != null) {
       remove(_cardComponent!);
