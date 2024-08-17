@@ -31,8 +31,8 @@ class HandItemDragCursorHitbox extends PositionComponent
   @override
   void onLoad() {
     add(CircleHitbox(
-      collisionType: CollisionType.passive,
-      radius: 0.5,
+      collisionType: CollisionType.active,
+      radius: 1,
     ));
   }
 
@@ -40,9 +40,8 @@ class HandItemDragCursorHitbox extends PositionComponent
   void onCollisionStart(
       Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollisionStart(intersectionPoints, other);
-    if (other is HandItemDropZone) {
-      _lastZone = other;
-    }
+    if (other is! HandItemDropZone) return;
+    _lastZone = other;
   }
 
   @override
@@ -54,6 +53,7 @@ class HandItemDragCursorHitbox extends PositionComponent
   }
 }
 
+//  Disable it for now, see https://github.com/flame-engine/flame/issues/3270
 mixin HandItemDropZone on PositionComponent, CollisionCallbacks {
   Component get hitbox => RectangleHitbox(
       collisionType: CollisionType.passive, isSolid: true, size: size);
@@ -61,7 +61,7 @@ mixin HandItemDropZone on PositionComponent, CollisionCallbacks {
   @override
   @mustCallSuper
   FutureOr<void> onLoad() {
-    add(hitbox);
+    //add(hitbox);
   }
 
   @override
@@ -69,14 +69,16 @@ mixin HandItemDropZone on PositionComponent, CollisionCallbacks {
   void onCollisionStart(
       Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollisionStart(intersectionPoints, other);
-    if (other is HandItemDragCursorHitbox) onDragOver(other.item);
+    /*if (other is! HandItemDragCursorHitbox) return;
+
+    onDragOver(other.item);*/
   }
 
   @override
   @mustCallSuper
   void onCollisionEnd(PositionComponent other) {
     super.onCollisionEnd(other);
-    if (other is HandItemDragCursorHitbox) onDragOverEnd(other.item);
+    //if (other is HandItemDragCursorHitbox) onDragOverEnd(other.item);
   }
 
   void onDragOverEnd(HandItem handItem) {}
@@ -98,7 +100,6 @@ abstract class HandItem<T> extends PositionComponent
   final T item;
   late final SpriteComponent _sprite;
   late final TextComponent<TextPaint> _label;
-  Vector2 _lastPos = Vector2.zero();
 
   HandItem({required this.item}) : super(size: Vector2(100, 0));
 
@@ -126,9 +127,9 @@ abstract class HandItem<T> extends PositionComponent
   void _resetPosition() {
     _sprite.position = Vector2(0, labelHeight);
     if (!_label.isMounted) add(_label);
-    final cursor = _cursorHitbox;
-    if (cursor != null) cursor.removeFromParent();
-    _cursorHitbox = null;
+    //final cursor = _cursorHitbox;
+    //if (cursor != null) cursor.removeFromParent();
+    //_cursorHitbox = null;
   }
 
   @override
@@ -164,12 +165,12 @@ abstract class HandItem<T> extends PositionComponent
   void onDragStart(DragStartEvent event) {
     super.onDragStart(event);
     remove(_label);
-    game.add(_cursorHitbox =
-        HandItemDragCursorHitbox(item: this, position: event.localPosition));
+    /*game.world.add(_cursorHitbox =
+        HandItemDragCursorHitbox(item: this, position: event.localPosition));*/
   }
 
-  HandItemDragCursorHitbox? _cursorHitbox;
-
+  //HandItemDragCursorHitbox? _cursorHitbox;
+  Vector2 _last = Vector2.zero();
   @override
   void onDragUpdate(DragUpdateEvent event) {
     super.onDragUpdate(event);
@@ -178,10 +179,8 @@ abstract class HandItem<T> extends PositionComponent
       return;
     }
     _sprite.position += event.localDelta;
-    final delta = event.canvasEndPosition - _lastPos;
-    _cursorHitbox?.position = event.canvasEndPosition;
-    _lastPos = event.canvasEndPosition;
-    if (delta.length < 1) return;
+    _last = event.canvasEndPosition;
+    //_cursorHitbox?.position = event.localEndPosition;
   }
 
   @override
@@ -189,7 +188,8 @@ abstract class HandItem<T> extends PositionComponent
     super.onDragEnd(event);
     if (!(isMouseOrLongPressing ?? true)) return;
 
-    final zone = _cursorHitbox?.lastHit;
+    final zone =
+        game.componentsAtPoint(_last).whereType<HandItemDropZone>().firstOrNull;
     if (zone != null) moveItem(zone);
     _resetPosition();
   }

@@ -119,5 +119,6 @@
   "stop": "Stop",
   "browse": "Browse",
   "disconnected": "Disconnected",
-  "disconnectedMessage": "You have been disconnected from the server. Please check your connection and try again."
+  "disconnectedMessage": "You have been disconnected from the server. Please check your connection and try again.",
+  "successfullyConnected": "You are successfully connected to the server"
 }

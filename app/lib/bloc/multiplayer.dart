@@ -107,16 +107,9 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
         port: add.length <= 1 ? kDefaultPort : int.parse(add[1]),
       ));
       final state = _addNetworker(client);
-      client.webSocketChannel.stream.listen((_) {},
-          onDone: () => emit(MultiplayerDisconnectedState()),
-          onError: (e) => emit(MultiplayerDisconnectedState(e)),
-          cancelOnError: true);
+      client.onClosed.listen((_) => emit(MultiplayerDisconnectedState()),
+          onError: (e) => emit(MultiplayerDisconnectedState(e)));
       emit(state);
-      await client.webSocketChannel.ready;
-      final error = client.webSocketChannel.closeReason;
-      if (error != null) {
-        emit(MultiplayerDisconnectedState(error));
-      }
     } catch (e) {
       emit(MultiplayerDisconnectedState(e));
     }
@@ -124,11 +117,11 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
 
   Future<void> create() async {
     try {
-      final httpServer =
-          await HttpServer.bind(InternetAddress.loopbackIPv4, kDefaultPort);
-      final server = NetworkerSocketServer(httpServer);
-      _addNetworker(server);
+      final server =
+          NetworkerSocketServer(InternetAddress.loopbackIPv4, kDefaultPort);
+      final state = _addNetworker(server);
       await server.init();
+      emit(state);
     } catch (e) {
       emit(MultiplayerDisconnectedState(e));
     }

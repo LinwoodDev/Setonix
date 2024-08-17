@@ -16,7 +16,11 @@ import 'package:quokka/helpers/scroll.dart';
 import 'package:quokka/helpers/secondary.dart';
 
 class BoardGame extends FlameGame
-    with ScrollDetector, KeyboardEvents, SecondaryTapDetector {
+    with
+        ScrollDetector,
+        KeyboardEvents,
+        SecondaryTapDetector,
+        HasCollisionDetection {
   final VoidCallback onEscape;
   final ContextMenuController contextMenuController;
   final AssetManager assetManager;
@@ -38,6 +42,8 @@ class BoardGame extends FlameGame
 
   @override
   FutureOr<void> onLoad() async {
+    add(ScreenHitbox());
+    camera.viewport.debugMode = true;
     final provider =
         FlameBlocProvider<WorldBloc, WorldState>.value(value: bloc);
     await add(provider);
