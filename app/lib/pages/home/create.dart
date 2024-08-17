@@ -23,7 +23,7 @@ class _CreateDialogState extends State<CreateDialog>
   final TextEditingController _nameController = TextEditingController(),
       _descriptionController = TextEditingController();
   late final TypedKeyFileSystem<QuokkaData> _templateSystem, _worldSystem;
-  late final Stream<Map<String, QuokkaData>> _templatesStream;
+  late final Stream<List<FileSystemFile<QuokkaData>>> _templatesStream;
 
   String? _selectedTemplate;
 
@@ -82,7 +82,7 @@ class _CreateDialogState extends State<CreateDialog>
       child: StreamBuilder(
         stream: _templatesStream,
         builder: (context, snapshot) {
-          final templates = snapshot.data?.entries.toList();
+          final templates = snapshot.data;
           if (templates == null) {
             return const Center(child: CircularProgressIndicator());
           }
@@ -98,11 +98,11 @@ class _CreateDialogState extends State<CreateDialog>
               }
               index--;
               final entry = templates[index];
-              final name = entry.key;
+              final name = entry.pathWithoutLeadingSlash;
               return ListTile(
                 title: Text(name),
                 selected: _selectedTemplate == name,
-                onTap: () => setState(() => _selectedTemplate = name),
+                onTap: () => setState(() => _selectedTemplate = entry.fileName),
               );
             },
           );

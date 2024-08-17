@@ -3,39 +3,45 @@ import 'dart:ui';
 
 import 'package:flame/components.dart';
 import 'package:flame_bloc/flame_bloc.dart';
-import 'package:quokka/bloc/board.dart';
-import 'package:quokka/bloc/board_state.dart';
+import 'package:quokka/bloc/world.dart';
+import 'package:quokka/bloc/world_state.dart';
 import 'package:quokka/board/game.dart';
 
-class GameBoardBackground extends SpriteComponent
+class GameBoardBackground extends PositionComponent
     with
         HasGameReference<BoardGame>,
-        FlameBlocListenable<BoardBloc, BoardState> {
-  GameBoardBackground({super.size})
-      : super(paint: Paint()..isAntiAlias = false);
+        FlameBlocListenable<WorldBloc, WorldState> {
+  SpriteComponent? _sprite;
+
+  GameBoardBackground({super.size});
 
   @override
-  void onLoad() {
-    sprite = game.selectionSprite;
-  }
+  void onInitialState(WorldState state) => updateBackground(state);
 
   @override
-  void onInitialState(BoardState state) => updateBackground(state);
+  bool listenWhen(WorldState previousState, WorldState newState) =>
+      previousState.table.background != newState.table.background;
 
   @override
-  void onNewState(BoardState state) => updateBackground(state);
+  void onNewState(WorldState state) => updateBackground(state);
 
-  Future<void> updateBackground(BoardState state) async {
+  Future<void> updateBackground(WorldState state) async {
     final backgroundLocation = state.table.background;
-    var background = backgroundLocation == null
-        ? null
-        : (await game.assetManager.loadPack(backgroundLocation.namespace))
-            ?.getBackgroundItem(backgroundLocation.id);
-    background ??= game.assetManager.packs
-        .map((pack) => pack.value.getBackgroundItems(pack.key).firstOrNull)
-        .nonNulls
-        .firstOrNull;
+    final background = (backgroundLocation == null
+            ? null
+            : (await game.assetManager.loadPack(backgroundLocation.namespace))
+                ?.getBackgroundItem(backgroundLocation.id)) ??
+        game.assetManager.packs
+            .map((pack) => pack.value.getBackgroundItems(pack.key).firstOrNull)
+            .nonNulls
+            .firstOrNull;
     if (background == null) return;
-    sprite = await game.assetManager.loadSprite(background.item.texture);
+    final shouldAdd = _sprite == null;
+    final sprite = _sprite ??= SpriteComponent(
+      size: size,
+      paint: Paint()..isAntiAlias = false,
+    );
+    sprite.sprite = await game.assetManager.loadSprite(background.item.texture);
+    if (shouldAdd) add(sprite);
   }
 }

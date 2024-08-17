@@ -1,14 +1,14 @@
 import 'dart:async';
 
+import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
-import 'package:flame/sprite.dart';
 import 'package:flame_bloc/flame_bloc.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:quokka/bloc/board.dart';
-import 'package:quokka/bloc/board_event.dart';
-import 'package:quokka/bloc/board_state.dart';
+import 'package:flutter/widgets.dart';
+import 'package:quokka/bloc/world.dart';
+import 'package:quokka/bloc/world_event.dart';
+import 'package:quokka/bloc/world_state.dart';
 import 'package:quokka/board/grid.dart';
 import 'package:quokka/board/hand/view.dart';
 import 'package:quokka/helpers/asset.dart';
@@ -17,12 +17,13 @@ import 'package:quokka/helpers/secondary.dart';
 
 class BoardGame extends FlameGame
     with ScrollDetector, KeyboardEvents, SecondaryTapDetector {
+  final VoidCallback onEscape;
   final ContextMenuController contextMenuController;
   final AssetManager assetManager;
   late final Sprite selectionSprite;
   late final GameHand _hand;
   late final BoardGrid grid;
-  final BoardBloc bloc;
+  final WorldBloc bloc;
 
   bool _isShifting = false;
 
@@ -32,12 +33,13 @@ class BoardGame extends FlameGame
     required this.bloc,
     required this.assetManager,
     required this.contextMenuController,
+    required this.onEscape,
   });
 
   @override
   FutureOr<void> onLoad() async {
     final provider =
-        FlameBlocProvider<BoardBloc, BoardState>.value(value: bloc);
+        FlameBlocProvider<WorldBloc, WorldState>.value(value: bloc);
     await add(provider);
     provider.addAll([camera, world]);
     const packName = '';
@@ -90,11 +92,6 @@ class BoardGame extends FlameGame
     if (!_currentCameraVelocity.isZero()) {
       camera.moveBy(_currentCameraVelocity * dt * 60);
     }
-    final nextColorScheme =
-        buildContext != null ? Theme.of(buildContext!).colorScheme : null;
-    if (nextColorScheme != bloc.state.colorScheme) {
-      bloc.send(ColorSchemeChanged(nextColorScheme));
-    }
   }
 
   @override
@@ -103,7 +100,7 @@ class BoardGame extends FlameGame
     var handled = false;
     switch (event.logicalKey) {
       case LogicalKeyboardKey.escape:
-        if (event is KeyDownEvent) Scaffold.of(buildContext!).openDrawer();
+        if (event is KeyDownEvent) onEscape();
         handled = true;
       case LogicalKeyboardKey.tab:
         if (event is KeyDownEvent) bloc.add(HandChanged.toggle());

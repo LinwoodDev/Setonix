@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:networker/networker.dart';
 import 'package:networker_socket/client.dart';
 import 'package:networker_socket/server.dart';
-import 'package:quokka/bloc/board_event.dart';
+import 'package:quokka/bloc/world_event.dart';
 
 part 'multiplayer.mapper.dart';
 
@@ -22,8 +22,20 @@ sealed class MultiplayerState with MultiplayerStateMappable {
 }
 
 @MappableClass()
+final class MultiplayerDisabledState extends MultiplayerState
+    with MultiplayerDisabledStateMappable {}
+
+@MappableClass()
+final class MultiplayerConnectingState extends MultiplayerState
+    with MultiplayerConnectingStateMappable {}
+
+@MappableClass()
 final class MultiplayerDisconnectedState extends MultiplayerState
-    with MultiplayerDisconnectedStateMappable {}
+    with MultiplayerDisconnectedStateMappable {
+  final Object? error;
+
+  MultiplayerDisconnectedState([this.error]);
+}
 
 @MappableClass()
 final class MultiplayerConnectedState extends MultiplayerState
@@ -49,19 +61,18 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
 
   Stream<int> get inits => _initController.stream;
 
-  MultiplayerCubit() : super(MultiplayerDisconnectedState());
+  MultiplayerCubit() : super(MultiplayerDisabledState());
 
   bool get isConnected => state.isConnected;
   bool get isClient => state.isClient;
   bool get isServer => state.isServer;
 
-  void _addNetworker(NetworkerBase base) {
+  MultiplayerConnectedState _addNetworker(NetworkerBase base) {
     final transformer = NetworkerPipeTransformer<String, BoardEvent>(
       BoardEventMapper.fromJson,
       (e) => e.toJson(),
     );
     base.connect(StringNetworkerPlugin()..connect(transformer));
-    emit(MultiplayerConnectedState(base, transformer));
     transformer.read.listen((event) {
       if (event.data.isMultiplayer) {
         _eventController.add(event.data.copyWith(isRemoteEvent: true));
@@ -71,6 +82,7 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
       base.connect(EchoPipe(toChannel: kAnyChannel));
       base.clientConnect.pipe(_initController);
     }
+    return MultiplayerConnectedState(base, transformer);
   }
 
   @override
@@ -86,23 +98,40 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
     if (emit) this.emit(MultiplayerDisconnectedState());
   }
 
-  void connect(String address) async {
-    final add = address.split(':');
-    final client = NetworkerSocketClient(Uri(
-      scheme: 'ws',
-      host: add[0],
-      port: add.length <= 1 ? kDefaultPort : int.parse(add[1]),
-    ));
-    _addNetworker(client);
-    client.init();
+  Future<void> connect(String address) async {
+    try {
+      final add = address.split(':');
+      final client = NetworkerSocketClient(Uri(
+        scheme: 'ws',
+        host: add[0],
+        port: add.length <= 1 ? kDefaultPort : int.parse(add[1]),
+      ));
+      final state = _addNetworker(client);
+      client.webSocketChannel.stream.listen((_) {},
+          onDone: () => emit(MultiplayerDisconnectedState()),
+          onError: (e) => emit(MultiplayerDisconnectedState(e)),
+          cancelOnError: true);
+      emit(state);
+      await client.webSocketChannel.ready;
+      final error = client.webSocketChannel.closeReason;
+      if (error != null) {
+        emit(MultiplayerDisconnectedState(error));
+      }
+    } catch (e) {
+      emit(MultiplayerDisconnectedState(e));
+    }
   }
 
   Future<void> create() async {
-    final httpServer =
-        await HttpServer.bind(InternetAddress.loopbackIPv4, kDefaultPort);
-    final server = NetworkerSocketServer(httpServer);
-    _addNetworker(server);
-    server.init();
+    try {
+      final httpServer =
+          await HttpServer.bind(InternetAddress.loopbackIPv4, kDefaultPort);
+      final server = NetworkerSocketServer(httpServer);
+      _addNetworker(server);
+      await server.init();
+    } catch (e) {
+      emit(MultiplayerDisconnectedState(e));
+    }
   }
 
   void send(BoardEvent event, [Channel channel = kAnyChannel]) {

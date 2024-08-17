@@ -4,7 +4,7 @@ import 'package:flame/game.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:quokka/bloc/board.dart';
+import 'package:quokka/bloc/world.dart';
 import 'package:quokka/models/data.dart';
 import 'package:quokka/models/table.dart';
 import 'package:quokka/models/translation.dart';
@@ -12,10 +12,10 @@ import 'package:quokka/services/file_system.dart';
 
 class AssetManager {
   String currentLocale;
-  final BoardBloc bloc;
+  final WorldBloc bloc;
   final Map<String, QuokkaData> _loadedPacks = {};
   final Map<String, TranslationsStore> _loadedTranslations = {};
-  final Map<ItemLocation, Image> _cachedImages = {};
+  final Map<ItemLocation, Future<Image>> _cachedImages = {};
 
   QuokkaFileSystem get fileSystem => bloc.state.fileSystem;
 
@@ -52,18 +52,18 @@ class AssetManager {
     ItemLocation location, {
     Vector2? srcPosition,
     Vector2? srcSize,
-  }) async {
-    Image? image = _cachedImages[location];
+  }) {
+    Future<Image>? image = _cachedImages[location];
     if (image == null) {
       final texture = getTextureFromLocation(location);
-      if (texture == null) return null;
-      image = _cachedImages[location] = await decodeImageFromList(texture);
+      if (texture == null) return Future.value(null);
+      image = _cachedImages[location] = decodeImageFromList(texture);
     }
-    return Sprite(
-      image,
-      srcPosition: srcPosition,
-      srcSize: srcSize,
-    );
+    return image.then((e) => Sprite(
+          e,
+          srcPosition: srcPosition,
+          srcSize: srcSize,
+        ));
   }
 
   Future<Sprite?> loadFigureSprite(String key, [String? variation]) =>
@@ -110,11 +110,11 @@ class AssetManager {
   void clearImagesFromNamespace(String namespace) => _cachedImages
     ..removeWhere((k, v) {
       if (namespace != k.namespace) return false;
-      v.dispose();
+      v.then((e) => e.dispose());
       return true;
     });
 
   void clearImages() => _cachedImages
-    ..forEach((_, v) => v.dispose())
+    ..forEach((_, v) => v.then((e) => e.dispose()))
     ..clear();
 }

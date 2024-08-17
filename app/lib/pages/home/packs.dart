@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:file_selector/file_selector.dart' as fs;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:lw_file_system/lw_file_system.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:quokka/models/data.dart';
@@ -26,7 +27,7 @@ class _PacksDialogState extends State<PacksDialog>
   late final QuokkaFileSystem _service = context.read<QuokkaFileSystem>();
   late final TabController _tabController;
   final TextEditingController _searchController = TextEditingController();
-  Future<Map<String, QuokkaData>>? _packsFuture;
+  Future<List<FileSystemFile<QuokkaData>>>? _packsFuture;
   (QuokkaData, String, bool)? _selectedPack;
 
   @override
@@ -155,21 +156,21 @@ class _PacksDialogState extends State<PacksDialog>
             searchController: _searchController,
             tabs: [
               HorizontalTab(
-                icon: PhosphorIcon(PhosphorIconsLight.folder),
+                icon: const PhosphorIcon(PhosphorIconsLight.folder),
                 label: Text(AppLocalizations.of(context).installed),
               ),
               HorizontalTab(
-                icon: PhosphorIcon(PhosphorIconsLight.globe),
+                icon: const PhosphorIcon(PhosphorIconsLight.globe),
                 label: Text(AppLocalizations.of(context).browse),
               ),
             ],
           ),
           const SizedBox(height: 8),
           Expanded(
-            child: FutureBuilder<Map<String, QuokkaData>>(
+            child: FutureBuilder<List<FileSystemFile<QuokkaData>>>(
               future: _packsFuture,
               builder: (context, snapshot) {
-                final packs = snapshot.data?.entries.toList() ?? [];
+                final packs = snapshot.data ?? [];
                 if (snapshot.hasError) {
                   return Center(
                     child: Column(
@@ -188,12 +189,12 @@ class _PacksDialogState extends State<PacksDialog>
                       final query = _searchController.text.toLowerCase();
                       final filtered = packs
                           .where((entry) =>
-                              entry.value
-                                  .getMetadata()
+                              entry.data
+                                  ?.getMetadata()
                                   ?.name
                                   .toLowerCase()
                                   .contains(query) ??
-                              entry.key.toLowerCase().contains(query))
+                              entry.fileName.toLowerCase().contains(query))
                           .toList();
                       return TabBarView(
                         controller: _tabController,
@@ -201,17 +202,17 @@ class _PacksDialogState extends State<PacksDialog>
                           ListView.builder(
                             itemCount: filtered.length,
                             itemBuilder: (context, index) {
-                              final entry = filtered[index];
-                              final key = entry.key;
-                              final pack = entry.value;
-                              final metadata = pack.getMetadata();
+                              final pack = packs[index];
+                              final key = pack.pathWithoutLeadingSlash;
+                              final data = pack.data!;
+                              final metadata = data.getMetadata();
                               return ListTile(
                                 title: Text(metadata?.name ??
                                     AppLocalizations.of(context).unnamed),
                                 subtitle: Text(key),
-                                selected: _selectedPack?.$1 == pack &&
+                                selected: _selectedPack?.$1 == data &&
                                     (!isMobile || _isMobileOpen),
-                                onTap: () => selectPack(pack, key, true),
+                                onTap: () => selectPack(data, key, true),
                               );
                             },
                           ),

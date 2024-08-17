@@ -4,15 +4,15 @@
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
-part of 'board_state.dart';
+part of 'world_state.dart';
 
-class BoardStateMapper extends ClassMapperBase<BoardState> {
-  BoardStateMapper._();
+class WorldStateMapper extends ClassMapperBase<WorldState> {
+  WorldStateMapper._();
 
-  static BoardStateMapper? _instance;
-  static BoardStateMapper ensureInitialized() {
+  static WorldStateMapper? _instance;
+  static WorldStateMapper ensureInitialized() {
     if (_instance == null) {
-      MapperContainer.globals.use(_instance = BoardStateMapper._());
+      MapperContainer.globals.use(_instance = WorldStateMapper._());
       GameTableMapper.ensureInitialized();
       VectorDefinitionMapper.ensureInitialized();
       ItemLocationMapper.ensureInitialized();
@@ -21,41 +21,41 @@ class BoardStateMapper extends ClassMapperBase<BoardState> {
   }
 
   @override
-  final String id = 'BoardState';
+  final String id = 'WorldState';
 
-  static MultiplayerCubit _$multiplayer(BoardState v) => v.multiplayer;
-  static const Field<BoardState, MultiplayerCubit> _f$multiplayer =
+  static MultiplayerCubit _$multiplayer(WorldState v) => v.multiplayer;
+  static const Field<WorldState, MultiplayerCubit> _f$multiplayer =
       Field('multiplayer', _$multiplayer);
-  static QuokkaFileSystem _$fileSystem(BoardState v) => v.fileSystem;
-  static const Field<BoardState, QuokkaFileSystem> _f$fileSystem =
+  static QuokkaFileSystem _$fileSystem(WorldState v) => v.fileSystem;
+  static const Field<WorldState, QuokkaFileSystem> _f$fileSystem =
       Field('fileSystem', _$fileSystem);
-  static String? _$name(BoardState v) => v.name;
-  static const Field<BoardState, String> _f$name =
+  static ColorScheme _$colorScheme(WorldState v) => v.colorScheme;
+  static const Field<WorldState, ColorScheme> _f$colorScheme =
+      Field('colorScheme', _$colorScheme);
+  static String? _$name(WorldState v) => v.name;
+  static const Field<WorldState, String> _f$name =
       Field('name', _$name, opt: true);
-  static ColorScheme? _$colorScheme(BoardState v) => v.colorScheme;
-  static const Field<BoardState, ColorScheme> _f$colorScheme =
-      Field('colorScheme', _$colorScheme, opt: true);
-  static GameTable _$table(BoardState v) => v.table;
-  static const Field<BoardState, GameTable> _f$table =
+  static GameTable _$table(WorldState v) => v.table;
+  static const Field<WorldState, GameTable> _f$table =
       Field('table', _$table, opt: true, def: const GameTable());
-  static VectorDefinition? _$selectedCell(BoardState v) => v.selectedCell;
-  static const Field<BoardState, VectorDefinition> _f$selectedCell =
+  static VectorDefinition? _$selectedCell(WorldState v) => v.selectedCell;
+  static const Field<WorldState, VectorDefinition> _f$selectedCell =
       Field('selectedCell', _$selectedCell, opt: true);
-  static ItemLocation? _$selectedDeck(BoardState v) => v.selectedDeck;
-  static const Field<BoardState, ItemLocation> _f$selectedDeck =
+  static ItemLocation? _$selectedDeck(WorldState v) => v.selectedDeck;
+  static const Field<WorldState, ItemLocation> _f$selectedDeck =
       Field('selectedDeck', _$selectedDeck, opt: true);
-  static bool _$showHand(BoardState v) => v.showHand;
-  static const Field<BoardState, bool> _f$showHand =
+  static bool _$showHand(WorldState v) => v.showHand;
+  static const Field<WorldState, bool> _f$showHand =
       Field('showHand', _$showHand, opt: true, def: false);
-  static QuokkaData _$data(BoardState v) => v.data;
-  static const Field<BoardState, QuokkaData> _f$data = Field('data', _$data);
+  static QuokkaData _$data(WorldState v) => v.data;
+  static const Field<WorldState, QuokkaData> _f$data = Field('data', _$data);
 
   @override
-  final MappableFields<BoardState> fields = const {
+  final MappableFields<WorldState> fields = const {
     #multiplayer: _f$multiplayer,
     #fileSystem: _f$fileSystem,
-    #name: _f$name,
     #colorScheme: _f$colorScheme,
+    #name: _f$name,
     #table: _f$table,
     #selectedCell: _f$selectedCell,
     #selectedDeck: _f$selectedDeck,
@@ -63,12 +63,12 @@ class BoardStateMapper extends ClassMapperBase<BoardState> {
     #data: _f$data,
   };
 
-  static BoardState _instantiate(DecodingData data) {
-    return BoardState(
+  static WorldState _instantiate(DecodingData data) {
+    return WorldState(
         multiplayer: data.dec(_f$multiplayer),
         fileSystem: data.dec(_f$fileSystem),
-        name: data.dec(_f$name),
         colorScheme: data.dec(_f$colorScheme),
+        name: data.dec(_f$name),
         table: data.dec(_f$table),
         selectedCell: data.dec(_f$selectedCell),
         selectedDeck: data.dec(_f$selectedDeck),
@@ -79,53 +79,53 @@ class BoardStateMapper extends ClassMapperBase<BoardState> {
   @override
   final Function instantiate = _instantiate;
 
-  static BoardState fromMap(Map<String, dynamic> map) {
-    return ensureInitialized().decodeMap<BoardState>(map);
+  static WorldState fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<WorldState>(map);
   }
 
-  static BoardState fromJson(String json) {
-    return ensureInitialized().decodeJson<BoardState>(json);
+  static WorldState fromJson(String json) {
+    return ensureInitialized().decodeJson<WorldState>(json);
   }
 }
 
-mixin BoardStateMappable {
+mixin WorldStateMappable {
   String toJson() {
-    return BoardStateMapper.ensureInitialized()
-        .encodeJson<BoardState>(this as BoardState);
+    return WorldStateMapper.ensureInitialized()
+        .encodeJson<WorldState>(this as WorldState);
   }
 
   Map<String, dynamic> toMap() {
-    return BoardStateMapper.ensureInitialized()
-        .encodeMap<BoardState>(this as BoardState);
+    return WorldStateMapper.ensureInitialized()
+        .encodeMap<WorldState>(this as WorldState);
   }
 
-  BoardStateCopyWith<BoardState, BoardState, BoardState> get copyWith =>
-      _BoardStateCopyWithImpl(this as BoardState, $identity, $identity);
+  WorldStateCopyWith<WorldState, WorldState, WorldState> get copyWith =>
+      _WorldStateCopyWithImpl(this as WorldState, $identity, $identity);
   @override
   String toString() {
-    return BoardStateMapper.ensureInitialized()
-        .stringifyValue(this as BoardState);
+    return WorldStateMapper.ensureInitialized()
+        .stringifyValue(this as WorldState);
   }
 
   @override
   bool operator ==(Object other) {
-    return BoardStateMapper.ensureInitialized()
-        .equalsValue(this as BoardState, other);
+    return WorldStateMapper.ensureInitialized()
+        .equalsValue(this as WorldState, other);
   }
 
   @override
   int get hashCode {
-    return BoardStateMapper.ensureInitialized().hashValue(this as BoardState);
+    return WorldStateMapper.ensureInitialized().hashValue(this as WorldState);
   }
 }
 
-extension BoardStateValueCopy<$R, $Out>
-    on ObjectCopyWith<$R, BoardState, $Out> {
-  BoardStateCopyWith<$R, BoardState, $Out> get $asBoardState =>
-      $base.as((v, t, t2) => _BoardStateCopyWithImpl(v, t, t2));
+extension WorldStateValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, WorldState, $Out> {
+  WorldStateCopyWith<$R, WorldState, $Out> get $asWorldState =>
+      $base.as((v, t, t2) => _WorldStateCopyWithImpl(v, t, t2));
 }
 
-abstract class BoardStateCopyWith<$R, $In extends BoardState, $Out>
+abstract class WorldStateCopyWith<$R, $In extends WorldState, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   GameTableCopyWith<$R, GameTable, GameTable> get table;
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>?
@@ -134,24 +134,24 @@ abstract class BoardStateCopyWith<$R, $In extends BoardState, $Out>
   $R call(
       {MultiplayerCubit? multiplayer,
       QuokkaFileSystem? fileSystem,
-      String? name,
       ColorScheme? colorScheme,
+      String? name,
       GameTable? table,
       VectorDefinition? selectedCell,
       ItemLocation? selectedDeck,
       bool? showHand,
       QuokkaData? data});
-  BoardStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+  WorldStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
-class _BoardStateCopyWithImpl<$R, $Out>
-    extends ClassCopyWithBase<$R, BoardState, $Out>
-    implements BoardStateCopyWith<$R, BoardState, $Out> {
-  _BoardStateCopyWithImpl(super.value, super.then, super.then2);
+class _WorldStateCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, WorldState, $Out>
+    implements WorldStateCopyWith<$R, WorldState, $Out> {
+  _WorldStateCopyWithImpl(super.value, super.then, super.then2);
 
   @override
-  late final ClassMapperBase<BoardState> $mapper =
-      BoardStateMapper.ensureInitialized();
+  late final ClassMapperBase<WorldState> $mapper =
+      WorldStateMapper.ensureInitialized();
   @override
   GameTableCopyWith<$R, GameTable, GameTable> get table =>
       $value.table.copyWith.$chain((v) => call(table: v));
@@ -166,8 +166,8 @@ class _BoardStateCopyWithImpl<$R, $Out>
   $R call(
           {MultiplayerCubit? multiplayer,
           QuokkaFileSystem? fileSystem,
+          ColorScheme? colorScheme,
           Object? name = $none,
-          Object? colorScheme = $none,
           GameTable? table,
           Object? selectedCell = $none,
           Object? selectedDeck = $none,
@@ -176,8 +176,8 @@ class _BoardStateCopyWithImpl<$R, $Out>
       $apply(FieldCopyWithData({
         if (multiplayer != null) #multiplayer: multiplayer,
         if (fileSystem != null) #fileSystem: fileSystem,
+        if (colorScheme != null) #colorScheme: colorScheme,
         if (name != $none) #name: name,
-        if (colorScheme != $none) #colorScheme: colorScheme,
         if (table != null) #table: table,
         if (selectedCell != $none) #selectedCell: selectedCell,
         if (selectedDeck != $none) #selectedDeck: selectedDeck,
@@ -185,11 +185,11 @@ class _BoardStateCopyWithImpl<$R, $Out>
         if (data != null) #data: data
       }));
   @override
-  BoardState $make(CopyWithData data) => BoardState(
+  WorldState $make(CopyWithData data) => WorldState(
       multiplayer: data.get(#multiplayer, or: $value.multiplayer),
       fileSystem: data.get(#fileSystem, or: $value.fileSystem),
-      name: data.get(#name, or: $value.name),
       colorScheme: data.get(#colorScheme, or: $value.colorScheme),
+      name: data.get(#name, or: $value.name),
       table: data.get(#table, or: $value.table),
       selectedCell: data.get(#selectedCell, or: $value.selectedCell),
       selectedDeck: data.get(#selectedDeck, or: $value.selectedDeck),
@@ -197,7 +197,7 @@ class _BoardStateCopyWithImpl<$R, $Out>
       data: data.get(#data, or: $value.data));
 
   @override
-  BoardStateCopyWith<$R2, BoardState, $Out2> $chain<$R2, $Out2>(
+  WorldStateCopyWith<$R2, WorldState, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _BoardStateCopyWithImpl($value, $cast, t);
+      _WorldStateCopyWithImpl($value, $cast, t);
 }

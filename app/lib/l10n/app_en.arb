@@ -117,5 +117,7 @@
   "connectNote": "Only connect to servers you trust. Be sure to open necessary ports and connect to the same network. Both clients need to be on the same version of Quokka.",
   "start": "Start",
   "stop": "Stop",
-  "browse": "Browse"
+  "browse": "Browse",
+  "disconnected": "Disconnected",
+  "disconnectedMessage": "You have been disconnected from the server. Please check your connection and try again."
 }

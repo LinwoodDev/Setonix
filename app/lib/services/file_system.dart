@@ -58,16 +58,16 @@ class QuokkaFileSystem {
   Future<QuokkaData?> fetchCorePack() async =>
       _corePack ?? (_corePack = await QuokkaData.getCorePack());
 
-  Future<Map<String, QuokkaData>> getPacks({
+  Future<List<FileSystemFile<QuokkaData>>> getPacks({
     bool fetchCore = true,
     bool force = false,
   }) async {
     final corePack = fetchCore ? await fetchCorePack() : null;
     await packSystem.initialize();
-    return {
+    return [
       ...await packSystem.getFiles(),
-      if (corePack != null) '': corePack,
-    };
+      if (corePack != null) FileSystemFile(AssetLocation.empty, data: corePack),
+    ];
   }
 
   Future<QuokkaData?> getPack(String packId) =>

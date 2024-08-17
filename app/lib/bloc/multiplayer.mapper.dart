@@ -13,6 +13,8 @@ class MultiplayerStateMapper extends ClassMapperBase<MultiplayerState> {
   static MultiplayerStateMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = MultiplayerStateMapper._());
+      MultiplayerDisabledStateMapper.ensureInitialized();
+      MultiplayerConnectingStateMapper.ensureInitialized();
       MultiplayerDisconnectedStateMapper.ensureInitialized();
       MultiplayerConnectedStateMapper.ensureInitialized();
     }
@@ -55,6 +57,225 @@ abstract class MultiplayerStateCopyWith<$R, $In extends MultiplayerState, $Out>
       Then<$Out2, $R2> t);
 }
 
+class MultiplayerDisabledStateMapper
+    extends ClassMapperBase<MultiplayerDisabledState> {
+  MultiplayerDisabledStateMapper._();
+
+  static MultiplayerDisabledStateMapper? _instance;
+  static MultiplayerDisabledStateMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals
+          .use(_instance = MultiplayerDisabledStateMapper._());
+      MultiplayerStateMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'MultiplayerDisabledState';
+
+  @override
+  final MappableFields<MultiplayerDisabledState> fields = const {};
+
+  static MultiplayerDisabledState _instantiate(DecodingData data) {
+    return MultiplayerDisabledState();
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static MultiplayerDisabledState fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<MultiplayerDisabledState>(map);
+  }
+
+  static MultiplayerDisabledState fromJson(String json) {
+    return ensureInitialized().decodeJson<MultiplayerDisabledState>(json);
+  }
+}
+
+mixin MultiplayerDisabledStateMappable {
+  String toJson() {
+    return MultiplayerDisabledStateMapper.ensureInitialized()
+        .encodeJson<MultiplayerDisabledState>(this as MultiplayerDisabledState);
+  }
+
+  Map<String, dynamic> toMap() {
+    return MultiplayerDisabledStateMapper.ensureInitialized()
+        .encodeMap<MultiplayerDisabledState>(this as MultiplayerDisabledState);
+  }
+
+  MultiplayerDisabledStateCopyWith<MultiplayerDisabledState,
+          MultiplayerDisabledState, MultiplayerDisabledState>
+      get copyWith => _MultiplayerDisabledStateCopyWithImpl(
+          this as MultiplayerDisabledState, $identity, $identity);
+  @override
+  String toString() {
+    return MultiplayerDisabledStateMapper.ensureInitialized()
+        .stringifyValue(this as MultiplayerDisabledState);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return MultiplayerDisabledStateMapper.ensureInitialized()
+        .equalsValue(this as MultiplayerDisabledState, other);
+  }
+
+  @override
+  int get hashCode {
+    return MultiplayerDisabledStateMapper.ensureInitialized()
+        .hashValue(this as MultiplayerDisabledState);
+  }
+}
+
+extension MultiplayerDisabledStateValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, MultiplayerDisabledState, $Out> {
+  MultiplayerDisabledStateCopyWith<$R, MultiplayerDisabledState, $Out>
+      get $asMultiplayerDisabledState => $base
+          .as((v, t, t2) => _MultiplayerDisabledStateCopyWithImpl(v, t, t2));
+}
+
+abstract class MultiplayerDisabledStateCopyWith<
+    $R,
+    $In extends MultiplayerDisabledState,
+    $Out> implements MultiplayerStateCopyWith<$R, $In, $Out> {
+  @override
+  $R call();
+  MultiplayerDisabledStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class _MultiplayerDisabledStateCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, MultiplayerDisabledState, $Out>
+    implements
+        MultiplayerDisabledStateCopyWith<$R, MultiplayerDisabledState, $Out> {
+  _MultiplayerDisabledStateCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<MultiplayerDisabledState> $mapper =
+      MultiplayerDisabledStateMapper.ensureInitialized();
+  @override
+  $R call() => $apply(FieldCopyWithData({}));
+  @override
+  MultiplayerDisabledState $make(CopyWithData data) =>
+      MultiplayerDisabledState();
+
+  @override
+  MultiplayerDisabledStateCopyWith<$R2, MultiplayerDisabledState, $Out2>
+      $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+          _MultiplayerDisabledStateCopyWithImpl($value, $cast, t);
+}
+
+class MultiplayerConnectingStateMapper
+    extends ClassMapperBase<MultiplayerConnectingState> {
+  MultiplayerConnectingStateMapper._();
+
+  static MultiplayerConnectingStateMapper? _instance;
+  static MultiplayerConnectingStateMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals
+          .use(_instance = MultiplayerConnectingStateMapper._());
+      MultiplayerStateMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'MultiplayerConnectingState';
+
+  @override
+  final MappableFields<MultiplayerConnectingState> fields = const {};
+
+  static MultiplayerConnectingState _instantiate(DecodingData data) {
+    return MultiplayerConnectingState();
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static MultiplayerConnectingState fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<MultiplayerConnectingState>(map);
+  }
+
+  static MultiplayerConnectingState fromJson(String json) {
+    return ensureInitialized().decodeJson<MultiplayerConnectingState>(json);
+  }
+}
+
+mixin MultiplayerConnectingStateMappable {
+  String toJson() {
+    return MultiplayerConnectingStateMapper.ensureInitialized()
+        .encodeJson<MultiplayerConnectingState>(
+            this as MultiplayerConnectingState);
+  }
+
+  Map<String, dynamic> toMap() {
+    return MultiplayerConnectingStateMapper.ensureInitialized()
+        .encodeMap<MultiplayerConnectingState>(
+            this as MultiplayerConnectingState);
+  }
+
+  MultiplayerConnectingStateCopyWith<MultiplayerConnectingState,
+          MultiplayerConnectingState, MultiplayerConnectingState>
+      get copyWith => _MultiplayerConnectingStateCopyWithImpl(
+          this as MultiplayerConnectingState, $identity, $identity);
+  @override
+  String toString() {
+    return MultiplayerConnectingStateMapper.ensureInitialized()
+        .stringifyValue(this as MultiplayerConnectingState);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return MultiplayerConnectingStateMapper.ensureInitialized()
+        .equalsValue(this as MultiplayerConnectingState, other);
+  }
+
+  @override
+  int get hashCode {
+    return MultiplayerConnectingStateMapper.ensureInitialized()
+        .hashValue(this as MultiplayerConnectingState);
+  }
+}
+
+extension MultiplayerConnectingStateValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, MultiplayerConnectingState, $Out> {
+  MultiplayerConnectingStateCopyWith<$R, MultiplayerConnectingState, $Out>
+      get $asMultiplayerConnectingState => $base
+          .as((v, t, t2) => _MultiplayerConnectingStateCopyWithImpl(v, t, t2));
+}
+
+abstract class MultiplayerConnectingStateCopyWith<
+    $R,
+    $In extends MultiplayerConnectingState,
+    $Out> implements MultiplayerStateCopyWith<$R, $In, $Out> {
+  @override
+  $R call();
+  MultiplayerConnectingStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class _MultiplayerConnectingStateCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, MultiplayerConnectingState, $Out>
+    implements
+        MultiplayerConnectingStateCopyWith<$R, MultiplayerConnectingState,
+            $Out> {
+  _MultiplayerConnectingStateCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<MultiplayerConnectingState> $mapper =
+      MultiplayerConnectingStateMapper.ensureInitialized();
+  @override
+  $R call() => $apply(FieldCopyWithData({}));
+  @override
+  MultiplayerConnectingState $make(CopyWithData data) =>
+      MultiplayerConnectingState();
+
+  @override
+  MultiplayerConnectingStateCopyWith<$R2, MultiplayerConnectingState, $Out2>
+      $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+          _MultiplayerConnectingStateCopyWithImpl($value, $cast, t);
+}
+
 class MultiplayerDisconnectedStateMapper
     extends ClassMapperBase<MultiplayerDisconnectedState> {
   MultiplayerDisconnectedStateMapper._();
@@ -72,11 +293,17 @@ class MultiplayerDisconnectedStateMapper
   @override
   final String id = 'MultiplayerDisconnectedState';
 
+  static Object? _$error(MultiplayerDisconnectedState v) => v.error;
+  static const Field<MultiplayerDisconnectedState, Object> _f$error =
+      Field('error', _$error, opt: true);
+
   @override
-  final MappableFields<MultiplayerDisconnectedState> fields = const {};
+  final MappableFields<MultiplayerDisconnectedState> fields = const {
+    #error: _f$error,
+  };
 
   static MultiplayerDisconnectedState _instantiate(DecodingData data) {
-    return MultiplayerDisconnectedState();
+    return MultiplayerDisconnectedState(data.dec(_f$error));
   }
 
   @override
@@ -139,7 +366,7 @@ abstract class MultiplayerDisconnectedStateCopyWith<
     $In extends MultiplayerDisconnectedState,
     $Out> implements MultiplayerStateCopyWith<$R, $In, $Out> {
   @override
-  $R call();
+  $R call({Object? error});
   MultiplayerDisconnectedStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -156,10 +383,11 @@ class _MultiplayerDisconnectedStateCopyWithImpl<$R, $Out>
   late final ClassMapperBase<MultiplayerDisconnectedState> $mapper =
       MultiplayerDisconnectedStateMapper.ensureInitialized();
   @override
-  $R call() => $apply(FieldCopyWithData({}));
+  $R call({Object? error = $none}) =>
+      $apply(FieldCopyWithData({if (error != $none) #error: error}));
   @override
   MultiplayerDisconnectedState $make(CopyWithData data) =>
-      MultiplayerDisconnectedState();
+      MultiplayerDisconnectedState(data.get(#error, or: $value.error));
 
   @override
   MultiplayerDisconnectedStateCopyWith<$R2, MultiplayerDisconnectedState, $Out2>

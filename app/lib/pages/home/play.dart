@@ -22,8 +22,8 @@ class PlayDialog extends StatefulWidget {
 
 class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
   late final TypedKeyFileSystem<QuokkaData> _worldSystem;
-  late Stream<Map<String, QuokkaData>> _gamesStream;
-  MapEntry<String, QuokkaData>? _selected;
+  late Stream<List<FileSystemFile<QuokkaData>>> _gamesStream;
+  FileSystemFile<QuokkaData>? _selected;
   bool _isMobileOpen = false;
 
   @override
@@ -33,7 +33,7 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
     _gamesStream = _fetchGames().asBroadcastStream();
   }
 
-  Stream<Map<String, QuokkaData>> _fetchGames() async* {
+  Stream<List<FileSystemFile<QuokkaData>>> _fetchGames() async* {
     await _worldSystem.initialize();
     yield* _worldSystem.fetchFiles();
   }
@@ -69,9 +69,8 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
               label: Text(AppLocalizations.of(context).play),
               onPressed: () => GoRouter.of(context).goNamed(
                 'game',
-                extra: _selected?.value,
                 pathParameters: {
-                  if (_selected?.key != null) 'name': _selected!.key,
+                  if (_selected != null) 'name': _selected!.path,
                 },
               ),
             ),
@@ -83,9 +82,9 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
                 icon: const Icon(PhosphorIconsLight.export),
                 onPressed: () => exportFile(
                   context: context,
-                  bytes: _selected?.value.exportAsBytes() ?? Uint8List(0),
+                  bytes: _selected?.data?.exportAsBytes() ?? Uint8List(0),
                   fileExtension: 'qka',
-                  fileName: _selected?.key ?? 'game',
+                  fileName: _selected?.fileNameWithoutExtension ?? 'game',
                   label: AppLocalizations.of(context).game,
                   mimeType: 'application/octet-stream',
                   uniformTypeIdentifier: 'dev.linwood.butterfly.note',
@@ -108,7 +107,7 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          _worldSystem.deleteFile(_selected!.key);
+                          _worldSystem.deleteFile(_selected!.path);
                           Navigator.of(context).pop();
                           if (_isMobileOpen) Navigator.of(context).pop();
                           _selected = null;
@@ -125,7 +124,7 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
         ],
       ),
     );
-    final metadata = _selected?.value.getMetadata() ?? const FileMetadata();
+    final metadata = _selected?.data?.getMetadata() ?? const FileMetadata();
     final details = Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -152,7 +151,7 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
           child: StreamBuilder(
               stream: _gamesStream,
               builder: (context, snapshot) {
-                final games = snapshot.data?.entries.toList();
+                final games = snapshot.data;
                 if (games == null) {
                   return const Center(child: CircularProgressIndicator());
                 }
@@ -165,7 +164,7 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
                   itemCount: games.length,
                   itemBuilder: (context, index) {
                     final entry = games[index];
-                    final name = entry.key;
+                    final name = entry.pathWithoutLeadingSlash;
                     return ListTile(
                       title: Text(name),
                       onTap: () {
@@ -175,7 +174,7 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
                         });
                         if (isMobile) {
                           final metadata =
-                              entry.value.getMetadata() ?? const FileMetadata();
+                              entry.data?.getMetadata() ?? const FileMetadata();
                           showLeapBottomSheet(
                             context: context,
                             title: metadata.name,
@@ -192,7 +191,7 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
                           });
                         }
                       },
-                      selected: name == _selected?.key &&
+                      selected: name == _selected?.pathWithoutLeadingSlash &&
                           (!isMobile || _isMobileOpen),
                     );
                   },

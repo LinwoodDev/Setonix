@@ -4,7 +4,7 @@ import 'package:quokka/board/cell.dart';
 
 class BoardGrid extends PositionComponent with HasGameRef {
   final Vector2 cellSize;
-  static const _padding = 16.0;
+  static const _padding = 3.0;
   Rect? _lastViewport;
 
   BoardGrid({
@@ -41,9 +41,7 @@ class BoardGrid extends PositionComponent with HasGameRef {
     final last = _lastViewport ?? Rect.zero;
     // Add components that are in the viewport
     // Top and bottom
-    for (var x = viewport.left + cellSize.x;
-        x < viewport.right - cellSize.x;
-        x += cellSize.x) {
+    for (var x = viewport.left; x < viewport.right; x += cellSize.x) {
       for (var y = viewport.top; y < last.top; y += cellSize.y) {
         add(_createCell(
           position: Vector2(x, y),
@@ -58,9 +56,7 @@ class BoardGrid extends PositionComponent with HasGameRef {
       }
     }
     // Left and right
-    for (var y = last.top + cellSize.y;
-        y < last.bottom - cellSize.y;
-        y += cellSize.y) {
+    for (var y = last.top; y < last.bottom; y += cellSize.y) {
       for (var x = viewport.left; x < last.left; x += cellSize.x) {
         add(_createCell(
           position: Vector2(x, y),
@@ -73,32 +69,6 @@ class BoardGrid extends PositionComponent with HasGameRef {
           size: cellSize,
         ));
       }
-    }
-    // Corner
-    if (last.left != viewport.left || last.top != viewport.top) {
-      add(_createCell(
-        position: Vector2(viewport.left, viewport.top),
-        size: cellSize,
-      ));
-    }
-    if (last.right != viewport.right || last.top != viewport.top) {
-      add(_createCell(
-        position: Vector2(viewport.right - cellSize.x, viewport.top),
-        size: cellSize,
-      ));
-    }
-    if (last.left != viewport.left || last.bottom != viewport.bottom) {
-      add(_createCell(
-        position: Vector2(viewport.left, viewport.bottom - cellSize.y),
-        size: cellSize,
-      ));
-    }
-    if (last.right != viewport.right || last.bottom != viewport.bottom) {
-      add(_createCell(
-        position:
-            Vector2(viewport.right - cellSize.x, viewport.bottom - cellSize.y),
-        size: cellSize,
-      ));
     }
     _lastViewport = viewport;
   }
