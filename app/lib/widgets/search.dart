@@ -8,6 +8,7 @@ const searchConstraints =
 
 class TabSearchView extends StatelessWidget {
   final TabController? tabController;
+  final TextEditingController? searchController;
   final List<Widget> tabs;
   final ValueChanged<String>? onSearchChanged;
   final ValueChanged<String>? onSearchSubmitted;
@@ -16,6 +17,7 @@ class TabSearchView extends StatelessWidget {
   const TabSearchView({
     super.key,
     this.tabController,
+    this.searchController,
     required this.tabs,
     this.onSearchChanged,
     this.onSearchSubmitted,
@@ -38,6 +40,7 @@ class TabSearchView extends StatelessWidget {
       hintText: AppLocalizations.of(context).search,
       onChanged: onSearchChanged,
       onSubmitted: onSearchSubmitted,
+      controller: searchController,
     );
     return TwoChildRowLayout(primary: tabBar, second: searchBar);
   }

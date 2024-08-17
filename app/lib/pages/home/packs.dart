@@ -25,6 +25,7 @@ class _PacksDialogState extends State<PacksDialog>
   );
   late final QuokkaFileSystem _service = context.read<QuokkaFileSystem>();
   late final TabController _tabController;
+  final TextEditingController _searchController = TextEditingController();
   Future<Map<String, QuokkaData>>? _packsFuture;
   (QuokkaData, String, bool)? _selectedPack;
 
@@ -151,14 +152,15 @@ class _PacksDialogState extends State<PacksDialog>
         children: [
           TabSearchView(
             tabController: _tabController,
-            tabs: const [
+            searchController: _searchController,
+            tabs: [
               HorizontalTab(
                 icon: PhosphorIcon(PhosphorIconsLight.folder),
-                label: Text('Installed'),
+                label: Text(AppLocalizations.of(context).installed),
               ),
               HorizontalTab(
                 icon: PhosphorIcon(PhosphorIconsLight.globe),
-                label: Text('Browse'),
+                label: Text(AppLocalizations.of(context).browse),
               ),
             ],
           ),
@@ -180,30 +182,46 @@ class _PacksDialogState extends State<PacksDialog>
                     ),
                   );
                 }
-                final view = TabBarView(
-                  controller: _tabController,
-                  children: [
-                    ListView.builder(
-                      itemCount: packs.length,
-                      itemBuilder: (context, index) {
-                        final key = packs[index].key;
-                        final pack = packs[index].value;
-                        final metadata = pack.getMetadata();
-                        return ListTile(
-                          title: Text(metadata?.name ??
-                              AppLocalizations.of(context).unnamed),
-                          subtitle: Text(key),
-                          selected: _selectedPack?.$1 == pack &&
-                              (!isMobile || _isMobileOpen),
-                          onTap: () => selectPack(pack, key, true),
-                        );
-                      },
-                    ),
-                    Center(
-                      child: Text(AppLocalizations.of(context).comingSoon),
-                    ),
-                  ],
-                );
+                final view = ListenableBuilder(
+                    listenable: _searchController,
+                    builder: (context, _) {
+                      final query = _searchController.text.toLowerCase();
+                      final filtered = packs
+                          .where((entry) =>
+                              entry.value
+                                  .getMetadata()
+                                  ?.name
+                                  .toLowerCase()
+                                  .contains(query) ??
+                              entry.key.toLowerCase().contains(query))
+                          .toList();
+                      return TabBarView(
+                        controller: _tabController,
+                        children: [
+                          ListView.builder(
+                            itemCount: filtered.length,
+                            itemBuilder: (context, index) {
+                              final entry = filtered[index];
+                              final key = entry.key;
+                              final pack = entry.value;
+                              final metadata = pack.getMetadata();
+                              return ListTile(
+                                title: Text(metadata?.name ??
+                                    AppLocalizations.of(context).unnamed),
+                                subtitle: Text(key),
+                                selected: _selectedPack?.$1 == pack &&
+                                    (!isMobile || _isMobileOpen),
+                                onTap: () => selectPack(pack, key, true),
+                              );
+                            },
+                          ),
+                          Center(
+                            child:
+                                Text(AppLocalizations.of(context).comingSoon),
+                          ),
+                        ],
+                      );
+                    });
                 if (isMobile) {
                   return view;
                 }

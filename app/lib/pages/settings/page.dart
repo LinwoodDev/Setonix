@@ -69,7 +69,7 @@ class _SettingsPageState extends State<SettingsPage> {
         color: widget.isDialog ? Colors.transparent : null,
         child: LayoutBuilder(builder: (context, constraints) {
           final isMobile = constraints.maxWidth < 600;
-          var navigation = Column(children: [
+          var navigation = Column(mainAxisSize: MainAxisSize.min, children: [
             Header(
               title: Text(AppLocalizations.of(context).settings),
               leading: IconButton.outlined(
