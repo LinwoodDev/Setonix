@@ -32,8 +32,8 @@ class _DotsBackgroundState extends State<DotsBackground>
 
   @override
   void dispose() {
-    super.dispose();
     _controller.dispose();
+    super.dispose();
   }
 
   @override

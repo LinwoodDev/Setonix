@@ -67,7 +67,7 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
   bool get isClient => state.isClient;
   bool get isServer => state.isServer;
 
-  MultiplayerConnectedState _addNetworker(NetworkerBase base) {
+  Future<MultiplayerConnectedState> _addNetworker(NetworkerBase base) async {
     final transformer = NetworkerPipeTransformer<String, BoardEvent>(
       BoardEventMapper.fromJson,
       (e) => e.toJson(),
@@ -79,8 +79,8 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
       }
     });
     if (base is NetworkerServer) {
+      base.clientConnect.listen(_initController.add);
       base.connect(EchoPipe(toChannel: kAnyChannel));
-      base.clientConnect.pipe(_initController);
     }
     return MultiplayerConnectedState(base, transformer);
   }
@@ -95,20 +95,27 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
     final state = this.state;
     if (state is! MultiplayerConnectedState) return;
     state.networker.close();
-    if (emit) this.emit(MultiplayerDisconnectedState());
+    if (emit) {
+      if (state.isClient)
+        this.emit(MultiplayerDisconnectedState());
+      else
+        this.emit(MultiplayerDisabledState());
+    }
   }
 
   Future<void> connect(String address) async {
     try {
+      emit(MultiplayerConnectingState());
       final add = address.split(':');
       final client = NetworkerSocketClient(Uri(
         scheme: 'ws',
         host: add[0],
         port: add.length <= 1 ? kDefaultPort : int.parse(add[1]),
       ));
-      final state = _addNetworker(client);
+      final state = await _addNetworker(client);
       client.onClosed.listen((_) => emit(MultiplayerDisconnectedState()),
           onError: (e) => emit(MultiplayerDisconnectedState(e)));
+      await client.init();
       emit(state);
     } catch (e) {
       emit(MultiplayerDisconnectedState(e));
@@ -119,7 +126,7 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
     try {
       final server =
           NetworkerSocketServer(InternetAddress.loopbackIPv4, kDefaultPort);
-      final state = _addNetworker(server);
+      final state = await _addNetworker(server);
       await server.init();
       emit(state);
     } catch (e) {
