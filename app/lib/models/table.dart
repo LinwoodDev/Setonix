@@ -1,4 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:flutter/material.dart' show Color, Colors;
 import 'package:quokka/models/vector.dart';
 
 part 'table.mapper.dart';
@@ -36,25 +37,54 @@ class GameTable with GameTableMappable {
   final Map<VectorDefinition, TableCell> cells;
   @MappableField(hook: VectorMapHook())
   final Map<VectorDefinition, GameBoard> boards;
-  final Map<String, GamePlayer> players;
+  final Map<String, GameTeam> teams;
   final ItemLocation? background;
 
   const GameTable({
     this.cells = const {},
     this.boards = const {},
-    this.players = const {},
+    this.teams = const {},
     this.background,
   });
 }
 
-@MappableClass()
-class GamePlayer with GamePlayerMappable {
-  final String name;
-  final List<String>? teams;
+@MappableEnum()
+enum TeamColor {
+  pink,
+  red,
+  orange,
+  yellow,
+  green,
+  blue,
+  indigo,
+  purple,
+  brown,
+  white,
+  black;
 
-  GamePlayer({
-    required this.name,
-    this.teams = const [],
+  Color get color => switch (this) {
+        TeamColor.red => Colors.red,
+        TeamColor.blue => Colors.blue,
+        TeamColor.indigo => Colors.indigo,
+        TeamColor.green => Colors.green,
+        TeamColor.yellow => Colors.yellow,
+        TeamColor.purple => Colors.purple,
+        TeamColor.orange => Colors.orange,
+        TeamColor.pink => Colors.pink,
+        TeamColor.brown => Colors.brown,
+        TeamColor.white => Colors.white,
+        TeamColor.black => Colors.black,
+      };
+}
+
+@MappableClass()
+class GameTeam with GameTeamMappable {
+  final String description;
+  final TeamColor? color;
+
+  GameTeam({
+    this.description = '',
+    this.color,
   });
 }
 

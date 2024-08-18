@@ -41,7 +41,7 @@ final class MultiplayerDisconnectedState extends MultiplayerState
 final class MultiplayerConnectedState extends MultiplayerState
     with MultiplayerConnectedStateMappable {
   final NetworkerBase networker;
-  final NetworkerPipeTransformer<String, BoardEvent> transformer;
+  final NetworkerPipeTransformer<String, WorldEvent> transformer;
 
   MultiplayerConnectedState(this.networker, this.transformer);
 
@@ -52,10 +52,10 @@ final class MultiplayerConnectedState extends MultiplayerState
 }
 
 class MultiplayerCubit extends Cubit<MultiplayerState> {
-  final StreamController<BoardEvent> _eventController =
+  final StreamController<WorldEvent> _eventController =
       StreamController.broadcast();
 
-  Stream<BoardEvent> get events => _eventController.stream;
+  Stream<WorldEvent> get events => _eventController.stream;
 
   final StreamController<int> _initController = StreamController.broadcast();
 
@@ -68,19 +68,22 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
   bool get isServer => state.isServer;
 
   Future<MultiplayerConnectedState> _addNetworker(NetworkerBase base) async {
-    final transformer = NetworkerPipeTransformer<String, BoardEvent>(
-      BoardEventMapper.fromJson,
+    final transformer = NetworkerPipeTransformer<String, WorldEvent>(
+      WorldEventMapper.fromJson,
       (e) => e.toJson(),
     );
     base.connect(StringNetworkerPlugin()..connect(transformer));
     transformer.read.listen((event) {
       if (event.data.isMultiplayer) {
-        _eventController.add(event.data.copyWith(isRemoteEvent: true));
+        _eventController.add(event.data);
       }
     });
     if (base is NetworkerServer) {
+      base.connect(RawJsonNetworkerPlugin()
+        ..connect(NetworkerPipeTransformer<dynamic, WorldEvent>(
+            (data) => WorldEventMapper.fromJson(data), (data) => data.toJson())
+          ..connect(EchoPipe(toChannel: kAnyChannel))));
       base.clientConnect.listen(_initController.add);
-      base.connect(EchoPipe(toChannel: kAnyChannel));
     }
     return MultiplayerConnectedState(base, transformer);
   }
@@ -96,10 +99,11 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
     if (state is! MultiplayerConnectedState) return;
     state.networker.close();
     if (emit) {
-      if (state.isClient)
+      if (state.isClient) {
         this.emit(MultiplayerDisconnectedState());
-      else
+      } else {
         this.emit(MultiplayerDisabledState());
+      }
     }
   }
 
@@ -134,9 +138,8 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
     }
   }
 
-  void send(BoardEvent event, [Channel channel = kAnyChannel]) {
+  void send(WorldEvent event, [Channel channel = kAnyChannel]) {
     final state = this.state;
-    if (event.isRemoteEvent) return;
     if (state is! MultiplayerConnectedState) return;
     state.transformer.sendMessage(event, channel);
   }

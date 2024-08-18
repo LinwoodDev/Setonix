@@ -29,7 +29,7 @@ class MultiplayerDialog extends StatelessWidget {
                 decoration: InputDecoration(
                   filled: true,
                   suffix: IconButton(
-                    icon: Icon(PhosphorIconsLight.copy),
+                    icon: const Icon(PhosphorIconsLight.copy),
                     onPressed: () => saveToClipboard(
                       context,
                       state.networker.address.toString(),

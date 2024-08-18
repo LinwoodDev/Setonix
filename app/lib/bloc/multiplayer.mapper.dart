@@ -405,7 +405,7 @@ class MultiplayerConnectedStateMapper
       MapperContainer.globals
           .use(_instance = MultiplayerConnectedStateMapper._());
       MultiplayerStateMapper.ensureInitialized();
-      BoardEventMapper.ensureInitialized();
+      WorldEventMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -416,11 +416,11 @@ class MultiplayerConnectedStateMapper
   static NetworkerBase _$networker(MultiplayerConnectedState v) => v.networker;
   static const Field<MultiplayerConnectedState, NetworkerBase> _f$networker =
       Field('networker', _$networker);
-  static NetworkerPipeTransformer<String, BoardEvent> _$transformer(
+  static NetworkerPipeTransformer<String, WorldEvent> _$transformer(
           MultiplayerConnectedState v) =>
       v.transformer;
   static const Field<MultiplayerConnectedState,
-          NetworkerPipeTransformer<String, BoardEvent>> _f$transformer =
+          NetworkerPipeTransformer<String, WorldEvent>> _f$transformer =
       Field('transformer', _$transformer);
 
   @override
@@ -496,7 +496,7 @@ abstract class MultiplayerConnectedStateCopyWith<
   @override
   $R call(
       {NetworkerBase? networker,
-      NetworkerPipeTransformer<String, BoardEvent>? transformer});
+      NetworkerPipeTransformer<String, WorldEvent>? transformer});
   MultiplayerConnectedStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -513,7 +513,7 @@ class _MultiplayerConnectedStateCopyWithImpl<$R, $Out>
   @override
   $R call(
           {NetworkerBase? networker,
-          NetworkerPipeTransformer<String, BoardEvent>? transformer}) =>
+          NetworkerPipeTransformer<String, WorldEvent>? transformer}) =>
       $apply(FieldCopyWithData({
         if (networker != null) #networker: networker,
         if (transformer != null) #transformer: transformer

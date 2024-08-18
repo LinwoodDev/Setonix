@@ -16,10 +16,10 @@ class DotsBackground extends StatefulWidget {
 class _DotsBackgroundState extends State<DotsBackground>
     with TickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
-    duration: const Duration(seconds: 10),
+    duration: const Duration(seconds: 5),
     vsync: this,
   )..repeat(reverse: true);
-  late final Tween<double> _valueTween = Tween(begin: 0.1, end: 0.7);
+  late final Tween<double> _valueTween = Tween(begin: 0.1, end: 0.6);
   @override
   void didUpdateWidget(covariant DotsBackground oldWidget) {
     super.didUpdateWidget(oldWidget);

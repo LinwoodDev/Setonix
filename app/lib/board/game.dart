@@ -43,7 +43,6 @@ class BoardGame extends FlameGame
   @override
   FutureOr<void> onLoad() async {
     add(ScreenHitbox());
-    camera.viewport.debugMode = true;
     final provider =
         FlameBlocProvider<WorldBloc, WorldState>.value(value: bloc);
     await add(provider);

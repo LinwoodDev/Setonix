@@ -11,7 +11,8 @@ import 'package:quokka/models/table.dart';
 import 'package:quokka/services/file_system.dart';
 import 'package:quokka/bloc/multiplayer.dart';
 
-class WorldBloc extends Bloc<BoardEvent, WorldState> {
+class WorldBloc extends Bloc<WorldEvent, WorldState> {
+  bool _remoteEvent = false;
   WorldBloc({
     required MultiplayerCubit multiplayer,
     required QuokkaFileSystem fileSystem,
@@ -28,7 +29,11 @@ class WorldBloc extends Bloc<BoardEvent, WorldState> {
           table: table ?? data?.getTable() ?? const GameTable(),
         )) {
     state.multiplayer
-      ..events.listen(add)
+      ..events.listen((event) {
+        _remoteEvent = true;
+        add(event);
+        _remoteEvent = false;
+      })
       ..inits.listen((e) {
         if (e == 0) return;
         state.multiplayer.send(TableChanged(state.table), e);
@@ -134,6 +139,16 @@ class WorldBloc extends Bloc<BoardEvent, WorldState> {
           .replace(event.cell, cell.copyWith(objects: newObjects)));
       return save();
     });
+    on<TeamChanged>((event, emit) {
+      emit(state.copyWith(
+          table: state.table.copyWith.teams.put(event.name, event.team)));
+      return save();
+    });
+    on<TeamRemoved>((event, emit) {
+      emit(
+          state.copyWith(table: state.table.copyWith.teams.remove(event.team)));
+      return save();
+    });
   }
 
   Future<void> save() async {
@@ -144,12 +159,12 @@ class WorldBloc extends Bloc<BoardEvent, WorldState> {
   }
 
   @override
-  void onEvent(BoardEvent event) {
+  void onEvent(WorldEvent event) {
     super.onEvent(event);
-    if (event.isMultiplayer) state.multiplayer.send(event);
+    if (event.isMultiplayer && !_remoteEvent) state.multiplayer.send(event);
   }
 
-  void send(BoardEvent event) {
+  void send(WorldEvent event) {
     if (event.isMultiplayer && state.multiplayer.isConnected) {
       if (state.multiplayer.isServer) add(event);
       state.multiplayer.send(event);

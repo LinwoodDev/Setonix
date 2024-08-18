@@ -6,13 +6,13 @@
 
 part of 'world_event.dart';
 
-class BoardEventMapper extends ClassMapperBase<BoardEvent> {
-  BoardEventMapper._();
+class WorldEventMapper extends ClassMapperBase<WorldEvent> {
+  WorldEventMapper._();
 
-  static BoardEventMapper? _instance;
-  static BoardEventMapper ensureInitialized() {
+  static WorldEventMapper? _instance;
+  static WorldEventMapper ensureInitialized() {
     if (_instance == null) {
-      MapperContainer.globals.use(_instance = BoardEventMapper._());
+      MapperContainer.globals.use(_instance = WorldEventMapper._());
       TableChangedMapper.ensureInitialized();
       CellSwitchedMapper.ensureInitialized();
       ColorSchemeChangedMapper.ensureInitialized();
@@ -23,51 +23,48 @@ class BoardEventMapper extends ClassMapperBase<BoardEvent> {
       CellHideChangedMapper.ensureInitialized();
       CellShuffledMapper.ensureInitialized();
       ObjectIndexChangedMapper.ensureInitialized();
+      UserBasedEventMapper.ensureInitialized();
+      TeamChangedMapper.ensureInitialized();
+      TeamRemovedMapper.ensureInitialized();
     }
     return _instance!;
   }
 
   @override
-  final String id = 'BoardEvent';
-
-  static bool _$isRemoteEvent(BoardEvent v) => v.isRemoteEvent;
-  static const Field<BoardEvent, bool> _f$isRemoteEvent =
-      Field('isRemoteEvent', _$isRemoteEvent, opt: true, def: false);
+  final String id = 'WorldEvent';
 
   @override
-  final MappableFields<BoardEvent> fields = const {
-    #isRemoteEvent: _f$isRemoteEvent,
-  };
+  final MappableFields<WorldEvent> fields = const {};
 
   @override
-  final MappingHook hook = const IgnoreKeysHook({'isRemoteEvent'});
-  static BoardEvent _instantiate(DecodingData data) {
+  final MappingHook hook = const IgnoreKeysHook({'user'});
+  static WorldEvent _instantiate(DecodingData data) {
     throw MapperException.missingSubclass(
-        'BoardEvent', 'type', '${data.value['type']}');
+        'WorldEvent', 'type', '${data.value['type']}');
   }
 
   @override
   final Function instantiate = _instantiate;
 
-  static BoardEvent fromMap(Map<String, dynamic> map) {
-    return ensureInitialized().decodeMap<BoardEvent>(map);
+  static WorldEvent fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<WorldEvent>(map);
   }
 
-  static BoardEvent fromJson(String json) {
-    return ensureInitialized().decodeJson<BoardEvent>(json);
+  static WorldEvent fromJson(String json) {
+    return ensureInitialized().decodeJson<WorldEvent>(json);
   }
 }
 
-mixin BoardEventMappable {
+mixin WorldEventMappable {
   String toJson();
   Map<String, dynamic> toMap();
-  BoardEventCopyWith<BoardEvent, BoardEvent, BoardEvent> get copyWith;
+  WorldEventCopyWith<WorldEvent, WorldEvent, WorldEvent> get copyWith;
 }
 
-abstract class BoardEventCopyWith<$R, $In extends BoardEvent, $Out>
+abstract class WorldEventCopyWith<$R, $In extends WorldEvent, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call({bool? isRemoteEvent});
-  BoardEventCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+  $R call();
+  WorldEventCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
 class TableChangedMapper extends SubClassMapperBase<TableChanged> {
@@ -77,7 +74,7 @@ class TableChangedMapper extends SubClassMapperBase<TableChanged> {
   static TableChangedMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = TableChangedMapper._());
-      BoardEventMapper.ensureInitialized().addSubMapper(_instance!);
+      WorldEventMapper.ensureInitialized().addSubMapper(_instance!);
       GameTableMapper.ensureInitialized();
     }
     return _instance!;
@@ -89,14 +86,10 @@ class TableChangedMapper extends SubClassMapperBase<TableChanged> {
   static GameTable _$table(TableChanged v) => v.table;
   static const Field<TableChanged, GameTable> _f$table =
       Field('table', _$table);
-  static bool _$isRemoteEvent(TableChanged v) => v.isRemoteEvent;
-  static const Field<TableChanged, bool> _f$isRemoteEvent =
-      Field('isRemoteEvent', _$isRemoteEvent, opt: true, def: false);
 
   @override
   final MappableFields<TableChanged> fields = const {
     #table: _f$table,
-    #isRemoteEvent: _f$isRemoteEvent,
   };
 
   @override
@@ -104,14 +97,13 @@ class TableChangedMapper extends SubClassMapperBase<TableChanged> {
   @override
   final dynamic discriminatorValue = 'TableChanged';
   @override
-  late final ClassMapperBase superMapper = BoardEventMapper.ensureInitialized();
+  late final ClassMapperBase superMapper = WorldEventMapper.ensureInitialized();
 
   @override
-  final MappingHook superHook = const IgnoreKeysHook({'isRemoteEvent'});
+  final MappingHook superHook = const IgnoreKeysHook({'user'});
 
   static TableChanged _instantiate(DecodingData data) {
-    return TableChanged(data.dec(_f$table),
-        isRemoteEvent: data.dec(_f$isRemoteEvent));
+    return TableChanged(data.dec(_f$table));
   }
 
   @override
@@ -165,10 +157,10 @@ extension TableChangedValueCopy<$R, $Out>
 }
 
 abstract class TableChangedCopyWith<$R, $In extends TableChanged, $Out>
-    implements BoardEventCopyWith<$R, $In, $Out> {
+    implements WorldEventCopyWith<$R, $In, $Out> {
   GameTableCopyWith<$R, GameTable, GameTable> get table;
   @override
-  $R call({GameTable? table, bool? isRemoteEvent});
+  $R call({GameTable? table});
   TableChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -184,14 +176,11 @@ class _TableChangedCopyWithImpl<$R, $Out>
   GameTableCopyWith<$R, GameTable, GameTable> get table =>
       $value.table.copyWith.$chain((v) => call(table: v));
   @override
-  $R call({GameTable? table, bool? isRemoteEvent}) => $apply(FieldCopyWithData({
-        if (table != null) #table: table,
-        if (isRemoteEvent != null) #isRemoteEvent: isRemoteEvent
-      }));
+  $R call({GameTable? table}) =>
+      $apply(FieldCopyWithData({if (table != null) #table: table}));
   @override
   TableChanged $make(CopyWithData data) =>
-      TableChanged(data.get(#table, or: $value.table),
-          isRemoteEvent: data.get(#isRemoteEvent, or: $value.isRemoteEvent));
+      TableChanged(data.get(#table, or: $value.table));
 
   @override
   TableChangedCopyWith<$R2, TableChanged, $Out2> $chain<$R2, $Out2>(
@@ -206,7 +195,7 @@ class CellSwitchedMapper extends SubClassMapperBase<CellSwitched> {
   static CellSwitchedMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = CellSwitchedMapper._());
-      BoardEventMapper.ensureInitialized().addSubMapper(_instance!);
+      WorldEventMapper.ensureInitialized().addSubMapper(_instance!);
       VectorDefinitionMapper.ensureInitialized();
     }
     return _instance!;
@@ -221,15 +210,11 @@ class CellSwitchedMapper extends SubClassMapperBase<CellSwitched> {
   static bool _$toggle(CellSwitched v) => v.toggle;
   static const Field<CellSwitched, bool> _f$toggle =
       Field('toggle', _$toggle, opt: true, def: false);
-  static bool _$isRemoteEvent(CellSwitched v) => v.isRemoteEvent;
-  static const Field<CellSwitched, bool> _f$isRemoteEvent =
-      Field('isRemoteEvent', _$isRemoteEvent, opt: true, def: false);
 
   @override
   final MappableFields<CellSwitched> fields = const {
     #cell: _f$cell,
     #toggle: _f$toggle,
-    #isRemoteEvent: _f$isRemoteEvent,
   };
 
   @override
@@ -237,14 +222,13 @@ class CellSwitchedMapper extends SubClassMapperBase<CellSwitched> {
   @override
   final dynamic discriminatorValue = 'CellSwitched';
   @override
-  late final ClassMapperBase superMapper = BoardEventMapper.ensureInitialized();
+  late final ClassMapperBase superMapper = WorldEventMapper.ensureInitialized();
 
   @override
-  final MappingHook superHook = const IgnoreKeysHook({'isRemoteEvent'});
+  final MappingHook superHook = const IgnoreKeysHook({'user'});
 
   static CellSwitched _instantiate(DecodingData data) {
-    return CellSwitched(data.dec(_f$cell),
-        toggle: data.dec(_f$toggle), isRemoteEvent: data.dec(_f$isRemoteEvent));
+    return CellSwitched(data.dec(_f$cell), toggle: data.dec(_f$toggle));
   }
 
   @override
@@ -298,10 +282,10 @@ extension CellSwitchedValueCopy<$R, $Out>
 }
 
 abstract class CellSwitchedCopyWith<$R, $In extends CellSwitched, $Out>
-    implements BoardEventCopyWith<$R, $In, $Out> {
+    implements WorldEventCopyWith<$R, $In, $Out> {
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>? get cell;
   @override
-  $R call({VectorDefinition? cell, bool? toggle, bool? isRemoteEvent});
+  $R call({VectorDefinition? cell, bool? toggle});
   CellSwitchedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -317,17 +301,12 @@ class _CellSwitchedCopyWithImpl<$R, $Out>
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>? get cell =>
       $value.cell?.copyWith.$chain((v) => call(cell: v));
   @override
-  $R call({Object? cell = $none, bool? toggle, bool? isRemoteEvent}) =>
-      $apply(FieldCopyWithData({
-        if (cell != $none) #cell: cell,
-        if (toggle != null) #toggle: toggle,
-        if (isRemoteEvent != null) #isRemoteEvent: isRemoteEvent
-      }));
+  $R call({Object? cell = $none, bool? toggle}) => $apply(FieldCopyWithData(
+      {if (cell != $none) #cell: cell, if (toggle != null) #toggle: toggle}));
   @override
   CellSwitched $make(CopyWithData data) =>
       CellSwitched(data.get(#cell, or: $value.cell),
-          toggle: data.get(#toggle, or: $value.toggle),
-          isRemoteEvent: data.get(#isRemoteEvent, or: $value.isRemoteEvent));
+          toggle: data.get(#toggle, or: $value.toggle));
 
   @override
   CellSwitchedCopyWith<$R2, CellSwitched, $Out2> $chain<$R2, $Out2>(
@@ -342,7 +321,7 @@ class ColorSchemeChangedMapper extends SubClassMapperBase<ColorSchemeChanged> {
   static ColorSchemeChangedMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ColorSchemeChangedMapper._());
-      BoardEventMapper.ensureInitialized().addSubMapper(_instance!);
+      WorldEventMapper.ensureInitialized().addSubMapper(_instance!);
     }
     return _instance!;
   }
@@ -353,14 +332,10 @@ class ColorSchemeChangedMapper extends SubClassMapperBase<ColorSchemeChanged> {
   static ColorScheme? _$colorScheme(ColorSchemeChanged v) => v.colorScheme;
   static const Field<ColorSchemeChanged, ColorScheme> _f$colorScheme =
       Field('colorScheme', _$colorScheme);
-  static bool _$isRemoteEvent(ColorSchemeChanged v) => v.isRemoteEvent;
-  static const Field<ColorSchemeChanged, bool> _f$isRemoteEvent =
-      Field('isRemoteEvent', _$isRemoteEvent, opt: true, def: false);
 
   @override
   final MappableFields<ColorSchemeChanged> fields = const {
     #colorScheme: _f$colorScheme,
-    #isRemoteEvent: _f$isRemoteEvent,
   };
 
   @override
@@ -368,14 +343,13 @@ class ColorSchemeChangedMapper extends SubClassMapperBase<ColorSchemeChanged> {
   @override
   final dynamic discriminatorValue = 'ColorSchemeChanged';
   @override
-  late final ClassMapperBase superMapper = BoardEventMapper.ensureInitialized();
+  late final ClassMapperBase superMapper = WorldEventMapper.ensureInitialized();
 
   @override
-  final MappingHook superHook = const IgnoreKeysHook({'isRemoteEvent'});
+  final MappingHook superHook = const IgnoreKeysHook({'user'});
 
   static ColorSchemeChanged _instantiate(DecodingData data) {
-    return ColorSchemeChanged(data.dec(_f$colorScheme),
-        isRemoteEvent: data.dec(_f$isRemoteEvent));
+    return ColorSchemeChanged(data.dec(_f$colorScheme));
   }
 
   @override
@@ -432,9 +406,9 @@ extension ColorSchemeChangedValueCopy<$R, $Out>
 }
 
 abstract class ColorSchemeChangedCopyWith<$R, $In extends ColorSchemeChanged,
-    $Out> implements BoardEventCopyWith<$R, $In, $Out> {
+    $Out> implements WorldEventCopyWith<$R, $In, $Out> {
   @override
-  $R call({ColorScheme? colorScheme, bool? isRemoteEvent});
+  $R call({ColorScheme? colorScheme});
   ColorSchemeChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -448,15 +422,11 @@ class _ColorSchemeChangedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ColorSchemeChanged> $mapper =
       ColorSchemeChangedMapper.ensureInitialized();
   @override
-  $R call({Object? colorScheme = $none, bool? isRemoteEvent}) =>
-      $apply(FieldCopyWithData({
-        if (colorScheme != $none) #colorScheme: colorScheme,
-        if (isRemoteEvent != null) #isRemoteEvent: isRemoteEvent
-      }));
+  $R call({Object? colorScheme = $none}) => $apply(
+      FieldCopyWithData({if (colorScheme != $none) #colorScheme: colorScheme}));
   @override
   ColorSchemeChanged $make(CopyWithData data) =>
-      ColorSchemeChanged(data.get(#colorScheme, or: $value.colorScheme),
-          isRemoteEvent: data.get(#isRemoteEvent, or: $value.isRemoteEvent));
+      ColorSchemeChanged(data.get(#colorScheme, or: $value.colorScheme));
 
   @override
   ColorSchemeChangedCopyWith<$R2, ColorSchemeChanged, $Out2> $chain<$R2, $Out2>(
@@ -471,7 +441,7 @@ class BackgroundChangedMapper extends SubClassMapperBase<BackgroundChanged> {
   static BackgroundChangedMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = BackgroundChangedMapper._());
-      BoardEventMapper.ensureInitialized().addSubMapper(_instance!);
+      WorldEventMapper.ensureInitialized().addSubMapper(_instance!);
       ItemLocationMapper.ensureInitialized();
     }
     return _instance!;
@@ -483,14 +453,10 @@ class BackgroundChangedMapper extends SubClassMapperBase<BackgroundChanged> {
   static ItemLocation _$background(BackgroundChanged v) => v.background;
   static const Field<BackgroundChanged, ItemLocation> _f$background =
       Field('background', _$background);
-  static bool _$isRemoteEvent(BackgroundChanged v) => v.isRemoteEvent;
-  static const Field<BackgroundChanged, bool> _f$isRemoteEvent =
-      Field('isRemoteEvent', _$isRemoteEvent, opt: true, def: false);
 
   @override
   final MappableFields<BackgroundChanged> fields = const {
     #background: _f$background,
-    #isRemoteEvent: _f$isRemoteEvent,
   };
 
   @override
@@ -498,14 +464,13 @@ class BackgroundChangedMapper extends SubClassMapperBase<BackgroundChanged> {
   @override
   final dynamic discriminatorValue = 'BackgroundChanged';
   @override
-  late final ClassMapperBase superMapper = BoardEventMapper.ensureInitialized();
+  late final ClassMapperBase superMapper = WorldEventMapper.ensureInitialized();
 
   @override
-  final MappingHook superHook = const IgnoreKeysHook({'isRemoteEvent'});
+  final MappingHook superHook = const IgnoreKeysHook({'user'});
 
   static BackgroundChanged _instantiate(DecodingData data) {
-    return BackgroundChanged(data.dec(_f$background),
-        isRemoteEvent: data.dec(_f$isRemoteEvent));
+    return BackgroundChanged(data.dec(_f$background));
   }
 
   @override
@@ -562,10 +527,10 @@ extension BackgroundChangedValueCopy<$R, $Out>
 }
 
 abstract class BackgroundChangedCopyWith<$R, $In extends BackgroundChanged,
-    $Out> implements BoardEventCopyWith<$R, $In, $Out> {
+    $Out> implements WorldEventCopyWith<$R, $In, $Out> {
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation> get background;
   @override
-  $R call({ItemLocation? background, bool? isRemoteEvent});
+  $R call({ItemLocation? background});
   BackgroundChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -582,15 +547,11 @@ class _BackgroundChangedCopyWithImpl<$R, $Out>
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation> get background =>
       $value.background.copyWith.$chain((v) => call(background: v));
   @override
-  $R call({ItemLocation? background, bool? isRemoteEvent}) =>
-      $apply(FieldCopyWithData({
-        if (background != null) #background: background,
-        if (isRemoteEvent != null) #isRemoteEvent: isRemoteEvent
-      }));
+  $R call({ItemLocation? background}) => $apply(
+      FieldCopyWithData({if (background != null) #background: background}));
   @override
   BackgroundChanged $make(CopyWithData data) =>
-      BackgroundChanged(data.get(#background, or: $value.background),
-          isRemoteEvent: data.get(#isRemoteEvent, or: $value.isRemoteEvent));
+      BackgroundChanged(data.get(#background, or: $value.background));
 
   @override
   BackgroundChangedCopyWith<$R2, BackgroundChanged, $Out2> $chain<$R2, $Out2>(
@@ -605,7 +566,7 @@ class HandChangedMapper extends SubClassMapperBase<HandChanged> {
   static HandChangedMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = HandChangedMapper._());
-      BoardEventMapper.ensureInitialized().addSubMapper(_instance!);
+      WorldEventMapper.ensureInitialized().addSubMapper(_instance!);
       ItemLocationMapper.ensureInitialized();
     }
     return _instance!;
@@ -620,15 +581,11 @@ class HandChangedMapper extends SubClassMapperBase<HandChanged> {
   static bool? _$show(HandChanged v) => v.show;
   static const Field<HandChanged, bool> _f$show =
       Field('show', _$show, opt: true, def: true);
-  static bool _$isRemoteEvent(HandChanged v) => v.isRemoteEvent;
-  static const Field<HandChanged, bool> _f$isRemoteEvent =
-      Field('isRemoteEvent', _$isRemoteEvent, opt: true, def: false);
 
   @override
   final MappableFields<HandChanged> fields = const {
     #deck: _f$deck,
     #show: _f$show,
-    #isRemoteEvent: _f$isRemoteEvent,
   };
 
   @override
@@ -636,16 +593,13 @@ class HandChangedMapper extends SubClassMapperBase<HandChanged> {
   @override
   final dynamic discriminatorValue = 'HandChanged';
   @override
-  late final ClassMapperBase superMapper = BoardEventMapper.ensureInitialized();
+  late final ClassMapperBase superMapper = WorldEventMapper.ensureInitialized();
 
   @override
-  final MappingHook superHook = const IgnoreKeysHook({'isRemoteEvent'});
+  final MappingHook superHook = const IgnoreKeysHook({'user'});
 
   static HandChanged _instantiate(DecodingData data) {
-    return HandChanged(
-        deck: data.dec(_f$deck),
-        show: data.dec(_f$show),
-        isRemoteEvent: data.dec(_f$isRemoteEvent));
+    return HandChanged(deck: data.dec(_f$deck), show: data.dec(_f$show));
   }
 
   @override
@@ -698,10 +652,10 @@ extension HandChangedValueCopy<$R, $Out>
 }
 
 abstract class HandChangedCopyWith<$R, $In extends HandChanged, $Out>
-    implements BoardEventCopyWith<$R, $In, $Out> {
+    implements WorldEventCopyWith<$R, $In, $Out> {
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get deck;
   @override
-  $R call({ItemLocation? deck, bool? show, bool? isRemoteEvent});
+  $R call({ItemLocation? deck, bool? show});
   HandChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -717,17 +671,12 @@ class _HandChangedCopyWithImpl<$R, $Out>
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get deck =>
       $value.deck?.copyWith.$chain((v) => call(deck: v));
   @override
-  $R call({Object? deck = $none, bool? show, bool? isRemoteEvent}) =>
-      $apply(FieldCopyWithData({
-        if (deck != $none) #deck: deck,
-        if (show != null) #show: show,
-        if (isRemoteEvent != null) #isRemoteEvent: isRemoteEvent
-      }));
+  $R call({Object? deck = $none, bool? show}) => $apply(FieldCopyWithData(
+      {if (deck != $none) #deck: deck, if (show != null) #show: show}));
   @override
   HandChanged $make(CopyWithData data) => HandChanged(
       deck: data.get(#deck, or: $value.deck),
-      show: data.get(#show, or: $value.show),
-      isRemoteEvent: data.get(#isRemoteEvent, or: $value.isRemoteEvent));
+      show: data.get(#show, or: $value.show));
 
   @override
   HandChangedCopyWith<$R2, HandChanged, $Out2> $chain<$R2, $Out2>(
@@ -742,7 +691,7 @@ class ObjectsSpawnedMapper extends SubClassMapperBase<ObjectsSpawned> {
   static ObjectsSpawnedMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ObjectsSpawnedMapper._());
-      BoardEventMapper.ensureInitialized().addSubMapper(_instance!);
+      WorldEventMapper.ensureInitialized().addSubMapper(_instance!);
       VectorDefinitionMapper.ensureInitialized();
       GameObjectMapper.ensureInitialized();
     }
@@ -758,15 +707,11 @@ class ObjectsSpawnedMapper extends SubClassMapperBase<ObjectsSpawned> {
   static List<GameObject> _$objects(ObjectsSpawned v) => v.objects;
   static const Field<ObjectsSpawned, List<GameObject>> _f$objects =
       Field('objects', _$objects);
-  static bool _$isRemoteEvent(ObjectsSpawned v) => v.isRemoteEvent;
-  static const Field<ObjectsSpawned, bool> _f$isRemoteEvent =
-      Field('isRemoteEvent', _$isRemoteEvent, opt: true, def: false);
 
   @override
   final MappableFields<ObjectsSpawned> fields = const {
     #cell: _f$cell,
     #objects: _f$objects,
-    #isRemoteEvent: _f$isRemoteEvent,
   };
 
   @override
@@ -774,14 +719,13 @@ class ObjectsSpawnedMapper extends SubClassMapperBase<ObjectsSpawned> {
   @override
   final dynamic discriminatorValue = 'ObjectsSpawned';
   @override
-  late final ClassMapperBase superMapper = BoardEventMapper.ensureInitialized();
+  late final ClassMapperBase superMapper = WorldEventMapper.ensureInitialized();
 
   @override
-  final MappingHook superHook = const IgnoreKeysHook({'isRemoteEvent'});
+  final MappingHook superHook = const IgnoreKeysHook({'user'});
 
   static ObjectsSpawned _instantiate(DecodingData data) {
-    return ObjectsSpawned(data.dec(_f$cell), data.dec(_f$objects),
-        isRemoteEvent: data.dec(_f$isRemoteEvent));
+    return ObjectsSpawned(data.dec(_f$cell), data.dec(_f$objects));
   }
 
   @override
@@ -836,13 +780,12 @@ extension ObjectsSpawnedValueCopy<$R, $Out>
 }
 
 abstract class ObjectsSpawnedCopyWith<$R, $In extends ObjectsSpawned, $Out>
-    implements BoardEventCopyWith<$R, $In, $Out> {
+    implements WorldEventCopyWith<$R, $In, $Out> {
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell;
   ListCopyWith<$R, GameObject, GameObjectCopyWith<$R, GameObject, GameObject>>
       get objects;
   @override
-  $R call(
-      {VectorDefinition? cell, List<GameObject>? objects, bool? isRemoteEvent});
+  $R call({VectorDefinition? cell, List<GameObject>? objects});
   ObjectsSpawnedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -863,19 +806,14 @@ class _ObjectsSpawnedCopyWithImpl<$R, $Out>
       get objects => ListCopyWith($value.objects,
           (v, t) => v.copyWith.$chain(t), (v) => call(objects: v));
   @override
-  $R call(
-          {VectorDefinition? cell,
-          List<GameObject>? objects,
-          bool? isRemoteEvent}) =>
+  $R call({VectorDefinition? cell, List<GameObject>? objects}) =>
       $apply(FieldCopyWithData({
         if (cell != null) #cell: cell,
-        if (objects != null) #objects: objects,
-        if (isRemoteEvent != null) #isRemoteEvent: isRemoteEvent
+        if (objects != null) #objects: objects
       }));
   @override
   ObjectsSpawned $make(CopyWithData data) => ObjectsSpawned(
-      data.get(#cell, or: $value.cell), data.get(#objects, or: $value.objects),
-      isRemoteEvent: data.get(#isRemoteEvent, or: $value.isRemoteEvent));
+      data.get(#cell, or: $value.cell), data.get(#objects, or: $value.objects));
 
   @override
   ObjectsSpawnedCopyWith<$R2, ObjectsSpawned, $Out2> $chain<$R2, $Out2>(
@@ -890,7 +828,7 @@ class ObjectsMovedMapper extends SubClassMapperBase<ObjectsMoved> {
   static ObjectsMovedMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ObjectsMovedMapper._());
-      BoardEventMapper.ensureInitialized().addSubMapper(_instance!);
+      WorldEventMapper.ensureInitialized().addSubMapper(_instance!);
       VectorDefinitionMapper.ensureInitialized();
     }
     return _instance!;
@@ -907,16 +845,12 @@ class ObjectsMovedMapper extends SubClassMapperBase<ObjectsMoved> {
       Field('from', _$from);
   static VectorDefinition _$to(ObjectsMoved v) => v.to;
   static const Field<ObjectsMoved, VectorDefinition> _f$to = Field('to', _$to);
-  static bool _$isRemoteEvent(ObjectsMoved v) => v.isRemoteEvent;
-  static const Field<ObjectsMoved, bool> _f$isRemoteEvent =
-      Field('isRemoteEvent', _$isRemoteEvent, opt: true, def: false);
 
   @override
   final MappableFields<ObjectsMoved> fields = const {
     #objects: _f$objects,
     #from: _f$from,
     #to: _f$to,
-    #isRemoteEvent: _f$isRemoteEvent,
   };
 
   @override
@@ -924,15 +858,14 @@ class ObjectsMovedMapper extends SubClassMapperBase<ObjectsMoved> {
   @override
   final dynamic discriminatorValue = 'ObjectsMoved';
   @override
-  late final ClassMapperBase superMapper = BoardEventMapper.ensureInitialized();
+  late final ClassMapperBase superMapper = WorldEventMapper.ensureInitialized();
 
   @override
-  final MappingHook superHook = const IgnoreKeysHook({'isRemoteEvent'});
+  final MappingHook superHook = const IgnoreKeysHook({'user'});
 
   static ObjectsMoved _instantiate(DecodingData data) {
     return ObjectsMoved(
-        data.dec(_f$objects), data.dec(_f$from), data.dec(_f$to),
-        isRemoteEvent: data.dec(_f$isRemoteEvent));
+        data.dec(_f$objects), data.dec(_f$from), data.dec(_f$to));
   }
 
   @override
@@ -986,16 +919,12 @@ extension ObjectsMovedValueCopy<$R, $Out>
 }
 
 abstract class ObjectsMovedCopyWith<$R, $In extends ObjectsMoved, $Out>
-    implements BoardEventCopyWith<$R, $In, $Out> {
+    implements WorldEventCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, int, ObjectCopyWith<$R, int, int>> get objects;
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get from;
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get to;
   @override
-  $R call(
-      {List<int>? objects,
-      VectorDefinition? from,
-      VectorDefinition? to,
-      bool? isRemoteEvent});
+  $R call({List<int>? objects, VectorDefinition? from, VectorDefinition? to});
   ObjectsMovedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -1018,23 +947,17 @@ class _ObjectsMovedCopyWithImpl<$R, $Out>
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get to =>
       $value.to.copyWith.$chain((v) => call(to: v));
   @override
-  $R call(
-          {List<int>? objects,
-          VectorDefinition? from,
-          VectorDefinition? to,
-          bool? isRemoteEvent}) =>
+  $R call({List<int>? objects, VectorDefinition? from, VectorDefinition? to}) =>
       $apply(FieldCopyWithData({
         if (objects != null) #objects: objects,
         if (from != null) #from: from,
-        if (to != null) #to: to,
-        if (isRemoteEvent != null) #isRemoteEvent: isRemoteEvent
+        if (to != null) #to: to
       }));
   @override
   ObjectsMoved $make(CopyWithData data) => ObjectsMoved(
       data.get(#objects, or: $value.objects),
       data.get(#from, or: $value.from),
-      data.get(#to, or: $value.to),
-      isRemoteEvent: data.get(#isRemoteEvent, or: $value.isRemoteEvent));
+      data.get(#to, or: $value.to));
 
   @override
   ObjectsMovedCopyWith<$R2, ObjectsMoved, $Out2> $chain<$R2, $Out2>(
@@ -1049,7 +972,7 @@ class CellHideChangedMapper extends SubClassMapperBase<CellHideChanged> {
   static CellHideChangedMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = CellHideChangedMapper._());
-      BoardEventMapper.ensureInitialized().addSubMapper(_instance!);
+      WorldEventMapper.ensureInitialized().addSubMapper(_instance!);
       VectorDefinitionMapper.ensureInitialized();
     }
     return _instance!;
@@ -1067,16 +990,12 @@ class CellHideChangedMapper extends SubClassMapperBase<CellHideChanged> {
   static bool? _$hide(CellHideChanged v) => v.hide;
   static const Field<CellHideChanged, bool> _f$hide =
       Field('hide', _$hide, opt: true);
-  static bool _$isRemoteEvent(CellHideChanged v) => v.isRemoteEvent;
-  static const Field<CellHideChanged, bool> _f$isRemoteEvent =
-      Field('isRemoteEvent', _$isRemoteEvent, opt: true, def: false);
 
   @override
   final MappableFields<CellHideChanged> fields = const {
     #cell: _f$cell,
     #object: _f$object,
     #hide: _f$hide,
-    #isRemoteEvent: _f$isRemoteEvent,
   };
 
   @override
@@ -1084,16 +1003,14 @@ class CellHideChangedMapper extends SubClassMapperBase<CellHideChanged> {
   @override
   final dynamic discriminatorValue = 'CellHideChanged';
   @override
-  late final ClassMapperBase superMapper = BoardEventMapper.ensureInitialized();
+  late final ClassMapperBase superMapper = WorldEventMapper.ensureInitialized();
 
   @override
-  final MappingHook superHook = const IgnoreKeysHook({'isRemoteEvent'});
+  final MappingHook superHook = const IgnoreKeysHook({'user'});
 
   static CellHideChanged _instantiate(DecodingData data) {
     return CellHideChanged(data.dec(_f$cell),
-        object: data.dec(_f$object),
-        hide: data.dec(_f$hide),
-        isRemoteEvent: data.dec(_f$isRemoteEvent));
+        object: data.dec(_f$object), hide: data.dec(_f$hide));
   }
 
   @override
@@ -1148,11 +1065,10 @@ extension CellHideChangedValueCopy<$R, $Out>
 }
 
 abstract class CellHideChangedCopyWith<$R, $In extends CellHideChanged, $Out>
-    implements BoardEventCopyWith<$R, $In, $Out> {
+    implements WorldEventCopyWith<$R, $In, $Out> {
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell;
   @override
-  $R call(
-      {VectorDefinition? cell, int? object, bool? hide, bool? isRemoteEvent});
+  $R call({VectorDefinition? cell, int? object, bool? hide});
   CellHideChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -1172,20 +1088,17 @@ class _CellHideChangedCopyWithImpl<$R, $Out>
   $R call(
           {VectorDefinition? cell,
           Object? object = $none,
-          Object? hide = $none,
-          bool? isRemoteEvent}) =>
+          Object? hide = $none}) =>
       $apply(FieldCopyWithData({
         if (cell != null) #cell: cell,
         if (object != $none) #object: object,
-        if (hide != $none) #hide: hide,
-        if (isRemoteEvent != null) #isRemoteEvent: isRemoteEvent
+        if (hide != $none) #hide: hide
       }));
   @override
   CellHideChanged $make(CopyWithData data) =>
       CellHideChanged(data.get(#cell, or: $value.cell),
           object: data.get(#object, or: $value.object),
-          hide: data.get(#hide, or: $value.hide),
-          isRemoteEvent: data.get(#isRemoteEvent, or: $value.isRemoteEvent));
+          hide: data.get(#hide, or: $value.hide));
 
   @override
   CellHideChangedCopyWith<$R2, CellHideChanged, $Out2> $chain<$R2, $Out2>(
@@ -1200,7 +1113,7 @@ class CellShuffledMapper extends SubClassMapperBase<CellShuffled> {
   static CellShuffledMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = CellShuffledMapper._());
-      BoardEventMapper.ensureInitialized().addSubMapper(_instance!);
+      WorldEventMapper.ensureInitialized().addSubMapper(_instance!);
       VectorDefinitionMapper.ensureInitialized();
     }
     return _instance!;
@@ -1214,15 +1127,11 @@ class CellShuffledMapper extends SubClassMapperBase<CellShuffled> {
       Field('cell', _$cell);
   static int _$seed(CellShuffled v) => v.seed;
   static const Field<CellShuffled, int> _f$seed = Field('seed', _$seed);
-  static bool _$isRemoteEvent(CellShuffled v) => v.isRemoteEvent;
-  static const Field<CellShuffled, bool> _f$isRemoteEvent =
-      Field('isRemoteEvent', _$isRemoteEvent, opt: true, def: false);
 
   @override
   final MappableFields<CellShuffled> fields = const {
     #cell: _f$cell,
     #seed: _f$seed,
-    #isRemoteEvent: _f$isRemoteEvent,
   };
 
   @override
@@ -1230,14 +1139,13 @@ class CellShuffledMapper extends SubClassMapperBase<CellShuffled> {
   @override
   final dynamic discriminatorValue = 'CellShuffled';
   @override
-  late final ClassMapperBase superMapper = BoardEventMapper.ensureInitialized();
+  late final ClassMapperBase superMapper = WorldEventMapper.ensureInitialized();
 
   @override
-  final MappingHook superHook = const IgnoreKeysHook({'isRemoteEvent'});
+  final MappingHook superHook = const IgnoreKeysHook({'user'});
 
   static CellShuffled _instantiate(DecodingData data) {
-    return CellShuffled(data.dec(_f$cell), data.dec(_f$seed),
-        isRemoteEvent: data.dec(_f$isRemoteEvent));
+    return CellShuffled(data.dec(_f$cell), data.dec(_f$seed));
   }
 
   @override
@@ -1291,10 +1199,10 @@ extension CellShuffledValueCopy<$R, $Out>
 }
 
 abstract class CellShuffledCopyWith<$R, $In extends CellShuffled, $Out>
-    implements BoardEventCopyWith<$R, $In, $Out> {
+    implements WorldEventCopyWith<$R, $In, $Out> {
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell;
   @override
-  $R call({VectorDefinition? cell, int? seed, bool? isRemoteEvent});
+  $R call({VectorDefinition? cell, int? seed});
   CellShuffledCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -1310,16 +1218,11 @@ class _CellShuffledCopyWithImpl<$R, $Out>
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell =>
       $value.cell.copyWith.$chain((v) => call(cell: v));
   @override
-  $R call({VectorDefinition? cell, int? seed, bool? isRemoteEvent}) =>
-      $apply(FieldCopyWithData({
-        if (cell != null) #cell: cell,
-        if (seed != null) #seed: seed,
-        if (isRemoteEvent != null) #isRemoteEvent: isRemoteEvent
-      }));
+  $R call({VectorDefinition? cell, int? seed}) => $apply(FieldCopyWithData(
+      {if (cell != null) #cell: cell, if (seed != null) #seed: seed}));
   @override
   CellShuffled $make(CopyWithData data) => CellShuffled(
-      data.get(#cell, or: $value.cell), data.get(#seed, or: $value.seed),
-      isRemoteEvent: data.get(#isRemoteEvent, or: $value.isRemoteEvent));
+      data.get(#cell, or: $value.cell), data.get(#seed, or: $value.seed));
 
   @override
   CellShuffledCopyWith<$R2, CellShuffled, $Out2> $chain<$R2, $Out2>(
@@ -1334,7 +1237,7 @@ class ObjectIndexChangedMapper extends SubClassMapperBase<ObjectIndexChanged> {
   static ObjectIndexChangedMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ObjectIndexChangedMapper._());
-      BoardEventMapper.ensureInitialized().addSubMapper(_instance!);
+      WorldEventMapper.ensureInitialized().addSubMapper(_instance!);
       VectorDefinitionMapper.ensureInitialized();
     }
     return _instance!;
@@ -1352,16 +1255,12 @@ class ObjectIndexChangedMapper extends SubClassMapperBase<ObjectIndexChanged> {
   static int _$index(ObjectIndexChanged v) => v.index;
   static const Field<ObjectIndexChanged, int> _f$index =
       Field('index', _$index);
-  static bool _$isRemoteEvent(ObjectIndexChanged v) => v.isRemoteEvent;
-  static const Field<ObjectIndexChanged, bool> _f$isRemoteEvent =
-      Field('isRemoteEvent', _$isRemoteEvent, opt: true, def: false);
 
   @override
   final MappableFields<ObjectIndexChanged> fields = const {
     #cell: _f$cell,
     #object: _f$object,
     #index: _f$index,
-    #isRemoteEvent: _f$isRemoteEvent,
   };
 
   @override
@@ -1369,15 +1268,14 @@ class ObjectIndexChangedMapper extends SubClassMapperBase<ObjectIndexChanged> {
   @override
   final dynamic discriminatorValue = 'ObjectIndexChanged';
   @override
-  late final ClassMapperBase superMapper = BoardEventMapper.ensureInitialized();
+  late final ClassMapperBase superMapper = WorldEventMapper.ensureInitialized();
 
   @override
-  final MappingHook superHook = const IgnoreKeysHook({'isRemoteEvent'});
+  final MappingHook superHook = const IgnoreKeysHook({'user'});
 
   static ObjectIndexChanged _instantiate(DecodingData data) {
     return ObjectIndexChanged(
-        data.dec(_f$cell), data.dec(_f$object), data.dec(_f$index),
-        isRemoteEvent: data.dec(_f$isRemoteEvent));
+        data.dec(_f$cell), data.dec(_f$object), data.dec(_f$index));
   }
 
   @override
@@ -1434,11 +1332,10 @@ extension ObjectIndexChangedValueCopy<$R, $Out>
 }
 
 abstract class ObjectIndexChangedCopyWith<$R, $In extends ObjectIndexChanged,
-    $Out> implements BoardEventCopyWith<$R, $In, $Out> {
+    $Out> implements WorldEventCopyWith<$R, $In, $Out> {
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell;
   @override
-  $R call(
-      {VectorDefinition? cell, int? object, int? index, bool? isRemoteEvent});
+  $R call({VectorDefinition? cell, int? object, int? index});
   ObjectIndexChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -1455,26 +1352,561 @@ class _ObjectIndexChangedCopyWithImpl<$R, $Out>
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell =>
       $value.cell.copyWith.$chain((v) => call(cell: v));
   @override
-  $R call(
-          {VectorDefinition? cell,
-          int? object,
-          int? index,
-          bool? isRemoteEvent}) =>
+  $R call({VectorDefinition? cell, int? object, int? index}) =>
       $apply(FieldCopyWithData({
         if (cell != null) #cell: cell,
         if (object != null) #object: object,
-        if (index != null) #index: index,
-        if (isRemoteEvent != null) #isRemoteEvent: isRemoteEvent
+        if (index != null) #index: index
       }));
   @override
   ObjectIndexChanged $make(CopyWithData data) => ObjectIndexChanged(
       data.get(#cell, or: $value.cell),
       data.get(#object, or: $value.object),
-      data.get(#index, or: $value.index),
-      isRemoteEvent: data.get(#isRemoteEvent, or: $value.isRemoteEvent));
+      data.get(#index, or: $value.index));
 
   @override
   ObjectIndexChangedCopyWith<$R2, ObjectIndexChanged, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
       _ObjectIndexChangedCopyWithImpl($value, $cast, t);
+}
+
+class UserBasedEventMapper extends SubClassMapperBase<UserBasedEvent> {
+  UserBasedEventMapper._();
+
+  static UserBasedEventMapper? _instance;
+  static UserBasedEventMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = UserBasedEventMapper._());
+      WorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      TeamJoinedMapper.ensureInitialized();
+      TeamLeftMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'UserBasedEvent';
+
+  static int? _$user(UserBasedEvent v) => v.user;
+  static const Field<UserBasedEvent, int> _f$user =
+      Field('user', _$user, opt: true);
+
+  @override
+  final MappableFields<UserBasedEvent> fields = const {
+    #user: _f$user,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'UserBasedEvent';
+  @override
+  late final ClassMapperBase superMapper = WorldEventMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = const IgnoreKeysHook({'user'});
+
+  static UserBasedEvent _instantiate(DecodingData data) {
+    throw MapperException.missingSubclass(
+        'UserBasedEvent', 'type', '${data.value['type']}');
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static UserBasedEvent fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<UserBasedEvent>(map);
+  }
+
+  static UserBasedEvent fromJson(String json) {
+    return ensureInitialized().decodeJson<UserBasedEvent>(json);
+  }
+}
+
+mixin UserBasedEventMappable {
+  String toJson();
+  Map<String, dynamic> toMap();
+  UserBasedEventCopyWith<UserBasedEvent, UserBasedEvent, UserBasedEvent>
+      get copyWith;
+}
+
+abstract class UserBasedEventCopyWith<$R, $In extends UserBasedEvent, $Out>
+    implements WorldEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({int? user});
+  UserBasedEventCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class TeamChangedMapper extends SubClassMapperBase<TeamChanged> {
+  TeamChangedMapper._();
+
+  static TeamChangedMapper? _instance;
+  static TeamChangedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = TeamChangedMapper._());
+      WorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      GameTeamMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'TeamChanged';
+
+  static String _$name(TeamChanged v) => v.name;
+  static const Field<TeamChanged, String> _f$name = Field('name', _$name);
+  static GameTeam _$team(TeamChanged v) => v.team;
+  static const Field<TeamChanged, GameTeam> _f$team = Field('team', _$team);
+
+  @override
+  final MappableFields<TeamChanged> fields = const {
+    #name: _f$name,
+    #team: _f$team,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'TeamChanged';
+  @override
+  late final ClassMapperBase superMapper = WorldEventMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = const IgnoreKeysHook({'user'});
+
+  static TeamChanged _instantiate(DecodingData data) {
+    return TeamChanged(data.dec(_f$name), data.dec(_f$team));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static TeamChanged fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<TeamChanged>(map);
+  }
+
+  static TeamChanged fromJson(String json) {
+    return ensureInitialized().decodeJson<TeamChanged>(json);
+  }
+}
+
+mixin TeamChangedMappable {
+  String toJson() {
+    return TeamChangedMapper.ensureInitialized()
+        .encodeJson<TeamChanged>(this as TeamChanged);
+  }
+
+  Map<String, dynamic> toMap() {
+    return TeamChangedMapper.ensureInitialized()
+        .encodeMap<TeamChanged>(this as TeamChanged);
+  }
+
+  TeamChangedCopyWith<TeamChanged, TeamChanged, TeamChanged> get copyWith =>
+      _TeamChangedCopyWithImpl(this as TeamChanged, $identity, $identity);
+  @override
+  String toString() {
+    return TeamChangedMapper.ensureInitialized()
+        .stringifyValue(this as TeamChanged);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return TeamChangedMapper.ensureInitialized()
+        .equalsValue(this as TeamChanged, other);
+  }
+
+  @override
+  int get hashCode {
+    return TeamChangedMapper.ensureInitialized().hashValue(this as TeamChanged);
+  }
+}
+
+extension TeamChangedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, TeamChanged, $Out> {
+  TeamChangedCopyWith<$R, TeamChanged, $Out> get $asTeamChanged =>
+      $base.as((v, t, t2) => _TeamChangedCopyWithImpl(v, t, t2));
+}
+
+abstract class TeamChangedCopyWith<$R, $In extends TeamChanged, $Out>
+    implements WorldEventCopyWith<$R, $In, $Out> {
+  GameTeamCopyWith<$R, GameTeam, GameTeam> get team;
+  @override
+  $R call({String? name, GameTeam? team});
+  TeamChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _TeamChangedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, TeamChanged, $Out>
+    implements TeamChangedCopyWith<$R, TeamChanged, $Out> {
+  _TeamChangedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<TeamChanged> $mapper =
+      TeamChangedMapper.ensureInitialized();
+  @override
+  GameTeamCopyWith<$R, GameTeam, GameTeam> get team =>
+      $value.team.copyWith.$chain((v) => call(team: v));
+  @override
+  $R call({String? name, GameTeam? team}) => $apply(FieldCopyWithData(
+      {if (name != null) #name: name, if (team != null) #team: team}));
+  @override
+  TeamChanged $make(CopyWithData data) => TeamChanged(
+      data.get(#name, or: $value.name), data.get(#team, or: $value.team));
+
+  @override
+  TeamChangedCopyWith<$R2, TeamChanged, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _TeamChangedCopyWithImpl($value, $cast, t);
+}
+
+class TeamRemovedMapper extends SubClassMapperBase<TeamRemoved> {
+  TeamRemovedMapper._();
+
+  static TeamRemovedMapper? _instance;
+  static TeamRemovedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = TeamRemovedMapper._());
+      WorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'TeamRemoved';
+
+  static String _$team(TeamRemoved v) => v.team;
+  static const Field<TeamRemoved, String> _f$team = Field('team', _$team);
+
+  @override
+  final MappableFields<TeamRemoved> fields = const {
+    #team: _f$team,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'TeamRemoved';
+  @override
+  late final ClassMapperBase superMapper = WorldEventMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = const IgnoreKeysHook({'user'});
+
+  static TeamRemoved _instantiate(DecodingData data) {
+    return TeamRemoved(data.dec(_f$team));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static TeamRemoved fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<TeamRemoved>(map);
+  }
+
+  static TeamRemoved fromJson(String json) {
+    return ensureInitialized().decodeJson<TeamRemoved>(json);
+  }
+}
+
+mixin TeamRemovedMappable {
+  String toJson() {
+    return TeamRemovedMapper.ensureInitialized()
+        .encodeJson<TeamRemoved>(this as TeamRemoved);
+  }
+
+  Map<String, dynamic> toMap() {
+    return TeamRemovedMapper.ensureInitialized()
+        .encodeMap<TeamRemoved>(this as TeamRemoved);
+  }
+
+  TeamRemovedCopyWith<TeamRemoved, TeamRemoved, TeamRemoved> get copyWith =>
+      _TeamRemovedCopyWithImpl(this as TeamRemoved, $identity, $identity);
+  @override
+  String toString() {
+    return TeamRemovedMapper.ensureInitialized()
+        .stringifyValue(this as TeamRemoved);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return TeamRemovedMapper.ensureInitialized()
+        .equalsValue(this as TeamRemoved, other);
+  }
+
+  @override
+  int get hashCode {
+    return TeamRemovedMapper.ensureInitialized().hashValue(this as TeamRemoved);
+  }
+}
+
+extension TeamRemovedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, TeamRemoved, $Out> {
+  TeamRemovedCopyWith<$R, TeamRemoved, $Out> get $asTeamRemoved =>
+      $base.as((v, t, t2) => _TeamRemovedCopyWithImpl(v, t, t2));
+}
+
+abstract class TeamRemovedCopyWith<$R, $In extends TeamRemoved, $Out>
+    implements WorldEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({String? team});
+  TeamRemovedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _TeamRemovedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, TeamRemoved, $Out>
+    implements TeamRemovedCopyWith<$R, TeamRemoved, $Out> {
+  _TeamRemovedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<TeamRemoved> $mapper =
+      TeamRemovedMapper.ensureInitialized();
+  @override
+  $R call({String? team}) =>
+      $apply(FieldCopyWithData({if (team != null) #team: team}));
+  @override
+  TeamRemoved $make(CopyWithData data) =>
+      TeamRemoved(data.get(#team, or: $value.team));
+
+  @override
+  TeamRemovedCopyWith<$R2, TeamRemoved, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _TeamRemovedCopyWithImpl($value, $cast, t);
+}
+
+class TeamJoinedMapper extends SubClassMapperBase<TeamJoined> {
+  TeamJoinedMapper._();
+
+  static TeamJoinedMapper? _instance;
+  static TeamJoinedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = TeamJoinedMapper._());
+      UserBasedEventMapper.ensureInitialized().addSubMapper(_instance!);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'TeamJoined';
+
+  static String _$team(TeamJoined v) => v.team;
+  static const Field<TeamJoined, String> _f$team = Field('team', _$team);
+  static int? _$user(TeamJoined v) => v.user;
+  static const Field<TeamJoined, int> _f$user =
+      Field('user', _$user, opt: true);
+
+  @override
+  final MappableFields<TeamJoined> fields = const {
+    #team: _f$team,
+    #user: _f$user,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'TeamJoined';
+  @override
+  late final ClassMapperBase superMapper =
+      UserBasedEventMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = const IgnoreKeysHook({'user'});
+
+  static TeamJoined _instantiate(DecodingData data) {
+    return TeamJoined(data.dec(_f$team), user: data.dec(_f$user));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static TeamJoined fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<TeamJoined>(map);
+  }
+
+  static TeamJoined fromJson(String json) {
+    return ensureInitialized().decodeJson<TeamJoined>(json);
+  }
+}
+
+mixin TeamJoinedMappable {
+  String toJson() {
+    return TeamJoinedMapper.ensureInitialized()
+        .encodeJson<TeamJoined>(this as TeamJoined);
+  }
+
+  Map<String, dynamic> toMap() {
+    return TeamJoinedMapper.ensureInitialized()
+        .encodeMap<TeamJoined>(this as TeamJoined);
+  }
+
+  TeamJoinedCopyWith<TeamJoined, TeamJoined, TeamJoined> get copyWith =>
+      _TeamJoinedCopyWithImpl(this as TeamJoined, $identity, $identity);
+  @override
+  String toString() {
+    return TeamJoinedMapper.ensureInitialized()
+        .stringifyValue(this as TeamJoined);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return TeamJoinedMapper.ensureInitialized()
+        .equalsValue(this as TeamJoined, other);
+  }
+
+  @override
+  int get hashCode {
+    return TeamJoinedMapper.ensureInitialized().hashValue(this as TeamJoined);
+  }
+}
+
+extension TeamJoinedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, TeamJoined, $Out> {
+  TeamJoinedCopyWith<$R, TeamJoined, $Out> get $asTeamJoined =>
+      $base.as((v, t, t2) => _TeamJoinedCopyWithImpl(v, t, t2));
+}
+
+abstract class TeamJoinedCopyWith<$R, $In extends TeamJoined, $Out>
+    implements UserBasedEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({String? team, int? user});
+  TeamJoinedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _TeamJoinedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, TeamJoined, $Out>
+    implements TeamJoinedCopyWith<$R, TeamJoined, $Out> {
+  _TeamJoinedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<TeamJoined> $mapper =
+      TeamJoinedMapper.ensureInitialized();
+  @override
+  $R call({String? team, Object? user = $none}) => $apply(FieldCopyWithData(
+      {if (team != null) #team: team, if (user != $none) #user: user}));
+  @override
+  TeamJoined $make(CopyWithData data) =>
+      TeamJoined(data.get(#team, or: $value.team),
+          user: data.get(#user, or: $value.user));
+
+  @override
+  TeamJoinedCopyWith<$R2, TeamJoined, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _TeamJoinedCopyWithImpl($value, $cast, t);
+}
+
+class TeamLeftMapper extends SubClassMapperBase<TeamLeft> {
+  TeamLeftMapper._();
+
+  static TeamLeftMapper? _instance;
+  static TeamLeftMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = TeamLeftMapper._());
+      UserBasedEventMapper.ensureInitialized().addSubMapper(_instance!);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'TeamLeft';
+
+  static String _$team(TeamLeft v) => v.team;
+  static const Field<TeamLeft, String> _f$team = Field('team', _$team);
+  static int? _$user(TeamLeft v) => v.user;
+  static const Field<TeamLeft, int> _f$user = Field('user', _$user, opt: true);
+
+  @override
+  final MappableFields<TeamLeft> fields = const {
+    #team: _f$team,
+    #user: _f$user,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'TeamLeft';
+  @override
+  late final ClassMapperBase superMapper =
+      UserBasedEventMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = const IgnoreKeysHook({'user'});
+
+  static TeamLeft _instantiate(DecodingData data) {
+    return TeamLeft(data.dec(_f$team), user: data.dec(_f$user));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static TeamLeft fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<TeamLeft>(map);
+  }
+
+  static TeamLeft fromJson(String json) {
+    return ensureInitialized().decodeJson<TeamLeft>(json);
+  }
+}
+
+mixin TeamLeftMappable {
+  String toJson() {
+    return TeamLeftMapper.ensureInitialized()
+        .encodeJson<TeamLeft>(this as TeamLeft);
+  }
+
+  Map<String, dynamic> toMap() {
+    return TeamLeftMapper.ensureInitialized()
+        .encodeMap<TeamLeft>(this as TeamLeft);
+  }
+
+  TeamLeftCopyWith<TeamLeft, TeamLeft, TeamLeft> get copyWith =>
+      _TeamLeftCopyWithImpl(this as TeamLeft, $identity, $identity);
+  @override
+  String toString() {
+    return TeamLeftMapper.ensureInitialized().stringifyValue(this as TeamLeft);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return TeamLeftMapper.ensureInitialized()
+        .equalsValue(this as TeamLeft, other);
+  }
+
+  @override
+  int get hashCode {
+    return TeamLeftMapper.ensureInitialized().hashValue(this as TeamLeft);
+  }
+}
+
+extension TeamLeftValueCopy<$R, $Out> on ObjectCopyWith<$R, TeamLeft, $Out> {
+  TeamLeftCopyWith<$R, TeamLeft, $Out> get $asTeamLeft =>
+      $base.as((v, t, t2) => _TeamLeftCopyWithImpl(v, t, t2));
+}
+
+abstract class TeamLeftCopyWith<$R, $In extends TeamLeft, $Out>
+    implements UserBasedEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({String? team, int? user});
+  TeamLeftCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _TeamLeftCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, TeamLeft, $Out>
+    implements TeamLeftCopyWith<$R, TeamLeft, $Out> {
+  _TeamLeftCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<TeamLeft> $mapper =
+      TeamLeftMapper.ensureInitialized();
+  @override
+  $R call({String? team, Object? user = $none}) => $apply(FieldCopyWithData(
+      {if (team != null) #team: team, if (user != $none) #user: user}));
+  @override
+  TeamLeft $make(CopyWithData data) =>
+      TeamLeft(data.get(#team, or: $value.team),
+          user: data.get(#user, or: $value.user));
+
+  @override
+  TeamLeftCopyWith<$R2, TeamLeft, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _TeamLeftCopyWithImpl($value, $cast, t);
 }

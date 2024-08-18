@@ -120,5 +120,9 @@
   "browse": "Browse",
   "disconnected": "Disconnected",
   "disconnectedMessage": "You have been disconnected from the server. Please check your connection and try again.",
-  "successfullyConnected": "You are successfully connected to the server"
+  "successfullyConnected": "You are successfully connected to the server",
+  "reconnect": "Reconnect",
+  "teams": "Teams",
+  "addTeam": "Add team",
+  "edit": "Edit"
 }

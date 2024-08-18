@@ -128,7 +128,6 @@ class HomePage extends StatelessWidget {
                             return LayoutBuilder(
                                 builder: (context, constraints) =>
                                     Card.outlined(
-                                      color: Colors.transparent,
                                       child: InkWell(
                                         onTap: item.$3,
                                         borderRadius:

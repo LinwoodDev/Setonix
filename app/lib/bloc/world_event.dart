@@ -1,5 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
+import 'package:networker/networker.dart';
 import 'package:quokka/models/table.dart';
 import 'package:quokka/models/vector.dart';
 
@@ -25,126 +26,158 @@ class IgnoreKeysHook extends MappingHook {
   Object? afterEncode(Object? value) => _removeKeys(value);
 }
 
-@MappableClass(
-    discriminatorKey: 'type', hook: IgnoreKeysHook({'isRemoteEvent'}))
-sealed class BoardEvent with BoardEventMappable {
-  final bool isRemoteEvent;
-
-  BoardEvent({this.isRemoteEvent = false});
+@MappableClass(discriminatorKey: 'type', hook: IgnoreKeysHook({'user'}))
+sealed class WorldEvent with WorldEventMappable {
+  WorldEvent();
 
   bool get isMultiplayer => false;
 }
 
 @MappableClass()
-final class TableChanged extends BoardEvent with TableChangedMappable {
+final class TableChanged extends WorldEvent with TableChangedMappable {
   final GameTable table;
 
-  TableChanged(this.table, {super.isRemoteEvent});
+  TableChanged(this.table);
 
   @override
   bool get isMultiplayer => true;
 }
 
 @MappableClass()
-final class CellSwitched extends BoardEvent with CellSwitchedMappable {
+final class CellSwitched extends WorldEvent with CellSwitchedMappable {
   final VectorDefinition? cell;
   final bool toggle;
 
-  CellSwitched(this.cell, {this.toggle = false, super.isRemoteEvent});
+  CellSwitched(this.cell, {this.toggle = false});
 }
 
 @MappableClass()
-final class ColorSchemeChanged extends BoardEvent
+final class ColorSchemeChanged extends WorldEvent
     with ColorSchemeChangedMappable {
   final ColorScheme? colorScheme;
 
-  ColorSchemeChanged(this.colorScheme, {super.isRemoteEvent});
+  ColorSchemeChanged(this.colorScheme);
 }
 
 @MappableClass()
-final class BackgroundChanged extends BoardEvent
+final class BackgroundChanged extends WorldEvent
     with BackgroundChangedMappable {
   final ItemLocation background;
 
-  BackgroundChanged(this.background, {super.isRemoteEvent});
+  BackgroundChanged(this.background);
 }
 
 @MappableClass()
-final class HandChanged extends BoardEvent with HandChangedMappable {
+final class HandChanged extends WorldEvent with HandChangedMappable {
   final ItemLocation? deck;
   final bool? show;
 
   HandChanged({
     this.deck,
     bool this.show = true,
-    super.isRemoteEvent,
   });
-  HandChanged.hide({super.isRemoteEvent})
+  HandChanged.hide()
       : deck = null,
         show = false;
-  HandChanged.toggle({this.deck, super.isRemoteEvent}) : show = null;
+  HandChanged.toggle({this.deck}) : show = null;
 }
 
 @MappableClass()
-final class ObjectsSpawned extends BoardEvent with ObjectsSpawnedMappable {
+final class ObjectsSpawned extends WorldEvent with ObjectsSpawnedMappable {
   final VectorDefinition cell;
   final List<GameObject> objects;
 
-  ObjectsSpawned(this.cell, this.objects, {super.isRemoteEvent});
+  ObjectsSpawned(this.cell, this.objects);
 
   @override
   bool get isMultiplayer => true;
 }
 
 @MappableClass()
-final class ObjectsMoved extends BoardEvent with ObjectsMovedMappable {
+final class ObjectsMoved extends WorldEvent with ObjectsMovedMappable {
   final List<int> objects;
   final VectorDefinition from, to;
 
-  ObjectsMoved(this.objects, this.from, this.to, {super.isRemoteEvent});
+  ObjectsMoved(this.objects, this.from, this.to);
 
   @override
   bool get isMultiplayer => true;
 }
 
 @MappableClass()
-final class CellHideChanged extends BoardEvent with CellHideChangedMappable {
+final class CellHideChanged extends WorldEvent with CellHideChangedMappable {
   final VectorDefinition cell;
   final int? object;
   final bool? hide;
 
-  CellHideChanged(this.cell, {this.object, this.hide, super.isRemoteEvent});
-  CellHideChanged.show(this.cell, {this.object, super.isRemoteEvent})
-      : hide = false;
-  CellHideChanged.hide(this.cell, {this.object, super.isRemoteEvent})
-      : hide = true;
+  CellHideChanged(this.cell, {this.object, this.hide});
+  CellHideChanged.show(this.cell, {this.object}) : hide = false;
+  CellHideChanged.hide(this.cell, {this.object}) : hide = true;
 
   @override
   bool get isMultiplayer => true;
 }
 
 @MappableClass()
-final class CellShuffled extends BoardEvent with CellShuffledMappable {
+final class CellShuffled extends WorldEvent with CellShuffledMappable {
   final VectorDefinition cell;
   final int seed;
 
-  CellShuffled(this.cell, this.seed, {super.isRemoteEvent});
-  CellShuffled.random(this.cell, {super.isRemoteEvent})
-      : seed = DateTime.now().millisecondsSinceEpoch;
+  CellShuffled(this.cell, this.seed);
+  CellShuffled.random(this.cell) : seed = DateTime.now().millisecondsSinceEpoch;
 
   @override
   bool get isMultiplayer => true;
 }
 
 @MappableClass()
-final class ObjectIndexChanged extends BoardEvent
+final class ObjectIndexChanged extends WorldEvent
     with ObjectIndexChangedMappable {
   final VectorDefinition cell;
   final int object;
   final int index;
 
-  ObjectIndexChanged(this.cell, this.object, this.index, {super.isRemoteEvent});
+  ObjectIndexChanged(this.cell, this.object, this.index);
 
   @override
   bool get isMultiplayer => true;
+}
+
+@MappableClass()
+sealed class UserBasedEvent extends WorldEvent with UserBasedEventMappable {
+  final Channel? user;
+
+  UserBasedEvent({this.user});
+
+  @override
+  bool get isMultiplayer => true;
+}
+
+@MappableClass()
+final class TeamChanged extends WorldEvent with TeamChangedMappable {
+  final String name;
+  final GameTeam team;
+
+  TeamChanged(this.name, this.team);
+}
+
+@MappableClass()
+final class TeamRemoved extends WorldEvent with TeamRemovedMappable {
+  final String team;
+
+  TeamRemoved(this.team);
+}
+
+@MappableClass()
+final class TeamJoined extends UserBasedEvent with TeamJoinedMappable {
+  final String team;
+
+  TeamJoined(this.team, {super.user});
+}
+
+@MappableClass()
+final class TeamLeft extends UserBasedEvent with TeamLeftMappable {
+  final String team;
+
+  TeamLeft(this.team, {super.user});
 }
