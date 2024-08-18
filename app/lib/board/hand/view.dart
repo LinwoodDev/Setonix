@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:collection/collection.dart';
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame_bloc/flame_bloc.dart';
@@ -47,7 +48,9 @@ class GameHand extends CustomPainterComponent
         DragCallbacks,
         FlameBlocListenable<WorldBloc, WorldState>,
         TapCallbacks,
-        ScrollCallbacks {
+        ScrollCallbacks,
+        CollisionCallbacks,
+        HandItemDropZone {
   double _nextItemPos = 0;
   final _itemsChild = PositionComponent();
 
@@ -55,6 +58,7 @@ class GameHand extends CustomPainterComponent
 
   @override
   void onLoad() {
+    super.onLoad();
     add(_itemsChild);
   }
 

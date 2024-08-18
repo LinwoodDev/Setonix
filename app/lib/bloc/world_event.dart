@@ -29,18 +29,26 @@ class IgnoreKeysHook extends MappingHook {
 @MappableClass(discriminatorKey: 'type', hook: IgnoreKeysHook({'user'}))
 sealed class WorldEvent with WorldEventMappable {
   WorldEvent();
-
-  bool get isMultiplayer => false;
 }
 
 @MappableClass()
-final class TableChanged extends WorldEvent with TableChangedMappable {
+sealed class WorldMultiplayerEvent extends WorldEvent
+    with WorldMultiplayerEventMappable {
+  WorldMultiplayerEvent();
+}
+
+@MappableClass()
+final class WorldInitialized extends WorldMultiplayerEvent
+    with WorldInitializedMappable {
   final GameTable table;
+  final Map<String, Set<Channel>> teamMembers;
+  final Channel id;
 
-  TableChanged(this.table);
-
-  @override
-  bool get isMultiplayer => true;
+  WorldInitialized({
+    required this.table,
+    this.teamMembers = const {},
+    this.id = kAuthorityChannel,
+  });
 }
 
 @MappableClass()
@@ -60,7 +68,7 @@ final class ColorSchemeChanged extends WorldEvent
 }
 
 @MappableClass()
-final class BackgroundChanged extends WorldEvent
+final class BackgroundChanged extends WorldMultiplayerEvent
     with BackgroundChangedMappable {
   final ItemLocation background;
 
@@ -83,29 +91,26 @@ final class HandChanged extends WorldEvent with HandChangedMappable {
 }
 
 @MappableClass()
-final class ObjectsSpawned extends WorldEvent with ObjectsSpawnedMappable {
+final class ObjectsSpawned extends WorldMultiplayerEvent
+    with ObjectsSpawnedMappable {
   final VectorDefinition cell;
   final List<GameObject> objects;
 
   ObjectsSpawned(this.cell, this.objects);
-
-  @override
-  bool get isMultiplayer => true;
 }
 
 @MappableClass()
-final class ObjectsMoved extends WorldEvent with ObjectsMovedMappable {
+final class ObjectsMoved extends WorldMultiplayerEvent
+    with ObjectsMovedMappable {
   final List<int> objects;
   final VectorDefinition from, to;
 
   ObjectsMoved(this.objects, this.from, this.to);
-
-  @override
-  bool get isMultiplayer => true;
 }
 
 @MappableClass()
-final class CellHideChanged extends WorldEvent with CellHideChangedMappable {
+final class CellHideChanged extends WorldMultiplayerEvent
+    with CellHideChangedMappable {
   final VectorDefinition cell;
   final int? object;
   final bool? hide;
@@ -113,48 +118,38 @@ final class CellHideChanged extends WorldEvent with CellHideChangedMappable {
   CellHideChanged(this.cell, {this.object, this.hide});
   CellHideChanged.show(this.cell, {this.object}) : hide = false;
   CellHideChanged.hide(this.cell, {this.object}) : hide = true;
-
-  @override
-  bool get isMultiplayer => true;
 }
 
 @MappableClass()
-final class CellShuffled extends WorldEvent with CellShuffledMappable {
+final class CellShuffled extends WorldMultiplayerEvent
+    with CellShuffledMappable {
   final VectorDefinition cell;
   final int seed;
 
   CellShuffled(this.cell, this.seed);
   CellShuffled.random(this.cell) : seed = DateTime.now().millisecondsSinceEpoch;
-
-  @override
-  bool get isMultiplayer => true;
 }
 
 @MappableClass()
-final class ObjectIndexChanged extends WorldEvent
+final class ObjectIndexChanged extends WorldMultiplayerEvent
     with ObjectIndexChangedMappable {
   final VectorDefinition cell;
   final int object;
   final int index;
 
   ObjectIndexChanged(this.cell, this.object, this.index);
+}
 
-  @override
-  bool get isMultiplayer => true;
+@MappableClass(hook: IgnoreKeysHook({'user'}))
+sealed class UserBasedEvent extends WorldMultiplayerEvent
+    with UserBasedEventMappable {
+  final Channel user;
+
+  UserBasedEvent({this.user = kAuthorityChannel});
 }
 
 @MappableClass()
-sealed class UserBasedEvent extends WorldEvent with UserBasedEventMappable {
-  final Channel? user;
-
-  UserBasedEvent({this.user});
-
-  @override
-  bool get isMultiplayer => true;
-}
-
-@MappableClass()
-final class TeamChanged extends WorldEvent with TeamChangedMappable {
+final class TeamChanged extends WorldMultiplayerEvent with TeamChangedMappable {
   final String name;
   final GameTeam team;
 
@@ -162,7 +157,7 @@ final class TeamChanged extends WorldEvent with TeamChangedMappable {
 }
 
 @MappableClass()
-final class TeamRemoved extends WorldEvent with TeamRemovedMappable {
+final class TeamRemoved extends WorldMultiplayerEvent with TeamRemovedMappable {
   final String team;
 
   TeamRemoved(this.team);

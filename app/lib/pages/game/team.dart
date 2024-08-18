@@ -51,6 +51,7 @@ class TeamDialogState extends State<TeamDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(AppLocalizations.of(context).addTeam),
+      scrollable: true,
       content: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: LeapBreakpoints.compact),
         child: Column(
@@ -70,6 +71,8 @@ class TeamDialogState extends State<TeamDialog> {
                 border: const OutlineInputBorder(),
               ),
               controller: _descriptionController,
+              minLines: 3,
+              maxLines: 5,
             ),
             const SizedBox(height: 16),
             Wrap(
@@ -78,7 +81,8 @@ class TeamDialogState extends State<TeamDialog> {
                         color: e.color,
                         size: 32,
                         selected: _color == e,
-                        onTap: () => setState(() => _color = e),
+                        onTap: () =>
+                            setState(() => _color = _color == e ? null : e),
                       ))
                   .toList(),
             ),

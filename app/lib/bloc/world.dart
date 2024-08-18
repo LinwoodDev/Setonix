@@ -36,11 +36,21 @@ class WorldBloc extends Bloc<WorldEvent, WorldState> {
       })
       ..inits.listen((e) {
         if (e == 0) return;
-        state.multiplayer.send(TableChanged(state.table), e);
+        state.multiplayer.send(
+            WorldInitialized(
+              table: state.table,
+              teamMembers: state.teamMembers,
+              id: e,
+            ),
+            e);
       });
 
-    on<TableChanged>((event, emit) {
-      emit(state.copyWith(table: event.table));
+    on<WorldInitialized>((event, emit) {
+      emit(state.copyWith(
+        table: event.table,
+        id: event.id,
+        teamMembers: event.teamMembers,
+      ));
       return save();
     });
     on<BackgroundChanged>((event, emit) {
@@ -131,6 +141,7 @@ class WorldBloc extends Bloc<WorldEvent, WorldState> {
     });
     on<ObjectIndexChanged>((event, emit) {
       final cell = state.table.cells[event.cell] ?? TableCell();
+      if (!event.index.inRange(0, cell.objects.length - 1)) return null;
       final object = cell.objects[event.object];
       final newObjects = List<GameObject>.from(cell.objects);
       newObjects.removeAt(event.object);
@@ -145,8 +156,34 @@ class WorldBloc extends Bloc<WorldEvent, WorldState> {
       return save();
     });
     on<TeamRemoved>((event, emit) {
-      emit(
-          state.copyWith(table: state.table.copyWith.teams.remove(event.team)));
+      emit(state.copyWith(
+        table: state.table.copyWith.teams.remove(event.team),
+        teamMembers: Map.from(state.teamMembers)..remove(event.team),
+      ));
+      return save();
+    });
+    on<TeamJoined>((event, emit) {
+      if (!state.table.teams.containsKey(event.team)) return null;
+
+      final members = state.teamMembers[event.team];
+      emit(state.copyWith(teamMembers: {
+        ...state.teamMembers,
+        event.team: {...?members, state.id},
+      }));
+      return save();
+    });
+    on<TeamLeft>((event, emit) {
+      if (!state.table.teams.containsKey(event.team)) return null;
+
+      final members = state.teamMembers[event.team] ?? {};
+      members.remove(state.id);
+      final allMembers = Map<String, Set<int>>.from(state.teamMembers);
+      if (members.isEmpty) {
+        allMembers.remove(event.team);
+      } else {
+        allMembers[event.team] = members;
+      }
+      emit(state.copyWith(teamMembers: allMembers));
       return save();
     });
   }
@@ -161,11 +198,13 @@ class WorldBloc extends Bloc<WorldEvent, WorldState> {
   @override
   void onEvent(WorldEvent event) {
     super.onEvent(event);
-    if (event.isMultiplayer && !_remoteEvent) state.multiplayer.send(event);
+    if (event is WorldMultiplayerEvent && !_remoteEvent) {
+      state.multiplayer.send(event);
+    }
   }
 
   void send(WorldEvent event) {
-    if (event.isMultiplayer && state.multiplayer.isConnected) {
+    if (event is WorldMultiplayerEvent && state.multiplayer.isConnected) {
       if (state.multiplayer.isServer) add(event);
       state.multiplayer.send(event);
     } else {

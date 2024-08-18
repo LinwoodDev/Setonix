@@ -13,19 +13,10 @@ class WorldEventMapper extends ClassMapperBase<WorldEvent> {
   static WorldEventMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = WorldEventMapper._());
-      TableChangedMapper.ensureInitialized();
+      WorldMultiplayerEventMapper.ensureInitialized();
       CellSwitchedMapper.ensureInitialized();
       ColorSchemeChangedMapper.ensureInitialized();
-      BackgroundChangedMapper.ensureInitialized();
       HandChangedMapper.ensureInitialized();
-      ObjectsSpawnedMapper.ensureInitialized();
-      ObjectsMovedMapper.ensureInitialized();
-      CellHideChangedMapper.ensureInitialized();
-      CellShuffledMapper.ensureInitialized();
-      ObjectIndexChangedMapper.ensureInitialized();
-      UserBasedEventMapper.ensureInitialized();
-      TeamChangedMapper.ensureInitialized();
-      TeamRemovedMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -67,125 +58,228 @@ abstract class WorldEventCopyWith<$R, $In extends WorldEvent, $Out>
   WorldEventCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
-class TableChangedMapper extends SubClassMapperBase<TableChanged> {
-  TableChangedMapper._();
+class WorldMultiplayerEventMapper
+    extends SubClassMapperBase<WorldMultiplayerEvent> {
+  WorldMultiplayerEventMapper._();
 
-  static TableChangedMapper? _instance;
-  static TableChangedMapper ensureInitialized() {
+  static WorldMultiplayerEventMapper? _instance;
+  static WorldMultiplayerEventMapper ensureInitialized() {
     if (_instance == null) {
-      MapperContainer.globals.use(_instance = TableChangedMapper._());
+      MapperContainer.globals.use(_instance = WorldMultiplayerEventMapper._());
       WorldEventMapper.ensureInitialized().addSubMapper(_instance!);
-      GameTableMapper.ensureInitialized();
+      WorldInitializedMapper.ensureInitialized();
+      BackgroundChangedMapper.ensureInitialized();
+      ObjectsSpawnedMapper.ensureInitialized();
+      ObjectsMovedMapper.ensureInitialized();
+      CellHideChangedMapper.ensureInitialized();
+      CellShuffledMapper.ensureInitialized();
+      ObjectIndexChangedMapper.ensureInitialized();
+      UserBasedEventMapper.ensureInitialized();
+      TeamChangedMapper.ensureInitialized();
+      TeamRemovedMapper.ensureInitialized();
     }
     return _instance!;
   }
 
   @override
-  final String id = 'TableChanged';
-
-  static GameTable _$table(TableChanged v) => v.table;
-  static const Field<TableChanged, GameTable> _f$table =
-      Field('table', _$table);
+  final String id = 'WorldMultiplayerEvent';
 
   @override
-  final MappableFields<TableChanged> fields = const {
-    #table: _f$table,
-  };
+  final MappableFields<WorldMultiplayerEvent> fields = const {};
 
   @override
   final String discriminatorKey = 'type';
   @override
-  final dynamic discriminatorValue = 'TableChanged';
+  final dynamic discriminatorValue = 'WorldMultiplayerEvent';
   @override
   late final ClassMapperBase superMapper = WorldEventMapper.ensureInitialized();
 
   @override
   final MappingHook superHook = const IgnoreKeysHook({'user'});
 
-  static TableChanged _instantiate(DecodingData data) {
-    return TableChanged(data.dec(_f$table));
+  static WorldMultiplayerEvent _instantiate(DecodingData data) {
+    throw MapperException.missingSubclass(
+        'WorldMultiplayerEvent', 'type', '${data.value['type']}');
   }
 
   @override
   final Function instantiate = _instantiate;
 
-  static TableChanged fromMap(Map<String, dynamic> map) {
-    return ensureInitialized().decodeMap<TableChanged>(map);
+  static WorldMultiplayerEvent fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<WorldMultiplayerEvent>(map);
   }
 
-  static TableChanged fromJson(String json) {
-    return ensureInitialized().decodeJson<TableChanged>(json);
+  static WorldMultiplayerEvent fromJson(String json) {
+    return ensureInitialized().decodeJson<WorldMultiplayerEvent>(json);
   }
 }
 
-mixin TableChangedMappable {
+mixin WorldMultiplayerEventMappable {
+  String toJson();
+  Map<String, dynamic> toMap();
+  WorldMultiplayerEventCopyWith<WorldMultiplayerEvent, WorldMultiplayerEvent,
+      WorldMultiplayerEvent> get copyWith;
+}
+
+abstract class WorldMultiplayerEventCopyWith<
+    $R,
+    $In extends WorldMultiplayerEvent,
+    $Out> implements WorldEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call();
+  WorldMultiplayerEventCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class WorldInitializedMapper extends SubClassMapperBase<WorldInitialized> {
+  WorldInitializedMapper._();
+
+  static WorldInitializedMapper? _instance;
+  static WorldInitializedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = WorldInitializedMapper._());
+      WorldMultiplayerEventMapper.ensureInitialized().addSubMapper(_instance!);
+      GameTableMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'WorldInitialized';
+
+  static GameTable _$table(WorldInitialized v) => v.table;
+  static const Field<WorldInitialized, GameTable> _f$table =
+      Field('table', _$table);
+  static Map<String, Set<int>> _$teamMembers(WorldInitialized v) =>
+      v.teamMembers;
+  static const Field<WorldInitialized, Map<String, Set<int>>> _f$teamMembers =
+      Field('teamMembers', _$teamMembers, opt: true, def: const {});
+  static int _$id(WorldInitialized v) => v.id;
+  static const Field<WorldInitialized, int> _f$id =
+      Field('id', _$id, opt: true, def: kAuthorityChannel);
+
+  @override
+  final MappableFields<WorldInitialized> fields = const {
+    #table: _f$table,
+    #teamMembers: _f$teamMembers,
+    #id: _f$id,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'WorldInitialized';
+  @override
+  late final ClassMapperBase superMapper =
+      WorldMultiplayerEventMapper.ensureInitialized();
+
+  @override
+  final MappingHook superHook = const IgnoreKeysHook({'user'});
+
+  static WorldInitialized _instantiate(DecodingData data) {
+    return WorldInitialized(
+        table: data.dec(_f$table),
+        teamMembers: data.dec(_f$teamMembers),
+        id: data.dec(_f$id));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static WorldInitialized fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<WorldInitialized>(map);
+  }
+
+  static WorldInitialized fromJson(String json) {
+    return ensureInitialized().decodeJson<WorldInitialized>(json);
+  }
+}
+
+mixin WorldInitializedMappable {
   String toJson() {
-    return TableChangedMapper.ensureInitialized()
-        .encodeJson<TableChanged>(this as TableChanged);
+    return WorldInitializedMapper.ensureInitialized()
+        .encodeJson<WorldInitialized>(this as WorldInitialized);
   }
 
   Map<String, dynamic> toMap() {
-    return TableChangedMapper.ensureInitialized()
-        .encodeMap<TableChanged>(this as TableChanged);
+    return WorldInitializedMapper.ensureInitialized()
+        .encodeMap<WorldInitialized>(this as WorldInitialized);
   }
 
-  TableChangedCopyWith<TableChanged, TableChanged, TableChanged> get copyWith =>
-      _TableChangedCopyWithImpl(this as TableChanged, $identity, $identity);
+  WorldInitializedCopyWith<WorldInitialized, WorldInitialized, WorldInitialized>
+      get copyWith => _WorldInitializedCopyWithImpl(
+          this as WorldInitialized, $identity, $identity);
   @override
   String toString() {
-    return TableChangedMapper.ensureInitialized()
-        .stringifyValue(this as TableChanged);
+    return WorldInitializedMapper.ensureInitialized()
+        .stringifyValue(this as WorldInitialized);
   }
 
   @override
   bool operator ==(Object other) {
-    return TableChangedMapper.ensureInitialized()
-        .equalsValue(this as TableChanged, other);
+    return WorldInitializedMapper.ensureInitialized()
+        .equalsValue(this as WorldInitialized, other);
   }
 
   @override
   int get hashCode {
-    return TableChangedMapper.ensureInitialized()
-        .hashValue(this as TableChanged);
+    return WorldInitializedMapper.ensureInitialized()
+        .hashValue(this as WorldInitialized);
   }
 }
 
-extension TableChangedValueCopy<$R, $Out>
-    on ObjectCopyWith<$R, TableChanged, $Out> {
-  TableChangedCopyWith<$R, TableChanged, $Out> get $asTableChanged =>
-      $base.as((v, t, t2) => _TableChangedCopyWithImpl(v, t, t2));
+extension WorldInitializedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, WorldInitialized, $Out> {
+  WorldInitializedCopyWith<$R, WorldInitialized, $Out>
+      get $asWorldInitialized =>
+          $base.as((v, t, t2) => _WorldInitializedCopyWithImpl(v, t, t2));
 }
 
-abstract class TableChangedCopyWith<$R, $In extends TableChanged, $Out>
-    implements WorldEventCopyWith<$R, $In, $Out> {
+abstract class WorldInitializedCopyWith<$R, $In extends WorldInitialized, $Out>
+    implements WorldMultiplayerEventCopyWith<$R, $In, $Out> {
   GameTableCopyWith<$R, GameTable, GameTable> get table;
+  MapCopyWith<$R, String, Set<int>, ObjectCopyWith<$R, Set<int>, Set<int>>>
+      get teamMembers;
   @override
-  $R call({GameTable? table});
-  TableChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+  $R call({GameTable? table, Map<String, Set<int>>? teamMembers, int? id});
+  WorldInitializedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
 }
 
-class _TableChangedCopyWithImpl<$R, $Out>
-    extends ClassCopyWithBase<$R, TableChanged, $Out>
-    implements TableChangedCopyWith<$R, TableChanged, $Out> {
-  _TableChangedCopyWithImpl(super.value, super.then, super.then2);
+class _WorldInitializedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, WorldInitialized, $Out>
+    implements WorldInitializedCopyWith<$R, WorldInitialized, $Out> {
+  _WorldInitializedCopyWithImpl(super.value, super.then, super.then2);
 
   @override
-  late final ClassMapperBase<TableChanged> $mapper =
-      TableChangedMapper.ensureInitialized();
+  late final ClassMapperBase<WorldInitialized> $mapper =
+      WorldInitializedMapper.ensureInitialized();
   @override
   GameTableCopyWith<$R, GameTable, GameTable> get table =>
       $value.table.copyWith.$chain((v) => call(table: v));
   @override
-  $R call({GameTable? table}) =>
-      $apply(FieldCopyWithData({if (table != null) #table: table}));
+  MapCopyWith<$R, String, Set<int>, ObjectCopyWith<$R, Set<int>, Set<int>>>
+      get teamMembers => MapCopyWith(
+          $value.teamMembers,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(teamMembers: v));
   @override
-  TableChanged $make(CopyWithData data) =>
-      TableChanged(data.get(#table, or: $value.table));
+  $R call({GameTable? table, Map<String, Set<int>>? teamMembers, int? id}) =>
+      $apply(FieldCopyWithData({
+        if (table != null) #table: table,
+        if (teamMembers != null) #teamMembers: teamMembers,
+        if (id != null) #id: id
+      }));
+  @override
+  WorldInitialized $make(CopyWithData data) => WorldInitialized(
+      table: data.get(#table, or: $value.table),
+      teamMembers: data.get(#teamMembers, or: $value.teamMembers),
+      id: data.get(#id, or: $value.id));
 
   @override
-  TableChangedCopyWith<$R2, TableChanged, $Out2> $chain<$R2, $Out2>(
+  WorldInitializedCopyWith<$R2, WorldInitialized, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _TableChangedCopyWithImpl($value, $cast, t);
+      _WorldInitializedCopyWithImpl($value, $cast, t);
 }
 
 class CellSwitchedMapper extends SubClassMapperBase<CellSwitched> {
@@ -441,7 +535,7 @@ class BackgroundChangedMapper extends SubClassMapperBase<BackgroundChanged> {
   static BackgroundChangedMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = BackgroundChangedMapper._());
-      WorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      WorldMultiplayerEventMapper.ensureInitialized().addSubMapper(_instance!);
       ItemLocationMapper.ensureInitialized();
     }
     return _instance!;
@@ -464,7 +558,8 @@ class BackgroundChangedMapper extends SubClassMapperBase<BackgroundChanged> {
   @override
   final dynamic discriminatorValue = 'BackgroundChanged';
   @override
-  late final ClassMapperBase superMapper = WorldEventMapper.ensureInitialized();
+  late final ClassMapperBase superMapper =
+      WorldMultiplayerEventMapper.ensureInitialized();
 
   @override
   final MappingHook superHook = const IgnoreKeysHook({'user'});
@@ -527,7 +622,7 @@ extension BackgroundChangedValueCopy<$R, $Out>
 }
 
 abstract class BackgroundChangedCopyWith<$R, $In extends BackgroundChanged,
-    $Out> implements WorldEventCopyWith<$R, $In, $Out> {
+    $Out> implements WorldMultiplayerEventCopyWith<$R, $In, $Out> {
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation> get background;
   @override
   $R call({ItemLocation? background});
@@ -691,7 +786,7 @@ class ObjectsSpawnedMapper extends SubClassMapperBase<ObjectsSpawned> {
   static ObjectsSpawnedMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ObjectsSpawnedMapper._());
-      WorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      WorldMultiplayerEventMapper.ensureInitialized().addSubMapper(_instance!);
       VectorDefinitionMapper.ensureInitialized();
       GameObjectMapper.ensureInitialized();
     }
@@ -719,7 +814,8 @@ class ObjectsSpawnedMapper extends SubClassMapperBase<ObjectsSpawned> {
   @override
   final dynamic discriminatorValue = 'ObjectsSpawned';
   @override
-  late final ClassMapperBase superMapper = WorldEventMapper.ensureInitialized();
+  late final ClassMapperBase superMapper =
+      WorldMultiplayerEventMapper.ensureInitialized();
 
   @override
   final MappingHook superHook = const IgnoreKeysHook({'user'});
@@ -780,7 +876,7 @@ extension ObjectsSpawnedValueCopy<$R, $Out>
 }
 
 abstract class ObjectsSpawnedCopyWith<$R, $In extends ObjectsSpawned, $Out>
-    implements WorldEventCopyWith<$R, $In, $Out> {
+    implements WorldMultiplayerEventCopyWith<$R, $In, $Out> {
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell;
   ListCopyWith<$R, GameObject, GameObjectCopyWith<$R, GameObject, GameObject>>
       get objects;
@@ -828,7 +924,7 @@ class ObjectsMovedMapper extends SubClassMapperBase<ObjectsMoved> {
   static ObjectsMovedMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ObjectsMovedMapper._());
-      WorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      WorldMultiplayerEventMapper.ensureInitialized().addSubMapper(_instance!);
       VectorDefinitionMapper.ensureInitialized();
     }
     return _instance!;
@@ -858,7 +954,8 @@ class ObjectsMovedMapper extends SubClassMapperBase<ObjectsMoved> {
   @override
   final dynamic discriminatorValue = 'ObjectsMoved';
   @override
-  late final ClassMapperBase superMapper = WorldEventMapper.ensureInitialized();
+  late final ClassMapperBase superMapper =
+      WorldMultiplayerEventMapper.ensureInitialized();
 
   @override
   final MappingHook superHook = const IgnoreKeysHook({'user'});
@@ -919,7 +1016,7 @@ extension ObjectsMovedValueCopy<$R, $Out>
 }
 
 abstract class ObjectsMovedCopyWith<$R, $In extends ObjectsMoved, $Out>
-    implements WorldEventCopyWith<$R, $In, $Out> {
+    implements WorldMultiplayerEventCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, int, ObjectCopyWith<$R, int, int>> get objects;
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get from;
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get to;
@@ -972,7 +1069,7 @@ class CellHideChangedMapper extends SubClassMapperBase<CellHideChanged> {
   static CellHideChangedMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = CellHideChangedMapper._());
-      WorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      WorldMultiplayerEventMapper.ensureInitialized().addSubMapper(_instance!);
       VectorDefinitionMapper.ensureInitialized();
     }
     return _instance!;
@@ -1003,7 +1100,8 @@ class CellHideChangedMapper extends SubClassMapperBase<CellHideChanged> {
   @override
   final dynamic discriminatorValue = 'CellHideChanged';
   @override
-  late final ClassMapperBase superMapper = WorldEventMapper.ensureInitialized();
+  late final ClassMapperBase superMapper =
+      WorldMultiplayerEventMapper.ensureInitialized();
 
   @override
   final MappingHook superHook = const IgnoreKeysHook({'user'});
@@ -1065,7 +1163,7 @@ extension CellHideChangedValueCopy<$R, $Out>
 }
 
 abstract class CellHideChangedCopyWith<$R, $In extends CellHideChanged, $Out>
-    implements WorldEventCopyWith<$R, $In, $Out> {
+    implements WorldMultiplayerEventCopyWith<$R, $In, $Out> {
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell;
   @override
   $R call({VectorDefinition? cell, int? object, bool? hide});
@@ -1113,7 +1211,7 @@ class CellShuffledMapper extends SubClassMapperBase<CellShuffled> {
   static CellShuffledMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = CellShuffledMapper._());
-      WorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      WorldMultiplayerEventMapper.ensureInitialized().addSubMapper(_instance!);
       VectorDefinitionMapper.ensureInitialized();
     }
     return _instance!;
@@ -1139,7 +1237,8 @@ class CellShuffledMapper extends SubClassMapperBase<CellShuffled> {
   @override
   final dynamic discriminatorValue = 'CellShuffled';
   @override
-  late final ClassMapperBase superMapper = WorldEventMapper.ensureInitialized();
+  late final ClassMapperBase superMapper =
+      WorldMultiplayerEventMapper.ensureInitialized();
 
   @override
   final MappingHook superHook = const IgnoreKeysHook({'user'});
@@ -1199,7 +1298,7 @@ extension CellShuffledValueCopy<$R, $Out>
 }
 
 abstract class CellShuffledCopyWith<$R, $In extends CellShuffled, $Out>
-    implements WorldEventCopyWith<$R, $In, $Out> {
+    implements WorldMultiplayerEventCopyWith<$R, $In, $Out> {
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell;
   @override
   $R call({VectorDefinition? cell, int? seed});
@@ -1237,7 +1336,7 @@ class ObjectIndexChangedMapper extends SubClassMapperBase<ObjectIndexChanged> {
   static ObjectIndexChangedMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ObjectIndexChangedMapper._());
-      WorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      WorldMultiplayerEventMapper.ensureInitialized().addSubMapper(_instance!);
       VectorDefinitionMapper.ensureInitialized();
     }
     return _instance!;
@@ -1268,7 +1367,8 @@ class ObjectIndexChangedMapper extends SubClassMapperBase<ObjectIndexChanged> {
   @override
   final dynamic discriminatorValue = 'ObjectIndexChanged';
   @override
-  late final ClassMapperBase superMapper = WorldEventMapper.ensureInitialized();
+  late final ClassMapperBase superMapper =
+      WorldMultiplayerEventMapper.ensureInitialized();
 
   @override
   final MappingHook superHook = const IgnoreKeysHook({'user'});
@@ -1332,7 +1432,7 @@ extension ObjectIndexChangedValueCopy<$R, $Out>
 }
 
 abstract class ObjectIndexChangedCopyWith<$R, $In extends ObjectIndexChanged,
-    $Out> implements WorldEventCopyWith<$R, $In, $Out> {
+    $Out> implements WorldMultiplayerEventCopyWith<$R, $In, $Out> {
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell;
   @override
   $R call({VectorDefinition? cell, int? object, int? index});
@@ -1377,7 +1477,7 @@ class UserBasedEventMapper extends SubClassMapperBase<UserBasedEvent> {
   static UserBasedEventMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = UserBasedEventMapper._());
-      WorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      WorldMultiplayerEventMapper.ensureInitialized().addSubMapper(_instance!);
       TeamJoinedMapper.ensureInitialized();
       TeamLeftMapper.ensureInitialized();
     }
@@ -1387,9 +1487,9 @@ class UserBasedEventMapper extends SubClassMapperBase<UserBasedEvent> {
   @override
   final String id = 'UserBasedEvent';
 
-  static int? _$user(UserBasedEvent v) => v.user;
+  static int _$user(UserBasedEvent v) => v.user;
   static const Field<UserBasedEvent, int> _f$user =
-      Field('user', _$user, opt: true);
+      Field('user', _$user, opt: true, def: kAuthorityChannel);
 
   @override
   final MappableFields<UserBasedEvent> fields = const {
@@ -1401,8 +1501,11 @@ class UserBasedEventMapper extends SubClassMapperBase<UserBasedEvent> {
   @override
   final dynamic discriminatorValue = 'UserBasedEvent';
   @override
-  late final ClassMapperBase superMapper = WorldEventMapper.ensureInitialized();
+  late final ClassMapperBase superMapper =
+      WorldMultiplayerEventMapper.ensureInitialized();
 
+  @override
+  final MappingHook hook = const IgnoreKeysHook({'user'});
   @override
   final MappingHook superHook = const IgnoreKeysHook({'user'});
 
@@ -1431,7 +1534,7 @@ mixin UserBasedEventMappable {
 }
 
 abstract class UserBasedEventCopyWith<$R, $In extends UserBasedEvent, $Out>
-    implements WorldEventCopyWith<$R, $In, $Out> {
+    implements WorldMultiplayerEventCopyWith<$R, $In, $Out> {
   @override
   $R call({int? user});
   UserBasedEventCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
@@ -1445,7 +1548,7 @@ class TeamChangedMapper extends SubClassMapperBase<TeamChanged> {
   static TeamChangedMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = TeamChangedMapper._());
-      WorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      WorldMultiplayerEventMapper.ensureInitialized().addSubMapper(_instance!);
       GameTeamMapper.ensureInitialized();
     }
     return _instance!;
@@ -1470,7 +1573,8 @@ class TeamChangedMapper extends SubClassMapperBase<TeamChanged> {
   @override
   final dynamic discriminatorValue = 'TeamChanged';
   @override
-  late final ClassMapperBase superMapper = WorldEventMapper.ensureInitialized();
+  late final ClassMapperBase superMapper =
+      WorldMultiplayerEventMapper.ensureInitialized();
 
   @override
   final MappingHook superHook = const IgnoreKeysHook({'user'});
@@ -1529,7 +1633,7 @@ extension TeamChangedValueCopy<$R, $Out>
 }
 
 abstract class TeamChangedCopyWith<$R, $In extends TeamChanged, $Out>
-    implements WorldEventCopyWith<$R, $In, $Out> {
+    implements WorldMultiplayerEventCopyWith<$R, $In, $Out> {
   GameTeamCopyWith<$R, GameTeam, GameTeam> get team;
   @override
   $R call({String? name, GameTeam? team});
@@ -1567,7 +1671,7 @@ class TeamRemovedMapper extends SubClassMapperBase<TeamRemoved> {
   static TeamRemovedMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = TeamRemovedMapper._());
-      WorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      WorldMultiplayerEventMapper.ensureInitialized().addSubMapper(_instance!);
     }
     return _instance!;
   }
@@ -1588,7 +1692,8 @@ class TeamRemovedMapper extends SubClassMapperBase<TeamRemoved> {
   @override
   final dynamic discriminatorValue = 'TeamRemoved';
   @override
-  late final ClassMapperBase superMapper = WorldEventMapper.ensureInitialized();
+  late final ClassMapperBase superMapper =
+      WorldMultiplayerEventMapper.ensureInitialized();
 
   @override
   final MappingHook superHook = const IgnoreKeysHook({'user'});
@@ -1647,7 +1752,7 @@ extension TeamRemovedValueCopy<$R, $Out>
 }
 
 abstract class TeamRemovedCopyWith<$R, $In extends TeamRemoved, $Out>
-    implements WorldEventCopyWith<$R, $In, $Out> {
+    implements WorldMultiplayerEventCopyWith<$R, $In, $Out> {
   @override
   $R call({String? team});
   TeamRemovedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -1691,9 +1796,9 @@ class TeamJoinedMapper extends SubClassMapperBase<TeamJoined> {
 
   static String _$team(TeamJoined v) => v.team;
   static const Field<TeamJoined, String> _f$team = Field('team', _$team);
-  static int? _$user(TeamJoined v) => v.user;
+  static int _$user(TeamJoined v) => v.user;
   static const Field<TeamJoined, int> _f$user =
-      Field('user', _$user, opt: true);
+      Field('user', _$user, opt: true, def: kAuthorityChannel);
 
   @override
   final MappableFields<TeamJoined> fields = const {
@@ -1710,7 +1815,10 @@ class TeamJoinedMapper extends SubClassMapperBase<TeamJoined> {
       UserBasedEventMapper.ensureInitialized();
 
   @override
-  final MappingHook superHook = const IgnoreKeysHook({'user'});
+  final MappingHook superHook = const ChainedHook([
+    IgnoreKeysHook({'user'}),
+    IgnoreKeysHook({'user'})
+  ]);
 
   static TeamJoined _instantiate(DecodingData data) {
     return TeamJoined(data.dec(_f$team), user: data.dec(_f$user));
@@ -1781,8 +1889,8 @@ class _TeamJoinedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<TeamJoined> $mapper =
       TeamJoinedMapper.ensureInitialized();
   @override
-  $R call({String? team, Object? user = $none}) => $apply(FieldCopyWithData(
-      {if (team != null) #team: team, if (user != $none) #user: user}));
+  $R call({String? team, int? user}) => $apply(FieldCopyWithData(
+      {if (team != null) #team: team, if (user != null) #user: user}));
   @override
   TeamJoined $make(CopyWithData data) =>
       TeamJoined(data.get(#team, or: $value.team),
@@ -1811,8 +1919,9 @@ class TeamLeftMapper extends SubClassMapperBase<TeamLeft> {
 
   static String _$team(TeamLeft v) => v.team;
   static const Field<TeamLeft, String> _f$team = Field('team', _$team);
-  static int? _$user(TeamLeft v) => v.user;
-  static const Field<TeamLeft, int> _f$user = Field('user', _$user, opt: true);
+  static int _$user(TeamLeft v) => v.user;
+  static const Field<TeamLeft, int> _f$user =
+      Field('user', _$user, opt: true, def: kAuthorityChannel);
 
   @override
   final MappableFields<TeamLeft> fields = const {
@@ -1829,7 +1938,10 @@ class TeamLeftMapper extends SubClassMapperBase<TeamLeft> {
       UserBasedEventMapper.ensureInitialized();
 
   @override
-  final MappingHook superHook = const IgnoreKeysHook({'user'});
+  final MappingHook superHook = const ChainedHook([
+    IgnoreKeysHook({'user'}),
+    IgnoreKeysHook({'user'})
+  ]);
 
   static TeamLeft _instantiate(DecodingData data) {
     return TeamLeft(data.dec(_f$team), user: data.dec(_f$user));
@@ -1898,8 +2010,8 @@ class _TeamLeftCopyWithImpl<$R, $Out>
   late final ClassMapperBase<TeamLeft> $mapper =
       TeamLeftMapper.ensureInitialized();
   @override
-  $R call({String? team, Object? user = $none}) => $apply(FieldCopyWithData(
-      {if (team != null) #team: team, if (user != $none) #user: user}));
+  $R call({String? team, int? user}) => $apply(FieldCopyWithData(
+      {if (team != null) #team: team, if (user != null) #user: user}));
   @override
   TeamLeft $make(CopyWithData data) =>
       TeamLeft(data.get(#team, or: $value.team),

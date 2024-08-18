@@ -1,5 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
+import 'package:networker/networker.dart';
 import 'package:quokka/models/data.dart';
 import 'package:quokka/models/table.dart';
 import 'package:quokka/models/vector.dart';
@@ -18,6 +19,8 @@ class WorldState with WorldStateMappable {
   final ItemLocation? selectedDeck;
   final bool showHand;
   final String? name;
+  final Channel id;
+  final Map<String, Set<Channel>> teamMembers;
   final QuokkaData data;
 
   const WorldState({
@@ -29,6 +32,8 @@ class WorldState with WorldStateMappable {
     this.selectedCell,
     this.selectedDeck,
     this.showHand = false,
+    this.id = kAuthorityChannel,
+    this.teamMembers = const {},
     required this.data,
   });
 }

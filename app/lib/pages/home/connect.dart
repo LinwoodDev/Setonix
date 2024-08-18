@@ -118,7 +118,7 @@ class _ConnectDialogState extends State<ConnectDialog> {
             showLeapBottomSheet(
               context: context,
               title: servers[_selectedIndex],
-              childrenBuilder: (context) => [
+              children: [
                 ...detailsChildren,
                 const SizedBox(height: 16),
                 Padding(

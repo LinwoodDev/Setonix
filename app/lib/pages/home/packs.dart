@@ -128,7 +128,7 @@ class _PacksDialogState extends State<PacksDialog>
       if (isMobile) {
         await showLeapBottomSheet(
           context: context,
-          childrenBuilder: (context) => [
+          children: [
             ..._buildDetailsChildren(pack, metadata),
             const SizedBox(height: 16),
             ..._buildActionsChildren(pack,

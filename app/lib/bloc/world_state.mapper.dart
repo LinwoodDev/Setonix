@@ -47,6 +47,12 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
   static bool _$showHand(WorldState v) => v.showHand;
   static const Field<WorldState, bool> _f$showHand =
       Field('showHand', _$showHand, opt: true, def: false);
+  static int _$id(WorldState v) => v.id;
+  static const Field<WorldState, int> _f$id =
+      Field('id', _$id, opt: true, def: kAuthorityChannel);
+  static Map<String, Set<int>> _$teamMembers(WorldState v) => v.teamMembers;
+  static const Field<WorldState, Map<String, Set<int>>> _f$teamMembers =
+      Field('teamMembers', _$teamMembers, opt: true, def: const {});
   static QuokkaData _$data(WorldState v) => v.data;
   static const Field<WorldState, QuokkaData> _f$data = Field('data', _$data);
 
@@ -60,6 +66,8 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
     #selectedCell: _f$selectedCell,
     #selectedDeck: _f$selectedDeck,
     #showHand: _f$showHand,
+    #id: _f$id,
+    #teamMembers: _f$teamMembers,
     #data: _f$data,
   };
 
@@ -73,6 +81,8 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
         selectedCell: data.dec(_f$selectedCell),
         selectedDeck: data.dec(_f$selectedDeck),
         showHand: data.dec(_f$showHand),
+        id: data.dec(_f$id),
+        teamMembers: data.dec(_f$teamMembers),
         data: data.dec(_f$data));
   }
 
@@ -131,6 +141,8 @@ abstract class WorldStateCopyWith<$R, $In extends WorldState, $Out>
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>?
       get selectedCell;
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get selectedDeck;
+  MapCopyWith<$R, String, Set<int>, ObjectCopyWith<$R, Set<int>, Set<int>>>
+      get teamMembers;
   $R call(
       {MultiplayerCubit? multiplayer,
       QuokkaFileSystem? fileSystem,
@@ -140,6 +152,8 @@ abstract class WorldStateCopyWith<$R, $In extends WorldState, $Out>
       VectorDefinition? selectedCell,
       ItemLocation? selectedDeck,
       bool? showHand,
+      int? id,
+      Map<String, Set<int>>? teamMembers,
       QuokkaData? data});
   WorldStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -163,6 +177,12 @@ class _WorldStateCopyWithImpl<$R, $Out>
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get selectedDeck =>
       $value.selectedDeck?.copyWith.$chain((v) => call(selectedDeck: v));
   @override
+  MapCopyWith<$R, String, Set<int>, ObjectCopyWith<$R, Set<int>, Set<int>>>
+      get teamMembers => MapCopyWith(
+          $value.teamMembers,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(teamMembers: v));
+  @override
   $R call(
           {MultiplayerCubit? multiplayer,
           QuokkaFileSystem? fileSystem,
@@ -172,6 +192,8 @@ class _WorldStateCopyWithImpl<$R, $Out>
           Object? selectedCell = $none,
           Object? selectedDeck = $none,
           bool? showHand,
+          int? id,
+          Map<String, Set<int>>? teamMembers,
           QuokkaData? data}) =>
       $apply(FieldCopyWithData({
         if (multiplayer != null) #multiplayer: multiplayer,
@@ -182,6 +204,8 @@ class _WorldStateCopyWithImpl<$R, $Out>
         if (selectedCell != $none) #selectedCell: selectedCell,
         if (selectedDeck != $none) #selectedDeck: selectedDeck,
         if (showHand != null) #showHand: showHand,
+        if (id != null) #id: id,
+        if (teamMembers != null) #teamMembers: teamMembers,
         if (data != null) #data: data
       }));
   @override
@@ -194,6 +218,8 @@ class _WorldStateCopyWithImpl<$R, $Out>
       selectedCell: data.get(#selectedCell, or: $value.selectedCell),
       selectedDeck: data.get(#selectedDeck, or: $value.selectedDeck),
       showHand: data.get(#showHand, or: $value.showHand),
+      id: data.get(#id, or: $value.id),
+      teamMembers: data.get(#teamMembers, or: $value.teamMembers),
       data: data.get(#data, or: $value.data));
 
   @override

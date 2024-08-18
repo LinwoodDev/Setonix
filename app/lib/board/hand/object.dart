@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:quokka/bloc/world_event.dart';
 import 'package:quokka/board/cell.dart';
 import 'package:quokka/board/hand/item.dart';
+import 'package:quokka/board/hand/view.dart';
 import 'package:quokka/models/table.dart';
 import 'package:quokka/models/vector.dart';
 
@@ -42,6 +43,13 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
           item.$1,
           item.$2,
           e.item.$2,
+        ));
+      case GameHand _:
+        final cell = game.bloc.state.table.cells[item.$1];
+        game.bloc.send(ObjectIndexChanged(
+          item.$1,
+          item.$2,
+          (cell?.objects.length ?? 1) - 1,
         ));
       default:
         return;

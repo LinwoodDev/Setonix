@@ -106,96 +106,87 @@ class PersonalizationSettingsPage extends StatelessWidget {
     final cubit = context.read<SettingsCubit>();
     final design = cubit.state.design;
 
-    showLeapBottomSheet(
-        context: context,
-        title: AppLocalizations.of(context).theme,
-        childrenBuilder: (context) {
-          void changeDesign(String design) {
-            cubit.changeDesign(design);
-            Navigator.of(context).pop();
-          }
+    void changeDesign(String design) {
+      cubit.changeDesign(design);
+      Navigator.of(context).pop();
+    }
 
-          return [
-            ListTile(
-              title: Text(AppLocalizations.of(context).systemTheme),
-              selected: design.isEmpty,
-              onTap: () => changeDesign(''),
-              leading: ThemeBox(
-                theme: getThemeData('', false),
-              ),
-            ),
-            ...getThemes().map(
-              (e) {
-                final theme = getThemeData(e, false);
-                return ListTile(
-                    title: Text(e.toDisplayString()),
-                    selected: e == design,
-                    onTap: () => changeDesign(e),
-                    leading: ThemeBox(
-                      theme: theme,
-                    ));
-              },
-            ),
-          ];
-        });
+    showLeapBottomSheet(
+      context: context,
+      title: AppLocalizations.of(context).theme,
+      children: [
+        ListTile(
+          title: Text(AppLocalizations.of(context).systemTheme),
+          selected: design.isEmpty,
+          onTap: () => changeDesign(''),
+          leading: ThemeBox(
+            theme: getThemeData('', false),
+          ),
+        ),
+        ...getThemes().map(
+          (e) {
+            final theme = getThemeData(e, false);
+            return ListTile(
+                title: Text(e.toDisplayString()),
+                selected: e == design,
+                onTap: () => changeDesign(e),
+                leading: ThemeBox(
+                  theme: theme,
+                ));
+          },
+        ),
+      ],
+    );
   }
 
   void _openThemeModal(BuildContext context) {
     final cubit = context.read<SettingsCubit>();
     final currentTheme = cubit.state.theme;
+    void changeTheme(ThemeMode themeMode) {
+      cubit.changeTheme(themeMode);
+      Navigator.of(context).pop();
+    }
 
     showLeapBottomSheet(
         context: context,
         title: AppLocalizations.of(context).theme,
-        childrenBuilder: (context) {
-          void changeTheme(ThemeMode themeMode) {
-            cubit.changeTheme(themeMode);
-            Navigator.of(context).pop();
-          }
-
-          return [
-            ListTile(
-                title: Text(AppLocalizations.of(context).systemTheme),
-                selected: currentTheme == ThemeMode.system,
-                leading: const PhosphorIcon(PhosphorIconsLight.power),
-                onTap: () => changeTheme(ThemeMode.system)),
-            ListTile(
-                title: Text(AppLocalizations.of(context).lightTheme),
-                selected: currentTheme == ThemeMode.light,
-                leading: const PhosphorIcon(PhosphorIconsLight.sun),
-                onTap: () => changeTheme(ThemeMode.light)),
-            ListTile(
-                title: Text(AppLocalizations.of(context).darkTheme),
-                selected: currentTheme == ThemeMode.dark,
-                leading: const PhosphorIcon(PhosphorIconsLight.moon),
-                onTap: () => changeTheme(ThemeMode.dark)),
-          ];
-        });
+        children: [
+          ListTile(
+              title: Text(AppLocalizations.of(context).systemTheme),
+              selected: currentTheme == ThemeMode.system,
+              leading: const PhosphorIcon(PhosphorIconsLight.power),
+              onTap: () => changeTheme(ThemeMode.system)),
+          ListTile(
+              title: Text(AppLocalizations.of(context).lightTheme),
+              selected: currentTheme == ThemeMode.light,
+              leading: const PhosphorIcon(PhosphorIconsLight.sun),
+              onTap: () => changeTheme(ThemeMode.light)),
+          ListTile(
+              title: Text(AppLocalizations.of(context).darkTheme),
+              selected: currentTheme == ThemeMode.dark,
+              leading: const PhosphorIcon(PhosphorIconsLight.moon),
+              onTap: () => changeTheme(ThemeMode.dark)),
+        ]);
   }
 
   void _openLocaleModal(BuildContext context) {
     final cubit = context.read<SettingsCubit>();
     var currentLocale = cubit.state.localeTag;
     var locales = getLocales();
-    showLeapBottomSheet(
-        context: context,
-        childrenBuilder: (context) {
-          void changeLocale(Locale? locale) {
-            cubit.changeLocale(locale);
-            Navigator.of(context).pop();
-          }
+    void changeLocale(Locale? locale) {
+      cubit.changeLocale(locale);
+      Navigator.of(context).pop();
+    }
 
-          return [
-            ListTile(
-                title: Text(AppLocalizations.of(context).defaultLocale),
-                selected: currentLocale.isEmpty,
-                onTap: () => changeLocale(null)),
-            ...locales.map((e) => ListTile(
-                title: Text(_getLocaleName(context, e.toLanguageTag())),
-                selected: currentLocale == e.toLanguageTag(),
-                onTap: () => changeLocale(e))),
-            const SizedBox(height: 32),
-          ];
-        });
+    showLeapBottomSheet(context: context, children: [
+      ListTile(
+          title: Text(AppLocalizations.of(context).defaultLocale),
+          selected: currentLocale.isEmpty,
+          onTap: () => changeLocale(null)),
+      ...locales.map((e) => ListTile(
+          title: Text(_getLocaleName(context, e.toLanguageTag())),
+          selected: currentLocale == e.toLanguageTag(),
+          onTap: () => changeLocale(e))),
+    ]);
   }
 }

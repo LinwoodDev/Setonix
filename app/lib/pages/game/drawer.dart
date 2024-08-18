@@ -58,27 +58,26 @@ class GameDrawer extends StatelessWidget {
                     onTap: () => showLeapBottomSheet(
                         context: context,
                         title: AppLocalizations.of(context).background,
-                        childrenBuilder: (_) => assetManager.packs
-                                .expand(
-                                    (e) => e.value.getBackgroundItems(e.key))
-                                .map((entry) {
-                              final translation = assetManager
-                                  .getTranslations(entry.namespace)
-                                  .getBackgroundTranslation(entry.id);
-                              return ListTile(
-                                title: Text(translation.name),
-                                subtitle: translation.description == null
-                                    ? null
-                                    : Text(translation.description!),
-                                onTap: () {
-                                  context
-                                      .read<WorldBloc>()
-                                      .send(BackgroundChanged(entry.location));
-                                  Navigator.of(context).pop();
-                                },
-                                selected: background == entry.location,
-                              );
-                            }).toList()));
+                        children: assetManager.packs
+                            .expand((e) => e.value.getBackgroundItems(e.key))
+                            .map((entry) {
+                          final translation = assetManager
+                              .getTranslations(entry.namespace)
+                              .getBackgroundTranslation(entry.id);
+                          return ListTile(
+                            title: Text(translation.name),
+                            subtitle: translation.description == null
+                                ? null
+                                : Text(translation.description!),
+                            onTap: () {
+                              context
+                                  .read<WorldBloc>()
+                                  .send(BackgroundChanged(entry.location));
+                              Navigator.of(context).pop();
+                            },
+                            selected: background == entry.location,
+                          );
+                        }).toList()));
               },
             ),
             ListTile(
@@ -102,7 +101,7 @@ class GameDrawer extends StatelessWidget {
                 showLeapBottomSheet(
                   context: context,
                   title: AppLocalizations.of(context).teams,
-                  actionsBuilder: (context) => [
+                  actions: [
                     IconButton(
                       icon: const Icon(PhosphorIconsLight.plusCircle),
                       onPressed: () => showDialog(
@@ -111,10 +110,11 @@ class GameDrawer extends StatelessWidget {
                               value: bloc, child: const TeamDialog())),
                     ),
                   ],
-                  childrenBuilder: (_) => [
+                  children: [
                     BlocBuilder<WorldBloc, WorldState>(
                       buildWhen: (previous, current) =>
-                          previous.table.teams != current.table.teams,
+                          previous.table.teams != current.table.teams ||
+                          previous.teamMembers != current.teamMembers,
                       bloc: bloc,
                       builder: (context, state) {
                         return Column(
@@ -123,14 +123,16 @@ class GameDrawer extends StatelessWidget {
                             final name = entry.key;
                             final team = entry.value;
                             final color = team.color;
+                            final selected =
+                                state.teamMembers[name]?.contains(state.id) ??
+                                    false;
                             return ListTile(
                               title: Text(entry.key),
-                              leading: color == null
-                                  ? null
-                                  : ColorButton(
-                                      color: color.color,
-                                      size: 32,
-                                    ),
+                              leading: ColorButton(
+                                color: color?.color ?? Colors.transparent,
+                                size: 24,
+                              ),
+                              selected: selected,
                               trailing: MenuAnchor(
                                 builder: defaultMenuButton(),
                                 menuChildren: [
@@ -162,7 +164,13 @@ class GameDrawer extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              onTap: () {},
+                              onTap: () {
+                                if (selected) {
+                                  bloc.send(TeamLeft(name));
+                                } else {
+                                  bloc.send(TeamJoined(name));
+                                }
+                              },
                             );
                           }).toList(),
                         );

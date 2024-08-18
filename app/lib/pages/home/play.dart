@@ -178,7 +178,7 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
                           showLeapBottomSheet(
                             context: context,
                             title: metadata.name,
-                            childrenBuilder: (context) => [
+                            children: [
                               ..._buildDetailsChildren(metadata),
                               const SizedBox(height: 16),
                               Padding(

@@ -60,8 +60,8 @@ mixin HandItemDropZone on PositionComponent, CollisionCallbacks {
 
   @override
   @mustCallSuper
-  FutureOr<void> onLoad() {
-    //add(hitbox);
+  void onLoad() {
+    add(hitbox);
   }
 
   @override
@@ -69,16 +69,16 @@ mixin HandItemDropZone on PositionComponent, CollisionCallbacks {
   void onCollisionStart(
       Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollisionStart(intersectionPoints, other);
-    /*if (other is! HandItemDragCursorHitbox) return;
+    if (other is! HandItemDragCursorHitbox) return;
 
-    onDragOver(other.item);*/
+    onDragOver(other.item);
   }
 
   @override
   @mustCallSuper
   void onCollisionEnd(PositionComponent other) {
     super.onCollisionEnd(other);
-    //if (other is HandItemDragCursorHitbox) onDragOverEnd(other.item);
+    if (other is HandItemDragCursorHitbox) onDragOverEnd(other.item);
   }
 
   void onDragOverEnd(HandItem handItem) {}
@@ -119,6 +119,7 @@ abstract class HandItem<T> extends PositionComponent
     _sprite = SpriteComponent(
       position: Vector2(0, labelHeight),
       size: Vector2(100, 0),
+      autoResize: false,
       sprite: await loadIcon(),
     );
     add(_sprite);
@@ -127,9 +128,9 @@ abstract class HandItem<T> extends PositionComponent
   void _resetPosition() {
     _sprite.position = Vector2(0, labelHeight);
     if (!_label.isMounted) add(_label);
-    //final cursor = _cursorHitbox;
-    //if (cursor != null) cursor.removeFromParent();
-    //_cursorHitbox = null;
+    final cursor = _cursorHitbox;
+    if (cursor != null) cursor.removeFromParent();
+    _cursorHitbox = null;
   }
 
   @override
@@ -158,18 +159,20 @@ abstract class HandItem<T> extends PositionComponent
   @override
   void onParentResize(Vector2 maxSize) {
     height = maxSize.y;
-    _sprite.height = height - labelHeight;
+    final size = height - labelHeight;
+    _sprite.size = Vector2.all(size);
+    _sprite.x = (100 - size) / 2;
   }
 
   @override
   void onDragStart(DragStartEvent event) {
     super.onDragStart(event);
     remove(_label);
-    /*game.world.add(_cursorHitbox =
-        HandItemDragCursorHitbox(item: this, position: event.localPosition));*/
+    game.world.add(_cursorHitbox =
+        HandItemDragCursorHitbox(item: this, position: event.localPosition));
   }
 
-  //HandItemDragCursorHitbox? _cursorHitbox;
+  HandItemDragCursorHitbox? _cursorHitbox;
   Vector2 _last = Vector2.zero();
   @override
   void onDragUpdate(DragUpdateEvent event) {
@@ -180,7 +183,8 @@ abstract class HandItem<T> extends PositionComponent
     }
     _sprite.position += event.localDelta;
     _last = event.canvasEndPosition;
-    //_cursorHitbox?.position = event.localEndPosition;
+    _cursorHitbox?.position =
+        game.camera.globalToLocal(event.canvasEndPosition);
   }
 
   @override

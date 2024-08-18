@@ -52,6 +52,7 @@ class BoardGame extends FlameGame
     selectionSprite = await Sprite.load('selection.png');
     _hand = GameHand();
     camera.viewport.add(_hand);
+    camera.moveTo(camera.viewport.virtualSize * 0.5);
     grid = BoardGrid(cellSize: Vector2.all(128));
     world.add(grid);
     _updateLocale();
