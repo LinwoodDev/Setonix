@@ -30,3 +30,11 @@ final class RollObjectRequest extends ClientWorldEvent
 
   RollObjectRequest(this.cell, this.object);
 }
+
+@MappableClass()
+final class ShuffleCellRequest extends ClientWorldEvent
+    with ShuffleCellRequestMappable {
+  final VectorDefinition cell;
+
+  ShuffleCellRequest(this.cell);
+}

@@ -16,13 +16,15 @@ part of '../event.dart';
           kAnyChannel
         ),
       RollObjectRequest r => _processRollObjectRequest(bloc, r),
+      ShuffleCellRequest r => _processShuffleCellRequest(bloc, r),
     };
 
 (ServerWorldEvent, Channel)? _processRollObjectRequest(
     WorldBloc bloc, RollObjectRequest r) {
   final cell = bloc.state.table.cells[r.cell];
-  if (cell == null || !r.object.inRange(0, cell.objects.length - 1))
+  if (cell == null || !r.object.inRange(0, cell.objects.length - 1)) {
     return null;
+  }
   final object = cell.objects[r.object];
   final figure = bloc.assetManager
       .getPack(object.asset.namespace)
@@ -32,4 +34,13 @@ part of '../event.dart';
   if (variations.isEmpty) return null;
   final picked = variations[Random().nextInt(variations.length)];
   return (VariationChanged(r.cell, r.object, picked), kAnyChannel);
+}
+
+(ServerWorldEvent, Channel)? _processShuffleCellRequest(
+    WorldBloc bloc, ShuffleCellRequest r) {
+  final cell = bloc.state.table.cells[r.cell];
+  if (cell == null) return null;
+  final positions = List<int>.generate(cell.objects.length, (i) => i)
+    ..shuffle();
+  return (CellShuffled(r.cell, positions), kAnyChannel);
 }

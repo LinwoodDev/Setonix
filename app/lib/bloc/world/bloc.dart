@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart' show ColorScheme;
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -148,11 +146,17 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState> {
     });
     on<CellShuffled>((event, emit) {
       final cell = state.table.cells[event.cell] ?? TableCell();
-      final random = Random(event.seed);
+      final objects = List<GameObject>.from(cell.objects);
+      final positions = event.positions;
+      if (positions.any((e) => !e.inRange(0, objects.length - 1))) return null;
+      final newObjects = List<GameObject>.from(objects);
+      for (var i = 0; i < positions.length; i++) {
+        newObjects[positions[i]] = objects[i];
+      }
       emit(state.copyWith.table.cells.replace(
           event.cell,
           cell.copyWith(
-            objects: cell.objects.toList()..shuffle(random),
+            objects: newObjects,
           )));
       return save();
     });
@@ -177,8 +181,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState> {
       return save();
     });
     on<TeamChanged>((event, emit) {
-      emit(state.copyWith(
-          table: state.table.copyWith.teams.put(event.name, event.team)));
+      emit(state.copyWith.table.teams.put(event.name, event.team));
       return save();
     });
     on<TeamRemoved>((event, emit) {

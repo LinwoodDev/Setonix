@@ -81,10 +81,12 @@ enum TeamColor {
 class GameTeam with GameTeamMappable {
   final String description;
   final TeamColor? color;
+  final Set<VectorDefinition> claimedCells;
 
   GameTeam({
     this.description = '',
     this.color,
+    this.claimedCells = const {},
   });
 }
 

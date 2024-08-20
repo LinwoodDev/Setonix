@@ -177,8 +177,8 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
                               entry.data?.getMetadata() ?? const FileMetadata();
                           showLeapBottomSheet(
                             context: context,
-                            title: metadata.name,
-                            children: [
+                            titleBuilder: (context) => Text(metadata.name),
+                            childrenBuilder: (context) => [
                               ..._buildDetailsChildren(metadata),
                               const SizedBox(height: 16),
                               Padding(

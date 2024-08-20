@@ -1,5 +1,6 @@
 import 'package:flame/components.dart';
 import 'package:quokka/bloc/world/event.dart';
+import 'package:quokka/bloc/world/state.dart';
 import 'package:quokka/board/cell.dart';
 import 'package:quokka/board/hand/item.dart';
 import 'package:quokka/models/deck.dart';
@@ -10,7 +11,7 @@ class DeckDefinitionHandItem extends HandItem<PackItem<DeckDefinition>> {
   DeckDefinitionHandItem({required super.item});
 
   @override
-  String get label => game.assetManager
+  String getLabel(WorldState state) => game.assetManager
       .getTranslations(item.namespace)
       .getDeckTranslation(item.id)
       .name;
@@ -21,7 +22,7 @@ class DeckDefinitionHandItem extends HandItem<PackItem<DeckDefinition>> {
   }
 
   @override
-  Future<Sprite?> loadIcon() async {
+  Future<Sprite?> loadIcon(WorldState state) async {
     final front = item.item.figures.firstOrNull;
     if (front == null) return null;
     return assetManager.loadFigureSprite(front.name, front.variation);

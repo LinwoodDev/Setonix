@@ -113,8 +113,8 @@ class PersonalizationSettingsPage extends StatelessWidget {
 
     showLeapBottomSheet(
       context: context,
-      title: AppLocalizations.of(context).theme,
-      children: [
+      titleBuilder: (context) => Text(AppLocalizations.of(context).theme),
+      childrenBuilder: (context) => [
         ListTile(
           title: Text(AppLocalizations.of(context).systemTheme),
           selected: design.isEmpty,
@@ -149,24 +149,24 @@ class PersonalizationSettingsPage extends StatelessWidget {
 
     showLeapBottomSheet(
         context: context,
-        title: AppLocalizations.of(context).theme,
-        children: [
-          ListTile(
-              title: Text(AppLocalizations.of(context).systemTheme),
-              selected: currentTheme == ThemeMode.system,
-              leading: const PhosphorIcon(PhosphorIconsLight.power),
-              onTap: () => changeTheme(ThemeMode.system)),
-          ListTile(
-              title: Text(AppLocalizations.of(context).lightTheme),
-              selected: currentTheme == ThemeMode.light,
-              leading: const PhosphorIcon(PhosphorIconsLight.sun),
-              onTap: () => changeTheme(ThemeMode.light)),
-          ListTile(
-              title: Text(AppLocalizations.of(context).darkTheme),
-              selected: currentTheme == ThemeMode.dark,
-              leading: const PhosphorIcon(PhosphorIconsLight.moon),
-              onTap: () => changeTheme(ThemeMode.dark)),
-        ]);
+        titleBuilder: (context) => Text(AppLocalizations.of(context).theme),
+        childrenBuilder: (context) => [
+              ListTile(
+                  title: Text(AppLocalizations.of(context).systemTheme),
+                  selected: currentTheme == ThemeMode.system,
+                  leading: const PhosphorIcon(PhosphorIconsLight.power),
+                  onTap: () => changeTheme(ThemeMode.system)),
+              ListTile(
+                  title: Text(AppLocalizations.of(context).lightTheme),
+                  selected: currentTheme == ThemeMode.light,
+                  leading: const PhosphorIcon(PhosphorIconsLight.sun),
+                  onTap: () => changeTheme(ThemeMode.light)),
+              ListTile(
+                  title: Text(AppLocalizations.of(context).darkTheme),
+                  selected: currentTheme == ThemeMode.dark,
+                  leading: const PhosphorIcon(PhosphorIconsLight.moon),
+                  onTap: () => changeTheme(ThemeMode.dark)),
+            ]);
   }
 
   void _openLocaleModal(BuildContext context) {
@@ -178,15 +178,17 @@ class PersonalizationSettingsPage extends StatelessWidget {
       Navigator.of(context).pop();
     }
 
-    showLeapBottomSheet(context: context, children: [
-      ListTile(
-          title: Text(AppLocalizations.of(context).defaultLocale),
-          selected: currentLocale.isEmpty,
-          onTap: () => changeLocale(null)),
-      ...locales.map((e) => ListTile(
-          title: Text(_getLocaleName(context, e.toLanguageTag())),
-          selected: currentLocale == e.toLanguageTag(),
-          onTap: () => changeLocale(e))),
-    ]);
+    showLeapBottomSheet(
+        context: context,
+        childrenBuilder: (context) => [
+              ListTile(
+                  title: Text(AppLocalizations.of(context).defaultLocale),
+                  selected: currentLocale.isEmpty,
+                  onTap: () => changeLocale(null)),
+              ...locales.map((e) => ListTile(
+                  title: Text(_getLocaleName(context, e.toLanguageTag())),
+                  selected: currentLocale == e.toLanguageTag(),
+                  onTap: () => changeLocale(e))),
+            ]);
   }
 }

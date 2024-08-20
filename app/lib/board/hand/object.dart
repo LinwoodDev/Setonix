@@ -2,6 +2,7 @@ import 'package:flame/components.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:quokka/bloc/world/event.dart';
+import 'package:quokka/bloc/world/state.dart';
 import 'package:quokka/board/cell.dart';
 import 'package:quokka/board/hand/item.dart';
 import 'package:quokka/board/hand/view.dart';
@@ -12,12 +13,12 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
   GameObjectHandItem({required super.item});
 
   @override
-  String get label {
+  String getLabel(WorldState state) {
     final object = item.$3;
     final translation =
         game.assetManager.getTranslations(object.asset.namespace);
     final variation = object.variation;
-    if (variation != null && !item.$3.hidden) {
+    if (variation != null && !item.$3.hidden && state.isCellVisible(item.$1)) {
       return translation
           .getFigureVariationTranslation(object.asset.id, variation)
           .name;
@@ -26,8 +27,12 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
   }
 
   @override
-  Future<Sprite?> loadIcon() => game.assetManager.loadFigureSpriteFromLocation(
-      item.$3.asset, item.$3.hidden ? null : item.$3.variation);
+  Future<Sprite?> loadIcon(WorldState state) =>
+      game.assetManager.loadFigureSpriteFromLocation(
+          item.$3.asset,
+          item.$3.hidden || !state.isCellVisible(item.$1)
+              ? null
+              : item.$3.variation);
 
   @override
   void moveItem(HandItemDropZone zone) {

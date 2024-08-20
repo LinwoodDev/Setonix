@@ -98,16 +98,16 @@ abstract class HandItem<T> extends PositionComponent
         DetailsTapCallbacks,
         FlameBlocListenable<WorldBloc, WorldState> {
   final T item;
-  late final SpriteComponent _sprite;
+  final SpriteComponent _sprite = SpriteComponent();
   late final TextComponent<TextPaint> _label;
 
   HandItem({required this.item}) : super(size: Vector2(100, 0));
 
   GameHand get hand => findParent<GameHand>()!;
 
-  String get label;
+  String getLabel(WorldState state);
 
-  Future<Sprite?> loadIcon();
+  Future<Sprite?> loadIcon(WorldState state);
 
   AssetManager get assetManager => game.assetManager;
 
@@ -116,12 +116,7 @@ abstract class HandItem<T> extends PositionComponent
   @override
   Future<void> onLoad() async {
     super.onLoad();
-    _sprite = SpriteComponent(
-      position: Vector2(0, labelHeight),
-      size: Vector2(100, 0),
-      autoResize: false,
-      sprite: await loadIcon(),
-    );
+    _sprite.sprite = game.selectionSprite;
     add(_sprite);
   }
 
@@ -138,13 +133,14 @@ abstract class HandItem<T> extends PositionComponent
       previousState.colorScheme != newState.colorScheme;
 
   @override
-  void onInitialState(WorldState state) {
+  void onInitialState(WorldState state) async {
     add(_label = TextComponent(
-        text: label,
+        text: getLabel(state),
         size: Vector2(0, labelHeight),
         position: Vector2(50, 0),
         anchor: Anchor.topCenter,
         textRenderer: _buildPaint(state)));
+    _sprite.sprite = await loadIcon(state);
   }
 
   _buildPaint(WorldState state) => TextPaint(
@@ -162,6 +158,7 @@ abstract class HandItem<T> extends PositionComponent
     final size = height - labelHeight;
     _sprite.size = Vector2.all(size);
     _sprite.x = (100 - size) / 2;
+    _sprite.y = labelHeight;
   }
 
   @override

@@ -128,13 +128,13 @@ class _PacksDialogState extends State<PacksDialog>
       if (isMobile) {
         await showLeapBottomSheet(
           context: context,
-          children: [
+          childrenBuilder: (context) => [
             ..._buildDetailsChildren(pack, metadata),
             const SizedBox(height: 16),
             ..._buildActionsChildren(pack,
                 onInstall: onInstall, onRemove: onRemove),
           ],
-          title: pack.getMetadata()?.name ?? '',
+          titleBuilder: (context) => Text(pack.getMetadata()?.name ?? ''),
         );
         if (mounted) {
           _deselectPack();

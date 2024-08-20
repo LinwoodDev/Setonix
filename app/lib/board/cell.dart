@@ -6,7 +6,9 @@ import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:material_leap/material_leap.dart';
 import 'package:quokka/bloc/world/bloc.dart';
 import 'package:quokka/bloc/world/event.dart';
 import 'package:quokka/bloc/world/state.dart';
@@ -72,6 +74,8 @@ class GameCell extends PositionComponent
             (newState.selectedCell == definition) ||
         previousState.table.cells[definition] !=
             newState.table.cells[definition] ||
+        previousState.teamMembers != newState.teamMembers ||
+        previousState.table.teams != newState.table.teams ||
         previousState.colorScheme != newState.colorScheme;
   }
 
@@ -162,7 +166,10 @@ class GameCell extends PositionComponent
     if (top != null) {
       _cardComponent = SpriteComponent(
           sprite: await game.assetManager.loadFigureSpriteFromLocation(
-              top.asset, top.hidden ? null : top.variation),
+              top.asset,
+              top.hidden || !state.isCellVisible(toDefinition())
+                  ? null
+                  : top.variation),
           size: size);
       await add(_cardComponent!);
     }
@@ -201,8 +208,80 @@ class GameCell extends PositionComponent
                   ContextMenuButtonItem(
                     label: AppLocalizations.of(context).shuffle,
                     onPressed: () {
-                      bloc.process(CellShuffled.random(toDefinition()));
+                      bloc.process(ShuffleCellRequest(toDefinition()));
                       onClose();
+                    },
+                  ),
+                  ContextMenuButtonItem(
+                    label: AppLocalizations.of(context).teams,
+                    onPressed: () {
+                      onClose();
+                      showLeapBottomSheet(
+                        context: context,
+                        titleBuilder: (context) => Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(AppLocalizations.of(context).teams),
+                            Text(toDefinition().toDisplayString(),
+                                style: Theme.of(context).textTheme.bodyLarge),
+                          ],
+                        ),
+                        childrenBuilder: (context) => [
+                          BlocBuilder<WorldBloc, WorldState>(
+                            bloc: bloc,
+                            buildWhen: (previous, current) =>
+                                previous.table.teams != current.table.teams,
+                            builder: (context, state) {
+                              final teams = state.table.teams.entries.toList();
+                              if (teams.isEmpty) {
+                                return Center(
+                                  child: Text(
+                                    AppLocalizations.of(context).noTeams,
+                                  ),
+                                );
+                              }
+                              final anyClaimed = teams.any((entry) => entry
+                                  .value.claimedCells
+                                  .contains(toDefinition()));
+                              return Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    anyClaimed
+                                        ? AppLocalizations.of(context)
+                                            .claimedCell
+                                        : AppLocalizations.of(context)
+                                            .publicCell,
+                                  ),
+                                  ...teams.map((entry) {
+                                    final selected = entry.value.claimedCells
+                                        .contains(toDefinition());
+                                    return ListTile(
+                                      title: Text(entry.key),
+                                      leading: ColorButton(
+                                        color: entry.value.color?.color ??
+                                            Colors.transparent,
+                                        size: 24,
+                                      ),
+                                      selected: selected,
+                                      onTap: () => bloc.process(TeamChanged(
+                                          entry.key,
+                                          entry.value.copyWith(
+                                            claimedCells: selected
+                                                ? entry.value.claimedCells
+                                                    .difference(
+                                                        {toDefinition()})
+                                                : entry.value.claimedCells
+                                                    .union({toDefinition()}),
+                                          ))),
+                                    );
+                                  }),
+                                ],
+                              );
+                            },
+                          )
+                        ],
+                      );
                     },
                   ),
                 ],

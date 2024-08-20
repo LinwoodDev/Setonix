@@ -6,6 +6,52 @@
 
 part of 'state.dart';
 
+class WorldOperationModeMapper extends EnumMapper<WorldOperationMode> {
+  WorldOperationModeMapper._();
+
+  static WorldOperationModeMapper? _instance;
+  static WorldOperationModeMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = WorldOperationModeMapper._());
+    }
+    return _instance!;
+  }
+
+  static WorldOperationMode fromValue(dynamic value) {
+    ensureInitialized();
+    return MapperContainer.globals.fromValue(value);
+  }
+
+  @override
+  WorldOperationMode decode(dynamic value) {
+    switch (value) {
+      case 'figures':
+        return WorldOperationMode.figures;
+      case 'boards':
+        return WorldOperationMode.boards;
+      default:
+        throw MapperException.unknownEnumValue(value);
+    }
+  }
+
+  @override
+  dynamic encode(WorldOperationMode self) {
+    switch (self) {
+      case WorldOperationMode.figures:
+        return 'figures';
+      case WorldOperationMode.boards:
+        return 'boards';
+    }
+  }
+}
+
+extension WorldOperationModeMapperExtension on WorldOperationMode {
+  String toValue() {
+    WorldOperationModeMapper.ensureInitialized();
+    return MapperContainer.globals.toValue<WorldOperationMode>(this) as String;
+  }
+}
+
 class WorldStateMapper extends ClassMapperBase<WorldState> {
   WorldStateMapper._();
 

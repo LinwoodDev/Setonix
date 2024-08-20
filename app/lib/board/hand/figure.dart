@@ -1,5 +1,6 @@
 import 'package:flame/widgets.dart';
 import 'package:quokka/bloc/world/event.dart';
+import 'package:quokka/bloc/world/state.dart';
 import 'package:quokka/board/cell.dart';
 import 'package:quokka/board/hand/item.dart';
 import 'package:quokka/models/object.dart';
@@ -11,7 +12,7 @@ class FigureDefinitionHandItem
   FigureDefinitionHandItem({required super.item});
 
   @override
-  String get label {
+  String getLabel(WorldState state) {
     final translation = game.assetManager.getTranslations(item.$1.namespace);
     final variation = item.$2;
     if (variation != null) {
@@ -23,7 +24,7 @@ class FigureDefinitionHandItem
   }
 
   @override
-  Future<Sprite?> loadIcon() =>
+  Future<Sprite?> loadIcon(WorldState state) =>
       assetManager.loadFigureSpriteFromLocation(item.$1.location, item.$2);
   @override
   void moveItem(HandItemDropZone zone) {

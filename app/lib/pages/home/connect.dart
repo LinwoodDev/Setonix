@@ -117,8 +117,8 @@ class _ConnectDialogState extends State<ConnectDialog> {
           if (isMobile) {
             showLeapBottomSheet(
               context: context,
-              title: servers[_selectedIndex],
-              children: [
+              titleBuilder: (context) => Text(servers[_selectedIndex]),
+              childrenBuilder: (context) => [
                 ...detailsChildren,
                 const SizedBox(height: 16),
                 Padding(

@@ -7,6 +7,7 @@ import 'package:flame/events.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/material.dart'
     show Canvas, Color, Colors, CustomPainter, Paint, PaintingStyle, Rect, Size;
+import 'package:flutter/painting.dart';
 import 'package:quokka/bloc/world/bloc.dart';
 import 'package:quokka/bloc/world/state.dart';
 import 'package:quokka/board/game.dart';
@@ -51,15 +52,14 @@ class GameHand extends CustomPainterComponent
         ScrollCallbacks,
         CollisionCallbacks,
         HandItemDropZone {
-  double _nextItemPos = 0;
-  final _itemsChild = PositionComponent();
+  final _scrollView = ScrollViewComponent(direction: Axis.horizontal);
 
   GameHand() : super(anchor: Anchor.topLeft, painter: GameHandCustomPainter());
 
   @override
   void onLoad() {
     super.onLoad();
-    add(_itemsChild);
+    add(_scrollView);
   }
 
   @override
@@ -73,7 +73,8 @@ class GameHand extends CustomPainterComponent
     width = maxSize.x;
     height = min(maxSize.y / 3, 128);
     position = Vector2(0, maxSize.y - height);
-    _itemsChild.height = height;
+    _scrollView.height = height;
+    _scrollView.width = width;
   }
 
   @override
@@ -86,13 +87,10 @@ class GameHand extends CustomPainterComponent
       previousState.colorScheme != newState.colorScheme;
 
   void _buildHand(WorldState state) {
-    _itemsChild.children
-        .whereType<HandItem>()
-        .forEach((e) => e.removeFromParent());
+    _scrollView.clearChildren();
     painter = GameHandCustomPainter(
         showHand: state.showHand, color: state.colorScheme.surface);
     if (!state.showHand) return;
-    _itemsChild.x = 0;
     final selected = state.selectedCell;
     final cell = state.table.cells[selected];
     if (selected == null) {
@@ -116,16 +114,14 @@ class GameHand extends CustomPainterComponent
     final game = gameRef;
     final decks =
         game.assetManager.packs.expand((e) => e.value.getDeckItems(e.key));
-    _nextItemPos = 0;
     for (final deck in decks) {
-      _addChild(DeckDefinitionHandItem(item: deck));
+      _scrollView.addChild(DeckDefinitionHandItem(item: deck));
     }
   }
 
   void _addFigures(Iterable<(PackItem<FigureDefinition>, String?)> figures) {
-    _nextItemPos = 0;
     for (final figure in figures) {
-      _addChild(FigureDefinitionHandItem(item: figure));
+      _scrollView.addChild(FigureDefinitionHandItem(item: figure));
     }
   }
 
@@ -140,22 +136,11 @@ class GameHand extends CustomPainterComponent
   }
 
   void _buildCellHand(VectorDefinition location, TableCell? cell) {
-    _nextItemPos = 0;
     for (final object
         in cell?.objects.asMap().entries ?? const Iterable.empty()) {
-      _addChild(GameObjectHandItem(item: (location, object.key, object.value)));
+      _scrollView.addChild(
+          GameObjectHandItem(item: (location, object.key, object.value)));
     }
-  }
-
-  void _addChild(HandItem item) {
-    _itemsChild.add(item);
-    item.position = Vector2(_nextItemPos, 0);
-    _nextItemPos += item.size.x;
-  }
-
-  void scroll(double delta) {
-    _itemsChild.position.x =
-        (delta + _itemsChild.position.x).clamp(min(width - _nextItemPos, 0), 0);
   }
 
   bool get isShowing => bloc.state.showHand;
@@ -206,4 +191,6 @@ class GameHand extends CustomPainterComponent
     }
     super.onDragEnd(event);
   }
+
+  void scroll(double delta) => _scrollView.scroll(delta);
 }

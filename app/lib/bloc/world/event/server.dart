@@ -45,3 +45,11 @@ final class VariationChanged extends ServerWorldEvent
 
   VariationChanged(this.cell, this.object, this.variation);
 }
+
+@MappableClass()
+final class CellShuffled extends ServerWorldEvent with CellShuffledMappable {
+  final VectorDefinition cell;
+  final List<int> positions;
+
+  CellShuffled(this.cell, this.positions);
+}

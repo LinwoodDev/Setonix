@@ -737,6 +737,7 @@ class GameTeamMapper extends ClassMapperBase<GameTeam> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = GameTeamMapper._());
       TeamColorMapper.ensureInitialized();
+      VectorDefinitionMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -750,16 +751,22 @@ class GameTeamMapper extends ClassMapperBase<GameTeam> {
   static TeamColor? _$color(GameTeam v) => v.color;
   static const Field<GameTeam, TeamColor> _f$color =
       Field('color', _$color, opt: true);
+  static Set<VectorDefinition> _$claimedCells(GameTeam v) => v.claimedCells;
+  static const Field<GameTeam, Set<VectorDefinition>> _f$claimedCells =
+      Field('claimedCells', _$claimedCells, opt: true, def: const {});
 
   @override
   final MappableFields<GameTeam> fields = const {
     #description: _f$description,
     #color: _f$color,
+    #claimedCells: _f$claimedCells,
   };
 
   static GameTeam _instantiate(DecodingData data) {
     return GameTeam(
-        description: data.dec(_f$description), color: data.dec(_f$color));
+        description: data.dec(_f$description),
+        color: data.dec(_f$color),
+        claimedCells: data.dec(_f$claimedCells));
   }
 
   @override
@@ -811,7 +818,10 @@ extension GameTeamValueCopy<$R, $Out> on ObjectCopyWith<$R, GameTeam, $Out> {
 
 abstract class GameTeamCopyWith<$R, $In extends GameTeam, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call({String? description, TeamColor? color});
+  $R call(
+      {String? description,
+      TeamColor? color,
+      Set<VectorDefinition>? claimedCells});
   GameTeamCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -824,15 +834,20 @@ class _GameTeamCopyWithImpl<$R, $Out>
   late final ClassMapperBase<GameTeam> $mapper =
       GameTeamMapper.ensureInitialized();
   @override
-  $R call({String? description, Object? color = $none}) =>
+  $R call(
+          {String? description,
+          Object? color = $none,
+          Set<VectorDefinition>? claimedCells}) =>
       $apply(FieldCopyWithData({
         if (description != null) #description: description,
-        if (color != $none) #color: color
+        if (color != $none) #color: color,
+        if (claimedCells != null) #claimedCells: claimedCells
       }));
   @override
   GameTeam $make(CopyWithData data) => GameTeam(
       description: data.get(#description, or: $value.description),
-      color: data.get(#color, or: $value.color));
+      color: data.get(#color, or: $value.color),
+      claimedCells: data.get(#claimedCells, or: $value.claimedCells));
 
   @override
   GameTeamCopyWith<$R2, GameTeam, $Out2> $chain<$R2, $Out2>(

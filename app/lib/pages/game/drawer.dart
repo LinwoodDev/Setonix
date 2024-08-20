@@ -9,7 +9,6 @@ import 'package:quokka/bloc/multiplayer.dart';
 import 'package:quokka/bloc/world/bloc.dart';
 import 'package:quokka/bloc/world/event.dart';
 import 'package:quokka/bloc/world/state.dart';
-import 'package:quokka/helpers/asset.dart';
 import 'package:quokka/pages/game/multiplayer.dart';
 import 'package:quokka/pages/game/team.dart';
 
@@ -44,7 +43,8 @@ class GameDrawer extends StatelessWidget {
               buildWhen: (previous, current) =>
                   previous.table.background != current.table.background,
               builder: (context, state) {
-                final assetManager = context.read<AssetManager>();
+                final bloc = context.read<WorldBloc>();
+                final assetManager = bloc.assetManager;
                 final background = state.table.background;
                 return ListTile(
                     leading: const Icon(PhosphorIconsLight.image),
@@ -57,27 +57,28 @@ class GameDrawer extends StatelessWidget {
                             .name),
                     onTap: () => showLeapBottomSheet(
                         context: context,
-                        title: AppLocalizations.of(context).background,
-                        children: assetManager.packs
-                            .expand((e) => e.value.getBackgroundItems(e.key))
-                            .map((entry) {
-                          final translation = assetManager
-                              .getTranslations(entry.namespace)
-                              .getBackgroundTranslation(entry.id);
-                          return ListTile(
-                            title: Text(translation.name),
-                            subtitle: translation.description == null
-                                ? null
-                                : Text(translation.description!),
-                            onTap: () {
-                              context
-                                  .read<WorldBloc>()
-                                  .process(BackgroundChanged(entry.location));
-                              Navigator.of(context).pop();
-                            },
-                            selected: background == entry.location,
-                          );
-                        }).toList()));
+                        titleBuilder: (context) =>
+                            Text(AppLocalizations.of(context).background),
+                        childrenBuilder: (context) => assetManager.packs
+                                .expand(
+                                    (e) => e.value.getBackgroundItems(e.key))
+                                .map((entry) {
+                              final translation = assetManager
+                                  .getTranslations(entry.namespace)
+                                  .getBackgroundTranslation(entry.id);
+                              return ListTile(
+                                title: Text(translation.name),
+                                subtitle: translation.description == null
+                                    ? null
+                                    : Text(translation.description!),
+                                onTap: () {
+                                  bloc.process(
+                                      BackgroundChanged(entry.location));
+                                  Navigator.of(context).pop();
+                                },
+                                selected: background == entry.location,
+                              );
+                            }).toList()));
               },
             ),
             ListTile(
@@ -100,8 +101,9 @@ class GameDrawer extends StatelessWidget {
                 final bloc = context.read<WorldBloc>();
                 showLeapBottomSheet(
                   context: context,
-                  title: AppLocalizations.of(context).teams,
-                  actions: [
+                  titleBuilder: (context) =>
+                      Text(AppLocalizations.of(context).teams),
+                  actionsBuilder: (context) => [
                     IconButton(
                       icon: const Icon(PhosphorIconsLight.plusCircle),
                       onPressed: () => showDialog(
@@ -110,7 +112,7 @@ class GameDrawer extends StatelessWidget {
                               value: bloc, child: const TeamDialog())),
                     ),
                   ],
-                  children: [
+                  childrenBuilder: (context) => [
                     BlocBuilder<WorldBloc, WorldState>(
                       buildWhen: (previous, current) =>
                           previous.table.teams != current.table.teams ||

@@ -127,6 +127,7 @@ class ServerWorldEventMapper extends SubClassMapperBase<ServerWorldEvent> {
       TeamJoinedMapper.ensureInitialized();
       TeamLeftMapper.ensureInitialized();
       VariationChangedMapper.ensureInitialized();
+      CellShuffledMapper.ensureInitialized();
       HybridWorldEventMapper.ensureInitialized();
     }
     return _instance!;
@@ -691,6 +692,138 @@ class _VariationChangedCopyWithImpl<$R, $Out>
       _VariationChangedCopyWithImpl($value, $cast, t);
 }
 
+class CellShuffledMapper extends SubClassMapperBase<CellShuffled> {
+  CellShuffledMapper._();
+
+  static CellShuffledMapper? _instance;
+  static CellShuffledMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = CellShuffledMapper._());
+      ServerWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      VectorDefinitionMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'CellShuffled';
+
+  static VectorDefinition _$cell(CellShuffled v) => v.cell;
+  static const Field<CellShuffled, VectorDefinition> _f$cell =
+      Field('cell', _$cell);
+  static List<int> _$positions(CellShuffled v) => v.positions;
+  static const Field<CellShuffled, List<int>> _f$positions =
+      Field('positions', _$positions);
+
+  @override
+  final MappableFields<CellShuffled> fields = const {
+    #cell: _f$cell,
+    #positions: _f$positions,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'CellShuffled';
+  @override
+  late final ClassMapperBase superMapper =
+      ServerWorldEventMapper.ensureInitialized();
+
+  static CellShuffled _instantiate(DecodingData data) {
+    return CellShuffled(data.dec(_f$cell), data.dec(_f$positions));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static CellShuffled fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<CellShuffled>(map);
+  }
+
+  static CellShuffled fromJson(String json) {
+    return ensureInitialized().decodeJson<CellShuffled>(json);
+  }
+}
+
+mixin CellShuffledMappable {
+  String toJson() {
+    return CellShuffledMapper.ensureInitialized()
+        .encodeJson<CellShuffled>(this as CellShuffled);
+  }
+
+  Map<String, dynamic> toMap() {
+    return CellShuffledMapper.ensureInitialized()
+        .encodeMap<CellShuffled>(this as CellShuffled);
+  }
+
+  CellShuffledCopyWith<CellShuffled, CellShuffled, CellShuffled> get copyWith =>
+      _CellShuffledCopyWithImpl(this as CellShuffled, $identity, $identity);
+  @override
+  String toString() {
+    return CellShuffledMapper.ensureInitialized()
+        .stringifyValue(this as CellShuffled);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return CellShuffledMapper.ensureInitialized()
+        .equalsValue(this as CellShuffled, other);
+  }
+
+  @override
+  int get hashCode {
+    return CellShuffledMapper.ensureInitialized()
+        .hashValue(this as CellShuffled);
+  }
+}
+
+extension CellShuffledValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, CellShuffled, $Out> {
+  CellShuffledCopyWith<$R, CellShuffled, $Out> get $asCellShuffled =>
+      $base.as((v, t, t2) => _CellShuffledCopyWithImpl(v, t, t2));
+}
+
+abstract class CellShuffledCopyWith<$R, $In extends CellShuffled, $Out>
+    implements ServerWorldEventCopyWith<$R, $In, $Out> {
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell;
+  ListCopyWith<$R, int, ObjectCopyWith<$R, int, int>> get positions;
+  @override
+  $R call({VectorDefinition? cell, List<int>? positions});
+  CellShuffledCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _CellShuffledCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, CellShuffled, $Out>
+    implements CellShuffledCopyWith<$R, CellShuffled, $Out> {
+  _CellShuffledCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<CellShuffled> $mapper =
+      CellShuffledMapper.ensureInitialized();
+  @override
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell =>
+      $value.cell.copyWith.$chain((v) => call(cell: v));
+  @override
+  ListCopyWith<$R, int, ObjectCopyWith<$R, int, int>> get positions =>
+      ListCopyWith($value.positions, (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(positions: v));
+  @override
+  $R call({VectorDefinition? cell, List<int>? positions}) =>
+      $apply(FieldCopyWithData({
+        if (cell != null) #cell: cell,
+        if (positions != null) #positions: positions
+      }));
+  @override
+  CellShuffled $make(CopyWithData data) => CellShuffled(
+      data.get(#cell, or: $value.cell),
+      data.get(#positions, or: $value.positions));
+
+  @override
+  CellShuffledCopyWith<$R2, CellShuffled, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _CellShuffledCopyWithImpl($value, $cast, t);
+}
+
 class ClientWorldEventMapper extends SubClassMapperBase<ClientWorldEvent> {
   ClientWorldEventMapper._();
 
@@ -702,6 +835,7 @@ class ClientWorldEventMapper extends SubClassMapperBase<ClientWorldEvent> {
       TeamJoinRequestMapper.ensureInitialized();
       TeamLeaveRequestMapper.ensureInitialized();
       RollObjectRequestMapper.ensureInitialized();
+      ShuffleCellRequestMapper.ensureInitialized();
       HybridWorldEventMapper.ensureInitialized();
     }
     return _instance!;
@@ -1110,6 +1244,129 @@ class _RollObjectRequestCopyWithImpl<$R, $Out>
       _RollObjectRequestCopyWithImpl($value, $cast, t);
 }
 
+class ShuffleCellRequestMapper extends SubClassMapperBase<ShuffleCellRequest> {
+  ShuffleCellRequestMapper._();
+
+  static ShuffleCellRequestMapper? _instance;
+  static ShuffleCellRequestMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = ShuffleCellRequestMapper._());
+      ClientWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      VectorDefinitionMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'ShuffleCellRequest';
+
+  static VectorDefinition _$cell(ShuffleCellRequest v) => v.cell;
+  static const Field<ShuffleCellRequest, VectorDefinition> _f$cell =
+      Field('cell', _$cell);
+
+  @override
+  final MappableFields<ShuffleCellRequest> fields = const {
+    #cell: _f$cell,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'ShuffleCellRequest';
+  @override
+  late final ClassMapperBase superMapper =
+      ClientWorldEventMapper.ensureInitialized();
+
+  static ShuffleCellRequest _instantiate(DecodingData data) {
+    return ShuffleCellRequest(data.dec(_f$cell));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static ShuffleCellRequest fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<ShuffleCellRequest>(map);
+  }
+
+  static ShuffleCellRequest fromJson(String json) {
+    return ensureInitialized().decodeJson<ShuffleCellRequest>(json);
+  }
+}
+
+mixin ShuffleCellRequestMappable {
+  String toJson() {
+    return ShuffleCellRequestMapper.ensureInitialized()
+        .encodeJson<ShuffleCellRequest>(this as ShuffleCellRequest);
+  }
+
+  Map<String, dynamic> toMap() {
+    return ShuffleCellRequestMapper.ensureInitialized()
+        .encodeMap<ShuffleCellRequest>(this as ShuffleCellRequest);
+  }
+
+  ShuffleCellRequestCopyWith<ShuffleCellRequest, ShuffleCellRequest,
+          ShuffleCellRequest>
+      get copyWith => _ShuffleCellRequestCopyWithImpl(
+          this as ShuffleCellRequest, $identity, $identity);
+  @override
+  String toString() {
+    return ShuffleCellRequestMapper.ensureInitialized()
+        .stringifyValue(this as ShuffleCellRequest);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return ShuffleCellRequestMapper.ensureInitialized()
+        .equalsValue(this as ShuffleCellRequest, other);
+  }
+
+  @override
+  int get hashCode {
+    return ShuffleCellRequestMapper.ensureInitialized()
+        .hashValue(this as ShuffleCellRequest);
+  }
+}
+
+extension ShuffleCellRequestValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, ShuffleCellRequest, $Out> {
+  ShuffleCellRequestCopyWith<$R, ShuffleCellRequest, $Out>
+      get $asShuffleCellRequest =>
+          $base.as((v, t, t2) => _ShuffleCellRequestCopyWithImpl(v, t, t2));
+}
+
+abstract class ShuffleCellRequestCopyWith<$R, $In extends ShuffleCellRequest,
+    $Out> implements ClientWorldEventCopyWith<$R, $In, $Out> {
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell;
+  @override
+  $R call({VectorDefinition? cell});
+  ShuffleCellRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class _ShuffleCellRequestCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, ShuffleCellRequest, $Out>
+    implements ShuffleCellRequestCopyWith<$R, ShuffleCellRequest, $Out> {
+  _ShuffleCellRequestCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<ShuffleCellRequest> $mapper =
+      ShuffleCellRequestMapper.ensureInitialized();
+  @override
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell =>
+      $value.cell.copyWith.$chain((v) => call(cell: v));
+  @override
+  $R call({VectorDefinition? cell}) =>
+      $apply(FieldCopyWithData({if (cell != null) #cell: cell}));
+  @override
+  ShuffleCellRequest $make(CopyWithData data) =>
+      ShuffleCellRequest(data.get(#cell, or: $value.cell));
+
+  @override
+  ShuffleCellRequestCopyWith<$R2, ShuffleCellRequest, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _ShuffleCellRequestCopyWithImpl($value, $cast, t);
+}
+
 class HybridWorldEventMapper extends SubClassMapperBase<HybridWorldEvent> {
   HybridWorldEventMapper._();
 
@@ -1122,7 +1379,6 @@ class HybridWorldEventMapper extends SubClassMapperBase<HybridWorldEvent> {
       ObjectsSpawnedMapper.ensureInitialized();
       ObjectsMovedMapper.ensureInitialized();
       CellHideChangedMapper.ensureInitialized();
-      CellShuffledMapper.ensureInitialized();
       ObjectIndexChangedMapper.ensureInitialized();
       TeamChangedMapper.ensureInitialized();
       TeamRemovedMapper.ensureInitialized();
@@ -1715,128 +1971,6 @@ class _CellHideChangedCopyWithImpl<$R, $Out>
   CellHideChangedCopyWith<$R2, CellHideChanged, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
       _CellHideChangedCopyWithImpl($value, $cast, t);
-}
-
-class CellShuffledMapper extends SubClassMapperBase<CellShuffled> {
-  CellShuffledMapper._();
-
-  static CellShuffledMapper? _instance;
-  static CellShuffledMapper ensureInitialized() {
-    if (_instance == null) {
-      MapperContainer.globals.use(_instance = CellShuffledMapper._());
-      HybridWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
-      VectorDefinitionMapper.ensureInitialized();
-    }
-    return _instance!;
-  }
-
-  @override
-  final String id = 'CellShuffled';
-
-  static VectorDefinition _$cell(CellShuffled v) => v.cell;
-  static const Field<CellShuffled, VectorDefinition> _f$cell =
-      Field('cell', _$cell);
-  static int _$seed(CellShuffled v) => v.seed;
-  static const Field<CellShuffled, int> _f$seed = Field('seed', _$seed);
-
-  @override
-  final MappableFields<CellShuffled> fields = const {
-    #cell: _f$cell,
-    #seed: _f$seed,
-  };
-
-  @override
-  final String discriminatorKey = 'type';
-  @override
-  final dynamic discriminatorValue = 'CellShuffled';
-  @override
-  late final ClassMapperBase superMapper =
-      HybridWorldEventMapper.ensureInitialized();
-
-  static CellShuffled _instantiate(DecodingData data) {
-    return CellShuffled(data.dec(_f$cell), data.dec(_f$seed));
-  }
-
-  @override
-  final Function instantiate = _instantiate;
-
-  static CellShuffled fromMap(Map<String, dynamic> map) {
-    return ensureInitialized().decodeMap<CellShuffled>(map);
-  }
-
-  static CellShuffled fromJson(String json) {
-    return ensureInitialized().decodeJson<CellShuffled>(json);
-  }
-}
-
-mixin CellShuffledMappable {
-  String toJson() {
-    return CellShuffledMapper.ensureInitialized()
-        .encodeJson<CellShuffled>(this as CellShuffled);
-  }
-
-  Map<String, dynamic> toMap() {
-    return CellShuffledMapper.ensureInitialized()
-        .encodeMap<CellShuffled>(this as CellShuffled);
-  }
-
-  CellShuffledCopyWith<CellShuffled, CellShuffled, CellShuffled> get copyWith =>
-      _CellShuffledCopyWithImpl(this as CellShuffled, $identity, $identity);
-  @override
-  String toString() {
-    return CellShuffledMapper.ensureInitialized()
-        .stringifyValue(this as CellShuffled);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return CellShuffledMapper.ensureInitialized()
-        .equalsValue(this as CellShuffled, other);
-  }
-
-  @override
-  int get hashCode {
-    return CellShuffledMapper.ensureInitialized()
-        .hashValue(this as CellShuffled);
-  }
-}
-
-extension CellShuffledValueCopy<$R, $Out>
-    on ObjectCopyWith<$R, CellShuffled, $Out> {
-  CellShuffledCopyWith<$R, CellShuffled, $Out> get $asCellShuffled =>
-      $base.as((v, t, t2) => _CellShuffledCopyWithImpl(v, t, t2));
-}
-
-abstract class CellShuffledCopyWith<$R, $In extends CellShuffled, $Out>
-    implements HybridWorldEventCopyWith<$R, $In, $Out> {
-  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell;
-  @override
-  $R call({VectorDefinition? cell, int? seed});
-  CellShuffledCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
-}
-
-class _CellShuffledCopyWithImpl<$R, $Out>
-    extends ClassCopyWithBase<$R, CellShuffled, $Out>
-    implements CellShuffledCopyWith<$R, CellShuffled, $Out> {
-  _CellShuffledCopyWithImpl(super.value, super.then, super.then2);
-
-  @override
-  late final ClassMapperBase<CellShuffled> $mapper =
-      CellShuffledMapper.ensureInitialized();
-  @override
-  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell =>
-      $value.cell.copyWith.$chain((v) => call(cell: v));
-  @override
-  $R call({VectorDefinition? cell, int? seed}) => $apply(FieldCopyWithData(
-      {if (cell != null) #cell: cell, if (seed != null) #seed: seed}));
-  @override
-  CellShuffled $make(CopyWithData data) => CellShuffled(
-      data.get(#cell, or: $value.cell), data.get(#seed, or: $value.seed));
-
-  @override
-  CellShuffledCopyWith<$R2, CellShuffled, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _CellShuffledCopyWithImpl($value, $cast, t);
 }
 
 class ObjectIndexChangedMapper extends SubClassMapperBase<ObjectIndexChanged> {

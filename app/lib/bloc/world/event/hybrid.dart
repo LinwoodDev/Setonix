@@ -43,15 +43,6 @@ final class CellHideChanged extends HybridWorldEvent
 }
 
 @MappableClass()
-final class CellShuffled extends HybridWorldEvent with CellShuffledMappable {
-  final VectorDefinition cell;
-  final int seed;
-
-  CellShuffled(this.cell, this.seed);
-  CellShuffled.random(this.cell) : seed = DateTime.now().millisecondsSinceEpoch;
-}
-
-@MappableClass()
 final class ObjectIndexChanged extends HybridWorldEvent
     with ObjectIndexChangedMappable {
   final VectorDefinition cell;

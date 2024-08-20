@@ -13,6 +13,8 @@ class VectorDefinition with VectorDefinitionMappable {
   static const one = VectorDefinition(1, 1);
 
   Vector2 toVector() => Vector2(x.toDouble(), y.toDouble());
+
+  String toDisplayString() => '($x, $y)';
 }
 
 class VectorDefinitionHook extends MappingHook {

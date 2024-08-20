@@ -178,18 +178,23 @@ class _GamePageState extends State<GamePage> {
                         buildWhen: (previous, current) =>
                             previous.showHand != current.showHand ||
                             previous.selectedCell != current.selectedCell,
-                        builder: (context, state) => IconButton(
-                              icon: const PhosphorIcon(
-                                  PhosphorIconsLight.plusCircle),
-                              selectedIcon: const PhosphorIcon(
-                                  PhosphorIconsFill.plusCircle),
-                              isSelected:
-                                  state.showHand && state.selectedCell == null,
-                              tooltip: AppLocalizations.of(context).addDeck,
-                              onPressed: () => context
-                                  .read<WorldBloc>()
-                                  .process(HandChanged.toggle()),
-                            ))
+                        builder: (context, state) {
+                          final selected =
+                              state.showHand && state.selectedCell == null;
+                          return IconButton(
+                            icon: const PhosphorIcon(
+                                PhosphorIconsLight.plusCircle),
+                            selectedIcon: const PhosphorIcon(
+                                PhosphorIconsFill.plusCircle),
+                            isSelected: selected,
+                            tooltip: selected
+                                ? AppLocalizations.of(context).enterEditMode
+                                : AppLocalizations.of(context).exitEditMode,
+                            onPressed: () => context
+                                .read<WorldBloc>()
+                                .process(HandChanged.toggle()),
+                          );
+                        })
                   ],
                 ),
                 drawer: const GameDrawer(),

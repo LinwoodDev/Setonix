@@ -31,7 +31,7 @@ dependencies:
   material_leap:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 86efee52537b5e4634c495f0c9dd20974960e52f
+      ref: 065b5b2808517551559f7cd27d6f9a8b294ffebf
       path: packages/material_leap
   flex_color_scheme:
     git:
