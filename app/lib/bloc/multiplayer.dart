@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:networker/networker.dart';
 import 'package:networker_socket/client.dart';
 import 'package:networker_socket/server.dart';
-import 'package:quokka/bloc/world_event.dart';
+import 'package:quokka/bloc/world/event.dart';
 
 part 'multiplayer.mapper.dart';
 
@@ -41,9 +41,9 @@ final class MultiplayerDisconnectedState extends MultiplayerState
 final class MultiplayerConnectedState extends MultiplayerState
     with MultiplayerConnectedStateMappable {
   final NetworkerBase networker;
-  final NetworkerPipeTransformer<String, WorldEvent> transformer;
+  final SimpleNetworkerPipe<WorldEvent> pipe;
 
-  MultiplayerConnectedState(this.networker, this.transformer);
+  MultiplayerConnectedState(this.networker, this.pipe);
 
   @override
   bool get isClient => networker is NetworkerClient;
@@ -52,10 +52,16 @@ final class MultiplayerConnectedState extends MultiplayerState
 }
 
 class MultiplayerCubit extends Cubit<MultiplayerState> {
-  final StreamController<WorldEvent> _eventController =
+  final StreamController<PlayableWorldEvent> _eventController =
       StreamController.broadcast();
 
-  Stream<WorldEvent> get events => _eventController.stream;
+  Stream<PlayableWorldEvent> get events => _eventController.stream;
+
+  final StreamController<(ClientWorldEvent, Channel)> _serverEventController =
+      StreamController.broadcast();
+
+  Stream<(ClientWorldEvent, Channel)> get serverEvents =>
+      _serverEventController.stream;
 
   final StreamController<int> _initController = StreamController.broadcast();
 
@@ -72,26 +78,34 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
       WorldEventMapper.fromJson,
       (e) => e.toJson(),
     );
-    base.connect(StringNetworkerPlugin()..connect(transformer));
-    transformer.read.listen((event) {
-      if (event.data is WorldMultiplayerEvent) {
-        _eventController.add(event.data);
-      }
-    });
-    if (base is NetworkerServer) {
-      base.connect(RawJsonNetworkerPlugin()
-        ..connect(AdvancedNetworkerPipeTransformer<dynamic, WorldEvent>(
-            (data, channel) => (WorldEventMapper.fromJson(data), channel),
-            (data, channel) {
-          if (data is UserBasedEvent) {
-            data = data.copyWith(user: channel);
-          }
-          return (data.toJson(), channel);
-        })
-          ..connect(EchoPipe(toChannel: kAnyChannel))));
-      base.clientConnect.listen(_initController.add);
+    final pipe = SimpleNetworkerPipe<WorldEvent>();
+    final stringPlugin = StringNetworkerPlugin();
+    if (base is NetworkerClient) {
+      base.connect(stringPlugin..connect(transformer));
+      transformer
+        ..read.listen(_onServerEvent)
+        ..connect(pipe);
+    } else if (base is NetworkerServer) {
+      transformer.connect(SimpleNetworkerPipe()
+        ..read.listen(_onClientEvent)
+        ..write.listen(_onClientEvent)
+        ..connect(pipe));
     }
-    return MultiplayerConnectedState(base, transformer);
+    return MultiplayerConnectedState(base, pipe);
+  }
+
+  void _onClientEvent(NetworkerPacket<WorldEvent> event) {
+    final data = event.data;
+    if (data is ClientWorldEvent) {
+      _serverEventController.add((data, event.channel));
+    }
+  }
+
+  void _onServerEvent(event) {
+    final data = event.data;
+    if (data is ServerWorldEvent) {
+      _eventController.add(data);
+    }
   }
 
   @override
@@ -144,9 +158,10 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
     }
   }
 
-  void send(WorldMultiplayerEvent event, [Channel channel = kAnyChannel]) {
+  void send(WorldEvent event, [Channel channel = kAnyChannel]) {
     final state = this.state;
     if (state is! MultiplayerConnectedState) return;
-    state.transformer.sendMessage(event, channel);
+    if (event is LocalWorldEvent) return;
+    state.pipe.sendMessage(event, channel);
   }
 }

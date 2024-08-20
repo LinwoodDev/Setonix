@@ -10,8 +10,8 @@ import 'package:flutter/material.dart'
         ContextMenuButtonItem,
         TextSelectionToolbarAnchors;
 import 'package:flutter/widgets.dart';
-import 'package:quokka/bloc/world.dart';
-import 'package:quokka/bloc/world_state.dart';
+import 'package:quokka/bloc/world/bloc.dart';
+import 'package:quokka/bloc/world/state.dart';
 import 'package:quokka/board/game.dart';
 import 'package:quokka/board/hand/view.dart';
 import 'package:quokka/helpers/asset.dart';

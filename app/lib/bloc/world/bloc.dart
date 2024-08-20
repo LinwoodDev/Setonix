@@ -4,14 +4,17 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart' show ColorScheme;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_leap/helpers.dart';
-import 'package:quokka/bloc/world_event.dart';
-import 'package:quokka/bloc/world_state.dart';
+import 'package:networker/networker.dart';
+import 'package:quokka/bloc/world/event.dart';
+import 'package:quokka/bloc/world/state.dart';
+import 'package:quokka/helpers/asset.dart';
 import 'package:quokka/models/data.dart';
 import 'package:quokka/models/table.dart';
 import 'package:quokka/services/file_system.dart';
 import 'package:quokka/bloc/multiplayer.dart';
 
-class WorldBloc extends Bloc<WorldEvent, WorldState> {
+class WorldBloc extends Bloc<PlayableWorldEvent, WorldState> {
+  late final AssetManager assetManager;
   bool _remoteEvent = false;
   WorldBloc({
     required MultiplayerCubit multiplayer,
@@ -28,6 +31,9 @@ class WorldBloc extends Bloc<WorldEvent, WorldState> {
           colorScheme: colorScheme,
           table: table ?? data?.getTable() ?? const GameTable(),
         )) {
+    assetManager = AssetManager(
+      bloc: this,
+    );
     state.multiplayer
       ..events.listen((event) {
         _remoteEvent = true;
@@ -43,7 +49,8 @@ class WorldBloc extends Bloc<WorldEvent, WorldState> {
               id: e,
             ),
             e);
-      });
+      })
+      ..serverEvents.listen(_processEvent);
 
     on<WorldInitialized>((event, emit) {
       emit(state.copyWith(
@@ -107,10 +114,20 @@ class WorldBloc extends Bloc<WorldEvent, WorldState> {
       }));
       return save();
     });
+    /*on<ObjectVariationChanged>((event, emit) {
+      final cell = state.table.cells[event.cell] ?? TableCell();
+      if (cell.objects.isEmpty) return null;
+      if (!event.object.inRange(0, cell.objects.length - 1)) return null;
+
+      final newCell = cell.copyWith.objects
+          .at(event.object)
+          .$update((e) => e.copyWith(variation: event.variation));
+    });*/
     on<CellHideChanged>((event, emit) {
       final cell = state.table.cells[event.cell] ?? TableCell();
       final objectIndex = event.object;
       if (objectIndex != null) {
+        if (cell.objects.isEmpty) return null;
         if (!objectIndex.inRange(0, cell.objects.length - 1)) return null;
         final object = cell.objects[objectIndex];
         emit(state.copyWith.table.cells.replace(
@@ -138,6 +155,15 @@ class WorldBloc extends Bloc<WorldEvent, WorldState> {
             objects: cell.objects.toList()..shuffle(random),
           )));
       return save();
+    });
+    on<VariationChanged>((event, emit) {
+      final cell = state.table.cells[event.cell] ?? TableCell();
+      if (!event.object.inRange(0, cell.objects.length - 1)) return null;
+      final object = cell.objects[event.object];
+      emit(state.copyWith.table.cells.replace(
+          event.cell,
+          cell.copyWith.objects.replace(
+              event.object, object.copyWith(variation: event.variation))));
     });
     on<ObjectIndexChanged>((event, emit) {
       final cell = state.table.cells[event.cell] ?? TableCell();
@@ -195,20 +221,35 @@ class WorldBloc extends Bloc<WorldEvent, WorldState> {
     return state.fileSystem.worldSystem.updateFile(name, data);
   }
 
+  void _processEvent((WorldEvent, Channel) data) {
+    final value = processEvent(this, data.$1, data.$2);
+    if (value == null) return;
+    state.multiplayer.send(value.$1, value.$2);
+  }
+
   @override
-  void onEvent(WorldEvent event) {
+  void onEvent(PlayableWorldEvent event) {
     super.onEvent(event);
-    if (event is WorldMultiplayerEvent && !_remoteEvent) {
+    if (event is ClientWorldEvent && !_remoteEvent) {
       state.multiplayer.send(event);
     }
   }
 
-  void send(WorldEvent event) {
-    if (event is WorldMultiplayerEvent && state.multiplayer.isConnected) {
-      if (state.multiplayer.isServer) add(event);
-      state.multiplayer.send(event);
-    } else {
-      add(event);
+  void process(WorldEvent event) {
+    switch (event) {
+      case LocalWorldEvent e:
+        add(e);
+      case ServerWorldEvent e:
+        add(e);
+      case ClientWorldEvent e:
+        final multiplayer = state.multiplayer;
+        if (multiplayer.isConnected) {
+          multiplayer.send(e);
+        } else {
+          final event =
+              processEvent(this, e, kAuthorityChannel, allowServerEvents: true);
+          if (event != null) add(event.$1);
+        }
     }
   }
 }

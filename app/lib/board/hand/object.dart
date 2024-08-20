@@ -1,7 +1,7 @@
 import 'package:flame/components.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:quokka/bloc/world_event.dart';
+import 'package:quokka/bloc/world/event.dart';
 import 'package:quokka/board/cell.dart';
 import 'package:quokka/board/hand/item.dart';
 import 'package:quokka/board/hand/view.dart';
@@ -33,20 +33,20 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
   void moveItem(HandItemDropZone zone) {
     switch (zone) {
       case GameCell e:
-        game.bloc.send(ObjectsMoved(
+        game.bloc.process(ObjectsMoved(
           [item.$2],
           item.$1,
           e.toDefinition(),
         ));
       case GameObjectHandItem e:
-        game.bloc.send(ObjectIndexChanged(
+        game.bloc.process(ObjectIndexChanged(
           item.$1,
           item.$2,
           e.item.$2,
         ));
       case GameHand _:
         final cell = game.bloc.state.table.cells[item.$1];
-        game.bloc.send(ObjectIndexChanged(
+        game.bloc.process(ObjectIndexChanged(
           item.$1,
           item.$2,
           (cell?.objects.length ?? 1) - 1,
@@ -57,13 +57,28 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
   }
 
   @override
-  get contextItemsBuilder => (context, onClose) => [
-        ContextMenuButtonItem(
-          label: AppLocalizations.of(game.buildContext!).toggleHide,
-          onPressed: () {
-            game.bloc.send(CellHideChanged(item.$1, object: item.$2));
-            onClose();
-          },
-        ),
-      ];
+  get contextItemsBuilder {
+    final location = item.$3.asset;
+    return (context, onClose) => [
+          ContextMenuButtonItem(
+            label: AppLocalizations.of(game.buildContext!).toggleHide,
+            onPressed: () {
+              game.bloc.process(CellHideChanged(item.$1, object: item.$2));
+              onClose();
+            },
+          ),
+          if (game.assetManager
+                  .getPack(location.namespace)
+                  ?.getFigure(location.id)
+                  ?.rollable ??
+              true)
+            ContextMenuButtonItem(
+              label: AppLocalizations.of(game.buildContext!).roll,
+              onPressed: () {
+                game.bloc.process(RollObjectRequest(item.$1, item.$2));
+                onClose();
+              },
+            ),
+        ];
+  }
 }

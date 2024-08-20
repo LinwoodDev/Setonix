@@ -6,9 +6,9 @@ import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:quokka/api/settings.dart';
 import 'package:quokka/bloc/multiplayer.dart';
-import 'package:quokka/bloc/world.dart';
-import 'package:quokka/bloc/world_event.dart';
-import 'package:quokka/bloc/world_state.dart';
+import 'package:quokka/bloc/world/bloc.dart';
+import 'package:quokka/bloc/world/event.dart';
+import 'package:quokka/bloc/world/state.dart';
 import 'package:quokka/helpers/asset.dart';
 import 'package:quokka/pages/game/multiplayer.dart';
 import 'package:quokka/pages/game/team.dart';
@@ -72,7 +72,7 @@ class GameDrawer extends StatelessWidget {
                             onTap: () {
                               context
                                   .read<WorldBloc>()
-                                  .send(BackgroundChanged(entry.location));
+                                  .process(BackgroundChanged(entry.location));
                               Navigator.of(context).pop();
                             },
                             selected: background == entry.location,
@@ -159,16 +159,16 @@ class GameDrawer extends StatelessWidget {
                                     child: Text(
                                         AppLocalizations.of(context).delete),
                                     onPressed: () {
-                                      bloc.send(TeamRemoved(name));
+                                      bloc.process(TeamRemoved(name));
                                     },
                                   ),
                                 ],
                               ),
                               onTap: () {
                                 if (selected) {
-                                  bloc.send(TeamLeft(name));
+                                  bloc.process(TeamLeaveRequest(name));
                                 } else {
-                                  bloc.send(TeamJoined(name));
+                                  bloc.process(TeamJoinRequest(name));
                                 }
                               },
                             );

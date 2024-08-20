@@ -3,9 +3,9 @@ import 'dart:ui';
 
 import 'package:flame/components.dart';
 import 'package:flame_bloc/flame_bloc.dart';
-import 'package:quokka/bloc/world.dart';
-import 'package:quokka/bloc/world_state.dart';
+import 'package:quokka/bloc/world/bloc.dart';
 import 'package:quokka/board/game.dart';
+import 'package:quokka/bloc/world/state.dart';
 
 class GameBoardBackground extends PositionComponent
     with

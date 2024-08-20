@@ -416,22 +416,19 @@ class MultiplayerConnectedStateMapper
   static NetworkerBase _$networker(MultiplayerConnectedState v) => v.networker;
   static const Field<MultiplayerConnectedState, NetworkerBase> _f$networker =
       Field('networker', _$networker);
-  static NetworkerPipeTransformer<String, WorldEvent> _$transformer(
-          MultiplayerConnectedState v) =>
-      v.transformer;
-  static const Field<MultiplayerConnectedState,
-          NetworkerPipeTransformer<String, WorldEvent>> _f$transformer =
-      Field('transformer', _$transformer);
+  static SimpleNetworkerPipe<WorldEvent> _$pipe(MultiplayerConnectedState v) =>
+      v.pipe;
+  static const Field<MultiplayerConnectedState, SimpleNetworkerPipe<WorldEvent>>
+      _f$pipe = Field('pipe', _$pipe);
 
   @override
   final MappableFields<MultiplayerConnectedState> fields = const {
     #networker: _f$networker,
-    #transformer: _f$transformer,
+    #pipe: _f$pipe,
   };
 
   static MultiplayerConnectedState _instantiate(DecodingData data) {
-    return MultiplayerConnectedState(
-        data.dec(_f$networker), data.dec(_f$transformer));
+    return MultiplayerConnectedState(data.dec(_f$networker), data.dec(_f$pipe));
   }
 
   @override
@@ -494,9 +491,7 @@ abstract class MultiplayerConnectedStateCopyWith<
     $In extends MultiplayerConnectedState,
     $Out> implements MultiplayerStateCopyWith<$R, $In, $Out> {
   @override
-  $R call(
-      {NetworkerBase? networker,
-      NetworkerPipeTransformer<String, WorldEvent>? transformer});
+  $R call({NetworkerBase? networker, SimpleNetworkerPipe<WorldEvent>? pipe});
   MultiplayerConnectedStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -511,17 +506,15 @@ class _MultiplayerConnectedStateCopyWithImpl<$R, $Out>
   late final ClassMapperBase<MultiplayerConnectedState> $mapper =
       MultiplayerConnectedStateMapper.ensureInitialized();
   @override
-  $R call(
-          {NetworkerBase? networker,
-          NetworkerPipeTransformer<String, WorldEvent>? transformer}) =>
+  $R call({NetworkerBase? networker, SimpleNetworkerPipe<WorldEvent>? pipe}) =>
       $apply(FieldCopyWithData({
         if (networker != null) #networker: networker,
-        if (transformer != null) #transformer: transformer
+        if (pipe != null) #pipe: pipe
       }));
   @override
   MultiplayerConnectedState $make(CopyWithData data) =>
       MultiplayerConnectedState(data.get(#networker, or: $value.networker),
-          data.get(#transformer, or: $value.transformer));
+          data.get(#pipe, or: $value.pipe));
 
   @override
   MultiplayerConnectedStateCopyWith<$R2, MultiplayerConnectedState, $Out2>

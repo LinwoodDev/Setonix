@@ -27,6 +27,9 @@ class FigureDefinitionMapper extends ClassMapperBase<FigureDefinition> {
   static const Field<FigureDefinition, Map<String, VariationDefinition>>
       _f$variations =
       Field('variations', _$variations, opt: true, def: const {});
+  static bool _$rollable(FigureDefinition v) => v.rollable;
+  static const Field<FigureDefinition, bool> _f$rollable =
+      Field('rollable', _$rollable, opt: true, def: false);
   static FigureBackDefinition _$back(FigureDefinition v) => v.back;
   static const Field<FigureDefinition, FigureBackDefinition> _f$back =
       Field('back', _$back);
@@ -34,12 +37,15 @@ class FigureDefinitionMapper extends ClassMapperBase<FigureDefinition> {
   @override
   final MappableFields<FigureDefinition> fields = const {
     #variations: _f$variations,
+    #rollable: _f$rollable,
     #back: _f$back,
   };
 
   static FigureDefinition _instantiate(DecodingData data) {
     return FigureDefinition(
-        variations: data.dec(_f$variations), back: data.dec(_f$back));
+        variations: data.dec(_f$variations),
+        rollable: data.dec(_f$rollable),
+        back: data.dec(_f$back));
   }
 
   @override
@@ -106,6 +112,7 @@ abstract class FigureDefinitionCopyWith<$R, $In extends FigureDefinition, $Out>
       get back;
   $R call(
       {Map<String, VariationDefinition>? variations,
+      bool? rollable,
       FigureBackDefinition? back});
   FigureDefinitionCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
@@ -133,14 +140,17 @@ class _FigureDefinitionCopyWithImpl<$R, $Out>
   @override
   $R call(
           {Map<String, VariationDefinition>? variations,
+          bool? rollable,
           FigureBackDefinition? back}) =>
       $apply(FieldCopyWithData({
         if (variations != null) #variations: variations,
+        if (rollable != null) #rollable: rollable,
         if (back != null) #back: back
       }));
   @override
   FigureDefinition $make(CopyWithData data) => FigureDefinition(
       variations: data.get(#variations, or: $value.variations),
+      rollable: data.get(#rollable, or: $value.rollable),
       back: data.get(#back, or: $value.back));
 
   @override

@@ -4,7 +4,7 @@ import 'package:flame/game.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:quokka/bloc/world.dart';
+import 'package:quokka/bloc/world/bloc.dart';
 import 'package:quokka/models/data.dart';
 import 'package:quokka/models/table.dart';
 import 'package:quokka/models/translation.dart';

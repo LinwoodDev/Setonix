@@ -1,5 +1,5 @@
 import 'package:flame/widgets.dart';
-import 'package:quokka/bloc/world_event.dart';
+import 'package:quokka/bloc/world/event.dart';
 import 'package:quokka/board/cell.dart';
 import 'package:quokka/board/hand/item.dart';
 import 'package:quokka/models/object.dart';
@@ -28,7 +28,7 @@ class FigureDefinitionHandItem
   @override
   void moveItem(HandItemDropZone zone) {
     if (zone is! GameCell) return;
-    bloc.send(ObjectsSpawned(zone.toDefinition(), [
+    bloc.process(ObjectsSpawned(zone.toDefinition(), [
       GameObject(
           asset: ItemLocation(item.$1.namespace, item.$1.id),
           variation: item.$2)

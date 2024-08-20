@@ -10,10 +10,12 @@ sealed class GameObjectDefinition {}
 class FigureDefinition extends GameObjectDefinition
     with FigureDefinitionMappable {
   final FigureBackDefinition back;
+  final bool rollable;
   final Map<String, VariationDefinition> variations;
 
   FigureDefinition({
     this.variations = const {},
+    this.rollable = false,
     required this.back,
   });
 }

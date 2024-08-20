@@ -124,5 +124,6 @@
   "reconnect": "Reconnect",
   "teams": "Teams",
   "addTeam": "Add team",
-  "edit": "Edit"
+  "edit": "Edit",
+  "roll": "Roll"
 }

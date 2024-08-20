@@ -7,7 +7,7 @@ import 'package:quokka/models/vector.dart';
 import 'package:quokka/services/file_system.dart';
 import 'package:quokka/bloc/multiplayer.dart';
 
-part 'world_state.mapper.dart';
+part 'state.mapper.dart';
 
 @MappableClass()
 class WorldState with WorldStateMappable {

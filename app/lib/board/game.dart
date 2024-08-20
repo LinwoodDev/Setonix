@@ -6,9 +6,9 @@ import 'package:flame/game.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:quokka/bloc/world.dart';
-import 'package:quokka/bloc/world_event.dart';
-import 'package:quokka/bloc/world_state.dart';
+import 'package:quokka/bloc/world/bloc.dart';
+import 'package:quokka/bloc/world/event.dart';
+import 'package:quokka/bloc/world/state.dart';
 import 'package:quokka/board/grid.dart';
 import 'package:quokka/board/hand/view.dart';
 import 'package:quokka/helpers/asset.dart';
@@ -23,7 +23,6 @@ class BoardGame extends FlameGame
         HasCollisionDetection {
   final VoidCallback onEscape;
   final ContextMenuController contextMenuController;
-  final AssetManager assetManager;
   late final Sprite selectionSprite;
   late final GameHand _hand;
   late final BoardGrid grid;
@@ -31,11 +30,11 @@ class BoardGame extends FlameGame
 
   bool _isShifting = false;
 
+  AssetManager get assetManager => bloc.assetManager;
   bool get isShifting => _isShifting;
 
   BoardGame({
     required this.bloc,
-    required this.assetManager,
     required this.contextMenuController,
     required this.onEscape,
   });

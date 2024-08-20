@@ -7,9 +7,9 @@ import 'package:flame/events.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:quokka/bloc/world.dart';
-import 'package:quokka/bloc/world_event.dart';
-import 'package:quokka/bloc/world_state.dart';
+import 'package:quokka/bloc/world/bloc.dart';
+import 'package:quokka/bloc/world/event.dart';
+import 'package:quokka/bloc/world/state.dart';
 import 'package:quokka/board/background.dart';
 import 'package:quokka/board/game.dart';
 import 'package:quokka/board/grid.dart';
@@ -117,9 +117,9 @@ class GameCell extends PositionComponent
   @override
   void onTapUp(TapUpEvent event) {
     if (isSelected) {
-      bloc.send(HandChanged.hide());
+      bloc.process(HandChanged.hide());
     } else {
-      bloc.send(CellSwitched(toDefinition(), toggle: true));
+      bloc.process(CellSwitched(toDefinition(), toggle: true));
     }
   }
 
@@ -194,14 +194,14 @@ class GameCell extends PositionComponent
                   ContextMenuButtonItem(
                     label: AppLocalizations.of(context).toggleHide,
                     onPressed: () {
-                      bloc.send(CellHideChanged(toDefinition()));
+                      bloc.process(CellHideChanged(toDefinition()));
                       onClose();
                     },
                   ),
                   ContextMenuButtonItem(
                     label: AppLocalizations.of(context).shuffle,
                     onPressed: () {
-                      bloc.send(CellShuffled.random(toDefinition()));
+                      bloc.process(CellShuffled.random(toDefinition()));
                       onClose();
                     },
                   ),

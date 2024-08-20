@@ -5,13 +5,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:quokka/bloc/world.dart';
-import 'package:quokka/bloc/world_event.dart';
-import 'package:quokka/bloc/world_state.dart';
+import 'package:quokka/bloc/world/bloc.dart';
+import 'package:quokka/bloc/world/event.dart';
+import 'package:quokka/bloc/world/state.dart';
 import 'package:quokka/bloc/multiplayer.dart';
 import 'package:quokka/bloc/settings.dart';
 import 'package:quokka/board/game.dart';
-import 'package:quokka/helpers/asset.dart';
 import 'package:quokka/models/data.dart';
 import 'package:quokka/pages/game/drawer.dart';
 import 'package:quokka/pages/home/background.dart';
@@ -83,7 +82,7 @@ class _GamePageState extends State<GamePage> {
 
     final nextColorScheme = Theme.of(context).colorScheme;
     if (nextColorScheme != _bloc?.$2.state.colorScheme) {
-      _bloc?.$2.send(ColorSchemeChanged(nextColorScheme));
+      _bloc?.$2.process(ColorSchemeChanged(nextColorScheme));
     }
   }
 
@@ -100,11 +99,6 @@ class _GamePageState extends State<GamePage> {
           providers: [
             BlocProvider.value(value: _bloc!.$1),
             BlocProvider.value(value: _bloc!.$2),
-            RepositoryProvider(
-              create: (context) => AssetManager(
-                bloc: context.read<WorldBloc>(),
-              ),
-            ),
           ],
           child: BlocBuilder<MultiplayerCubit, MultiplayerState>(
             buildWhen: (previous, current) =>
@@ -194,7 +188,7 @@ class _GamePageState extends State<GamePage> {
                               tooltip: AppLocalizations.of(context).addDeck,
                               onPressed: () => context
                                   .read<WorldBloc>()
-                                  .send(HandChanged.toggle()),
+                                  .process(HandChanged.toggle()),
                             ))
                   ],
                 ),
@@ -203,7 +197,6 @@ class _GamePageState extends State<GamePage> {
                     builder: (context) => GameWidget(
                             game: BoardGame(
                           bloc: context.read<WorldBloc>(),
-                          assetManager: context.read<AssetManager>(),
                           contextMenuController: _contextMenuController,
                           onEscape: () => Scaffold.of(context).openDrawer(),
                         ))),

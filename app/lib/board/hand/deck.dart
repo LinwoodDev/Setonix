@@ -1,5 +1,5 @@
 import 'package:flame/components.dart';
-import 'package:quokka/bloc/world_event.dart';
+import 'package:quokka/bloc/world/event.dart';
 import 'package:quokka/board/cell.dart';
 import 'package:quokka/board/hand/item.dart';
 import 'package:quokka/models/deck.dart';
@@ -17,7 +17,7 @@ class DeckDefinitionHandItem extends HandItem<PackItem<DeckDefinition>> {
 
   @override
   void onTapUp(event) {
-    bloc.send(HandChanged(deck: item.location));
+    bloc.process(HandChanged(deck: item.location));
   }
 
   @override
@@ -30,7 +30,7 @@ class DeckDefinitionHandItem extends HandItem<PackItem<DeckDefinition>> {
   @override
   void moveItem(HandItemDropZone zone) {
     if (zone is! GameCell) return;
-    bloc.send(ObjectsSpawned(
+    bloc.process(ObjectsSpawned(
         zone.toDefinition(),
         item.item.figures
             .map((e) => GameObject(

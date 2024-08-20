@@ -7,8 +7,8 @@ import 'package:flame/events.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/material.dart'
     show Canvas, Color, Colors, CustomPainter, Paint, PaintingStyle, Rect, Size;
-import 'package:quokka/bloc/world.dart';
-import 'package:quokka/bloc/world_state.dart';
+import 'package:quokka/bloc/world/bloc.dart';
+import 'package:quokka/bloc/world/state.dart';
 import 'package:quokka/board/game.dart';
 import 'package:quokka/board/hand/deck.dart';
 import 'package:quokka/board/hand/figure.dart';
