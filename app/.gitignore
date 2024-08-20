@@ -39,6 +39,7 @@
 
 # Session related
 *.png~
+*.png-autosave.kra
 *.tiled-session
 /node_modules
 

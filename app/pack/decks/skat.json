@@ -1,6 +1,4 @@
 {
-  "name": "Skat Cards",
-  "description": "A deck with 32 cards for playing Skat.",
   "figures": [
     {
       "position": [0, 0],

@@ -1,6 +1,4 @@
 {
-  "name": "Poker Deck",
-  "description": "A standard deck of 52 playing cards.",
   "figures": [
     {
       "position": [0, 0],

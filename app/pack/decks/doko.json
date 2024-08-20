@@ -1,6 +1,4 @@
 {
-  "name": "Doppelkopf Deck",
-  "description": "A deck of cards for playing Doppelkopf",
   "figures": [
     {
       "position": [0, 0],

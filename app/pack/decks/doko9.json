@@ -1,6 +1,4 @@
 {
-  "name": "Doppelkopf Deck with 9",
-  "description": "A deck of cards for playing Doppelkopf including the nines",
   "figures": [
     {
       "position": [0, 0],

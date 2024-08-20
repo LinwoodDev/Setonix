@@ -1,0 +1,39 @@
+{
+  "figures": [
+    {
+      "position": [0, 0],
+      "name": "chips",
+      "variation": "white"
+    },
+    {
+      "position": [0, 0],
+      "name": "chips",
+      "variation": "black"
+    },
+    {
+      "position": [0, 0],
+      "name": "chips",
+      "variation": "red"
+    },
+    {
+      "position": [0, 0],
+      "name": "chips",
+      "variation": "yellow"
+    },
+    {
+      "position": [0, 0],
+      "name": "chips",
+      "variation": "green"
+    },
+    {
+      "position": [0, 0],
+      "name": "chips",
+      "variation": "blue"
+    },
+    {
+      "position": [0, 0],
+      "name": "chips",
+      "variation": "indigo"
+    }
+  ]
+}

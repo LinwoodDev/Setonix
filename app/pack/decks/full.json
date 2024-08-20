@@ -1,6 +1,4 @@
 {
-  "name": "Full Deck",
-  "description": "A standard deck of 52 playing cards with 3 joker.",
   "figures": [
     {
       "position": [0, 0],
