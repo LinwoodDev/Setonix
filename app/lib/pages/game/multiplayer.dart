@@ -49,8 +49,17 @@ class MultiplayerDialog extends StatelessWidget {
                       itemCount: connections.length,
                       itemBuilder: (context, index) {
                         final connection = connections[index];
+                        final info = networker.getConnectionInfo(connection);
+                        if (info == null) return const SizedBox();
                         return ListTile(
-                          title: Text(connection.toString()),
+                          title: Text(info.address.toString()),
+                          trailing: IconButton(
+                            icon: const Icon(PhosphorIconsLight.door),
+                            tooltip: AppLocalizations.of(context).disconnect,
+                            onPressed: () {
+                              info.close();
+                            },
+                          ),
                         );
                       },
                     );

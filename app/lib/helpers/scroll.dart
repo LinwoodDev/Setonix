@@ -9,7 +9,7 @@ mixin ScrollCallbacks on Component {
 }
 
 class _ScrollViewport extends PositionComponent {
-  ScrollViewComponent get parent => super.parent as ScrollViewComponent;
+  ScrollViewComponent get scrollParent => parent as ScrollViewComponent;
   @override
   void onParentResize(Vector2 maxSize) {
     super.onParentResize(maxSize);
@@ -18,7 +18,7 @@ class _ScrollViewport extends PositionComponent {
       if (child is! PositionComponent) {
         continue;
       }
-      if (parent.direction == Axis.horizontal) {
+      if (scrollParent.direction == Axis.horizontal) {
         child.height = maxSize.y;
       } else {
         child.width = maxSize.x;
@@ -56,7 +56,9 @@ class ScrollViewComponent extends PositionComponent with ScrollCallbacks {
   }
 
   void clearChildren() {
-    _view.children.forEach((e) => e.removeFromParent());
+    for (final child in _view.children) {
+      child.removeFromParent();
+    }
     _nextItemPos = 0;
     _view.position = Vector2.zero();
   }

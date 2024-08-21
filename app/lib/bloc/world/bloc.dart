@@ -40,7 +40,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState> {
       })
       ..inits.listen((e) {
         if (e == 0) return;
-        state.multiplayer.send(
+        state.multiplayer.sendServer(
             WorldInitialized(
               table: state.table,
               teamMembers: state.teamMembers,
@@ -197,15 +197,15 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState> {
       final members = state.teamMembers[event.team];
       emit(state.copyWith(teamMembers: {
         ...state.teamMembers,
-        event.team: {...?members, state.id},
+        event.team: {...?members, event.user},
       }));
       return save();
     });
     on<TeamLeft>((event, emit) {
       if (!state.table.teams.containsKey(event.team)) return null;
 
-      final members = state.teamMembers[event.team] ?? {};
-      members.remove(state.id);
+      final members = Set<Channel>.from(state.teamMembers[event.team] ?? {});
+      members.remove(event.user);
       final allMembers = Map<String, Set<int>>.from(state.teamMembers);
       if (members.isEmpty) {
         allMembers.remove(event.team);
@@ -227,7 +227,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState> {
   void _processEvent((WorldEvent, Channel) data) {
     final value = processEvent(this, data.$1, data.$2);
     if (value == null) return;
-    state.multiplayer.send(value.$1, value.$2);
+    state.multiplayer.sendServer(value.$1, value.$2);
   }
 
   @override

@@ -57,12 +57,12 @@ dependencies:
   networker:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs
-      ref: d97f6d66a94b1f18045d25675b26f9f4eaf16773
+      ref: 407e47be9f481019d32c3f2eae094a0deb61075d
       path: packages/networker/networker
   networker_socket:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs
-      ref: 1b0297f8cb568aadf0b00d1ebba4a44243b41d21
+      ref: 6768a889d03d8e0a215c054bc0b351560fc1d33b
       path: packages/networker/networker_socket
   # System Information
   dynamic_color: ^1.7.0

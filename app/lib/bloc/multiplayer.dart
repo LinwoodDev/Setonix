@@ -80,28 +80,33 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
     );
     final pipe = SimpleNetworkerPipe<WorldEvent>();
     final stringPlugin = StringNetworkerPlugin();
+    transformer.read.listen(_onServerEvent);
+    base.connect(stringPlugin..connect(transformer));
     if (base is NetworkerClient) {
-      base.connect(stringPlugin..connect(transformer));
-      transformer
-        ..read.listen(_onServerEvent)
-        ..connect(pipe);
+      transformer.connect(pipe);
     } else if (base is NetworkerServer) {
+      base.clientConnect.listen(_initController.add);
       transformer.connect(SimpleNetworkerPipe()
         ..read.listen(_onClientEvent)
-        ..write.listen(_onClientEvent)
+        ..write.listen((e) => _onClientEvent(e, true))
         ..connect(pipe));
     }
     return MultiplayerConnectedState(base, pipe);
   }
 
-  void _onClientEvent(NetworkerPacket<WorldEvent> event) {
+  void _onClientEvent(NetworkerPacket<WorldEvent> event, [bool local = false]) {
     final data = event.data;
-    if (data is ClientWorldEvent) {
-      _serverEventController.add((data, event.channel));
+    if (data is ServerWorldEvent && local) {
+      if (event.channel == kAuthorityChannel || event.channel == kAnyChannel) {
+        _eventController.add(data);
+      }
+    } else if (data is ClientWorldEvent) {
+      _serverEventController
+          .add((data, local ? kAuthorityChannel : event.channel));
     }
   }
 
-  void _onServerEvent(event) {
+  void _onServerEvent(NetworkerPacket<WorldEvent> event) {
     final data = event.data;
     if (data is ServerWorldEvent) {
       _eventController.add(data);
@@ -158,10 +163,17 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
     }
   }
 
-  void send(WorldEvent event, [Channel channel = kAnyChannel]) {
+  void send(WorldEvent event) {
     final state = this.state;
     if (state is! MultiplayerConnectedState) return;
     if (event is LocalWorldEvent) return;
+    if (event is! ClientWorldEvent) return;
+    state.pipe.sendMessage(event);
+  }
+
+  void sendServer(ServerWorldEvent event, [Channel channel = kAnyChannel]) {
+    final state = this.state;
+    if (state is! MultiplayerConnectedState) return;
     state.pipe.sendMessage(event, channel);
   }
 }
