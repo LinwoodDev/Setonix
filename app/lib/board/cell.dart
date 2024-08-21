@@ -136,13 +136,26 @@ class GameCell extends PositionComponent
     _updateTop(state);
   }
 
+  bool isClaimed(WorldState state) => state.table.teams.entries
+      .any((entry) => entry.value.claimedCells.contains(toDefinition()));
+
+  bool isAllowed(WorldState state) => state.teamMembers.entries
+      .where((entry) => entry.value.contains(state.id))
+      .any((entry) =>
+          state.table.teams[entry.key]?.claimedCells.contains(toDefinition()) ??
+          false);
+
   @override
   Future<void> onNewState(WorldState state) async {
     final selected = state.selectedCell == toDefinition();
     final controller = EffectController(
       duration: 0.1,
     );
-    final color = state.colorScheme.primary;
+    final color = isClaimed(state)
+        ? isAllowed(state)
+            ? state.colorScheme.secondary
+            : state.colorScheme.error
+        : state.colorScheme.primary;
     if (selected) {
       _updateEffects([
         OpacityEffect.fadeIn(controller, target: _selectionComponent),
