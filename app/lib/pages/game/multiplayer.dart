@@ -39,29 +39,38 @@ class MultiplayerDialog extends StatelessWidget {
                 controller: TextEditingController(
                     text: state.networker.address.toString()),
               ),
-              Builder(
-                builder: (context) {
+              StreamBuilder(
+                stream: state.clientChange,
+                builder: (context, snapshot) {
                   final networker = state.networker;
                   if (networker is NetworkerServer) {
-                    final connections = networker.clientConnections;
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: connections.length,
-                      itemBuilder: (context, index) {
-                        final connection = connections[index];
-                        final info = networker.getConnectionInfo(connection);
-                        if (info == null) return const SizedBox();
-                        return ListTile(
-                          title: Text(info.address.toString()),
-                          trailing: IconButton(
-                            icon: const Icon(PhosphorIconsLight.door),
-                            tooltip: AppLocalizations.of(context).disconnect,
-                            onPressed: () {
-                              info.close();
-                            },
-                          ),
-                        );
-                      },
+                    final connections = (snapshot.data ?? {}).toList();
+                    return Column(
+                      children: [
+                        Text(AppLocalizations.of(context)
+                            .areConnected(connections.length)),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: connections.length,
+                          itemBuilder: (context, index) {
+                            final connection = connections[index];
+                            final info =
+                                networker.getConnectionInfo(connection);
+                            if (info == null) return const SizedBox();
+                            return ListTile(
+                              title: Text(info.address.toString()),
+                              trailing: IconButton(
+                                icon: const Icon(PhosphorIconsLight.door),
+                                tooltip:
+                                    AppLocalizations.of(context).disconnect,
+                                onPressed: () {
+                                  info.close();
+                                },
+                              ),
+                            );
+                          },
+                        ),
+                      ],
                     );
                   } else {
                     return Text(

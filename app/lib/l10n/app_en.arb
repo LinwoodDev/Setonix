@@ -119,5 +119,13 @@
   "boards": "Boards",
   "publicCell": "No teams selected. The cell is public.",
   "claimedCell": "The cell is claimed and not publicly visible.",
-  "noTeams": "No teams available"
+  "noTeams": "No teams available",
+  "areConnected": "{count, plural, zero {No players connected} one {One player connected} other {{count} players connected}}",
+  "@areCounnected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

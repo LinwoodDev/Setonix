@@ -32,182 +32,202 @@ class GamePage extends StatefulWidget {
   State<GamePage> createState() => _GamePageState();
 }
 
+typedef Blocs = (MultiplayerCubit, WorldBloc);
+
 class _GamePageState extends State<GamePage> {
-  (MultiplayerCubit, WorldBloc)? _bloc;
+  late final Future<Blocs> _bloc;
   final ContextMenuController _contextMenuController = ContextMenuController();
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _loadTable());
+    _bloc = _loadTable();
   }
 
-  void _initBloc([QuokkaData? data]) {
+  Blocs _initBloc([QuokkaData? data]) {
     final cubit = MultiplayerCubit();
     final address = widget.address;
     if (address != null) {
       cubit.connect(address);
     }
-    setState(() {
-      _bloc = (
-        cubit,
-        WorldBloc(
-          multiplayer: cubit,
-          fileSystem: context.read<QuokkaFileSystem>(),
-          name: widget.name,
-          data: data,
-          colorScheme: Theme.of(context).colorScheme,
-        )
-      );
-    });
+    return (
+      cubit,
+      WorldBloc(
+        multiplayer: cubit,
+        fileSystem: context.read<QuokkaFileSystem>(),
+        name: widget.name,
+        data: data,
+        colorScheme: Theme.of(context).colorScheme,
+      )
+    );
   }
 
-  Future<void> _loadTable() async {
+  Future<Blocs> _loadTable() async {
     final address = widget.address;
     if (address != null) {
-      _initBloc();
-      return;
+      return _initBloc();
     }
     final worldSystem = context.read<QuokkaFileSystem>().worldSystem;
     final name = widget.name;
     final data = (widget.data ??
             (name == null ? null : await worldSystem.getFile(name))) ??
         QuokkaData.empty();
-    _initBloc(data);
+    return _initBloc(data);
   }
 
   @override
-  void didChangeDependencies() {
+  Future<void> didChangeDependencies() async {
     super.didChangeDependencies();
 
     final nextColorScheme = Theme.of(context).colorScheme;
-    if (nextColorScheme != _bloc?.$2.state.colorScheme) {
-      _bloc?.$2.process(ColorSchemeChanged(nextColorScheme));
+    final bloc = await _bloc;
+    if (nextColorScheme != bloc.$2.state.colorScheme) {
+      bloc.$2.process(ColorSchemeChanged(nextColorScheme));
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _bloc.then((bloc) {
+      bloc.$1.close();
+      bloc.$2.close();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    if (_bloc == null) {
-      return const Center(child: CircularProgressIndicator());
-    }
-    return Listener(
-      behavior: HitTestBehavior.translucent,
-      onPointerDown: (_) => _contextMenuController.remove(),
-      child: MultiBlocProvider(
-          providers: [
-            BlocProvider.value(value: _bloc!.$1),
-            BlocProvider.value(value: _bloc!.$2),
-          ],
-          child: BlocBuilder<MultiplayerCubit, MultiplayerState>(
-            buildWhen: (previous, current) =>
-                previous is MultiplayerDisconnectedState !=
-                    current is MultiplayerDisconnectedState ||
-                previous is MultiplayerConnectingState !=
-                    current is MultiplayerConnectingState,
-            builder: (context, state) {
-              if (state is MultiplayerConnectingState) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              if (state is MultiplayerDisconnectedState) {
-                return Scaffold(
-                  body: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      const DotsBackground(),
-                      Card.filled(
-                        child: Container(
-                          constraints: const BoxConstraints(
-                            maxWidth: LeapBreakpoints.large,
-                          ),
-                          padding: const EdgeInsets.all(8.0),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  AppLocalizations.of(context).disconnected,
-                                  textAlign: TextAlign.center,
-                                  style: theme.textTheme.headlineSmall,
+    return FutureBuilder<Blocs>(
+        future: _bloc,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          final bloc = snapshot.data!;
+          return Listener(
+            behavior: HitTestBehavior.translucent,
+            onPointerDown: (_) => _contextMenuController.remove(),
+            child: MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(value: bloc.$1),
+                  BlocProvider.value(value: bloc.$2),
+                ],
+                child: BlocBuilder<MultiplayerCubit, MultiplayerState>(
+                  buildWhen: (previous, current) =>
+                      previous is MultiplayerDisconnectedState !=
+                          current is MultiplayerDisconnectedState ||
+                      previous is MultiplayerConnectingState !=
+                          current is MultiplayerConnectingState,
+                  builder: (context, state) {
+                    if (state is MultiplayerConnectingState) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (state is MultiplayerDisconnectedState) {
+                      return Scaffold(
+                        body: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            const DotsBackground(),
+                            Card.filled(
+                              child: Container(
+                                constraints: const BoxConstraints(
+                                  maxWidth: LeapBreakpoints.large,
                                 ),
-                                Text(
-                                  AppLocalizations.of(context)
-                                      .disconnectedMessage,
-                                  textAlign: TextAlign.center,
-                                  style: theme.textTheme.bodySmall,
+                                padding: const EdgeInsets.all(8.0),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        AppLocalizations.of(context)
+                                            .disconnected,
+                                        textAlign: TextAlign.center,
+                                        style: theme.textTheme.headlineSmall,
+                                      ),
+                                      Text(
+                                        AppLocalizations.of(context)
+                                            .disconnectedMessage,
+                                        textAlign: TextAlign.center,
+                                        style: theme.textTheme.bodySmall,
+                                      ),
+                                      const SizedBox(height: 16),
+                                      Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          FilledButton(
+                                            onPressed: () =>
+                                                GoRouter.of(context).go('/'),
+                                            child: Text(
+                                                AppLocalizations.of(context)
+                                                    .reconnect),
+                                          ),
+                                          const SizedBox(width: 8),
+                                          ElevatedButton(
+                                            onPressed: () =>
+                                                GoRouter.of(context).go('/'),
+                                            child: Text(
+                                                AppLocalizations.of(context)
+                                                    .home),
+                                          ),
+                                        ],
+                                      ),
+                                      if (state.error != null) ...[
+                                        const SizedBox(height: 16),
+                                        Text(state.error.toString()),
+                                      ],
+                                    ],
+                                  ),
                                 ),
-                                const SizedBox(height: 16),
-                                Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    FilledButton(
-                                      onPressed: () =>
-                                          GoRouter.of(context).go('/'),
-                                      child: Text(AppLocalizations.of(context)
-                                          .reconnect),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    ElevatedButton(
-                                      onPressed: () =>
-                                          GoRouter.of(context).go('/'),
-                                      child: Text(
-                                          AppLocalizations.of(context).home),
-                                    ),
-                                  ],
-                                ),
-                                if (state.error != null) ...[
-                                  const SizedBox(height: 16),
-                                  Text(state.error.toString()),
-                                ],
-                              ],
+                              ),
                             ),
-                          ),
+                          ],
                         ),
+                      );
+                    }
+                    return Scaffold(
+                      appBar: WindowTitleBar<SettingsCubit, QuokkaSettings>(
+                        title: Text(AppLocalizations.of(context).game),
+                        height: 50,
+                        actions: [
+                          BlocBuilder<WorldBloc, WorldState>(
+                              buildWhen: (previous, current) =>
+                                  previous.showHand != current.showHand ||
+                                  previous.selectedCell != current.selectedCell,
+                              builder: (context, state) {
+                                final selected = state.showHand &&
+                                    state.selectedCell == null;
+                                return IconButton(
+                                  icon: const PhosphorIcon(
+                                      PhosphorIconsLight.plusCircle),
+                                  selectedIcon: const PhosphorIcon(
+                                      PhosphorIconsFill.plusCircle),
+                                  isSelected: selected,
+                                  tooltip: selected
+                                      ? AppLocalizations.of(context)
+                                          .enterEditMode
+                                      : AppLocalizations.of(context)
+                                          .exitEditMode,
+                                  onPressed: () => context
+                                      .read<WorldBloc>()
+                                      .process(HandChanged.toggle()),
+                                );
+                              })
+                        ],
                       ),
-                    ],
-                  ),
-                );
-              }
-              return Scaffold(
-                appBar: WindowTitleBar<SettingsCubit, QuokkaSettings>(
-                  title: Text(AppLocalizations.of(context).game),
-                  height: 50,
-                  actions: [
-                    BlocBuilder<WorldBloc, WorldState>(
-                        buildWhen: (previous, current) =>
-                            previous.showHand != current.showHand ||
-                            previous.selectedCell != current.selectedCell,
-                        builder: (context, state) {
-                          final selected =
-                              state.showHand && state.selectedCell == null;
-                          return IconButton(
-                            icon: const PhosphorIcon(
-                                PhosphorIconsLight.plusCircle),
-                            selectedIcon: const PhosphorIcon(
-                                PhosphorIconsFill.plusCircle),
-                            isSelected: selected,
-                            tooltip: selected
-                                ? AppLocalizations.of(context).enterEditMode
-                                : AppLocalizations.of(context).exitEditMode,
-                            onPressed: () => context
-                                .read<WorldBloc>()
-                                .process(HandChanged.toggle()),
-                          );
-                        })
-                  ],
-                ),
-                drawer: const GameDrawer(),
-                body: Builder(
-                    builder: (context) => GameWidget(
-                            game: BoardGame(
-                          bloc: context.read<WorldBloc>(),
-                          contextMenuController: _contextMenuController,
-                          onEscape: () => Scaffold.of(context).openDrawer(),
-                        ))),
-              );
-            },
-          )),
-    );
+                      drawer: const GameDrawer(),
+                      body: Builder(
+                          builder: (context) => GameWidget(
+                                  game: BoardGame(
+                                bloc: context.read<WorldBloc>(),
+                                contextMenuController: _contextMenuController,
+                                onEscape: () =>
+                                    Scaffold.of(context).openDrawer(),
+                              ))),
+                    );
+                  },
+                )),
+          );
+        });
   }
 }

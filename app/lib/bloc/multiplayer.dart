@@ -49,6 +49,10 @@ final class MultiplayerConnectedState extends MultiplayerState
   bool get isClient => networker is NetworkerClient;
   @override
   bool get isServer => networker is NetworkerServer;
+
+  Stream<Set<int>>? get clientChange => networker is NetworkerServer
+      ? (networker as NetworkerServer).clientChange
+      : null;
 }
 
 class MultiplayerCubit extends Cubit<MultiplayerState> {
