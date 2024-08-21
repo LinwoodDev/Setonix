@@ -45,7 +45,7 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
 
   Future<Meta> _fetchMeta() async {
     final response =
-        await http.get(Uri.parse('https://docs.qeck.linwood.dev/meta.json'));
+        await http.get(Uri.parse('https://docs.quokka.linwood.dev/meta.json'));
     return Meta.fromJson({...json.decode(response.body)});
   }
 

@@ -6,21 +6,21 @@ If you have any questions, please contact me at [contact@linwood.dev](mailto:con
 
 There is a matrix server for this project [here](https://linwood.dev/matrix) and a discord server [here](https://discord.linwood.dev).
 
-Please follow the [Code of Conduct](https://docs.qeck.linwood.dev/code-of-conduct).
+Please follow the [Code of Conduct](https://quokka.linwood.dev/code-of-conduct).
 
 ## Give feedback
 
 The best way to give feedback is to open an issue on GitHub.
 Please report any bug you find [here](https://github.com/LinwoodDev/Qeck/issues/new?assignees=CodeDoctorDE&labels=bug%2Ctriage&template=bug_report.yml&title=%5BBug%5D%3A+).
 
-If you have a feature that you would like to see added, please open an issue [here](https://github.com/LinwoodDev/Qeck/issues/new?assignees=CodeDoctorDE&labels=enhancement%2Ctriage&template=feature_request.yml&title=%5BFeature+request%5D%3A+).
+If you have a feature that you would like to see added, please open an issue [here](https://github.com/LinwoodDev/Quokka/issues/new?assignees=CodeDoctorDE&labels=enhancement%2Ctriage&template=feature_request.yml&title=%5BFeature+request%5D%3A+).
 
 ## Test nightly builds
 
 Nightly builds are not production ready and need to be tested.
 Please report any bugs in the github issues section.
 
-Read more about it [here](https://docs.qeck.linwood.dev/nightly).
+Read more about it [here](https://quokka.linwood.dev/nightly).
 
 ## Write documentation
 

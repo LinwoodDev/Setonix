@@ -2,9 +2,9 @@
 
 ## Supported Versions
 
-| Version | Supported |                                                |
-| ------- | --------- | ---------------------------------------------- |
-| -       | :warning: | [Docs](https://qeck.linwood.dev/docs/v0/intro) |
+| Version | Supported |                                                  |
+| ------- | --------- | ------------------------------------------------ |
+| -       | :warning: | [Docs](https://quokka.linwood.dev/docs/v1/intro) |
 
 Currently there is no version released yet.
 Because of that, there is also no main branch.
