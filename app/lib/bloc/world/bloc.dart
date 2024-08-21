@@ -218,7 +218,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState> {
   }
 
   Future<void> save() async {
-    final data = state.data.setTable(state.table);
+    final data = state.save();
     final name = state.name;
     if (name == null) return;
     return state.fileSystem.worldSystem.updateFile(name, data);

@@ -66,7 +66,7 @@
   "community": "Community",
   "systemLocale": "System locale",
   "packs": "Packs",
-  "checkForUpdatesWarning": "Performing a check for updates will connect to the Butterfly website to get the information.",
+  "checkForUpdatesWarning": "Performing a check for updates will connect to the Quokka website to get the information.",
   "comingSoon": "Coming soon",
   "templates": "Templates",
   "custom": "Custom",
@@ -127,5 +127,7 @@
         "type": "int"
       }
     }
-  }
+  },
+  "saveAsTemplate": "Save as template",
+  "save": "Save"
 }

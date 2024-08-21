@@ -15,7 +15,7 @@ export default defineConfig({
         mastodon: "https://floss.social/@linwood",
         matrix: "https://linwood.dev/matrix",
         discord: "https://linwood.dev/discord",
-        github: "https://github.com/LinwoodDev/Butterfly",
+        github: "https://github.com/LinwoodDev/Quokka",
       },
       components: {
         SocialIcons: "./src/components/CustomSocialIcons.astro",

@@ -77,4 +77,6 @@ class WorldState with WorldStateMappable {
         table.cells.keys.map((e) => MapEntry(e, restrictCell(e, user)!));
     return table.copyWith(cells: Map.fromEntries(cells));
   }
+
+  QuokkaData save() => data.setTable(table);
 }

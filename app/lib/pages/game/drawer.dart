@@ -183,6 +183,44 @@ class GameDrawer extends StatelessWidget {
               },
             ),
             ListTile(
+                leading: const Icon(PhosphorIconsLight.fileArchive),
+                title: Text(AppLocalizations.of(context).saveAsTemplate),
+                onTap: () async {
+                  final bloc = context.read<WorldBloc>();
+                  String name = '';
+                  final result = await showDialog<bool>(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text(AppLocalizations.of(context).saveAsTemplate),
+                      content: TextField(
+                        decoration: InputDecoration(
+                          labelText: AppLocalizations.of(context).name,
+                          filled: true,
+                        ),
+                        onChanged: (value) => name = value,
+                        onSubmitted: (value) => Navigator.of(context).pop(true),
+                        autofocus: true,
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: Text(AppLocalizations.of(context).cancel),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop(true);
+                          },
+                          child: Text(AppLocalizations.of(context).save),
+                        ),
+                      ],
+                    ),
+                  );
+                  if (!(result ?? true)) return;
+                  final state = bloc.state;
+                  final data = state.save();
+                  state.fileSystem.templateSystem.createFile(name, data);
+                }),
+            ListTile(
               leading: const Icon(PhosphorIconsLight.gear),
               title: Text(AppLocalizations.of(context).settings),
               onTap: () => openSettings(context),

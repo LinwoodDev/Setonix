@@ -87,7 +87,7 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
                   fileName: _selected?.fileNameWithoutExtension ?? 'game',
                   label: AppLocalizations.of(context).game,
                   mimeType: 'application/octet-stream',
-                  uniformTypeIdentifier: 'dev.linwood.butterfly.note',
+                  uniformTypeIdentifier: 'dev.linwood.quokka.pack',
                 ),
               ),
               const SizedBox(width: 8),
