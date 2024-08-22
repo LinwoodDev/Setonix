@@ -203,6 +203,7 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
                 context,
                 _fileSystem,
               ).then((_) => _reloadGames()),
+              tooltip: AppLocalizations.of(context).import,
               icon: const Icon(PhosphorIconsLight.arrowSquareIn),
             ),
             const SizedBox(width: 8),

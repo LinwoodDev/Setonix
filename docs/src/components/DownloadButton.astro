@@ -24,7 +24,7 @@ const { title, href, after } = Astro.props;
 
   downloadButtons.forEach((button) => {
     const after = button.getAttribute("data-after");
-    button.addEventListener("click", (event) => {
+    button.addEventListener("click", () => {
       console.log("Downloading...");
       setTimeout(() => {
         window.location.href = after ?? "/downloads/thank-you";

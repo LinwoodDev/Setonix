@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lw_file_system/lw_file_system.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:quokka/api/open.dart';
 import 'package:quokka/api/save.dart';
 import 'package:quokka/models/data.dart';
 import 'package:quokka/models/meta.dart';
@@ -24,6 +25,7 @@ class _CreateDialogState extends State<CreateDialog>
   final TextEditingController _nameController = TextEditingController(),
       _descriptionController = TextEditingController();
   late final TypedKeyFileSystem<QuokkaData> _templateSystem, _worldSystem;
+  late final QuokkaFileSystem _fileSystem;
   late Stream<List<FileSystemFile<QuokkaData>>> _templatesStream;
 
   String? _selectedTemplate;
@@ -33,9 +35,9 @@ class _CreateDialogState extends State<CreateDialog>
   @override
   void initState() {
     super.initState();
-    final fileSystem = context.read<QuokkaFileSystem>();
-    _worldSystem = fileSystem.worldSystem;
-    _templateSystem = fileSystem.templateSystem;
+    _fileSystem = context.read<QuokkaFileSystem>();
+    _worldSystem = _fileSystem.worldSystem;
+    _templateSystem = _fileSystem.templateSystem;
     _templatesStream = _loadPacks().asBroadcastStream();
     //_tabController = TabController(length: 2, vsync: this);
     //_customTabController = TabController(length: 2, vsync: this);
@@ -247,6 +249,16 @@ class _CreateDialogState extends State<CreateDialog>
           )
         ],
       ),
+      headerActions: [
+        IconButton(
+          onPressed: () => importFile(
+            context,
+            _fileSystem,
+          ).then((_) => _reloadTemplates()),
+          tooltip: AppLocalizations.of(context).import,
+          icon: const Icon(PhosphorIconsLight.arrowSquareIn),
+        ),
+      ],
       actions: [
         TextButton.icon(
           onPressed: () => Navigator.of(context).pop(),
