@@ -37,14 +37,21 @@ class GameTable with GameTableMappable {
   final Map<VectorDefinition, TableCell> cells;
   @MappableField(hook: VectorMapHook())
   final Map<VectorDefinition, GameBoard> boards;
-  final Map<String, GameTeam> teams;
   final ItemLocation? background;
 
   const GameTable({
     this.cells = const {},
     this.boards = const {},
-    this.teams = const {},
     this.background,
+  });
+}
+
+@MappableClass()
+class GameInfo with GameInfoMappable {
+  final Map<String, GameTeam> teams;
+
+  const GameInfo({
+    this.teams = const {},
   });
 }
 
@@ -81,13 +88,28 @@ enum TeamColor {
 class GameTeam with GameTeamMappable {
   final String description;
   final TeamColor? color;
-  final Set<VectorDefinition> claimedCells;
+  final Set<GlobalVectorDefinition> claimedCells;
 
   GameTeam({
     this.description = '',
     this.color,
     this.claimedCells = const {},
   });
+}
+
+@MappableClass()
+class GlobalVectorDefinition extends VectorDefinition
+    with GlobalVectorDefinitionMappable {
+  final String world;
+
+  GlobalVectorDefinition(
+    this.world,
+    super.x,
+    super.y,
+  );
+
+  GlobalVectorDefinition.fromLocal(String world, VectorDefinition definition)
+      : this(world, definition.x, definition.y);
 }
 
 @MappableClass()

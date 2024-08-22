@@ -19,6 +19,7 @@ import 'package:quokka/board/hand/item.dart';
 import 'package:quokka/helpers/scroll.dart';
 import 'package:quokka/helpers/secondary.dart';
 import 'package:quokka/helpers/vector.dart';
+import 'package:quokka/models/table.dart';
 import 'package:quokka/models/vector.dart';
 
 class GameCell extends PositionComponent
@@ -75,7 +76,7 @@ class GameCell extends PositionComponent
         previousState.table.cells[definition] !=
             newState.table.cells[definition] ||
         previousState.teamMembers != newState.teamMembers ||
-        previousState.table.teams != newState.table.teams ||
+        previousState.info.teams != newState.info.teams ||
         previousState.colorScheme != newState.colorScheme;
   }
 
@@ -130,19 +131,23 @@ class GameCell extends PositionComponent
   VectorDefinition toDefinition() =>
       (position.clone()..divide(grid.cellSize)).toDefinition();
 
+  GlobalVectorDefinition toGlobalDefinition(WorldState state) =>
+      GlobalVectorDefinition.fromLocal(state.tableName, toDefinition());
+
   @override
   void onInitialState(WorldState state) {
     if (state.selectedCell != toDefinition()) _selectionComponent.opacity = 0;
     _updateTop(state);
   }
 
-  bool isClaimed(WorldState state) => state.table.teams.entries
-      .any((entry) => entry.value.claimedCells.contains(toDefinition()));
+  bool isClaimed(WorldState state) => state.info.teams.entries.any(
+      (entry) => entry.value.claimedCells.contains(toGlobalDefinition(state)));
 
   bool isAllowed(WorldState state) => state.teamMembers.entries
       .where((entry) => entry.value.contains(state.id))
       .any((entry) =>
-          state.table.teams[entry.key]?.claimedCells.contains(toDefinition()) ??
+          state.info.teams[entry.key]?.claimedCells
+              .contains(toGlobalDefinition(state)) ??
           false);
 
   @override
@@ -243,9 +248,9 @@ class GameCell extends PositionComponent
                           BlocBuilder<WorldBloc, WorldState>(
                             bloc: bloc,
                             buildWhen: (previous, current) =>
-                                previous.table.teams != current.table.teams,
+                                previous.info.teams != current.info.teams,
                             builder: (context, state) {
-                              final teams = state.table.teams.entries.toList();
+                              final teams = state.info.teams.entries.toList();
                               if (teams.isEmpty) {
                                 return Center(
                                   child: Text(
@@ -282,10 +287,13 @@ class GameCell extends PositionComponent
                                           entry.value.copyWith(
                                             claimedCells: selected
                                                 ? entry.value.claimedCells
-                                                    .difference(
-                                                        {toDefinition()})
+                                                    .difference({
+                                                    toGlobalDefinition(state)
+                                                  })
                                                 : entry.value.claimedCells
-                                                    .union({toDefinition()}),
+                                                    .union({
+                                                    toGlobalDefinition(state)
+                                                  }),
                                           ))),
                                     );
                                   }),

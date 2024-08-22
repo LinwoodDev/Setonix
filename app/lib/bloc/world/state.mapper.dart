@@ -60,6 +60,7 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = WorldStateMapper._());
       GameTableMapper.ensureInitialized();
+      GameInfoMapper.ensureInitialized();
       VectorDefinitionMapper.ensureInitialized();
       ItemLocationMapper.ensureInitialized();
     }
@@ -84,6 +85,12 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
   static GameTable _$table(WorldState v) => v.table;
   static const Field<WorldState, GameTable> _f$table =
       Field('table', _$table, opt: true, def: const GameTable());
+  static String _$tableName(WorldState v) => v.tableName;
+  static const Field<WorldState, String> _f$tableName =
+      Field('tableName', _$tableName, opt: true, def: '');
+  static GameInfo _$info(WorldState v) => v.info;
+  static const Field<WorldState, GameInfo> _f$info =
+      Field('info', _$info, opt: true, def: const GameInfo());
   static VectorDefinition? _$selectedCell(WorldState v) => v.selectedCell;
   static const Field<WorldState, VectorDefinition> _f$selectedCell =
       Field('selectedCell', _$selectedCell, opt: true);
@@ -109,6 +116,8 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
     #colorScheme: _f$colorScheme,
     #name: _f$name,
     #table: _f$table,
+    #tableName: _f$tableName,
+    #info: _f$info,
     #selectedCell: _f$selectedCell,
     #selectedDeck: _f$selectedDeck,
     #showHand: _f$showHand,
@@ -124,6 +133,8 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
         colorScheme: data.dec(_f$colorScheme),
         name: data.dec(_f$name),
         table: data.dec(_f$table),
+        tableName: data.dec(_f$tableName),
+        info: data.dec(_f$info),
         selectedCell: data.dec(_f$selectedCell),
         selectedDeck: data.dec(_f$selectedDeck),
         showHand: data.dec(_f$showHand),
@@ -184,6 +195,7 @@ extension WorldStateValueCopy<$R, $Out>
 abstract class WorldStateCopyWith<$R, $In extends WorldState, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   GameTableCopyWith<$R, GameTable, GameTable> get table;
+  GameInfoCopyWith<$R, GameInfo, GameInfo> get info;
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>?
       get selectedCell;
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get selectedDeck;
@@ -195,6 +207,8 @@ abstract class WorldStateCopyWith<$R, $In extends WorldState, $Out>
       ColorScheme? colorScheme,
       String? name,
       GameTable? table,
+      String? tableName,
+      GameInfo? info,
       VectorDefinition? selectedCell,
       ItemLocation? selectedDeck,
       bool? showHand,
@@ -216,6 +230,9 @@ class _WorldStateCopyWithImpl<$R, $Out>
   GameTableCopyWith<$R, GameTable, GameTable> get table =>
       $value.table.copyWith.$chain((v) => call(table: v));
   @override
+  GameInfoCopyWith<$R, GameInfo, GameInfo> get info =>
+      $value.info.copyWith.$chain((v) => call(info: v));
+  @override
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>?
       get selectedCell =>
           $value.selectedCell?.copyWith.$chain((v) => call(selectedCell: v));
@@ -235,6 +252,8 @@ class _WorldStateCopyWithImpl<$R, $Out>
           ColorScheme? colorScheme,
           Object? name = $none,
           GameTable? table,
+          String? tableName,
+          GameInfo? info,
           Object? selectedCell = $none,
           Object? selectedDeck = $none,
           bool? showHand,
@@ -247,6 +266,8 @@ class _WorldStateCopyWithImpl<$R, $Out>
         if (colorScheme != null) #colorScheme: colorScheme,
         if (name != $none) #name: name,
         if (table != null) #table: table,
+        if (tableName != null) #tableName: tableName,
+        if (info != null) #info: info,
         if (selectedCell != $none) #selectedCell: selectedCell,
         if (selectedDeck != $none) #selectedDeck: selectedDeck,
         if (showHand != null) #showHand: showHand,
@@ -261,6 +282,8 @@ class _WorldStateCopyWithImpl<$R, $Out>
       colorScheme: data.get(#colorScheme, or: $value.colorScheme),
       name: data.get(#name, or: $value.name),
       table: data.get(#table, or: $value.table),
+      tableName: data.get(#tableName, or: $value.tableName),
+      info: data.get(#info, or: $value.info),
       selectedCell: data.get(#selectedCell, or: $value.selectedCell),
       selectedDeck: data.get(#selectedDeck, or: $value.selectedDeck),
       showHand: data.get(#showHand, or: $value.showHand),

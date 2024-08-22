@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:file_selector/file_selector.dart' as fs;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lw_file_system/lw_file_system.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:quokka/api/open.dart';
 import 'package:quokka/models/data.dart';
 import 'package:quokka/models/meta.dart';
 import 'package:quokka/services/file_system.dart';
@@ -24,7 +24,7 @@ class _PacksDialogState extends State<PacksDialog>
     vsync: this,
     duration: const Duration(milliseconds: 100),
   );
-  late final QuokkaFileSystem _service = context.read<QuokkaFileSystem>();
+  late final QuokkaFileSystem _fileSystem = context.read<QuokkaFileSystem>();
   late final TabController _tabController;
   final TextEditingController _searchController = TextEditingController();
   Future<List<FileSystemFile<QuokkaData>>>? _packsFuture;
@@ -42,7 +42,7 @@ class _PacksDialogState extends State<PacksDialog>
         });
       }
     });
-    _packsFuture = _service.getPacks();
+    _packsFuture = _fileSystem.getPacks();
   }
 
   @override
@@ -54,22 +54,18 @@ class _PacksDialogState extends State<PacksDialog>
   void _reloadPacks() {
     if (mounted) {
       setState(() {
-        _packsFuture = _service.getPacks();
+        _packsFuture = _fileSystem.getPacks();
       });
     }
   }
 
-  List<Widget> _buildDetailsChildren(QuokkaData pack, FileMetadata? metadata) {
-    if (metadata == null) {
-      return [];
-    }
-    return [
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(metadata.description),
-      ),
-    ];
-  }
+  List<Widget> _buildDetailsChildren(QuokkaData pack, FileMetadata metadata) =>
+      [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(metadata.description),
+        ),
+      ];
 
   List<Widget> _buildActionsChildren(
     QuokkaData pack, {
@@ -105,7 +101,7 @@ class _PacksDialogState extends State<PacksDialog>
     _deselectPack();
     final pack = _selectedPack?.$2;
     if (pack == null) return;
-    await _service.packSystem.deleteFile(pack);
+    await _fileSystem.packSystem.deleteFile(pack);
     _reloadPacks();
   }
 
@@ -124,7 +120,7 @@ class _PacksDialogState extends State<PacksDialog>
         _selectedPack = (pack, id, installed);
         _isMobileOpen = isMobile;
       });
-      final metadata = pack.getMetadata();
+      final metadata = pack.getMetadataOrDefault();
       if (isMobile) {
         await showLeapBottomSheet(
           context: context,
@@ -134,7 +130,7 @@ class _PacksDialogState extends State<PacksDialog>
             ..._buildActionsChildren(pack,
                 onInstall: onInstall, onRemove: onRemove),
           ],
-          titleBuilder: (context) => Text(pack.getMetadata()?.name ?? ''),
+          titleBuilder: (context) => Text(metadata.name),
         );
         if (mounted) {
           _deselectPack();
@@ -246,14 +242,14 @@ class _PacksDialogState extends State<PacksDialog>
                             if (pack == null) {
                               return const SizedBox();
                             }
-                            final metadata = pack.getMetadata();
+                            final metadata = pack.getMetadataOrDefault();
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: _selectedPack?.$1 == null
                                   ? []
                                   : [
                                       Header(
-                                        title: Text(metadata?.name ?? ''),
+                                        title: Text(metadata.name),
                                         actions: [
                                           IconButton.outlined(
                                             icon: const Icon(
@@ -309,37 +305,13 @@ class _PacksDialogState extends State<PacksDialog>
         const SizedBox(height: 32, child: VerticalDivider()),*/
         IconButton(
           tooltip: AppLocalizations.of(context).import,
-          onPressed: _importPack,
+          onPressed: () => importFile(
+            context,
+            _fileSystem,
+          ).then((_) => _reloadPacks()),
           icon: const Icon(PhosphorIconsLight.arrowSquareIn),
         ),
       ],
     );
-  }
-
-  Future<void> _importPack() async {
-    final result = await fs.openFile(
-      acceptedTypeGroups: [
-        fs.XTypeGroup(
-          label: AppLocalizations.of(context).packs,
-          extensions: const ['qka'],
-          uniformTypeIdentifiers: const ['dev.linwood.quokka.pack'],
-          mimeTypes: const ['application/octet-stream', 'application/zip'],
-        )
-      ],
-    );
-    if (result == null) return;
-    final data = await result.readAsBytes();
-    var name = result.name;
-    const qka = '.qka';
-    if (name.endsWith(qka)) {
-      name = name.substring(0, name.length - qka.length);
-    }
-    final pack = QuokkaData.fromData(data);
-    await _service.packSystem.updateFile(
-      name,
-      pack,
-    );
-
-    _reloadPacks();
   }
 }

@@ -98,7 +98,6 @@ class GameTableMapper extends ClassMapperBase<GameTable> {
       VectorDefinitionMapper.ensureInitialized();
       TableCellMapper.ensureInitialized();
       GameBoardMapper.ensureInitialized();
-      GameTeamMapper.ensureInitialized();
       ItemLocationMapper.ensureInitialized();
     }
     return _instance!;
@@ -114,9 +113,6 @@ class GameTableMapper extends ClassMapperBase<GameTable> {
   static const Field<GameTable, Map<VectorDefinition, GameBoard>> _f$boards =
       Field('boards', _$boards,
           opt: true, def: const {}, hook: VectorMapHook());
-  static Map<String, GameTeam> _$teams(GameTable v) => v.teams;
-  static const Field<GameTable, Map<String, GameTeam>> _f$teams =
-      Field('teams', _$teams, opt: true, def: const {});
   static ItemLocation? _$background(GameTable v) => v.background;
   static const Field<GameTable, ItemLocation> _f$background =
       Field('background', _$background, opt: true);
@@ -125,7 +121,6 @@ class GameTableMapper extends ClassMapperBase<GameTable> {
   final MappableFields<GameTable> fields = const {
     #cells: _f$cells,
     #boards: _f$boards,
-    #teams: _f$teams,
     #background: _f$background,
   };
 
@@ -133,7 +128,6 @@ class GameTableMapper extends ClassMapperBase<GameTable> {
     return GameTable(
         cells: data.dec(_f$cells),
         boards: data.dec(_f$boards),
-        teams: data.dec(_f$teams),
         background: data.dec(_f$background));
   }
 
@@ -191,13 +185,10 @@ abstract class GameTableCopyWith<$R, $In extends GameTable, $Out>
       TableCellCopyWith<$R, TableCell, TableCell>> get cells;
   MapCopyWith<$R, VectorDefinition, GameBoard,
       GameBoardCopyWith<$R, GameBoard, GameBoard>> get boards;
-  MapCopyWith<$R, String, GameTeam, GameTeamCopyWith<$R, GameTeam, GameTeam>>
-      get teams;
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get background;
   $R call(
       {Map<VectorDefinition, TableCell>? cells,
       Map<VectorDefinition, GameBoard>? boards,
-      Map<String, GameTeam>? teams,
       ItemLocation? background});
   GameTableCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -221,29 +212,22 @@ class _GameTableCopyWithImpl<$R, $Out>
       get boards => MapCopyWith($value.boards, (v, t) => v.copyWith.$chain(t),
           (v) => call(boards: v));
   @override
-  MapCopyWith<$R, String, GameTeam, GameTeamCopyWith<$R, GameTeam, GameTeam>>
-      get teams => MapCopyWith(
-          $value.teams, (v, t) => v.copyWith.$chain(t), (v) => call(teams: v));
-  @override
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get background =>
       $value.background?.copyWith.$chain((v) => call(background: v));
   @override
   $R call(
           {Map<VectorDefinition, TableCell>? cells,
           Map<VectorDefinition, GameBoard>? boards,
-          Map<String, GameTeam>? teams,
           Object? background = $none}) =>
       $apply(FieldCopyWithData({
         if (cells != null) #cells: cells,
         if (boards != null) #boards: boards,
-        if (teams != null) #teams: teams,
         if (background != $none) #background: background
       }));
   @override
   GameTable $make(CopyWithData data) => GameTable(
       cells: data.get(#cells, or: $value.cells),
       boards: data.get(#boards, or: $value.boards),
-      teams: data.get(#teams, or: $value.teams),
       background: data.get(#background, or: $value.background));
 
   @override
@@ -729,6 +713,114 @@ class _GameBoardCopyWithImpl<$R, $Out>
       _GameBoardCopyWithImpl($value, $cast, t);
 }
 
+class GameInfoMapper extends ClassMapperBase<GameInfo> {
+  GameInfoMapper._();
+
+  static GameInfoMapper? _instance;
+  static GameInfoMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = GameInfoMapper._());
+      GameTeamMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'GameInfo';
+
+  static Map<String, GameTeam> _$teams(GameInfo v) => v.teams;
+  static const Field<GameInfo, Map<String, GameTeam>> _f$teams =
+      Field('teams', _$teams, opt: true, def: const {});
+
+  @override
+  final MappableFields<GameInfo> fields = const {
+    #teams: _f$teams,
+  };
+
+  static GameInfo _instantiate(DecodingData data) {
+    return GameInfo(teams: data.dec(_f$teams));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static GameInfo fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<GameInfo>(map);
+  }
+
+  static GameInfo fromJson(String json) {
+    return ensureInitialized().decodeJson<GameInfo>(json);
+  }
+}
+
+mixin GameInfoMappable {
+  String toJson() {
+    return GameInfoMapper.ensureInitialized()
+        .encodeJson<GameInfo>(this as GameInfo);
+  }
+
+  Map<String, dynamic> toMap() {
+    return GameInfoMapper.ensureInitialized()
+        .encodeMap<GameInfo>(this as GameInfo);
+  }
+
+  GameInfoCopyWith<GameInfo, GameInfo, GameInfo> get copyWith =>
+      _GameInfoCopyWithImpl(this as GameInfo, $identity, $identity);
+  @override
+  String toString() {
+    return GameInfoMapper.ensureInitialized().stringifyValue(this as GameInfo);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return GameInfoMapper.ensureInitialized()
+        .equalsValue(this as GameInfo, other);
+  }
+
+  @override
+  int get hashCode {
+    return GameInfoMapper.ensureInitialized().hashValue(this as GameInfo);
+  }
+}
+
+extension GameInfoValueCopy<$R, $Out> on ObjectCopyWith<$R, GameInfo, $Out> {
+  GameInfoCopyWith<$R, GameInfo, $Out> get $asGameInfo =>
+      $base.as((v, t, t2) => _GameInfoCopyWithImpl(v, t, t2));
+}
+
+abstract class GameInfoCopyWith<$R, $In extends GameInfo, $Out>
+    implements ClassCopyWith<$R, $In, $Out> {
+  MapCopyWith<$R, String, GameTeam, GameTeamCopyWith<$R, GameTeam, GameTeam>>
+      get teams;
+  $R call({Map<String, GameTeam>? teams});
+  GameInfoCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _GameInfoCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, GameInfo, $Out>
+    implements GameInfoCopyWith<$R, GameInfo, $Out> {
+  _GameInfoCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<GameInfo> $mapper =
+      GameInfoMapper.ensureInitialized();
+  @override
+  MapCopyWith<$R, String, GameTeam, GameTeamCopyWith<$R, GameTeam, GameTeam>>
+      get teams => MapCopyWith(
+          $value.teams, (v, t) => v.copyWith.$chain(t), (v) => call(teams: v));
+  @override
+  $R call({Map<String, GameTeam>? teams}) =>
+      $apply(FieldCopyWithData({if (teams != null) #teams: teams}));
+  @override
+  GameInfo $make(CopyWithData data) =>
+      GameInfo(teams: data.get(#teams, or: $value.teams));
+
+  @override
+  GameInfoCopyWith<$R2, GameInfo, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _GameInfoCopyWithImpl($value, $cast, t);
+}
+
 class GameTeamMapper extends ClassMapperBase<GameTeam> {
   GameTeamMapper._();
 
@@ -737,7 +829,7 @@ class GameTeamMapper extends ClassMapperBase<GameTeam> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = GameTeamMapper._());
       TeamColorMapper.ensureInitialized();
-      VectorDefinitionMapper.ensureInitialized();
+      GlobalVectorDefinitionMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -751,8 +843,9 @@ class GameTeamMapper extends ClassMapperBase<GameTeam> {
   static TeamColor? _$color(GameTeam v) => v.color;
   static const Field<GameTeam, TeamColor> _f$color =
       Field('color', _$color, opt: true);
-  static Set<VectorDefinition> _$claimedCells(GameTeam v) => v.claimedCells;
-  static const Field<GameTeam, Set<VectorDefinition>> _f$claimedCells =
+  static Set<GlobalVectorDefinition> _$claimedCells(GameTeam v) =>
+      v.claimedCells;
+  static const Field<GameTeam, Set<GlobalVectorDefinition>> _f$claimedCells =
       Field('claimedCells', _$claimedCells, opt: true, def: const {});
 
   @override
@@ -821,7 +914,7 @@ abstract class GameTeamCopyWith<$R, $In extends GameTeam, $Out>
   $R call(
       {String? description,
       TeamColor? color,
-      Set<VectorDefinition>? claimedCells});
+      Set<GlobalVectorDefinition>? claimedCells});
   GameTeamCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -837,7 +930,7 @@ class _GameTeamCopyWithImpl<$R, $Out>
   $R call(
           {String? description,
           Object? color = $none,
-          Set<VectorDefinition>? claimedCells}) =>
+          Set<GlobalVectorDefinition>? claimedCells}) =>
       $apply(FieldCopyWithData({
         if (description != null) #description: description,
         if (color != $none) #color: color,
@@ -853,6 +946,135 @@ class _GameTeamCopyWithImpl<$R, $Out>
   GameTeamCopyWith<$R2, GameTeam, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
       _GameTeamCopyWithImpl($value, $cast, t);
+}
+
+class GlobalVectorDefinitionMapper
+    extends ClassMapperBase<GlobalVectorDefinition> {
+  GlobalVectorDefinitionMapper._();
+
+  static GlobalVectorDefinitionMapper? _instance;
+  static GlobalVectorDefinitionMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = GlobalVectorDefinitionMapper._());
+      VectorDefinitionMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'GlobalVectorDefinition';
+
+  static String _$world(GlobalVectorDefinition v) => v.world;
+  static const Field<GlobalVectorDefinition, String> _f$world =
+      Field('world', _$world);
+  static int _$x(GlobalVectorDefinition v) => v.x;
+  static const Field<GlobalVectorDefinition, int> _f$x = Field('x', _$x);
+  static int _$y(GlobalVectorDefinition v) => v.y;
+  static const Field<GlobalVectorDefinition, int> _f$y = Field('y', _$y);
+
+  @override
+  final MappableFields<GlobalVectorDefinition> fields = const {
+    #world: _f$world,
+    #x: _f$x,
+    #y: _f$y,
+  };
+
+  @override
+  final MappingHook superHook = const VectorDefinitionHook();
+
+  static GlobalVectorDefinition _instantiate(DecodingData data) {
+    return GlobalVectorDefinition(
+        data.dec(_f$world), data.dec(_f$x), data.dec(_f$y));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static GlobalVectorDefinition fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<GlobalVectorDefinition>(map);
+  }
+
+  static GlobalVectorDefinition fromJson(String json) {
+    return ensureInitialized().decodeJson<GlobalVectorDefinition>(json);
+  }
+}
+
+mixin GlobalVectorDefinitionMappable {
+  String toJson() {
+    return GlobalVectorDefinitionMapper.ensureInitialized()
+        .encodeJson<GlobalVectorDefinition>(this as GlobalVectorDefinition);
+  }
+
+  Map<String, dynamic> toMap() {
+    return GlobalVectorDefinitionMapper.ensureInitialized()
+        .encodeMap<GlobalVectorDefinition>(this as GlobalVectorDefinition);
+  }
+
+  GlobalVectorDefinitionCopyWith<GlobalVectorDefinition, GlobalVectorDefinition,
+          GlobalVectorDefinition>
+      get copyWith => _GlobalVectorDefinitionCopyWithImpl(
+          this as GlobalVectorDefinition, $identity, $identity);
+  @override
+  String toString() {
+    return GlobalVectorDefinitionMapper.ensureInitialized()
+        .stringifyValue(this as GlobalVectorDefinition);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return GlobalVectorDefinitionMapper.ensureInitialized()
+        .equalsValue(this as GlobalVectorDefinition, other);
+  }
+
+  @override
+  int get hashCode {
+    return GlobalVectorDefinitionMapper.ensureInitialized()
+        .hashValue(this as GlobalVectorDefinition);
+  }
+}
+
+extension GlobalVectorDefinitionValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, GlobalVectorDefinition, $Out> {
+  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition, $Out>
+      get $asGlobalVectorDefinition =>
+          $base.as((v, t, t2) => _GlobalVectorDefinitionCopyWithImpl(v, t, t2));
+}
+
+abstract class GlobalVectorDefinitionCopyWith<
+    $R,
+    $In extends GlobalVectorDefinition,
+    $Out> implements VectorDefinitionCopyWith<$R, $In, $Out> {
+  @override
+  $R call({String? world, int? x, int? y});
+  GlobalVectorDefinitionCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class _GlobalVectorDefinitionCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, GlobalVectorDefinition, $Out>
+    implements
+        GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition, $Out> {
+  _GlobalVectorDefinitionCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<GlobalVectorDefinition> $mapper =
+      GlobalVectorDefinitionMapper.ensureInitialized();
+  @override
+  $R call({String? world, int? x, int? y}) => $apply(FieldCopyWithData({
+        if (world != null) #world: world,
+        if (x != null) #x: x,
+        if (y != null) #y: y
+      }));
+  @override
+  GlobalVectorDefinition $make(CopyWithData data) => GlobalVectorDefinition(
+      data.get(#world, or: $value.world),
+      data.get(#x, or: $value.x),
+      data.get(#y, or: $value.y));
+
+  @override
+  GlobalVectorDefinitionCopyWith<$R2, GlobalVectorDefinition, $Out2>
+      $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+          _GlobalVectorDefinitionCopyWithImpl($value, $cast, t);
 }
 
 class GameSeatMapper extends ClassMapperBase<GameSeat> {

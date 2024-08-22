@@ -181,18 +181,18 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState> {
       return save();
     });
     on<TeamChanged>((event, emit) {
-      emit(state.copyWith.table.teams.put(event.name, event.team));
+      emit(state.copyWith.info.teams.put(event.name, event.team));
       return save();
     });
     on<TeamRemoved>((event, emit) {
       emit(state.copyWith(
-        table: state.table.copyWith.teams.remove(event.team),
+        info: state.info.copyWith.teams.remove(event.team),
         teamMembers: Map.from(state.teamMembers)..remove(event.team),
       ));
       return save();
     });
     on<TeamJoined>((event, emit) {
-      if (!state.table.teams.containsKey(event.team)) return null;
+      if (!state.info.teams.containsKey(event.team)) return null;
 
       final members = state.teamMembers[event.team];
       emit(state.copyWith(teamMembers: {
@@ -202,7 +202,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState> {
       return save();
     });
     on<TeamLeft>((event, emit) {
-      if (!state.table.teams.containsKey(event.team)) return null;
+      if (!state.info.teams.containsKey(event.team)) return null;
 
       final members = Set<Channel>.from(state.teamMembers[event.team] ?? {});
       members.remove(event.user);

@@ -20,6 +20,7 @@ const kPackTranslationsPath = 'translations';
 const kPackBackgroundsPath = 'backgrounds';
 
 const kGameTablePath = 'tables';
+const kGameTeamPath = 'teams.json';
 
 class QuokkaData extends ArchiveData<QuokkaData> {
   QuokkaData(super.archive, {super.state});
@@ -39,8 +40,8 @@ class QuokkaData extends ArchiveData<QuokkaData> {
     return GameTableMapper.fromJson(content);
   }
 
-  QuokkaData setTable(GameTable table) => setAsset(
-        '$kGameTablePath/.json',
+  QuokkaData setTable(GameTable table, String name) => setAsset(
+        '$kGameTablePath/$name.json',
         utf8.encode(table.toJson()),
       );
 
@@ -52,6 +53,8 @@ class QuokkaData extends ArchiveData<QuokkaData> {
     final content = utf8.decode(data);
     return FileMetadataMapper.fromJson(content);
   }
+
+  FileMetadata getMetadataOrDefault() => getMetadata() ?? const FileMetadata();
 
   Iterable<String> getAssets(String path, [bool removeExtension = false]) => {
         ...archive.files.map((e) => e.name),

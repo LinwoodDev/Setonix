@@ -21,6 +21,8 @@ class WorldState with WorldStateMappable {
   final ColorScheme colorScheme;
   final QuokkaFileSystem fileSystem;
   final GameTable table;
+  final String tableName;
+  final GameInfo info;
   final VectorDefinition? selectedCell;
   final ItemLocation? selectedDeck;
   final bool showHand;
@@ -35,6 +37,8 @@ class WorldState with WorldStateMappable {
     required this.colorScheme,
     this.name,
     this.table = const GameTable(),
+    this.tableName = '',
+    this.info = const GameInfo(),
     this.selectedCell,
     this.selectedDeck,
     this.showHand = false,
@@ -45,7 +49,7 @@ class WorldState with WorldStateMappable {
 
   bool isCellVisible(VectorDefinition cell, [Channel? id]) {
     bool isClaimed = false, isMyTeam = false;
-    for (final entry in table.teams.entries) {
+    for (final entry in info.teams.entries) {
       final name = entry.key;
       final team = entry.value;
       if (team.claimedCells.contains(cell)) {
@@ -78,5 +82,5 @@ class WorldState with WorldStateMappable {
     return table.copyWith(cells: Map.fromEntries(cells));
   }
 
-  QuokkaData save() => data.setTable(table);
+  QuokkaData save() => data.setTable(table, tableName);
 }

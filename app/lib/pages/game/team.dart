@@ -97,14 +97,14 @@ class TeamDialogState extends State<TeamDialog> {
         BlocBuilder<WorldBloc, WorldState>(
           bloc: _bloc,
           buildWhen: (previous, current) =>
-              previous.table.teams != current.table.teams,
+              previous.info.teams != current.info.teams,
           builder: (context, state) => ListenableBuilder(
             listenable: _nameController,
             builder: (context, child) {
               final text = _nameController.text;
               return ElevatedButton(
                 onPressed: text.isEmpty ||
-                        (state.table.teams.containsKey(text) &&
+                        (state.info.teams.containsKey(text) &&
                             text != widget.team)
                     ? null
                     : () {

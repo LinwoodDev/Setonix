@@ -129,5 +129,12 @@
     }
   },
   "saveAsTemplate": "Save as template",
-  "save": "Save"
+  "save": "Save",
+  "importPack": "Import pack",
+  "importGame": "Import game",
+  "importTemplate": "Import template",
+  "importPackDescription": "Are you sure you want to import the pack?",
+  "importGameDescription": "Are you sure you want to import the game?",
+  "importTemplateDescription": "Are you sure you want to import the template?",
+  "export": "Export"
 }

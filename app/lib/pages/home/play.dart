@@ -1,13 +1,12 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lw_file_system/lw_file_system.dart';
-import 'package:lw_sysapi/lw_sysapi.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:quokka/api/open.dart';
+import 'package:quokka/api/save.dart';
 import 'package:quokka/models/data.dart';
 import 'package:quokka/models/meta.dart';
 import 'package:quokka/pages/home/create.dart';
@@ -22,6 +21,7 @@ class PlayDialog extends StatefulWidget {
 
 class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
   late final TypedKeyFileSystem<QuokkaData> _worldSystem;
+  late final QuokkaFileSystem _fileSystem;
   late Stream<List<FileSystemFile<QuokkaData>>> _gamesStream;
   FileSystemFile<QuokkaData>? _selected;
   bool _isMobileOpen = false;
@@ -29,7 +29,8 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _worldSystem = context.read<QuokkaFileSystem>().worldSystem;
+    _fileSystem = context.read<QuokkaFileSystem>();
+    _worldSystem = _fileSystem.worldSystem;
     _gamesStream = _fetchGames().asBroadcastStream();
   }
 
@@ -80,14 +81,10 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
             children: [
               IconButton.outlined(
                 icon: const Icon(PhosphorIconsLight.export),
-                onPressed: () => exportFile(
-                  context: context,
-                  bytes: _selected?.data?.exportAsBytes() ?? Uint8List(0),
-                  fileExtension: 'qka',
-                  fileName: _selected?.fileNameWithoutExtension ?? 'game',
-                  label: AppLocalizations.of(context).game,
-                  mimeType: 'application/octet-stream',
-                  uniformTypeIdentifier: 'dev.linwood.quokka.pack',
+                onPressed: () => exportData(
+                  context,
+                  _selected!.data!,
+                  _selected!.fileName,
                 ),
               ),
               const SizedBox(width: 8),
@@ -199,16 +196,30 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
               }),
         ),
         const SizedBox(height: 16),
-        SizedBox(
-          height: 48,
-          child: ElevatedButton.icon(
-            icon: const Icon(PhosphorIconsLight.plus),
-            label: Text(AppLocalizations.of(context).create),
-            onPressed: () => showDialog(
-              context: context,
-              builder: (context) => const CreateDialog(),
-            ).then((_) => _reloadGames()),
-          ),
+        Row(
+          children: [
+            IconButton.outlined(
+              onPressed: () => importFile(
+                context,
+                _fileSystem,
+              ).then((_) => _reloadGames()),
+              icon: const Icon(PhosphorIconsLight.arrowSquareIn),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: SizedBox(
+                height: 48,
+                child: ElevatedButton.icon(
+                  icon: const Icon(PhosphorIconsLight.plus),
+                  label: Text(AppLocalizations.of(context).create),
+                  onPressed: () => showDialog(
+                    context: context,
+                    builder: (context) => const CreateDialog(),
+                  ).then((_) => _reloadGames()),
+                ),
+              ),
+            ),
+          ],
         ),
       ],
     );

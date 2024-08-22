@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lw_file_system/lw_file_system.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:quokka/api/save.dart';
 import 'package:quokka/models/data.dart';
 import 'package:quokka/models/meta.dart';
 import 'package:quokka/services/file_system.dart';
@@ -23,7 +24,7 @@ class _CreateDialogState extends State<CreateDialog>
   final TextEditingController _nameController = TextEditingController(),
       _descriptionController = TextEditingController();
   late final TypedKeyFileSystem<QuokkaData> _templateSystem, _worldSystem;
-  late final Stream<List<FileSystemFile<QuokkaData>>> _templatesStream;
+  late Stream<List<FileSystemFile<QuokkaData>>> _templatesStream;
 
   String? _selectedTemplate;
 
@@ -35,13 +36,17 @@ class _CreateDialogState extends State<CreateDialog>
     final fileSystem = context.read<QuokkaFileSystem>();
     _worldSystem = fileSystem.worldSystem;
     _templateSystem = fileSystem.templateSystem;
-    _templatesStream = () async* {
-      await _templateSystem.initialize();
-      yield* _templateSystem.fetchFiles();
-    }()
-        .asBroadcastStream();
+    _templatesStream = _loadPacks().asBroadcastStream();
     //_tabController = TabController(length: 2, vsync: this);
     //_customTabController = TabController(length: 2, vsync: this);
+  }
+
+  void _reloadTemplates() =>
+      setState(() => _templatesStream = _loadPacks().asBroadcastStream());
+
+  Stream<List<FileSystemFile<QuokkaData>>> _loadPacks() async* {
+    await _templateSystem.initialize();
+    yield* _templateSystem.fetchFiles();
   }
 
   @override
@@ -101,6 +106,25 @@ class _CreateDialogState extends State<CreateDialog>
               final name = entry.pathWithoutLeadingSlash;
               return ListTile(
                 title: Text(name),
+                trailing: MenuAnchor(
+                  builder: defaultMenuButton(),
+                  menuChildren: [
+                    MenuItemButton(
+                      leadingIcon: const Icon(PhosphorIconsLight.export),
+                      child: Text(AppLocalizations.of(context).export),
+                      onPressed: () =>
+                          exportData(context, entry.data!, entry.fileName),
+                    ),
+                    MenuItemButton(
+                      leadingIcon: const Icon(PhosphorIconsLight.trash),
+                      child: Text(AppLocalizations.of(context).delete),
+                      onPressed: () async {
+                        await _templateSystem.deleteFile(entry.path);
+                        _reloadTemplates();
+                      },
+                    )
+                  ],
+                ),
                 selected: _selectedTemplate == name,
                 onTap: () => setState(() => _selectedTemplate = entry.fileName),
               );
@@ -260,6 +284,7 @@ class _CreateDialogState extends State<CreateDialog>
                 FileMetadata(
                   name: name,
                   description: description,
+                  type: FileType.game,
                 ),
               );
               await _worldSystem.createFile(name, template);

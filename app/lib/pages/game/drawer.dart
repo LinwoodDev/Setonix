@@ -9,6 +9,7 @@ import 'package:quokka/bloc/multiplayer.dart';
 import 'package:quokka/bloc/world/bloc.dart';
 import 'package:quokka/bloc/world/event.dart';
 import 'package:quokka/bloc/world/state.dart';
+import 'package:quokka/models/meta.dart';
 import 'package:quokka/pages/game/multiplayer.dart';
 import 'package:quokka/pages/game/team.dart';
 
@@ -115,13 +116,13 @@ class GameDrawer extends StatelessWidget {
                   childrenBuilder: (context) => [
                     BlocBuilder<WorldBloc, WorldState>(
                       buildWhen: (previous, current) =>
-                          previous.table.teams != current.table.teams ||
+                          previous.info.teams != current.info.teams ||
                           previous.teamMembers != current.teamMembers,
                       bloc: bloc,
                       builder: (context, state) {
                         return Column(
                           mainAxisSize: MainAxisSize.min,
-                          children: state.table.teams.entries.map((entry) {
+                          children: state.info.teams.entries.map((entry) {
                             final name = entry.key;
                             final team = entry.value;
                             final color = team.color;
@@ -215,9 +216,12 @@ class GameDrawer extends StatelessWidget {
                       ],
                     ),
                   );
-                  if (!(result ?? true)) return;
+                  if (!(result ?? false)) return;
                   final state = bloc.state;
-                  final data = state.save();
+                  var data = state.save();
+                  data = data.setFileMetadata(data
+                      .getMetadataOrDefault()
+                      .copyWith(name: name, type: FileType.template));
                   state.fileSystem.templateSystem.createFile(name, data);
                 }),
             ListTile(
