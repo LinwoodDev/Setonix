@@ -10,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:quokka/bloc/world/bloc.dart';
-import 'package:quokka/bloc/world/event.dart';
+import 'package:quokka/bloc/world/local.dart';
 import 'package:quokka/bloc/world/state.dart';
 import 'package:quokka/board/background.dart';
 import 'package:quokka/board/game.dart';
@@ -19,8 +19,8 @@ import 'package:quokka/board/hand/item.dart';
 import 'package:quokka/helpers/scroll.dart';
 import 'package:quokka/helpers/secondary.dart';
 import 'package:quokka/helpers/vector.dart';
-import 'package:quokka/models/table.dart';
-import 'package:quokka/models/vector.dart';
+import 'package:quokka/helpers/visualizer.dart';
+import 'package:quokka_api/quokka_api.dart';
 
 class GameCell extends PositionComponent
     with

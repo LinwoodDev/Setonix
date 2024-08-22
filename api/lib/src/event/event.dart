@@ -1,20 +1,21 @@
 import 'dart:math';
 
+import 'package:dart_leap/dart_leap.dart';
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:flutter/material.dart';
-import 'package:material_leap/material_leap.dart';
 import 'package:networker/networker.dart';
-import 'package:quokka/bloc/world/bloc.dart';
-import 'package:quokka/models/table.dart';
-import 'package:quokka/models/vector.dart';
+import 'package:quokka_api/src/services/asset.dart';
+import '../models/table.dart';
+import '../models/vector.dart';
 
 part 'event.mapper.dart';
 
-part 'event/server.dart';
-part 'event/client.dart';
-part 'event/hybrid.dart';
-part 'event/local.dart';
-part 'event/process.dart';
+part 'server.dart';
+part 'client.dart';
+part 'hybrid.dart';
+part 'local.dart';
+part 'process.dart';
+
+const kDefaultPort = 28006;
 
 @MappableClass(discriminatorKey: 'type')
 sealed class WorldEvent with WorldEventMappable {

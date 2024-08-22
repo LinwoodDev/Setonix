@@ -1,15 +1,14 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
-import 'package:collection/collection.dart';
-import 'package:flutter/services.dart';
-import 'package:lw_file_system/lw_file_system.dart';
-import 'package:quokka/models/background.dart';
-import 'package:quokka/models/deck.dart';
-import 'package:quokka/models/meta.dart';
-import 'package:quokka/models/object.dart';
-import 'package:quokka/models/table.dart';
-import 'package:quokka/models/translation.dart';
+import 'package:lw_file_system_api/lw_file_system_api.dart';
+import 'background.dart';
+import 'deck.dart';
+import 'meta.dart';
+import 'object.dart';
+import 'table.dart';
+import 'translation.dart';
 
 const kPackMetadataPath = 'pack.json';
 const kPackDecksPath = 'decks';
@@ -29,9 +28,6 @@ class QuokkaData extends ArchiveData<QuokkaData> {
   factory QuokkaData.fromData(Uint8List data) {
     return QuokkaData(ZipDecoder().decodeBytes(data));
   }
-
-  static Future<QuokkaData?> getCorePack() async => QuokkaData.fromData(
-      (await rootBundle.load('assets/pack.qka')).buffer.asUint8List());
 
   GameTable? getTable() {
     final data = getAsset('$kGameTablePath/.json');
@@ -87,7 +83,7 @@ class QuokkaData extends ArchiveData<QuokkaData> {
       );
 
   Iterable<PackItem<DeckDefinition>> getDeckItems([String namespace = '']) =>
-      getDecks().map((e) => getDeckItem(e, namespace)).whereNotNull();
+      getDecks().map((e) => getDeckItem(e, namespace)).nonNulls;
 
   Iterable<String> getFigures() => getAssets('$kPackFiguresPath/', true);
 
@@ -109,7 +105,7 @@ class QuokkaData extends ArchiveData<QuokkaData> {
 
   Iterable<PackItem<FigureDefinition>> getFigureItems(
           [String namespace = '']) =>
-      getDecks().map((e) => getFigureItem(e, namespace)).whereNotNull();
+      getDecks().map((e) => getFigureItem(e, namespace)).nonNulls;
 
   Iterable<String> getBoards() => getAssets(kPackBoardsPath, true);
 
@@ -145,9 +141,7 @@ class QuokkaData extends ArchiveData<QuokkaData> {
 
   Iterable<PackItem<BackgroundDefinition>> getBackgroundItems(
           [String namespace = '']) =>
-      getBackgrounds()
-          .map((e) => getBackgroundItem(e, namespace))
-          .whereNotNull();
+      getBackgrounds().map((e) => getBackgroundItem(e, namespace)).nonNulls;
 
   Uint8List? getTexture(String path) => getAsset('$kPackTexturesPath/$path');
 

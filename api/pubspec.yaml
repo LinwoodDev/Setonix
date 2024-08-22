@@ -1,0 +1,34 @@
+name: quokka_api
+description: The Linwood Quokka API
+version: 0.1.0
+publish_to: none
+# repository: https://github.com/my_org/my_repo
+
+environment:
+  sdk: ^3.5.1
+
+# Add regular dependencies here.
+dependencies:
+  dart_mappable: ^4.2.2
+  archive: ^3.6.1
+  lw_file_system_api:
+    git:
+      url: https://github.com/LinwoodDev/dart_pkgs
+      ref: dfda6c2e3cef2e29511f97e9470fd4deb8e0c573
+      path: packages/lw_file_system_api
+  networker:
+    git:
+      url: https://github.com/LinwoodDev/dart_pkgs
+      ref: 699545d8be7fd267f0aac1481f39c0646bf2198e
+      path: packages/networker/networker
+  dart_leap:
+    git:
+      url: https://github.com/LinwoodDev/dart_pkgs
+      path: packages/dart_leap
+      ref: dfda6c2e3cef2e29511f97e9470fd4deb8e0c573
+  # path: ^1.8.0
+
+dev_dependencies:
+  lints: ^4.0.0
+  dart_mappable_builder: ^4.2.3
+  build_runner: ^2.4.12

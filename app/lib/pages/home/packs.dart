@@ -5,10 +5,9 @@ import 'package:lw_file_system/lw_file_system.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:quokka/api/open.dart';
-import 'package:quokka/models/data.dart';
-import 'package:quokka/models/meta.dart';
 import 'package:quokka/services/file_system.dart';
 import 'package:quokka/widgets/search.dart';
+import 'package:quokka_api/quokka_api.dart';
 
 class PacksDialog extends StatefulWidget {
   const PacksDialog({super.key});

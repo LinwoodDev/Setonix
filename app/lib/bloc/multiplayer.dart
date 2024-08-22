@@ -6,11 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:networker/networker.dart';
 import 'package:networker_socket/client.dart';
 import 'package:networker_socket/server.dart';
-import 'package:quokka/bloc/world/event.dart';
+import 'package:quokka_api/quokka_api.dart';
 
 part 'multiplayer.mapper.dart';
-
-const kDefaultPort = 28006;
 
 @MappableClass()
 sealed class MultiplayerState with MultiplayerStateMappable {

@@ -7,11 +7,11 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:quokka/api/settings.dart';
 import 'package:quokka/bloc/multiplayer.dart';
 import 'package:quokka/bloc/world/bloc.dart';
-import 'package:quokka/bloc/world/event.dart';
 import 'package:quokka/bloc/world/state.dart';
-import 'package:quokka/models/meta.dart';
+import 'package:quokka/helpers/visualizer.dart';
 import 'package:quokka/pages/game/multiplayer.dart';
 import 'package:quokka/pages/game/team.dart';
+import 'package:quokka_api/quokka_api.dart';
 
 class GameDrawer extends StatelessWidget {
   const GameDrawer({

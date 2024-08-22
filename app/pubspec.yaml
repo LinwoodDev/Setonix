@@ -74,16 +74,17 @@ dependencies:
   file_selector: ^1.0.3
   lw_file_system:
     git:
-      url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 3c975be33c84052c1b96f8646ad7ea2270bb9d34
+      url: https://github.com/LinwoodDev/dart_pkgs
+      ref: ebc79d7cf461d852cefeb976d2088cca9f7f4702
       path: packages/lw_file_system
   lw_sysapi:
     git:
-      url: https://github.com/LinwoodDev/dart_pkgs.git
+      url: https://github.com/LinwoodDev/dart_pkgs
       ref: 21808e89bb6239f0b39367d0c00b0b14f5273992
       path: packages/lw_sysapi
+  quokka_api:
+    path: ../api
   # Serialization
-  json_annotation: ^4.9.0
   dart_mappable: ^4.2.2
   archive: ^3.4.10
 dependency_overrides:

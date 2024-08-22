@@ -1,9 +1,8 @@
-part of '../event.dart';
+import 'package:dart_mappable/dart_mappable.dart';
+import 'package:flutter/material.dart';
+import 'package:quokka_api/quokka_api.dart';
 
-@MappableClass()
-sealed class LocalWorldEvent extends WorldEvent
-    with LocalWorldEventMappable
-    implements PlayableWorldEvent {}
+part 'local.mapper.dart';
 
 @MappableClass()
 final class HandChanged extends LocalWorldEvent with HandChangedMappable {

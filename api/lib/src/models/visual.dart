@@ -1,4 +1,4 @@
-import 'package:quokka/models/vector.dart';
+import 'vector.dart';
 
 mixin VisualDefinition {
   String get texture;

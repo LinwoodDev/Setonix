@@ -1,11 +1,9 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart' show ColorScheme;
 import 'package:networker/networker.dart';
-import 'package:quokka/models/data.dart';
-import 'package:quokka/models/table.dart';
-import 'package:quokka/models/vector.dart';
 import 'package:quokka/services/file_system.dart';
 import 'package:quokka/bloc/multiplayer.dart';
+import 'package:quokka_api/quokka_api.dart';
 
 part 'state.mapper.dart';
 

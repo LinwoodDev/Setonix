@@ -7,7 +7,7 @@ import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:quokka/bloc/world/bloc.dart';
-import 'package:quokka/bloc/world/event.dart';
+import 'package:quokka/bloc/world/local.dart';
 import 'package:quokka/bloc/world/state.dart';
 import 'package:quokka/board/grid.dart';
 import 'package:quokka/board/hand/view.dart';
@@ -30,7 +30,7 @@ class BoardGame extends FlameGame
 
   bool _isShifting = false;
 
-  AssetManager get assetManager => bloc.assetManager;
+  GameAssetManager get assetManager => bloc.assetManager;
   bool get isShifting => _isShifting;
 
   BoardGame({

@@ -1,4 +1,4 @@
-part of '../event.dart';
+part of 'event.dart';
 
 /// Events that will be send by the client
 /// Naming convention: present tense + Event

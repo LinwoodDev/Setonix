@@ -1,11 +1,8 @@
 import 'package:flame/widgets.dart';
-import 'package:quokka/bloc/world/event.dart';
 import 'package:quokka/bloc/world/state.dart';
 import 'package:quokka/board/cell.dart';
 import 'package:quokka/board/hand/item.dart';
-import 'package:quokka/models/object.dart';
-import 'package:quokka/models/data.dart';
-import 'package:quokka/models/table.dart';
+import 'package:quokka_api/quokka_api.dart';
 
 class FigureDefinitionHandItem
     extends HandItem<(PackItem<FigureDefinition>, String?)> {

@@ -5,12 +5,11 @@ import 'package:flame/sprite.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:quokka/bloc/world/bloc.dart';
-import 'package:quokka/models/data.dart';
-import 'package:quokka/models/table.dart';
-import 'package:quokka/models/translation.dart';
+import 'package:quokka/helpers/vector.dart';
 import 'package:quokka/services/file_system.dart';
+import 'package:quokka_api/quokka_api.dart';
 
-class AssetManager {
+class GameAssetManager extends AssetManager {
   String currentLocale;
   final WorldBloc bloc;
   final Map<String, QuokkaData> _loadedPacks = {};
@@ -19,7 +18,7 @@ class AssetManager {
 
   QuokkaFileSystem get fileSystem => bloc.state.fileSystem;
 
-  AssetManager({
+  GameAssetManager({
     required this.bloc,
     this.currentLocale = 'en',
   });
@@ -81,6 +80,7 @@ class AssetManager {
     );
   }
 
+  @override
   QuokkaData? getPack(String key) => _loadedPacks[key];
 
   Future<QuokkaData?> loadPack(String key,

@@ -1,6 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:quokka/models/vector.dart';
-import 'package:quokka/models/visual.dart';
+import 'vector.dart';
+import 'visual.dart';
 
 part 'background.mapper.dart';
 

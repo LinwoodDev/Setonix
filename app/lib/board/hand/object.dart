@@ -1,13 +1,11 @@
 import 'package:flame/components.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:quokka/bloc/world/event.dart';
 import 'package:quokka/bloc/world/state.dart';
 import 'package:quokka/board/cell.dart';
 import 'package:quokka/board/hand/item.dart';
 import 'package:quokka/board/hand/view.dart';
-import 'package:quokka/models/table.dart';
-import 'package:quokka/models/vector.dart';
+import 'package:quokka_api/quokka_api.dart';
 
 class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
   GameObjectHandItem({required super.item});

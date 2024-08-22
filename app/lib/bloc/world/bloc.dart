@@ -3,16 +3,15 @@ import 'package:flutter/material.dart' show ColorScheme;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_leap/helpers.dart';
 import 'package:networker/networker.dart';
-import 'package:quokka/bloc/world/event.dart';
+import 'package:quokka/bloc/world/local.dart';
 import 'package:quokka/bloc/world/state.dart';
 import 'package:quokka/helpers/asset.dart';
-import 'package:quokka/models/data.dart';
-import 'package:quokka/models/table.dart';
 import 'package:quokka/services/file_system.dart';
 import 'package:quokka/bloc/multiplayer.dart';
+import 'package:quokka_api/quokka_api.dart';
 
 class WorldBloc extends Bloc<PlayableWorldEvent, WorldState> {
-  late final AssetManager assetManager;
+  late final GameAssetManager assetManager;
   bool _remoteEvent = false;
   WorldBloc({
     required MultiplayerCubit multiplayer,
@@ -29,7 +28,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState> {
           colorScheme: colorScheme,
           table: table ?? data?.getTable() ?? const GameTable(),
         )) {
-    assetManager = AssetManager(
+    assetManager = GameAssetManager(
       bloc: this,
     );
     state.multiplayer
@@ -225,7 +224,8 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState> {
   }
 
   void _processEvent((WorldEvent, Channel) data) {
-    final value = processEvent(this, data.$1, data.$2);
+    final value = processEvent(data.$1, data.$2,
+        assetManager: assetManager, table: state.table);
     if (value == null) return;
     state.multiplayer.sendServer(value.$1, value.$2);
   }
@@ -249,8 +249,10 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState> {
         if (multiplayer.isConnected) {
           multiplayer.send(e);
         } else {
-          final event =
-              processEvent(this, e, kAuthorityChannel, allowServerEvents: true);
+          final event = processEvent(e, kAuthorityChannel,
+              assetManager: assetManager,
+              table: state.table,
+              allowServerEvents: true);
           if (event != null) add(event.$1);
         }
     }

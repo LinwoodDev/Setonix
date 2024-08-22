@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:file_selector/file_selector.dart' as fs;
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:quokka/main.dart';
-import 'package:quokka/models/data.dart';
-import 'package:quokka/models/meta.dart';
+import 'package:quokka_api/quokka_api.dart';
 import 'package:quokka/services/file_system.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -43,6 +43,9 @@ Future<void> importFile(
   final data = QuokkaData.fromData(bytes);
   if (context.mounted) return importFileData(context, fileSystem, data);
 }
+
+Future<QuokkaData?> getCorePack() async => QuokkaData.fromData(
+    (await rootBundle.load('assets/pack.qka')).buffer.asUint8List());
 
 Future<void> importFileData(
     BuildContext context, QuokkaFileSystem fileSystem, QuokkaData data) async {

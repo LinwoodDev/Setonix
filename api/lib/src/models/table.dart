@@ -1,6 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:flutter/material.dart' show Color, Colors;
-import 'package:quokka/models/vector.dart';
+import 'vector.dart';
 
 part 'table.mapper.dart';
 
@@ -68,20 +67,6 @@ enum TeamColor {
   brown,
   white,
   black;
-
-  Color get color => switch (this) {
-        TeamColor.red => Colors.red,
-        TeamColor.blue => Colors.blue,
-        TeamColor.indigo => Colors.indigo,
-        TeamColor.green => Colors.green,
-        TeamColor.yellow => Colors.yellow,
-        TeamColor.purple => Colors.purple,
-        TeamColor.orange => Colors.orange,
-        TeamColor.pink => Colors.pink,
-        TeamColor.brown => Colors.brown,
-        TeamColor.white => Colors.white,
-        TeamColor.black => Colors.black,
-      };
 }
 
 @MappableClass()

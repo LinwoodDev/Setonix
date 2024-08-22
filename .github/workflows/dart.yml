@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        projects: [app, tools]
+        projects: [app, api, server, tools]
     defaults:
       run:
         working-directory: ${{ matrix.projects }}

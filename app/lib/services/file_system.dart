@@ -1,6 +1,7 @@
 import 'package:lw_file_system/lw_file_system.dart';
+import 'package:quokka/api/open.dart';
 import 'package:quokka/api/storage.dart';
-import 'package:quokka/models/data.dart';
+import 'package:quokka_api/quokka_api.dart';
 
 class QuokkaFileSystem {
   QuokkaData? _corePack;
@@ -56,7 +57,7 @@ class QuokkaFileSystem {
         );
 
   Future<QuokkaData?> fetchCorePack() async =>
-      _corePack ?? (_corePack = await QuokkaData.getCorePack());
+      _corePack ?? (_corePack = await getCorePack());
 
   Future<List<FileSystemFile<QuokkaData>>> getPacks({
     bool fetchCore = true,

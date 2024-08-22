@@ -1,4 +1,4 @@
-part of '../event.dart';
+part of 'event.dart';
 
 @MappableClass()
 sealed class HybridWorldEvent extends WorldEvent

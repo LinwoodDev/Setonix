@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:quokka/bloc/world/bloc.dart';
-import 'package:quokka/bloc/world/event.dart';
 import 'package:quokka/bloc/world/state.dart';
-import 'package:quokka/models/table.dart';
+import 'package:quokka/helpers/visualizer.dart';
+import 'package:quokka_api/quokka_api.dart';
 
 class TeamDialog extends StatefulWidget {
   final String? team;
