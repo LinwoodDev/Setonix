@@ -30,6 +30,7 @@ class ClientWorldState extends WorldState with ClientWorldStateMappable {
     super.table,
     super.tableName,
     super.info,
+    super.metadata,
     this.selectedCell,
     this.selectedDeck,
     this.showHand = false,

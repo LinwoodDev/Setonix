@@ -23,7 +23,11 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
 
   QuokkaServer._(this.worldFile, QuokkaData data)
       : assetManager = ServerAssetManager(),
-        super(WorldState(data: data, table: data.getTableOrDefault())) {
+        super(WorldState(
+          data: data,
+          table: data.getTableOrDefault(),
+          metadata: data.getMetadataOrDefault(),
+        )) {
     on<ServerWorldEvent>((event, emit) {
       final newState = processServerEvent(event, state);
       if (newState == null) return null;

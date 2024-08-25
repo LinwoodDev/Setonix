@@ -9,6 +9,7 @@ import 'package:quokka/bloc/multiplayer.dart';
 import 'package:quokka/bloc/world/bloc.dart';
 import 'package:quokka/bloc/world/state.dart';
 import 'package:quokka/helpers/visualizer.dart';
+import 'package:quokka/pages/game/info.dart';
 import 'package:quokka/pages/game/multiplayer.dart';
 import 'package:quokka/pages/game/team.dart';
 import 'package:quokka_api/quokka_api.dart';
@@ -27,12 +28,71 @@ class GameDrawer extends StatelessWidget {
           shrinkWrap: true,
           children: [
             BlocBuilder<WorldBloc, ClientWorldState>(
-              buildWhen: (previous, current) => previous.name != current.name,
-              builder: (context, state) => Text(
-                state.name ?? '',
-                textAlign: TextAlign.center,
-                style: theme.textTheme.headlineSmall,
-              ),
+              buildWhen: (previous, current) =>
+                  previous.name != current.name ||
+                  previous.metadata != current.metadata,
+              builder: (context, state) {
+                final metadata = state.metadata;
+                return Card.filled(
+                  clipBehavior: Clip.antiAlias,
+                  child: InkWell(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            metadata.name,
+                            textAlign: TextAlign.center,
+                            style: theme.textTheme.headlineSmall,
+                          ),
+                          Text(
+                            metadata.description,
+                            maxLines: 5,
+                          ),
+                        ],
+                      ),
+                    ),
+                    onTap: () {
+                      final bloc = context.read<WorldBloc>();
+                      showLeapBottomSheet(
+                        context: context,
+                        titleBuilder: (context) => Text(metadata.name),
+                        actionsBuilder: (context) => [
+                          IconButton(
+                            icon: const Icon(PhosphorIconsLight.pencil),
+                            tooltip: AppLocalizations.of(context).editInfo,
+                            onPressed: () async {
+                              final newInfo = await showDialog<FileMetadata>(
+                                  context: context,
+                                  builder: (context) => BlocProvider.value(
+                                        value: bloc,
+                                        child: EditInfoDialog(
+                                          value: metadata,
+                                        ),
+                                      ));
+                              if (newInfo == null) return;
+                              bloc.process(MetadataChanged(newInfo.copyWith(
+                                  type: metadata.type,
+                                  namespace: metadata.namespace)));
+                            },
+                          ),
+                        ],
+                        childrenBuilder: (context) => [
+                          BlocBuilder<WorldBloc, WorldState>(
+                            bloc: bloc,
+                            buildWhen: (previous, current) =>
+                                previous.metadata != current.metadata,
+                            builder: (context, state) =>
+                                Text(state.metadata.description),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                );
+              },
             ),
             const Divider(),
             ListTile(

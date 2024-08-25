@@ -18,6 +18,7 @@ class WorldState with WorldStateMappable {
   final String? name;
   final Channel id;
   final Map<String, Set<Channel>> teamMembers;
+  final FileMetadata metadata;
   final QuokkaData data;
 
   const WorldState({
@@ -25,6 +26,7 @@ class WorldState with WorldStateMappable {
     this.table = const GameTable(),
     this.tableName = '',
     this.info = const GameInfo(),
+    this.metadata = const FileMetadata(),
     this.teamMembers = const {},
     this.id = kAuthorityChannel,
     required this.data,
@@ -65,5 +67,6 @@ class WorldState with WorldStateMappable {
     return table.copyWith(cells: Map.fromEntries(cells));
   }
 
-  QuokkaData save() => data.setTable(table, tableName);
+  QuokkaData save() =>
+      data.setTable(table, tableName).setFileMetadata(metadata);
 }

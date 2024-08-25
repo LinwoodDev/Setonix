@@ -25,6 +25,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
           data: data ?? QuokkaData.empty(),
           colorScheme: colorScheme,
           table: table ?? data?.getTable() ?? const GameTable(),
+          metadata: data?.getMetadata() ?? const FileMetadata(),
         )) {
     assetManager = GameAssetManager(
       bloc: this,

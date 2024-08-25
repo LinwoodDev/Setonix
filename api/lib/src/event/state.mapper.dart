@@ -61,6 +61,7 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
       MapperContainer.globals.use(_instance = WorldStateMapper._());
       GameTableMapper.ensureInitialized();
       GameInfoMapper.ensureInitialized();
+      FileMetadataMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -80,6 +81,9 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
   static GameInfo _$info(WorldState v) => v.info;
   static const Field<WorldState, GameInfo> _f$info =
       Field('info', _$info, opt: true, def: const GameInfo());
+  static FileMetadata _$metadata(WorldState v) => v.metadata;
+  static const Field<WorldState, FileMetadata> _f$metadata =
+      Field('metadata', _$metadata, opt: true, def: const FileMetadata());
   static Map<String, Set<int>> _$teamMembers(WorldState v) => v.teamMembers;
   static const Field<WorldState, Map<String, Set<int>>> _f$teamMembers =
       Field('teamMembers', _$teamMembers, opt: true, def: const {});
@@ -95,6 +99,7 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
     #table: _f$table,
     #tableName: _f$tableName,
     #info: _f$info,
+    #metadata: _f$metadata,
     #teamMembers: _f$teamMembers,
     #id: _f$id,
     #data: _f$data,
@@ -106,6 +111,7 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
         table: data.dec(_f$table),
         tableName: data.dec(_f$tableName),
         info: data.dec(_f$info),
+        metadata: data.dec(_f$metadata),
         teamMembers: data.dec(_f$teamMembers),
         id: data.dec(_f$id),
         data: data.dec(_f$data));
@@ -164,6 +170,7 @@ abstract class WorldStateCopyWith<$R, $In extends WorldState, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   GameTableCopyWith<$R, GameTable, GameTable> get table;
   GameInfoCopyWith<$R, GameInfo, GameInfo> get info;
+  FileMetadataCopyWith<$R, FileMetadata, FileMetadata> get metadata;
   MapCopyWith<$R, String, Set<int>, ObjectCopyWith<$R, Set<int>, Set<int>>>
       get teamMembers;
   $R call(
@@ -171,6 +178,7 @@ abstract class WorldStateCopyWith<$R, $In extends WorldState, $Out>
       GameTable? table,
       String? tableName,
       GameInfo? info,
+      FileMetadata? metadata,
       Map<String, Set<int>>? teamMembers,
       int? id,
       QuokkaData? data});
@@ -192,6 +200,9 @@ class _WorldStateCopyWithImpl<$R, $Out>
   GameInfoCopyWith<$R, GameInfo, GameInfo> get info =>
       $value.info.copyWith.$chain((v) => call(info: v));
   @override
+  FileMetadataCopyWith<$R, FileMetadata, FileMetadata> get metadata =>
+      $value.metadata.copyWith.$chain((v) => call(metadata: v));
+  @override
   MapCopyWith<$R, String, Set<int>, ObjectCopyWith<$R, Set<int>, Set<int>>>
       get teamMembers => MapCopyWith(
           $value.teamMembers,
@@ -203,6 +214,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
           GameTable? table,
           String? tableName,
           GameInfo? info,
+          FileMetadata? metadata,
           Map<String, Set<int>>? teamMembers,
           int? id,
           QuokkaData? data}) =>
@@ -211,6 +223,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
         if (table != null) #table: table,
         if (tableName != null) #tableName: tableName,
         if (info != null) #info: info,
+        if (metadata != null) #metadata: metadata,
         if (teamMembers != null) #teamMembers: teamMembers,
         if (id != null) #id: id,
         if (data != null) #data: data
@@ -221,6 +234,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
       table: data.get(#table, or: $value.table),
       tableName: data.get(#tableName, or: $value.tableName),
       info: data.get(#info, or: $value.info),
+      metadata: data.get(#metadata, or: $value.metadata),
       teamMembers: data.get(#teamMembers, or: $value.teamMembers),
       id: data.get(#id, or: $value.id),
       data: data.get(#data, or: $value.data));

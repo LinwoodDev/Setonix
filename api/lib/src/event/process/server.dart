@@ -129,5 +129,7 @@ WorldState? processServerEvent(ServerWorldEvent event, WorldState state) {
         info: state.info.copyWith.teams.remove(event.team),
         teamMembers: Map.from(state.teamMembers)..remove(event.team),
       );
+    case MetadataChanged():
+      return state.copyWith(metadata: event.metadata);
   }
 }

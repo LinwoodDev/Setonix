@@ -1382,6 +1382,7 @@ class HybridWorldEventMapper extends SubClassMapperBase<HybridWorldEvent> {
       ObjectIndexChangedMapper.ensureInitialized();
       TeamChangedMapper.ensureInitialized();
       TeamRemovedMapper.ensureInitialized();
+      MetadataChangedMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -2341,6 +2342,127 @@ class _TeamRemovedCopyWithImpl<$R, $Out>
   TeamRemovedCopyWith<$R2, TeamRemoved, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
       _TeamRemovedCopyWithImpl($value, $cast, t);
+}
+
+class MetadataChangedMapper extends SubClassMapperBase<MetadataChanged> {
+  MetadataChangedMapper._();
+
+  static MetadataChangedMapper? _instance;
+  static MetadataChangedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = MetadataChangedMapper._());
+      HybridWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      FileMetadataMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'MetadataChanged';
+
+  static FileMetadata _$metadata(MetadataChanged v) => v.metadata;
+  static const Field<MetadataChanged, FileMetadata> _f$metadata =
+      Field('metadata', _$metadata);
+
+  @override
+  final MappableFields<MetadataChanged> fields = const {
+    #metadata: _f$metadata,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'MetadataChanged';
+  @override
+  late final ClassMapperBase superMapper =
+      HybridWorldEventMapper.ensureInitialized();
+
+  static MetadataChanged _instantiate(DecodingData data) {
+    return MetadataChanged(data.dec(_f$metadata));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static MetadataChanged fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<MetadataChanged>(map);
+  }
+
+  static MetadataChanged fromJson(String json) {
+    return ensureInitialized().decodeJson<MetadataChanged>(json);
+  }
+}
+
+mixin MetadataChangedMappable {
+  String toJson() {
+    return MetadataChangedMapper.ensureInitialized()
+        .encodeJson<MetadataChanged>(this as MetadataChanged);
+  }
+
+  Map<String, dynamic> toMap() {
+    return MetadataChangedMapper.ensureInitialized()
+        .encodeMap<MetadataChanged>(this as MetadataChanged);
+  }
+
+  MetadataChangedCopyWith<MetadataChanged, MetadataChanged, MetadataChanged>
+      get copyWith => _MetadataChangedCopyWithImpl(
+          this as MetadataChanged, $identity, $identity);
+  @override
+  String toString() {
+    return MetadataChangedMapper.ensureInitialized()
+        .stringifyValue(this as MetadataChanged);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return MetadataChangedMapper.ensureInitialized()
+        .equalsValue(this as MetadataChanged, other);
+  }
+
+  @override
+  int get hashCode {
+    return MetadataChangedMapper.ensureInitialized()
+        .hashValue(this as MetadataChanged);
+  }
+}
+
+extension MetadataChangedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, MetadataChanged, $Out> {
+  MetadataChangedCopyWith<$R, MetadataChanged, $Out> get $asMetadataChanged =>
+      $base.as((v, t, t2) => _MetadataChangedCopyWithImpl(v, t, t2));
+}
+
+abstract class MetadataChangedCopyWith<$R, $In extends MetadataChanged, $Out>
+    implements HybridWorldEventCopyWith<$R, $In, $Out> {
+  FileMetadataCopyWith<$R, FileMetadata, FileMetadata> get metadata;
+  @override
+  $R call({FileMetadata? metadata});
+  MetadataChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class _MetadataChangedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, MetadataChanged, $Out>
+    implements MetadataChangedCopyWith<$R, MetadataChanged, $Out> {
+  _MetadataChangedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<MetadataChanged> $mapper =
+      MetadataChangedMapper.ensureInitialized();
+  @override
+  FileMetadataCopyWith<$R, FileMetadata, FileMetadata> get metadata =>
+      $value.metadata.copyWith.$chain((v) => call(metadata: v));
+  @override
+  $R call({FileMetadata? metadata}) =>
+      $apply(FieldCopyWithData({if (metadata != null) #metadata: metadata}));
+  @override
+  MetadataChanged $make(CopyWithData data) =>
+      MetadataChanged(data.get(#metadata, or: $value.metadata));
+
+  @override
+  MetadataChangedCopyWith<$R2, MetadataChanged, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _MetadataChangedCopyWithImpl($value, $cast, t);
 }
 
 class LocalWorldEventMapper extends SubClassMapperBase<LocalWorldEvent> {

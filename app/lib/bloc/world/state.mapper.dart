@@ -62,6 +62,7 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
       WorldStateMapper.ensureInitialized();
       GameTableMapper.ensureInitialized();
       GameInfoMapper.ensureInitialized();
+      FileMetadataMapper.ensureInitialized();
       VectorDefinitionMapper.ensureInitialized();
       ItemLocationMapper.ensureInitialized();
     }
@@ -92,6 +93,9 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
   static GameInfo _$info(ClientWorldState v) => v.info;
   static const Field<ClientWorldState, GameInfo> _f$info =
       Field('info', _$info, opt: true, def: const GameInfo());
+  static FileMetadata _$metadata(ClientWorldState v) => v.metadata;
+  static const Field<ClientWorldState, FileMetadata> _f$metadata =
+      Field('metadata', _$metadata, opt: true, def: const FileMetadata());
   static VectorDefinition? _$selectedCell(ClientWorldState v) => v.selectedCell;
   static const Field<ClientWorldState, VectorDefinition> _f$selectedCell =
       Field('selectedCell', _$selectedCell, opt: true);
@@ -121,6 +125,7 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
     #table: _f$table,
     #tableName: _f$tableName,
     #info: _f$info,
+    #metadata: _f$metadata,
     #selectedCell: _f$selectedCell,
     #selectedDeck: _f$selectedDeck,
     #showHand: _f$showHand,
@@ -138,6 +143,7 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
         table: data.dec(_f$table),
         tableName: data.dec(_f$tableName),
         info: data.dec(_f$info),
+        metadata: data.dec(_f$metadata),
         selectedCell: data.dec(_f$selectedCell),
         selectedDeck: data.dec(_f$selectedDeck),
         showHand: data.dec(_f$showHand),
@@ -204,6 +210,8 @@ abstract class ClientWorldStateCopyWith<$R, $In extends ClientWorldState, $Out>
   GameTableCopyWith<$R, GameTable, GameTable> get table;
   @override
   GameInfoCopyWith<$R, GameInfo, GameInfo> get info;
+  @override
+  FileMetadataCopyWith<$R, FileMetadata, FileMetadata> get metadata;
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>?
       get selectedCell;
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get selectedDeck;
@@ -219,6 +227,7 @@ abstract class ClientWorldStateCopyWith<$R, $In extends ClientWorldState, $Out>
       GameTable? table,
       String? tableName,
       GameInfo? info,
+      FileMetadata? metadata,
       VectorDefinition? selectedCell,
       ItemLocation? selectedDeck,
       bool? showHand,
@@ -244,6 +253,9 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
   GameInfoCopyWith<$R, GameInfo, GameInfo> get info =>
       $value.info.copyWith.$chain((v) => call(info: v));
   @override
+  FileMetadataCopyWith<$R, FileMetadata, FileMetadata> get metadata =>
+      $value.metadata.copyWith.$chain((v) => call(metadata: v));
+  @override
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>?
       get selectedCell =>
           $value.selectedCell?.copyWith.$chain((v) => call(selectedCell: v));
@@ -265,6 +277,7 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
           GameTable? table,
           String? tableName,
           GameInfo? info,
+          FileMetadata? metadata,
           Object? selectedCell = $none,
           Object? selectedDeck = $none,
           bool? showHand,
@@ -279,6 +292,7 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
         if (table != null) #table: table,
         if (tableName != null) #tableName: tableName,
         if (info != null) #info: info,
+        if (metadata != null) #metadata: metadata,
         if (selectedCell != $none) #selectedCell: selectedCell,
         if (selectedDeck != $none) #selectedDeck: selectedDeck,
         if (showHand != null) #showHand: showHand,
@@ -295,6 +309,7 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
       table: data.get(#table, or: $value.table),
       tableName: data.get(#tableName, or: $value.tableName),
       info: data.get(#info, or: $value.info),
+      metadata: data.get(#metadata, or: $value.metadata),
       selectedCell: data.get(#selectedCell, or: $value.selectedCell),
       selectedDeck: data.get(#selectedDeck, or: $value.selectedDeck),
       showHand: data.get(#showHand, or: $value.showHand),

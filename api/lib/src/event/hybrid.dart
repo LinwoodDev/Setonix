@@ -66,3 +66,11 @@ final class TeamRemoved extends HybridWorldEvent with TeamRemovedMappable {
 
   TeamRemoved(this.team);
 }
+
+@MappableClass()
+final class MetadataChanged extends HybridWorldEvent
+    with MetadataChangedMappable {
+  final FileMetadata metadata;
+
+  MetadataChanged(this.metadata);
+}
