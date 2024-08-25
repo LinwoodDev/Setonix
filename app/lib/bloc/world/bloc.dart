@@ -36,14 +36,15 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
         _remoteEvent = false;
       })
       ..inits.listen((e) {
-        if (e == 0) return;
+        final (user, info) = e;
+        if (user == 0) return;
         state.multiplayer.sendServer(
             WorldInitialized(
               table: state.table,
               teamMembers: state.teamMembers,
-              id: e,
+              id: user,
             ),
-            e);
+            user);
       })
       ..serverEvents.listen(_processEvent);
 

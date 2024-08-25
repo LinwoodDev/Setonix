@@ -71,9 +71,10 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
   Stream<(ClientWorldEvent, Channel)> get serverEvents =>
       _serverEventController.stream;
 
-  final StreamController<int> _initController = StreamController.broadcast();
+  final StreamController<(Channel, ConnectionInfo)> _initController =
+      StreamController.broadcast();
 
-  Stream<int> get inits => _initController.stream;
+  Stream<(Channel, ConnectionInfo)> get inits => _initController.stream;
 
   MultiplayerCubit() : super(MultiplayerDisabledState());
 

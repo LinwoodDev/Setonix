@@ -36,6 +36,8 @@ class QuokkaData extends ArchiveData<QuokkaData> {
     return GameTableMapper.fromJson(content);
   }
 
+  GameTable getTableOrDefault() => getTable() ?? GameTable();
+
   QuokkaData setTable(GameTable table, String name) => setAsset(
         '$kGameTablePath/$name.json',
         utf8.encode(table.toJson()),

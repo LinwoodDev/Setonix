@@ -228,8 +228,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/networker/networker"
-      ref: "699545d8be7fd267f0aac1481f39c0646bf2198e"
-      resolved-ref: "699545d8be7fd267f0aac1481f39c0646bf2198e"
+      ref: "5a3658cad80fcb8594b8be6f84460e77607eb959"
+      resolved-ref: "5a3658cad80fcb8594b8be6f84460e77607eb959"
       url: "https://github.com/LinwoodDev/dart_pkgs"
     source: git
     version: "1.0.0"
@@ -237,8 +237,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/networker/networker_socket"
-      ref: "3d5b1e311fdc90bf2eaf3d948f08e1eb6098ab68"
-      resolved-ref: "3d5b1e311fdc90bf2eaf3d948f08e1eb6098ab68"
+      ref: "00671cce35e995f203806b55bc6d6881fca0e107"
+      resolved-ref: "00671cce35e995f203806b55bc6d6881fca0e107"
       url: "https://github.com/LinwoodDev/dart_pkgs"
     source: git
     version: "1.0.0"
