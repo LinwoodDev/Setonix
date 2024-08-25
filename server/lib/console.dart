@@ -39,10 +39,14 @@ abstract class ConsoleProgram {
   bool get isHidden => getDescription() == null;
 }
 
+enum LogLevel { verbose, info, warning, error }
+
 class ConsoleManager<T extends ConsoleProgram> {
   StreamSubscription? _subscription;
   final Map<String?, T> _programs = {};
   final String prefix;
+
+  LogLevel minLogLevel = LogLevel.info;
 
   bool _firstPrefix = true;
 
@@ -63,11 +67,36 @@ class ConsoleManager<T extends ConsoleProgram> {
 
   void sendPrefix() {
     _firstPrefix = false;
-    stdout.write(' \r$prefix');
+    stdout.write('\r$prefix');
   }
 
-  void print(Object? message) {
+  void print(Object? message, {LogLevel? level}) {
+    if (level != null && level.index < minLogLevel.index) return;
     stdout.write('\r');
+    final supportsAnsi = stdout.supportsAnsiEscapes;
+    if (level != null) {
+      switch (level) {
+        case LogLevel.verbose:
+          // Purple
+          if (supportsAnsi) stdout.write('\x1B[35m');
+          stdout.write('[VERBOSE] ');
+          break;
+        case LogLevel.info:
+          // Blue
+          if (supportsAnsi) stdout.write('\x1B[36m');
+          stdout.write('[INFO] ');
+          break;
+        case LogLevel.warning:
+          // Yellow
+          if (supportsAnsi) stdout.write('\x1B[33m');
+          stdout.write('[WARNING] ');
+        case LogLevel.error:
+          // Red
+          if (supportsAnsi) stdout.write('\x1B[31m');
+          stdout.write('[ERROR] ');
+      }
+      if (supportsAnsi) stdout.write('\x1B[0m');
+    }
     stdout.write(message);
     sendPrefix();
   }

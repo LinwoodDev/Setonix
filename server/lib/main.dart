@@ -16,7 +16,6 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
   final ConsoleManager consoleManager = ConsoleManager();
   final ServerAssetManager assetManager;
   final String? worldFile;
-  bool _verbose = false;
   bool _temp = false;
   GameTable _table = const GameTable();
 
@@ -52,7 +51,8 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
     return QuokkaServer._(worldFile, data);
   }
 
-  void log(Object? message) => consoleManager.print(message);
+  void log(Object? message, {LogLevel? level}) =>
+      consoleManager.print(message, level: level);
 
   static String get defaultWorldFile => 'world.qka';
 
@@ -61,9 +61,11 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
       bool verbose = false,
       bool autosave = false}) async {
     await _runLogZone(() async {
-      await assetManager.init(verbose: verbose);
+      await assetManager.init(console: consoleManager, verbose: verbose);
     });
-    _verbose = verbose;
+    if (verbose) {
+      consoleManager.minLogLevel = LogLevel.verbose;
+    }
     _temp = autosave;
     final server =
         _server = NetworkerSocketServer(InternetAddress.anyIPv4, port);
@@ -94,10 +96,8 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
     _runLogZone(() {
       consoleManager.run();
     });
-    log('Server running on ${_server?.address}');
-    if (_verbose) {
-      log('Verbose logging activated');
-    }
+    log('Server running on ${_server?.address}', level: LogLevel.info);
+    log('Verbose logging activated', level: LogLevel.verbose);
     await _server?.onClosed.first;
   }
 
@@ -110,9 +110,8 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
       table: _table,
     );
     if (process == null) return;
-    if (_verbose) {
-      log('Processing event by ${event.channel}: $process');
-    }
+    log('Processing event by ${event.channel}: $process',
+        level: LogLevel.verbose);
     _pipe?.sendMessage(process.$1, process.$2);
     if (process.$2 == kAnyChannel || process.$2 == kAuthorityChannel) {
       add(process.$1);
@@ -121,7 +120,7 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
 
   void _onJoin((Channel, ConnectionInfo) event) {
     final (user, info) = event;
-    log('${info.address} ($user) joined the game');
+    log('${info.address} ($user) joined the game', level: LogLevel.info);
     _pipe?.sendMessage(
         WorldInitialized(
           table: state.table,
@@ -133,7 +132,7 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
 
   void _onLeave((Channel, ConnectionInfo) event) {
     final (user, info) = event;
-    log('${info.address} ($user) left the game');
+    log('${info.address} ($user) left the game', level: LogLevel.info);
   }
 
   Future<void> save({bool force = false}) async {
@@ -145,7 +144,7 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
   @override
   Future<void> close() async {
     await super.close();
-    log('Closing...');
+    log('Closing...', level: LogLevel.info);
     _server?.close();
     consoleManager.dispose();
   }

@@ -33,6 +33,13 @@ jobs:
           flutter clean
           flutter pub get
           flutter doctor -v
+      - name: Build nessesary files
+        working-directory: ./
+        run: |
+          cd tools
+          dart pub get
+          cd ..
+          dart run tools/generate.dart
       - name: Import files
         if: ${{ github.event_name != 'pull_request' }}
         env:
