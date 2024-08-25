@@ -10,6 +10,7 @@ class HelpProgram extends ConsoleProgram {
 
   @override
   void run(List<String> args) {
+    print("-----");
     print("Quokka server");
     for (final program in consoleManager.programs) {
       final usage = program.value.getUsage();
@@ -17,5 +18,6 @@ class HelpProgram extends ConsoleProgram {
       if (description == null) continue;
       print("> ${program.key}${usage != null ? ' $usage' : ''} - $description");
     }
+    print("-----");
   }
 }

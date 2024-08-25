@@ -44,23 +44,32 @@ class ConsoleManager<T extends ConsoleProgram> {
   final Map<String?, T> _programs = {};
   final String prefix;
 
+  bool _firstPrefix = true;
+
   ConsoleManager({this.prefix = '\n> '});
 
   void dispose() {
     _subscription?.cancel();
+    _firstPrefix = true;
   }
 
   void run() {
     _subscription?.cancel();
     _subscription = _readLine().listen(_onInput);
-    sendPrefix();
+    if (_firstPrefix) sendPrefix();
   }
 
   Iterable<MapEntry<String?, T>> get programs => _programs.entries;
 
   void sendPrefix() {
-    //TODO:Fix print writes over prefix
-    //stdout.write(prefix);
+    _firstPrefix = false;
+    stdout.write(' \r$prefix');
+  }
+
+  void print(Object? message) {
+    stdout.write('\r');
+    stdout.write(message);
+    sendPrefix();
   }
 
   void registerProgram(String? name, T program) {
@@ -72,8 +81,8 @@ class ConsoleManager<T extends ConsoleProgram> {
   }
 
   void _onInput(String input) {
-    sendPrefix();
     final splitted = _splitBySpaces(input);
-    (_programs[splitted.first] ?? _programs[null])?.run(splitted.sublist(1));
+    (_programs[splitted.firstOrNull] ?? _programs[null])
+        ?.run(splitted.isEmpty ? const [] : splitted.sublist(1));
   }
 }

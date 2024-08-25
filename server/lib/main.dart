@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
@@ -7,6 +8,7 @@ import 'package:quokka_api/quokka_api.dart';
 import 'package:quokka_server/asset.dart';
 import 'package:quokka_server/console.dart';
 import 'package:quokka_server/programs/help.dart';
+import 'package:quokka_server/programs/save.dart';
 import 'package:quokka_server/programs/stop.dart';
 import 'package:quokka_server/programs/unknown.dart';
 
@@ -50,13 +52,17 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
     return QuokkaServer._(worldFile, data);
   }
 
+  void log(Object? message) => consoleManager.print(message);
+
   static String get defaultWorldFile => 'world.qka';
 
   Future<void> init(
       {int port = kDefaultPort,
       bool verbose = false,
       bool autosave = false}) async {
-    await assetManager.init(verbose: verbose);
+    await _runLogZone(() async {
+      await assetManager.init(verbose: verbose);
+    });
     _verbose = verbose;
     _temp = autosave;
     final server =
@@ -73,14 +79,24 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
 
     consoleManager.registerProgram('stop', StopProgram(this));
     consoleManager.registerProgram('help', HelpProgram(consoleManager));
+    consoleManager.registerProgram('save', SaveProgram(this));
     consoleManager.registerProgram(null, UnknownProgram());
   }
 
+  R _runLogZone<R>(R Function() body) =>
+      runZoned(body, zoneSpecification: ZoneSpecification(
+        print: (self, parent, zone, message) {
+          log(message);
+        },
+      ));
+
   Future<void> run() async {
-    consoleManager.run();
-    print('Server running on ${_server?.address}');
+    _runLogZone(() {
+      consoleManager.run();
+    });
+    log('Server running on ${_server?.address}');
     if (_verbose) {
-      print('Verbose logging activated');
+      log('Verbose logging activated');
     }
     await _server?.onClosed.first;
   }
@@ -95,7 +111,7 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
     );
     if (process == null) return;
     if (_verbose) {
-      print('Processing event by ${event.channel}: $process');
+      log('Processing event by ${event.channel}: $process');
     }
     _pipe?.sendMessage(process.$1, process.$2);
     if (process.$2 == kAnyChannel || process.$2 == kAuthorityChannel) {
@@ -105,7 +121,7 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
 
   void _onJoin((Channel, ConnectionInfo) event) {
     final (user, info) = event;
-    print('${info.address} ($user) joined the game');
+    log('${info.address} ($user) joined the game');
     _pipe?.sendMessage(
         WorldInitialized(
           table: state.table,
@@ -117,11 +133,11 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
 
   void _onLeave((Channel, ConnectionInfo) event) {
     final (user, info) = event;
-    print('${info.address} ($user) left the game');
+    log('${info.address} ($user) left the game');
   }
 
-  Future<void> save() async {
-    if (_temp) return;
+  Future<void> save({bool force = false}) async {
+    if (!force && _temp) return;
     final bytes = state.save().exportAsBytes();
     await File(defaultWorldFile).writeAsBytes(bytes);
   }
@@ -129,7 +145,8 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
   @override
   Future<void> close() async {
     await super.close();
-    print('Closing...');
+    log('Closing...');
     _server?.close();
+    consoleManager.dispose();
   }
 }
