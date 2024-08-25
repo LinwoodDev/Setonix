@@ -2,14 +2,14 @@ name: quokka_server
 description: The Linwood Quokka game server
 version: 0.1.0
 publish_to: none
-# repository: https://github.com/my_org/my_repo
 
 environment:
   sdk: ^3.5.1
 
-# Add regular dependencies here.
 dependencies:
   args: ^2.4.2
+  bloc: ^8.1.4
+  logging: ^1.2.0
   networker:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs

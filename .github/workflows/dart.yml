@@ -40,7 +40,7 @@ jobs:
         run: |
           flutter analyze --fatal-infos
       - name: Run build_runner
-        if: matrix.projects != 'tools'
+        if: matrix.projects == 'api' || matrix.projects == 'app'
         run: dart run build_runner build --delete-conflicting-outputs
       - name: Test for git changes
         run: git diff --exit-code

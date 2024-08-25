@@ -35,13 +35,17 @@ class GamePage extends StatefulWidget {
 typedef Blocs = (MultiplayerCubit, WorldBloc);
 
 class _GamePageState extends State<GamePage> {
-  late final Future<Blocs> _bloc;
+  Future<Blocs>? _bloc;
   final ContextMenuController _contextMenuController = ContextMenuController();
 
   @override
   void initState() {
     super.initState();
-    _bloc = _loadTable();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        _bloc = _loadTable();
+      });
+    });
   }
 
   Blocs _initBloc([QuokkaData? data]) {
@@ -81,15 +85,15 @@ class _GamePageState extends State<GamePage> {
 
     final nextColorScheme = Theme.of(context).colorScheme;
     final bloc = await _bloc;
-    if (nextColorScheme != bloc.$2.state.colorScheme) {
-      bloc.$2.process(ColorSchemeChanged(nextColorScheme));
+    if (nextColorScheme != bloc?.$2.state.colorScheme) {
+      bloc?.$2.process(ColorSchemeChanged(nextColorScheme));
     }
   }
 
   @override
   void dispose() {
     super.dispose();
-    _bloc.then((bloc) {
+    _bloc?.then((bloc) {
       bloc.$1.close();
       bloc.$2.close();
     });
@@ -156,8 +160,8 @@ class _GamePageState extends State<GamePage> {
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           FilledButton(
-                                            onPressed: () =>
-                                                GoRouter.of(context).go('/'),
+                                            onPressed: () async =>
+                                                (await _bloc)?.$1.reconnect(),
                                             child: Text(
                                                 AppLocalizations.of(context)
                                                     .reconnect),

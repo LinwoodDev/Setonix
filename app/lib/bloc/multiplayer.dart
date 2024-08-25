@@ -30,9 +30,15 @@ final class MultiplayerConnectingState extends MultiplayerState
 @MappableClass()
 final class MultiplayerDisconnectedState extends MultiplayerState
     with MultiplayerDisconnectedStateMappable {
+  final MultiplayerConnectedState? oldState;
   final Object? error;
 
-  MultiplayerDisconnectedState([this.error]);
+  MultiplayerDisconnectedState({
+    this.error,
+    this.oldState,
+  });
+
+  bool get canReconnect => oldState != null;
 }
 
 @MappableClass()
@@ -144,12 +150,13 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
         port: add.length <= 1 ? kDefaultPort : int.parse(add[1]),
       ));
       final state = await _addNetworker(client);
-      client.onClosed.listen((_) => emit(MultiplayerDisconnectedState()),
-          onError: (e) => emit(MultiplayerDisconnectedState(e)));
+      client.onClosed.listen((_) {
+        if (!isClosed) emit(MultiplayerDisconnectedState(oldState: state));
+      }, onError: (e) => emit(MultiplayerDisconnectedState(error: e)));
       await client.init();
       emit(state);
     } catch (e) {
-      emit(MultiplayerDisconnectedState(e));
+      emit(MultiplayerDisconnectedState(error: e));
     }
   }
 
@@ -161,7 +168,7 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
       await server.init();
       emit(state);
     } catch (e) {
-      emit(MultiplayerDisconnectedState(e));
+      emit(MultiplayerDisconnectedState(error: e));
     }
   }
 
@@ -177,5 +184,19 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
     final state = this.state;
     if (state is! MultiplayerConnectedState) return;
     state.pipe.sendMessage(event, channel);
+  }
+
+  Future<void> reconnect() async {
+    try {
+      final state = this.state;
+      if (state is! MultiplayerDisconnectedState) return;
+      final oldState = state.oldState;
+      if (oldState == null) return;
+      emit(MultiplayerConnectingState());
+      await oldState.networker.init();
+      emit(oldState);
+    } catch (e) {
+      emit(MultiplayerDisconnectedState(error: e));
+    }
   }
 }

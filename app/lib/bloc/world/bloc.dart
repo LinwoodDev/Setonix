@@ -103,8 +103,6 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
     switch (event) {
       case LocalWorldEvent e:
         add(e);
-      case ServerWorldEvent e:
-        add(e);
       case ClientWorldEvent e:
         final multiplayer = state.multiplayer;
         if (multiplayer.isConnected) {
@@ -116,6 +114,8 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
               allowServerEvents: true);
           if (event != null) add(event.$1);
         }
+      case ServerWorldEvent e:
+        add(e);
     }
   }
 }

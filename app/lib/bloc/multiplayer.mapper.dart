@@ -286,6 +286,7 @@ class MultiplayerDisconnectedStateMapper
       MapperContainer.globals
           .use(_instance = MultiplayerDisconnectedStateMapper._());
       MultiplayerStateMapper.ensureInitialized();
+      MultiplayerConnectedStateMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -296,14 +297,21 @@ class MultiplayerDisconnectedStateMapper
   static Object? _$error(MultiplayerDisconnectedState v) => v.error;
   static const Field<MultiplayerDisconnectedState, Object> _f$error =
       Field('error', _$error, opt: true);
+  static MultiplayerConnectedState? _$oldState(
+          MultiplayerDisconnectedState v) =>
+      v.oldState;
+  static const Field<MultiplayerDisconnectedState, MultiplayerConnectedState>
+      _f$oldState = Field('oldState', _$oldState, opt: true);
 
   @override
   final MappableFields<MultiplayerDisconnectedState> fields = const {
     #error: _f$error,
+    #oldState: _f$oldState,
   };
 
   static MultiplayerDisconnectedState _instantiate(DecodingData data) {
-    return MultiplayerDisconnectedState(data.dec(_f$error));
+    return MultiplayerDisconnectedState(
+        error: data.dec(_f$error), oldState: data.dec(_f$oldState));
   }
 
   @override
@@ -365,8 +373,10 @@ abstract class MultiplayerDisconnectedStateCopyWith<
     $R,
     $In extends MultiplayerDisconnectedState,
     $Out> implements MultiplayerStateCopyWith<$R, $In, $Out> {
+  MultiplayerConnectedStateCopyWith<$R, MultiplayerConnectedState,
+      MultiplayerConnectedState>? get oldState;
   @override
-  $R call({Object? error});
+  $R call({Object? error, MultiplayerConnectedState? oldState});
   MultiplayerDisconnectedStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -383,11 +393,21 @@ class _MultiplayerDisconnectedStateCopyWithImpl<$R, $Out>
   late final ClassMapperBase<MultiplayerDisconnectedState> $mapper =
       MultiplayerDisconnectedStateMapper.ensureInitialized();
   @override
-  $R call({Object? error = $none}) =>
-      $apply(FieldCopyWithData({if (error != $none) #error: error}));
+  MultiplayerConnectedStateCopyWith<$R, MultiplayerConnectedState,
+          MultiplayerConnectedState>?
+      get oldState =>
+          $value.oldState?.copyWith.$chain((v) => call(oldState: v));
+  @override
+  $R call({Object? error = $none, Object? oldState = $none}) =>
+      $apply(FieldCopyWithData({
+        if (error != $none) #error: error,
+        if (oldState != $none) #oldState: oldState
+      }));
   @override
   MultiplayerDisconnectedState $make(CopyWithData data) =>
-      MultiplayerDisconnectedState(data.get(#error, or: $value.error));
+      MultiplayerDisconnectedState(
+          error: data.get(#error, or: $value.error),
+          oldState: data.get(#oldState, or: $value.oldState));
 
   @override
   MultiplayerDisconnectedStateCopyWith<$R2, MultiplayerDisconnectedState, $Out2>
