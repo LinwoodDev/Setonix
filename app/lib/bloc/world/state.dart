@@ -14,71 +14,27 @@ enum WorldOperationMode {
 }
 
 @MappableClass()
-class WorldState with WorldStateMappable {
+class ClientWorldState extends WorldState with ClientWorldStateMappable {
   final MultiplayerCubit multiplayer;
   final ColorScheme colorScheme;
   final QuokkaFileSystem fileSystem;
-  final GameTable table;
-  final String tableName;
-  final GameInfo info;
   final VectorDefinition? selectedCell;
   final ItemLocation? selectedDeck;
   final bool showHand;
-  final String? name;
-  final Channel id;
-  final Map<String, Set<Channel>> teamMembers;
-  final QuokkaData data;
 
-  const WorldState({
+  const ClientWorldState({
     required this.multiplayer,
     required this.fileSystem,
     required this.colorScheme,
-    this.name,
-    this.table = const GameTable(),
-    this.tableName = '',
-    this.info = const GameInfo(),
+    super.name,
+    super.table,
+    super.tableName,
+    super.info,
     this.selectedCell,
     this.selectedDeck,
     this.showHand = false,
-    this.id = kAuthorityChannel,
-    this.teamMembers = const {},
-    required this.data,
+    super.id,
+    super.teamMembers,
+    required super.data,
   });
-
-  bool isCellVisible(VectorDefinition cell, [Channel? id]) {
-    bool isClaimed = false, isMyTeam = false;
-    for (final entry in info.teams.entries) {
-      final name = entry.key;
-      final team = entry.value;
-      if (team.claimedCells.contains(cell)) {
-        isClaimed = true;
-        if (teamMembers[name]?.contains(id ?? this.id) ?? false) {
-          isMyTeam = true;
-          break;
-        }
-      }
-    }
-    return !isClaimed || isMyTeam;
-  }
-
-  TableCell? restrictCell(VectorDefinition cell, Channel user) {
-    final cellObject = table.cells[cell];
-    if (cellObject == null) {
-      return null;
-    }
-    final cellVisible = isCellVisible(cell, user);
-    final objects = cellObject.objects
-        .map((e) => e.copyWith(
-            variation: cellVisible && !e.hidden ? e.variation : null))
-        .toList();
-    return cellObject.copyWith(objects: objects);
-  }
-
-  GameTable restrict(Channel user) {
-    final cells =
-        table.cells.keys.map((e) => MapEntry(e, restrictCell(e, user)!));
-    return table.copyWith(cells: Map.fromEntries(cells));
-  }
-
-  QuokkaData save() => data.setTable(table, tableName);
 }

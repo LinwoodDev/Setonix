@@ -9,7 +9,7 @@ class FigureDefinitionHandItem
   FigureDefinitionHandItem({required super.item});
 
   @override
-  String getLabel(WorldState state) {
+  String getLabel(ClientWorldState state) {
     final translation = game.assetManager.getTranslations(item.$1.namespace);
     final variation = item.$2;
     if (variation != null) {
@@ -21,7 +21,7 @@ class FigureDefinitionHandItem
   }
 
   @override
-  Future<Sprite?> loadIcon(WorldState state) =>
+  Future<Sprite?> loadIcon(ClientWorldState state) =>
       assetManager.loadFigureSpriteFromLocation(item.$1.location, item.$2);
   @override
   void moveItem(HandItemDropZone zone) {

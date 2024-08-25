@@ -94,7 +94,7 @@ class TeamDialogState extends State<TeamDialog> {
           onPressed: () => Navigator.of(context).pop(),
           child: Text(AppLocalizations.of(context).cancel),
         ),
-        BlocBuilder<WorldBloc, WorldState>(
+        BlocBuilder<WorldBloc, ClientWorldState>(
           bloc: _bloc,
           buildWhen: (previous, current) =>
               previous.info.teams != current.info.teams,

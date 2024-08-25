@@ -33,7 +33,7 @@ class GameCell extends PositionComponent
         DetailsTapCallbacks,
         CollisionCallbacks,
         HandItemDropZone,
-        FlameBlocListenable<WorldBloc, WorldState>,
+        FlameBlocListenable<WorldBloc, ClientWorldState>,
         ScrollCallbacks {
   late final SpriteComponent _selectionComponent;
   SpriteComponent? _cardComponent;
@@ -69,7 +69,7 @@ class GameCell extends PositionComponent
   }
 
   @override
-  bool listenWhen(WorldState previousState, WorldState newState) {
+  bool listenWhen(ClientWorldState previousState, ClientWorldState newState) {
     final definition = toDefinition();
     return (previousState.selectedCell == definition) !=
             (newState.selectedCell == definition) ||
@@ -131,19 +131,19 @@ class GameCell extends PositionComponent
   VectorDefinition toDefinition() =>
       (position.clone()..divide(grid.cellSize)).toDefinition();
 
-  GlobalVectorDefinition toGlobalDefinition(WorldState state) =>
+  GlobalVectorDefinition toGlobalDefinition(ClientWorldState state) =>
       GlobalVectorDefinition.fromLocal(state.tableName, toDefinition());
 
   @override
-  void onInitialState(WorldState state) {
+  void onInitialState(ClientWorldState state) {
     if (state.selectedCell != toDefinition()) _selectionComponent.opacity = 0;
     _updateTop(state);
   }
 
-  bool isClaimed(WorldState state) => state.info.teams.entries.any(
+  bool isClaimed(ClientWorldState state) => state.info.teams.entries.any(
       (entry) => entry.value.claimedCells.contains(toGlobalDefinition(state)));
 
-  bool isAllowed(WorldState state) => state.teamMembers.entries
+  bool isAllowed(ClientWorldState state) => state.teamMembers.entries
       .where((entry) => entry.value.contains(state.id))
       .any((entry) =>
           state.info.teams[entry.key]?.claimedCells
@@ -151,7 +151,7 @@ class GameCell extends PositionComponent
           false);
 
   @override
-  Future<void> onNewState(WorldState state) async {
+  Future<void> onNewState(ClientWorldState state) async {
     final selected = state.selectedCell == toDefinition();
     final controller = EffectController(
       duration: 0.1,
@@ -175,7 +175,7 @@ class GameCell extends PositionComponent
     await _updateTop(state);
   }
 
-  Future<void> _updateTop(WorldState state) async {
+  Future<void> _updateTop(ClientWorldState state) async {
     final top = state.table.cells[toDefinition()]?.objects.firstOrNull;
     if (_cardComponent != null) {
       remove(_cardComponent!);
@@ -245,7 +245,7 @@ class GameCell extends PositionComponent
                           ],
                         ),
                         childrenBuilder: (context) => [
-                          BlocBuilder<WorldBloc, WorldState>(
+                          BlocBuilder<WorldBloc, ClientWorldState>(
                             bloc: bloc,
                             buildWhen: (previous, current) =>
                                 previous.info.teams != current.info.teams,

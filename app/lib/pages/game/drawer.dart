@@ -26,7 +26,7 @@ class GameDrawer extends StatelessWidget {
         child: ListView(
           shrinkWrap: true,
           children: [
-            BlocBuilder<WorldBloc, WorldState>(
+            BlocBuilder<WorldBloc, ClientWorldState>(
               buildWhen: (previous, current) => previous.name != current.name,
               builder: (context, state) => Text(
                 state.name ?? '',
@@ -40,7 +40,7 @@ class GameDrawer extends StatelessWidget {
               title: Text(MaterialLocalizations.of(context).backButtonTooltip),
               onTap: () => Scaffold.of(context).closeDrawer(),
             ),
-            BlocBuilder<WorldBloc, WorldState>(
+            BlocBuilder<WorldBloc, ClientWorldState>(
               buildWhen: (previous, current) =>
                   previous.table.background != current.table.background,
               builder: (context, state) {
@@ -114,7 +114,7 @@ class GameDrawer extends StatelessWidget {
                     ),
                   ],
                   childrenBuilder: (context) => [
-                    BlocBuilder<WorldBloc, WorldState>(
+                    BlocBuilder<WorldBloc, ClientWorldState>(
                       buildWhen: (previous, current) =>
                           previous.info.teams != current.info.teams ||
                           previous.teamMembers != current.teamMembers,

@@ -190,7 +190,7 @@ class _GamePageState extends State<GamePage> {
                         title: Text(AppLocalizations.of(context).game),
                         height: 50,
                         actions: [
-                          BlocBuilder<WorldBloc, WorldState>(
+                          BlocBuilder<WorldBloc, ClientWorldState>(
                               buildWhen: (previous, current) =>
                                   previous.showHand != current.showHand ||
                                   previous.selectedCell != current.selectedCell,

@@ -43,7 +43,7 @@ class BoardGame extends FlameGame
   FutureOr<void> onLoad() async {
     add(ScreenHitbox());
     final provider =
-        FlameBlocProvider<WorldBloc, WorldState>.value(value: bloc);
+        FlameBlocProvider<WorldBloc, ClientWorldState>.value(value: bloc);
     await add(provider);
     provider.addAll([camera, world]);
     const packName = '';

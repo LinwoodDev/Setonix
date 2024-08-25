@@ -52,13 +52,14 @@ extension WorldOperationModeMapperExtension on WorldOperationMode {
   }
 }
 
-class WorldStateMapper extends ClassMapperBase<WorldState> {
-  WorldStateMapper._();
+class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
+  ClientWorldStateMapper._();
 
-  static WorldStateMapper? _instance;
-  static WorldStateMapper ensureInitialized() {
+  static ClientWorldStateMapper? _instance;
+  static ClientWorldStateMapper ensureInitialized() {
     if (_instance == null) {
-      MapperContainer.globals.use(_instance = WorldStateMapper._());
+      MapperContainer.globals.use(_instance = ClientWorldStateMapper._());
+      WorldStateMapper.ensureInitialized();
       GameTableMapper.ensureInitialized();
       GameInfoMapper.ensureInitialized();
       VectorDefinitionMapper.ensureInitialized();
@@ -68,49 +69,51 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
   }
 
   @override
-  final String id = 'WorldState';
+  final String id = 'ClientWorldState';
 
-  static MultiplayerCubit _$multiplayer(WorldState v) => v.multiplayer;
-  static const Field<WorldState, MultiplayerCubit> _f$multiplayer =
+  static MultiplayerCubit _$multiplayer(ClientWorldState v) => v.multiplayer;
+  static const Field<ClientWorldState, MultiplayerCubit> _f$multiplayer =
       Field('multiplayer', _$multiplayer);
-  static QuokkaFileSystem _$fileSystem(WorldState v) => v.fileSystem;
-  static const Field<WorldState, QuokkaFileSystem> _f$fileSystem =
+  static QuokkaFileSystem _$fileSystem(ClientWorldState v) => v.fileSystem;
+  static const Field<ClientWorldState, QuokkaFileSystem> _f$fileSystem =
       Field('fileSystem', _$fileSystem);
-  static ColorScheme _$colorScheme(WorldState v) => v.colorScheme;
-  static const Field<WorldState, ColorScheme> _f$colorScheme =
+  static ColorScheme _$colorScheme(ClientWorldState v) => v.colorScheme;
+  static const Field<ClientWorldState, ColorScheme> _f$colorScheme =
       Field('colorScheme', _$colorScheme);
-  static String? _$name(WorldState v) => v.name;
-  static const Field<WorldState, String> _f$name =
+  static String? _$name(ClientWorldState v) => v.name;
+  static const Field<ClientWorldState, String> _f$name =
       Field('name', _$name, opt: true);
-  static GameTable _$table(WorldState v) => v.table;
-  static const Field<WorldState, GameTable> _f$table =
+  static GameTable _$table(ClientWorldState v) => v.table;
+  static const Field<ClientWorldState, GameTable> _f$table =
       Field('table', _$table, opt: true, def: const GameTable());
-  static String _$tableName(WorldState v) => v.tableName;
-  static const Field<WorldState, String> _f$tableName =
+  static String _$tableName(ClientWorldState v) => v.tableName;
+  static const Field<ClientWorldState, String> _f$tableName =
       Field('tableName', _$tableName, opt: true, def: '');
-  static GameInfo _$info(WorldState v) => v.info;
-  static const Field<WorldState, GameInfo> _f$info =
+  static GameInfo _$info(ClientWorldState v) => v.info;
+  static const Field<ClientWorldState, GameInfo> _f$info =
       Field('info', _$info, opt: true, def: const GameInfo());
-  static VectorDefinition? _$selectedCell(WorldState v) => v.selectedCell;
-  static const Field<WorldState, VectorDefinition> _f$selectedCell =
+  static VectorDefinition? _$selectedCell(ClientWorldState v) => v.selectedCell;
+  static const Field<ClientWorldState, VectorDefinition> _f$selectedCell =
       Field('selectedCell', _$selectedCell, opt: true);
-  static ItemLocation? _$selectedDeck(WorldState v) => v.selectedDeck;
-  static const Field<WorldState, ItemLocation> _f$selectedDeck =
+  static ItemLocation? _$selectedDeck(ClientWorldState v) => v.selectedDeck;
+  static const Field<ClientWorldState, ItemLocation> _f$selectedDeck =
       Field('selectedDeck', _$selectedDeck, opt: true);
-  static bool _$showHand(WorldState v) => v.showHand;
-  static const Field<WorldState, bool> _f$showHand =
+  static bool _$showHand(ClientWorldState v) => v.showHand;
+  static const Field<ClientWorldState, bool> _f$showHand =
       Field('showHand', _$showHand, opt: true, def: false);
-  static int _$id(WorldState v) => v.id;
-  static const Field<WorldState, int> _f$id =
+  static int _$id(ClientWorldState v) => v.id;
+  static const Field<ClientWorldState, int> _f$id =
       Field('id', _$id, opt: true, def: kAuthorityChannel);
-  static Map<String, Set<int>> _$teamMembers(WorldState v) => v.teamMembers;
-  static const Field<WorldState, Map<String, Set<int>>> _f$teamMembers =
+  static Map<String, Set<int>> _$teamMembers(ClientWorldState v) =>
+      v.teamMembers;
+  static const Field<ClientWorldState, Map<String, Set<int>>> _f$teamMembers =
       Field('teamMembers', _$teamMembers, opt: true, def: const {});
-  static QuokkaData _$data(WorldState v) => v.data;
-  static const Field<WorldState, QuokkaData> _f$data = Field('data', _$data);
+  static QuokkaData _$data(ClientWorldState v) => v.data;
+  static const Field<ClientWorldState, QuokkaData> _f$data =
+      Field('data', _$data);
 
   @override
-  final MappableFields<WorldState> fields = const {
+  final MappableFields<ClientWorldState> fields = const {
     #multiplayer: _f$multiplayer,
     #fileSystem: _f$fileSystem,
     #colorScheme: _f$colorScheme,
@@ -126,8 +129,8 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
     #data: _f$data,
   };
 
-  static WorldState _instantiate(DecodingData data) {
-    return WorldState(
+  static ClientWorldState _instantiate(DecodingData data) {
+    return ClientWorldState(
         multiplayer: data.dec(_f$multiplayer),
         fileSystem: data.dec(_f$fileSystem),
         colorScheme: data.dec(_f$colorScheme),
@@ -146,61 +149,68 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
   @override
   final Function instantiate = _instantiate;
 
-  static WorldState fromMap(Map<String, dynamic> map) {
-    return ensureInitialized().decodeMap<WorldState>(map);
+  static ClientWorldState fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<ClientWorldState>(map);
   }
 
-  static WorldState fromJson(String json) {
-    return ensureInitialized().decodeJson<WorldState>(json);
+  static ClientWorldState fromJson(String json) {
+    return ensureInitialized().decodeJson<ClientWorldState>(json);
   }
 }
 
-mixin WorldStateMappable {
+mixin ClientWorldStateMappable {
   String toJson() {
-    return WorldStateMapper.ensureInitialized()
-        .encodeJson<WorldState>(this as WorldState);
+    return ClientWorldStateMapper.ensureInitialized()
+        .encodeJson<ClientWorldState>(this as ClientWorldState);
   }
 
   Map<String, dynamic> toMap() {
-    return WorldStateMapper.ensureInitialized()
-        .encodeMap<WorldState>(this as WorldState);
+    return ClientWorldStateMapper.ensureInitialized()
+        .encodeMap<ClientWorldState>(this as ClientWorldState);
   }
 
-  WorldStateCopyWith<WorldState, WorldState, WorldState> get copyWith =>
-      _WorldStateCopyWithImpl(this as WorldState, $identity, $identity);
+  ClientWorldStateCopyWith<ClientWorldState, ClientWorldState, ClientWorldState>
+      get copyWith => _ClientWorldStateCopyWithImpl(
+          this as ClientWorldState, $identity, $identity);
   @override
   String toString() {
-    return WorldStateMapper.ensureInitialized()
-        .stringifyValue(this as WorldState);
+    return ClientWorldStateMapper.ensureInitialized()
+        .stringifyValue(this as ClientWorldState);
   }
 
   @override
   bool operator ==(Object other) {
-    return WorldStateMapper.ensureInitialized()
-        .equalsValue(this as WorldState, other);
+    return ClientWorldStateMapper.ensureInitialized()
+        .equalsValue(this as ClientWorldState, other);
   }
 
   @override
   int get hashCode {
-    return WorldStateMapper.ensureInitialized().hashValue(this as WorldState);
+    return ClientWorldStateMapper.ensureInitialized()
+        .hashValue(this as ClientWorldState);
   }
 }
 
-extension WorldStateValueCopy<$R, $Out>
-    on ObjectCopyWith<$R, WorldState, $Out> {
-  WorldStateCopyWith<$R, WorldState, $Out> get $asWorldState =>
-      $base.as((v, t, t2) => _WorldStateCopyWithImpl(v, t, t2));
+extension ClientWorldStateValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, ClientWorldState, $Out> {
+  ClientWorldStateCopyWith<$R, ClientWorldState, $Out>
+      get $asClientWorldState =>
+          $base.as((v, t, t2) => _ClientWorldStateCopyWithImpl(v, t, t2));
 }
 
-abstract class WorldStateCopyWith<$R, $In extends WorldState, $Out>
-    implements ClassCopyWith<$R, $In, $Out> {
+abstract class ClientWorldStateCopyWith<$R, $In extends ClientWorldState, $Out>
+    implements WorldStateCopyWith<$R, $In, $Out> {
+  @override
   GameTableCopyWith<$R, GameTable, GameTable> get table;
+  @override
   GameInfoCopyWith<$R, GameInfo, GameInfo> get info;
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>?
       get selectedCell;
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get selectedDeck;
+  @override
   MapCopyWith<$R, String, Set<int>, ObjectCopyWith<$R, Set<int>, Set<int>>>
       get teamMembers;
+  @override
   $R call(
       {MultiplayerCubit? multiplayer,
       QuokkaFileSystem? fileSystem,
@@ -215,17 +225,18 @@ abstract class WorldStateCopyWith<$R, $In extends WorldState, $Out>
       int? id,
       Map<String, Set<int>>? teamMembers,
       QuokkaData? data});
-  WorldStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+  ClientWorldStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
 }
 
-class _WorldStateCopyWithImpl<$R, $Out>
-    extends ClassCopyWithBase<$R, WorldState, $Out>
-    implements WorldStateCopyWith<$R, WorldState, $Out> {
-  _WorldStateCopyWithImpl(super.value, super.then, super.then2);
+class _ClientWorldStateCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, ClientWorldState, $Out>
+    implements ClientWorldStateCopyWith<$R, ClientWorldState, $Out> {
+  _ClientWorldStateCopyWithImpl(super.value, super.then, super.then2);
 
   @override
-  late final ClassMapperBase<WorldState> $mapper =
-      WorldStateMapper.ensureInitialized();
+  late final ClassMapperBase<ClientWorldState> $mapper =
+      ClientWorldStateMapper.ensureInitialized();
   @override
   GameTableCopyWith<$R, GameTable, GameTable> get table =>
       $value.table.copyWith.$chain((v) => call(table: v));
@@ -276,7 +287,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
         if (data != null) #data: data
       }));
   @override
-  WorldState $make(CopyWithData data) => WorldState(
+  ClientWorldState $make(CopyWithData data) => ClientWorldState(
       multiplayer: data.get(#multiplayer, or: $value.multiplayer),
       fileSystem: data.get(#fileSystem, or: $value.fileSystem),
       colorScheme: data.get(#colorScheme, or: $value.colorScheme),
@@ -292,7 +303,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
       data: data.get(#data, or: $value.data));
 
   @override
-  WorldStateCopyWith<$R2, WorldState, $Out2> $chain<$R2, $Out2>(
+  ClientWorldStateCopyWith<$R2, ClientWorldState, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _WorldStateCopyWithImpl($value, $cast, t);
+      _ClientWorldStateCopyWithImpl($value, $cast, t);
 }

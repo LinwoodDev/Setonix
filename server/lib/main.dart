@@ -35,7 +35,7 @@ final class QuokkaServer {
 
   void _onClientEvent(NetworkerPacket<WorldEvent> event) {
     final data = event.data;
-    final process = processEvent(
+    final process = processClientEvent(
       data,
       event.channel,
       assetManager: assetManager,

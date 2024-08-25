@@ -96,7 +96,7 @@ abstract class HandItem<T> extends PositionComponent
         DoubleTapCallbacks,
         SecondaryTapCallbacks,
         DetailsTapCallbacks,
-        FlameBlocListenable<WorldBloc, WorldState> {
+        FlameBlocListenable<WorldBloc, ClientWorldState> {
   final T item;
   final SpriteComponent _sprite = SpriteComponent();
   late final TextComponent<TextPaint> _label;
@@ -105,9 +105,9 @@ abstract class HandItem<T> extends PositionComponent
 
   GameHand get hand => findParent<GameHand>()!;
 
-  String getLabel(WorldState state);
+  String getLabel(ClientWorldState state);
 
-  Future<Sprite?> loadIcon(WorldState state);
+  Future<Sprite?> loadIcon(ClientWorldState state);
 
   GameAssetManager get assetManager => game.assetManager;
 
@@ -129,11 +129,11 @@ abstract class HandItem<T> extends PositionComponent
   }
 
   @override
-  bool listenWhen(WorldState previousState, WorldState newState) =>
+  bool listenWhen(ClientWorldState previousState, ClientWorldState newState) =>
       previousState.colorScheme != newState.colorScheme;
 
   @override
-  void onInitialState(WorldState state) async {
+  void onInitialState(ClientWorldState state) async {
     add(_label = TextComponent(
         text: getLabel(state),
         size: Vector2(0, labelHeight),
@@ -143,12 +143,12 @@ abstract class HandItem<T> extends PositionComponent
     _sprite.sprite = await loadIcon(state);
   }
 
-  _buildPaint(WorldState state) => TextPaint(
+  _buildPaint(ClientWorldState state) => TextPaint(
         style: TextStyle(fontSize: 14, color: state.colorScheme.onSurface),
       );
 
   @override
-  void onNewState(WorldState state) {
+  void onNewState(ClientWorldState state) {
     _label.textRenderer = _buildPaint(state);
   }
 

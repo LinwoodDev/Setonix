@@ -10,22 +10,22 @@ import 'package:quokka/bloc/world/state.dart';
 class GameBoardBackground extends PositionComponent
     with
         HasGameReference<BoardGame>,
-        FlameBlocListenable<WorldBloc, WorldState> {
+        FlameBlocListenable<WorldBloc, ClientWorldState> {
   SpriteComponent? _sprite;
 
   GameBoardBackground({super.size});
 
   @override
-  void onInitialState(WorldState state) => updateBackground(state);
+  void onInitialState(ClientWorldState state) => updateBackground(state);
 
   @override
-  bool listenWhen(WorldState previousState, WorldState newState) =>
+  bool listenWhen(ClientWorldState previousState, ClientWorldState newState) =>
       previousState.table.background != newState.table.background;
 
   @override
-  void onNewState(WorldState state) => updateBackground(state);
+  void onNewState(ClientWorldState state) => updateBackground(state);
 
-  Future<void> updateBackground(WorldState state) async {
+  Future<void> updateBackground(ClientWorldState state) async {
     final backgroundLocation = state.table.background;
     final background = (backgroundLocation == null
             ? null

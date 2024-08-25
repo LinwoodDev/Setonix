@@ -11,7 +11,7 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
   GameObjectHandItem({required super.item});
 
   @override
-  String getLabel(WorldState state) {
+  String getLabel(ClientWorldState state) {
     final object = item.$3;
     final translation =
         game.assetManager.getTranslations(object.asset.namespace);
@@ -25,7 +25,7 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
   }
 
   @override
-  Future<Sprite?> loadIcon(WorldState state) =>
+  Future<Sprite?> loadIcon(ClientWorldState state) =>
       game.assetManager.loadFigureSpriteFromLocation(
           item.$3.asset,
           item.$3.hidden || !state.isCellVisible(item.$1)

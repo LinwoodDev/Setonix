@@ -43,6 +43,9 @@ class GameTable with GameTableMappable {
     this.boards = const {},
     this.background,
   });
+
+  TableCell getCell(VectorDefinition position) =>
+      cells[position] ?? TableCell();
 }
 
 @MappableClass()

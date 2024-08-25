@@ -43,7 +43,7 @@ class GameHand extends CustomPainterComponent
     with
         HasGameRef<BoardGame>,
         DragCallbacks,
-        FlameBlocListenable<WorldBloc, WorldState>,
+        FlameBlocListenable<WorldBloc, ClientWorldState>,
         TapCallbacks,
         ScrollCallbacks,
         CollisionCallbacks,
@@ -59,10 +59,10 @@ class GameHand extends CustomPainterComponent
   }
 
   @override
-  void onInitialState(WorldState state) => _buildHand(state);
+  void onInitialState(ClientWorldState state) => _buildHand(state);
 
   @override
-  void onNewState(WorldState state) => _buildHand(state);
+  void onNewState(ClientWorldState state) => _buildHand(state);
 
   @override
   void onParentResize(Vector2 maxSize) {
@@ -74,7 +74,7 @@ class GameHand extends CustomPainterComponent
   }
 
   @override
-  bool listenWhen(WorldState previousState, WorldState newState) =>
+  bool listenWhen(ClientWorldState previousState, ClientWorldState newState) =>
       previousState.showHand != newState.showHand ||
       previousState.selectedDeck != newState.selectedDeck ||
       previousState.selectedCell != newState.selectedCell ||
@@ -82,7 +82,7 @@ class GameHand extends CustomPainterComponent
           newState.table.cells[newState.selectedCell] ||
       previousState.colorScheme != newState.colorScheme;
 
-  void _buildHand(WorldState state) {
+  void _buildHand(ClientWorldState state) {
     _scrollView.clearChildren();
     painter = GameHandCustomPainter(
         showHand: state.showHand, color: state.colorScheme.surface);
