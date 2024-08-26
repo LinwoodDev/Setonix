@@ -477,6 +477,52 @@ jobs:
   #       with:
   #         name: quokka-snap
   #         path: ${{ steps.build.outputs.snap }}
+  build-server:
+    defaults:
+      run:
+        working-directory: server
+    strategy:
+      matrix:
+        os:
+          - name: ubuntu-22.04
+            label: linux
+          - name: windows-2022
+            label: windows
+          - name: macos-latest
+            label: macos
+    runs-on: ${{ matrix.os.name }}
+    steps:
+      - name: ⬆️ Checkout
+        uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2.16.0
+        with:
+          flutter-version-file: app/pubspec.yaml
+      - name: 📦 Get dependencies
+        run: |
+          flutter clean
+          flutter pub get
+          flutter doctor -v
+      - name: Compile
+        run: |
+          dart compile exe bin/quokka_server.dart
+      - name: Create directory
+        run: |
+          mkdir -p server-build
+          mv bin/quokka_server.exe server-build/
+          mkdir -p server-build/packs
+      - name: Build nessesary files
+        working-directory: ./
+        run: |
+          cd tools
+          dart pub get
+          cd ..
+          dart run tools/generate.dart
+          cp app/assets/pack.qka server/server-build/packs/.qka
+      - name: Archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: server-build-${{ matrix.os.label }}
+          path: server/server-build
   deploy:
     runs-on: ubuntu-22.04
     if: github.event_name != 'pull_request'
@@ -490,6 +536,7 @@ jobs:
       - build-flatpak
       - build-macos
       - build-ipa
+      - build-server
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v4
@@ -555,11 +602,26 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: ipa-build
+      - uses: actions/download-artifact@v4
+        with:
+          name: server-build-linux
+          path: server-build-linux/
+      - uses: actions/download-artifact@v4
+        with:
+          name: server-build-windows
+          path: server-build-windows/
+      - uses: actions/download-artifact@v4
+        with:
+          name: server-build-macos
+          path: server-build-macos/
       - name: 📦 Zip artifacts
         run: |
           zip -r linwood-quokka-windows-x86_64.zip windows-build/*
           tar -C linux-build -czf linwood-quokka-linux-x86_64.tar.gz .
           tar -C linux-alternative-portable -czf linwood-quokka-linux-alternative-x86_64.tar.gz .
+          zip -r linwood-quokka-server-windows-x86_64.zip server-build-windows/*
+          tar -C server-build-linux -czf linwood-quokka-server-linux-x86_64.tar.gz .
+          zip -r linwood-quokka-server-macos.zip server-build-macos/*
       - name: Configure git
         if: ${{ github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main' }}
         run: |
@@ -586,6 +648,9 @@ jobs:
             linwood-quokka-macos.dmg
             linwood-quokka-android.apk
             linwood-quokka-ios.ipa
+            linwood-quokka-server-linux-x86_64.tar.gz
+            linwood-quokka-server-windows-x86_64.zip
+            linwood-quokka-server-macos.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: 🚀 Deploy nightly
@@ -610,6 +675,9 @@ jobs:
             linwood-quokka-android-arm64.apk
             linwood-quokka-android-x86_64.apk
             linwood-quokka-ios.ipa
+            linwood-quokka-server-linux-x86_64.tar.gz
+            linwood-quokka-server-windows-x86_64.zip
+            linwood-quokka-server-macos.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Release
@@ -632,6 +700,9 @@ jobs:
             linwood-quokka-android-arm64.apk
             linwood-quokka-android-x86_64.apk
             linwood-quokka-ios.ipa
+            linwood-quokka-server-linux-x86_64.tar.gz
+            linwood-quokka-server-windows-x86_64.zip
+            linwood-quokka-server-macos.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   deploy-to-play-store:

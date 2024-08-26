@@ -7,6 +7,8 @@ import 'package:quokka_server/console.dart';
 class ServerAssetManager extends AssetManager {
   final Map<String, QuokkaData> _packs = {};
 
+  Iterable<MapEntry<String, QuokkaData>> get packs => _packs.entries;
+
   Future<void> init(
       {required ConsoleManager console, bool verbose = false}) async {
     _packs.clear();
@@ -23,12 +25,15 @@ class ServerAssetManager extends AssetManager {
         _packs[fileName] = data;
       }
     }
-    console.print('Loaded ${_packs.length} packs.', level: LogLevel.info);
+    final coreIncluded = _packs.containsKey('');
+    console.print(
+        'Loaded ${_packs.length} packs. ${coreIncluded ? '(with core pack)' : '(without core pack)'}',
+        level: LogLevel.info);
     if (_packs.isEmpty) {
       console.print('No packs loaded.', level: LogLevel.warning);
-    }
-    if (verbose) {
-      print('Loaded packs: ${_packs.keys.join(', ')}');
+    } else {
+      console.print('Loaded packs: ${_packs.keys.join(', ')}',
+          level: LogLevel.verbose);
     }
   }
 

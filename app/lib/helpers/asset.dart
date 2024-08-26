@@ -12,6 +12,7 @@ import 'package:quokka_api/quokka_api.dart';
 class GameAssetManager extends AssetManager {
   String currentLocale;
   final WorldBloc bloc;
+  final Set<String> _allowedPacks = {};
   final Map<String, QuokkaData> _loadedPacks = {};
   final Map<String, TranslationsStore> _loadedTranslations = {};
   final Map<ItemLocation, Future<Image>> _cachedImages = {};
@@ -23,7 +24,8 @@ class GameAssetManager extends AssetManager {
     this.currentLocale = 'en',
   });
 
-  Iterable<MapEntry<String, QuokkaData>> get packs => _loadedPacks.entries;
+  Iterable<MapEntry<String, QuokkaData>> get packs => _loadedPacks.entries
+      .where((e) => _allowedPacks.isEmpty || _allowedPacks.contains(e.key));
 
   Uint8List? getTexture(String key) =>
       getTextureFromLocation(ItemLocation.fromString(key));
@@ -117,4 +119,22 @@ class GameAssetManager extends AssetManager {
   void clearImages() => _cachedImages
     ..forEach((_, v) => v.then((e) => e.dispose()))
     ..clear();
+
+  bool isServerSupported(Map<String, String> signature) {
+    if (signature.isEmpty) return false;
+    for (final entry in signature.entries) {
+      final pack = _loadedPacks[entry.key];
+      if (pack == null || pack.getChecksum().toString() != entry.value) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  void setAllowedPacks(Iterable<String> packs) {
+    _allowedPacks.clear();
+    _allowedPacks.addAll(packs);
+  }
+
+  void resetAllowedPacks() => _allowedPacks.clear();
 }

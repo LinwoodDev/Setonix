@@ -8,6 +8,7 @@ import 'package:quokka_api/quokka_api.dart';
 import 'package:quokka_server/asset.dart';
 import 'package:quokka_server/console.dart';
 import 'package:quokka_server/programs/help.dart';
+import 'package:quokka_server/programs/packs.dart';
 import 'package:quokka_server/programs/save.dart';
 import 'package:quokka_server/programs/stop.dart';
 import 'package:quokka_server/programs/unknown.dart';
@@ -17,7 +18,6 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
   final ServerAssetManager assetManager;
   final String? worldFile;
   bool _temp = false;
-  GameTable _table = const GameTable();
 
   NetworkerSocketServer? _server;
   NetworkerPipe<dynamic, WorldEvent>? _pipe;
@@ -76,12 +76,12 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
       ..clientConnect.listen(_onJoin)
       ..clientDisconnect.listen(_onLeave)
       ..connect(StringNetworkerPlugin()..connect(transformer));
-    _table = const GameTable();
     await _server?.init();
 
     consoleManager.registerProgram('stop', StopProgram(this));
     consoleManager.registerProgram('help', HelpProgram(consoleManager));
     consoleManager.registerProgram('save', SaveProgram(this));
+    consoleManager.registerProgram('packs', PacksProgram(this));
     consoleManager.registerProgram(null, UnknownProgram());
   }
 
@@ -106,8 +106,8 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
     final process = processClientEvent(
       data,
       event.channel,
+      state,
       assetManager: assetManager,
-      table: _table,
     );
     if (process == null) return;
     log('Processing event by ${event.channel}: $process',

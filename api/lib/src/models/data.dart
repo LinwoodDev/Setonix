@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
+import 'package:crypto/crypto.dart';
 import 'package:lw_file_system_api/lw_file_system_api.dart';
 import 'background.dart';
 import 'deck.dart';
@@ -169,6 +170,11 @@ class QuokkaData extends ArchiveData<QuokkaData> {
   @override
   QuokkaData updateState(ArchiveState state) =>
       QuokkaData(archive, state: state);
+
+  Digest getChecksum() {
+    final data = exportAsBytes();
+    return sha512256.convert(data);
+  }
 }
 
 final class PackItem<T> {

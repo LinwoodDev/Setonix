@@ -39,7 +39,31 @@ abstract class ConsoleProgram {
   bool get isHidden => getDescription() == null;
 }
 
-enum LogLevel { verbose, info, warning, error }
+enum LogLevel {
+  verbose(35),
+  info(36),
+  warning(33),
+  error(31);
+
+  final int colorCode;
+
+  const LogLevel(this.colorCode);
+
+  void toConsole([bool withColor = true, bool withSpace = true]) {
+    if (withColor) {
+      stdout.write('\x1B[${colorCode}m');
+    }
+    stdout.write('[');
+    stdout.write(name.toUpperCase());
+    stdout.write(']');
+    if (withColor) {
+      stdout.write('\x1B[0m');
+    }
+    if (withSpace) {
+      stdout.write(' ');
+    }
+  }
+}
 
 class ConsoleManager<T extends ConsoleProgram> {
   StreamSubscription? _subscription;
@@ -74,29 +98,7 @@ class ConsoleManager<T extends ConsoleProgram> {
     if (level != null && level.index < minLogLevel.index) return;
     stdout.write('\r');
     final supportsAnsi = stdout.supportsAnsiEscapes;
-    if (level != null) {
-      switch (level) {
-        case LogLevel.verbose:
-          // Purple
-          if (supportsAnsi) stdout.write('\x1B[35m');
-          stdout.write('[VERBOSE] ');
-          break;
-        case LogLevel.info:
-          // Blue
-          if (supportsAnsi) stdout.write('\x1B[36m');
-          stdout.write('[INFO] ');
-          break;
-        case LogLevel.warning:
-          // Yellow
-          if (supportsAnsi) stdout.write('\x1B[33m');
-          stdout.write('[WARNING] ');
-        case LogLevel.error:
-          // Red
-          if (supportsAnsi) stdout.write('\x1B[31m');
-          stdout.write('[ERROR] ');
-      }
-      if (supportsAnsi) stdout.write('\x1B[0m');
-    }
+    level?.toConsole(supportsAnsi, true);
     stdout.write(message);
     sendPrefix();
   }

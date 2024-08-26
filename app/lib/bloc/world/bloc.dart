@@ -87,8 +87,8 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
   }
 
   void _processEvent((WorldEvent, Channel) data) {
-    final value = processClientEvent(data.$1, data.$2,
-        assetManager: assetManager, table: state.table);
+    final value =
+        processClientEvent(data.$1, data.$2, state, assetManager: assetManager);
     if (value == null) return;
     state.multiplayer.sendServer(value.$1, value.$2);
   }
@@ -110,10 +110,8 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
         if (multiplayer.isConnected) {
           multiplayer.send(e);
         } else {
-          final event = processClientEvent(e, kAuthorityChannel,
-              assetManager: assetManager,
-              table: state.table,
-              allowServerEvents: true);
+          final event = processClientEvent(e, kAuthorityChannel, state,
+              assetManager: assetManager, allowServerEvents: true);
           if (event != null) add(event.$1);
         }
       case ServerWorldEvent e:
