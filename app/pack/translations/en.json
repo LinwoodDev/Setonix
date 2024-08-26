@@ -19,6 +19,14 @@
     "skat": {
       "name": "Skat",
       "description": "A deck with 32 cards for playing Skat."
+    },
+    "dices": {
+      "name": "Dices",
+      "description": "A set of dices."
+    },
+    "chips": {
+      "name": "Chips",
+      "description": "A set of chips."
     }
   },
   "backgrounds": {
@@ -212,6 +220,52 @@
         },
         "joker-mixed": {
           "name": "Mixed Joker"
+        }
+      }
+    },
+    "d6": {
+      "name": "D6",
+      "variations": {
+        "1": {
+          "name": "1"
+        },
+        "2": {
+          "name": "2"
+        },
+        "3": {
+          "name": "3"
+        },
+        "4": {
+          "name": "4"
+        },
+        "5": {
+          "name": "5"
+        },
+        "6": {
+          "name": "6"
+        }
+      }
+    },
+    "chips": {
+      "name": "Chips",
+      "variations": {
+        "white": {
+          "name": "White Chip"
+        },
+        "black": {
+          "name": "Black Chip"
+        },
+        "red": {
+          "name": "Red Chip"
+        },
+        "yellow": {
+          "name": "Yellow Chip"
+        },
+        "green": {
+          "name": "Green Chip"
+        },
+        "blue": {
+          "name": "Blue Chip"
         }
       }
     }
