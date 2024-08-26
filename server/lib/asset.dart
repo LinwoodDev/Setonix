@@ -6,7 +6,7 @@ import 'package:quokka_server/console.dart';
 
 class ServerAssetManager extends AssetManager {
   final Map<String, QuokkaData> _packs = {};
-
+  static const _qkaExtension = 'qka';
   Iterable<MapEntry<String, QuokkaData>> get packs => _packs.entries;
 
   Future<void> init(
@@ -21,18 +21,27 @@ class ServerAssetManager extends AssetManager {
     await for (final file in directory.list()) {
       if (file is File) {
         final data = QuokkaData.fromData(await file.readAsBytes());
-        final fileName = p.basenameWithoutExtension(file.path);
-        _packs[fileName] = data;
+        final fileName = p.basename(file.path);
+        final extension = fileName.split('.').last;
+        if (extension != _qkaExtension) {
+          console.print(
+              'WARNING: Invalid pack file extension: $fileName. Skipping.',
+              level: LogLevel.warning);
+          continue;
+        }
+        final name =
+            fileName.substring(0, fileName.length - _qkaExtension.length - 1);
+        _packs[name] = data;
       }
     }
     final coreIncluded = _packs.containsKey('');
     console.print(
-        'Loaded ${_packs.length} packs. ${coreIncluded ? '(with core pack)' : '(without core pack)'}',
+        'Loaded ${_packs.length} pack(s). ${coreIncluded ? '(with core pack)' : '(without core pack)'}',
         level: LogLevel.info);
     if (_packs.isEmpty) {
       console.print('No packs loaded.', level: LogLevel.warning);
     } else {
-      console.print('Loaded packs: ${_packs.keys.join(', ')}',
+      console.print('Loaded pack(s): ${_packs.keys.join(', ')}',
           level: LogLevel.verbose);
     }
   }

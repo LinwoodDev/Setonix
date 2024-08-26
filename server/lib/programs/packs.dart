@@ -13,13 +13,14 @@ class PacksProgram extends ConsoleProgram {
   void run(List<String> args) {
     print("-----");
     final packs = server.assetManager.packs.toList();
-    print("Loaded ${packs.length} packs.");
+    print("Loaded ${packs.length} pack(s).");
     for (final pack in packs) {
       final checksum = pack.value.getChecksum();
       if (pack.key.isEmpty) {
         print("| Core pack ($checksum)");
+      } else {
+        print("> ${pack.key} ($checksum)");
       }
-      print("> ${pack.key} ($checksum)");
     }
     print("-----");
   }

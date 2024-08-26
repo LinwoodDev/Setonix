@@ -50,10 +50,15 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
       ..serverEvents.listen(_processEvent);
 
     on<ServerWorldEvent>((event, emit) {
-      final newState = processServerEvent(event, state);
-      if (newState is! ClientWorldState) return null;
-      emit(newState);
-      return save();
+      try {
+        final newState =
+            processServerEvent(event, state, assetManager: assetManager);
+        if (newState is! ClientWorldState) return null;
+        emit(newState);
+        return save();
+      } on FatalServerEventError catch (e) {
+        state.multiplayer.raiseError(e);
+      }
     });
     on<ColorSchemeChanged>((event, emit) {
       emit(state.copyWith(colorScheme: event.colorScheme));

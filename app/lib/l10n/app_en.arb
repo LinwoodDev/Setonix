@@ -137,5 +137,6 @@
   "importGameDescription": "Are you sure you want to import the game?",
   "importTemplateDescription": "Are you sure you want to import the template?",
   "export": "Export",
-  "editInfo": "Edit information"
+  "editInfo": "Edit information",
+  "invalidPacks": "The server requested packs that doesn't exist on this client"
 }

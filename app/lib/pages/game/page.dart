@@ -101,7 +101,6 @@ class _GamePageState extends State<GamePage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return FutureBuilder<Blocs>(
         future: _bloc,
         builder: (context, snapshot) {
@@ -128,65 +127,9 @@ class _GamePageState extends State<GamePage> {
                       return const Center(child: CircularProgressIndicator());
                     }
                     if (state is MultiplayerDisconnectedState) {
-                      return Scaffold(
-                        body: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            const DotsBackground(),
-                            Card.filled(
-                              child: Container(
-                                constraints: const BoxConstraints(
-                                  maxWidth: LeapBreakpoints.large,
-                                ),
-                                padding: const EdgeInsets.all(8.0),
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        AppLocalizations.of(context)
-                                            .disconnected,
-                                        textAlign: TextAlign.center,
-                                        style: theme.textTheme.headlineSmall,
-                                      ),
-                                      Text(
-                                        AppLocalizations.of(context)
-                                            .disconnectedMessage,
-                                        textAlign: TextAlign.center,
-                                        style: theme.textTheme.bodySmall,
-                                      ),
-                                      const SizedBox(height: 16),
-                                      Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          FilledButton(
-                                            onPressed: () async =>
-                                                (await _bloc)?.$1.reconnect(),
-                                            child: Text(
-                                                AppLocalizations.of(context)
-                                                    .reconnect),
-                                          ),
-                                          const SizedBox(width: 8),
-                                          ElevatedButton(
-                                            onPressed: () =>
-                                                GoRouter.of(context).go('/'),
-                                            child: Text(
-                                                AppLocalizations.of(context)
-                                                    .home),
-                                          ),
-                                        ],
-                                      ),
-                                      if (state.error != null) ...[
-                                        const SizedBox(height: 16),
-                                        Text(state.error.toString()),
-                                      ],
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                      return _GameErrorView(
+                        state: state,
+                        onReconnect: () async => (await _bloc)?.$1.reconnect(),
                       );
                     }
                     return Scaffold(
@@ -233,5 +176,79 @@ class _GamePageState extends State<GamePage> {
                 )),
           );
         });
+  }
+}
+
+class _GameErrorView extends StatelessWidget {
+  final MultiplayerDisconnectedState state;
+  final VoidCallback onReconnect;
+
+  const _GameErrorView({
+    required this.state,
+    required this.onReconnect,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final error = state.error;
+    var message = AppLocalizations.of(context).disconnectedMessage;
+    if (error is FatalServerEventError) {
+      message = switch (error) {
+        InvalidPacksError() => AppLocalizations.of(context).invalidPacks,
+      };
+    }
+    return Scaffold(
+      body: Stack(
+        alignment: Alignment.center,
+        children: [
+          const DotsBackground(),
+          Card.filled(
+            child: Container(
+              constraints: const BoxConstraints(
+                maxWidth: LeapBreakpoints.large,
+              ),
+              padding: const EdgeInsets.all(8.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      AppLocalizations.of(context).disconnected,
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.headlineSmall,
+                    ),
+                    Text(
+                      message,
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.bodySmall,
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        FilledButton(
+                          onPressed: onReconnect,
+                          child: Text(AppLocalizations.of(context).reconnect),
+                        ),
+                        const SizedBox(width: 8),
+                        ElevatedButton(
+                          onPressed: () => GoRouter.of(context).go('/'),
+                          child: Text(AppLocalizations.of(context).home),
+                        ),
+                      ],
+                    ),
+                    if (state.error != null) ...[
+                      const SizedBox(height: 16),
+                      Text(state.error.toString()),
+                    ],
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

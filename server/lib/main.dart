@@ -30,7 +30,8 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
           metadata: data.getMetadataOrDefault(),
         )) {
     on<ServerWorldEvent>((event, emit) {
-      final newState = processServerEvent(event, state);
+      final newState =
+          processServerEvent(event, state, assetManager: assetManager);
       if (newState == null) return null;
       emit(newState);
       return save();

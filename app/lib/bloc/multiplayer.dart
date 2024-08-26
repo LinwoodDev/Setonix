@@ -200,4 +200,11 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
       emit(MultiplayerDisconnectedState(error: e));
     }
   }
+
+  Future<void> raiseError(FatalServerEventError e) async {
+    final state = this.state;
+    if (state is! MultiplayerConnectedState) return;
+    await state.networker.close();
+    emit(MultiplayerDisconnectedState(error: e, oldState: state));
+  }
 }

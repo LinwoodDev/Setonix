@@ -21,10 +21,30 @@ bool isValidServerEvent(ServerWorldEvent event, WorldState state) =>
       _ => true,
     };
 
-WorldState? processServerEvent(ServerWorldEvent event, WorldState state) {
+sealed class FatalServerEventError {}
+
+final class InvalidPacksError extends FatalServerEventError {
+  final Map<String, String> signature;
+
+  InvalidPacksError({required this.signature});
+
+  @override
+  String toString() =>
+      'Server requested packs, that are not available on the client: $signature';
+}
+
+WorldState? processServerEvent(
+  ServerWorldEvent event,
+  WorldState state, {
+  required AssetManager assetManager,
+}) {
   if (!isValidServerEvent(event, state)) return null;
   switch (event) {
     case WorldInitialized event:
+      final supported = assetManager.isServerSupported(event.packsSignature);
+      if (!supported) {
+        throw InvalidPacksError(signature: event.packsSignature);
+      }
       return state.copyWith(
         table: event.table,
         id: event.id,

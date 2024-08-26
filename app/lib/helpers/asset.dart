@@ -120,17 +120,6 @@ class GameAssetManager extends AssetManager {
     ..forEach((_, v) => v.then((e) => e.dispose()))
     ..clear();
 
-  bool isServerSupported(Map<String, String> signature) {
-    if (signature.isEmpty) return false;
-    for (final entry in signature.entries) {
-      final pack = _loadedPacks[entry.key];
-      if (pack == null || pack.getChecksum().toString() != entry.value) {
-        return false;
-      }
-    }
-    return true;
-  }
-
   void setAllowedPacks(Iterable<String> packs) {
     _allowedPacks.clear();
     _allowedPacks.addAll(packs);
