@@ -1,4 +1,4 @@
-import 'package:quokka_server/console.dart';
+import 'package:consoler/consoler.dart';
 import 'package:quokka_server/main.dart';
 
 class StopProgram extends ConsoleProgram {

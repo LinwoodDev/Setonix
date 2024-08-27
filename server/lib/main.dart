@@ -2,19 +2,17 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:consoler/consoler.dart';
 import 'package:networker/networker.dart';
 import 'package:networker_socket/server.dart';
 import 'package:quokka_api/quokka_api.dart';
 import 'package:quokka_server/asset.dart';
-import 'package:quokka_server/console.dart';
-import 'package:quokka_server/programs/help.dart';
 import 'package:quokka_server/programs/packs.dart';
 import 'package:quokka_server/programs/save.dart';
 import 'package:quokka_server/programs/stop.dart';
-import 'package:quokka_server/programs/unknown.dart';
 
 final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
-  final ConsoleManager consoleManager = ConsoleManager();
+  final Consoler consoler;
   final ServerAssetManager assetManager;
   final String? worldFile;
   bool _temp = false;
@@ -24,6 +22,11 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
 
   QuokkaServer._(this.worldFile, QuokkaData data)
       : assetManager = ServerAssetManager(),
+        consoler = Consoler(
+          defaultProgramConfig: DefaultProgramConfiguration(
+            description: "Quokka server",
+          ),
+        ),
         super(WorldState(
           data: data,
           table: data.getTableOrDefault(),
@@ -53,7 +56,7 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
   }
 
   void log(Object? message, {LogLevel? level}) =>
-      consoleManager.print(message, level: level);
+      consoler.print(message, level: level);
 
   static String get defaultWorldFile => 'world.qka';
 
@@ -62,10 +65,10 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
       bool verbose = false,
       bool autosave = false}) async {
     await _runLogZone(() async {
-      await assetManager.init(console: consoleManager, verbose: verbose);
+      await assetManager.init(console: consoler, verbose: verbose);
     });
     if (verbose) {
-      consoleManager.minLogLevel = LogLevel.verbose;
+      consoler.minLogLevel = LogLevel.verbose;
     }
     _temp = autosave;
     final server =
@@ -79,11 +82,10 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
       ..connect(StringNetworkerPlugin()..connect(transformer));
     await _server?.init();
 
-    consoleManager.registerProgram('stop', StopProgram(this));
-    consoleManager.registerProgram('help', HelpProgram(consoleManager));
-    consoleManager.registerProgram('save', SaveProgram(this));
-    consoleManager.registerProgram('packs', PacksProgram(this));
-    consoleManager.registerProgram(null, UnknownProgram());
+    consoler.registerProgram('stop', StopProgram(this));
+    consoler.registerProgram('save', SaveProgram(this));
+    consoler.registerProgram('packs', PacksProgram(this));
+    consoler.registerProgram(null, UnknownProgram());
   }
 
   R _runLogZone<R>(R Function() body) =>
@@ -95,7 +97,7 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
 
   Future<void> run() async {
     _runLogZone(() {
-      consoleManager.run();
+      consoler.run();
     });
     log('Server running on ${_server?.address}', level: LogLevel.info);
     log('Verbose logging activated', level: LogLevel.verbose);
@@ -147,6 +149,6 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
     await super.close();
     log('Closing...', level: LogLevel.info);
     _server?.close();
-    consoleManager.dispose();
+    consoler.dispose();
   }
 }

@@ -1,16 +1,15 @@
 import 'dart:io';
 
+import 'package:consoler/consoler.dart';
 import 'package:path/path.dart' as p;
 import 'package:quokka_api/quokka_api.dart';
-import 'package:quokka_server/console.dart';
 
 class ServerAssetManager extends AssetManager {
   final Map<String, QuokkaData> _packs = {};
   static const _qkaExtension = 'qka';
   Iterable<MapEntry<String, QuokkaData>> get packs => _packs.entries;
 
-  Future<void> init(
-      {required ConsoleManager console, bool verbose = false}) async {
+  Future<void> init({required Consoler console, bool verbose = false}) async {
     _packs.clear();
     final directory = Directory('packs');
     if (!await directory.exists()) {

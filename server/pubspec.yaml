@@ -20,6 +20,11 @@ dependencies:
       url: https://github.com/LinwoodDev/dart_pkgs
       ref: 00671cce35e995f203806b55bc6d6881fca0e107
       path: packages/networker/networker_socket
+  consoler:
+    git:
+      url: https://github.com/LinwoodDev/dart_pkgs
+      ref: 2433c04c7526744a1aad757b744ec2b68225a35c
+      path: packages/consoler
   path: ^1.9.0
   quokka_api:
     path: ../api

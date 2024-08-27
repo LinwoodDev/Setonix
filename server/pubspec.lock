@@ -70,6 +70,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.19.0"
+  consoler:
+    dependency: "direct main"
+    description:
+      path: "packages/consoler"
+      ref: "2433c04c7526744a1aad757b744ec2b68225a35c"
+      resolved-ref: "2433c04c7526744a1aad757b744ec2b68225a35c"
+      url: "https://github.com/LinwoodDev/dart_pkgs"
+    source: git
+    version: "1.0.0"
   convert:
     dependency: transitive
     description:
