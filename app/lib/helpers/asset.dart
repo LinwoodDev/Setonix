@@ -24,6 +24,7 @@ class GameAssetManager extends AssetManager {
     this.currentLocale = 'en',
   });
 
+  @override
   Iterable<MapEntry<String, QuokkaData>> get packs => _loadedPacks.entries
       .where((e) => _allowedPacks.isEmpty || _allowedPacks.contains(e.key));
 
@@ -85,6 +86,7 @@ class GameAssetManager extends AssetManager {
   @override
   QuokkaData? getPack(String key) => _loadedPacks[key];
 
+  @override
   Future<QuokkaData?> loadPack(String key,
       {QuokkaData? pack, bool force = false}) async {
     final oldPack = _loadedPacks[key];
@@ -120,6 +122,7 @@ class GameAssetManager extends AssetManager {
     ..forEach((_, v) => v.then((e) => e.dispose()))
     ..clear();
 
+  @override
   void setAllowedPacks(Iterable<String> packs) {
     _allowedPacks.clear();
     _allowedPacks.addAll(packs);

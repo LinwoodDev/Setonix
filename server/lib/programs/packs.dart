@@ -10,7 +10,7 @@ class PacksProgram extends ConsoleProgram {
   String getDescription() => "Show all loaded packs";
 
   @override
-  void run(List<String> args) {
+  void run(String label, List<String> args) {
     print("-----");
     final packs = server.assetManager.packs.toList();
     print("Loaded ${packs.length} pack(s).");

@@ -76,6 +76,8 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
 
   Stream<(Channel, ConnectionInfo)> get inits => _initController.stream;
 
+  FatalServerEventError? _fatalError;
+
   MultiplayerCubit() : super(MultiplayerDisabledState());
 
   bool get isConnected => state.isConnected;
@@ -132,12 +134,8 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
     final state = this.state;
     if (state is! MultiplayerConnectedState) return;
     state.networker.close();
-    if (emit) {
-      if (state.isClient) {
-        this.emit(MultiplayerDisconnectedState());
-      } else {
-        this.emit(MultiplayerDisabledState());
-      }
+    if (emit && state.isServer) {
+      this.emit(MultiplayerDisabledState());
     }
   }
 
@@ -152,7 +150,9 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
       ));
       final state = await _addNetworker(client);
       client.onClosed.listen((_) {
-        if (!isClosed) emit(MultiplayerDisconnectedState(oldState: state));
+        if (isClosed) return;
+        emit(MultiplayerDisconnectedState(oldState: state, error: _fatalError));
+        _fatalError = null;
       }, onError: (e) => emit(MultiplayerDisconnectedState(error: e)));
       await client.init();
       emit(state);
@@ -202,9 +202,7 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
   }
 
   Future<void> raiseError(FatalServerEventError e) async {
-    final state = this.state;
-    if (state is! MultiplayerConnectedState) return;
-    await state.networker.close();
-    emit(MultiplayerDisconnectedState(error: e, oldState: state));
+    _fatalError = e;
+    disconnect();
   }
 }

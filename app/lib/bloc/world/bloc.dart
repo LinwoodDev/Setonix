@@ -44,16 +44,17 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
               table: state.table,
               teamMembers: state.teamMembers,
               id: user,
+              packsSignature: assetManager.createSignature(),
             ),
             user);
       })
       ..serverEvents.listen(_processEvent);
 
-    on<ServerWorldEvent>((event, emit) {
+    on<ServerWorldEvent>((event, emit) async {
       try {
         final newState =
-            processServerEvent(event, state, assetManager: assetManager);
-        if (newState is! ClientWorldState) return null;
+            await processServerEvent(event, state, assetManager: assetManager);
+        if (newState is! ClientWorldState) return;
         emit(newState);
         return save();
       } on FatalServerEventError catch (e) {

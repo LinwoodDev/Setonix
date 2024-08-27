@@ -74,8 +74,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/consoler"
-      ref: "2433c04c7526744a1aad757b744ec2b68225a35c"
-      resolved-ref: "2433c04c7526744a1aad757b744ec2b68225a35c"
+      ref: "68d1e59fa9f611ad496b7f341f0b1741f662469e"
+      resolved-ref: "68d1e59fa9f611ad496b7f341f0b1741f662469e"
       url: "https://github.com/LinwoodDev/dart_pkgs"
     source: git
     version: "1.0.0"

@@ -32,10 +32,10 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
           table: data.getTableOrDefault(),
           metadata: data.getMetadataOrDefault(),
         )) {
-    on<ServerWorldEvent>((event, emit) {
+    on<ServerWorldEvent>((event, emit) async {
       final newState =
-          processServerEvent(event, state, assetManager: assetManager);
-      if (newState == null) return null;
+          await processServerEvent(event, state, assetManager: assetManager);
+      if (newState == null) return;
       emit(newState);
       return save();
     });
@@ -129,6 +129,7 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
           table: state.table,
           id: state.id,
           teamMembers: state.teamMembers,
+          packsSignature: assetManager.createSignature(),
         ),
         user);
   }

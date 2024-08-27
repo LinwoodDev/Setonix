@@ -9,9 +9,9 @@ class SaveProgram extends ConsoleProgram {
   String getDescription() => "Saves the world manually";
 
   @override
-  Future<void> run(List<String> args) async {
-    print('Saving...');
+  Future<void> run(String label, List<String> args) async {
+    server.consoler.print('Saving...', level: LogLevel.info);
     await server.save(force: true);
-    print('Saved.');
+    server.consoler.print('Saved.', level: LogLevel.info);
   }
 }

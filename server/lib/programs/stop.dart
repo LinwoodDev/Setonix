@@ -9,7 +9,7 @@ class StopProgram extends ConsoleProgram {
   String getDescription() => "Stops the server";
 
   @override
-  void run(List<String> args) {
+  void run(String label, List<String> args) {
     server.close();
   }
 }

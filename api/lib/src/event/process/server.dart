@@ -30,21 +30,23 @@ final class InvalidPacksError extends FatalServerEventError {
 
   @override
   String toString() =>
-      'Server requested packs, that are not available on the client: $signature';
+      'Server requested packs, that are not available on the client (or is empty): $signature';
 }
 
-WorldState? processServerEvent(
+Future<WorldState?> processServerEvent(
   ServerWorldEvent event,
   WorldState state, {
   required AssetManager assetManager,
-}) {
+}) async {
   if (!isValidServerEvent(event, state)) return null;
   switch (event) {
     case WorldInitialized event:
-      final supported = assetManager.isServerSupported(event.packsSignature);
+      final supported =
+          await assetManager.isServerSupported(event.packsSignature);
       if (!supported) {
         throw InvalidPacksError(signature: event.packsSignature);
       }
+      assetManager.setAllowedPacks(event.packsSignature.keys.toSet());
       return state.copyWith(
         table: event.table,
         id: event.id,

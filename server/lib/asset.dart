@@ -7,6 +7,7 @@ import 'package:quokka_api/quokka_api.dart';
 class ServerAssetManager extends AssetManager {
   final Map<String, QuokkaData> _packs = {};
   static const _qkaExtension = 'qka';
+  @override
   Iterable<MapEntry<String, QuokkaData>> get packs => _packs.entries;
 
   Future<void> init({required Consoler console, bool verbose = false}) async {
