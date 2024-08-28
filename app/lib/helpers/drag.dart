@@ -4,8 +4,8 @@ import 'package:flame/events.dart';
 import 'package:flutter/foundation.dart';
 
 mixin LongDragCallbacks on DragCallbacks, TapCallbacks {
-  int get longThresholdPixels => 12;
-  Duration get longThresholdDuration => const Duration(milliseconds: 600);
+  int get longThresholdPixels => 8;
+  Duration get longThresholdDuration => const Duration(milliseconds: 500);
 
   DateTime? _start;
   bool _isMouse = false;

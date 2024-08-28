@@ -41,6 +41,10 @@ export default defineConfig({
               label: "Introduction",
               link: "/docs/v1/intro",
             },
+            {
+              label: "Packs",
+              link: "/docs/v1/packs",
+            },
           ],
         },
         {

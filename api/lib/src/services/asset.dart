@@ -6,21 +6,21 @@ abstract class AssetManager {
 
   Iterable<MapEntry<String, QuokkaData>> get packs;
 
-  Future<bool> isServerSupported(Map<String, String> signature) async {
+  Future<bool> isServerSupported(Map<String, FileMetadata> signature) async {
     if (signature.isEmpty) return false;
     for (final entry in signature.entries) {
       final pack = await loadPack(entry.key);
-      if (pack == null || pack.getChecksum().toString() != entry.value) {
+      if (pack == null || pack.getMetadataOrDefault() != entry.value) {
         return false;
       }
     }
     return true;
   }
 
-  Map<String, String> createSignature() {
-    final signature = <String, String>{};
+  Map<String, FileMetadata> createSignature() {
+    final signature = <String, FileMetadata>{};
     for (final entry in packs) {
-      signature[entry.key] = entry.value.getChecksum().toString();
+      signature[entry.key] = entry.value.getMetadataOrDefault();
     }
     return signature;
   }

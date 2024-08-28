@@ -363,26 +363,26 @@ packages:
     dependency: "direct main"
     description:
       name: flame
-      sha256: "79133dc46a3ff870950f41d0dc1598414e7bd7ae2c29bd9f0a9de208d9a70cb7"
+      sha256: e6873a8540a197a9bfe251e10c9e1f200329041d6e6d70df2cf38aa681cf2ef7
       url: "https://pub.dev"
     source: hosted
-    version: "1.18.0"
+    version: "1.19.0"
   flame_bloc:
     dependency: "direct main"
     description:
       name: flame_bloc
-      sha256: "19d907204b65f81b08adf71da02e632e68757b1a6738378d8dd4bc024c1660b8"
+      sha256: "13f883e635e656200404dfd7ca900d4eadf1ee0c81834558fe774d44cfd0a53d"
       url: "https://pub.dev"
     source: hosted
-    version: "1.12.0"
+    version: "1.12.1"
   flame_tiled:
     dependency: "direct main"
     description:
       name: flame_tiled
-      sha256: "519dc91412dc617203ed182712c2d44343ce2ab103ab81921cd4032b10b0cc2b"
+      sha256: bb00888e0893413ffeb083e24cee3d5f7c08cbae5d8df551f14a564fdf7c5282
       url: "https://pub.dev"
     source: hosted
-    version: "1.20.2"
+    version: "1.20.3"
   flex_color_scheme:
     dependency: "direct main"
     description:
@@ -758,10 +758,10 @@ packages:
     dependency: transitive
     description:
       name: ordered_set
-      sha256: "1bfaaaee0419e43ecc9eaebd410eb4bd5039657b72011de75ff3e2915c9aac60"
+      sha256: "984658d0c28c69516ed22f780db7511932a223339463a16c0cc48b3055e926c4"
       url: "https://pub.dev"
     source: hosted
-    version: "5.0.3"
+    version: "6.0.1"
   package_config:
     dependency: transitive
     description:

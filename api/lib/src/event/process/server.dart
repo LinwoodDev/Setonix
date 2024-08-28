@@ -24,7 +24,7 @@ bool isValidServerEvent(ServerWorldEvent event, WorldState state) =>
 sealed class FatalServerEventError {}
 
 final class InvalidPacksError extends FatalServerEventError {
-  final Map<String, String> signature;
+  final Map<String, FileMetadata> signature;
 
   InvalidPacksError({required this.signature});
 

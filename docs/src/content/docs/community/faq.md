@@ -23,4 +23,4 @@ Try updating your browser to the latest version.
 
 > [#244](https://github.com/LinwoodDev/Quokka/issues/244)
 
-Quokka is available on iOS as preview. Click [here](https://quokka.linwood.dev/downloads/ios) to download it. See [here](https://github.com/LinwoodDev/Quokka/issues/244#issuecomment-1935460878) why it's not available on the App Store.
+Quokka is available on iOS as preview. Click [here](https://quokka.linwood.dev/downloads/ios) to download it. See [here](https://github.com/LinwoodDev/Butterfly/issues/244#issuecomment-1935460878) why it's not available on the App Store.

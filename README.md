@@ -35,15 +35,12 @@
 * The protocol is not stable and will change
   * This means you need to have the same version of the client and server
 * Missing checks on server
-  * The server doesn't check if figures really exist
   * Make sure you only allow trusted people to connect
 * No rules are implemented yet
   * You can only play without rules
   * Will be added in 0.3
 * Missing error messages
   * Some errors are not displayed
-* Packs won't be checked on connecting
-  * Make sure you have the same packs as the server
 * Boards aren't available, currently only figures are supported (see the concept for reference)
 
 ## Features

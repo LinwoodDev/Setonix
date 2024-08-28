@@ -172,8 +172,8 @@ class QuokkaData extends ArchiveData<QuokkaData> {
       QuokkaData(archive, state: state);
 
   Digest getChecksum() {
-    final data = exportAsBytes();
-    return sha512256.convert(data);
+    final metadata = getMetadataOrDefault().toJson();
+    return sha512256.convert(utf8.encode(metadata));
   }
 }
 

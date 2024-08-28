@@ -164,7 +164,6 @@ abstract class HandItem<T> extends PositionComponent
   @override
   void onDragStart(DragStartEvent event) {
     super.onDragStart(event);
-    remove(_label);
     game.world.add(_cursorHitbox =
         HandItemDragCursorHitbox(item: this, position: event.localPosition));
   }
@@ -178,6 +177,7 @@ abstract class HandItem<T> extends PositionComponent
       hand.scroll(event.localDelta.x);
       return;
     }
+    if (_label.parent != null) _label.removeFromParent();
     _sprite.position += event.localDelta;
     _last = event.canvasEndPosition;
     _cursorHitbox?.position =
@@ -187,11 +187,13 @@ abstract class HandItem<T> extends PositionComponent
   @override
   void onDragEnd(DragEndEvent event) {
     super.onDragEnd(event);
-    if (!(isMouseOrLongPressing ?? true)) return;
-
-    final zone =
-        game.componentsAtPoint(_last).whereType<HandItemDropZone>().firstOrNull;
-    if (zone != null) moveItem(zone);
+    if (isMouseOrLongPressing ?? true) {
+      final zone = game
+          .componentsAtPoint(_last)
+          .whereType<HandItemDropZone>()
+          .firstOrNull;
+      if (zone != null) moveItem(zone);
+    }
     _resetPosition();
   }
 
