@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://www.linwood.dev/logos/logo.png" width="350px" />
+<img src="https://raw.githubusercontent.com/LinwoodDev/Quokka/develop/app/images/logo.png" width="350px" />
 
 # Quokka
 
