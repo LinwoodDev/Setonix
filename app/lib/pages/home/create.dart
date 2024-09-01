@@ -8,6 +8,7 @@ import 'package:quokka/api/open.dart';
 import 'package:quokka/api/save.dart';
 import 'package:quokka/services/file_system.dart';
 import 'package:quokka_api/quokka_api.dart';
+import 'package:rxdart/rxdart.dart';
 
 class CreateDialog extends StatefulWidget {
   const CreateDialog({super.key});
@@ -37,13 +38,13 @@ class _CreateDialogState extends State<CreateDialog>
     _fileSystem = context.read<QuokkaFileSystem>();
     _worldSystem = _fileSystem.worldSystem;
     _templateSystem = _fileSystem.templateSystem;
-    _templatesStream = _loadPacks().asBroadcastStream();
+    _templatesStream = ValueConnectableStream(_loadPacks()).autoConnect();
     //_tabController = TabController(length: 2, vsync: this);
     //_customTabController = TabController(length: 2, vsync: this);
   }
 
-  void _reloadTemplates() =>
-      setState(() => _templatesStream = _loadPacks().asBroadcastStream());
+  void _reloadTemplates() => setState(() =>
+      _templatesStream = ValueConnectableStream(_loadPacks()).autoConnect());
 
   Stream<List<FileSystemFile<QuokkaData>>> _loadPacks() async* {
     await _templateSystem.initialize();

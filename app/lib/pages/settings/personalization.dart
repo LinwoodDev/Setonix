@@ -67,12 +67,13 @@ class PersonalizationSettingsPage extends StatelessWidget {
                           onTap: () => _openDesignModal(context),
                         ),
                         ListTile(
-                            leading: const PhosphorIcon(
-                                PhosphorIconsLight.translate),
-                            title: Text(AppLocalizations.of(context).locale),
-                            subtitle:
-                                Text(_getLocaleName(context, state.localeTag)),
-                            onTap: () => _openLocaleModal(context)),
+                          leading:
+                              const PhosphorIcon(PhosphorIconsLight.translate),
+                          title: Text(AppLocalizations.of(context).locale),
+                          subtitle: Text(AppLocalizations.of(context)
+                              .comingSoon /*_getLocaleName(context, state.localeTag)*/),
+                          onTap: null /*() => _openLocaleModal(context)*/,
+                        ),
                       ]),
                 ),
               ),
@@ -169,6 +170,7 @@ class PersonalizationSettingsPage extends StatelessWidget {
             ]);
   }
 
+  // ignore: unused_element
   void _openLocaleModal(BuildContext context) {
     final cubit = context.read<SettingsCubit>();
     var currentLocale = cubit.state.localeTag;

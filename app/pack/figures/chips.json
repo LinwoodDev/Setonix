@@ -4,7 +4,6 @@
     "offset": [0, 0],
     "size": [16, 16]
   },
-  "rollable": true,
   "variations": {
     "white": {
       "texture": "figures/chips.png",

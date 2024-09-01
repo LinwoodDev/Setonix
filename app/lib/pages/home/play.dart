@@ -10,6 +10,7 @@ import 'package:quokka/api/save.dart';
 import 'package:quokka/pages/home/create.dart';
 import 'package:quokka/services/file_system.dart';
 import 'package:quokka_api/quokka_api.dart';
+import 'package:rxdart/rxdart.dart';
 
 class PlayDialog extends StatefulWidget {
   const PlayDialog({super.key});
@@ -30,7 +31,7 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
     super.initState();
     _fileSystem = context.read<QuokkaFileSystem>();
     _worldSystem = _fileSystem.worldSystem;
-    _gamesStream = _fetchGames().asBroadcastStream();
+    _gamesStream = ValueConnectableStream(_fetchGames()).autoConnect();
   }
 
   Stream<List<FileSystemFile<QuokkaData>>> _fetchGames() async* {
@@ -41,7 +42,7 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
   void _reloadGames() {
     if (!mounted) return;
     setState(() {
-      _gamesStream = _fetchGames().asBroadcastStream();
+      _gamesStream = ValueConnectableStream(_fetchGames()).autoConnect();
     });
   }
 

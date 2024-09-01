@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -8,6 +9,7 @@ import 'package:quokka/api/settings.dart';
 import 'package:quokka/bloc/multiplayer.dart';
 import 'package:quokka/bloc/world/bloc.dart';
 import 'package:quokka/bloc/world/state.dart';
+import 'package:quokka/board/hand/view.dart';
 import 'package:quokka/helpers/visualizer.dart';
 import 'package:quokka/pages/game/info.dart';
 import 'package:quokka/pages/game/multiplayer.dart';
@@ -123,6 +125,8 @@ class GameDrawer extends StatelessWidget {
                         childrenBuilder: (context) => assetManager.packs
                                 .expand(
                                     (e) => e.value.getBackgroundItems(e.key))
+                                .sorted((a, b) =>
+                                    b.item.priority.compareTo(a.item.priority))
                                 .map((entry) {
                               final translation = assetManager
                                   .getTranslations(entry.namespace)
