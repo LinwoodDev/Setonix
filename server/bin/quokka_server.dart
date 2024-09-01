@@ -38,6 +38,12 @@ void printUsage(ArgParser argParser) {
   print(argParser.usage);
 }
 
+const welcomeText = """
+  ____            __    __       
+ / __ \\__ _____  / /__ / /_____ _
+/ /_/ / // / _ \\/  '_//  '_/ _ `/
+\\___\\_\\_,_/\\___/_/\\_\\/_/\\_\\\\_,_/                                                                             
+""";
 Future<void> main(List<String> arguments) async {
   final ArgParser argParser = buildParser();
   try {
@@ -59,6 +65,7 @@ Future<void> main(List<String> arguments) async {
     if (results.wasParsed('autosave')) {
       autosave = true;
     }
+    print(welcomeText);
     final server = await QuokkaServer.load();
     await server.init(
       port: int.tryParse(results['port'] ?? '') ?? kDefaultPort,

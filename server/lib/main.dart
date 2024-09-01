@@ -8,6 +8,7 @@ import 'package:networker_socket/server.dart';
 import 'package:quokka_api/quokka_api.dart';
 import 'package:quokka_server/asset.dart';
 import 'package:quokka_server/programs/packs.dart';
+import 'package:quokka_server/programs/players.dart';
 import 'package:quokka_server/programs/save.dart';
 import 'package:quokka_server/programs/stop.dart';
 
@@ -60,6 +61,10 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
 
   static String get defaultWorldFile => 'world.qka';
 
+  Map<int, ConnectionInfo> get players =>
+      Map.fromEntries((_server?.clientConnections ?? {})
+          .map((e) => MapEntry(e, _server!.getConnectionInfo(e)!)));
+
   Future<void> init(
       {int port = kDefaultPort,
       bool verbose = false,
@@ -70,6 +75,8 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
     if (verbose) {
       consoler.minLogLevel = LogLevel.verbose;
     }
+    log("Starting server on port $port", level: LogLevel.info);
+    log('Verbose logging activated', level: LogLevel.verbose);
     _temp = autosave;
     final server =
         _server = NetworkerSocketServer(InternetAddress.anyIPv4, port);
@@ -85,6 +92,7 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
     consoler.registerProgram('stop', StopProgram(this));
     consoler.registerProgram('save', SaveProgram(this));
     consoler.registerProgram('packs', PacksProgram(this));
+    consoler.registerProgram('players', PlayersProgram(this));
     consoler.registerProgram(null, UnknownProgram());
   }
 
@@ -100,7 +108,6 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
       consoler.run();
     });
     log('Server running on ${_server?.address}', level: LogLevel.info);
-    log('Verbose logging activated', level: LogLevel.verbose);
     await _server?.onClosed.first;
   }
 
