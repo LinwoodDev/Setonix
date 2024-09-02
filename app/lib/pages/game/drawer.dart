@@ -9,7 +9,6 @@ import 'package:quokka/api/settings.dart';
 import 'package:quokka/bloc/multiplayer.dart';
 import 'package:quokka/bloc/world/bloc.dart';
 import 'package:quokka/bloc/world/state.dart';
-import 'package:quokka/board/hand/view.dart';
 import 'package:quokka/helpers/visualizer.dart';
 import 'package:quokka/pages/game/info.dart';
 import 'package:quokka/pages/game/multiplayer.dart';

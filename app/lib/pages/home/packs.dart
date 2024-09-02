@@ -110,7 +110,7 @@ class _PacksDialogState extends State<PacksDialog>
     final isMobile = currentSize < LeapBreakpoints.medium;
     final onInstall = _selectedPack?.$3 ?? false ? null : _deselectPack;
     final onRemove =
-        (_selectedPack?.$3 ?? false) && (_selectedPack?.$2.isNotEmpty ?? true)
+        (_selectedPack?.$3 ?? false) && (_selectedPack?.$2 != kCorePackId)
             ? _removePack
             : null;
     Future<void> selectPack(QuokkaData pack, String id, bool installed) async {

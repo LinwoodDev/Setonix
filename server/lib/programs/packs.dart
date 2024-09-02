@@ -1,4 +1,5 @@
 import 'package:consoler/consoler.dart';
+import 'package:quokka_api/quokka_api.dart';
 import 'package:quokka_server/main.dart';
 
 class PacksProgram extends ConsoleProgram {
@@ -16,7 +17,7 @@ class PacksProgram extends ConsoleProgram {
     print("Loaded ${packs.length} pack(s).");
     for (final pack in packs) {
       final checksum = pack.value.getChecksum();
-      if (pack.key.isEmpty) {
+      if (pack.key == kCorePackId) {
         print("| Core pack ($checksum)");
       } else {
         print("> ${pack.key} ($checksum)");

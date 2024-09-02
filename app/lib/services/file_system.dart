@@ -67,10 +67,11 @@ class QuokkaFileSystem {
     await packSystem.initialize();
     return [
       ...await packSystem.getFiles(),
-      if (corePack != null) FileSystemFile(AssetLocation.empty, data: corePack),
+      if (corePack != null)
+        FileSystemFile(const AssetLocation(path: kCorePackId), data: corePack),
     ];
   }
 
   Future<QuokkaData?> getPack(String packId) =>
-      packId.isEmpty ? fetchCorePack() : packSystem.getFile(packId);
+      packId == kCorePackId ? fetchCorePack() : packSystem.getFile(packId);
 }

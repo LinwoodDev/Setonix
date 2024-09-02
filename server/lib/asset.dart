@@ -29,8 +29,9 @@ class ServerAssetManager extends AssetManager {
               level: LogLevel.warning);
           continue;
         }
-        final name =
+        var name =
             fileName.substring(0, fileName.length - _qkaExtension.length - 1);
+        if (name.isEmpty) name = kCorePackId;
         _packs[name] = data;
       }
     }

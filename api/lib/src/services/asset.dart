@@ -1,5 +1,7 @@
 import 'package:quokka_api/quokka_api.dart';
 
+const kCorePackId = "core";
+
 abstract class AssetManager {
   QuokkaData? getPack(String key);
   Future<QuokkaData?> loadPack(String key) => Future.value(getPack(key));
