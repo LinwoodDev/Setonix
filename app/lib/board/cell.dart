@@ -37,8 +37,8 @@ class GameCell extends PositionComponent
         ScrollCallbacks {
   late final SpriteComponent _selectionComponent;
   SpriteComponent? _cardComponent;
-  final List<Effect> _effects = [];
   late final BoardGrid grid;
+  List<Effect>? _effects;
 
   GameCell({
     super.size,
@@ -46,18 +46,22 @@ class GameCell extends PositionComponent
   });
 
   void _updateEffects(List<Effect> effects) {
-    for (final e in _effects) {
-      e.removeFromParent();
-    }
-    _effects.clear();
-    for (final e in effects) {
-      _selectionComponent.add(e);
-      _effects.add(e);
+    _effects = effects;
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+    final effects = _effects;
+    if (effects != null) {
+      _selectionComponent.removeWhere((e) => e is Effect);
+      _selectionComponent.addAll(effects);
+      _effects = null;
     }
   }
 
   @override
-  Future<void> onLoad() async {
+  void onLoad() {
     super.onLoad();
     grid = findParent<BoardGrid>()!;
     add(GameBoardBackground(size: size));
@@ -80,14 +84,13 @@ class GameCell extends PositionComponent
         previousState.colorScheme != newState.colorScheme;
   }
 
-  bool get isSelected => isMounted && bloc.state.selectedCell == toDefinition();
+  bool get isSelected => bloc.state.selectedCell == toDefinition();
 
   void _fadeIn() => _updateEffects([
         OpacityEffect.fadeIn(
           EffectController(
-            duration: 0.1,
+            duration: 0.2,
           ),
-          target: _selectionComponent,
         )
       ]);
   @override
@@ -103,9 +106,8 @@ class GameCell extends PositionComponent
   void _fadeOut() => _updateEffects([
         OpacityEffect.fadeOut(
           EffectController(
-            duration: 0.1,
+            duration: 0.2,
           ),
-          target: _selectionComponent,
         )
       ]);
 
@@ -117,7 +119,11 @@ class GameCell extends PositionComponent
   }
 
   @override
-  void onDragOverEnd(HandItem handItem) => _fadeOut();
+  void onDragOverEnd(HandItem handItem) {
+    if (!isSelected) {
+      _fadeOut();
+    }
+  }
 
   @override
   void onTapUp(TapUpEvent event) {
@@ -150,12 +156,11 @@ class GameCell extends PositionComponent
               .contains(toGlobalDefinition(state)) ??
           false);
 
+  GameObject? _currentTop;
+
   @override
-  Future<void> onNewState(ClientWorldState state) async {
+  void onNewState(ClientWorldState state) {
     final selected = state.selectedCell == toDefinition();
-    final controller = EffectController(
-      duration: 0.1,
-    );
     final color = isClaimed(state)
         ? isAllowed(state)
             ? state.colorScheme.secondary
@@ -163,20 +168,41 @@ class GameCell extends PositionComponent
         : state.colorScheme.primary;
     if (selected) {
       _updateEffects([
-        OpacityEffect.fadeIn(controller, target: _selectionComponent),
-        ColorEffect(color, controller),
+        OpacityEffect.fadeIn(
+          EffectController(
+            duration: 0.2,
+          ),
+        ),
+        ColorEffect(
+          color,
+          EffectController(
+            duration: 0.2,
+          ),
+        ),
       ]);
     } else {
       _updateEffects([
-        OpacityEffect.fadeOut(controller, target: _selectionComponent),
-        ColorEffect(color, controller, opacityFrom: 1, opacityTo: 0),
+        OpacityEffect.fadeOut(
+          EffectController(
+            duration: 0.2,
+          ),
+        ),
+        ColorEffect(
+            color,
+            EffectController(
+              duration: 0.2,
+            ),
+            opacityFrom: 1,
+            opacityTo: 0),
       ]);
     }
-    await _updateTop(state);
+    _updateTop(state);
   }
 
   Future<void> _updateTop(ClientWorldState state) async {
     final top = state.table.cells[toDefinition()]?.objects.firstOrNull;
+    if (top == _currentTop) return;
+    _currentTop = top;
     if (_cardComponent != null) {
       remove(_cardComponent!);
       _cardComponent = null;

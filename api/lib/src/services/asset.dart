@@ -9,7 +9,6 @@ abstract class AssetManager {
   Iterable<MapEntry<String, QuokkaData>> get packs;
 
   bool isServerSupported(Map<String, FileMetadata> signature) {
-    if (signature.isEmpty) return false;
     for (final entry in signature.entries) {
       final pack = getPack(entry.key);
       if (pack == null || pack.getMetadataOrDefault() != entry.value) {

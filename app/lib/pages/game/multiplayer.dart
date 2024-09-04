@@ -92,7 +92,7 @@ class MultiplayerDialog extends StatelessWidget {
               icon: const Icon(PhosphorIconsLight.x),
             )
           else
-            ElevatedButton.icon(
+            FilledButton.icon(
               onPressed: () {
                 context.read<MultiplayerCubit>().create();
               },

@@ -1,6 +1,7 @@
 import 'package:flame/components.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:quokka/bloc/world/local.dart';
 import 'package:quokka/bloc/world/state.dart';
 import 'package:quokka/board/cell.dart';
 import 'package:quokka/board/hand/item.dart';
@@ -36,11 +37,14 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
   void moveItem(HandItemDropZone zone) {
     switch (zone) {
       case GameCell e:
-        game.bloc.process(ObjectsMoved(
-          [item.$2],
-          item.$1,
-          e.toDefinition(),
-        ));
+        final location = e.toDefinition();
+        game.bloc
+          ..process(ObjectsMoved(
+            [item.$2],
+            item.$1,
+            location,
+          ))
+          ..process(CellSwitched(location));
       case GameObjectHandItem e:
         game.bloc.process(ObjectIndexChanged(
           item.$1,

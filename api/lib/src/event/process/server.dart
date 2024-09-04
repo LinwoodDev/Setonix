@@ -41,7 +41,6 @@ WorldState? processServerEvent(
   WorldState state, {
   required AssetManager assetManager,
 }) {
-  print('Processing $event');
   if (!isValidServerEvent(event, state)) return null;
   switch (event) {
     case WorldInitialized event:
