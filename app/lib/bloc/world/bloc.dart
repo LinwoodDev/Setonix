@@ -26,6 +26,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
           colorScheme: colorScheme,
           table: table ?? data?.getTable() ?? const GameTable(),
           metadata: data?.getMetadata() ?? const FileMetadata(),
+          info: data?.getInfo() ?? const GameInfo(),
         )) {
     assetManager = GameAssetManager(
       bloc: this,
@@ -37,24 +38,16 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
         _remoteEvent = false;
       })
       ..inits.listen((e) {
-        final (user, info) = e;
-        if (user == 0) return;
-        state.multiplayer.sendServer(
-            WorldInitialized(
-              table: state.table,
-              teamMembers: state.teamMembers,
-              id: user,
-              packsSignature: assetManager.createSignature(),
-            ),
-            user);
+        if (e.$1 == kAnyChannel) return;
+        _processEvent((null, e.$1));
       })
       ..serverEvents.listen(_processEvent);
 
-    on<ServerWorldEvent>((event, emit) async {
+    on<ServerWorldEvent>((event, emit) {
       try {
         final newState =
-            await processServerEvent(event, state, assetManager: assetManager);
-        if (newState is! ClientWorldState) return;
+            processServerEvent(event, state, assetManager: assetManager);
+        if (newState is! ClientWorldState) return null;
         emit(newState);
         return save();
       } on FatalServerEventError catch (e) {
@@ -92,7 +85,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
     return state.fileSystem.worldSystem.updateFile(name, data);
   }
 
-  void _processEvent((WorldEvent, Channel) data) {
+  void _processEvent((WorldEvent?, Channel) data) {
     final value =
         processClientEvent(data.$1, data.$2, state, assetManager: assetManager);
     if (value == null) return;
@@ -124,4 +117,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
         add(e);
     }
   }
+
+  Iterable<MapEntry<String, QuokkaData>> get packs =>
+      assetManager.packs.where((e) => state.info.packs.contains(e.key));
 }

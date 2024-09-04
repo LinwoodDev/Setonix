@@ -4,6 +4,9 @@ import 'package:quokka_api/quokka_api.dart';
 
 bool isValidServerEvent(ServerWorldEvent event, WorldState state) =>
     switch (event) {
+      WorldInitialized() =>
+        event.info.packs.length == event.packsSignature.length &&
+            event.info.packs.every((e) => event.packsSignature.containsKey(e)),
       TeamJoined() => state.info.teams.containsKey(event.team),
       TeamLeft() => state.info.teams.containsKey(event.team),
       VariationChanged() => event.object
@@ -33,24 +36,24 @@ final class InvalidPacksError extends FatalServerEventError {
       'Server requested packs, that are not available on the client (or is empty): $signature';
 }
 
-Future<WorldState?> processServerEvent(
+WorldState? processServerEvent(
   ServerWorldEvent event,
   WorldState state, {
   required AssetManager assetManager,
-}) async {
+}) {
+  print('Processing $event');
   if (!isValidServerEvent(event, state)) return null;
   switch (event) {
     case WorldInitialized event:
-      final supported =
-          await assetManager.isServerSupported(event.packsSignature);
+      final supported = assetManager.isServerSupported(event.packsSignature);
       if (!supported) {
         throw InvalidPacksError(signature: event.packsSignature);
       }
-      assetManager.setAllowedPacks(event.packsSignature.keys.toSet());
       return state.copyWith(
         table: event.table,
-        id: event.id,
+        id: event.id ?? state.id,
         teamMembers: event.teamMembers,
+        info: event.info,
       );
     case TeamJoined event:
       return state.copyWith(

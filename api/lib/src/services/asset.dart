@@ -4,14 +4,14 @@ const kCorePackId = "core";
 
 abstract class AssetManager {
   QuokkaData? getPack(String key);
-  Future<QuokkaData?> loadPack(String key) => Future.value(getPack(key));
+  bool hasPack(String key);
 
   Iterable<MapEntry<String, QuokkaData>> get packs;
 
-  Future<bool> isServerSupported(Map<String, FileMetadata> signature) async {
+  bool isServerSupported(Map<String, FileMetadata> signature) {
     if (signature.isEmpty) return false;
     for (final entry in signature.entries) {
-      final pack = await loadPack(entry.key);
+      final pack = getPack(entry.key);
       if (pack == null || pack.getMetadataOrDefault() != entry.value) {
         return false;
       }
@@ -19,13 +19,12 @@ abstract class AssetManager {
     return true;
   }
 
-  Map<String, FileMetadata> createSignature() {
+  Map<String, FileMetadata> createSignature(Set<String> packs) {
     final signature = <String, FileMetadata>{};
-    for (final entry in packs) {
+    for (final entry in this.packs) {
+      if (!packs.contains(entry.key)) continue;
       signature[entry.key] = entry.value.getMetadataOrDefault();
     }
     return signature;
   }
-
-  void setAllowedPacks(Set<String> packs) {}
 }

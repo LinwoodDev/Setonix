@@ -188,6 +188,7 @@ class WorldInitializedMapper extends SubClassMapperBase<WorldInitialized> {
       MapperContainer.globals.use(_instance = WorldInitializedMapper._());
       ServerWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
       GameTableMapper.ensureInitialized();
+      GameInfoMapper.ensureInitialized();
       FileMetadataMapper.ensureInitialized();
     }
     return _instance!;
@@ -199,13 +200,16 @@ class WorldInitializedMapper extends SubClassMapperBase<WorldInitialized> {
   static GameTable _$table(WorldInitialized v) => v.table;
   static const Field<WorldInitialized, GameTable> _f$table =
       Field('table', _$table);
+  static GameInfo _$info(WorldInitialized v) => v.info;
+  static const Field<WorldInitialized, GameInfo> _f$info =
+      Field('info', _$info);
   static Map<String, Set<int>> _$teamMembers(WorldInitialized v) =>
       v.teamMembers;
   static const Field<WorldInitialized, Map<String, Set<int>>> _f$teamMembers =
       Field('teamMembers', _$teamMembers, opt: true, def: const {});
-  static int _$id(WorldInitialized v) => v.id;
+  static int? _$id(WorldInitialized v) => v.id;
   static const Field<WorldInitialized, int> _f$id =
-      Field('id', _$id, opt: true, def: kAuthorityChannel);
+      Field('id', _$id, opt: true);
   static Map<String, FileMetadata> _$packsSignature(WorldInitialized v) =>
       v.packsSignature;
   static const Field<WorldInitialized, Map<String, FileMetadata>>
@@ -215,6 +219,7 @@ class WorldInitializedMapper extends SubClassMapperBase<WorldInitialized> {
   @override
   final MappableFields<WorldInitialized> fields = const {
     #table: _f$table,
+    #info: _f$info,
     #teamMembers: _f$teamMembers,
     #id: _f$id,
     #packsSignature: _f$packsSignature,
@@ -231,6 +236,7 @@ class WorldInitializedMapper extends SubClassMapperBase<WorldInitialized> {
   static WorldInitialized _instantiate(DecodingData data) {
     return WorldInitialized(
         table: data.dec(_f$table),
+        info: data.dec(_f$info),
         teamMembers: data.dec(_f$teamMembers),
         id: data.dec(_f$id),
         packsSignature: data.dec(_f$packsSignature));
@@ -291,6 +297,7 @@ extension WorldInitializedValueCopy<$R, $Out>
 abstract class WorldInitializedCopyWith<$R, $In extends WorldInitialized, $Out>
     implements ServerWorldEventCopyWith<$R, $In, $Out> {
   GameTableCopyWith<$R, GameTable, GameTable> get table;
+  GameInfoCopyWith<$R, GameInfo, GameInfo> get info;
   MapCopyWith<$R, String, Set<int>, ObjectCopyWith<$R, Set<int>, Set<int>>>
       get teamMembers;
   MapCopyWith<$R, String, FileMetadata,
@@ -298,6 +305,7 @@ abstract class WorldInitializedCopyWith<$R, $In extends WorldInitialized, $Out>
   @override
   $R call(
       {GameTable? table,
+      GameInfo? info,
       Map<String, Set<int>>? teamMembers,
       int? id,
       Map<String, FileMetadata>? packsSignature});
@@ -317,6 +325,9 @@ class _WorldInitializedCopyWithImpl<$R, $Out>
   GameTableCopyWith<$R, GameTable, GameTable> get table =>
       $value.table.copyWith.$chain((v) => call(table: v));
   @override
+  GameInfoCopyWith<$R, GameInfo, GameInfo> get info =>
+      $value.info.copyWith.$chain((v) => call(info: v));
+  @override
   MapCopyWith<$R, String, Set<int>, ObjectCopyWith<$R, Set<int>, Set<int>>>
       get teamMembers => MapCopyWith(
           $value.teamMembers,
@@ -330,18 +341,21 @@ class _WorldInitializedCopyWithImpl<$R, $Out>
   @override
   $R call(
           {GameTable? table,
+          GameInfo? info,
           Map<String, Set<int>>? teamMembers,
-          int? id,
+          Object? id = $none,
           Map<String, FileMetadata>? packsSignature}) =>
       $apply(FieldCopyWithData({
         if (table != null) #table: table,
+        if (info != null) #info: info,
         if (teamMembers != null) #teamMembers: teamMembers,
-        if (id != null) #id: id,
+        if (id != $none) #id: id,
         if (packsSignature != null) #packsSignature: packsSignature
       }));
   @override
   WorldInitialized $make(CopyWithData data) => WorldInitialized(
       table: data.get(#table, or: $value.table),
+      info: data.get(#info, or: $value.info),
       teamMembers: data.get(#teamMembers, or: $value.teamMembers),
       id: data.get(#id, or: $value.id),
       packsSignature: data.get(#packsSignature, or: $value.packsSignature));
@@ -861,6 +875,7 @@ class ClientWorldEventMapper extends SubClassMapperBase<ClientWorldEvent> {
       TeamLeaveRequestMapper.ensureInitialized();
       RollObjectRequestMapper.ensureInitialized();
       ShuffleCellRequestMapper.ensureInitialized();
+      PacksChangeRequestMapper.ensureInitialized();
       HybridWorldEventMapper.ensureInitialized();
     }
     return _instance!;
@@ -1390,6 +1405,124 @@ class _ShuffleCellRequestCopyWithImpl<$R, $Out>
   ShuffleCellRequestCopyWith<$R2, ShuffleCellRequest, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
       _ShuffleCellRequestCopyWithImpl($value, $cast, t);
+}
+
+class PacksChangeRequestMapper extends SubClassMapperBase<PacksChangeRequest> {
+  PacksChangeRequestMapper._();
+
+  static PacksChangeRequestMapper? _instance;
+  static PacksChangeRequestMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = PacksChangeRequestMapper._());
+      ClientWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'PacksChangeRequest';
+
+  static Set<String> _$packs(PacksChangeRequest v) => v.packs;
+  static const Field<PacksChangeRequest, Set<String>> _f$packs =
+      Field('packs', _$packs);
+
+  @override
+  final MappableFields<PacksChangeRequest> fields = const {
+    #packs: _f$packs,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'PacksChangeRequest';
+  @override
+  late final ClassMapperBase superMapper =
+      ClientWorldEventMapper.ensureInitialized();
+
+  static PacksChangeRequest _instantiate(DecodingData data) {
+    return PacksChangeRequest(data.dec(_f$packs));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static PacksChangeRequest fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<PacksChangeRequest>(map);
+  }
+
+  static PacksChangeRequest fromJson(String json) {
+    return ensureInitialized().decodeJson<PacksChangeRequest>(json);
+  }
+}
+
+mixin PacksChangeRequestMappable {
+  String toJson() {
+    return PacksChangeRequestMapper.ensureInitialized()
+        .encodeJson<PacksChangeRequest>(this as PacksChangeRequest);
+  }
+
+  Map<String, dynamic> toMap() {
+    return PacksChangeRequestMapper.ensureInitialized()
+        .encodeMap<PacksChangeRequest>(this as PacksChangeRequest);
+  }
+
+  PacksChangeRequestCopyWith<PacksChangeRequest, PacksChangeRequest,
+          PacksChangeRequest>
+      get copyWith => _PacksChangeRequestCopyWithImpl(
+          this as PacksChangeRequest, $identity, $identity);
+  @override
+  String toString() {
+    return PacksChangeRequestMapper.ensureInitialized()
+        .stringifyValue(this as PacksChangeRequest);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return PacksChangeRequestMapper.ensureInitialized()
+        .equalsValue(this as PacksChangeRequest, other);
+  }
+
+  @override
+  int get hashCode {
+    return PacksChangeRequestMapper.ensureInitialized()
+        .hashValue(this as PacksChangeRequest);
+  }
+}
+
+extension PacksChangeRequestValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, PacksChangeRequest, $Out> {
+  PacksChangeRequestCopyWith<$R, PacksChangeRequest, $Out>
+      get $asPacksChangeRequest =>
+          $base.as((v, t, t2) => _PacksChangeRequestCopyWithImpl(v, t, t2));
+}
+
+abstract class PacksChangeRequestCopyWith<$R, $In extends PacksChangeRequest,
+    $Out> implements ClientWorldEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({Set<String>? packs});
+  PacksChangeRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class _PacksChangeRequestCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, PacksChangeRequest, $Out>
+    implements PacksChangeRequestCopyWith<$R, PacksChangeRequest, $Out> {
+  _PacksChangeRequestCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<PacksChangeRequest> $mapper =
+      PacksChangeRequestMapper.ensureInitialized();
+  @override
+  $R call({Set<String>? packs}) =>
+      $apply(FieldCopyWithData({if (packs != null) #packs: packs}));
+  @override
+  PacksChangeRequest $make(CopyWithData data) =>
+      PacksChangeRequest(data.get(#packs, or: $value.packs));
+
+  @override
+  PacksChangeRequestCopyWith<$R2, PacksChangeRequest, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _PacksChangeRequestCopyWithImpl($value, $cast, t);
 }
 
 class HybridWorldEventMapper extends SubClassMapperBase<HybridWorldEvent> {

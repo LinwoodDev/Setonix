@@ -116,7 +116,7 @@ abstract class HandItem<T> extends PositionComponent
   @override
   Future<void> onLoad() async {
     super.onLoad();
-    _sprite.sprite = game.selectionSprite;
+    _sprite.sprite = game.blankSprite;
     add(_sprite);
   }
 
@@ -140,7 +140,7 @@ abstract class HandItem<T> extends PositionComponent
         position: Vector2(50, 0),
         anchor: Anchor.topCenter,
         textRenderer: _buildPaint(state)));
-    _sprite.sprite = await loadIcon(state);
+    _sprite.sprite = await loadIcon(state) ?? game.blankSprite;
   }
 
   _buildPaint(ClientWorldState state) => TextPaint(

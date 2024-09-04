@@ -14,6 +14,7 @@ import 'package:quokka/board/hand/view.dart';
 import 'package:quokka/helpers/asset.dart';
 import 'package:quokka/helpers/scroll.dart';
 import 'package:quokka/helpers/secondary.dart';
+import 'package:quokka_api/quokka_api.dart';
 
 class BoardGame extends FlameGame
     with
@@ -23,7 +24,7 @@ class BoardGame extends FlameGame
         HasCollisionDetection {
   final VoidCallback onEscape;
   final ContextMenuController contextMenuController;
-  late final Sprite selectionSprite;
+  late final Sprite selectionSprite, blankSprite;
   late final GameHand _hand;
   late final BoardGrid grid;
   final WorldBloc bloc;
@@ -31,6 +32,7 @@ class BoardGame extends FlameGame
   bool _isShifting = false;
 
   GameAssetManager get assetManager => bloc.assetManager;
+  Iterable<MapEntry<String, QuokkaData>> get packs => bloc.packs;
   bool get isShifting => _isShifting;
 
   BoardGame({
@@ -46,9 +48,8 @@ class BoardGame extends FlameGame
         FlameBlocProvider<WorldBloc, ClientWorldState>.value(value: bloc);
     await add(provider);
     provider.addAll([camera, world]);
-    const packName = '';
-    await assetManager.loadPack(packName);
     selectionSprite = await Sprite.load('selection.png');
+    blankSprite = await Sprite.load('blank.png');
     _hand = GameHand();
     camera.viewport.add(_hand);
     camera.moveTo(camera.viewport.virtualSize * 0.5);

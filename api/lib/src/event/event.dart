@@ -1,6 +1,8 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:networker/networker.dart';
+
 import '../models/meta.dart';
+import '../models/info.dart';
 import '../models/table.dart';
 import '../models/vector.dart';
 

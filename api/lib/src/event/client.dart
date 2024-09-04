@@ -38,3 +38,11 @@ final class ShuffleCellRequest extends ClientWorldEvent
 
   ShuffleCellRequest(this.cell);
 }
+
+@MappableClass()
+final class PacksChangeRequest extends ClientWorldEvent
+    with PacksChangeRequestMappable {
+  final Set<String> packs;
+
+  PacksChangeRequest(this.packs);
+}

@@ -33,10 +33,10 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
           table: data.getTableOrDefault(),
           metadata: data.getMetadataOrDefault(),
         )) {
-    on<ServerWorldEvent>((event, emit) async {
+    on<ServerWorldEvent>((event, emit) {
       final newState =
-          await processServerEvent(event, state, assetManager: assetManager);
-      if (newState == null) return;
+          processServerEvent(event, state, assetManager: assetManager);
+      if (newState == null) return null;
       emit(newState);
       return save();
     });
@@ -111,7 +111,7 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
     await _server?.onClosed.first;
   }
 
-  void _onClientEvent(NetworkerPacket<WorldEvent> event) {
+  void _onClientEvent(NetworkerPacket<WorldEvent?> event) async {
     final data = event.data;
     final process = processClientEvent(
       data,
@@ -120,8 +120,10 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
       assetManager: assetManager,
     );
     if (process == null) return;
-    log('Processing event by ${event.channel}: $process',
-        level: LogLevel.verbose);
+    if (data != null) {
+      log('Processing event by ${event.channel}: $process',
+          level: LogLevel.verbose);
+    }
     _pipe?.sendMessage(process.$1, process.$2);
     if (process.$2 == kAnyChannel || process.$2 == kAuthorityChannel) {
       add(process.$1);
@@ -131,14 +133,7 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
   void _onJoin((Channel, ConnectionInfo) event) {
     final (user, info) = event;
     log('${info.address} ($user) joined the game', level: LogLevel.info);
-    _pipe?.sendMessage(
-        WorldInitialized(
-          table: state.table,
-          id: state.id,
-          teamMembers: state.teamMembers,
-          packsSignature: assetManager.createSignature(),
-        ),
-        user);
+    _onClientEvent(NetworkerPacket(null, event.$1));
   }
 
   void _onLeave((Channel, ConnectionInfo) event) {

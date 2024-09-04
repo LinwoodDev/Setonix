@@ -10,14 +10,16 @@ sealed class ServerWorldEvent extends PlayableWorldEvent
 final class WorldInitialized extends ServerWorldEvent
     with WorldInitializedMappable {
   final GameTable table;
+  final GameInfo info;
   final Map<String, Set<Channel>> teamMembers;
-  final Channel id;
+  final Channel? id;
   final Map<String, FileMetadata> packsSignature;
 
   WorldInitialized({
     required this.table,
+    required this.info,
     this.teamMembers = const {},
-    this.id = kAuthorityChannel,
+    this.id,
     this.packsSignature = const {},
   });
 }

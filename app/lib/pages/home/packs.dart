@@ -5,12 +5,18 @@ import 'package:lw_file_system/lw_file_system.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:quokka/api/open.dart';
+import 'package:quokka/bloc/world/bloc.dart';
 import 'package:quokka/services/file_system.dart';
 import 'package:quokka/widgets/search.dart';
 import 'package:quokka_api/quokka_api.dart';
 
 class PacksDialog extends StatefulWidget {
-  const PacksDialog({super.key});
+  final WorldBloc? bloc;
+
+  const PacksDialog({
+    super.key,
+    this.bloc,
+  });
 
   @override
   State<PacksDialog> createState() => _PacksDialogState();
@@ -32,7 +38,7 @@ class _PacksDialogState extends State<PacksDialog>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: isWorldLoaded ? 3 : 2, vsync: this);
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.dismissed) {
         setState(() {
@@ -57,6 +63,8 @@ class _PacksDialogState extends State<PacksDialog>
       });
     }
   }
+
+  bool get isWorldLoaded => widget.bloc != null;
 
   List<Widget> _buildDetailsChildren(QuokkaData pack, FileMetadata metadata) =>
       [
@@ -104,15 +112,13 @@ class _PacksDialogState extends State<PacksDialog>
     _reloadPacks();
   }
 
+  bool _allowRemoving(String? id, bool? installed) =>
+      id != kCorePackId && (installed ?? false);
+
   @override
   Widget build(BuildContext context) {
     final currentSize = MediaQuery.sizeOf(context).width;
     final isMobile = currentSize < LeapBreakpoints.medium;
-    final onInstall = _selectedPack?.$3 ?? false ? null : _deselectPack;
-    final onRemove =
-        (_selectedPack?.$3 ?? false) && (_selectedPack?.$2 != kCorePackId)
-            ? _removePack
-            : null;
     Future<void> selectPack(QuokkaData pack, String id, bool installed) async {
       _controller.forward();
       setState(() {
@@ -126,8 +132,11 @@ class _PacksDialogState extends State<PacksDialog>
           childrenBuilder: (context) => [
             ..._buildDetailsChildren(pack, metadata),
             const SizedBox(height: 16),
-            ..._buildActionsChildren(pack,
-                onInstall: onInstall, onRemove: onRemove),
+            ..._buildActionsChildren(
+              pack,
+              onInstall: installed ? null : _deselectPack,
+              onRemove: _allowRemoving(id, installed) ? _removePack : null,
+            ),
           ],
           titleBuilder: (context) => Text(metadata.name),
         );
@@ -136,6 +145,11 @@ class _PacksDialogState extends State<PacksDialog>
         }
       }
     }
+
+    final onInstall = _selectedPack?.$3 ?? false ? null : _deselectPack;
+    final onRemove = _allowRemoving(_selectedPack?.$2, _selectedPack?.$3)
+        ? _removePack
+        : null;
 
     return ResponsiveAlertDialog(
       title: Text(AppLocalizations.of(context).packs),
@@ -150,6 +164,11 @@ class _PacksDialogState extends State<PacksDialog>
             tabController: _tabController,
             searchController: _searchController,
             tabs: [
+              if (isWorldLoaded)
+                HorizontalTab(
+                  icon: const PhosphorIcon(PhosphorIconsLight.play),
+                  label: Text(AppLocalizations.of(context).game),
+                ),
               HorizontalTab(
                 icon: const PhosphorIcon(PhosphorIconsLight.folder),
                 label: Text(AppLocalizations.of(context).installed),
@@ -191,9 +210,47 @@ class _PacksDialogState extends State<PacksDialog>
                                   .contains(query) ??
                               entry.fileName.toLowerCase().contains(query))
                           .toList();
+
+                      var worldPacks = const <MapEntry<String, QuokkaData>>[];
+                      final bloc = widget.bloc;
+                      if (bloc != null) {
+                        worldPacks = bloc.assetManager.packs.toList();
+                      }
+
                       return TabBarView(
                         controller: _tabController,
                         children: [
+                          if (isWorldLoaded)
+                            BlocBuilder<WorldBloc, WorldState>(
+                              bloc: bloc,
+                              buildWhen: (previous, current) =>
+                                  previous.info.packs != current.info.packs,
+                              builder: (context, state) => ListView.builder(
+                                itemCount: worldPacks.length,
+                                itemBuilder: (context, index) {
+                                  final entry = worldPacks[index];
+                                  final id = entry.key;
+                                  final data = entry.value;
+                                  final metadata = data.getMetadata();
+                                  return CheckboxListTile(
+                                    title: Text(metadata?.name ??
+                                        AppLocalizations.of(context).unnamed),
+                                    subtitle: Text(id),
+                                    value: state.info.packs.contains(id),
+                                    onChanged: (value) {
+                                      final packs =
+                                          Set<String>.from(state.info.packs);
+                                      if (value ?? false) {
+                                        packs.add(id);
+                                      } else {
+                                        packs.remove(id);
+                                      }
+                                      bloc?.process(PacksChangeRequest(packs));
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
                           ListView.builder(
                             itemCount: filtered.length,
                             itemBuilder: (context, index) {

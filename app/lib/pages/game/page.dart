@@ -48,22 +48,21 @@ class _GamePageState extends State<GamePage> {
     });
   }
 
-  Blocs _initBloc([QuokkaData? data]) {
+  Future<Blocs> _initBloc([QuokkaData? data]) async {
     final cubit = MultiplayerCubit();
     final address = widget.address;
+    final world = WorldBloc(
+      multiplayer: cubit,
+      fileSystem: context.read<QuokkaFileSystem>(),
+      name: widget.name,
+      data: data,
+      colorScheme: Theme.of(context).colorScheme,
+    );
+    await world.assetManager.loadPacks();
     if (address != null) {
       cubit.connect(address);
     }
-    return (
-      cubit,
-      WorldBloc(
-        multiplayer: cubit,
-        fileSystem: context.read<QuokkaFileSystem>(),
-        name: widget.name,
-        data: data,
-        colorScheme: Theme.of(context).colorScheme,
-      )
-    );
+    return (cubit, world);
   }
 
   Future<Blocs> _loadTable() async {

@@ -6,12 +6,14 @@ import 'package:crypto/crypto.dart';
 import 'package:lw_file_system_api/lw_file_system_api.dart';
 import 'background.dart';
 import 'deck.dart';
+import 'info.dart';
 import 'meta.dart';
 import 'object.dart';
 import 'table.dart';
 import 'translation.dart';
 
 const kPackMetadataPath = 'pack.json';
+const kPackInfoPath = 'info.json';
 const kPackDecksPath = 'decks';
 const kPackFiguresPath = 'figures';
 const kPackBoardsPath = 'boards';
@@ -52,6 +54,18 @@ class QuokkaData extends ArchiveData<QuokkaData> {
     final content = utf8.decode(data);
     return FileMetadataMapper.fromJson(content);
   }
+
+  GameInfo? getInfo() {
+    final data = getAsset(kPackInfoPath);
+    if (data == null) return null;
+    final content = utf8.decode(data);
+    return GameInfoMapper.fromJson(content);
+  }
+
+  GameInfo getInfoOrDefault() => getInfo() ?? const GameInfo();
+
+  QuokkaData setInfo(GameInfo info) =>
+      setAsset(kPackInfoPath, utf8.encode(info.toJson()));
 
   FileMetadata getMetadataOrDefault() => getMetadata() ?? const FileMetadata();
 

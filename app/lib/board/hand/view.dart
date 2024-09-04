@@ -80,7 +80,8 @@ class GameHand extends CustomPainterComponent
       previousState.selectedCell != newState.selectedCell ||
       previousState.table.cells[previousState.selectedCell] !=
           newState.table.cells[newState.selectedCell] ||
-      previousState.colorScheme != newState.colorScheme;
+      previousState.colorScheme != newState.colorScheme ||
+      previousState.info.packs != newState.info.packs;
 
   void _buildHand(ClientWorldState state) {
     _scrollView.clearChildren();
@@ -108,8 +109,7 @@ class GameHand extends CustomPainterComponent
 
   void _buildFreeHand() {
     final game = gameRef;
-    final decks =
-        game.assetManager.packs.expand((e) => e.value.getDeckItems(e.key));
+    final decks = game.packs.expand((e) => e.value.getDeckItems(e.key));
     for (final deck in decks) {
       _scrollView.addChild(DeckDefinitionHandItem(item: deck));
     }

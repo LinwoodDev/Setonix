@@ -68,5 +68,5 @@ class WorldState with WorldStateMappable {
   }
 
   QuokkaData save() =>
-      data.setTable(table, tableName).setFileMetadata(metadata);
+      data.setTable(table, tableName).setInfo(info).setFileMetadata(metadata);
 }

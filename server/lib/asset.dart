@@ -49,4 +49,7 @@ class ServerAssetManager extends AssetManager {
 
   @override
   QuokkaData? getPack(String key) => _packs[key];
+
+  @override
+  bool hasPack(String key) => _packs.containsKey(key);
 }

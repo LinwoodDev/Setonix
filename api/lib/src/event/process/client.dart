@@ -6,6 +6,7 @@ import 'package:quokka_api/quokka_api.dart';
 
 bool isValidClientEvent(
   WorldEvent event,
+  Channel channel,
   WorldState state, {
   required AssetManager assetManager,
 }) =>
@@ -31,13 +32,31 @@ bool isValidClientEvent(
       ObjectIndexChanged() => event.index
           .inRange(0, state.table.getCell(event.cell).objects.length - 1),
       TeamRemoved() => state.info.teams.containsKey(event.team),
+      PacksChangeRequest() => channel == kAuthorityChannel &&
+          event.packs.every((e) => assetManager.hasPack(e)),
       _ => true,
     };
 
 (ServerWorldEvent, Channel)? processClientEvent(
-    WorldEvent event, Channel channel, WorldState state,
+    WorldEvent? event, Channel channel, WorldState state,
     {required AssetManager assetManager, bool allowServerEvents = false}) {
-  if (!isValidClientEvent(event, state, assetManager: assetManager)) {
+  (ServerWorldEvent, Channel) sendInit(Channel? channel, WorldState state) {
+    return (
+      WorldInitialized(
+        table: state.table,
+        info: state.info,
+        id: channel,
+        packsSignature: assetManager.createSignature(state.info.packs),
+        teamMembers: state.teamMembers,
+      ),
+      channel ?? kAnyChannel,
+    );
+  }
+
+  if (event == null) {
+    return sendInit(channel, state);
+  }
+  if (!isValidClientEvent(event, channel, state, assetManager: assetManager)) {
     return null;
   }
   switch (event) {
@@ -71,5 +90,11 @@ bool isValidClientEvent(
       final positions = List<int>.generate(cell.objects.length, (i) => i)
         ..shuffle();
       return (CellShuffled(r.cell, positions), kAnyChannel);
+    case PacksChangeRequest r:
+      return sendInit(
+          null,
+          state.copyWith.info(
+            packs: r.packs,
+          ));
   }
 }

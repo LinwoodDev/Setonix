@@ -13,6 +13,7 @@ import 'package:quokka/helpers/visualizer.dart';
 import 'package:quokka/pages/game/info.dart';
 import 'package:quokka/pages/game/multiplayer.dart';
 import 'package:quokka/pages/game/team.dart';
+import 'package:quokka/pages/home/packs.dart';
 import 'package:quokka_api/quokka_api.dart';
 
 class GameDrawer extends StatelessWidget {
@@ -101,6 +102,19 @@ class GameDrawer extends StatelessWidget {
               title: Text(MaterialLocalizations.of(context).backButtonTooltip),
               onTap: () => Scaffold.of(context).closeDrawer(),
             ),
+            ListTile(
+              leading: const Icon(PhosphorIconsLight.package),
+              title: Text(AppLocalizations.of(context).packs),
+              onTap: () {
+                final bloc = context.read<WorldBloc>();
+                showDialog(
+                  builder: (context) => PacksDialog(
+                    bloc: bloc,
+                  ),
+                  context: context,
+                );
+              },
+            ),
             BlocBuilder<WorldBloc, ClientWorldState>(
               buildWhen: (previous, current) =>
                   previous.table.background != current.table.background,
@@ -121,7 +135,7 @@ class GameDrawer extends StatelessWidget {
                         context: context,
                         titleBuilder: (context) =>
                             Text(AppLocalizations.of(context).background),
-                        childrenBuilder: (context) => assetManager.packs
+                        childrenBuilder: (context) => bloc.packs
                                 .expand(
                                     (e) => e.value.getBackgroundItems(e.key))
                                 .sorted((a, b) =>

@@ -49,43 +49,6 @@ class GameTable with GameTableMappable {
 }
 
 @MappableClass()
-class GameInfo with GameInfoMappable {
-  final Map<String, GameTeam> teams;
-
-  const GameInfo({
-    this.teams = const {},
-  });
-}
-
-@MappableEnum()
-enum TeamColor {
-  pink,
-  red,
-  orange,
-  yellow,
-  green,
-  blue,
-  indigo,
-  purple,
-  brown,
-  white,
-  black;
-}
-
-@MappableClass()
-class GameTeam with GameTeamMappable {
-  final String description;
-  final TeamColor? color;
-  final Set<GlobalVectorDefinition> claimedCells;
-
-  GameTeam({
-    this.description = '',
-    this.color,
-    this.claimedCells = const {},
-  });
-}
-
-@MappableClass()
 class GlobalVectorDefinition extends VectorDefinition
     with GlobalVectorDefinitionMappable {
   final String world;
@@ -151,10 +114,10 @@ class ItemLocation with ItemLocationMappable {
   final String namespace, id;
 
   ItemLocation(this.namespace, this.id);
-  factory ItemLocation.fromString(String location) {
+  factory ItemLocation.fromString(String location, String namespace) {
     final splitted = location.split(':');
     if (splitted.length < 2) {
-      return ItemLocation('', splitted[0]);
+      return ItemLocation(namespace, splitted[0]);
     }
     return ItemLocation(splitted[0], splitted[1]);
   }

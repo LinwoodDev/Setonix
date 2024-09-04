@@ -12,10 +12,9 @@ import 'package:quokka_api/quokka_api.dart';
 class GameAssetManager extends AssetManager {
   String currentLocale;
   final WorldBloc bloc;
-  final Set<String> _allowedPacks = {};
   final Map<String, QuokkaData> _loadedPacks = {};
   final Map<String, TranslationsStore> _loadedTranslations = {};
-  final Map<ItemLocation, Future<Image>> _cachedImages = {};
+  final Map<ItemLocation?, Future<Image>> _cachedImages = {};
 
   QuokkaFileSystem get fileSystem => bloc.state.fileSystem;
 
@@ -25,11 +24,10 @@ class GameAssetManager extends AssetManager {
   });
 
   @override
-  Iterable<MapEntry<String, QuokkaData>> get packs => _loadedPacks.entries
-      .where((e) => _allowedPacks.isEmpty || _allowedPacks.contains(e.key));
+  Iterable<MapEntry<String, QuokkaData>> get packs => _loadedPacks.entries;
 
-  Uint8List? getTexture(String key) =>
-      getTextureFromLocation(ItemLocation.fromString(key));
+  Uint8List? getTexture(String key, String namespace) =>
+      getTextureFromLocation(ItemLocation.fromString(key, namespace));
 
   Uint8List? getTextureFromLocation(ItemLocation location) {
     final pack = _loadedPacks[location.namespace];
@@ -40,12 +38,13 @@ class GameAssetManager extends AssetManager {
   }
 
   Future<Sprite?> loadSprite(
-    String key, {
+    String key,
+    String namespace, {
     Vector2? srcPosition,
     Vector2? srcSize,
   }) =>
       loadSpriteFromLocation(
-        ItemLocation.fromString(key),
+        ItemLocation.fromString(key, namespace),
         srcPosition: srcPosition,
         srcSize: srcSize,
       );
@@ -68,16 +67,19 @@ class GameAssetManager extends AssetManager {
         ));
   }
 
-  Future<Sprite?> loadFigureSprite(String key, [String? variation]) =>
-      loadFigureSpriteFromLocation(ItemLocation.fromString(key), variation);
+  Future<Sprite?> loadFigureSprite(String key, String namespace,
+          [String? variation]) =>
+      loadFigureSpriteFromLocation(
+          ItemLocation.fromString(key, namespace), variation);
 
   Future<Sprite?> loadFigureSpriteFromLocation(ItemLocation location,
       [String? variation]) async {
-    final figure = (await loadPack(location.namespace))?.getFigure(location.id);
+    final figure = getPack(location.namespace)?.getFigure(location.id);
     if (figure == null) return null;
     final definition = figure.variations[variation] ?? figure.back;
     return loadSprite(
       definition.texture,
+      location.namespace,
       srcPosition: definition.offset.toVector(),
       srcSize: definition.size?.toVector(),
     );
@@ -86,34 +88,36 @@ class GameAssetManager extends AssetManager {
   @override
   QuokkaData? getPack(String key) => _loadedPacks[key];
 
-  @override
-  Future<QuokkaData?> loadPack(String key,
-      {QuokkaData? pack, bool force = false}) async {
-    final oldPack = _loadedPacks[key];
-    if (!force && oldPack != null) return oldPack;
-    pack ??= await fileSystem.getPack(key);
-    if (pack == null) return null;
-    unloadPack(key);
-    _loadedPacks[key] = pack;
-    _loadedTranslations[key] = TranslationsStore(
-      translations: pack.getAllTranslations(),
-      getLocale: () => currentLocale,
-    );
-    return pack;
+  Future<void> loadPacks() async {
+    final files = await fileSystem.getPacks();
+    unloadPacks(_loadedPacks.keys.where((e) => !files.any((f) => f.path == e)));
+    for (final file in files) {
+      try {
+        final key = file.path;
+        final pack = file.data!;
+        _loadedPacks[key] = pack;
+        _loadedTranslations[key] = TranslationsStore(
+          translations: pack.getAllTranslations(),
+          getLocale: () => currentLocale,
+        );
+      } catch (_) {}
+    }
   }
 
   TranslationsStore getTranslations(String key) =>
       _loadedTranslations[key] ??
       TranslationsStore(getLocale: () => currentLocale);
 
-  void unloadPack(String key) {
-    _loadedTranslations.remove(key);
-    if (_loadedPacks.remove(key) != null) clearImagesFromNamespace(key);
+  void unloadPacks(Iterable<String> keys) {
+    _loadedTranslations.removeWhere((e, _) => keys.contains(e));
+    for (final key in keys) {
+      if (_loadedPacks.remove(key) != null) clearImagesFromNamespace(key);
+    }
   }
 
   void clearImagesFromNamespace(String namespace) => _cachedImages
     ..removeWhere((k, v) {
-      if (namespace != k.namespace) return false;
+      if (namespace != k?.namespace) return false;
       v.then((e) => e.dispose());
       return true;
     });
@@ -123,10 +127,5 @@ class GameAssetManager extends AssetManager {
     ..clear();
 
   @override
-  void setAllowedPacks(Iterable<String> packs) {
-    _allowedPacks.clear();
-    _allowedPacks.addAll(packs);
-  }
-
-  void resetAllowedPacks() => _allowedPacks.clear();
+  bool hasPack(String key) => _loadedPacks.containsKey(key);
 }
