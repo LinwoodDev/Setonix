@@ -210,63 +210,22 @@ class _PacksDialogState extends State<PacksDialog>
                                   .contains(query) ??
                               entry.fileName.toLowerCase().contains(query))
                           .toList();
-
-                      var worldPacks = const <MapEntry<String, QuokkaData>>[];
                       final bloc = widget.bloc;
-                      if (bloc != null) {
-                        worldPacks = bloc.assetManager.packs.toList();
-                      }
-
                       return TabBarView(
                         controller: _tabController,
                         children: [
-                          if (isWorldLoaded)
-                            BlocBuilder<WorldBloc, WorldState>(
+                          if (bloc != null)
+                            _WorldPacksView(
                               bloc: bloc,
-                              buildWhen: (previous, current) =>
-                                  previous.info.packs != current.info.packs,
-                              builder: (context, state) => ListView.builder(
-                                itemCount: worldPacks.length,
-                                itemBuilder: (context, index) {
-                                  final entry = worldPacks[index];
-                                  final id = entry.key;
-                                  final data = entry.value;
-                                  final metadata = data.getMetadata();
-                                  return CheckboxListTile(
-                                    title: Text(metadata?.name ??
-                                        AppLocalizations.of(context).unnamed),
-                                    subtitle: Text(id),
-                                    value: state.info.packs.contains(id),
-                                    onChanged: (value) {
-                                      final packs =
-                                          Set<String>.from(state.info.packs);
-                                      if (value ?? false) {
-                                        packs.add(id);
-                                      } else {
-                                        packs.remove(id);
-                                      }
-                                      bloc?.process(PacksChangeRequest(packs));
-                                    },
-                                  );
-                                },
-                              ),
                             ),
-                          ListView.builder(
-                            itemCount: filtered.length,
-                            itemBuilder: (context, index) {
-                              final pack = packs[index];
-                              final key = pack.pathWithoutLeadingSlash;
-                              final data = pack.data!;
-                              final metadata = data.getMetadata();
-                              return ListTile(
-                                title: Text(metadata?.name ??
-                                    AppLocalizations.of(context).unnamed),
-                                subtitle: Text(key),
-                                selected: _selectedPack?.$1 == data &&
-                                    (!isMobile || _isMobileOpen),
-                                onTap: () => selectPack(data, key, true),
-                              );
-                            },
+                          _InstalledPacksView(
+                            filtered: filtered,
+                            packs: packs,
+                            selectedPack: _selectedPack,
+                            isMobile: isMobile,
+                            isMobileOpen: _isMobileOpen,
+                            bloc: bloc,
+                            selectPack: selectPack,
                           ),
                           Center(
                             child:
@@ -368,6 +327,127 @@ class _PacksDialogState extends State<PacksDialog>
           icon: const Icon(PhosphorIconsLight.arrowSquareIn),
         ),
       ],
+    );
+  }
+}
+
+class _InstalledPacksView extends StatelessWidget {
+  final List<FileSystemFile<QuokkaData>> filtered;
+  final List<FileSystemFile<QuokkaData>> packs;
+  final (QuokkaData, String, bool)? selectedPack;
+  final void Function(QuokkaData, String, bool) selectPack;
+  final bool isMobile;
+  final bool isMobileOpen;
+  final WorldBloc? bloc;
+
+  const _InstalledPacksView({
+    required this.filtered,
+    required this.packs,
+    required this.selectedPack,
+    required this.selectPack,
+    required this.isMobile,
+    required this.isMobileOpen,
+    required this.bloc,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: filtered.length,
+      itemBuilder: (context, index) {
+        final pack = packs[index];
+        final key = pack.pathWithoutLeadingSlash;
+        final data = pack.data!;
+        final metadata = data.getMetadata();
+        return ListTile(
+          title: Text(metadata?.name ?? AppLocalizations.of(context).unnamed),
+          subtitle: Text(key),
+          selected: selectedPack?.$1 == data && (!isMobile || isMobileOpen),
+          onTap: () => selectPack(data, key, true),
+          leading: bloc != null
+              ? BlocBuilder<WorldBloc, WorldState>(
+                  bloc: bloc,
+                  buildWhen: (previous, current) =>
+                      previous.info.packs != current.info.packs,
+                  builder: (context, state) {
+                    return IconButton.outlined(
+                      icon: const Icon(PhosphorIconsLight.plus),
+                      tooltip: AppLocalizations.of(context).addPack,
+                      onPressed: state.info.packs.contains(key)
+                          ? null
+                          : () {
+                              final packs = [
+                                ...bloc!.state.info.packs,
+                                key,
+                              ];
+                              bloc!.process(
+                                PacksChangeRequest(packs),
+                              );
+                            },
+                    );
+                  })
+              : null,
+        );
+      },
+    );
+  }
+}
+
+class _WorldPacksView extends StatelessWidget {
+  const _WorldPacksView({
+    required this.bloc,
+  });
+
+  final WorldBloc bloc;
+
+  @override
+  Widget build(BuildContext context) {
+    final loadedPacks = bloc.assetManager.packs.toList();
+    return BlocBuilder<WorldBloc, WorldState>(
+      bloc: bloc,
+      buildWhen: (previous, current) =>
+          previous.info.packs != current.info.packs,
+      builder: (context, state) {
+        final worldPacks = loadedPacks
+            .where((entry) => state.info.packs.contains(entry.key))
+            .toList();
+        return ReorderableListView.builder(
+          itemCount: worldPacks.length,
+          itemBuilder: (context, index) {
+            final entry = worldPacks[index];
+            final id = entry.key;
+            final data = entry.value;
+            final metadata = data.getMetadata();
+            return ListTile(
+              key: ValueKey(id),
+              title:
+                  Text(metadata?.name ?? AppLocalizations.of(context).unnamed),
+              subtitle: Text(id),
+              leading: IconButton.outlined(
+                icon: const Icon(PhosphorIconsLight.minus),
+                tooltip: AppLocalizations.of(context).removePack,
+                onPressed: () {
+                  final packs = List<String>.from(state.info.packs)..remove(id);
+                  bloc.process(
+                    PacksChangeRequest(packs),
+                  );
+                },
+              ),
+            );
+          },
+          onReorder: (int oldIndex, int newIndex) {
+            if (oldIndex < newIndex) {
+              newIndex -= 1;
+            }
+            final packs = List<String>.from(state.info.packs);
+            final pack = packs.removeAt(oldIndex);
+            packs.insert(newIndex, pack);
+            bloc.process(
+              PacksChangeRequest(packs),
+            );
+          },
+        );
+      },
     );
   }
 }

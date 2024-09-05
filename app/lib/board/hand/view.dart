@@ -50,6 +50,9 @@ class GameHand extends CustomPainterComponent
         HandItemDropZone {
   final _scrollView = ScrollViewComponent(direction: Axis.horizontal);
 
+  /// Should hand be redrawn
+  bool _isDirty = true;
+
   GameHand() : super(anchor: Anchor.topLeft, painter: GameHandCustomPainter());
 
   @override
@@ -59,10 +62,20 @@ class GameHand extends CustomPainterComponent
   }
 
   @override
-  void onInitialState(ClientWorldState state) => _buildHand(state);
+  void update(double dt) {
+    if (_isDirty) {
+      _isDirty = false;
+      if (isMounted) {
+        _buildHand(bloc.state);
+      }
+    }
+  }
 
   @override
-  void onNewState(ClientWorldState state) => _buildHand(state);
+  void onInitialState(ClientWorldState state) => _isDirty = true;
+
+  @override
+  void onNewState(ClientWorldState state) => _isDirty = true;
 
   @override
   void onParentResize(Vector2 maxSize) {

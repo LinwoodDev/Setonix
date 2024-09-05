@@ -46,7 +46,7 @@ bool isValidClientEvent(
         table: state.table,
         info: state.info,
         id: channel,
-        packsSignature: assetManager.createSignature(state.info.packs),
+        packsSignature: assetManager.createSignature(state.info.packs.toSet()),
         teamMembers: state.teamMembers,
       ),
       channel ?? kAnyChannel,

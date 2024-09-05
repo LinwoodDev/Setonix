@@ -139,5 +139,7 @@
   "export": "Export",
   "editInfo": "Edit information",
   "invalidPacks": "The server requested packs that doesn't exist on this client",
-  "switchCellOnMove": "Switch cell on move"
+  "switchCellOnMove": "Switch cell on move",
+  "addPack": "Add pack",
+  "removePack": "Remove pack"
 }

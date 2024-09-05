@@ -106,9 +106,9 @@ class GameInfoMapper extends ClassMapperBase<GameInfo> {
   static Map<String, GameTeam> _$teams(GameInfo v) => v.teams;
   static const Field<GameInfo, Map<String, GameTeam>> _f$teams =
       Field('teams', _$teams, opt: true, def: const {});
-  static Set<String> _$packs(GameInfo v) => v.packs;
-  static const Field<GameInfo, Set<String>> _f$packs =
-      Field('packs', _$packs, opt: true, def: const {});
+  static List<String> _$packs(GameInfo v) => v.packs;
+  static const Field<GameInfo, List<String>> _f$packs =
+      Field('packs', _$packs, opt: true, def: const []);
 
   @override
   final MappableFields<GameInfo> fields = const {
@@ -171,7 +171,8 @@ abstract class GameInfoCopyWith<$R, $In extends GameInfo, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   MapCopyWith<$R, String, GameTeam, GameTeamCopyWith<$R, GameTeam, GameTeam>>
       get teams;
-  $R call({Map<String, GameTeam>? teams, Set<String>? packs});
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get packs;
+  $R call({Map<String, GameTeam>? teams, List<String>? packs});
   GameInfoCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -188,7 +189,11 @@ class _GameInfoCopyWithImpl<$R, $Out>
       get teams => MapCopyWith(
           $value.teams, (v, t) => v.copyWith.$chain(t), (v) => call(teams: v));
   @override
-  $R call({Map<String, GameTeam>? teams, Set<String>? packs}) =>
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get packs =>
+      ListCopyWith($value.packs, (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(packs: v));
+  @override
+  $R call({Map<String, GameTeam>? teams, List<String>? packs}) =>
       $apply(FieldCopyWithData({
         if (teams != null) #teams: teams,
         if (packs != null) #packs: packs

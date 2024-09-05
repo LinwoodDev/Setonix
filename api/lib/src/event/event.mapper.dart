@@ -1422,8 +1422,8 @@ class PacksChangeRequestMapper extends SubClassMapperBase<PacksChangeRequest> {
   @override
   final String id = 'PacksChangeRequest';
 
-  static Set<String> _$packs(PacksChangeRequest v) => v.packs;
-  static const Field<PacksChangeRequest, Set<String>> _f$packs =
+  static List<String> _$packs(PacksChangeRequest v) => v.packs;
+  static const Field<PacksChangeRequest, List<String>> _f$packs =
       Field('packs', _$packs);
 
   @override
@@ -1498,8 +1498,9 @@ extension PacksChangeRequestValueCopy<$R, $Out>
 
 abstract class PacksChangeRequestCopyWith<$R, $In extends PacksChangeRequest,
     $Out> implements ClientWorldEventCopyWith<$R, $In, $Out> {
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get packs;
   @override
-  $R call({Set<String>? packs});
+  $R call({List<String>? packs});
   PacksChangeRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -1513,7 +1514,11 @@ class _PacksChangeRequestCopyWithImpl<$R, $Out>
   late final ClassMapperBase<PacksChangeRequest> $mapper =
       PacksChangeRequestMapper.ensureInitialized();
   @override
-  $R call({Set<String>? packs}) =>
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get packs =>
+      ListCopyWith($value.packs, (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(packs: v));
+  @override
+  $R call({List<String>? packs}) =>
       $apply(FieldCopyWithData({if (packs != null) #packs: packs}));
   @override
   PacksChangeRequest $make(CopyWithData data) =>

@@ -957,10 +957,10 @@ packages:
     dependency: transitive
     description:
       name: sembast
-      sha256: "481e0a4199015e0050ee4b42d59d51731b1fb324a1eea5c24557fa72335790b0"
+      sha256: "99f9d53ecdc75db1630797a8b9b2f2050ee5377e49f60f5f6e788431db04224d"
       url: "https://pub.dev"
     source: hosted
-    version: "3.7.3+2"
+    version: "3.7.3+3"
   share_plus:
     dependency: transitive
     description:

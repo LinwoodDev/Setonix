@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -19,7 +20,7 @@ class CreateDialog extends StatefulWidget {
 
 class _CreateDialogState extends State<CreateDialog>
     with TickerProviderStateMixin {
-  //late final TabController _tabController, _customTabController;
+  late final TabController _tabController, _customTabController;
   final PageController _pageController = PageController(keepPage: true);
   final GlobalKey _pageKey = GlobalKey();
   final TextEditingController _nameController = TextEditingController(),
@@ -27,8 +28,10 @@ class _CreateDialogState extends State<CreateDialog>
   late final TypedKeyFileSystem<QuokkaData> _templateSystem, _worldSystem;
   late final QuokkaFileSystem _fileSystem;
   late Stream<List<FileSystemFile<QuokkaData>>> _templatesStream;
+  late final Future<List<FileSystemFile<QuokkaData>>> _packsFuture;
 
   String? _selectedTemplate;
+  List<String>? _selectedPacks;
 
   bool _infoView = false;
 
@@ -38,23 +41,24 @@ class _CreateDialogState extends State<CreateDialog>
     _fileSystem = context.read<QuokkaFileSystem>();
     _worldSystem = _fileSystem.worldSystem;
     _templateSystem = _fileSystem.templateSystem;
-    _templatesStream = ValueConnectableStream(_loadPacks()).autoConnect();
-    //_tabController = TabController(length: 2, vsync: this);
-    //_customTabController = TabController(length: 2, vsync: this);
+    _templatesStream = ValueConnectableStream(_loadTemplates()).autoConnect();
+    _packsFuture = _fileSystem.getPacks();
+    _tabController = TabController(length: 2, vsync: this);
+    _customTabController = TabController(length: 2, vsync: this);
   }
 
-  void _reloadTemplates() => setState(() =>
-      _templatesStream = ValueConnectableStream(_loadPacks()).autoConnect());
+  void _reloadTemplates() => setState(() => _templatesStream =
+      ValueConnectableStream(_loadTemplates()).autoConnect());
 
-  Stream<List<FileSystemFile<QuokkaData>>> _loadPacks() async* {
+  Stream<List<FileSystemFile<QuokkaData>>> _loadTemplates() async* {
     await _templateSystem.initialize();
     yield* _templateSystem.fetchFiles();
   }
 
   @override
   void dispose() {
-    //_tabController.dispose();
-    //_customTabController.dispose();
+    _tabController.dispose();
+    _customTabController.dispose();
     _pageController.dispose();
     super.dispose();
   }
@@ -62,7 +66,7 @@ class _CreateDialogState extends State<CreateDialog>
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.sizeOf(context).width < LeapBreakpoints.medium;
-    final selections = /*Column(
+    final selections = Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         TabBar(
@@ -70,12 +74,12 @@ class _CreateDialogState extends State<CreateDialog>
           indicatorSize: TabBarIndicatorSize.tab,
           tabs: [
             HorizontalTab(
-              icon: const PhosphorIcon(PhosphorIconsLight.folder),
-              label: Text(AppLocalizations.of(context).installed),
-            ),
-            HorizontalTab(
               icon: const PhosphorIcon(PhosphorIconsLight.globe),
               label: Text(AppLocalizations.of(context).custom),
+            ),
+            HorizontalTab(
+              icon: const PhosphorIcon(PhosphorIconsLight.folder),
+              label: Text(AppLocalizations.of(context).templates),
             ),
           ],
         ),
@@ -83,59 +87,8 @@ class _CreateDialogState extends State<CreateDialog>
         Expanded(
           child: TabBarView(
             controller: _tabController,
-            children: [*/
-        Material(
-      type: MaterialType.transparency,
-      child: StreamBuilder(
-        stream: _templatesStream,
-        builder: (context, snapshot) {
-          final templates = snapshot.data;
-          if (templates == null) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          return ListView.builder(
-            itemCount: templates.length + 1,
-            itemBuilder: (context, index) {
-              if (index == 0) {
-                return ListTile(
-                  title: Text(AppLocalizations.of(context).blank),
-                  selected: _selectedTemplate == null,
-                  onTap: () => setState(() => _selectedTemplate = null),
-                );
-              }
-              index--;
-              final entry = templates[index];
-              final name = entry.pathWithoutLeadingSlash;
-              return ListTile(
-                title: Text(name),
-                trailing: MenuAnchor(
-                  builder: defaultMenuButton(),
-                  menuChildren: [
-                    MenuItemButton(
-                      leadingIcon: const Icon(PhosphorIconsLight.export),
-                      child: Text(AppLocalizations.of(context).export),
-                      onPressed: () =>
-                          exportData(context, entry.data!, entry.fileName),
-                    ),
-                    MenuItemButton(
-                      leadingIcon: const Icon(PhosphorIconsLight.trash),
-                      child: Text(AppLocalizations.of(context).delete),
-                      onPressed: () async {
-                        await _templateSystem.deleteFile(entry.path);
-                        _reloadTemplates();
-                      },
-                    )
-                  ],
-                ),
-                selected: _selectedTemplate == name,
-                onTap: () => setState(() => _selectedTemplate = entry.fileName),
-              );
-            },
-          );
-        },
-      ),
-    )
-        /*Column(children: [
+            children: [
+              Column(children: [
                 TabBar.secondary(
                   tabs: [
                     HorizontalTab(
@@ -157,28 +110,20 @@ class _CreateDialogState extends State<CreateDialog>
                     child: TabBarView(
                       controller: _customTabController,
                       children: [
-                        ListView.builder(
-                          itemCount: 30,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return CheckboxListTile(
-                              title: Text('Custom ${index + 1}'),
-                              value: false,
-                              onChanged: (bool? value) {},
-                            );
-                          },
+                        _CustomCreateView(
+                          packsFuture: _packsFuture,
+                          selectedPacksId: _selectedPacks,
+                          onPacksSelected: (value) =>
+                              setState(() => _selectedPacks = value),
                         ),
                         ListView(
                           children: [
                             ListTile(
                               title:
                                   Text(AppLocalizations.of(context).background),
-                              subtitle: const Text('Not set'),
+                              subtitle:
+                                  Text(AppLocalizations.of(context).comingSoon),
                               onTap: () => Navigator.of(context).pop(),
-                            ),
-                            const ListTile(
-                              title: Text('Rules'),
-                              subtitle: Text('Coming soon'),
                             ),
                           ],
                         )
@@ -187,12 +132,59 @@ class _CreateDialogState extends State<CreateDialog>
                   ),
                 ),
               ]),
+              Material(
+                type: MaterialType.transparency,
+                child: StreamBuilder(
+                  stream: _templatesStream,
+                  builder: (context, snapshot) {
+                    final templates = snapshot.data;
+                    if (templates == null) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    return ListView.builder(
+                      itemCount: templates.length,
+                      itemBuilder: (context, index) {
+                        final entry = templates[index];
+                        final name = entry.pathWithoutLeadingSlash;
+                        return ListTile(
+                          title: Text(name),
+                          trailing: MenuAnchor(
+                            builder: defaultMenuButton(),
+                            menuChildren: [
+                              MenuItemButton(
+                                leadingIcon:
+                                    const Icon(PhosphorIconsLight.export),
+                                child:
+                                    Text(AppLocalizations.of(context).export),
+                                onPressed: () => exportData(
+                                    context, entry.data!, entry.fileName),
+                              ),
+                              MenuItemButton(
+                                leadingIcon:
+                                    const Icon(PhosphorIconsLight.trash),
+                                child:
+                                    Text(AppLocalizations.of(context).delete),
+                                onPressed: () async {
+                                  await _templateSystem.deleteFile(entry.path);
+                                  _reloadTemplates();
+                                },
+                              )
+                            ],
+                          ),
+                          selected: _selectedTemplate == name,
+                          onTap: () => setState(
+                              () => _selectedTemplate = entry.fileName),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         ),
       ],
-    )*/
-        ;
+    );
     final details = ListView(
       children: [
         Text(AppLocalizations.of(context).details,
@@ -288,10 +280,16 @@ class _CreateDialogState extends State<CreateDialog>
             onPressed: () async {
               final name = _nameController.text;
               final description = _descriptionController.text;
-              var template = _selectedTemplate == null
-                  ? null
-                  : await _templateSystem.getFile(_selectedTemplate!);
-              template ??= QuokkaData.empty();
+              var template =
+                  _selectedTemplate == null || _tabController.index == 0
+                      ? null
+                      : await _templateSystem.getFile(_selectedTemplate!);
+              template ??= QuokkaData.empty().setInfo(
+                GameInfo(
+                  packs: _selectedPacks ??
+                      (await _packsFuture).map((e) => e.path).toList(),
+                ),
+              );
               template = template.setFileMetadata(
                 FileMetadata(
                   name: name,
@@ -311,5 +309,110 @@ class _CreateDialogState extends State<CreateDialog>
         ]
       ],
     );
+  }
+}
+
+class _CustomCreateView extends StatelessWidget {
+  final Future<List<FileSystemFile<QuokkaData>>> packsFuture;
+  final List<String>? selectedPacksId;
+  final void Function(List<String>) onPacksSelected;
+
+  const _CustomCreateView({
+    required this.packsFuture,
+    required this.selectedPacksId,
+    required this.onPacksSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<FileSystemFile<QuokkaData>>>(
+        future: packsFuture,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          final allPacks = snapshot.data!;
+          final addedPacks = selectedPacksId
+                  ?.map((e) =>
+                      allPacks.firstWhereOrNull((element) => element.path == e))
+                  .nonNulls
+                  .toList() ??
+              allPacks;
+          final notAdded = allPacks
+              .where((e) => !(selectedPacksId?.contains(e.path) ?? true))
+              .toList();
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: ReorderableListView.builder(
+                  itemCount: addedPacks.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    final pack = addedPacks[index];
+                    return ListTile(
+                      title: Text(pack.data?.getMetadata()?.name ??
+                          AppLocalizations.of(context).unnamed),
+                      subtitle: Text(pack.pathWithoutLeadingSlash),
+                      key: ObjectKey(pack.path),
+                      leading: IconButton.outlined(
+                        icon: const Icon(PhosphorIconsLight.minus),
+                        onPressed: () {
+                          final newSelected = addedPacks
+                              .map((e) => e.path)
+                              .where((e) => e != pack.path)
+                              .toList();
+                          onPacksSelected(newSelected);
+                        },
+                      ),
+                    );
+                  },
+                  onReorder: (int oldIndex, int newIndex) {
+                    if (oldIndex < newIndex) {
+                      newIndex -= 1;
+                    }
+                    final newSelected = addedPacks.map((e) => e.path).toList();
+                    final item = newSelected.removeAt(oldIndex);
+                    newSelected.insert(newIndex, item);
+                    onPacksSelected(newSelected);
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 42,
+                child: ElevatedButton.icon(
+                  icon: const Icon(PhosphorIconsLight.plus),
+                  label: Text(AppLocalizations.of(context).addPack),
+                  onPressed: notAdded.isEmpty
+                      ? null
+                      : () {
+                          showLeapBottomSheet(
+                            context: context,
+                            titleBuilder: (context) =>
+                                Text(AppLocalizations.of(context).addPack),
+                            childrenBuilder: (context) => notAdded.map((e) {
+                              return ListTile(
+                                title: Text(e.data!.getMetadata()?.name ??
+                                    AppLocalizations.of(context).unnamed),
+                                subtitle: Text(e.pathWithoutLeadingSlash),
+                                onTap: () {
+                                  Navigator.of(context).pop();
+                                  onPacksSelected([
+                                    ...?selectedPacksId,
+                                    e.path,
+                                  ]);
+                                },
+                              );
+                            }).toList(),
+                          );
+                        },
+                ),
+              ),
+            ],
+          );
+        });
   }
 }

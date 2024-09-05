@@ -1,4 +1,5 @@
 import 'package:flame/widgets.dart';
+import 'package:quokka/bloc/world/local.dart';
 import 'package:quokka/bloc/world/state.dart';
 import 'package:quokka/board/cell.dart';
 import 'package:quokka/board/hand/item.dart';
@@ -26,10 +27,14 @@ class FigureDefinitionHandItem
   @override
   void moveItem(HandItemDropZone zone) {
     if (zone is! GameCell) return;
-    bloc.process(ObjectsSpawned(zone.toDefinition(), [
+    final location = zone.toDefinition();
+    bloc.process(ObjectsSpawned(location, [
       GameObject(
           asset: ItemLocation(item.$1.namespace, item.$1.id),
           variation: item.$2)
     ]));
+    if (bloc.state.switchCellOnMove) {
+      bloc.process(CellSwitched(location));
+    }
   }
 }

@@ -42,7 +42,7 @@ final class ShuffleCellRequest extends ClientWorldEvent
 @MappableClass()
 final class PacksChangeRequest extends ClientWorldEvent
     with PacksChangeRequestMappable {
-  final Set<String> packs;
+  final List<String> packs;
 
   PacksChangeRequest(this.packs);
 }
