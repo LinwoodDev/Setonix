@@ -8,6 +8,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:quokka/api/settings.dart';
 import 'package:quokka/bloc/multiplayer.dart';
 import 'package:quokka/bloc/world/bloc.dart';
+import 'package:quokka/bloc/world/local.dart';
 import 'package:quokka/bloc/world/state.dart';
 import 'package:quokka/helpers/visualizer.dart';
 import 'package:quokka/pages/game/info.dart';
@@ -102,6 +103,22 @@ class GameDrawer extends StatelessWidget {
               title: Text(MaterialLocalizations.of(context).backButtonTooltip),
               onTap: () => Scaffold.of(context).closeDrawer(),
             ),
+            BlocBuilder<WorldBloc, ClientWorldState>(
+              buildWhen: (previous, current) =>
+                  previous.switchCellOnMove != current.switchCellOnMove,
+              builder: (context, state) {
+                return SwitchListTile(
+                  value: state.switchCellOnMove,
+                  title: Text(AppLocalizations.of(context).switchCellOnMove),
+                  secondary: const Icon(PhosphorIconsLight.selection),
+                  onChanged: (value) {
+                    context
+                        .read<WorldBloc>()
+                        .process(SwitchCellOnMoveChanged(value));
+                  },
+                );
+              },
+            ),
             ListTile(
               leading: const Icon(PhosphorIconsLight.package),
               title: Text(AppLocalizations.of(context).packs),
@@ -157,19 +174,6 @@ class GameDrawer extends StatelessWidget {
                                 selected: background == entry.location,
                               );
                             }).toList()));
-              },
-            ),
-            ListTile(
-              leading: const Icon(PhosphorIconsLight.users),
-              title: Text(AppLocalizations.of(context).multiplayer),
-              onTap: () {
-                Scaffold.of(context).closeDrawer();
-                final multiplayer = context.read<MultiplayerCubit>();
-                showDialog(
-                  context: context,
-                  builder: (context) => BlocProvider.value(
-                      value: multiplayer, child: const MultiplayerDialog()),
-                );
               },
             ),
             ListTile(
@@ -257,6 +261,20 @@ class GameDrawer extends StatelessWidget {
                       },
                     ),
                   ],
+                );
+              },
+            ),
+            const Divider(),
+            ListTile(
+              leading: const Icon(PhosphorIconsLight.users),
+              title: Text(AppLocalizations.of(context).multiplayer),
+              onTap: () {
+                Scaffold.of(context).closeDrawer();
+                final multiplayer = context.read<MultiplayerCubit>();
+                showDialog(
+                  context: context,
+                  builder: (context) => BlocProvider.value(
+                      value: multiplayer, child: const MultiplayerDialog()),
                 );
               },
             ),

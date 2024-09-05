@@ -105,6 +105,9 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
   static bool _$showHand(ClientWorldState v) => v.showHand;
   static const Field<ClientWorldState, bool> _f$showHand =
       Field('showHand', _$showHand, opt: true, def: false);
+  static bool _$switchCellOnMove(ClientWorldState v) => v.switchCellOnMove;
+  static const Field<ClientWorldState, bool> _f$switchCellOnMove =
+      Field('switchCellOnMove', _$switchCellOnMove, opt: true, def: false);
   static int _$id(ClientWorldState v) => v.id;
   static const Field<ClientWorldState, int> _f$id =
       Field('id', _$id, opt: true, def: kAuthorityChannel);
@@ -129,6 +132,7 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
     #selectedCell: _f$selectedCell,
     #selectedDeck: _f$selectedDeck,
     #showHand: _f$showHand,
+    #switchCellOnMove: _f$switchCellOnMove,
     #id: _f$id,
     #teamMembers: _f$teamMembers,
     #data: _f$data,
@@ -147,6 +151,7 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
         selectedCell: data.dec(_f$selectedCell),
         selectedDeck: data.dec(_f$selectedDeck),
         showHand: data.dec(_f$showHand),
+        switchCellOnMove: data.dec(_f$switchCellOnMove),
         id: data.dec(_f$id),
         teamMembers: data.dec(_f$teamMembers),
         data: data.dec(_f$data));
@@ -231,6 +236,7 @@ abstract class ClientWorldStateCopyWith<$R, $In extends ClientWorldState, $Out>
       VectorDefinition? selectedCell,
       ItemLocation? selectedDeck,
       bool? showHand,
+      bool? switchCellOnMove,
       int? id,
       Map<String, Set<int>>? teamMembers,
       QuokkaData? data});
@@ -281,6 +287,7 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
           Object? selectedCell = $none,
           Object? selectedDeck = $none,
           bool? showHand,
+          bool? switchCellOnMove,
           int? id,
           Map<String, Set<int>>? teamMembers,
           QuokkaData? data}) =>
@@ -296,6 +303,7 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
         if (selectedCell != $none) #selectedCell: selectedCell,
         if (selectedDeck != $none) #selectedDeck: selectedDeck,
         if (showHand != null) #showHand: showHand,
+        if (switchCellOnMove != null) #switchCellOnMove: switchCellOnMove,
         if (id != null) #id: id,
         if (teamMembers != null) #teamMembers: teamMembers,
         if (data != null) #data: data
@@ -313,6 +321,8 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
       selectedCell: data.get(#selectedCell, or: $value.selectedCell),
       selectedDeck: data.get(#selectedDeck, or: $value.selectedDeck),
       showHand: data.get(#showHand, or: $value.showHand),
+      switchCellOnMove:
+          data.get(#switchCellOnMove, or: $value.switchCellOnMove),
       id: data.get(#id, or: $value.id),
       teamMembers: data.get(#teamMembers, or: $value.teamMembers),
       data: data.get(#data, or: $value.data));

@@ -43,7 +43,7 @@ WorldState? processServerEvent(
 }) {
   if (!isValidServerEvent(event, state)) return null;
   switch (event) {
-    case WorldInitialized event:
+    case WorldInitialized():
       final supported = assetManager.isServerSupported(event.packsSignature);
       if (!supported) {
         throw InvalidPacksError(signature: event.packsSignature);
@@ -54,7 +54,7 @@ WorldState? processServerEvent(
         teamMembers: event.teamMembers,
         info: event.info,
       );
-    case TeamJoined event:
+    case TeamJoined():
       return state.copyWith(
         teamMembers: {
           ...state.teamMembers,
@@ -64,7 +64,7 @@ WorldState? processServerEvent(
           },
         },
       );
-    case TeamLeft event:
+    case TeamLeft():
       final members = Set<Channel>.from(state.teamMembers[event.team] ?? {});
       members.remove(event.user);
       final allMembers = Map<String, Set<int>>.from(state.teamMembers);
@@ -74,7 +74,7 @@ WorldState? processServerEvent(
         allMembers[event.team] = members;
       }
       return state.copyWith(teamMembers: allMembers);
-    case VariationChanged event:
+    case VariationChanged():
       final cell = state.table.cells[event.cell] ?? TableCell();
       final object = cell.objects[event.object];
       return state.copyWith.table.cells.replace(
@@ -136,6 +136,19 @@ WorldState? processServerEvent(
             cell.copyWith(
               objects:
                   cell.objects.map((e) => e.copyWith(hidden: hidden)).toList(),
+            ));
+      }
+    case CellItemsCleared():
+      final cell = state.table.cells[event.cell] ?? TableCell();
+      final objectIndex = event.object;
+      if (objectIndex != null) {
+        return state.copyWith.table.cells
+            .replace(event.cell, cell.copyWith.objects.removeAt(objectIndex));
+      } else {
+        return state.copyWith.table.cells.replace(
+            event.cell,
+            cell.copyWith(
+              objects: [],
             ));
       }
     case ObjectIndexChanged():

@@ -9,7 +9,7 @@ class DeckDefinitionHandItem extends HandItem<PackItem<DeckDefinition>> {
   DeckDefinitionHandItem({required super.item});
 
   @override
-  String getLabel(ClientWorldState state) => game.assetManager
+  String getLabel(ClientWorldState state) => assetManager
       .getTranslations(item.namespace)
       .getDeckTranslation(item.id)
       .name;

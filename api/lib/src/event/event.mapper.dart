@@ -1541,6 +1541,7 @@ class HybridWorldEventMapper extends SubClassMapperBase<HybridWorldEvent> {
       TeamChangedMapper.ensureInitialized();
       TeamRemovedMapper.ensureInitialized();
       MetadataChangedMapper.ensureInitialized();
+      CellItemsClearedMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -2621,6 +2622,136 @@ class _MetadataChangedCopyWithImpl<$R, $Out>
   MetadataChangedCopyWith<$R2, MetadataChanged, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
       _MetadataChangedCopyWithImpl($value, $cast, t);
+}
+
+class CellItemsClearedMapper extends SubClassMapperBase<CellItemsCleared> {
+  CellItemsClearedMapper._();
+
+  static CellItemsClearedMapper? _instance;
+  static CellItemsClearedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = CellItemsClearedMapper._());
+      HybridWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      VectorDefinitionMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'CellItemsCleared';
+
+  static VectorDefinition _$cell(CellItemsCleared v) => v.cell;
+  static const Field<CellItemsCleared, VectorDefinition> _f$cell =
+      Field('cell', _$cell);
+  static int? _$object(CellItemsCleared v) => v.object;
+  static const Field<CellItemsCleared, int> _f$object =
+      Field('object', _$object, opt: true);
+
+  @override
+  final MappableFields<CellItemsCleared> fields = const {
+    #cell: _f$cell,
+    #object: _f$object,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'CellItemsCleared';
+  @override
+  late final ClassMapperBase superMapper =
+      HybridWorldEventMapper.ensureInitialized();
+
+  static CellItemsCleared _instantiate(DecodingData data) {
+    return CellItemsCleared(data.dec(_f$cell), object: data.dec(_f$object));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static CellItemsCleared fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<CellItemsCleared>(map);
+  }
+
+  static CellItemsCleared fromJson(String json) {
+    return ensureInitialized().decodeJson<CellItemsCleared>(json);
+  }
+}
+
+mixin CellItemsClearedMappable {
+  String toJson() {
+    return CellItemsClearedMapper.ensureInitialized()
+        .encodeJson<CellItemsCleared>(this as CellItemsCleared);
+  }
+
+  Map<String, dynamic> toMap() {
+    return CellItemsClearedMapper.ensureInitialized()
+        .encodeMap<CellItemsCleared>(this as CellItemsCleared);
+  }
+
+  CellItemsClearedCopyWith<CellItemsCleared, CellItemsCleared, CellItemsCleared>
+      get copyWith => _CellItemsClearedCopyWithImpl(
+          this as CellItemsCleared, $identity, $identity);
+  @override
+  String toString() {
+    return CellItemsClearedMapper.ensureInitialized()
+        .stringifyValue(this as CellItemsCleared);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return CellItemsClearedMapper.ensureInitialized()
+        .equalsValue(this as CellItemsCleared, other);
+  }
+
+  @override
+  int get hashCode {
+    return CellItemsClearedMapper.ensureInitialized()
+        .hashValue(this as CellItemsCleared);
+  }
+}
+
+extension CellItemsClearedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, CellItemsCleared, $Out> {
+  CellItemsClearedCopyWith<$R, CellItemsCleared, $Out>
+      get $asCellItemsCleared =>
+          $base.as((v, t, t2) => _CellItemsClearedCopyWithImpl(v, t, t2));
+}
+
+abstract class CellItemsClearedCopyWith<$R, $In extends CellItemsCleared, $Out>
+    implements HybridWorldEventCopyWith<$R, $In, $Out> {
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell;
+  @override
+  $R call({VectorDefinition? cell, int? object});
+  CellItemsClearedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class _CellItemsClearedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, CellItemsCleared, $Out>
+    implements CellItemsClearedCopyWith<$R, CellItemsCleared, $Out> {
+  _CellItemsClearedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<CellItemsCleared> $mapper =
+      CellItemsClearedMapper.ensureInitialized();
+  @override
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell =>
+      $value.cell.copyWith.$chain((v) => call(cell: v));
+  @override
+  $R call({VectorDefinition? cell, Object? object = $none}) =>
+      $apply(FieldCopyWithData({
+        if (cell != null) #cell: cell,
+        if (object != $none) #object: object
+      }));
+  @override
+  CellItemsCleared $make(CopyWithData data) =>
+      CellItemsCleared(data.get(#cell, or: $value.cell),
+          object: data.get(#object, or: $value.object));
+
+  @override
+  CellItemsClearedCopyWith<$R2, CellItemsCleared, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _CellItemsClearedCopyWithImpl($value, $cast, t);
 }
 
 class LocalWorldEventMapper extends SubClassMapperBase<LocalWorldEvent> {

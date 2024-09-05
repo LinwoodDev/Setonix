@@ -20,7 +20,7 @@ class ClientWorldState extends WorldState with ClientWorldStateMappable {
   final QuokkaFileSystem fileSystem;
   final VectorDefinition? selectedCell;
   final ItemLocation? selectedDeck;
-  final bool showHand;
+  final bool showHand, switchCellOnMove;
 
   const ClientWorldState({
     required this.multiplayer,
@@ -34,6 +34,7 @@ class ClientWorldState extends WorldState with ClientWorldStateMappable {
     this.selectedCell,
     this.selectedDeck,
     this.showHand = false,
+    this.switchCellOnMove = false,
     super.id,
     super.teamMembers,
     required super.data,

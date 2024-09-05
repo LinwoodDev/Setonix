@@ -10,7 +10,7 @@ class FigureDefinitionHandItem
 
   @override
   String getLabel(ClientWorldState state) {
-    final translation = game.assetManager.getTranslations(item.$1.namespace);
+    final translation = assetManager.getTranslations(item.$1.namespace);
     final variation = item.$2;
     if (variation != null) {
       return translation

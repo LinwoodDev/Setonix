@@ -74,3 +74,12 @@ final class MetadataChanged extends HybridWorldEvent
 
   MetadataChanged(this.metadata);
 }
+
+@MappableClass()
+final class CellItemsCleared extends HybridWorldEvent
+    with CellItemsClearedMappable {
+  final VectorDefinition cell;
+  final int? object;
+
+  CellItemsCleared(this.cell, {this.object});
+}

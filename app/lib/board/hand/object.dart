@@ -14,8 +14,7 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
   @override
   String getLabel(ClientWorldState state) {
     final object = item.$3;
-    final translation =
-        game.assetManager.getTranslations(object.asset.namespace);
+    final translation = assetManager.getTranslations(object.asset.namespace);
     final variation = object.variation;
     if (variation != null && !item.$3.hidden && state.isCellVisible(item.$1)) {
       return translation
@@ -27,7 +26,7 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
 
   @override
   Future<Sprite?> loadIcon(ClientWorldState state) =>
-      game.assetManager.loadFigureSpriteFromLocation(
+      assetManager.loadFigureSpriteFromLocation(
           item.$3.asset,
           item.$3.hidden || !state.isCellVisible(item.$1)
               ? null
@@ -38,22 +37,23 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
     switch (zone) {
       case GameCell e:
         final location = e.toDefinition();
-        game.bloc
-          ..process(ObjectsMoved(
-            [item.$2],
-            item.$1,
-            location,
-          ))
-          ..process(CellSwitched(location));
+        bloc.process(ObjectsMoved(
+          [item.$2],
+          item.$1,
+          location,
+        ));
+        if (bloc.state.switchCellOnMove) {
+          bloc.process(CellSwitched(location));
+        }
       case GameObjectHandItem e:
-        game.bloc.process(ObjectIndexChanged(
+        bloc.process(ObjectIndexChanged(
           item.$1,
           item.$2,
           e.item.$2,
         ));
       case GameHand _:
-        final cell = game.bloc.state.table.cells[item.$1];
-        game.bloc.process(ObjectIndexChanged(
+        final cell = bloc.state.table.cells[item.$1];
+        bloc.process(ObjectIndexChanged(
           item.$1,
           item.$2,
           (cell?.objects.length ?? 1) - 1,
@@ -68,21 +68,28 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
     final location = item.$3.asset;
     return (context, onClose) => [
           ContextMenuButtonItem(
-            label: AppLocalizations.of(game.buildContext!).toggleHide,
+            label: AppLocalizations.of(context).toggleHide,
             onPressed: () {
-              game.bloc.process(CellHideChanged(item.$1, object: item.$2));
+              bloc.process(CellHideChanged(item.$1, object: item.$2));
               onClose();
             },
           ),
-          if (game.assetManager
+          ContextMenuButtonItem(
+            label: AppLocalizations.of(context).remove,
+            onPressed: () {
+              bloc.process(CellItemsCleared(item.$1, object: item.$2));
+              onClose();
+            },
+          ),
+          if (assetManager
                   .getPack(location.namespace)
                   ?.getFigure(location.id)
                   ?.rollable ??
               true)
             ContextMenuButtonItem(
-              label: AppLocalizations.of(game.buildContext!).roll,
+              label: AppLocalizations.of(context).roll,
               onPressed: () {
-                game.bloc.process(RollObjectRequest(item.$1, item.$2));
+                bloc.process(RollObjectRequest(item.$1, item.$2));
                 onClose();
               },
             ),

@@ -258,6 +258,13 @@ class GameCell extends PositionComponent
                     },
                   ),
                   ContextMenuButtonItem(
+                    label: AppLocalizations.of(context).remove,
+                    onPressed: () {
+                      bloc.process(CellItemsCleared(toDefinition()));
+                      onClose();
+                    },
+                  ),
+                  ContextMenuButtonItem(
                     label: AppLocalizations.of(context).teams,
                     onPressed: () {
                       onClose();

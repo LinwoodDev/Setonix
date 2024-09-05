@@ -76,6 +76,11 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
         showHand: true,
       ));
     });
+    on<SwitchCellOnMoveChanged>((event, emit) {
+      emit(state.copyWith(
+        switchCellOnMove: event.value,
+      ));
+    });
   }
 
   Future<void> save() async {

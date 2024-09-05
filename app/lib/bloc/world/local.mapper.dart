@@ -370,3 +370,126 @@ class _ColorSchemeChangedCopyWithImpl<$R, $Out>
           Then<$Out2, $R2> t) =>
       _ColorSchemeChangedCopyWithImpl($value, $cast, t);
 }
+
+class SwitchCellOnMoveChangedMapper
+    extends SubClassMapperBase<SwitchCellOnMoveChanged> {
+  SwitchCellOnMoveChangedMapper._();
+
+  static SwitchCellOnMoveChangedMapper? _instance;
+  static SwitchCellOnMoveChangedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals
+          .use(_instance = SwitchCellOnMoveChangedMapper._());
+      LocalWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'SwitchCellOnMoveChanged';
+
+  static bool _$value(SwitchCellOnMoveChanged v) => v.value;
+  static const Field<SwitchCellOnMoveChanged, bool> _f$value =
+      Field('value', _$value);
+
+  @override
+  final MappableFields<SwitchCellOnMoveChanged> fields = const {
+    #value: _f$value,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'SwitchCellOnMoveChanged';
+  @override
+  late final ClassMapperBase superMapper =
+      LocalWorldEventMapper.ensureInitialized();
+
+  static SwitchCellOnMoveChanged _instantiate(DecodingData data) {
+    return SwitchCellOnMoveChanged(data.dec(_f$value));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static SwitchCellOnMoveChanged fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<SwitchCellOnMoveChanged>(map);
+  }
+
+  static SwitchCellOnMoveChanged fromJson(String json) {
+    return ensureInitialized().decodeJson<SwitchCellOnMoveChanged>(json);
+  }
+}
+
+mixin SwitchCellOnMoveChangedMappable {
+  String toJson() {
+    return SwitchCellOnMoveChangedMapper.ensureInitialized()
+        .encodeJson<SwitchCellOnMoveChanged>(this as SwitchCellOnMoveChanged);
+  }
+
+  Map<String, dynamic> toMap() {
+    return SwitchCellOnMoveChangedMapper.ensureInitialized()
+        .encodeMap<SwitchCellOnMoveChanged>(this as SwitchCellOnMoveChanged);
+  }
+
+  SwitchCellOnMoveChangedCopyWith<SwitchCellOnMoveChanged,
+          SwitchCellOnMoveChanged, SwitchCellOnMoveChanged>
+      get copyWith => _SwitchCellOnMoveChangedCopyWithImpl(
+          this as SwitchCellOnMoveChanged, $identity, $identity);
+  @override
+  String toString() {
+    return SwitchCellOnMoveChangedMapper.ensureInitialized()
+        .stringifyValue(this as SwitchCellOnMoveChanged);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return SwitchCellOnMoveChangedMapper.ensureInitialized()
+        .equalsValue(this as SwitchCellOnMoveChanged, other);
+  }
+
+  @override
+  int get hashCode {
+    return SwitchCellOnMoveChangedMapper.ensureInitialized()
+        .hashValue(this as SwitchCellOnMoveChanged);
+  }
+}
+
+extension SwitchCellOnMoveChangedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, SwitchCellOnMoveChanged, $Out> {
+  SwitchCellOnMoveChangedCopyWith<$R, SwitchCellOnMoveChanged, $Out>
+      get $asSwitchCellOnMoveChanged => $base
+          .as((v, t, t2) => _SwitchCellOnMoveChangedCopyWithImpl(v, t, t2));
+}
+
+abstract class SwitchCellOnMoveChangedCopyWith<
+    $R,
+    $In extends SwitchCellOnMoveChanged,
+    $Out> implements LocalWorldEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({bool? value});
+  SwitchCellOnMoveChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class _SwitchCellOnMoveChangedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, SwitchCellOnMoveChanged, $Out>
+    implements
+        SwitchCellOnMoveChangedCopyWith<$R, SwitchCellOnMoveChanged, $Out> {
+  _SwitchCellOnMoveChangedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<SwitchCellOnMoveChanged> $mapper =
+      SwitchCellOnMoveChangedMapper.ensureInitialized();
+  @override
+  $R call({bool? value}) =>
+      $apply(FieldCopyWithData({if (value != null) #value: value}));
+  @override
+  SwitchCellOnMoveChanged $make(CopyWithData data) =>
+      SwitchCellOnMoveChanged(data.get(#value, or: $value.value));
+
+  @override
+  SwitchCellOnMoveChangedCopyWith<$R2, SwitchCellOnMoveChanged, $Out2>
+      $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+          _SwitchCellOnMoveChangedCopyWithImpl($value, $cast, t);
+}

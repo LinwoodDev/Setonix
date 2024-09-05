@@ -34,3 +34,11 @@ final class ColorSchemeChanged extends LocalWorldEvent
 
   ColorSchemeChanged(this.colorScheme);
 }
+
+@MappableClass()
+final class SwitchCellOnMoveChanged extends LocalWorldEvent
+    with SwitchCellOnMoveChangedMappable {
+  final bool value;
+
+  SwitchCellOnMoveChanged(this.value);
+}
