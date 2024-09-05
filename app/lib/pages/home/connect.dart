@@ -36,7 +36,7 @@ class AddConnectDialog extends StatelessWidget {
         ],
       ),
       actions: [
-        ElevatedButton.icon(
+        FilledButton.icon(
           onPressed: () {
             Navigator.of(context).pop();
             GoRouter.of(context).goNamed('connect', queryParameters: {

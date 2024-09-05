@@ -93,7 +93,7 @@ class GameAssetManager extends AssetManager {
     unloadPacks(_loadedPacks.keys.where((e) => !files.any((f) => f.path == e)));
     for (final file in files) {
       try {
-        final key = file.path;
+        final key = file.pathWithoutLeadingSlash;
         final pack = file.data!;
         _loadedPacks[key] = pack;
         _loadedTranslations[key] = TranslationsStore(

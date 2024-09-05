@@ -213,10 +213,13 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
                 child: ElevatedButton.icon(
                   icon: const Icon(PhosphorIconsLight.plus),
                   label: Text(AppLocalizations.of(context).create),
-                  onPressed: () => showDialog(
+                  onPressed: () => showDialog<bool>(
                     context: context,
                     builder: (context) => const CreateDialog(),
-                  ).then((_) => _reloadGames()),
+                  ).then((result) {
+                    if (!(result ?? false)) return;
+                    _reloadGames();
+                  }),
                 ),
               ),
             ),

@@ -32,8 +32,7 @@ bool isValidClientEvent(
       ObjectIndexChanged() => event.index
           .inRange(0, state.table.getCell(event.cell).objects.length - 1),
       TeamRemoved() => state.info.teams.containsKey(event.team),
-      PacksChangeRequest() => channel == kAuthorityChannel &&
-          event.packs.every((e) => assetManager.hasPack(e)),
+      PacksChangeRequest() => channel == kAuthorityChannel,
       _ => true,
     };
 
@@ -94,7 +93,7 @@ bool isValidClientEvent(
       return sendInit(
           null,
           state.copyWith.info(
-            packs: r.packs,
+            packs: r.packs.where((e) => assetManager.hasPack(e)).toList(),
           ));
   }
 }

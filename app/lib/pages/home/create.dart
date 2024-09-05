@@ -123,7 +123,6 @@ class _CreateDialogState extends State<CreateDialog>
                                   Text(AppLocalizations.of(context).background),
                               subtitle:
                                   Text(AppLocalizations.of(context).comingSoon),
-                              onTap: () => Navigator.of(context).pop(),
                             ),
                           ],
                         )
@@ -253,7 +252,7 @@ class _CreateDialogState extends State<CreateDialog>
       ],
       actions: [
         TextButton.icon(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => Navigator.of(context).pop(false),
           label: Text(AppLocalizations.of(context).cancel),
           icon: const Icon(PhosphorIconsLight.prohibit),
         ),
@@ -300,7 +299,7 @@ class _CreateDialogState extends State<CreateDialog>
               await _worldSystem.createFile(name, template);
 
               if (context.mounted) {
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(true);
               }
             },
             label: Text(AppLocalizations.of(context).create),
