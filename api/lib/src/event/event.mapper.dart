@@ -602,7 +602,7 @@ class VariationChangedMapper extends SubClassMapperBase<VariationChanged> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = VariationChangedMapper._());
       ServerWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
-      VectorDefinitionMapper.ensureInitialized();
+      GlobalVectorDefinitionMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -610,8 +610,8 @@ class VariationChangedMapper extends SubClassMapperBase<VariationChanged> {
   @override
   final String id = 'VariationChanged';
 
-  static VectorDefinition _$cell(VariationChanged v) => v.cell;
-  static const Field<VariationChanged, VectorDefinition> _f$cell =
+  static GlobalVectorDefinition _$cell(VariationChanged v) => v.cell;
+  static const Field<VariationChanged, GlobalVectorDefinition> _f$cell =
       Field('cell', _$cell);
   static int _$object(VariationChanged v) => v.object;
   static const Field<VariationChanged, int> _f$object =
@@ -694,9 +694,10 @@ extension VariationChangedValueCopy<$R, $Out>
 
 abstract class VariationChangedCopyWith<$R, $In extends VariationChanged, $Out>
     implements ServerWorldEventCopyWith<$R, $In, $Out> {
-  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell;
+  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
+      GlobalVectorDefinition> get cell;
   @override
-  $R call({VectorDefinition? cell, int? object, String? variation});
+  $R call({GlobalVectorDefinition? cell, int? object, String? variation});
   VariationChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -710,10 +711,14 @@ class _VariationChangedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<VariationChanged> $mapper =
       VariationChangedMapper.ensureInitialized();
   @override
-  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell =>
-      $value.cell.copyWith.$chain((v) => call(cell: v));
+  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
+          GlobalVectorDefinition>
+      get cell => $value.cell.copyWith.$chain((v) => call(cell: v));
   @override
-  $R call({VectorDefinition? cell, int? object, Object? variation = $none}) =>
+  $R call(
+          {GlobalVectorDefinition? cell,
+          int? object,
+          Object? variation = $none}) =>
       $apply(FieldCopyWithData({
         if (cell != null) #cell: cell,
         if (object != null) #object: object,
@@ -739,7 +744,7 @@ class CellShuffledMapper extends SubClassMapperBase<CellShuffled> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = CellShuffledMapper._());
       ServerWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
-      VectorDefinitionMapper.ensureInitialized();
+      GlobalVectorDefinitionMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -747,8 +752,8 @@ class CellShuffledMapper extends SubClassMapperBase<CellShuffled> {
   @override
   final String id = 'CellShuffled';
 
-  static VectorDefinition _$cell(CellShuffled v) => v.cell;
-  static const Field<CellShuffled, VectorDefinition> _f$cell =
+  static GlobalVectorDefinition _$cell(CellShuffled v) => v.cell;
+  static const Field<CellShuffled, GlobalVectorDefinition> _f$cell =
       Field('cell', _$cell);
   static List<int> _$positions(CellShuffled v) => v.positions;
   static const Field<CellShuffled, List<int>> _f$positions =
@@ -824,10 +829,11 @@ extension CellShuffledValueCopy<$R, $Out>
 
 abstract class CellShuffledCopyWith<$R, $In extends CellShuffled, $Out>
     implements ServerWorldEventCopyWith<$R, $In, $Out> {
-  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell;
+  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
+      GlobalVectorDefinition> get cell;
   ListCopyWith<$R, int, ObjectCopyWith<$R, int, int>> get positions;
   @override
-  $R call({VectorDefinition? cell, List<int>? positions});
+  $R call({GlobalVectorDefinition? cell, List<int>? positions});
   CellShuffledCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -840,14 +846,15 @@ class _CellShuffledCopyWithImpl<$R, $Out>
   late final ClassMapperBase<CellShuffled> $mapper =
       CellShuffledMapper.ensureInitialized();
   @override
-  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell =>
-      $value.cell.copyWith.$chain((v) => call(cell: v));
+  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
+          GlobalVectorDefinition>
+      get cell => $value.cell.copyWith.$chain((v) => call(cell: v));
   @override
   ListCopyWith<$R, int, ObjectCopyWith<$R, int, int>> get positions =>
       ListCopyWith($value.positions, (v, t) => ObjectCopyWith(v, $identity, t),
           (v) => call(positions: v));
   @override
-  $R call({VectorDefinition? cell, List<int>? positions}) =>
+  $R call({GlobalVectorDefinition? cell, List<int>? positions}) =>
       $apply(FieldCopyWithData({
         if (cell != null) #cell: cell,
         if (positions != null) #positions: positions
@@ -1165,7 +1172,7 @@ class RollObjectRequestMapper extends SubClassMapperBase<RollObjectRequest> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = RollObjectRequestMapper._());
       ClientWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
-      VectorDefinitionMapper.ensureInitialized();
+      GlobalVectorDefinitionMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -1173,8 +1180,8 @@ class RollObjectRequestMapper extends SubClassMapperBase<RollObjectRequest> {
   @override
   final String id = 'RollObjectRequest';
 
-  static VectorDefinition _$cell(RollObjectRequest v) => v.cell;
-  static const Field<RollObjectRequest, VectorDefinition> _f$cell =
+  static GlobalVectorDefinition _$cell(RollObjectRequest v) => v.cell;
+  static const Field<RollObjectRequest, GlobalVectorDefinition> _f$cell =
       Field('cell', _$cell);
   static int _$object(RollObjectRequest v) => v.object;
   static const Field<RollObjectRequest, int> _f$object =
@@ -1253,9 +1260,10 @@ extension RollObjectRequestValueCopy<$R, $Out>
 
 abstract class RollObjectRequestCopyWith<$R, $In extends RollObjectRequest,
     $Out> implements ClientWorldEventCopyWith<$R, $In, $Out> {
-  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell;
+  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
+      GlobalVectorDefinition> get cell;
   @override
-  $R call({VectorDefinition? cell, int? object});
+  $R call({GlobalVectorDefinition? cell, int? object});
   RollObjectRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -1269,11 +1277,15 @@ class _RollObjectRequestCopyWithImpl<$R, $Out>
   late final ClassMapperBase<RollObjectRequest> $mapper =
       RollObjectRequestMapper.ensureInitialized();
   @override
-  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell =>
-      $value.cell.copyWith.$chain((v) => call(cell: v));
+  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
+          GlobalVectorDefinition>
+      get cell => $value.cell.copyWith.$chain((v) => call(cell: v));
   @override
-  $R call({VectorDefinition? cell, int? object}) => $apply(FieldCopyWithData(
-      {if (cell != null) #cell: cell, if (object != null) #object: object}));
+  $R call({GlobalVectorDefinition? cell, int? object}) =>
+      $apply(FieldCopyWithData({
+        if (cell != null) #cell: cell,
+        if (object != null) #object: object
+      }));
   @override
   RollObjectRequest $make(CopyWithData data) => RollObjectRequest(
       data.get(#cell, or: $value.cell), data.get(#object, or: $value.object));
@@ -1292,7 +1304,7 @@ class ShuffleCellRequestMapper extends SubClassMapperBase<ShuffleCellRequest> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ShuffleCellRequestMapper._());
       ClientWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
-      VectorDefinitionMapper.ensureInitialized();
+      GlobalVectorDefinitionMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -1300,8 +1312,8 @@ class ShuffleCellRequestMapper extends SubClassMapperBase<ShuffleCellRequest> {
   @override
   final String id = 'ShuffleCellRequest';
 
-  static VectorDefinition _$cell(ShuffleCellRequest v) => v.cell;
-  static const Field<ShuffleCellRequest, VectorDefinition> _f$cell =
+  static GlobalVectorDefinition _$cell(ShuffleCellRequest v) => v.cell;
+  static const Field<ShuffleCellRequest, GlobalVectorDefinition> _f$cell =
       Field('cell', _$cell);
 
   @override
@@ -1376,9 +1388,10 @@ extension ShuffleCellRequestValueCopy<$R, $Out>
 
 abstract class ShuffleCellRequestCopyWith<$R, $In extends ShuffleCellRequest,
     $Out> implements ClientWorldEventCopyWith<$R, $In, $Out> {
-  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell;
+  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
+      GlobalVectorDefinition> get cell;
   @override
-  $R call({VectorDefinition? cell});
+  $R call({GlobalVectorDefinition? cell});
   ShuffleCellRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -1392,10 +1405,11 @@ class _ShuffleCellRequestCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ShuffleCellRequest> $mapper =
       ShuffleCellRequestMapper.ensureInitialized();
   @override
-  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell =>
-      $value.cell.copyWith.$chain((v) => call(cell: v));
+  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
+          GlobalVectorDefinition>
+      get cell => $value.cell.copyWith.$chain((v) => call(cell: v));
   @override
-  $R call({VectorDefinition? cell}) =>
+  $R call({GlobalVectorDefinition? cell}) =>
       $apply(FieldCopyWithData({if (cell != null) #cell: cell}));
   @override
   ShuffleCellRequest $make(CopyWithData data) =>
@@ -1730,7 +1744,7 @@ class ObjectsSpawnedMapper extends SubClassMapperBase<ObjectsSpawned> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ObjectsSpawnedMapper._());
       HybridWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
-      VectorDefinitionMapper.ensureInitialized();
+      GlobalVectorDefinitionMapper.ensureInitialized();
       GameObjectMapper.ensureInitialized();
     }
     return _instance!;
@@ -1739,8 +1753,8 @@ class ObjectsSpawnedMapper extends SubClassMapperBase<ObjectsSpawned> {
   @override
   final String id = 'ObjectsSpawned';
 
-  static VectorDefinition _$cell(ObjectsSpawned v) => v.cell;
-  static const Field<ObjectsSpawned, VectorDefinition> _f$cell =
+  static GlobalVectorDefinition _$cell(ObjectsSpawned v) => v.cell;
+  static const Field<ObjectsSpawned, GlobalVectorDefinition> _f$cell =
       Field('cell', _$cell);
   static List<GameObject> _$objects(ObjectsSpawned v) => v.objects;
   static const Field<ObjectsSpawned, List<GameObject>> _f$objects =
@@ -1817,11 +1831,12 @@ extension ObjectsSpawnedValueCopy<$R, $Out>
 
 abstract class ObjectsSpawnedCopyWith<$R, $In extends ObjectsSpawned, $Out>
     implements HybridWorldEventCopyWith<$R, $In, $Out> {
-  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell;
+  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
+      GlobalVectorDefinition> get cell;
   ListCopyWith<$R, GameObject, GameObjectCopyWith<$R, GameObject, GameObject>>
       get objects;
   @override
-  $R call({VectorDefinition? cell, List<GameObject>? objects});
+  $R call({GlobalVectorDefinition? cell, List<GameObject>? objects});
   ObjectsSpawnedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -1835,14 +1850,15 @@ class _ObjectsSpawnedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ObjectsSpawned> $mapper =
       ObjectsSpawnedMapper.ensureInitialized();
   @override
-  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell =>
-      $value.cell.copyWith.$chain((v) => call(cell: v));
+  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
+          GlobalVectorDefinition>
+      get cell => $value.cell.copyWith.$chain((v) => call(cell: v));
   @override
   ListCopyWith<$R, GameObject, GameObjectCopyWith<$R, GameObject, GameObject>>
       get objects => ListCopyWith($value.objects,
           (v, t) => v.copyWith.$chain(t), (v) => call(objects: v));
   @override
-  $R call({VectorDefinition? cell, List<GameObject>? objects}) =>
+  $R call({GlobalVectorDefinition? cell, List<GameObject>? objects}) =>
       $apply(FieldCopyWithData({
         if (cell != null) #cell: cell,
         if (objects != null) #objects: objects
@@ -1876,6 +1892,8 @@ class ObjectsMovedMapper extends SubClassMapperBase<ObjectsMoved> {
   static List<int> _$objects(ObjectsMoved v) => v.objects;
   static const Field<ObjectsMoved, List<int>> _f$objects =
       Field('objects', _$objects);
+  static String _$table(ObjectsMoved v) => v.table;
+  static const Field<ObjectsMoved, String> _f$table = Field('table', _$table);
   static VectorDefinition _$from(ObjectsMoved v) => v.from;
   static const Field<ObjectsMoved, VectorDefinition> _f$from =
       Field('from', _$from);
@@ -1885,6 +1903,7 @@ class ObjectsMovedMapper extends SubClassMapperBase<ObjectsMoved> {
   @override
   final MappableFields<ObjectsMoved> fields = const {
     #objects: _f$objects,
+    #table: _f$table,
     #from: _f$from,
     #to: _f$to,
   };
@@ -1898,8 +1917,8 @@ class ObjectsMovedMapper extends SubClassMapperBase<ObjectsMoved> {
       HybridWorldEventMapper.ensureInitialized();
 
   static ObjectsMoved _instantiate(DecodingData data) {
-    return ObjectsMoved(
-        data.dec(_f$objects), data.dec(_f$from), data.dec(_f$to));
+    return ObjectsMoved(data.dec(_f$objects), data.dec(_f$table),
+        data.dec(_f$from), data.dec(_f$to));
   }
 
   @override
@@ -1958,7 +1977,11 @@ abstract class ObjectsMovedCopyWith<$R, $In extends ObjectsMoved, $Out>
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get from;
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get to;
   @override
-  $R call({List<int>? objects, VectorDefinition? from, VectorDefinition? to});
+  $R call(
+      {List<int>? objects,
+      String? table,
+      VectorDefinition? from,
+      VectorDefinition? to});
   ObjectsMovedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -1981,15 +2004,21 @@ class _ObjectsMovedCopyWithImpl<$R, $Out>
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get to =>
       $value.to.copyWith.$chain((v) => call(to: v));
   @override
-  $R call({List<int>? objects, VectorDefinition? from, VectorDefinition? to}) =>
+  $R call(
+          {List<int>? objects,
+          String? table,
+          VectorDefinition? from,
+          VectorDefinition? to}) =>
       $apply(FieldCopyWithData({
         if (objects != null) #objects: objects,
+        if (table != null) #table: table,
         if (from != null) #from: from,
         if (to != null) #to: to
       }));
   @override
   ObjectsMoved $make(CopyWithData data) => ObjectsMoved(
       data.get(#objects, or: $value.objects),
+      data.get(#table, or: $value.table),
       data.get(#from, or: $value.from),
       data.get(#to, or: $value.to));
 
@@ -2007,7 +2036,7 @@ class CellHideChangedMapper extends SubClassMapperBase<CellHideChanged> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = CellHideChangedMapper._());
       HybridWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
-      VectorDefinitionMapper.ensureInitialized();
+      GlobalVectorDefinitionMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -2015,8 +2044,8 @@ class CellHideChangedMapper extends SubClassMapperBase<CellHideChanged> {
   @override
   final String id = 'CellHideChanged';
 
-  static VectorDefinition _$cell(CellHideChanged v) => v.cell;
-  static const Field<CellHideChanged, VectorDefinition> _f$cell =
+  static GlobalVectorDefinition _$cell(CellHideChanged v) => v.cell;
+  static const Field<CellHideChanged, GlobalVectorDefinition> _f$cell =
       Field('cell', _$cell);
   static int? _$object(CellHideChanged v) => v.object;
   static const Field<CellHideChanged, int> _f$object =
@@ -2098,9 +2127,10 @@ extension CellHideChangedValueCopy<$R, $Out>
 
 abstract class CellHideChangedCopyWith<$R, $In extends CellHideChanged, $Out>
     implements HybridWorldEventCopyWith<$R, $In, $Out> {
-  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell;
+  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
+      GlobalVectorDefinition> get cell;
   @override
-  $R call({VectorDefinition? cell, int? object, bool? hide});
+  $R call({GlobalVectorDefinition? cell, int? object, bool? hide});
   CellHideChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -2114,11 +2144,12 @@ class _CellHideChangedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<CellHideChanged> $mapper =
       CellHideChangedMapper.ensureInitialized();
   @override
-  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell =>
-      $value.cell.copyWith.$chain((v) => call(cell: v));
+  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
+          GlobalVectorDefinition>
+      get cell => $value.cell.copyWith.$chain((v) => call(cell: v));
   @override
   $R call(
-          {VectorDefinition? cell,
+          {GlobalVectorDefinition? cell,
           Object? object = $none,
           Object? hide = $none}) =>
       $apply(FieldCopyWithData({
@@ -2146,7 +2177,7 @@ class ObjectIndexChangedMapper extends SubClassMapperBase<ObjectIndexChanged> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ObjectIndexChangedMapper._());
       HybridWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
-      VectorDefinitionMapper.ensureInitialized();
+      GlobalVectorDefinitionMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -2154,8 +2185,8 @@ class ObjectIndexChangedMapper extends SubClassMapperBase<ObjectIndexChanged> {
   @override
   final String id = 'ObjectIndexChanged';
 
-  static VectorDefinition _$cell(ObjectIndexChanged v) => v.cell;
-  static const Field<ObjectIndexChanged, VectorDefinition> _f$cell =
+  static GlobalVectorDefinition _$cell(ObjectIndexChanged v) => v.cell;
+  static const Field<ObjectIndexChanged, GlobalVectorDefinition> _f$cell =
       Field('cell', _$cell);
   static int _$object(ObjectIndexChanged v) => v.object;
   static const Field<ObjectIndexChanged, int> _f$object =
@@ -2239,9 +2270,10 @@ extension ObjectIndexChangedValueCopy<$R, $Out>
 
 abstract class ObjectIndexChangedCopyWith<$R, $In extends ObjectIndexChanged,
     $Out> implements HybridWorldEventCopyWith<$R, $In, $Out> {
-  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell;
+  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
+      GlobalVectorDefinition> get cell;
   @override
-  $R call({VectorDefinition? cell, int? object, int? index});
+  $R call({GlobalVectorDefinition? cell, int? object, int? index});
   ObjectIndexChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -2255,10 +2287,11 @@ class _ObjectIndexChangedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ObjectIndexChanged> $mapper =
       ObjectIndexChangedMapper.ensureInitialized();
   @override
-  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell =>
-      $value.cell.copyWith.$chain((v) => call(cell: v));
+  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
+          GlobalVectorDefinition>
+      get cell => $value.cell.copyWith.$chain((v) => call(cell: v));
   @override
-  $R call({VectorDefinition? cell, int? object, int? index}) =>
+  $R call({GlobalVectorDefinition? cell, int? object, int? index}) =>
       $apply(FieldCopyWithData({
         if (cell != null) #cell: cell,
         if (object != null) #object: object,
@@ -2637,7 +2670,7 @@ class CellItemsClearedMapper extends SubClassMapperBase<CellItemsCleared> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = CellItemsClearedMapper._());
       HybridWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
-      VectorDefinitionMapper.ensureInitialized();
+      GlobalVectorDefinitionMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -2645,8 +2678,8 @@ class CellItemsClearedMapper extends SubClassMapperBase<CellItemsCleared> {
   @override
   final String id = 'CellItemsCleared';
 
-  static VectorDefinition _$cell(CellItemsCleared v) => v.cell;
-  static const Field<CellItemsCleared, VectorDefinition> _f$cell =
+  static GlobalVectorDefinition _$cell(CellItemsCleared v) => v.cell;
+  static const Field<CellItemsCleared, GlobalVectorDefinition> _f$cell =
       Field('cell', _$cell);
   static int? _$object(CellItemsCleared v) => v.object;
   static const Field<CellItemsCleared, int> _f$object =
@@ -2724,9 +2757,10 @@ extension CellItemsClearedValueCopy<$R, $Out>
 
 abstract class CellItemsClearedCopyWith<$R, $In extends CellItemsCleared, $Out>
     implements HybridWorldEventCopyWith<$R, $In, $Out> {
-  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell;
+  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
+      GlobalVectorDefinition> get cell;
   @override
-  $R call({VectorDefinition? cell, int? object});
+  $R call({GlobalVectorDefinition? cell, int? object});
   CellItemsClearedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -2740,10 +2774,11 @@ class _CellItemsClearedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<CellItemsCleared> $mapper =
       CellItemsClearedMapper.ensureInitialized();
   @override
-  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get cell =>
-      $value.cell.copyWith.$chain((v) => call(cell: v));
+  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
+          GlobalVectorDefinition>
+      get cell => $value.cell.copyWith.$chain((v) => call(cell: v));
   @override
-  $R call({VectorDefinition? cell, Object? object = $none}) =>
+  $R call({GlobalVectorDefinition? cell, Object? object = $none}) =>
       $apply(FieldCopyWithData({
         if (cell != null) #cell: cell,
         if (object != $none) #object: object

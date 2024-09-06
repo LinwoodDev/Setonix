@@ -16,7 +16,7 @@ final class BackgroundChanged extends HybridWorldEvent
 @MappableClass()
 final class ObjectsSpawned extends HybridWorldEvent
     with ObjectsSpawnedMappable {
-  final VectorDefinition cell;
+  final GlobalVectorDefinition cell;
   final List<GameObject> objects;
 
   ObjectsSpawned(this.cell, this.objects);
@@ -25,15 +25,16 @@ final class ObjectsSpawned extends HybridWorldEvent
 @MappableClass()
 final class ObjectsMoved extends HybridWorldEvent with ObjectsMovedMappable {
   final List<int> objects;
+  final String table;
   final VectorDefinition from, to;
 
-  ObjectsMoved(this.objects, this.from, this.to);
+  ObjectsMoved(this.objects, this.table, this.from, this.to);
 }
 
 @MappableClass()
 final class CellHideChanged extends HybridWorldEvent
     with CellHideChangedMappable {
-  final VectorDefinition cell;
+  final GlobalVectorDefinition cell;
   final int? object;
   final bool? hide;
 
@@ -45,7 +46,7 @@ final class CellHideChanged extends HybridWorldEvent
 @MappableClass()
 final class ObjectIndexChanged extends HybridWorldEvent
     with ObjectIndexChangedMappable {
-  final VectorDefinition cell;
+  final GlobalVectorDefinition cell;
   final int object;
   final int index;
 
@@ -78,7 +79,7 @@ final class MetadataChanged extends HybridWorldEvent
 @MappableClass()
 final class CellItemsCleared extends HybridWorldEvent
     with CellItemsClearedMappable {
-  final VectorDefinition cell;
+  final GlobalVectorDefinition cell;
   final int? object;
 
   CellItemsCleared(this.cell, {this.object});

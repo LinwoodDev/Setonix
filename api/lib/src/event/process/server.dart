@@ -9,18 +9,48 @@ bool isValidServerEvent(ServerWorldEvent event, WorldState state) =>
             event.info.packs.every((e) => event.packsSignature.containsKey(e)),
       TeamJoined() => state.info.teams.containsKey(event.team),
       TeamLeft() => state.info.teams.containsKey(event.team),
-      VariationChanged() => event.object
-          .inRange(0, state.table.getCell(event.cell).objects.length - 1),
-      CellShuffled() => event.positions.every((e) =>
-          e.inRange(0, state.table.getCell(event.cell).objects.length - 1)),
+      VariationChanged() => event.object.inRange(
+          0,
+          state
+                  .getTableOrDefault(event.cell.table)
+                  .getCell(event.cell.location)
+                  .objects
+                  .length -
+              1),
+      CellShuffled() => event.positions.every((e) => e.inRange(
+          0,
+          state
+                  .getTableOrDefault(event.cell.table)
+                  .getCell(event.cell.location)
+                  .objects
+                  .length -
+              1)),
       ObjectsMoved() => event.from != event.to &&
-          event.objects.every((e) =>
-              e.inRange(0, state.table.getCell(event.from).objects.length - 1)),
+          event.objects.every((e) => e.inRange(
+              0,
+              state
+                      .getTableOrDefault(event.table)
+                      .getCell(event.from)
+                      .objects
+                      .length -
+                  1)),
       CellHideChanged() => event.object?.inRange(
-              0, state.table.getCell(event.cell).objects.length - 1) ??
+              0,
+              state
+                      .getTableOrDefault(event.cell.table)
+                      .getCell(event.cell.location)
+                      .objects
+                      .length -
+                  1) ??
           true,
-      ObjectIndexChanged() => event.index
-          .inRange(0, state.table.getCell(event.cell).objects.length - 1),
+      ObjectIndexChanged() => event.index.inRange(
+          0,
+          state
+                  .getTableOrDefault(event.cell.table)
+                  .getCell(event.cell.location)
+                  .objects
+                  .length -
+              1),
       _ => true,
     };
 
@@ -75,90 +105,105 @@ WorldState? processServerEvent(
       }
       return state.copyWith(teamMembers: allMembers);
     case VariationChanged():
-      final cell = state.table.cells[event.cell] ?? TableCell();
-      final object = cell.objects[event.object];
-      return state.copyWith.table.cells.replace(
-          event.cell,
-          cell.copyWith.objects.replace(
-              event.object, object.copyWith(variation: event.variation)));
+      return state.mapTableOrDefault(event.cell.table, (table) {
+        final cell = table.cells[event.cell.location] ?? TableCell();
+        final object = cell.objects[event.object];
+        return table.copyWith.cells.replace(
+            event.cell.location,
+            cell.copyWith.objects.replace(
+                event.object, object.copyWith(variation: event.variation)));
+      });
     case CellShuffled(positions: final positions):
-      final cell = state.table.cells[event.cell] ?? TableCell();
-      final objects = cell.objects;
-      final newObjects = List<GameObject>.from(objects);
-      for (var i = 0; i < positions.length; i++) {
-        newObjects[positions[i]] = objects[i];
-      }
-      return state.copyWith.table.cells.replace(
-          event.cell,
-          cell.copyWith(
-            objects: newObjects,
-          ));
+      return state.mapTableOrDefault(event.cell.table, (table) {
+        final cell = table.cells[event.cell.location] ?? TableCell();
+        final objects = cell.objects;
+        final newObjects = List<GameObject>.from(objects);
+        for (var i = 0; i < positions.length; i++) {
+          newObjects[positions[i]] = objects[i];
+        }
+        return table.copyWith.cells.replace(
+            event.cell.location,
+            cell.copyWith(
+              objects: newObjects,
+            ));
+      });
     case BackgroundChanged():
       return state.copyWith.table(background: event.background);
     case ObjectsSpawned():
-      final cell = (state.table.cells[event.cell] ?? TableCell());
-      return state.copyWith.table.cells.replace(event.cell,
-          cell.copyWith(objects: [...cell.objects, ...event.objects]));
+      return state.mapTableOrDefault(event.cell.table, (table) {
+        final cell = table.getCell(event.cell.location);
+        return table.copyWith.cells.replace(event.cell.location,
+            cell.copyWith(objects: [...cell.objects, ...event.objects]));
+      });
     case ObjectsMoved():
-      var from = state.table.cells[event.from] ?? TableCell();
-      var to = state.table.cells[event.to] ?? TableCell();
-      final toRemove = List<int>.from(event.objects)
-        ..sort((a, b) => b.compareTo(a));
-      final toAdd = toRemove.map((e) => from.objects[e]).toList();
-      final newObjects = List<GameObject>.from(from.objects);
-      for (final i in toRemove) {
-        newObjects.removeAt(i);
-      }
-      from = from.copyWith(objects: newObjects);
-      to = to.copyWith(objects: [
-        ...to.objects,
-        ...toAdd,
-      ]);
-      return state.copyWith.table(cells: {
-        ...state.table.cells,
-        event.from: from,
-        event.to: to,
+      return state.mapTableOrDefault(event.table, (table) {
+        var from = table.cells[event.from] ?? TableCell();
+        var to = table.cells[event.to] ?? TableCell();
+        final toRemove = List<int>.from(event.objects)
+          ..sort((a, b) => b.compareTo(a));
+        final toAdd = toRemove.map((e) => from.objects[e]).toList();
+        final newObjects = List<GameObject>.from(from.objects);
+        for (final i in toRemove) {
+          newObjects.removeAt(i);
+        }
+        from = from.copyWith(objects: newObjects);
+        to = to.copyWith(objects: [
+          ...to.objects,
+          ...toAdd,
+        ]);
+        return table.copyWith(cells: {
+          ...table.cells,
+          event.from: from,
+          event.to: to,
+        });
       });
     case CellHideChanged():
-      final cell = state.table.cells[event.cell] ?? TableCell();
-      final objectIndex = event.object;
-      if (objectIndex != null) {
-        final object = cell.objects[objectIndex];
-        return state.copyWith.table.cells.replace(
-            event.cell,
-            cell.copyWith.objects.replace(objectIndex,
-                object.copyWith(hidden: event.hide ?? !object.hidden)));
-      } else {
-        final hidden =
-            !(event.hide ?? cell.objects.firstOrNull?.hidden ?? false);
-        return state.copyWith.table.cells.replace(
-            event.cell,
-            cell.copyWith(
-              objects:
-                  cell.objects.map((e) => e.copyWith(hidden: hidden)).toList(),
-            ));
-      }
+      return state.mapTableOrDefault(event.cell.table, (table) {
+        final cell = table.cells[event.cell.location] ?? TableCell();
+        final objectIndex = event.object;
+        if (objectIndex != null) {
+          final object = cell.objects[objectIndex];
+          return table.copyWith.cells.replace(
+              event.cell.location,
+              cell.copyWith.objects.replace(objectIndex,
+                  object.copyWith(hidden: event.hide ?? !object.hidden)));
+        } else {
+          final hidden =
+              !(event.hide ?? cell.objects.firstOrNull?.hidden ?? false);
+          return table.copyWith.cells.replace(
+              event.cell.location,
+              cell.copyWith(
+                objects: cell.objects
+                    .map((e) => e.copyWith(hidden: hidden))
+                    .toList(),
+              ));
+        }
+      });
     case CellItemsCleared():
-      final cell = state.table.cells[event.cell] ?? TableCell();
-      final objectIndex = event.object;
-      if (objectIndex != null) {
-        return state.copyWith.table.cells
-            .replace(event.cell, cell.copyWith.objects.removeAt(objectIndex));
-      } else {
-        return state.copyWith.table.cells.replace(
-            event.cell,
-            cell.copyWith(
-              objects: [],
-            ));
-      }
+      return state.mapTableOrDefault(event.cell.table, (table) {
+        final cell = table.cells[event.cell.location] ?? TableCell();
+        final objectIndex = event.object;
+        if (objectIndex != null) {
+          return table.copyWith.cells.replace(
+              event.cell.location, cell.copyWith.objects.removeAt(objectIndex));
+        } else {
+          return table.copyWith.cells.replace(
+              event.cell.location,
+              cell.copyWith(
+                objects: [],
+              ));
+        }
+      });
     case ObjectIndexChanged():
-      final cell = state.table.cells[event.cell] ?? TableCell();
-      final object = cell.objects[event.object];
-      final newObjects = List<GameObject>.from(cell.objects);
-      newObjects.removeAt(event.object);
-      newObjects.insert(event.index, object);
-      return state.copyWith.table.cells
-          .replace(event.cell, cell.copyWith(objects: newObjects));
+      return state.mapTableOrDefault(event.cell.table, (table) {
+        final cell = table.cells[event.cell.location] ?? TableCell();
+        final object = cell.objects[event.object];
+        final newObjects = List<GameObject>.from(cell.objects);
+        newObjects.removeAt(event.object);
+        newObjects.insert(event.index, object);
+        return table.copyWith.cells
+            .replace(event.cell.location, cell.copyWith(objects: newObjects));
+      });
     case TeamChanged():
       return state.copyWith.info.teams.put(event.name, event.team);
     case TeamRemoved():

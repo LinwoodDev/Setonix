@@ -249,21 +249,24 @@ class GameCell extends PositionComponent
                   ContextMenuButtonItem(
                     label: AppLocalizations.of(context).toggleHide,
                     onPressed: () {
-                      bloc.process(CellHideChanged(toDefinition()));
+                      bloc.process(
+                          CellHideChanged(toGlobalDefinition(bloc.state)));
                       onClose();
                     },
                   ),
                   ContextMenuButtonItem(
                     label: AppLocalizations.of(context).shuffle,
                     onPressed: () {
-                      bloc.process(ShuffleCellRequest(toDefinition()));
+                      bloc.process(
+                          ShuffleCellRequest(toGlobalDefinition(bloc.state)));
                       onClose();
                     },
                   ),
                   ContextMenuButtonItem(
                     label: AppLocalizations.of(context).remove,
                     onPressed: () {
-                      bloc.process(CellItemsCleared(toDefinition()));
+                      bloc.process(
+                          CellItemsCleared(toGlobalDefinition(bloc.state)));
                       onClose();
                     },
                   ),

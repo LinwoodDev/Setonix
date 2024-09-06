@@ -11,6 +11,9 @@ import 'package:quokka_api/quokka_api.dart';
 class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
   GameObjectHandItem({required super.item});
 
+  GlobalVectorDefinition toGlobalDefinition(ClientWorldState state) =>
+      GlobalVectorDefinition.fromLocal(state.tableName, item.$1);
+
   @override
   String getLabel(ClientWorldState state) {
     final object = item.$3;
@@ -18,8 +21,7 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
     final variation = object.variation;
     if (variation != null &&
         !item.$3.hidden &&
-        state.isCellVisible(
-            GlobalVectorDefinition.fromLocal(state.tableName, item.$1))) {
+        state.isCellVisible(toGlobalDefinition(state))) {
       return translation
           .getFigureVariationTranslation(object.asset.id, variation)
           .name;
@@ -37,27 +39,29 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
 
   @override
   void moveItem(HandItemDropZone zone) {
+    final current = toGlobalDefinition(bloc.state);
     switch (zone) {
       case GameCell e:
-        final location = e.toDefinition();
+        final global = e.toDefinition();
         bloc.process(ObjectsMoved(
           [item.$2],
-          item.$1,
-          location,
+          current.table,
+          current.location,
+          global,
         ));
         if (bloc.state.switchCellOnMove) {
-          bloc.process(CellSwitched(location));
+          bloc.process(CellSwitched(global));
         }
       case GameObjectHandItem e:
         bloc.process(ObjectIndexChanged(
-          item.$1,
+          current,
           item.$2,
           e.item.$2,
         ));
       case GameHand _:
         final cell = bloc.state.table.cells[item.$1];
         bloc.process(ObjectIndexChanged(
-          item.$1,
+          current,
           item.$2,
           (cell?.objects.length ?? 1) - 1,
         ));
@@ -69,18 +73,19 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
   @override
   get contextItemsBuilder {
     final location = item.$3.asset;
+    final global = toGlobalDefinition(bloc.state);
     return (context, onClose) => [
           ContextMenuButtonItem(
             label: AppLocalizations.of(context).toggleHide,
             onPressed: () {
-              bloc.process(CellHideChanged(item.$1, object: item.$2));
+              bloc.process(CellHideChanged(global, object: item.$2));
               onClose();
             },
           ),
           ContextMenuButtonItem(
             label: AppLocalizations.of(context).remove,
             onPressed: () {
-              bloc.process(CellItemsCleared(item.$1, object: item.$2));
+              bloc.process(CellItemsCleared(global, object: item.$2));
               onClose();
             },
           ),
@@ -92,7 +97,7 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
             ContextMenuButtonItem(
               label: AppLocalizations.of(context).roll,
               onPressed: () {
-                bloc.process(RollObjectRequest(item.$1, item.$2));
+                bloc.process(RollObjectRequest(global, item.$2));
                 onClose();
               },
             ),

@@ -50,10 +50,11 @@ class GameDrawer extends StatelessWidget {
                             textAlign: TextAlign.center,
                             style: theme.textTheme.headlineSmall,
                           ),
-                          Text(
-                            metadata.description,
-                            maxLines: 5,
-                          ),
+                          if (metadata.description.isNotEmpty)
+                            Text(
+                              metadata.description,
+                              maxLines: 5,
+                            ),
                         ],
                       ),
                     ),

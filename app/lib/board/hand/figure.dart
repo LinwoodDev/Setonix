@@ -27,14 +27,14 @@ class FigureDefinitionHandItem
   @override
   void moveItem(HandItemDropZone zone) {
     if (zone is! GameCell) return;
-    final location = zone.toDefinition();
-    bloc.process(ObjectsSpawned(location, [
+    final global = zone.toGlobalDefinition(bloc.state);
+    bloc.process(ObjectsSpawned(global, [
       GameObject(
           asset: ItemLocation(item.$1.namespace, item.$1.id),
           variation: item.$2)
     ]));
     if (bloc.state.switchCellOnMove) {
-      bloc.process(CellSwitched(location));
+      bloc.process(CellSwitched(global.location));
     }
   }
 }

@@ -72,4 +72,23 @@ class WorldState with WorldStateMappable {
 
   QuokkaData save() =>
       data.setTable(table, tableName).setInfo(info).setFileMetadata(metadata);
+
+  GameTable? getTable(String name) =>
+      name == tableName ? table : data.getTable(name);
+  GameTable getTableOrDefault(String name) =>
+      name == tableName ? table : data.getTableOrDefault(name);
+
+  WorldState updateTable(String name, GameTable table) {
+    if (name == tableName) return copyWith(table: table);
+    return copyWith(
+      data: data.setTable(table, name),
+    );
+  }
+
+  WorldState mapTable(String name, GameTable Function(GameTable?) mapper) =>
+      updateTable(name, mapper(getTable(name)));
+
+  WorldState mapTableOrDefault(
+          String name, GameTable Function(GameTable) mapper) =>
+      updateTable(name, mapper(getTableOrDefault(name)));
 }

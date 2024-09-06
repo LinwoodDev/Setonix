@@ -30,16 +30,16 @@ class DeckDefinitionHandItem extends HandItem<PackItem<DeckDefinition>> {
   @override
   void moveItem(HandItemDropZone zone) {
     if (zone is! GameCell) return;
-    final location = zone.toDefinition();
+    final global = zone.toGlobalDefinition(bloc.state);
     bloc.process(ObjectsSpawned(
-        location,
+        global,
         item.item.figures
             .map((e) => GameObject(
                 asset: ItemLocation(item.namespace, e.name),
                 variation: e.variation))
             .toList()));
     if (bloc.state.switchCellOnMove) {
-      bloc.process(CellSwitched(location));
+      bloc.process(CellSwitched(global.location));
     }
   }
 }

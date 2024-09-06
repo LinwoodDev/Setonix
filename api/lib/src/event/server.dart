@@ -43,7 +43,7 @@ final class TeamLeft extends ServerWorldEvent with TeamLeftMappable {
 @MappableClass()
 final class VariationChanged extends ServerWorldEvent
     with VariationChangedMappable {
-  final VectorDefinition cell;
+  final GlobalVectorDefinition cell;
   final int object;
   final String? variation;
 
@@ -52,7 +52,7 @@ final class VariationChanged extends ServerWorldEvent
 
 @MappableClass()
 final class CellShuffled extends ServerWorldEvent with CellShuffledMappable {
-  final VectorDefinition cell;
+  final GlobalVectorDefinition cell;
   final List<int> positions;
 
   CellShuffled(this.cell, this.positions);

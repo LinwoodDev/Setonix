@@ -32,14 +32,15 @@ class QuokkaData extends ArchiveData<QuokkaData> {
     return QuokkaData(ZipDecoder().decodeBytes(data));
   }
 
-  GameTable? getTable() {
-    final data = getAsset('$kGameTablePath/.json');
+  GameTable? getTable([String name = '']) {
+    final data = getAsset('$kGameTablePath/$name.json');
     if (data == null) return null;
     final content = utf8.decode(data);
     return GameTableMapper.fromJson(content);
   }
 
-  GameTable getTableOrDefault() => getTable() ?? GameTable();
+  GameTable getTableOrDefault([String name = '']) =>
+      getTable(name) ?? GameTable();
 
   QuokkaData setTable(GameTable table, String name) => setAsset(
         '$kGameTablePath/$name.json',

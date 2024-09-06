@@ -13,9 +13,18 @@ bool isValidClientEvent(
     switch (event) {
       TeamJoinRequest() => state.info.teams.containsKey(event.team),
       TeamLeaveRequest() => state.info.teams.containsKey(event.team),
-      RollObjectRequest() => event.object
-          .inRange(0, state.table.getCell(event.cell).objects.length - 1),
-      ShuffleCellRequest() => state.table.cells.containsKey(event.cell),
+      RollObjectRequest() => event.object.inRange(
+          0,
+          state
+                  .getTableOrDefault(event.cell.table)
+                  .getCell(event.cell.location)
+                  .objects
+                  .length -
+              1),
+      ShuffleCellRequest() => state
+          .getTableOrDefault(event.cell.table)
+          .cells
+          .containsKey(event.cell.location),
       ObjectsSpawned() => event.objects.every((e) {
           final figure =
               assetManager.getPack(e.asset.namespace)?.getFigure(e.asset.id);
@@ -24,13 +33,31 @@ bool isValidClientEvent(
                   figure.variations.containsKey(e.variation));
         }),
       ObjectsMoved() => event.from != event.to &&
-          event.objects.every((e) =>
-              e.inRange(0, state.table.getCell(event.from).objects.length - 1)),
+          event.objects.every((e) => e.inRange(
+              0,
+              state
+                      .getTableOrDefault(event.table)
+                      .getCell(event.from)
+                      .objects
+                      .length -
+                  1)),
       CellHideChanged() => event.object?.inRange(
-              0, state.table.getCell(event.cell).objects.length - 1) ??
+              0,
+              state
+                      .getTableOrDefault(event.cell.table)
+                      .getCell(event.cell.location)
+                      .objects
+                      .length -
+                  1) ??
           true,
-      ObjectIndexChanged() => event.index
-          .inRange(0, state.table.getCell(event.cell).objects.length - 1),
+      ObjectIndexChanged() => event.index.inRange(
+          0,
+          state
+                  .getTableOrDefault(event.cell.table)
+                  .getCell(event.cell.location)
+                  .objects
+                  .length -
+              1),
       TeamRemoved() => state.info.teams.containsKey(event.team),
       PacksChangeRequest() => channel == kAuthorityChannel,
       _ => true,
@@ -70,7 +97,8 @@ bool isValidClientEvent(
     case TeamLeaveRequest(team: final team):
       return (TeamLeft(channel, team), kAnyChannel);
     case RollObjectRequest r:
-      final cell = state.table.cells[r.cell];
+      final table = state.getTableOrDefault(r.cell.table);
+      final cell = table.cells[r.cell.location];
       if (cell == null || !r.object.inRange(0, cell.objects.length - 1)) {
         return null;
       }
@@ -84,7 +112,8 @@ bool isValidClientEvent(
       final picked = variations[Random().nextInt(variations.length)];
       return (VariationChanged(r.cell, r.object, picked), kAnyChannel);
     case ShuffleCellRequest r:
-      final cell = state.table.cells[r.cell];
+      final table = state.getTableOrDefault(r.cell.table);
+      final cell = table.cells[r.cell.location];
       if (cell == null) return null;
       final positions = List<int>.generate(cell.objects.length, (i) => i)
         ..shuffle();
