@@ -77,14 +77,14 @@ class PersonalizationSettingsPage extends StatelessWidget {
                       ]),
                 ),
               ),
-              Card(
-                margin: const EdgeInsets.all(8),
-                child: Padding(
-                  padding: const EdgeInsets.all(32),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        if (!kIsWeb && (Platform.isWindows || Platform.isLinux))
+              if (!kIsWeb && (Platform.isWindows || Platform.isLinux))
+                Card(
+                  margin: const EdgeInsets.all(8),
+                  child: Padding(
+                    padding: const EdgeInsets.all(32),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
                           SwitchListTile(
                             value: state.nativeTitleBar,
                             title: Text(
@@ -95,9 +95,9 @@ class PersonalizationSettingsPage extends StatelessWidget {
                                 .read<SettingsCubit>()
                                 .changeNativeTitleBar(value),
                           ),
-                      ]),
+                        ]),
+                  ),
                 ),
-              ),
             ]);
           },
         ));

@@ -35,14 +35,14 @@ class DataSettingsPage extends StatelessWidget {
         body: BlocBuilder<SettingsCubit, QuokkaSettings>(
           builder: (context, state) {
             return ListView(children: [
-              Card(
-                margin: const EdgeInsets.all(8),
-                child: Padding(
-                  padding: const EdgeInsets.all(32),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        if (!kIsWeb)
+              if (!kIsWeb)
+                Card(
+                  margin: const EdgeInsets.all(8),
+                  child: Padding(
+                    padding: const EdgeInsets.all(32),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
                           ListTile(
                             leading:
                                 const PhosphorIcon(PhosphorIconsLight.folder),
@@ -83,9 +83,9 @@ class DataSettingsPage extends StatelessWidget {
                               }
                             },
                           ),
-                      ]),
+                        ]),
+                  ),
                 ),
-              ),
             ]);
           },
         ));

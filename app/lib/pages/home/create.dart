@@ -140,6 +140,11 @@ class _CreateDialogState extends State<CreateDialog>
                     if (templates == null) {
                       return const Center(child: CircularProgressIndicator());
                     }
+                    if (templates.isEmpty) {
+                      return Center(
+                        child: Text(AppLocalizations.of(context).noTemplates),
+                      );
+                    }
                     return ListView.builder(
                       itemCount: templates.length,
                       itemBuilder: (context, index) {
