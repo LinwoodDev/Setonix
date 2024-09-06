@@ -14,7 +14,7 @@ enum WorldOperationMode {
 }
 
 @MappableClass()
-class ClientWorldState extends WorldState with ClientWorldStateMappable {
+final class ClientWorldState extends WorldState with ClientWorldStateMappable {
   final MultiplayerCubit multiplayer;
   final ColorScheme colorScheme;
   final QuokkaFileSystem fileSystem;
@@ -37,6 +37,7 @@ class ClientWorldState extends WorldState with ClientWorldStateMappable {
     this.switchCellOnMove = false,
     super.id,
     super.teamMembers,
+    super.messages,
     required super.data,
   });
 }

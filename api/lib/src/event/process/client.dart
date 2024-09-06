@@ -90,19 +90,19 @@ bool isValidClientEvent(
       return (event, kAnyChannel);
     case LocalWorldEvent():
       return null;
-    case ServerWorldEvent e:
-      return allowServerEvents ? (e, kAnyChannel) : null;
+    case ServerWorldEvent():
+      return allowServerEvents ? (event, kAnyChannel) : null;
     case TeamJoinRequest(team: final team):
       return (TeamJoined(channel, team), kAnyChannel);
     case TeamLeaveRequest(team: final team):
       return (TeamLeft(channel, team), kAnyChannel);
-    case RollObjectRequest r:
-      final table = state.getTableOrDefault(r.cell.table);
-      final cell = table.cells[r.cell.location];
-      if (cell == null || !r.object.inRange(0, cell.objects.length - 1)) {
+    case RollObjectRequest():
+      final table = state.getTableOrDefault(event.cell.table);
+      final cell = table.cells[event.cell.location];
+      if (cell == null || !event.object.inRange(0, cell.objects.length - 1)) {
         return null;
       }
-      final object = cell.objects[r.object];
+      final object = cell.objects[event.object];
       final figure = assetManager
           .getPack(object.asset.namespace)
           ?.getFigure(object.asset.id);
@@ -110,19 +110,21 @@ bool isValidClientEvent(
       final variations = figure.variations.keys.toList();
       if (variations.isEmpty) return null;
       final picked = variations[Random().nextInt(variations.length)];
-      return (VariationChanged(r.cell, r.object, picked), kAnyChannel);
-    case ShuffleCellRequest r:
-      final table = state.getTableOrDefault(r.cell.table);
-      final cell = table.cells[r.cell.location];
+      return (VariationChanged(event.cell, event.object, picked), kAnyChannel);
+    case ShuffleCellRequest():
+      final table = state.getTableOrDefault(event.cell.table);
+      final cell = table.cells[event.cell.location];
       if (cell == null) return null;
       final positions = List<int>.generate(cell.objects.length, (i) => i)
         ..shuffle();
-      return (CellShuffled(r.cell, positions), kAnyChannel);
-    case PacksChangeRequest r:
+      return (CellShuffled(event.cell, positions), kAnyChannel);
+    case PacksChangeRequest():
       return sendInit(
           null,
           state.copyWith.info(
-            packs: r.packs.where((e) => assetManager.hasPack(e)).toList(),
+            packs: event.packs.where((e) => assetManager.hasPack(e)).toList(),
           ));
+    case MessageRequest():
+      return (MessageSent(channel, event.message), kAnyChannel);
   }
 }

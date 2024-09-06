@@ -57,3 +57,11 @@ final class CellShuffled extends ServerWorldEvent with CellShuffledMappable {
 
   CellShuffled(this.cell, this.positions);
 }
+
+@MappableClass()
+final class MessageSent extends ServerWorldEvent with MessageSentMappable {
+  final Channel user;
+  final String message;
+
+  MessageSent(this.user, this.message);
+}

@@ -11,6 +11,7 @@ import 'package:quokka/bloc/world/bloc.dart';
 import 'package:quokka/bloc/world/local.dart';
 import 'package:quokka/bloc/world/state.dart';
 import 'package:quokka/helpers/visualizer.dart';
+import 'package:quokka/pages/game/chat.dart';
 import 'package:quokka/pages/game/info.dart';
 import 'package:quokka/pages/game/multiplayer.dart';
 import 'package:quokka/pages/game/team.dart';
@@ -378,6 +379,19 @@ class GameDrawer extends StatelessWidget {
                   context: context,
                   builder: (context) => BlocProvider.value(
                       value: multiplayer, child: const MultiplayerDialog()),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(PhosphorIconsLight.chat),
+              title: Text(AppLocalizations.of(context).chat),
+              onTap: () {
+                Scaffold.of(context).closeDrawer();
+                final bloc = context.read<WorldBloc>();
+                showDialog(
+                  context: context,
+                  builder: (context) => BlocProvider.value(
+                      value: bloc, child: const GameChatDialog()),
                 );
               },
             ),

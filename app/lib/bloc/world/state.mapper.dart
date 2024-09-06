@@ -65,6 +65,7 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
       FileMetadataMapper.ensureInitialized();
       VectorDefinitionMapper.ensureInitialized();
       ItemLocationMapper.ensureInitialized();
+      ChatMessageMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -115,6 +116,9 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
       v.teamMembers;
   static const Field<ClientWorldState, Map<String, Set<int>>> _f$teamMembers =
       Field('teamMembers', _$teamMembers, opt: true, def: const {});
+  static List<ChatMessage> _$messages(ClientWorldState v) => v.messages;
+  static const Field<ClientWorldState, List<ChatMessage>> _f$messages =
+      Field('messages', _$messages, opt: true, def: const []);
   static QuokkaData _$data(ClientWorldState v) => v.data;
   static const Field<ClientWorldState, QuokkaData> _f$data =
       Field('data', _$data);
@@ -135,6 +139,7 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
     #switchCellOnMove: _f$switchCellOnMove,
     #id: _f$id,
     #teamMembers: _f$teamMembers,
+    #messages: _f$messages,
     #data: _f$data,
   };
 
@@ -154,6 +159,7 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
         switchCellOnMove: data.dec(_f$switchCellOnMove),
         id: data.dec(_f$id),
         teamMembers: data.dec(_f$teamMembers),
+        messages: data.dec(_f$messages),
         data: data.dec(_f$data));
   }
 
@@ -224,6 +230,9 @@ abstract class ClientWorldStateCopyWith<$R, $In extends ClientWorldState, $Out>
   MapCopyWith<$R, String, Set<int>, ObjectCopyWith<$R, Set<int>, Set<int>>>
       get teamMembers;
   @override
+  ListCopyWith<$R, ChatMessage,
+      ChatMessageCopyWith<$R, ChatMessage, ChatMessage>> get messages;
+  @override
   $R call(
       {MultiplayerCubit? multiplayer,
       QuokkaFileSystem? fileSystem,
@@ -239,6 +248,7 @@ abstract class ClientWorldStateCopyWith<$R, $In extends ClientWorldState, $Out>
       bool? switchCellOnMove,
       int? id,
       Map<String, Set<int>>? teamMembers,
+      List<ChatMessage>? messages,
       QuokkaData? data});
   ClientWorldStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
@@ -275,6 +285,11 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
           (v, t) => ObjectCopyWith(v, $identity, t),
           (v) => call(teamMembers: v));
   @override
+  ListCopyWith<$R, ChatMessage,
+          ChatMessageCopyWith<$R, ChatMessage, ChatMessage>>
+      get messages => ListCopyWith($value.messages,
+          (v, t) => v.copyWith.$chain(t), (v) => call(messages: v));
+  @override
   $R call(
           {MultiplayerCubit? multiplayer,
           QuokkaFileSystem? fileSystem,
@@ -290,6 +305,7 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
           bool? switchCellOnMove,
           int? id,
           Map<String, Set<int>>? teamMembers,
+          List<ChatMessage>? messages,
           QuokkaData? data}) =>
       $apply(FieldCopyWithData({
         if (multiplayer != null) #multiplayer: multiplayer,
@@ -306,6 +322,7 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
         if (switchCellOnMove != null) #switchCellOnMove: switchCellOnMove,
         if (id != null) #id: id,
         if (teamMembers != null) #teamMembers: teamMembers,
+        if (messages != null) #messages: messages,
         if (data != null) #data: data
       }));
   @override
@@ -325,6 +342,7 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
           data.get(#switchCellOnMove, or: $value.switchCellOnMove),
       id: data.get(#id, or: $value.id),
       teamMembers: data.get(#teamMembers, or: $value.teamMembers),
+      messages: data.get(#messages, or: $value.messages),
       data: data.get(#data, or: $value.data));
 
   @override

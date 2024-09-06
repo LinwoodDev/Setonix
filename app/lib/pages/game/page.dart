@@ -162,14 +162,48 @@ class _GamePageState extends State<GamePage> {
                         ],
                       ),
                       drawer: const GameDrawer(),
-                      body: Builder(
-                          builder: (context) => GameWidget(
-                                  game: BoardGame(
-                                bloc: context.read<WorldBloc>(),
-                                contextMenuController: _contextMenuController,
-                                onEscape: () =>
-                                    Scaffold.of(context).openDrawer(),
-                              ))),
+                      body: BlocListener<WorldBloc, WorldState>(
+                        listenWhen: (previous, current) =>
+                            previous.messages != current.messages,
+                        listener: (context, state) {
+                          final message = state.messages.lastOrNull;
+                          if (message == null) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              width: 300,
+                              behavior: SnackBarBehavior.floating,
+                              backgroundColor: Theme.of(context)
+                                  .colorScheme
+                                  .surfaceContainer,
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                      AppLocalizations.of(context).newMessage(
+                                          message.author.toString()),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium),
+                                  Text(message.content,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall),
+                                ],
+                              ),
+                              duration: const Duration(seconds: 2),
+                            ),
+                          );
+                        },
+                        child: Builder(
+                            builder: (context) => GameWidget(
+                                    game: BoardGame(
+                                  bloc: context.read<WorldBloc>(),
+                                  contextMenuController: _contextMenuController,
+                                  onEscape: () =>
+                                      Scaffold.of(context).openDrawer(),
+                                ))),
+                      ),
                     );
                   },
                 )),

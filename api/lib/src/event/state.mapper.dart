@@ -62,6 +62,7 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
       GameTableMapper.ensureInitialized();
       GameInfoMapper.ensureInitialized();
       FileMetadataMapper.ensureInitialized();
+      ChatMessageMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -87,6 +88,9 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
   static Map<String, Set<int>> _$teamMembers(WorldState v) => v.teamMembers;
   static const Field<WorldState, Map<String, Set<int>>> _f$teamMembers =
       Field('teamMembers', _$teamMembers, opt: true, def: const {});
+  static List<ChatMessage> _$messages(WorldState v) => v.messages;
+  static const Field<WorldState, List<ChatMessage>> _f$messages =
+      Field('messages', _$messages, opt: true, def: const []);
   static int _$id(WorldState v) => v.id;
   static const Field<WorldState, int> _f$id =
       Field('id', _$id, opt: true, def: kAuthorityChannel);
@@ -101,6 +105,7 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
     #info: _f$info,
     #metadata: _f$metadata,
     #teamMembers: _f$teamMembers,
+    #messages: _f$messages,
     #id: _f$id,
     #data: _f$data,
   };
@@ -113,6 +118,7 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
         info: data.dec(_f$info),
         metadata: data.dec(_f$metadata),
         teamMembers: data.dec(_f$teamMembers),
+        messages: data.dec(_f$messages),
         id: data.dec(_f$id),
         data: data.dec(_f$data));
   }
@@ -173,6 +179,8 @@ abstract class WorldStateCopyWith<$R, $In extends WorldState, $Out>
   FileMetadataCopyWith<$R, FileMetadata, FileMetadata> get metadata;
   MapCopyWith<$R, String, Set<int>, ObjectCopyWith<$R, Set<int>, Set<int>>>
       get teamMembers;
+  ListCopyWith<$R, ChatMessage,
+      ChatMessageCopyWith<$R, ChatMessage, ChatMessage>> get messages;
   $R call(
       {String? name,
       GameTable? table,
@@ -180,6 +188,7 @@ abstract class WorldStateCopyWith<$R, $In extends WorldState, $Out>
       GameInfo? info,
       FileMetadata? metadata,
       Map<String, Set<int>>? teamMembers,
+      List<ChatMessage>? messages,
       int? id,
       QuokkaData? data});
   WorldStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -209,6 +218,11 @@ class _WorldStateCopyWithImpl<$R, $Out>
           (v, t) => ObjectCopyWith(v, $identity, t),
           (v) => call(teamMembers: v));
   @override
+  ListCopyWith<$R, ChatMessage,
+          ChatMessageCopyWith<$R, ChatMessage, ChatMessage>>
+      get messages => ListCopyWith($value.messages,
+          (v, t) => v.copyWith.$chain(t), (v) => call(messages: v));
+  @override
   $R call(
           {Object? name = $none,
           GameTable? table,
@@ -216,6 +230,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
           GameInfo? info,
           FileMetadata? metadata,
           Map<String, Set<int>>? teamMembers,
+          List<ChatMessage>? messages,
           int? id,
           QuokkaData? data}) =>
       $apply(FieldCopyWithData({
@@ -225,6 +240,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
         if (info != null) #info: info,
         if (metadata != null) #metadata: metadata,
         if (teamMembers != null) #teamMembers: teamMembers,
+        if (messages != null) #messages: messages,
         if (id != null) #id: id,
         if (data != null) #data: data
       }));
@@ -236,6 +252,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
       info: data.get(#info, or: $value.info),
       metadata: data.get(#metadata, or: $value.metadata),
       teamMembers: data.get(#teamMembers, or: $value.teamMembers),
+      messages: data.get(#messages, or: $value.messages),
       id: data.get(#id, or: $value.id),
       data: data.get(#data, or: $value.data));
 

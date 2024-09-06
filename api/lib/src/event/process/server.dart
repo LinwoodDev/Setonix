@@ -213,5 +213,11 @@ WorldState? processServerEvent(
       );
     case MetadataChanged():
       return state.copyWith(metadata: event.metadata);
+    case MessageSent():
+      return state.copyWith.messages.add(ChatMessage(
+        author: event.user,
+        content: event.message,
+        timestamp: DateTime.now(),
+      ));
   }
 }

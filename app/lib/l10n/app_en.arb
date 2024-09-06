@@ -145,5 +145,16 @@
   "noTemplates": "There are no templates available",
   "table": "Table",
   "defaultTable": "Default table",
-  "switchTable": "Switch table"
+  "switchTable": "Switch table",
+  "webNotSupported": "Web is not supported",
+  "chat": "Chat",
+  "message": "Message",
+  "newMessage": "New message from {name}",
+  "@newMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  }
 }

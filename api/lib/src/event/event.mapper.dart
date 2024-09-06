@@ -128,6 +128,7 @@ class ServerWorldEventMapper extends SubClassMapperBase<ServerWorldEvent> {
       TeamLeftMapper.ensureInitialized();
       VariationChangedMapper.ensureInitialized();
       CellShuffledMapper.ensureInitialized();
+      MessageSentMapper.ensureInitialized();
       HybridWorldEventMapper.ensureInitialized();
     }
     return _instance!;
@@ -870,6 +871,122 @@ class _CellShuffledCopyWithImpl<$R, $Out>
       _CellShuffledCopyWithImpl($value, $cast, t);
 }
 
+class MessageSentMapper extends SubClassMapperBase<MessageSent> {
+  MessageSentMapper._();
+
+  static MessageSentMapper? _instance;
+  static MessageSentMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = MessageSentMapper._());
+      ServerWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'MessageSent';
+
+  static int _$user(MessageSent v) => v.user;
+  static const Field<MessageSent, int> _f$user = Field('user', _$user);
+  static String _$message(MessageSent v) => v.message;
+  static const Field<MessageSent, String> _f$message =
+      Field('message', _$message);
+
+  @override
+  final MappableFields<MessageSent> fields = const {
+    #user: _f$user,
+    #message: _f$message,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'MessageSent';
+  @override
+  late final ClassMapperBase superMapper =
+      ServerWorldEventMapper.ensureInitialized();
+
+  static MessageSent _instantiate(DecodingData data) {
+    return MessageSent(data.dec(_f$user), data.dec(_f$message));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static MessageSent fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<MessageSent>(map);
+  }
+
+  static MessageSent fromJson(String json) {
+    return ensureInitialized().decodeJson<MessageSent>(json);
+  }
+}
+
+mixin MessageSentMappable {
+  String toJson() {
+    return MessageSentMapper.ensureInitialized()
+        .encodeJson<MessageSent>(this as MessageSent);
+  }
+
+  Map<String, dynamic> toMap() {
+    return MessageSentMapper.ensureInitialized()
+        .encodeMap<MessageSent>(this as MessageSent);
+  }
+
+  MessageSentCopyWith<MessageSent, MessageSent, MessageSent> get copyWith =>
+      _MessageSentCopyWithImpl(this as MessageSent, $identity, $identity);
+  @override
+  String toString() {
+    return MessageSentMapper.ensureInitialized()
+        .stringifyValue(this as MessageSent);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return MessageSentMapper.ensureInitialized()
+        .equalsValue(this as MessageSent, other);
+  }
+
+  @override
+  int get hashCode {
+    return MessageSentMapper.ensureInitialized().hashValue(this as MessageSent);
+  }
+}
+
+extension MessageSentValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, MessageSent, $Out> {
+  MessageSentCopyWith<$R, MessageSent, $Out> get $asMessageSent =>
+      $base.as((v, t, t2) => _MessageSentCopyWithImpl(v, t, t2));
+}
+
+abstract class MessageSentCopyWith<$R, $In extends MessageSent, $Out>
+    implements ServerWorldEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({int? user, String? message});
+  MessageSentCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _MessageSentCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, MessageSent, $Out>
+    implements MessageSentCopyWith<$R, MessageSent, $Out> {
+  _MessageSentCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<MessageSent> $mapper =
+      MessageSentMapper.ensureInitialized();
+  @override
+  $R call({int? user, String? message}) => $apply(FieldCopyWithData(
+      {if (user != null) #user: user, if (message != null) #message: message}));
+  @override
+  MessageSent $make(CopyWithData data) => MessageSent(
+      data.get(#user, or: $value.user), data.get(#message, or: $value.message));
+
+  @override
+  MessageSentCopyWith<$R2, MessageSent, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _MessageSentCopyWithImpl($value, $cast, t);
+}
+
 class ClientWorldEventMapper extends SubClassMapperBase<ClientWorldEvent> {
   ClientWorldEventMapper._();
 
@@ -883,6 +1000,7 @@ class ClientWorldEventMapper extends SubClassMapperBase<ClientWorldEvent> {
       RollObjectRequestMapper.ensureInitialized();
       ShuffleCellRequestMapper.ensureInitialized();
       PacksChangeRequestMapper.ensureInitialized();
+      MessageRequestMapper.ensureInitialized();
       HybridWorldEventMapper.ensureInitialized();
     }
     return _instance!;
@@ -1542,6 +1660,122 @@ class _PacksChangeRequestCopyWithImpl<$R, $Out>
   PacksChangeRequestCopyWith<$R2, PacksChangeRequest, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
       _PacksChangeRequestCopyWithImpl($value, $cast, t);
+}
+
+class MessageRequestMapper extends SubClassMapperBase<MessageRequest> {
+  MessageRequestMapper._();
+
+  static MessageRequestMapper? _instance;
+  static MessageRequestMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = MessageRequestMapper._());
+      ClientWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'MessageRequest';
+
+  static String _$message(MessageRequest v) => v.message;
+  static const Field<MessageRequest, String> _f$message =
+      Field('message', _$message);
+
+  @override
+  final MappableFields<MessageRequest> fields = const {
+    #message: _f$message,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'MessageRequest';
+  @override
+  late final ClassMapperBase superMapper =
+      ClientWorldEventMapper.ensureInitialized();
+
+  static MessageRequest _instantiate(DecodingData data) {
+    return MessageRequest(data.dec(_f$message));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static MessageRequest fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<MessageRequest>(map);
+  }
+
+  static MessageRequest fromJson(String json) {
+    return ensureInitialized().decodeJson<MessageRequest>(json);
+  }
+}
+
+mixin MessageRequestMappable {
+  String toJson() {
+    return MessageRequestMapper.ensureInitialized()
+        .encodeJson<MessageRequest>(this as MessageRequest);
+  }
+
+  Map<String, dynamic> toMap() {
+    return MessageRequestMapper.ensureInitialized()
+        .encodeMap<MessageRequest>(this as MessageRequest);
+  }
+
+  MessageRequestCopyWith<MessageRequest, MessageRequest, MessageRequest>
+      get copyWith => _MessageRequestCopyWithImpl(
+          this as MessageRequest, $identity, $identity);
+  @override
+  String toString() {
+    return MessageRequestMapper.ensureInitialized()
+        .stringifyValue(this as MessageRequest);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return MessageRequestMapper.ensureInitialized()
+        .equalsValue(this as MessageRequest, other);
+  }
+
+  @override
+  int get hashCode {
+    return MessageRequestMapper.ensureInitialized()
+        .hashValue(this as MessageRequest);
+  }
+}
+
+extension MessageRequestValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, MessageRequest, $Out> {
+  MessageRequestCopyWith<$R, MessageRequest, $Out> get $asMessageRequest =>
+      $base.as((v, t, t2) => _MessageRequestCopyWithImpl(v, t, t2));
+}
+
+abstract class MessageRequestCopyWith<$R, $In extends MessageRequest, $Out>
+    implements ClientWorldEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({String? message});
+  MessageRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class _MessageRequestCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, MessageRequest, $Out>
+    implements MessageRequestCopyWith<$R, MessageRequest, $Out> {
+  _MessageRequestCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<MessageRequest> $mapper =
+      MessageRequestMapper.ensureInitialized();
+  @override
+  $R call({String? message}) =>
+      $apply(FieldCopyWithData({if (message != null) #message: message}));
+  @override
+  MessageRequest $make(CopyWithData data) =>
+      MessageRequest(data.get(#message, or: $value.message));
+
+  @override
+  MessageRequestCopyWith<$R2, MessageRequest, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _MessageRequestCopyWithImpl($value, $cast, t);
 }
 
 class HybridWorldEventMapper extends SubClassMapperBase<HybridWorldEvent> {

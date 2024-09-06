@@ -1,6 +1,12 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:networker/networker.dart';
-import 'package:quokka_api/quokka_api.dart';
+
+import '../models/chat.dart';
+import '../models/data.dart';
+import '../models/info.dart';
+import '../models/meta.dart';
+import '../models/table.dart';
+import '../models/vector.dart';
 
 part 'state.mapper.dart';
 
@@ -20,6 +26,7 @@ class WorldState with WorldStateMappable {
   final Map<String, Set<Channel>> teamMembers;
   final FileMetadata metadata;
   final QuokkaData data;
+  final List<ChatMessage> messages;
 
   const WorldState({
     this.name,
@@ -28,6 +35,7 @@ class WorldState with WorldStateMappable {
     this.info = const GameInfo(),
     this.metadata = const FileMetadata(),
     this.teamMembers = const {},
+    this.messages = const [],
     this.id = kAuthorityChannel,
     required this.data,
   });

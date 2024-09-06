@@ -46,3 +46,11 @@ final class PacksChangeRequest extends ClientWorldEvent
 
   PacksChangeRequest(this.packs);
 }
+
+@MappableClass()
+final class MessageRequest extends ClientWorldEvent
+    with MessageRequestMappable {
+  final String message;
+
+  MessageRequest(this.message);
+}
