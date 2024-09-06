@@ -10,7 +10,6 @@ import 'package:flutter/material.dart'
 import 'package:flutter/painting.dart';
 import 'package:quokka/bloc/world/bloc.dart';
 import 'package:quokka/bloc/world/state.dart';
-import 'package:quokka/board/game.dart';
 import 'package:quokka/board/hand/deck.dart';
 import 'package:quokka/board/hand/figure.dart';
 import 'package:quokka/board/hand/item.dart';
@@ -41,7 +40,6 @@ class GameHandCustomPainter extends CustomPainter {
 
 class GameHand extends CustomPainterComponent
     with
-        HasGameRef<BoardGame>,
         DragCallbacks,
         FlameBlocListenable<WorldBloc, ClientWorldState>,
         TapCallbacks,
@@ -107,23 +105,22 @@ class GameHand extends CustomPainterComponent
     if (selected == null) {
       final deck = state.selectedDeck;
       final packItem = deck != null
-          ? game.assetManager
+          ? state.assetManager
               .getPack(deck.namespace)
               ?.getDeckItem(deck.id, deck.namespace)
           : null;
       if (packItem != null) {
         _buildDeckHand(packItem);
       } else {
-        _buildFreeHand();
+        _buildFreeHand(state);
       }
     } else {
       _buildCellHand(selected, cell);
     }
   }
 
-  void _buildFreeHand() {
-    final game = gameRef;
-    final decks = game.packs.expand((e) => e.value.getDeckItems(e.key));
+  void _buildFreeHand(ClientWorldState state) {
+    final decks = state.packs.expand((e) => e.value.getDeckItems(e.key));
     for (final deck in decks) {
       _scrollView.addChild(DeckDefinitionHandItem(item: deck));
     }

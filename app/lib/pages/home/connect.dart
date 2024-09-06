@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -22,6 +23,8 @@ class AddConnectDialog extends StatelessWidget {
       });
     }
 
+    final secureSwitchEnabled = !kIsWeb || Uri.base.isScheme('HTTP');
+
     return ResponsiveAlertDialog(
       title: Text(AppLocalizations.of(context).connect),
       leading: IconButton.outlined(
@@ -44,13 +47,14 @@ class AddConnectDialog extends StatelessWidget {
             onFieldSubmitted: (_) => connect(),
           ),
           const SizedBox(height: 8),
-          StatefulBuilder(
-            builder: (context, setState) => SwitchListTile(
-              title: Text(AppLocalizations.of(context).secure),
-              value: secure,
-              onChanged: (value) => setState(() => secure = value),
+          if (secureSwitchEnabled)
+            StatefulBuilder(
+              builder: (context, setState) => SwitchListTile(
+                title: Text(AppLocalizations.of(context).secure),
+                value: secure,
+                onChanged: (value) => setState(() => secure = value),
+              ),
             ),
-          ),
         ],
       ),
       actions: [

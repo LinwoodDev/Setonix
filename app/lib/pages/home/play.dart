@@ -71,7 +71,8 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
               onPressed: () => GoRouter.of(context).goNamed(
                 'game',
                 pathParameters: {
-                  if (_selected != null) 'name': _selected!.path,
+                  if (_selected != null)
+                    'name': _selected!.pathWithoutLeadingSlash,
                 },
               ),
             ),

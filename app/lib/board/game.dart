@@ -11,10 +11,8 @@ import 'package:quokka/bloc/world/local.dart';
 import 'package:quokka/bloc/world/state.dart';
 import 'package:quokka/board/grid.dart';
 import 'package:quokka/board/hand/view.dart';
-import 'package:quokka/helpers/asset.dart';
 import 'package:quokka/helpers/scroll.dart';
 import 'package:quokka/helpers/secondary.dart';
-import 'package:quokka_api/quokka_api.dart';
 
 class BoardGame extends FlameGame
     with
@@ -30,9 +28,6 @@ class BoardGame extends FlameGame
   final WorldBloc bloc;
 
   bool _isShifting = false;
-
-  GameAssetManager get assetManager => bloc.assetManager;
-  Iterable<MapEntry<String, QuokkaData>> get packs => bloc.packs;
   bool get isShifting => _isShifting;
 
   BoardGame({
@@ -66,7 +61,8 @@ class BoardGame extends FlameGame
   void _updateLocale() {
     final context = buildContext;
     if (context == null) return;
-    assetManager.currentLocale = Localizations.localeOf(context).languageCode;
+    bloc.state.assetManager.currentLocale =
+        Localizations.localeOf(context).languageCode;
   }
 
   void clampZoom(double zoom) {

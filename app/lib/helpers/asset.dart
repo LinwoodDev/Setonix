@@ -4,22 +4,20 @@ import 'package:flame/game.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:quokka/bloc/world/bloc.dart';
 import 'package:quokka/helpers/vector.dart';
 import 'package:quokka/services/file_system.dart';
 import 'package:quokka_api/quokka_api.dart';
 
 class GameAssetManager extends AssetManager {
   String currentLocale;
-  final WorldBloc bloc;
   final Map<String, QuokkaData> _loadedPacks = {};
   final Map<String, TranslationsStore> _loadedTranslations = {};
   final Map<ItemLocation?, Future<Image>> _cachedImages = {};
 
-  QuokkaFileSystem get fileSystem => bloc.state.fileSystem;
+  final QuokkaFileSystem fileSystem;
 
   GameAssetManager({
-    required this.bloc,
+    required this.fileSystem,
     this.currentLocale = 'en',
   });
 

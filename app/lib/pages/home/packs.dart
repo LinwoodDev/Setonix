@@ -6,6 +6,7 @@ import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:quokka/api/open.dart';
 import 'package:quokka/bloc/world/bloc.dart';
+import 'package:quokka/bloc/world/state.dart';
 import 'package:quokka/services/file_system.dart';
 import 'package:quokka/widgets/search.dart';
 import 'package:quokka_api/quokka_api.dart';
@@ -402,12 +403,12 @@ class _WorldPacksView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final loadedPacks = bloc.assetManager.packs.toList();
-    return BlocBuilder<WorldBloc, WorldState>(
+    return BlocBuilder<WorldBloc, ClientWorldState>(
       bloc: bloc,
       buildWhen: (previous, current) =>
           previous.info.packs != current.info.packs,
       builder: (context, state) {
+        final loadedPacks = state.assetManager.packs.toList();
         final worldPacks = loadedPacks
             .where((entry) => state.info.packs.contains(entry.key))
             .toList();

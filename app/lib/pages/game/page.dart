@@ -61,7 +61,7 @@ class _GamePageState extends State<GamePage> {
       data: data,
       colorScheme: Theme.of(context).colorScheme,
     );
-    await world.assetManager.loadPacks();
+    await world.state.assetManager.loadPacks();
     if (address != null) {
       cubit.connect(address, secure: widget.secure);
     }

@@ -9,7 +9,7 @@ class DeckDefinitionHandItem extends HandItem<PackItem<DeckDefinition>> {
   DeckDefinitionHandItem({required super.item});
 
   @override
-  String getLabel(ClientWorldState state) => assetManager
+  String getLabel(ClientWorldState state) => getAssetManager(state)
       .getTranslations(item.namespace)
       .getDeckTranslation(item.id)
       .name;
@@ -23,8 +23,8 @@ class DeckDefinitionHandItem extends HandItem<PackItem<DeckDefinition>> {
   Future<Sprite?> loadIcon(ClientWorldState state) async {
     final front = item.item.figures.firstOrNull;
     if (front == null) return null;
-    return assetManager.loadFigureSprite(
-        front.name, item.namespace, front.variation);
+    return getAssetManager(state)
+        .loadFigureSprite(front.name, item.namespace, front.variation);
   }
 
   @override

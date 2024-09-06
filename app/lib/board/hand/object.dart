@@ -17,7 +17,8 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
   @override
   String getLabel(ClientWorldState state) {
     final object = item.$3;
-    final translation = assetManager.getTranslations(object.asset.namespace);
+    final translation =
+        getAssetManager(state).getTranslations(object.asset.namespace);
     final variation = object.variation;
     if (variation != null &&
         !item.$3.hidden &&
@@ -31,7 +32,7 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
 
   @override
   Future<Sprite?> loadIcon(ClientWorldState state) =>
-      assetManager.loadFigureSpriteFromLocation(
+      getAssetManager(state).loadFigureSpriteFromLocation(
           item.$3.asset,
           item.$3.hidden || !state.isCellVisible(state.toGlobal(item.$1))
               ? null
@@ -89,7 +90,7 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
               onClose();
             },
           ),
-          if (assetManager
+          if (getAssetManager(bloc.state)
                   .getPack(location.namespace)
                   ?.getFigure(location.id)
                   ?.rollable ??

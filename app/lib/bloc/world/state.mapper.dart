@@ -76,12 +76,12 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
   static MultiplayerCubit _$multiplayer(ClientWorldState v) => v.multiplayer;
   static const Field<ClientWorldState, MultiplayerCubit> _f$multiplayer =
       Field('multiplayer', _$multiplayer);
-  static QuokkaFileSystem _$fileSystem(ClientWorldState v) => v.fileSystem;
-  static const Field<ClientWorldState, QuokkaFileSystem> _f$fileSystem =
-      Field('fileSystem', _$fileSystem);
   static ColorScheme _$colorScheme(ClientWorldState v) => v.colorScheme;
   static const Field<ClientWorldState, ColorScheme> _f$colorScheme =
       Field('colorScheme', _$colorScheme);
+  static GameAssetManager _$assetManager(ClientWorldState v) => v.assetManager;
+  static const Field<ClientWorldState, GameAssetManager> _f$assetManager =
+      Field('assetManager', _$assetManager);
   static String? _$name(ClientWorldState v) => v.name;
   static const Field<ClientWorldState, String> _f$name =
       Field('name', _$name, opt: true);
@@ -126,8 +126,8 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
   @override
   final MappableFields<ClientWorldState> fields = const {
     #multiplayer: _f$multiplayer,
-    #fileSystem: _f$fileSystem,
     #colorScheme: _f$colorScheme,
+    #assetManager: _f$assetManager,
     #name: _f$name,
     #table: _f$table,
     #tableName: _f$tableName,
@@ -146,8 +146,8 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
   static ClientWorldState _instantiate(DecodingData data) {
     return ClientWorldState(
         multiplayer: data.dec(_f$multiplayer),
-        fileSystem: data.dec(_f$fileSystem),
         colorScheme: data.dec(_f$colorScheme),
+        assetManager: data.dec(_f$assetManager),
         name: data.dec(_f$name),
         table: data.dec(_f$table),
         tableName: data.dec(_f$tableName),
@@ -235,8 +235,8 @@ abstract class ClientWorldStateCopyWith<$R, $In extends ClientWorldState, $Out>
   @override
   $R call(
       {MultiplayerCubit? multiplayer,
-      QuokkaFileSystem? fileSystem,
       ColorScheme? colorScheme,
+      GameAssetManager? assetManager,
       String? name,
       GameTable? table,
       String? tableName,
@@ -292,8 +292,8 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
   @override
   $R call(
           {MultiplayerCubit? multiplayer,
-          QuokkaFileSystem? fileSystem,
           ColorScheme? colorScheme,
+          GameAssetManager? assetManager,
           Object? name = $none,
           GameTable? table,
           String? tableName,
@@ -309,8 +309,8 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
           QuokkaData? data}) =>
       $apply(FieldCopyWithData({
         if (multiplayer != null) #multiplayer: multiplayer,
-        if (fileSystem != null) #fileSystem: fileSystem,
         if (colorScheme != null) #colorScheme: colorScheme,
+        if (assetManager != null) #assetManager: assetManager,
         if (name != $none) #name: name,
         if (table != null) #table: table,
         if (tableName != null) #tableName: tableName,
@@ -328,8 +328,8 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
   @override
   ClientWorldState $make(CopyWithData data) => ClientWorldState(
       multiplayer: data.get(#multiplayer, or: $value.multiplayer),
-      fileSystem: data.get(#fileSystem, or: $value.fileSystem),
       colorScheme: data.get(#colorScheme, or: $value.colorScheme),
+      assetManager: data.get(#assetManager, or: $value.assetManager),
       name: data.get(#name, or: $value.name),
       table: data.get(#table, or: $value.table),
       tableName: data.get(#tableName, or: $value.tableName),

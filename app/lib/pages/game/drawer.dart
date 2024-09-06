@@ -150,7 +150,7 @@ class GameDrawer extends StatelessWidget {
                   previous.table.background != current.table.background,
               builder: (context, state) {
                 final bloc = context.read<WorldBloc>();
-                final assetManager = bloc.assetManager;
+                final assetManager = state.assetManager;
                 final background = state.table.background;
                 return ListTile(
                     leading: const Icon(PhosphorIconsLight.image),
@@ -165,7 +165,7 @@ class GameDrawer extends StatelessWidget {
                         context: context,
                         titleBuilder: (context) =>
                             Text(AppLocalizations.of(context).background),
-                        childrenBuilder: (context) => bloc.packs
+                        childrenBuilder: (context) => bloc.state.packs
                                 .expand(
                                     (e) => e.value.getBackgroundItems(e.key))
                                 .sorted((a, b) =>

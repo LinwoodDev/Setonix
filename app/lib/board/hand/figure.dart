@@ -11,7 +11,8 @@ class FigureDefinitionHandItem
 
   @override
   String getLabel(ClientWorldState state) {
-    final translation = assetManager.getTranslations(item.$1.namespace);
+    final translation =
+        getAssetManager(state).getTranslations(item.$1.namespace);
     final variation = item.$2;
     if (variation != null) {
       return translation
@@ -22,8 +23,8 @@ class FigureDefinitionHandItem
   }
 
   @override
-  Future<Sprite?> loadIcon(ClientWorldState state) =>
-      assetManager.loadFigureSpriteFromLocation(item.$1.location, item.$2);
+  Future<Sprite?> loadIcon(ClientWorldState state) => getAssetManager(state)
+      .loadFigureSpriteFromLocation(item.$1.location, item.$2);
   @override
   void moveItem(HandItemDropZone zone) {
     if (zone is! GameCell) return;

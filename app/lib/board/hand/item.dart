@@ -112,7 +112,8 @@ abstract class HandItem<T> extends PositionComponent
 
   Future<Sprite?> loadIcon(ClientWorldState state);
 
-  GameAssetManager get assetManager => game.assetManager;
+  GameAssetManager getAssetManager(ClientWorldState state) =>
+      state.assetManager;
 
   double get labelHeight => 20;
 

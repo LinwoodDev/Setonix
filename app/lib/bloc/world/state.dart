@@ -1,6 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart' show ColorScheme;
 import 'package:networker/networker.dart';
+import 'package:quokka/helpers/asset.dart';
 import 'package:quokka/services/file_system.dart';
 import 'package:quokka/bloc/multiplayer.dart';
 import 'package:quokka_api/quokka_api.dart';
@@ -16,16 +17,16 @@ enum WorldOperationMode {
 @MappableClass()
 final class ClientWorldState extends WorldState with ClientWorldStateMappable {
   final MultiplayerCubit multiplayer;
+  final GameAssetManager assetManager;
   final ColorScheme colorScheme;
-  final QuokkaFileSystem fileSystem;
   final VectorDefinition? selectedCell;
   final ItemLocation? selectedDeck;
   final bool showHand, switchCellOnMove;
 
   const ClientWorldState({
     required this.multiplayer,
-    required this.fileSystem,
     required this.colorScheme,
+    required this.assetManager,
     super.name,
     super.table,
     super.tableName,
@@ -40,4 +41,9 @@ final class ClientWorldState extends WorldState with ClientWorldStateMappable {
     super.messages,
     required super.data,
   });
+
+  QuokkaFileSystem get fileSystem => assetManager.fileSystem;
+
+  Iterable<MapEntry<String, QuokkaData>> get packs =>
+      assetManager.packs.where((e) => info.packs.contains(e.key));
 }
