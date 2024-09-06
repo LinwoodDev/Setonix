@@ -81,6 +81,13 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
         switchCellOnMove: event.value,
       ));
     });
+    on<TableSwitched>((event, emit) {
+      emit(state.copyWith(
+        table: state.data.getTableOrDefault(event.name),
+        tableName: event.name,
+        data: state.data.setTable(state.table, state.tableName),
+      ));
+    });
   }
 
   Future<void> save() async {

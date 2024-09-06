@@ -42,3 +42,10 @@ final class SwitchCellOnMoveChanged extends LocalWorldEvent
 
   SwitchCellOnMoveChanged(this.value);
 }
+
+@MappableClass()
+final class TableSwitched extends LocalWorldEvent with TableSwitchedMappable {
+  final String name;
+
+  TableSwitched([this.name = '']);
+}

@@ -47,6 +47,8 @@ class QuokkaData extends ArchiveData<QuokkaData> {
         utf8.encode(table.toJson()),
       );
 
+  Iterable<String> getTables() => getAssets(kGameTablePath, true);
+
   FileMetadata? getMetadata() {
     final data = getAsset(kPackMetadataPath);
     if (data == null) {

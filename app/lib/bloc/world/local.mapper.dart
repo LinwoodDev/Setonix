@@ -493,3 +493,118 @@ class _SwitchCellOnMoveChangedCopyWithImpl<$R, $Out>
       $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
           _SwitchCellOnMoveChangedCopyWithImpl($value, $cast, t);
 }
+
+class TableSwitchedMapper extends SubClassMapperBase<TableSwitched> {
+  TableSwitchedMapper._();
+
+  static TableSwitchedMapper? _instance;
+  static TableSwitchedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = TableSwitchedMapper._());
+      LocalWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'TableSwitched';
+
+  static String _$name(TableSwitched v) => v.name;
+  static const Field<TableSwitched, String> _f$name =
+      Field('name', _$name, opt: true, def: '');
+
+  @override
+  final MappableFields<TableSwitched> fields = const {
+    #name: _f$name,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'TableSwitched';
+  @override
+  late final ClassMapperBase superMapper =
+      LocalWorldEventMapper.ensureInitialized();
+
+  static TableSwitched _instantiate(DecodingData data) {
+    return TableSwitched(data.dec(_f$name));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static TableSwitched fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<TableSwitched>(map);
+  }
+
+  static TableSwitched fromJson(String json) {
+    return ensureInitialized().decodeJson<TableSwitched>(json);
+  }
+}
+
+mixin TableSwitchedMappable {
+  String toJson() {
+    return TableSwitchedMapper.ensureInitialized()
+        .encodeJson<TableSwitched>(this as TableSwitched);
+  }
+
+  Map<String, dynamic> toMap() {
+    return TableSwitchedMapper.ensureInitialized()
+        .encodeMap<TableSwitched>(this as TableSwitched);
+  }
+
+  TableSwitchedCopyWith<TableSwitched, TableSwitched, TableSwitched>
+      get copyWith => _TableSwitchedCopyWithImpl(
+          this as TableSwitched, $identity, $identity);
+  @override
+  String toString() {
+    return TableSwitchedMapper.ensureInitialized()
+        .stringifyValue(this as TableSwitched);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return TableSwitchedMapper.ensureInitialized()
+        .equalsValue(this as TableSwitched, other);
+  }
+
+  @override
+  int get hashCode {
+    return TableSwitchedMapper.ensureInitialized()
+        .hashValue(this as TableSwitched);
+  }
+}
+
+extension TableSwitchedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, TableSwitched, $Out> {
+  TableSwitchedCopyWith<$R, TableSwitched, $Out> get $asTableSwitched =>
+      $base.as((v, t, t2) => _TableSwitchedCopyWithImpl(v, t, t2));
+}
+
+abstract class TableSwitchedCopyWith<$R, $In extends TableSwitched, $Out>
+    implements LocalWorldEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({String? name});
+  TableSwitchedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _TableSwitchedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, TableSwitched, $Out>
+    implements TableSwitchedCopyWith<$R, TableSwitched, $Out> {
+  _TableSwitchedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<TableSwitched> $mapper =
+      TableSwitchedMapper.ensureInitialized();
+  @override
+  $R call({String? name}) =>
+      $apply(FieldCopyWithData({if (name != null) #name: name}));
+  @override
+  TableSwitched $make(CopyWithData data) =>
+      TableSwitched(data.get(#name, or: $value.name));
+
+  @override
+  TableSwitchedCopyWith<$R2, TableSwitched, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _TableSwitchedCopyWithImpl($value, $cast, t);
+}

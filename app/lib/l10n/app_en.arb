@@ -142,5 +142,8 @@
   "switchCellOnMove": "Switch cell on move",
   "addPack": "Add pack",
   "removePack": "Remove pack",
-  "noTemplates": "There are no templates available"
+  "noTemplates": "There are no templates available",
+  "table": "Table",
+  "defaultTable": "Default table",
+  "switchTable": "Switch table"
 }
