@@ -157,6 +157,7 @@ class GameCell extends PositionComponent
           false);
 
   GameObject? _currentTop;
+  bool _currentVisible = false;
 
   @override
   void onNewState(ClientWorldState state) {
@@ -201,8 +202,10 @@ class GameCell extends PositionComponent
 
   Future<void> _updateTop(ClientWorldState state) async {
     final top = state.table.cells[toDefinition()]?.objects.firstOrNull;
-    if (top == _currentTop) return;
+    final visible = state.isCellVisible(toGlobalDefinition(state));
+    if (top == _currentTop && visible == _currentVisible) return;
     _currentTop = top;
+    _currentVisible = visible;
     if (_cardComponent != null) {
       remove(_cardComponent!);
       _cardComponent = null;
@@ -211,7 +214,7 @@ class GameCell extends PositionComponent
       _cardComponent = SpriteComponent(
           sprite: await game.assetManager.loadFigureSpriteFromLocation(
                   top.asset,
-                  top.hidden || !state.isCellVisible(toDefinition())
+                  top.hidden || !state.isCellVisible(toGlobalDefinition(state))
                       ? null
                       : top.variation) ??
               game.blankSprite,
@@ -294,7 +297,7 @@ class GameCell extends PositionComponent
                               }
                               final anyClaimed = teams.any((entry) => entry
                                   .value.claimedCells
-                                  .contains(toDefinition()));
+                                  .contains(toGlobalDefinition(state)));
                               return Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -307,7 +310,7 @@ class GameCell extends PositionComponent
                                   ),
                                   ...teams.map((entry) {
                                     final selected = entry.value.claimedCells
-                                        .contains(toDefinition());
+                                        .contains(toGlobalDefinition(state));
                                     return ListTile(
                                       title: Text(entry.key),
                                       leading: ColorButton(

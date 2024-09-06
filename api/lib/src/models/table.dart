@@ -49,18 +49,20 @@ class GameTable with GameTableMappable {
 }
 
 @MappableClass()
-class GlobalVectorDefinition extends VectorDefinition
-    with GlobalVectorDefinitionMappable {
-  final String world;
+class GlobalVectorDefinition with GlobalVectorDefinitionMappable {
+  final String table;
+  final VectorDefinition location;
 
   GlobalVectorDefinition(
-    this.world,
-    super.x,
-    super.y,
-  );
+    this.table,
+    int x,
+    int y,
+  ) : location = VectorDefinition(x, y);
 
-  GlobalVectorDefinition.fromLocal(String world, VectorDefinition definition)
-      : this(world, definition.x, definition.y);
+  GlobalVectorDefinition.fromLocal(this.table, this.location);
+
+  int get x => location.x;
+  int get y => location.y;
 }
 
 @MappableClass()

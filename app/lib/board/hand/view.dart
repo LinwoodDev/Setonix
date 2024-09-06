@@ -94,7 +94,8 @@ class GameHand extends CustomPainterComponent
       previousState.table.cells[previousState.selectedCell] !=
           newState.table.cells[newState.selectedCell] ||
       previousState.colorScheme != newState.colorScheme ||
-      previousState.info.packs != newState.info.packs;
+      previousState.info.packs != newState.info.packs ||
+      previousState.info.teams != newState.info.teams;
 
   void _buildHand(ClientWorldState state) {
     _scrollView.clearChildren();

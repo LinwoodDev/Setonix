@@ -85,6 +85,9 @@ mixin HandItemDropZone on PositionComponent, CollisionCallbacks {
   void onDragOver(HandItem handItem) {}
 }
 
+const priorityDragging = 10;
+const priorityNormal = 0;
+
 abstract class HandItem<T> extends PositionComponent
     with
         HasGameRef<BoardGame>,
@@ -122,6 +125,7 @@ abstract class HandItem<T> extends PositionComponent
 
   void _resetPosition() {
     _sprite.position = Vector2(0, labelHeight);
+    priority = priorityNormal;
     if (!_label.isMounted) add(_label);
     final cursor = _cursorHitbox;
     if (cursor != null) cursor.removeFromParent();
@@ -178,6 +182,7 @@ abstract class HandItem<T> extends PositionComponent
       return;
     }
     if (_label.parent != null) _label.removeFromParent();
+    priority = priorityDragging;
     _sprite.position += event.localDelta;
     _last = event.canvasEndPosition;
     _cursorHitbox?.position =

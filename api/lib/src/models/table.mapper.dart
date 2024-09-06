@@ -639,7 +639,6 @@ class GlobalVectorDefinitionMapper
   static GlobalVectorDefinitionMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = GlobalVectorDefinitionMapper._());
-      VectorDefinitionMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -647,27 +646,28 @@ class GlobalVectorDefinitionMapper
   @override
   final String id = 'GlobalVectorDefinition';
 
-  static String _$world(GlobalVectorDefinition v) => v.world;
-  static const Field<GlobalVectorDefinition, String> _f$world =
-      Field('world', _$world);
+  static String _$table(GlobalVectorDefinition v) => v.table;
+  static const Field<GlobalVectorDefinition, String> _f$table =
+      Field('table', _$table);
   static int _$x(GlobalVectorDefinition v) => v.x;
   static const Field<GlobalVectorDefinition, int> _f$x = Field('x', _$x);
   static int _$y(GlobalVectorDefinition v) => v.y;
   static const Field<GlobalVectorDefinition, int> _f$y = Field('y', _$y);
+  static VectorDefinition _$location(GlobalVectorDefinition v) => v.location;
+  static const Field<GlobalVectorDefinition, VectorDefinition> _f$location =
+      Field('location', _$location, mode: FieldMode.member);
 
   @override
   final MappableFields<GlobalVectorDefinition> fields = const {
-    #world: _f$world,
+    #table: _f$table,
     #x: _f$x,
     #y: _f$y,
+    #location: _f$location,
   };
-
-  @override
-  final MappingHook superHook = const VectorDefinitionHook();
 
   static GlobalVectorDefinition _instantiate(DecodingData data) {
     return GlobalVectorDefinition(
-        data.dec(_f$world), data.dec(_f$x), data.dec(_f$y));
+        data.dec(_f$table), data.dec(_f$x), data.dec(_f$y));
   }
 
   @override
@@ -726,9 +726,8 @@ extension GlobalVectorDefinitionValueCopy<$R, $Out>
 abstract class GlobalVectorDefinitionCopyWith<
     $R,
     $In extends GlobalVectorDefinition,
-    $Out> implements VectorDefinitionCopyWith<$R, $In, $Out> {
-  @override
-  $R call({String? world, int? x, int? y});
+    $Out> implements ClassCopyWith<$R, $In, $Out> {
+  $R call({String? table, int? x, int? y});
   GlobalVectorDefinitionCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -743,14 +742,14 @@ class _GlobalVectorDefinitionCopyWithImpl<$R, $Out>
   late final ClassMapperBase<GlobalVectorDefinition> $mapper =
       GlobalVectorDefinitionMapper.ensureInitialized();
   @override
-  $R call({String? world, int? x, int? y}) => $apply(FieldCopyWithData({
-        if (world != null) #world: world,
+  $R call({String? table, int? x, int? y}) => $apply(FieldCopyWithData({
+        if (table != null) #table: table,
         if (x != null) #x: x,
         if (y != null) #y: y
       }));
   @override
   GlobalVectorDefinition $make(CopyWithData data) => GlobalVectorDefinition(
-      data.get(#world, or: $value.world),
+      data.get(#table, or: $value.table),
       data.get(#x, or: $value.x),
       data.get(#y, or: $value.y));
 

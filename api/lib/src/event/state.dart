@@ -32,7 +32,10 @@ class WorldState with WorldStateMappable {
     required this.data,
   });
 
-  bool isCellVisible(VectorDefinition cell, [Channel? id]) {
+  GlobalVectorDefinition toGlobal(VectorDefinition position) =>
+      GlobalVectorDefinition.fromLocal(tableName, position);
+
+  bool isCellVisible(GlobalVectorDefinition cell, [Channel? id]) {
     bool isClaimed = false, isMyTeam = false;
     for (final entry in info.teams.entries) {
       final name = entry.key;
@@ -53,7 +56,7 @@ class WorldState with WorldStateMappable {
     if (cellObject == null) {
       return null;
     }
-    final cellVisible = isCellVisible(cell, user);
+    final cellVisible = isCellVisible(toGlobal(cell), user);
     final objects = cellObject.objects
         .map((e) => e.copyWith(
             variation: cellVisible && !e.hidden ? e.variation : null))

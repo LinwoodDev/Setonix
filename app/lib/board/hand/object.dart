@@ -16,7 +16,10 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
     final object = item.$3;
     final translation = assetManager.getTranslations(object.asset.namespace);
     final variation = object.variation;
-    if (variation != null && !item.$3.hidden && state.isCellVisible(item.$1)) {
+    if (variation != null &&
+        !item.$3.hidden &&
+        state.isCellVisible(
+            GlobalVectorDefinition.fromLocal(state.tableName, item.$1))) {
       return translation
           .getFigureVariationTranslation(object.asset.id, variation)
           .name;
@@ -28,7 +31,7 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
   Future<Sprite?> loadIcon(ClientWorldState state) =>
       assetManager.loadFigureSpriteFromLocation(
           item.$3.asset,
-          item.$3.hidden || !state.isCellVisible(item.$1)
+          item.$3.hidden || !state.isCellVisible(state.toGlobal(item.$1))
               ? null
               : item.$3.variation);
 
