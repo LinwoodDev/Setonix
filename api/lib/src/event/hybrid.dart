@@ -84,3 +84,17 @@ final class CellItemsCleared extends HybridWorldEvent
 
   CellItemsCleared(this.cell, {this.object});
 }
+
+@MappableClass()
+final class TableRenamed extends HybridWorldEvent with TableRenamedMappable {
+  final String name, newName;
+
+  TableRenamed(this.name, this.newName);
+}
+
+@MappableClass()
+final class TableRemoved extends HybridWorldEvent with TableRemovedMappable {
+  final String name;
+
+  TableRemoved(this.name);
+}

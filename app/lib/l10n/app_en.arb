@@ -156,5 +156,7 @@
         "type": "String"
       }
     }
-  }
+  },
+  "open": "Open",
+  "rename": "Rename"
 }

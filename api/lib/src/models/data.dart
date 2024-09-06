@@ -47,6 +47,9 @@ class QuokkaData extends ArchiveData<QuokkaData> {
         utf8.encode(table.toJson()),
       );
 
+  QuokkaData removeTable(String name) =>
+      removeAsset('$kGameTablePath/$name.json');
+
   Iterable<String> getTables() => getAssets(kGameTablePath, true);
 
   FileMetadata? getMetadata() {
@@ -74,8 +77,10 @@ class QuokkaData extends ArchiveData<QuokkaData> {
 
   Iterable<String> getAssets(String path, [bool removeExtension = false]) => {
         ...archive.files.map((e) => e.name),
+        ...state.added.keys,
       }
           .where((e) => e.startsWith(path))
+          .where((e) => !state.removed.contains(e))
           .map((e) => e.substring(path.length))
           .map((e) {
         if (e.startsWith('/')) e = e.substring(1);

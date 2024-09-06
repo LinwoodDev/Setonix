@@ -7,17 +7,29 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:quokka/bloc/world/bloc.dart';
 import 'package:quokka_api/quokka_api.dart';
 
-class GameChatDialog extends StatefulWidget {
-  const GameChatDialog({super.key});
+class GameChatDrawer extends StatefulWidget {
+  const GameChatDrawer({super.key});
 
   @override
-  State<GameChatDialog> createState() => _GameChatDialogState();
+  State<GameChatDrawer> createState() => _GameChatDrawerState();
 }
 
-class _GameChatDialogState extends State<GameChatDialog> {
+class _GameChatDrawerState extends State<GameChatDrawer> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _messageController = TextEditingController();
   final FocusNode _messageFocus = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _scheduleScroll();
+  }
+
+  void _scheduleScroll() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+    });
+  }
 
   @override
   void dispose() {
@@ -29,27 +41,27 @@ class _GameChatDialogState extends State<GameChatDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveAlertDialog(
-      constraints: const BoxConstraints(
-          maxWidth: LeapBreakpoints.compact, maxHeight: 500),
-      leading: IconButton.outlined(
-        icon: const Icon(PhosphorIconsLight.x),
-        onPressed: () => Navigator.of(context).pop(),
-      ),
-      title: Text(AppLocalizations.of(context).chat),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
+    return Drawer(
+      child: Column(
         children: [
+          Header(
+            leading: IconButton.outlined(
+              icon: const Icon(PhosphorIconsLight.x),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            title: Text(AppLocalizations.of(context).chat),
+          ),
           Flexible(
             child: BlocConsumer<WorldBloc, WorldState>(
-              listener: (context, state) => _scrollController.jumpTo(
-                _scrollController.position.maxScrollExtent,
-              ),
+              listenWhen: (previous, current) =>
+                  previous.messages.length != current.messages.length,
+              listener: (context, state) {
+                _scheduleScroll();
+              },
               builder: (context, state) {
                 final messages = state.messages;
                 return ListView.builder(
                   itemCount: messages.length,
-                  shrinkWrap: true,
                   controller: _scrollController,
                   itemBuilder: (context, index) {
                     final message = messages[index];

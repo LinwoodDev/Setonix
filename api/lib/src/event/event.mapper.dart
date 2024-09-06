@@ -1795,6 +1795,8 @@ class HybridWorldEventMapper extends SubClassMapperBase<HybridWorldEvent> {
       TeamRemovedMapper.ensureInitialized();
       MetadataChangedMapper.ensureInitialized();
       CellItemsClearedMapper.ensureInitialized();
+      TableRenamedMapper.ensureInitialized();
+      TableRemovedMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -3026,6 +3028,236 @@ class _CellItemsClearedCopyWithImpl<$R, $Out>
   CellItemsClearedCopyWith<$R2, CellItemsCleared, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
       _CellItemsClearedCopyWithImpl($value, $cast, t);
+}
+
+class TableRenamedMapper extends SubClassMapperBase<TableRenamed> {
+  TableRenamedMapper._();
+
+  static TableRenamedMapper? _instance;
+  static TableRenamedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = TableRenamedMapper._());
+      HybridWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'TableRenamed';
+
+  static String _$name(TableRenamed v) => v.name;
+  static const Field<TableRenamed, String> _f$name = Field('name', _$name);
+  static String _$newName(TableRenamed v) => v.newName;
+  static const Field<TableRenamed, String> _f$newName =
+      Field('newName', _$newName);
+
+  @override
+  final MappableFields<TableRenamed> fields = const {
+    #name: _f$name,
+    #newName: _f$newName,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'TableRenamed';
+  @override
+  late final ClassMapperBase superMapper =
+      HybridWorldEventMapper.ensureInitialized();
+
+  static TableRenamed _instantiate(DecodingData data) {
+    return TableRenamed(data.dec(_f$name), data.dec(_f$newName));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static TableRenamed fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<TableRenamed>(map);
+  }
+
+  static TableRenamed fromJson(String json) {
+    return ensureInitialized().decodeJson<TableRenamed>(json);
+  }
+}
+
+mixin TableRenamedMappable {
+  String toJson() {
+    return TableRenamedMapper.ensureInitialized()
+        .encodeJson<TableRenamed>(this as TableRenamed);
+  }
+
+  Map<String, dynamic> toMap() {
+    return TableRenamedMapper.ensureInitialized()
+        .encodeMap<TableRenamed>(this as TableRenamed);
+  }
+
+  TableRenamedCopyWith<TableRenamed, TableRenamed, TableRenamed> get copyWith =>
+      _TableRenamedCopyWithImpl(this as TableRenamed, $identity, $identity);
+  @override
+  String toString() {
+    return TableRenamedMapper.ensureInitialized()
+        .stringifyValue(this as TableRenamed);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return TableRenamedMapper.ensureInitialized()
+        .equalsValue(this as TableRenamed, other);
+  }
+
+  @override
+  int get hashCode {
+    return TableRenamedMapper.ensureInitialized()
+        .hashValue(this as TableRenamed);
+  }
+}
+
+extension TableRenamedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, TableRenamed, $Out> {
+  TableRenamedCopyWith<$R, TableRenamed, $Out> get $asTableRenamed =>
+      $base.as((v, t, t2) => _TableRenamedCopyWithImpl(v, t, t2));
+}
+
+abstract class TableRenamedCopyWith<$R, $In extends TableRenamed, $Out>
+    implements HybridWorldEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({String? name, String? newName});
+  TableRenamedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _TableRenamedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, TableRenamed, $Out>
+    implements TableRenamedCopyWith<$R, TableRenamed, $Out> {
+  _TableRenamedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<TableRenamed> $mapper =
+      TableRenamedMapper.ensureInitialized();
+  @override
+  $R call({String? name, String? newName}) => $apply(FieldCopyWithData(
+      {if (name != null) #name: name, if (newName != null) #newName: newName}));
+  @override
+  TableRenamed $make(CopyWithData data) => TableRenamed(
+      data.get(#name, or: $value.name), data.get(#newName, or: $value.newName));
+
+  @override
+  TableRenamedCopyWith<$R2, TableRenamed, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _TableRenamedCopyWithImpl($value, $cast, t);
+}
+
+class TableRemovedMapper extends SubClassMapperBase<TableRemoved> {
+  TableRemovedMapper._();
+
+  static TableRemovedMapper? _instance;
+  static TableRemovedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = TableRemovedMapper._());
+      HybridWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'TableRemoved';
+
+  static String _$name(TableRemoved v) => v.name;
+  static const Field<TableRemoved, String> _f$name = Field('name', _$name);
+
+  @override
+  final MappableFields<TableRemoved> fields = const {
+    #name: _f$name,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'TableRemoved';
+  @override
+  late final ClassMapperBase superMapper =
+      HybridWorldEventMapper.ensureInitialized();
+
+  static TableRemoved _instantiate(DecodingData data) {
+    return TableRemoved(data.dec(_f$name));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static TableRemoved fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<TableRemoved>(map);
+  }
+
+  static TableRemoved fromJson(String json) {
+    return ensureInitialized().decodeJson<TableRemoved>(json);
+  }
+}
+
+mixin TableRemovedMappable {
+  String toJson() {
+    return TableRemovedMapper.ensureInitialized()
+        .encodeJson<TableRemoved>(this as TableRemoved);
+  }
+
+  Map<String, dynamic> toMap() {
+    return TableRemovedMapper.ensureInitialized()
+        .encodeMap<TableRemoved>(this as TableRemoved);
+  }
+
+  TableRemovedCopyWith<TableRemoved, TableRemoved, TableRemoved> get copyWith =>
+      _TableRemovedCopyWithImpl(this as TableRemoved, $identity, $identity);
+  @override
+  String toString() {
+    return TableRemovedMapper.ensureInitialized()
+        .stringifyValue(this as TableRemoved);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return TableRemovedMapper.ensureInitialized()
+        .equalsValue(this as TableRemoved, other);
+  }
+
+  @override
+  int get hashCode {
+    return TableRemovedMapper.ensureInitialized()
+        .hashValue(this as TableRemoved);
+  }
+}
+
+extension TableRemovedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, TableRemoved, $Out> {
+  TableRemovedCopyWith<$R, TableRemoved, $Out> get $asTableRemoved =>
+      $base.as((v, t, t2) => _TableRemovedCopyWithImpl(v, t, t2));
+}
+
+abstract class TableRemovedCopyWith<$R, $In extends TableRemoved, $Out>
+    implements HybridWorldEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({String? name});
+  TableRemovedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _TableRemovedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, TableRemoved, $Out>
+    implements TableRemovedCopyWith<$R, TableRemoved, $Out> {
+  _TableRemovedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<TableRemoved> $mapper =
+      TableRemovedMapper.ensureInitialized();
+  @override
+  $R call({String? name}) =>
+      $apply(FieldCopyWithData({if (name != null) #name: name}));
+  @override
+  TableRemoved $make(CopyWithData data) =>
+      TableRemoved(data.get(#name, or: $value.name));
+
+  @override
+  TableRemovedCopyWith<$R2, TableRemoved, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _TableRemovedCopyWithImpl($value, $cast, t);
 }
 
 class LocalWorldEventMapper extends SubClassMapperBase<LocalWorldEvent> {

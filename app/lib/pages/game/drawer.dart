@@ -11,7 +11,6 @@ import 'package:quokka/bloc/world/bloc.dart';
 import 'package:quokka/bloc/world/local.dart';
 import 'package:quokka/bloc/world/state.dart';
 import 'package:quokka/helpers/visualizer.dart';
-import 'package:quokka/pages/game/chat.dart';
 import 'package:quokka/pages/game/info.dart';
 import 'package:quokka/pages/game/multiplayer.dart';
 import 'package:quokka/pages/game/team.dart';
@@ -26,6 +25,7 @@ class GameDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
     return Drawer(
       child: Center(
         child: ListView(
@@ -137,104 +137,13 @@ class GameDrawer extends StatelessWidget {
             BlocBuilder<WorldBloc, ClientWorldState>(
               buildWhen: (previous, current) =>
                   previous.tableName != current.tableName,
-              builder: (context, state) {
-                final bloc = context.read<WorldBloc>();
-                return ListTile(
-                    leading: const Icon(PhosphorIconsLight.gridFour),
-                    title: Text(AppLocalizations.of(context).table),
-                    subtitle: Text(state.tableName.isEmpty
-                        ? AppLocalizations.of(context).defaultTable
-                        : state.tableName),
-                    onTap: () => showLeapBottomSheet(
-                        context: context,
-                        titleBuilder: (context) =>
-                            Text(AppLocalizations.of(context).table),
-                        actionsBuilder: (context) => [
-                              IconButton(
-                                icon: const Icon(
-                                    PhosphorIconsLight.arrowsLeftRight),
-                                tooltip:
-                                    AppLocalizations.of(context).switchTable,
-                                onPressed: () async {
-                                  String name = '';
-                                  final result = await showDialog<bool>(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      title: Text(AppLocalizations.of(context)
-                                          .switchTable),
-                                      content: TextField(
-                                        decoration: InputDecoration(
-                                          labelText:
-                                              AppLocalizations.of(context).name,
-                                          hintText: AppLocalizations.of(context)
-                                              .enterName,
-                                          filled: true,
-                                        ),
-                                        onChanged: (value) => name = value,
-                                        onSubmitted: (value) =>
-                                            Navigator.of(context).pop(true),
-                                        autofocus: true,
-                                      ),
-                                      actions: [
-                                        TextButton.icon(
-                                          onPressed: () =>
-                                              Navigator.of(context).pop(false),
-                                          label: Text(
-                                              AppLocalizations.of(context)
-                                                  .cancel),
-                                          icon: const Icon(
-                                              PhosphorIconsLight.prohibit),
-                                        ),
-                                        ElevatedButton.icon(
-                                          onPressed: () =>
-                                              Navigator.of(context).pop(true),
-                                          label: Text(
-                                              AppLocalizations.of(context)
-                                                  .change),
-                                          icon: const Icon(
-                                              PhosphorIconsLight.check),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                  if (!(result ?? false)) return;
-                                  bloc.process(TableSwitched(name));
-                                },
-                              ),
-                            ],
-                        childrenBuilder: (context) => [
-                              BlocBuilder<WorldBloc, WorldState>(
-                                bloc: bloc,
-                                buildWhen: (previous, current) =>
-                                    previous.tableName != current.tableName ||
-                                    previous.data != current.data,
-                                builder: (context, state) {
-                                  final other = {
-                                    ...state.data.getTables(),
-                                    state.tableName
-                                  }.where((e) => e.isNotEmpty).toList();
-                                  return Column(
-                                    children: [
-                                      ListTile(
-                                        title: Text(AppLocalizations.of(context)
-                                            .defaultTable),
-                                        selected: state.tableName == '',
-                                        onTap: () =>
-                                            bloc.process(TableSwitched()),
-                                      ),
-                                      if (other.isNotEmpty) const Divider(),
-                                      ...other.map((e) => ListTile(
-                                            title: Text(e),
-                                            selected: state.tableName == e,
-                                            onTap: () =>
-                                                bloc.process(TableSwitched(e)),
-                                          )),
-                                    ],
-                                  );
-                                },
-                              )
-                            ]));
-              },
+              builder: (context, state) => ListTile(
+                  leading: const Icon(PhosphorIconsLight.gridFour),
+                  title: Text(AppLocalizations.of(context).table),
+                  subtitle: Text(state.tableName.isEmpty
+                      ? AppLocalizations.of(context).defaultTable
+                      : state.tableName),
+                  onTap: () => _showTableDialog(context, state)),
             ),
             BlocBuilder<WorldBloc, ClientWorldState>(
               buildWhen: (previous, current) =>
@@ -386,13 +295,7 @@ class GameDrawer extends StatelessWidget {
               leading: const Icon(PhosphorIconsLight.chat),
               title: Text(AppLocalizations.of(context).chat),
               onTap: () {
-                Scaffold.of(context).closeDrawer();
-                final bloc = context.read<WorldBloc>();
-                showDialog(
-                  context: context,
-                  builder: (context) => BlocProvider.value(
-                      value: bloc, child: const GameChatDialog()),
-                );
+                Scaffold.of(context).openEndDrawer();
               },
             ),
             ListTile(
@@ -448,6 +351,142 @@ class GameDrawer extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  void _showTableDialog(BuildContext context, ClientWorldState state) {
+    final bloc = context.read<WorldBloc>();
+    showLeapBottomSheet(
+      context: context,
+      titleBuilder: (context) => Text(AppLocalizations.of(context).table),
+      actionsBuilder: (context) => [
+        IconButton(
+          icon: const Icon(PhosphorIconsLight.arrowsLeftRight),
+          tooltip: AppLocalizations.of(context).switchTable,
+          onPressed: () async {
+            String name = '';
+            final result = await showDialog<bool>(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text(AppLocalizations.of(context).switchTable),
+                content: TextField(
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context).name,
+                    hintText: AppLocalizations.of(context).enterName,
+                    filled: true,
+                  ),
+                  onChanged: (value) => name = value,
+                  onSubmitted: (value) => Navigator.of(context).pop(true),
+                  autofocus: true,
+                ),
+                actions: [
+                  TextButton.icon(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    label: Text(AppLocalizations.of(context).cancel),
+                    icon: const Icon(PhosphorIconsLight.prohibit),
+                  ),
+                  ElevatedButton.icon(
+                    onPressed: () => Navigator.of(context).pop(true),
+                    label: Text(AppLocalizations.of(context).change),
+                    icon: const Icon(PhosphorIconsLight.check),
+                  ),
+                ],
+              ),
+            );
+            if (!(result ?? false)) return;
+            bloc.process(TableSwitched(name));
+          },
+        ),
+      ],
+      childrenBuilder: (context) => [
+        BlocBuilder<WorldBloc, WorldState>(
+          bloc: bloc,
+          buildWhen: (previous, current) =>
+              previous.tableName != current.tableName ||
+              previous.data != current.data,
+          builder: (context, state) {
+            final other = {...state.data.getTables(), state.tableName}
+                .where((e) => e.isNotEmpty)
+                .toList();
+            return Column(
+              children: [
+                ListTile(
+                  title: Text(AppLocalizations.of(context).defaultTable),
+                  selected: state.tableName == '',
+                  onTap: () => bloc.process(TableSwitched()),
+                ),
+                if (other.isNotEmpty) const Divider(),
+                ...other.map(
+                  (e) => ListTile(
+                    title: Text(e),
+                    selected: state.tableName == e,
+                    onTap: () => bloc.process(TableSwitched(e)),
+                    trailing: MenuAnchor(
+                      builder: defaultMenuButton(),
+                      menuChildren: [
+                        MenuItemButton(
+                          leadingIcon: const Icon(PhosphorIconsLight.pencil),
+                          child: Text(AppLocalizations.of(context).edit),
+                          onPressed: () async {
+                            String name = e;
+                            final result = await showDialog<bool>(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text(
+                                    AppLocalizations.of(context).background),
+                                content: TextFormField(
+                                  decoration: InputDecoration(
+                                    labelText:
+                                        AppLocalizations.of(context).name,
+                                    hintText:
+                                        AppLocalizations.of(context).enterName,
+                                    filled: true,
+                                  ),
+                                  initialValue: name,
+                                  onChanged: (value) => name = value,
+                                  onFieldSubmitted: (value) =>
+                                      Navigator.of(context).pop(true),
+                                  autofocus: true,
+                                ),
+                                actions: [
+                                  TextButton.icon(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(false),
+                                    label: Text(
+                                        AppLocalizations.of(context).cancel),
+                                    icon:
+                                        const Icon(PhosphorIconsLight.prohibit),
+                                  ),
+                                  ElevatedButton.icon(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(true),
+                                    label: Text(
+                                        AppLocalizations.of(context).rename),
+                                    icon: const Icon(PhosphorIconsLight.check),
+                                  ),
+                                ],
+                              ),
+                            );
+                            if (!(result ?? false)) return;
+                            bloc.process(TableRenamed(e, name));
+                          },
+                        ),
+                        MenuItemButton(
+                          leadingIcon: const Icon(PhosphorIconsLight.trash),
+                          child: Text(AppLocalizations.of(context).delete),
+                          onPressed: () {
+                            bloc.process(TableRemoved(e));
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        )
+      ],
     );
   }
 }

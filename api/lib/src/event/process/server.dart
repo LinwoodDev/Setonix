@@ -219,5 +219,19 @@ WorldState? processServerEvent(
         content: event.message,
         timestamp: DateTime.now(),
       ));
+    case TableRenamed():
+      final data = state.data.getTable(event.name);
+      return state.copyWith(
+          tableName:
+              event.name == state.tableName ? event.newName : state.tableName,
+          data: data == null
+              ? state.data
+              : state.data
+                  .removeTable(event.name)
+                  .setTable(data, event.newName));
+    case TableRemoved():
+      return state.copyWith(
+          tableName: state.tableName == event.name ? '' : state.tableName,
+          data: state.data.removeTable(event.name));
   }
 }

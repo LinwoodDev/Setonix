@@ -11,6 +11,7 @@ import 'package:quokka/bloc/world/state.dart';
 import 'package:quokka/bloc/multiplayer.dart';
 import 'package:quokka/bloc/settings.dart';
 import 'package:quokka/board/game.dart';
+import 'package:quokka/pages/game/chat.dart';
 import 'package:quokka/pages/game/drawer.dart';
 import 'package:quokka/pages/home/background.dart';
 import 'package:quokka/services/file_system.dart';
@@ -162,12 +163,15 @@ class _GamePageState extends State<GamePage> {
                         ],
                       ),
                       drawer: const GameDrawer(),
+                      endDrawer: const GameChatDrawer(),
                       body: BlocListener<WorldBloc, WorldState>(
                         listenWhen: (previous, current) =>
-                            previous.messages != current.messages,
+                            previous.messages.length != current.messages.length,
                         listener: (context, state) {
                           final message = state.messages.lastOrNull;
-                          if (message == null) return;
+                          if (message == null || message.author == state.id) {
+                            return;
+                          }
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               width: 300,
@@ -190,6 +194,12 @@ class _GamePageState extends State<GamePage> {
                                           .textTheme
                                           .bodySmall),
                                 ],
+                              ),
+                              action: SnackBarAction(
+                                label: AppLocalizations.of(context).open,
+                                onPressed: () {
+                                  Scaffold.of(context).openEndDrawer();
+                                },
                               ),
                               duration: const Duration(seconds: 2),
                             ),
