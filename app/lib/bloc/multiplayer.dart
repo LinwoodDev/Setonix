@@ -139,12 +139,12 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
     }
   }
 
-  Future<void> connect(String address) async {
+  Future<void> connect(String address, {bool secure = true}) async {
     try {
       emit(MultiplayerConnectingState());
       final add = address.split(':');
       final client = NetworkerSocketClient(Uri(
-        scheme: 'ws',
+        scheme: secure ? 'wss' : 'ws',
         host: add[0],
         port: add.length <= 1 ? kDefaultPort : int.parse(add[1]),
       ));

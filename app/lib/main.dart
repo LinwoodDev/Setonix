@@ -125,6 +125,9 @@ class QuokkaApp extends StatelessWidget {
             path: 'connect',
             builder: (context, state) => GamePage(
               address: state.uri.queryParameters['address'],
+              secure:
+                  bool.tryParse(state.uri.queryParameters['secure'] ?? '') ??
+                      true,
             ),
           ),
           GoRoute(
@@ -157,4 +160,4 @@ const isNightly =
     flavor == 'nightly' || flavor == 'dev' || flavor == 'development';
 const shortApplicationName = isNightly ? 'Quokka Nightly' : 'Quokka';
 const applicationName = 'Linwood $shortApplicationName';
-const applicationMinorVersion = '1.0';
+const applicationMinorVersion = '0.1';

@@ -10,6 +10,7 @@ import 'package:quokka_server/asset.dart';
 import 'package:quokka_server/programs/packs.dart';
 import 'package:quokka_server/programs/players.dart';
 import 'package:quokka_server/programs/save.dart';
+import 'package:quokka_server/programs/say.dart';
 import 'package:quokka_server/programs/stop.dart';
 
 final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
@@ -21,17 +22,13 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
   NetworkerSocketServer? _server;
   NetworkerPipe<dynamic, WorldEvent>? _pipe;
 
-  QuokkaServer._(this.worldFile, QuokkaData data)
-      : assetManager = ServerAssetManager(),
-        consoler = Consoler(
-          defaultProgramConfig: DefaultProgramConfiguration(
-            description: "Quokka server",
-          ),
-        ),
-        super(WorldState(
+  QuokkaServer._(
+      this.worldFile, this.consoler, QuokkaData data, this.assetManager)
+      : super(WorldState(
           data: data,
           table: data.getTableOrDefault(),
           metadata: data.getMetadataOrDefault(),
+          info: data.getInfoOrDefault(),
         )) {
     on<ServerWorldEvent>((event, emit) {
       final newState =
@@ -42,24 +39,35 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
     });
   }
 
-  QuokkaServer.empty() : this._(null, QuokkaData.empty());
-
-  static Future<QuokkaServer> load({String? worldFile}) async {
+  static Future<QuokkaServer> load({
+    String? worldFile,
+    bool disableLoading = false,
+  }) async {
+    final assetManager = ServerAssetManager();
+    final consoler = Consoler(
+      defaultProgramConfig: DefaultProgramConfiguration(
+        description: "Quokka server",
+      ),
+    );
+    await _runStaticLogZone(
+        consoler, () => assetManager.init(console: consoler));
     worldFile ??= defaultWorldFile;
     final file = File(worldFile);
     QuokkaData? data;
-    if (await file.exists()) {
+    if (!disableLoading && await file.exists()) {
       final bytes = await file.readAsBytes();
       data = QuokkaData.fromData(bytes);
     }
-    data ??= QuokkaData.empty();
-    return QuokkaServer._(worldFile, data);
+    data ??= QuokkaData.empty().setInfo(GameInfo(
+      packs: assetManager.packs.map((e) => e.key).toList(),
+    ));
+    return QuokkaServer._(worldFile, consoler, data, assetManager);
   }
 
   void log(Object? message, {LogLevel? level}) =>
       consoler.print(message, level: level);
 
-  static String get defaultWorldFile => 'world.qka';
+  static final String defaultWorldFile = 'world.qka';
 
   Map<int, ConnectionInfo> get players =>
       Map.fromEntries((_server?.clientConnections ?? {})
@@ -69,17 +77,15 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
       {int port = kDefaultPort,
       bool verbose = false,
       bool autosave = false}) async {
-    await _runLogZone(() async {
-      await assetManager.init(console: consoler, verbose: verbose);
-    });
     if (verbose) {
       consoler.minLogLevel = LogLevel.verbose;
     }
     log("Starting server on port $port", level: LogLevel.info);
     log('Verbose logging activated', level: LogLevel.verbose);
     _temp = autosave;
-    final server =
-        _server = NetworkerSocketServer(InternetAddress.anyIPv4, port);
+    final server = _server = NetworkerSocketServer(
+        InternetAddress.anyIPv4, port,
+        filterConnections: _filterConnections);
     final transformer = _pipe = NetworkerPipeTransformer<String, WorldEvent>(
         WorldEventMapper.fromJson, (e) => e.toJson());
     transformer.read.listen(_onClientEvent);
@@ -93,15 +99,17 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
     consoler.registerProgram('save', SaveProgram(this));
     consoler.registerProgram('packs', PacksProgram(this));
     consoler.registerProgram('players', PlayersProgram(this));
+    consoler.registerProgram('say', SayProgram(this));
     consoler.registerProgram(null, UnknownProgram());
   }
 
-  R _runLogZone<R>(R Function() body) =>
+  static R _runStaticLogZone<R>(Consoler consoler, R Function() body) =>
       runZoned(body, zoneSpecification: ZoneSpecification(
         print: (self, parent, zone, message) {
-          log(message);
+          consoler.print(message);
         },
       ));
+  R _runLogZone<R>(R Function() body) => _runStaticLogZone(consoler, body);
 
   Future<void> run() async {
     _runLogZone(() {
@@ -153,5 +161,25 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
     log('Closing...', level: LogLevel.info);
     _server?.close();
     consoler.dispose();
+  }
+
+  void process(WorldEvent event) {
+    _onClientEvent(NetworkerPacket(event, kAuthorityChannel));
+  }
+
+  bool kick(int id) {
+    final info = _server?.getConnectionInfo(id);
+    if (info == null) return false;
+    info.close();
+    return true;
+  }
+
+  bool _filterConnections(HttpRequest request) {
+    request.response.headers.add("Access-Control-Allow-Origin", "*");
+    request.response.headers
+        .add("Access-Control-Allow-Methods", "POST,GET,DELETE,PUT,OPTIONS");
+
+    request.response.statusCode = HttpStatus.ok;
+    return true;
   }
 }

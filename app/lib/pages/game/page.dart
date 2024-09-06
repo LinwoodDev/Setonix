@@ -20,6 +20,7 @@ import 'package:quokka_api/quokka_api.dart';
 class GamePage extends StatefulWidget {
   final String? name;
   final String? address;
+  final bool secure;
   final QuokkaData? data;
 
   const GamePage({
@@ -27,6 +28,7 @@ class GamePage extends StatefulWidget {
     this.name,
     this.data,
     this.address,
+    this.secure = true,
   });
 
   @override
@@ -61,7 +63,7 @@ class _GamePageState extends State<GamePage> {
     );
     await world.assetManager.loadPacks();
     if (address != null) {
-      cubit.connect(address);
+      cubit.connect(address, secure: widget.secure);
     }
     return (cubit, world);
   }

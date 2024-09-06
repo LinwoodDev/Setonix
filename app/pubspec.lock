@@ -749,8 +749,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/networker/networker_socket"
-      ref: "00671cce35e995f203806b55bc6d6881fca0e107"
-      resolved-ref: "00671cce35e995f203806b55bc6d6881fca0e107"
+      ref: c9c0f1570f2e6ce11faa91bd6f70e322a768fb80
+      resolved-ref: c9c0f1570f2e6ce11faa91bd6f70e322a768fb80
       url: "https://github.com/LinwoodDev/dart_pkgs"
     source: git
     version: "1.0.0"

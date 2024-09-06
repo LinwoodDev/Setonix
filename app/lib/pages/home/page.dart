@@ -32,7 +32,7 @@ class HomePage extends StatelessWidget {
           AppLocalizations.of(context).connect,
           PhosphorIconsLight.plugsConnected,
           () => showDialog(
-              context: context, builder: (context) => AddConnectDialog()),
+              context: context, builder: (context) => const AddConnectDialog()),
           null,
         ),
         (

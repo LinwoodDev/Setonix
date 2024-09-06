@@ -90,7 +90,8 @@ class GameAssetManager extends AssetManager {
 
   Future<void> loadPacks() async {
     final files = await fileSystem.getPacks();
-    unloadPacks(_loadedPacks.keys.where((e) => !files.any((f) => f.path == e)));
+    unloadPacks(_loadedPacks.keys
+        .where((e) => !files.any((f) => f.pathWithoutLeadingSlash == e)));
     for (final file in files) {
       try {
         final key = file.pathWithoutLeadingSlash;

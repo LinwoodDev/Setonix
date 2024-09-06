@@ -8,12 +8,20 @@ import 'package:quokka/bloc/settings.dart';
 import 'package:quokka/widgets/search.dart';
 
 class AddConnectDialog extends StatelessWidget {
-  final TextEditingController _controller = TextEditingController();
-
-  AddConnectDialog({super.key});
+  const AddConnectDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
+    String address = '';
+    bool secure = true;
+    void connect() {
+      Navigator.of(context).pop();
+      GoRouter.of(context).goNamed('connect', queryParameters: {
+        'address': address,
+        'secure': secure.toString(),
+      });
+    }
+
     return ResponsiveAlertDialog(
       title: Text(AppLocalizations.of(context).connect),
       leading: IconButton.outlined(
@@ -26,23 +34,28 @@ class AddConnectDialog extends StatelessWidget {
         children: [
           Text(AppLocalizations.of(context).connectNote),
           const SizedBox(height: 16),
-          TextField(
-            controller: _controller,
+          TextFormField(
+            initialValue: address,
+            onChanged: (value) => address = value,
             decoration: InputDecoration(
               labelText: AppLocalizations.of(context).address,
               filled: true,
+            ),
+            onFieldSubmitted: (_) => connect(),
+          ),
+          const SizedBox(height: 8),
+          StatefulBuilder(
+            builder: (context, setState) => SwitchListTile(
+              title: Text(AppLocalizations.of(context).secure),
+              value: secure,
+              onChanged: (value) => setState(() => secure = value),
             ),
           ),
         ],
       ),
       actions: [
         FilledButton.icon(
-          onPressed: () {
-            Navigator.of(context).pop();
-            GoRouter.of(context).goNamed('connect', queryParameters: {
-              'address': _controller.text,
-            });
-          },
+          onPressed: connect,
           label: Text(AppLocalizations.of(context).connect),
           icon: const Icon(PhosphorIconsLight.link),
         ),

@@ -22,7 +22,7 @@ Future<bool> openHelp(List<String> pageLocation, [String? fragment]) {
         scheme: 'https',
         host: 'quokka.linwood.dev',
         fragment: fragment,
-        pathSegments: ['docs', 'v0', ...pageLocation]),
+        pathSegments: ['docs', 'v1', ...pageLocation]),
   );
 }
 
