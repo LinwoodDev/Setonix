@@ -18,7 +18,7 @@ class HomePage extends StatelessWidget {
 
   HomePage({super.key});
 
-  List<(String, IconData, VoidCallback, Widget?)> _getItems(
+  List<(String, IconData, VoidCallback, Widget?, bool)> _getItems(
           BuildContext context) =>
       [
         (
@@ -27,6 +27,7 @@ class HomePage extends StatelessWidget {
           () => showDialog(
               context: context, builder: (context) => const PlayDialog()),
           null,
+          false,
         ),
         (
           AppLocalizations.of(context).connect,
@@ -34,6 +35,7 @@ class HomePage extends StatelessWidget {
           () => showDialog(
               context: context, builder: (context) => const AddConnectDialog()),
           null,
+          false,
         ),
         (
           AppLocalizations.of(context).packs,
@@ -43,12 +45,14 @@ class HomePage extends StatelessWidget {
                 builder: (context) => const PacksDialog(),
               ),
           null,
+          false,
         ),
         (
           AppLocalizations.of(context).documentation,
           PhosphorIconsLight.book,
           () => openHelp(['intro']),
           null,
+          true,
         ),
         (
           AppLocalizations.of(context).releaseNotes,
@@ -61,12 +65,14 @@ class HomePage extends StatelessWidget {
               return Text(snapshot.data?.version ?? '');
             },
           ),
+          true,
         ),
         (
           AppLocalizations.of(context).settings,
           PhosphorIconsLight.gear,
           () => openSettings(context),
           null,
+          false,
         ),
       ];
 
@@ -113,75 +119,19 @@ class HomePage extends StatelessWidget {
                                 subtitle: item.$4,
                                 leading: Icon(item.$2,
                                     color: theme.colorScheme.primary),
+                                trailing: item.$5
+                                    ? Icon(
+                                        PhosphorIconsFill.arrowSquareOut,
+                                        color: theme.colorScheme.primaryFixed,
+                                      )
+                                    : null,
                                 onTap: item.$3,
                               );
                             }).toList(),
                           ),
                         )
                       else
-                        GridView.extent(
-                          shrinkWrap: true,
-                          maxCrossAxisExtent: 500,
-                          mainAxisSpacing: 8,
-                          crossAxisSpacing: 8,
-                          children: items.map((item) {
-                            return LayoutBuilder(
-                                builder: (context, constraints) =>
-                                    Card.outlined(
-                                      child: InkWell(
-                                        onTap: item.$3,
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(16.0),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Expanded(
-                                                  child: Icon(
-                                                item.$2,
-                                                size: constraints.maxWidth / 2,
-                                                color:
-                                                    theme.colorScheme.primary,
-                                              )),
-                                              SizedBox(
-                                                height: 64,
-                                                child: Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.end,
-                                                  children: [
-                                                    Expanded(
-                                                      child: Text(
-                                                        item.$1,
-                                                        style: theme.textTheme
-                                                            .headlineSmall,
-                                                      ),
-                                                    ),
-                                                    if (item.$4 != null)
-                                                      DefaultTextStyle(
-                                                        style: (theme.textTheme
-                                                                    .headlineSmall ??
-                                                                const TextStyle())
-                                                            .copyWith(
-                                                          color: theme
-                                                              .colorScheme
-                                                              .primaryFixed,
-                                                        ),
-                                                        child: item.$4!,
-                                                      ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ));
-                          }).toList(),
-                        )
+                        _GridHomeView(items: items),
                     ],
                   ),
                 ),
@@ -190,6 +140,85 @@ class HomePage extends StatelessWidget {
           ],
         );
       }),
+    );
+  }
+}
+
+class _GridHomeView extends StatelessWidget {
+  const _GridHomeView({
+    required this.items,
+  });
+
+  final List<(String, IconData, VoidCallback, Widget?, bool)> items;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return GridView.extent(
+      shrinkWrap: true,
+      maxCrossAxisExtent: 500,
+      mainAxisSpacing: 8,
+      crossAxisSpacing: 8,
+      children: items.map((item) {
+        return LayoutBuilder(
+            builder: (context, constraints) => Card.outlined(
+                  child: InkWell(
+                    onTap: item.$3,
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                              child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Icon(
+                                item.$2,
+                                size: constraints.maxWidth / 2,
+                                color: theme.colorScheme.primary,
+                              ),
+                              if (item.$5)
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Icon(
+                                    PhosphorIconsFill.arrowSquareOut,
+                                    color: theme.colorScheme.primaryFixed,
+                                  ),
+                                ),
+                            ],
+                          )),
+                          SizedBox(
+                            height: 64,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    item.$1,
+                                    style: theme.textTheme.headlineSmall,
+                                  ),
+                                ),
+                                if (item.$4 != null)
+                                  DefaultTextStyle(
+                                    style: (theme.textTheme.headlineSmall ??
+                                            const TextStyle())
+                                        .copyWith(
+                                      color: theme.colorScheme.primaryFixed,
+                                    ),
+                                    child: item.$4!,
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ));
+      }).toList(),
     );
   }
 }
