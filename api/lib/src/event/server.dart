@@ -41,13 +41,12 @@ final class TeamLeft extends ServerWorldEvent with TeamLeftMappable {
 }
 
 @MappableClass()
-final class VariationChanged extends ServerWorldEvent
-    with VariationChangedMappable {
+final class ObjectsChanged extends ServerWorldEvent
+    with ObjectsChangedMappable {
   final GlobalVectorDefinition cell;
-  final int object;
-  final String? variation;
+  final List<GameObject> objects;
 
-  VariationChanged(this.cell, this.object, this.variation);
+  ObjectsChanged(this.cell, this.objects);
 }
 
 @MappableClass()

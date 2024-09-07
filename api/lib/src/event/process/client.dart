@@ -13,14 +13,15 @@ bool isValidClientEvent(
     switch (event) {
       TeamJoinRequest() => state.info.teams.containsKey(event.team),
       TeamLeaveRequest() => state.info.teams.containsKey(event.team),
-      RollObjectRequest() => event.object.inRange(
-          0,
-          state
-                  .getTableOrDefault(event.cell.table)
-                  .getCell(event.cell.location)
-                  .objects
-                  .length -
-              1),
+      CellRollRequest() => event.object?.inRange(
+              0,
+              state
+                      .getTableOrDefault(event.cell.table)
+                      .getCell(event.cell.location)
+                      .objects
+                      .length -
+                  1) ??
+          true,
       ShuffleCellRequest() => state
           .getTableOrDefault(event.cell.table)
           .cells
@@ -96,21 +97,30 @@ bool isValidClientEvent(
       return (TeamJoined(channel, team), kAnyChannel);
     case TeamLeaveRequest(team: final team):
       return (TeamLeft(channel, team), kAnyChannel);
-    case RollObjectRequest():
+    case CellRollRequest():
       final table = state.getTableOrDefault(event.cell.table);
-      final cell = table.cells[event.cell.location];
-      if (cell == null || !event.object.inRange(0, cell.objects.length - 1)) {
-        return null;
+      var cell = table.getCell(event.cell.location);
+      final random = Random();
+      GameObject roll(GameObject object) {
+        final figure = assetManager
+            .getPack(object.asset.namespace)
+            ?.getFigure(object.asset.id);
+        if (figure == null || !figure.rollable) return object;
+        final variations = figure.variations.keys.toList();
+        if (variations.isEmpty) return object;
+        final picked = variations[random.nextInt(variations.length)];
+        return object.copyWith(variation: picked);
       }
-      final object = cell.objects[event.object];
-      final figure = assetManager
-          .getPack(object.asset.namespace)
-          ?.getFigure(object.asset.id);
-      if (figure == null || !figure.rollable) return null;
-      final variations = figure.variations.keys.toList();
-      if (variations.isEmpty) return null;
-      final picked = variations[Random().nextInt(variations.length)];
-      return (VariationChanged(event.cell, event.object, picked), kAnyChannel);
+      final objectIndex = event.object;
+      List<GameObject> objects;
+      if (objectIndex != null) {
+        final object = cell.objects[objectIndex];
+        objects = List<GameObject>.from(cell.objects)
+          ..[objectIndex] = roll(object);
+      } else {
+        objects = cell.objects.map(roll).toList();
+      }
+      return (ObjectsChanged(event.cell, objects), kAnyChannel);
     case ShuffleCellRequest():
       final table = state.getTableOrDefault(event.cell.table);
       final cell = table.cells[event.cell.location];

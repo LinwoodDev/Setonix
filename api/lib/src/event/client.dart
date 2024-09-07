@@ -23,12 +23,12 @@ final class TeamLeaveRequest extends ClientWorldEvent
 }
 
 @MappableClass()
-final class RollObjectRequest extends ClientWorldEvent
-    with RollObjectRequestMappable {
+final class CellRollRequest extends ClientWorldEvent
+    with CellRollRequestMappable {
   final GlobalVectorDefinition cell;
-  final int object;
+  final int? object;
 
-  RollObjectRequest(this.cell, this.object);
+  CellRollRequest(this.cell, {this.object});
 }
 
 @MappableClass()

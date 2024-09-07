@@ -9,14 +9,6 @@ bool isValidServerEvent(ServerWorldEvent event, WorldState state) =>
             event.info.packs.every((e) => event.packsSignature.containsKey(e)),
       TeamJoined() => state.info.teams.containsKey(event.team),
       TeamLeft() => state.info.teams.containsKey(event.team),
-      VariationChanged() => event.object.inRange(
-          0,
-          state
-                  .getTableOrDefault(event.cell.table)
-                  .getCell(event.cell.location)
-                  .objects
-                  .length -
-              1),
       CellShuffled() => event.positions.every((e) => e.inRange(
           0,
           state
@@ -104,14 +96,11 @@ WorldState? processServerEvent(
         allMembers[event.team] = members;
       }
       return state.copyWith(teamMembers: allMembers);
-    case VariationChanged():
+    case ObjectsChanged():
       return state.mapTableOrDefault(event.cell.table, (table) {
         final cell = table.cells[event.cell.location] ?? TableCell();
-        final object = cell.objects[event.object];
         return table.copyWith.cells.replace(
-            event.cell.location,
-            cell.copyWith.objects.replace(
-                event.object, object.copyWith(variation: event.variation)));
+            event.cell.location, cell.copyWith(objects: event.objects));
       });
     case CellShuffled(positions: final positions):
       return state.mapTableOrDefault(event.cell.table, (table) {

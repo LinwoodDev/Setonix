@@ -126,7 +126,7 @@ class ServerWorldEventMapper extends SubClassMapperBase<ServerWorldEvent> {
       WorldInitializedMapper.ensureInitialized();
       TeamJoinedMapper.ensureInitialized();
       TeamLeftMapper.ensureInitialized();
-      VariationChangedMapper.ensureInitialized();
+      ObjectsChangedMapper.ensureInitialized();
       CellShuffledMapper.ensureInitialized();
       MessageSentMapper.ensureInitialized();
       HybridWorldEventMapper.ensureInitialized();
@@ -595,146 +595,141 @@ class _TeamLeftCopyWithImpl<$R, $Out>
       _TeamLeftCopyWithImpl($value, $cast, t);
 }
 
-class VariationChangedMapper extends SubClassMapperBase<VariationChanged> {
-  VariationChangedMapper._();
+class ObjectsChangedMapper extends SubClassMapperBase<ObjectsChanged> {
+  ObjectsChangedMapper._();
 
-  static VariationChangedMapper? _instance;
-  static VariationChangedMapper ensureInitialized() {
+  static ObjectsChangedMapper? _instance;
+  static ObjectsChangedMapper ensureInitialized() {
     if (_instance == null) {
-      MapperContainer.globals.use(_instance = VariationChangedMapper._());
+      MapperContainer.globals.use(_instance = ObjectsChangedMapper._());
       ServerWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
       GlobalVectorDefinitionMapper.ensureInitialized();
+      GameObjectMapper.ensureInitialized();
     }
     return _instance!;
   }
 
   @override
-  final String id = 'VariationChanged';
+  final String id = 'ObjectsChanged';
 
-  static GlobalVectorDefinition _$cell(VariationChanged v) => v.cell;
-  static const Field<VariationChanged, GlobalVectorDefinition> _f$cell =
+  static GlobalVectorDefinition _$cell(ObjectsChanged v) => v.cell;
+  static const Field<ObjectsChanged, GlobalVectorDefinition> _f$cell =
       Field('cell', _$cell);
-  static int _$object(VariationChanged v) => v.object;
-  static const Field<VariationChanged, int> _f$object =
-      Field('object', _$object);
-  static String? _$variation(VariationChanged v) => v.variation;
-  static const Field<VariationChanged, String> _f$variation =
-      Field('variation', _$variation);
+  static List<GameObject> _$objects(ObjectsChanged v) => v.objects;
+  static const Field<ObjectsChanged, List<GameObject>> _f$objects =
+      Field('objects', _$objects);
 
   @override
-  final MappableFields<VariationChanged> fields = const {
+  final MappableFields<ObjectsChanged> fields = const {
     #cell: _f$cell,
-    #object: _f$object,
-    #variation: _f$variation,
+    #objects: _f$objects,
   };
 
   @override
   final String discriminatorKey = 'type';
   @override
-  final dynamic discriminatorValue = 'VariationChanged';
+  final dynamic discriminatorValue = 'ObjectsChanged';
   @override
   late final ClassMapperBase superMapper =
       ServerWorldEventMapper.ensureInitialized();
 
-  static VariationChanged _instantiate(DecodingData data) {
-    return VariationChanged(
-        data.dec(_f$cell), data.dec(_f$object), data.dec(_f$variation));
+  static ObjectsChanged _instantiate(DecodingData data) {
+    return ObjectsChanged(data.dec(_f$cell), data.dec(_f$objects));
   }
 
   @override
   final Function instantiate = _instantiate;
 
-  static VariationChanged fromMap(Map<String, dynamic> map) {
-    return ensureInitialized().decodeMap<VariationChanged>(map);
+  static ObjectsChanged fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<ObjectsChanged>(map);
   }
 
-  static VariationChanged fromJson(String json) {
-    return ensureInitialized().decodeJson<VariationChanged>(json);
+  static ObjectsChanged fromJson(String json) {
+    return ensureInitialized().decodeJson<ObjectsChanged>(json);
   }
 }
 
-mixin VariationChangedMappable {
+mixin ObjectsChangedMappable {
   String toJson() {
-    return VariationChangedMapper.ensureInitialized()
-        .encodeJson<VariationChanged>(this as VariationChanged);
+    return ObjectsChangedMapper.ensureInitialized()
+        .encodeJson<ObjectsChanged>(this as ObjectsChanged);
   }
 
   Map<String, dynamic> toMap() {
-    return VariationChangedMapper.ensureInitialized()
-        .encodeMap<VariationChanged>(this as VariationChanged);
+    return ObjectsChangedMapper.ensureInitialized()
+        .encodeMap<ObjectsChanged>(this as ObjectsChanged);
   }
 
-  VariationChangedCopyWith<VariationChanged, VariationChanged, VariationChanged>
-      get copyWith => _VariationChangedCopyWithImpl(
-          this as VariationChanged, $identity, $identity);
+  ObjectsChangedCopyWith<ObjectsChanged, ObjectsChanged, ObjectsChanged>
+      get copyWith => _ObjectsChangedCopyWithImpl(
+          this as ObjectsChanged, $identity, $identity);
   @override
   String toString() {
-    return VariationChangedMapper.ensureInitialized()
-        .stringifyValue(this as VariationChanged);
+    return ObjectsChangedMapper.ensureInitialized()
+        .stringifyValue(this as ObjectsChanged);
   }
 
   @override
   bool operator ==(Object other) {
-    return VariationChangedMapper.ensureInitialized()
-        .equalsValue(this as VariationChanged, other);
+    return ObjectsChangedMapper.ensureInitialized()
+        .equalsValue(this as ObjectsChanged, other);
   }
 
   @override
   int get hashCode {
-    return VariationChangedMapper.ensureInitialized()
-        .hashValue(this as VariationChanged);
+    return ObjectsChangedMapper.ensureInitialized()
+        .hashValue(this as ObjectsChanged);
   }
 }
 
-extension VariationChangedValueCopy<$R, $Out>
-    on ObjectCopyWith<$R, VariationChanged, $Out> {
-  VariationChangedCopyWith<$R, VariationChanged, $Out>
-      get $asVariationChanged =>
-          $base.as((v, t, t2) => _VariationChangedCopyWithImpl(v, t, t2));
+extension ObjectsChangedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, ObjectsChanged, $Out> {
+  ObjectsChangedCopyWith<$R, ObjectsChanged, $Out> get $asObjectsChanged =>
+      $base.as((v, t, t2) => _ObjectsChangedCopyWithImpl(v, t, t2));
 }
 
-abstract class VariationChangedCopyWith<$R, $In extends VariationChanged, $Out>
+abstract class ObjectsChangedCopyWith<$R, $In extends ObjectsChanged, $Out>
     implements ServerWorldEventCopyWith<$R, $In, $Out> {
   GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
       GlobalVectorDefinition> get cell;
+  ListCopyWith<$R, GameObject, GameObjectCopyWith<$R, GameObject, GameObject>>
+      get objects;
   @override
-  $R call({GlobalVectorDefinition? cell, int? object, String? variation});
-  VariationChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+  $R call({GlobalVectorDefinition? cell, List<GameObject>? objects});
+  ObjectsChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
 
-class _VariationChangedCopyWithImpl<$R, $Out>
-    extends ClassCopyWithBase<$R, VariationChanged, $Out>
-    implements VariationChangedCopyWith<$R, VariationChanged, $Out> {
-  _VariationChangedCopyWithImpl(super.value, super.then, super.then2);
+class _ObjectsChangedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, ObjectsChanged, $Out>
+    implements ObjectsChangedCopyWith<$R, ObjectsChanged, $Out> {
+  _ObjectsChangedCopyWithImpl(super.value, super.then, super.then2);
 
   @override
-  late final ClassMapperBase<VariationChanged> $mapper =
-      VariationChangedMapper.ensureInitialized();
+  late final ClassMapperBase<ObjectsChanged> $mapper =
+      ObjectsChangedMapper.ensureInitialized();
   @override
   GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
           GlobalVectorDefinition>
       get cell => $value.cell.copyWith.$chain((v) => call(cell: v));
   @override
-  $R call(
-          {GlobalVectorDefinition? cell,
-          int? object,
-          Object? variation = $none}) =>
+  ListCopyWith<$R, GameObject, GameObjectCopyWith<$R, GameObject, GameObject>>
+      get objects => ListCopyWith($value.objects,
+          (v, t) => v.copyWith.$chain(t), (v) => call(objects: v));
+  @override
+  $R call({GlobalVectorDefinition? cell, List<GameObject>? objects}) =>
       $apply(FieldCopyWithData({
         if (cell != null) #cell: cell,
-        if (object != null) #object: object,
-        if (variation != $none) #variation: variation
+        if (objects != null) #objects: objects
       }));
   @override
-  VariationChanged $make(CopyWithData data) => VariationChanged(
-      data.get(#cell, or: $value.cell),
-      data.get(#object, or: $value.object),
-      data.get(#variation, or: $value.variation));
+  ObjectsChanged $make(CopyWithData data) => ObjectsChanged(
+      data.get(#cell, or: $value.cell), data.get(#objects, or: $value.objects));
 
   @override
-  VariationChangedCopyWith<$R2, VariationChanged, $Out2> $chain<$R2, $Out2>(
+  ObjectsChangedCopyWith<$R2, ObjectsChanged, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _VariationChangedCopyWithImpl($value, $cast, t);
+      _ObjectsChangedCopyWithImpl($value, $cast, t);
 }
 
 class CellShuffledMapper extends SubClassMapperBase<CellShuffled> {
@@ -997,7 +992,7 @@ class ClientWorldEventMapper extends SubClassMapperBase<ClientWorldEvent> {
       WorldEventMapper.ensureInitialized().addSubMapper(_instance!);
       TeamJoinRequestMapper.ensureInitialized();
       TeamLeaveRequestMapper.ensureInitialized();
-      RollObjectRequestMapper.ensureInitialized();
+      CellRollRequestMapper.ensureInitialized();
       ShuffleCellRequestMapper.ensureInitialized();
       PacksChangeRequestMapper.ensureInitialized();
       MessageRequestMapper.ensureInitialized();
@@ -1282,13 +1277,13 @@ class _TeamLeaveRequestCopyWithImpl<$R, $Out>
       _TeamLeaveRequestCopyWithImpl($value, $cast, t);
 }
 
-class RollObjectRequestMapper extends SubClassMapperBase<RollObjectRequest> {
-  RollObjectRequestMapper._();
+class CellRollRequestMapper extends SubClassMapperBase<CellRollRequest> {
+  CellRollRequestMapper._();
 
-  static RollObjectRequestMapper? _instance;
-  static RollObjectRequestMapper ensureInitialized() {
+  static CellRollRequestMapper? _instance;
+  static CellRollRequestMapper ensureInitialized() {
     if (_instance == null) {
-      MapperContainer.globals.use(_instance = RollObjectRequestMapper._());
+      MapperContainer.globals.use(_instance = CellRollRequestMapper._());
       ClientWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
       GlobalVectorDefinitionMapper.ensureInitialized();
     }
@@ -1296,17 +1291,17 @@ class RollObjectRequestMapper extends SubClassMapperBase<RollObjectRequest> {
   }
 
   @override
-  final String id = 'RollObjectRequest';
+  final String id = 'CellRollRequest';
 
-  static GlobalVectorDefinition _$cell(RollObjectRequest v) => v.cell;
-  static const Field<RollObjectRequest, GlobalVectorDefinition> _f$cell =
+  static GlobalVectorDefinition _$cell(CellRollRequest v) => v.cell;
+  static const Field<CellRollRequest, GlobalVectorDefinition> _f$cell =
       Field('cell', _$cell);
-  static int _$object(RollObjectRequest v) => v.object;
-  static const Field<RollObjectRequest, int> _f$object =
-      Field('object', _$object);
+  static int? _$object(CellRollRequest v) => v.object;
+  static const Field<CellRollRequest, int> _f$object =
+      Field('object', _$object, opt: true);
 
   @override
-  final MappableFields<RollObjectRequest> fields = const {
+  final MappableFields<CellRollRequest> fields = const {
     #cell: _f$cell,
     #object: _f$object,
   };
@@ -1314,104 +1309,103 @@ class RollObjectRequestMapper extends SubClassMapperBase<RollObjectRequest> {
   @override
   final String discriminatorKey = 'type';
   @override
-  final dynamic discriminatorValue = 'RollObjectRequest';
+  final dynamic discriminatorValue = 'CellRollRequest';
   @override
   late final ClassMapperBase superMapper =
       ClientWorldEventMapper.ensureInitialized();
 
-  static RollObjectRequest _instantiate(DecodingData data) {
-    return RollObjectRequest(data.dec(_f$cell), data.dec(_f$object));
+  static CellRollRequest _instantiate(DecodingData data) {
+    return CellRollRequest(data.dec(_f$cell), object: data.dec(_f$object));
   }
 
   @override
   final Function instantiate = _instantiate;
 
-  static RollObjectRequest fromMap(Map<String, dynamic> map) {
-    return ensureInitialized().decodeMap<RollObjectRequest>(map);
+  static CellRollRequest fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<CellRollRequest>(map);
   }
 
-  static RollObjectRequest fromJson(String json) {
-    return ensureInitialized().decodeJson<RollObjectRequest>(json);
+  static CellRollRequest fromJson(String json) {
+    return ensureInitialized().decodeJson<CellRollRequest>(json);
   }
 }
 
-mixin RollObjectRequestMappable {
+mixin CellRollRequestMappable {
   String toJson() {
-    return RollObjectRequestMapper.ensureInitialized()
-        .encodeJson<RollObjectRequest>(this as RollObjectRequest);
+    return CellRollRequestMapper.ensureInitialized()
+        .encodeJson<CellRollRequest>(this as CellRollRequest);
   }
 
   Map<String, dynamic> toMap() {
-    return RollObjectRequestMapper.ensureInitialized()
-        .encodeMap<RollObjectRequest>(this as RollObjectRequest);
+    return CellRollRequestMapper.ensureInitialized()
+        .encodeMap<CellRollRequest>(this as CellRollRequest);
   }
 
-  RollObjectRequestCopyWith<RollObjectRequest, RollObjectRequest,
-          RollObjectRequest>
-      get copyWith => _RollObjectRequestCopyWithImpl(
-          this as RollObjectRequest, $identity, $identity);
+  CellRollRequestCopyWith<CellRollRequest, CellRollRequest, CellRollRequest>
+      get copyWith => _CellRollRequestCopyWithImpl(
+          this as CellRollRequest, $identity, $identity);
   @override
   String toString() {
-    return RollObjectRequestMapper.ensureInitialized()
-        .stringifyValue(this as RollObjectRequest);
+    return CellRollRequestMapper.ensureInitialized()
+        .stringifyValue(this as CellRollRequest);
   }
 
   @override
   bool operator ==(Object other) {
-    return RollObjectRequestMapper.ensureInitialized()
-        .equalsValue(this as RollObjectRequest, other);
+    return CellRollRequestMapper.ensureInitialized()
+        .equalsValue(this as CellRollRequest, other);
   }
 
   @override
   int get hashCode {
-    return RollObjectRequestMapper.ensureInitialized()
-        .hashValue(this as RollObjectRequest);
+    return CellRollRequestMapper.ensureInitialized()
+        .hashValue(this as CellRollRequest);
   }
 }
 
-extension RollObjectRequestValueCopy<$R, $Out>
-    on ObjectCopyWith<$R, RollObjectRequest, $Out> {
-  RollObjectRequestCopyWith<$R, RollObjectRequest, $Out>
-      get $asRollObjectRequest =>
-          $base.as((v, t, t2) => _RollObjectRequestCopyWithImpl(v, t, t2));
+extension CellRollRequestValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, CellRollRequest, $Out> {
+  CellRollRequestCopyWith<$R, CellRollRequest, $Out> get $asCellRollRequest =>
+      $base.as((v, t, t2) => _CellRollRequestCopyWithImpl(v, t, t2));
 }
 
-abstract class RollObjectRequestCopyWith<$R, $In extends RollObjectRequest,
-    $Out> implements ClientWorldEventCopyWith<$R, $In, $Out> {
+abstract class CellRollRequestCopyWith<$R, $In extends CellRollRequest, $Out>
+    implements ClientWorldEventCopyWith<$R, $In, $Out> {
   GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
       GlobalVectorDefinition> get cell;
   @override
   $R call({GlobalVectorDefinition? cell, int? object});
-  RollObjectRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+  CellRollRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
 
-class _RollObjectRequestCopyWithImpl<$R, $Out>
-    extends ClassCopyWithBase<$R, RollObjectRequest, $Out>
-    implements RollObjectRequestCopyWith<$R, RollObjectRequest, $Out> {
-  _RollObjectRequestCopyWithImpl(super.value, super.then, super.then2);
+class _CellRollRequestCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, CellRollRequest, $Out>
+    implements CellRollRequestCopyWith<$R, CellRollRequest, $Out> {
+  _CellRollRequestCopyWithImpl(super.value, super.then, super.then2);
 
   @override
-  late final ClassMapperBase<RollObjectRequest> $mapper =
-      RollObjectRequestMapper.ensureInitialized();
+  late final ClassMapperBase<CellRollRequest> $mapper =
+      CellRollRequestMapper.ensureInitialized();
   @override
   GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
           GlobalVectorDefinition>
       get cell => $value.cell.copyWith.$chain((v) => call(cell: v));
   @override
-  $R call({GlobalVectorDefinition? cell, int? object}) =>
+  $R call({GlobalVectorDefinition? cell, Object? object = $none}) =>
       $apply(FieldCopyWithData({
         if (cell != null) #cell: cell,
-        if (object != null) #object: object
+        if (object != $none) #object: object
       }));
   @override
-  RollObjectRequest $make(CopyWithData data) => RollObjectRequest(
-      data.get(#cell, or: $value.cell), data.get(#object, or: $value.object));
+  CellRollRequest $make(CopyWithData data) =>
+      CellRollRequest(data.get(#cell, or: $value.cell),
+          object: data.get(#object, or: $value.object));
 
   @override
-  RollObjectRequestCopyWith<$R2, RollObjectRequest, $Out2> $chain<$R2, $Out2>(
+  CellRollRequestCopyWith<$R2, CellRollRequest, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _RollObjectRequestCopyWithImpl($value, $cast, t);
+      _CellRollRequestCopyWithImpl($value, $cast, t);
 }
 
 class ShuffleCellRequestMapper extends SubClassMapperBase<ShuffleCellRequest> {

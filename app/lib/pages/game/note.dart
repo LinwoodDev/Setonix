@@ -94,10 +94,10 @@ class _GameNoteDialogState extends State<GameNoteDialog> {
               listenable: _contentController,
               builder: (context, _) => Markdown(
                   extensionSet: md.ExtensionSet(
-                    md.ExtensionSet.gitHubFlavored.blockSyntaxes,
+                    md.ExtensionSet.gitHubWeb.blockSyntaxes,
                     <md.InlineSyntax>[
                       md.EmojiSyntax(),
-                      ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes
+                      ...md.ExtensionSet.gitHubWeb.inlineSyntaxes
                     ],
                   ),
                   data: _contentController.text)),

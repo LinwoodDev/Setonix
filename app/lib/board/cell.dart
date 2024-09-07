@@ -240,6 +240,21 @@ class GameCell extends PositionComponent
     game.camera.moveBy(delta);
   }
 
+  bool anyRollable(ClientWorldState state) {
+    final assetManager = state.assetManager;
+    final global = toGlobalDefinition(state);
+    final local = global.location;
+    final cell = state.table.getCell(local);
+    if (!state.isCellVisible(global)) return false;
+    return cell.objects.any((object) =>
+        (assetManager
+                .getPack(object.asset.namespace)
+                ?.getFigure(object.asset.id)
+                ?.rollable ??
+            false) &&
+        state.isCellVisible(global));
+  }
+
   @override
   void onContextMenu(Vector2 position) {
     game.showContextMenu(
@@ -262,6 +277,15 @@ class GameCell extends PositionComponent
                       onClose();
                     },
                   ),
+                  if (anyRollable(bloc.state))
+                    ContextMenuButtonItem(
+                      label: AppLocalizations.of(context).roll,
+                      onPressed: () {
+                        bloc.process(
+                            CellRollRequest(toGlobalDefinition(bloc.state)));
+                        onClose();
+                      },
+                    ),
                   ContextMenuButtonItem(
                     label: AppLocalizations.of(context).remove,
                     onPressed: () {

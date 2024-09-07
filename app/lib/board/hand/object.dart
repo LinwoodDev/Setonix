@@ -98,7 +98,7 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
             ContextMenuButtonItem(
               label: AppLocalizations.of(context).roll,
               onPressed: () {
-                bloc.process(RollObjectRequest(global, item.$2));
+                bloc.process(CellRollRequest(global, object: item.$2));
                 onClose();
               },
             ),
