@@ -233,5 +233,10 @@ WorldState? processServerEvent(
       return state.copyWith(
           tableName: state.tableName == event.name ? '' : state.tableName,
           data: state.data.removeTable(event.name));
+    case NoteChanged():
+      return state.copyWith(
+          data: state.data.setNote(event.name, event.content));
+    case NoteRemoved():
+      return state.copyWith(data: state.data.removeNote(event.name));
   }
 }

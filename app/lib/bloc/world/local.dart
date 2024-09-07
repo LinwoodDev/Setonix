@@ -1,5 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
+import 'package:quokka/bloc/world/state.dart';
 import 'package:quokka_api/quokka_api.dart';
 
 part 'local.mapper.dart';
@@ -48,4 +49,12 @@ final class TableSwitched extends LocalWorldEvent with TableSwitchedMappable {
   final String name;
 
   TableSwitched([this.name = '']);
+}
+
+@MappableClass()
+final class DrawerViewChanged extends LocalWorldEvent
+    with DrawerViewChangedMappable {
+  final DrawerView view;
+
+  DrawerViewChanged(this.view);
 }

@@ -52,6 +52,52 @@ extension WorldOperationModeMapperExtension on WorldOperationMode {
   }
 }
 
+class DrawerViewMapper extends EnumMapper<DrawerView> {
+  DrawerViewMapper._();
+
+  static DrawerViewMapper? _instance;
+  static DrawerViewMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = DrawerViewMapper._());
+    }
+    return _instance!;
+  }
+
+  static DrawerView fromValue(dynamic value) {
+    ensureInitialized();
+    return MapperContainer.globals.fromValue(value);
+  }
+
+  @override
+  DrawerView decode(dynamic value) {
+    switch (value) {
+      case 'chat':
+        return DrawerView.chat;
+      case 'notes':
+        return DrawerView.notes;
+      default:
+        throw MapperException.unknownEnumValue(value);
+    }
+  }
+
+  @override
+  dynamic encode(DrawerView self) {
+    switch (self) {
+      case DrawerView.chat:
+        return 'chat';
+      case DrawerView.notes:
+        return 'notes';
+    }
+  }
+}
+
+extension DrawerViewMapperExtension on DrawerView {
+  String toValue() {
+    DrawerViewMapper.ensureInitialized();
+    return MapperContainer.globals.toValue<DrawerView>(this) as String;
+  }
+}
+
 class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
   ClientWorldStateMapper._();
 
@@ -66,6 +112,7 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
       VectorDefinitionMapper.ensureInitialized();
       ItemLocationMapper.ensureInitialized();
       ChatMessageMapper.ensureInitialized();
+      DrawerViewMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -122,6 +169,9 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
   static QuokkaData _$data(ClientWorldState v) => v.data;
   static const Field<ClientWorldState, QuokkaData> _f$data =
       Field('data', _$data);
+  static DrawerView _$drawerView(ClientWorldState v) => v.drawerView;
+  static const Field<ClientWorldState, DrawerView> _f$drawerView =
+      Field('drawerView', _$drawerView, opt: true, def: DrawerView.chat);
 
   @override
   final MappableFields<ClientWorldState> fields = const {
@@ -141,6 +191,7 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
     #teamMembers: _f$teamMembers,
     #messages: _f$messages,
     #data: _f$data,
+    #drawerView: _f$drawerView,
   };
 
   static ClientWorldState _instantiate(DecodingData data) {
@@ -160,7 +211,8 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
         id: data.dec(_f$id),
         teamMembers: data.dec(_f$teamMembers),
         messages: data.dec(_f$messages),
-        data: data.dec(_f$data));
+        data: data.dec(_f$data),
+        drawerView: data.dec(_f$drawerView));
   }
 
   @override
@@ -249,7 +301,8 @@ abstract class ClientWorldStateCopyWith<$R, $In extends ClientWorldState, $Out>
       int? id,
       Map<String, Set<int>>? teamMembers,
       List<ChatMessage>? messages,
-      QuokkaData? data});
+      QuokkaData? data,
+      DrawerView? drawerView});
   ClientWorldStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -306,7 +359,8 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
           int? id,
           Map<String, Set<int>>? teamMembers,
           List<ChatMessage>? messages,
-          QuokkaData? data}) =>
+          QuokkaData? data,
+          DrawerView? drawerView}) =>
       $apply(FieldCopyWithData({
         if (multiplayer != null) #multiplayer: multiplayer,
         if (colorScheme != null) #colorScheme: colorScheme,
@@ -323,7 +377,8 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
         if (id != null) #id: id,
         if (teamMembers != null) #teamMembers: teamMembers,
         if (messages != null) #messages: messages,
-        if (data != null) #data: data
+        if (data != null) #data: data,
+        if (drawerView != null) #drawerView: drawerView
       }));
   @override
   ClientWorldState $make(CopyWithData data) => ClientWorldState(
@@ -343,7 +398,8 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
       id: data.get(#id, or: $value.id),
       teamMembers: data.get(#teamMembers, or: $value.teamMembers),
       messages: data.get(#messages, or: $value.messages),
-      data: data.get(#data, or: $value.data));
+      data: data.get(#data, or: $value.data),
+      drawerView: data.get(#drawerView, or: $value.drawerView));
 
   @override
   ClientWorldStateCopyWith<$R2, ClientWorldState, $Out2> $chain<$R2, $Out2>(

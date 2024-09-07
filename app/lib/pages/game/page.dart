@@ -13,6 +13,7 @@ import 'package:quokka/bloc/settings.dart';
 import 'package:quokka/board/game.dart';
 import 'package:quokka/pages/game/chat.dart';
 import 'package:quokka/pages/game/drawer.dart';
+import 'package:quokka/pages/game/notes.dart';
 import 'package:quokka/pages/home/background.dart';
 import 'package:quokka/services/file_system.dart';
 import 'package:quokka_api/quokka_api.dart';
@@ -165,7 +166,14 @@ class _GamePageState extends State<GamePage> {
                         ],
                       ),
                       drawer: const GameDrawer(),
-                      endDrawer: const GameChatDrawer(),
+                      endDrawer: BlocBuilder<WorldBloc, ClientWorldState>(
+                        buildWhen: (previous, current) =>
+                            previous.drawerView != current.drawerView,
+                        builder: (context, state) => switch (state.drawerView) {
+                          DrawerView.chat => const GameChatDrawer(),
+                          DrawerView.notes => const GameNotesDrawer(),
+                        },
+                      ),
                       body: BlocListener<WorldBloc, WorldState>(
                         listenWhen: (previous, current) =>
                             previous.messages.length != current.messages.length,

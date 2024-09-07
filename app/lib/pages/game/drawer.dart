@@ -295,6 +295,19 @@ class GameDrawer extends StatelessWidget {
               leading: const Icon(PhosphorIconsLight.chat),
               title: Text(AppLocalizations.of(context).chat),
               onTap: () {
+                context
+                    .read<WorldBloc>()
+                    .process(DrawerViewChanged(DrawerView.chat));
+                Scaffold.of(context).openEndDrawer();
+              },
+            ),
+            ListTile(
+              leading: const Icon(PhosphorIconsLight.file),
+              title: Text(AppLocalizations.of(context).notes),
+              onTap: () {
+                context
+                    .read<WorldBloc>()
+                    .process(DrawerViewChanged(DrawerView.notes));
                 Scaffold.of(context).openEndDrawer();
               },
             ),

@@ -23,6 +23,7 @@ const kPackBackgroundsPath = 'backgrounds';
 
 const kGameTablePath = 'tables';
 const kGameTeamPath = 'teams.json';
+const kGameNotesPath = 'notes';
 
 class QuokkaData extends ArchiveData<QuokkaData> {
   QuokkaData(super.archive, {super.state});
@@ -51,6 +52,21 @@ class QuokkaData extends ArchiveData<QuokkaData> {
       removeAsset('$kGameTablePath/$name.json');
 
   Iterable<String> getTables() => getAssets(kGameTablePath, true);
+
+  String? getNote(String name) {
+    final data = getAsset('$kGameNotesPath/$name.md');
+    if (data == null) return null;
+    return utf8.decode(data);
+  }
+
+  QuokkaData setNote(String name, String content) => setAsset(
+        '$kGameNotesPath/$name.md',
+        utf8.encode(content),
+      );
+
+  QuokkaData removeNote(String name) => removeAsset('$kGameNotesPath/$name.md');
+
+  Iterable<String> getNotes() => getAssets(kGameNotesPath, true);
 
   FileMetadata? getMetadata() {
     final data = getAsset(kPackMetadataPath);

@@ -14,6 +14,12 @@ enum WorldOperationMode {
   boards,
 }
 
+@MappableEnum()
+enum DrawerView {
+  chat,
+  notes,
+}
+
 @MappableClass()
 final class ClientWorldState extends WorldState with ClientWorldStateMappable {
   final MultiplayerCubit multiplayer;
@@ -22,6 +28,7 @@ final class ClientWorldState extends WorldState with ClientWorldStateMappable {
   final VectorDefinition? selectedCell;
   final ItemLocation? selectedDeck;
   final bool showHand, switchCellOnMove;
+  final DrawerView drawerView;
 
   const ClientWorldState({
     required this.multiplayer,
@@ -40,6 +47,7 @@ final class ClientWorldState extends WorldState with ClientWorldStateMappable {
     super.teamMembers,
     super.messages,
     required super.data,
+    this.drawerView = DrawerView.chat,
   });
 
   QuokkaFileSystem get fileSystem => assetManager.fileSystem;

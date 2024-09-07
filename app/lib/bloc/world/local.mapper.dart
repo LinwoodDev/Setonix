@@ -608,3 +608,122 @@ class _TableSwitchedCopyWithImpl<$R, $Out>
           Then<$Out2, $R2> t) =>
       _TableSwitchedCopyWithImpl($value, $cast, t);
 }
+
+class DrawerViewChangedMapper extends SubClassMapperBase<DrawerViewChanged> {
+  DrawerViewChangedMapper._();
+
+  static DrawerViewChangedMapper? _instance;
+  static DrawerViewChangedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = DrawerViewChangedMapper._());
+      LocalWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      DrawerViewMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'DrawerViewChanged';
+
+  static DrawerView _$view(DrawerViewChanged v) => v.view;
+  static const Field<DrawerViewChanged, DrawerView> _f$view =
+      Field('view', _$view);
+
+  @override
+  final MappableFields<DrawerViewChanged> fields = const {
+    #view: _f$view,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'DrawerViewChanged';
+  @override
+  late final ClassMapperBase superMapper =
+      LocalWorldEventMapper.ensureInitialized();
+
+  static DrawerViewChanged _instantiate(DecodingData data) {
+    return DrawerViewChanged(data.dec(_f$view));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static DrawerViewChanged fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<DrawerViewChanged>(map);
+  }
+
+  static DrawerViewChanged fromJson(String json) {
+    return ensureInitialized().decodeJson<DrawerViewChanged>(json);
+  }
+}
+
+mixin DrawerViewChangedMappable {
+  String toJson() {
+    return DrawerViewChangedMapper.ensureInitialized()
+        .encodeJson<DrawerViewChanged>(this as DrawerViewChanged);
+  }
+
+  Map<String, dynamic> toMap() {
+    return DrawerViewChangedMapper.ensureInitialized()
+        .encodeMap<DrawerViewChanged>(this as DrawerViewChanged);
+  }
+
+  DrawerViewChangedCopyWith<DrawerViewChanged, DrawerViewChanged,
+          DrawerViewChanged>
+      get copyWith => _DrawerViewChangedCopyWithImpl(
+          this as DrawerViewChanged, $identity, $identity);
+  @override
+  String toString() {
+    return DrawerViewChangedMapper.ensureInitialized()
+        .stringifyValue(this as DrawerViewChanged);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return DrawerViewChangedMapper.ensureInitialized()
+        .equalsValue(this as DrawerViewChanged, other);
+  }
+
+  @override
+  int get hashCode {
+    return DrawerViewChangedMapper.ensureInitialized()
+        .hashValue(this as DrawerViewChanged);
+  }
+}
+
+extension DrawerViewChangedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, DrawerViewChanged, $Out> {
+  DrawerViewChangedCopyWith<$R, DrawerViewChanged, $Out>
+      get $asDrawerViewChanged =>
+          $base.as((v, t, t2) => _DrawerViewChangedCopyWithImpl(v, t, t2));
+}
+
+abstract class DrawerViewChangedCopyWith<$R, $In extends DrawerViewChanged,
+    $Out> implements LocalWorldEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({DrawerView? view});
+  DrawerViewChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class _DrawerViewChangedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, DrawerViewChanged, $Out>
+    implements DrawerViewChangedCopyWith<$R, DrawerViewChanged, $Out> {
+  _DrawerViewChangedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<DrawerViewChanged> $mapper =
+      DrawerViewChangedMapper.ensureInitialized();
+  @override
+  $R call({DrawerView? view}) =>
+      $apply(FieldCopyWithData({if (view != null) #view: view}));
+  @override
+  DrawerViewChanged $make(CopyWithData data) =>
+      DrawerViewChanged(data.get(#view, or: $value.view));
+
+  @override
+  DrawerViewChangedCopyWith<$R2, DrawerViewChanged, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _DrawerViewChangedCopyWithImpl($value, $cast, t);
+}

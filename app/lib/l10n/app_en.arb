@@ -158,5 +158,16 @@
     }
   },
   "open": "Open",
-  "rename": "Rename"
+  "rename": "Rename",
+  "notes": "Notes",
+  "deleteNote": "Delete note",
+  "deleteNoteMessage": "Are you sure you want to delete {name}? This action cannot be undone.",
+  "@deleteNoteMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "content": "Content"
 }

@@ -1797,6 +1797,8 @@ class HybridWorldEventMapper extends SubClassMapperBase<HybridWorldEvent> {
       CellItemsClearedMapper.ensureInitialized();
       TableRenamedMapper.ensureInitialized();
       TableRemovedMapper.ensureInitialized();
+      NoteChangedMapper.ensureInitialized();
+      NoteRemovedMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -3258,6 +3260,234 @@ class _TableRemovedCopyWithImpl<$R, $Out>
   TableRemovedCopyWith<$R2, TableRemoved, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
       _TableRemovedCopyWithImpl($value, $cast, t);
+}
+
+class NoteChangedMapper extends SubClassMapperBase<NoteChanged> {
+  NoteChangedMapper._();
+
+  static NoteChangedMapper? _instance;
+  static NoteChangedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = NoteChangedMapper._());
+      HybridWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'NoteChanged';
+
+  static String _$name(NoteChanged v) => v.name;
+  static const Field<NoteChanged, String> _f$name = Field('name', _$name);
+  static String _$content(NoteChanged v) => v.content;
+  static const Field<NoteChanged, String> _f$content =
+      Field('content', _$content);
+
+  @override
+  final MappableFields<NoteChanged> fields = const {
+    #name: _f$name,
+    #content: _f$content,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'NoteChanged';
+  @override
+  late final ClassMapperBase superMapper =
+      HybridWorldEventMapper.ensureInitialized();
+
+  static NoteChanged _instantiate(DecodingData data) {
+    return NoteChanged(data.dec(_f$name), data.dec(_f$content));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static NoteChanged fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<NoteChanged>(map);
+  }
+
+  static NoteChanged fromJson(String json) {
+    return ensureInitialized().decodeJson<NoteChanged>(json);
+  }
+}
+
+mixin NoteChangedMappable {
+  String toJson() {
+    return NoteChangedMapper.ensureInitialized()
+        .encodeJson<NoteChanged>(this as NoteChanged);
+  }
+
+  Map<String, dynamic> toMap() {
+    return NoteChangedMapper.ensureInitialized()
+        .encodeMap<NoteChanged>(this as NoteChanged);
+  }
+
+  NoteChangedCopyWith<NoteChanged, NoteChanged, NoteChanged> get copyWith =>
+      _NoteChangedCopyWithImpl(this as NoteChanged, $identity, $identity);
+  @override
+  String toString() {
+    return NoteChangedMapper.ensureInitialized()
+        .stringifyValue(this as NoteChanged);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return NoteChangedMapper.ensureInitialized()
+        .equalsValue(this as NoteChanged, other);
+  }
+
+  @override
+  int get hashCode {
+    return NoteChangedMapper.ensureInitialized().hashValue(this as NoteChanged);
+  }
+}
+
+extension NoteChangedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, NoteChanged, $Out> {
+  NoteChangedCopyWith<$R, NoteChanged, $Out> get $asNoteChanged =>
+      $base.as((v, t, t2) => _NoteChangedCopyWithImpl(v, t, t2));
+}
+
+abstract class NoteChangedCopyWith<$R, $In extends NoteChanged, $Out>
+    implements HybridWorldEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({String? name, String? content});
+  NoteChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _NoteChangedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, NoteChanged, $Out>
+    implements NoteChangedCopyWith<$R, NoteChanged, $Out> {
+  _NoteChangedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<NoteChanged> $mapper =
+      NoteChangedMapper.ensureInitialized();
+  @override
+  $R call({String? name, String? content}) => $apply(FieldCopyWithData(
+      {if (name != null) #name: name, if (content != null) #content: content}));
+  @override
+  NoteChanged $make(CopyWithData data) => NoteChanged(
+      data.get(#name, or: $value.name), data.get(#content, or: $value.content));
+
+  @override
+  NoteChangedCopyWith<$R2, NoteChanged, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _NoteChangedCopyWithImpl($value, $cast, t);
+}
+
+class NoteRemovedMapper extends SubClassMapperBase<NoteRemoved> {
+  NoteRemovedMapper._();
+
+  static NoteRemovedMapper? _instance;
+  static NoteRemovedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = NoteRemovedMapper._());
+      HybridWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'NoteRemoved';
+
+  static String _$name(NoteRemoved v) => v.name;
+  static const Field<NoteRemoved, String> _f$name = Field('name', _$name);
+
+  @override
+  final MappableFields<NoteRemoved> fields = const {
+    #name: _f$name,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'NoteRemoved';
+  @override
+  late final ClassMapperBase superMapper =
+      HybridWorldEventMapper.ensureInitialized();
+
+  static NoteRemoved _instantiate(DecodingData data) {
+    return NoteRemoved(data.dec(_f$name));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static NoteRemoved fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<NoteRemoved>(map);
+  }
+
+  static NoteRemoved fromJson(String json) {
+    return ensureInitialized().decodeJson<NoteRemoved>(json);
+  }
+}
+
+mixin NoteRemovedMappable {
+  String toJson() {
+    return NoteRemovedMapper.ensureInitialized()
+        .encodeJson<NoteRemoved>(this as NoteRemoved);
+  }
+
+  Map<String, dynamic> toMap() {
+    return NoteRemovedMapper.ensureInitialized()
+        .encodeMap<NoteRemoved>(this as NoteRemoved);
+  }
+
+  NoteRemovedCopyWith<NoteRemoved, NoteRemoved, NoteRemoved> get copyWith =>
+      _NoteRemovedCopyWithImpl(this as NoteRemoved, $identity, $identity);
+  @override
+  String toString() {
+    return NoteRemovedMapper.ensureInitialized()
+        .stringifyValue(this as NoteRemoved);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return NoteRemovedMapper.ensureInitialized()
+        .equalsValue(this as NoteRemoved, other);
+  }
+
+  @override
+  int get hashCode {
+    return NoteRemovedMapper.ensureInitialized().hashValue(this as NoteRemoved);
+  }
+}
+
+extension NoteRemovedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, NoteRemoved, $Out> {
+  NoteRemovedCopyWith<$R, NoteRemoved, $Out> get $asNoteRemoved =>
+      $base.as((v, t, t2) => _NoteRemovedCopyWithImpl(v, t, t2));
+}
+
+abstract class NoteRemovedCopyWith<$R, $In extends NoteRemoved, $Out>
+    implements HybridWorldEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({String? name});
+  NoteRemovedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _NoteRemovedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, NoteRemoved, $Out>
+    implements NoteRemovedCopyWith<$R, NoteRemoved, $Out> {
+  _NoteRemovedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<NoteRemoved> $mapper =
+      NoteRemovedMapper.ensureInitialized();
+  @override
+  $R call({String? name}) =>
+      $apply(FieldCopyWithData({if (name != null) #name: name}));
+  @override
+  NoteRemoved $make(CopyWithData data) =>
+      NoteRemoved(data.get(#name, or: $value.name));
+
+  @override
+  NoteRemovedCopyWith<$R2, NoteRemoved, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _NoteRemovedCopyWithImpl($value, $cast, t);
 }
 
 class LocalWorldEventMapper extends SubClassMapperBase<LocalWorldEvent> {

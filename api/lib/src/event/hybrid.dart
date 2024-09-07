@@ -98,3 +98,17 @@ final class TableRemoved extends HybridWorldEvent with TableRemovedMappable {
 
   TableRemoved(this.name);
 }
+
+@MappableClass()
+final class NoteChanged extends HybridWorldEvent with NoteChangedMappable {
+  final String name, content;
+
+  NoteChanged(this.name, this.content);
+}
+
+@MappableClass()
+final class NoteRemoved extends HybridWorldEvent with NoteRemovedMappable {
+  final String name;
+
+  NoteRemoved(this.name);
+}

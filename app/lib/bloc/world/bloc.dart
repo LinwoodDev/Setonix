@@ -86,6 +86,9 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
         data: state.data.setTable(state.table, state.tableName),
       ));
     });
+    on<DrawerViewChanged>((event, emit) {
+      emit(state.copyWith(drawerView: event.view));
+    });
   }
 
   Future<void> save() async {
