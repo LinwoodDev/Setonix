@@ -95,10 +95,8 @@ class GameAssetManager extends AssetManager {
         final key = file.pathWithoutLeadingSlash;
         final pack = file.data!;
         _loadedPacks[key] = pack;
-        _loadedTranslations[key] = TranslationsStore(
-          translations: pack.getAllTranslations(),
-          getLocale: () => currentLocale,
-        );
+        _loadedTranslations[key] =
+            pack.getTranslationsStore(getLocale: () => currentLocale);
       } catch (_) {}
     }
   }

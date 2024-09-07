@@ -43,7 +43,7 @@ class QuokkaData extends ArchiveData<QuokkaData> {
   GameTable getTableOrDefault([String name = '']) =>
       getTable(name) ?? GameTable();
 
-  QuokkaData setTable(GameTable table, String name) => setAsset(
+  QuokkaData setTable(GameTable table, [String name = '']) => setAsset(
         '$kGameTablePath/$name.json',
         utf8.encode(table.toJson()),
       );
@@ -213,6 +213,13 @@ class QuokkaData extends ArchiveData<QuokkaData> {
     final metadata = getMetadataOrDefault().toJson();
     return sha512256.convert(utf8.encode(metadata));
   }
+
+  TranslationsStore getTranslationsStore(
+          {required String Function() getLocale}) =>
+      TranslationsStore(
+        translations: getAllTranslations(),
+        getLocale: getLocale,
+      );
 }
 
 final class PackItem<T> {
@@ -252,4 +259,10 @@ final class PackItem<T> {
 
   String get namespace => location.namespace;
   String get id => location.id;
+
+  PackItem<E> withItem<E>(E backgroundTranslation) => PackItem(
+        pack: pack,
+        location: location,
+        item: backgroundTranslation,
+      );
 }

@@ -31,6 +31,7 @@ class _CreateDialogState extends State<CreateDialog>
   late final Future<List<FileSystemFile<QuokkaData>>> _packsFuture;
 
   String? _selectedTemplate;
+  PackItem<BackgroundTranslation>? _background;
   List<String>? _selectedPacks;
 
   bool _infoView = false;
@@ -113,16 +114,24 @@ class _CreateDialogState extends State<CreateDialog>
                         _CustomCreateView(
                           packsFuture: _packsFuture,
                           selectedPacksId: _selectedPacks,
-                          onPacksSelected: (value) =>
-                              setState(() => _selectedPacks = value),
+                          onPacksSelected: (value) => setState(() {
+                            _selectedPacks = value;
+                            if (_background != null &&
+                                !_selectedPacks!
+                                    .contains(_background!.namespace)) {
+                              _background = null;
+                            }
+                          }),
                         ),
                         ListView(
                           children: [
                             ListTile(
                               title:
                                   Text(AppLocalizations.of(context).background),
-                              subtitle:
-                                  Text(AppLocalizations.of(context).comingSoon),
+                              subtitle: _background == null
+                                  ? null
+                                  : Text(_background!.item.name),
+                              onTap: _showBackgroundPicker,
                             ),
                           ],
                         )
@@ -294,13 +303,17 @@ class _CreateDialogState extends State<CreateDialog>
                       (await _packsFuture).map((e) => e.path).toList(),
                 ),
               );
-              template = template.setFileMetadata(
-                FileMetadata(
-                  name: name,
-                  description: description,
-                  type: FileType.game,
-                ),
-              );
+              template = template
+                  .setFileMetadata(
+                    FileMetadata(
+                      name: name,
+                      description: description,
+                      type: FileType.game,
+                    ),
+                  )
+                  .setTable(GameTable(
+                    background: _background?.location,
+                  ));
               await _worldSystem.createFile(name, template);
 
               if (context.mounted) {
@@ -312,6 +325,43 @@ class _CreateDialogState extends State<CreateDialog>
           ),
         ]
       ],
+    );
+  }
+
+  Future<void> _showBackgroundPicker() async {
+    List<PackItem<BackgroundDefinition>> backgrounds = [];
+    final packs =
+        _selectedPacks ?? (await _packsFuture).map((e) => e.path).toList();
+    for (final name in packs) {
+      final pack = await _fileSystem.getPack(name);
+      if (pack == null) continue;
+      final backgroundItems = pack.getBackgroundItems(name);
+      backgrounds.addAll(backgroundItems);
+    }
+    if (!mounted) return;
+    showLeapBottomSheet(
+      context: context,
+      titleBuilder: (context) => Text(AppLocalizations.of(context).background),
+      childrenBuilder: (context) => backgrounds
+          .sorted((a, b) => b.item.priority.compareTo(a.item.priority))
+          .map((entry) {
+        final translations = entry.pack.getTranslationsStore(
+            getLocale: () => Localizations.localeOf(context).languageCode);
+        final translation = translations.getBackgroundTranslation(entry.id);
+        return ListTile(
+          title: Text(translation.name),
+          subtitle: translation.description == null
+              ? null
+              : Text(translation.description!),
+          onTap: () {
+            setState(() {
+              _background = entry.withItem(translation);
+            });
+            Navigator.of(context).pop();
+          },
+          selected: _background?.location == entry.location,
+        );
+      }).toList(),
     );
   }
 }
