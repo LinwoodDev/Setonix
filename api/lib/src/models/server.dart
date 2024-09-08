@@ -31,4 +31,9 @@ class GameProperty with GamePropertyMappable {
     this.name = '',
     this.description = '',
   });
+
+  static const defaultProperty = GameProperty(
+    name: 'Quokka server',
+    description: 'A server for Quokka.',
+  );
 }

@@ -73,19 +73,26 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
       Map.fromEntries((_server?.clientConnections ?? {})
           .map((e) => MapEntry(e, _server!.getConnectionInfo(e)!)));
 
-  Future<void> init(
-      {int port = kDefaultPort,
-      bool verbose = false,
-      bool autosave = false}) async {
+  Future<void> init({
+    int port = kDefaultPort,
+    bool verbose = false,
+    bool autosave = false,
+    String name = '',
+    String description = '',
+  }) async {
     if (verbose) {
       consoler.minLogLevel = LogLevel.verbose;
     }
     log("Starting server on port $port", level: LogLevel.info);
     log('Verbose logging activated', level: LogLevel.verbose);
     _temp = autosave;
-    final server = _server = NetworkerSocketServer(
-        InternetAddress.anyIPv4, port,
-        filterConnections: _filterConnections);
+    final server =
+        _server = NetworkerSocketServer(InternetAddress.anyIPv4, port,
+            filterConnections: buildFilterConnections(
+                property: GameProperty.defaultProperty.copyWith(
+              name: name,
+              description: description,
+            )));
     final transformer = _pipe = NetworkerPipeTransformer<String, WorldEvent>(
         WorldEventMapper.fromJson, (e) => e.toJson());
     transformer.read.listen(_onClientEvent);
@@ -171,15 +178,6 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
     final info = _server?.getConnectionInfo(id);
     if (info == null) return false;
     info.close();
-    return true;
-  }
-
-  bool _filterConnections(HttpRequest request) {
-    request.response.headers.add("Access-Control-Allow-Origin", "*");
-    request.response.headers
-        .add("Access-Control-Allow-Methods", "POST,GET,DELETE,PUT,OPTIONS");
-
-    request.response.statusCode = HttpStatus.ok;
     return true;
   }
 }

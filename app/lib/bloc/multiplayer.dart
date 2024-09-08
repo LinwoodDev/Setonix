@@ -161,10 +161,13 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
     }
   }
 
-  Future<void> create() async {
+  Future<void> create({GameProperty? property}) async {
     try {
-      final server =
-          NetworkerSocketServer(InternetAddress.loopbackIPv4, kDefaultPort);
+      final server = NetworkerSocketServer(
+        InternetAddress.loopbackIPv4,
+        kDefaultPort,
+        filterConnections: buildFilterConnections(property: property),
+      );
       final state = await _addNetworker(server);
       await server.init();
       emit(state);

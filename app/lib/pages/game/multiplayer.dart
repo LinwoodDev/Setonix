@@ -6,6 +6,7 @@ import 'package:material_leap/material_leap.dart';
 import 'package:networker/networker.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:quokka/bloc/multiplayer.dart';
+import 'package:quokka/bloc/settings.dart';
 
 class MultiplayerDialog extends StatelessWidget {
   const MultiplayerDialog({super.key});
@@ -99,7 +100,10 @@ class MultiplayerDialog extends StatelessWidget {
           else if (!kIsWeb)
             FilledButton.icon(
               onPressed: () {
-                context.read<MultiplayerCubit>().create();
+                final settings = context.read<SettingsCubit>().state;
+                context
+                    .read<MultiplayerCubit>()
+                    .create(property: settings.gameProperty);
               },
               label: Text(AppLocalizations.of(context).start),
               icon: const Icon(PhosphorIconsLight.play),

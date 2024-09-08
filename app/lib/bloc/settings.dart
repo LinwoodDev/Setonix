@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:quokka_api/quokka_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -19,6 +20,7 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
   @override
   final bool nativeTitleBar;
   final bool showConnectOfficial, showConnectCustom, showConnectOnlyFavorites;
+  final GameProperty gameProperty;
 
   const QuokkaSettings({
     this.localeTag = '',
@@ -30,6 +32,7 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
     this.showConnectCustom = true,
     this.showConnectOnlyFavorites = false,
     this.lastVersion,
+    this.gameProperty = const GameProperty(),
   });
 
   Locale? get locale {

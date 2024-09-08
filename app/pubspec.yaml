@@ -36,8 +36,8 @@ dependencies:
       path: packages/material_leap
   flex_color_scheme:
     git:
-      url: https://github.com/rydmike/flex_color_scheme
-      ref: 6b34ee7d2efcf0d964163e925ba946a7bf454d72
+      url: https://github.com/CodeDoctorDE/flex_color_scheme
+      ref: bb3b74ea95dcb133a19bf9a00942355030961b6e
   flutter_svg: ^2.0.10+1
   window_manager: ^0.4.0
   go_router: ^14.2.2
@@ -63,7 +63,7 @@ dependencies:
   networker_socket:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs
-      ref: c9c0f1570f2e6ce11faa91bd6f70e322a768fb80
+      ref: 81fcf2b6c6c3cfe5d36c948e424f4c97e1e5f88b
       path: packages/networker/networker_socket
   # System Information
   dynamic_color: ^1.7.0

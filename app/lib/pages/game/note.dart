@@ -79,7 +79,9 @@ class _GameNoteDialogState extends State<GameNoteDialog> {
         onPressed: () => Navigator.of(context).pop(),
       ),
       constraints: const BoxConstraints(
-          maxWidth: LeapBreakpoints.medium, maxHeight: 800),
+        maxWidth: LeapBreakpoints.expanded,
+        maxHeight: 1000,
+      ),
       content: _editing
           ? TextFormField(
               minLines: 5,

@@ -29,6 +29,17 @@ ArgParser buildParser() {
       abbr: 'p',
       help: 'The port to run the server on. Defaults to $kDefaultPort.',
     )
+    ..addOption(
+      'name',
+      abbr: 'n',
+      help: 'The name of the server. Will be displayed in the server list.',
+    )
+    ..addOption(
+      'description',
+      abbr: 'd',
+      help:
+          'A description of the server. Will be displayed in the server list.',
+    )
     ..addOption('autosave',
         abbr: 'a', help: "Disable saving of the world automatically");
 }
@@ -65,12 +76,21 @@ Future<void> main(List<String> arguments) async {
     if (results.wasParsed('autosave')) {
       autosave = true;
     }
+    String name = '', description = '';
+    if (results.wasParsed('name')) {
+      name = results['name'];
+    }
+    if (results.wasParsed('description')) {
+      description = results['description'];
+    }
     print(welcomeText);
     final server = await QuokkaServer.load();
     await server.init(
       port: int.tryParse(results['port'] ?? '') ?? kDefaultPort,
       verbose: verbose,
       autosave: autosave,
+      name: name,
+      description: description,
     );
     await server.run();
   } on FormatException catch (e) {
