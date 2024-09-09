@@ -77,7 +77,6 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
     int port = kDefaultPort,
     bool verbose = false,
     bool autosave = false,
-    String name = '',
     String description = '',
   }) async {
     if (verbose) {
@@ -90,7 +89,6 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
         _server = NetworkerSocketServer(InternetAddress.anyIPv4, port,
             filterConnections: buildFilterConnections(
                 property: GameProperty.defaultProperty.copyWith(
-              name: name,
               description: description,
             )));
     final transformer = _pipe = NetworkerPipeTransformer<String, WorldEvent>(

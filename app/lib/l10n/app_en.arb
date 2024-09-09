@@ -169,5 +169,8 @@
       }
     }
   },
-  "content": "Content"
+  "content": "Content",
+  "selectServer": "Select a server",
+  "deleteServer": "Delete server",
+  "deleteServerMessage": "Are you sure you want to delete the server?"
 }

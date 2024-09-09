@@ -13,8 +13,6 @@ class GameServerMapper extends ClassMapperBase<GameServer> {
   static GameServerMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = GameServerMapper._());
-      LanGameServerMapper.ensureInitialized();
-      GamePropertyMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -22,17 +20,28 @@ class GameServerMapper extends ClassMapperBase<GameServer> {
   @override
   final String id = 'GameServer';
 
-  static GameProperty _$property(GameServer v) => v.property;
-  static const Field<GameServer, GameProperty> _f$property =
-      Field('property', _$property);
+  static String _$name(GameServer v) => v.name;
+  static const Field<GameServer, String> _f$name =
+      Field('name', _$name, opt: true, def: '');
+  static String _$address(GameServer v) => v.address;
+  static const Field<GameServer, String> _f$address =
+      Field('address', _$address);
+  static bool _$secure(GameServer v) => v.secure;
+  static const Field<GameServer, bool> _f$secure =
+      Field('secure', _$secure, opt: true, def: true);
 
   @override
   final MappableFields<GameServer> fields = const {
-    #property: _f$property,
+    #name: _f$name,
+    #address: _f$address,
+    #secure: _f$secure,
   };
 
   static GameServer _instantiate(DecodingData data) {
-    throw MapperException.missingConstructor('GameServer');
+    return GameServer(
+        name: data.dec(_f$name),
+        address: data.dec(_f$address),
+        secure: data.dec(_f$secure));
   }
 
   @override
@@ -48,16 +57,73 @@ class GameServerMapper extends ClassMapperBase<GameServer> {
 }
 
 mixin GameServerMappable {
-  String toJson();
-  Map<String, dynamic> toMap();
-  GameServerCopyWith<GameServer, GameServer, GameServer> get copyWith;
+  String toJson() {
+    return GameServerMapper.ensureInitialized()
+        .encodeJson<GameServer>(this as GameServer);
+  }
+
+  Map<String, dynamic> toMap() {
+    return GameServerMapper.ensureInitialized()
+        .encodeMap<GameServer>(this as GameServer);
+  }
+
+  GameServerCopyWith<GameServer, GameServer, GameServer> get copyWith =>
+      _GameServerCopyWithImpl(this as GameServer, $identity, $identity);
+  @override
+  String toString() {
+    return GameServerMapper.ensureInitialized()
+        .stringifyValue(this as GameServer);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return GameServerMapper.ensureInitialized()
+        .equalsValue(this as GameServer, other);
+  }
+
+  @override
+  int get hashCode {
+    return GameServerMapper.ensureInitialized().hashValue(this as GameServer);
+  }
+}
+
+extension GameServerValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, GameServer, $Out> {
+  GameServerCopyWith<$R, GameServer, $Out> get $asGameServer =>
+      $base.as((v, t, t2) => _GameServerCopyWithImpl(v, t, t2));
 }
 
 abstract class GameServerCopyWith<$R, $In extends GameServer, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  GamePropertyCopyWith<$R, GameProperty, GameProperty> get property;
-  $R call({GameProperty? property});
+  $R call({String? name, String? address, bool? secure});
   GameServerCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _GameServerCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, GameServer, $Out>
+    implements GameServerCopyWith<$R, GameServer, $Out> {
+  _GameServerCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<GameServer> $mapper =
+      GameServerMapper.ensureInitialized();
+  @override
+  $R call({String? name, String? address, bool? secure}) =>
+      $apply(FieldCopyWithData({
+        if (name != null) #name: name,
+        if (address != null) #address: address,
+        if (secure != null) #secure: secure
+      }));
+  @override
+  GameServer $make(CopyWithData data) => GameServer(
+      name: data.get(#name, or: $value.name),
+      address: data.get(#address, or: $value.address),
+      secure: data.get(#secure, or: $value.secure));
+
+  @override
+  GameServerCopyWith<$R2, GameServer, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _GameServerCopyWithImpl($value, $cast, t);
 }
 
 class GamePropertyMapper extends ClassMapperBase<GameProperty> {
@@ -74,22 +140,17 @@ class GamePropertyMapper extends ClassMapperBase<GameProperty> {
   @override
   final String id = 'GameProperty';
 
-  static String _$name(GameProperty v) => v.name;
-  static const Field<GameProperty, String> _f$name =
-      Field('name', _$name, opt: true, def: '');
   static String _$description(GameProperty v) => v.description;
   static const Field<GameProperty, String> _f$description =
       Field('description', _$description, opt: true, def: '');
 
   @override
   final MappableFields<GameProperty> fields = const {
-    #name: _f$name,
     #description: _f$description,
   };
 
   static GameProperty _instantiate(DecodingData data) {
-    return GameProperty(
-        name: data.dec(_f$name), description: data.dec(_f$description));
+    return GameProperty(description: data.dec(_f$description));
   }
 
   @override
@@ -144,7 +205,7 @@ extension GamePropertyValueCopy<$R, $Out>
 
 abstract class GamePropertyCopyWith<$R, $In extends GameProperty, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call({String? name, String? description});
+  $R call({String? description});
   GamePropertyCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -157,139 +218,14 @@ class _GamePropertyCopyWithImpl<$R, $Out>
   late final ClassMapperBase<GameProperty> $mapper =
       GamePropertyMapper.ensureInitialized();
   @override
-  $R call({String? name, String? description}) => $apply(FieldCopyWithData({
-        if (name != null) #name: name,
-        if (description != null) #description: description
-      }));
+  $R call({String? description}) => $apply(
+      FieldCopyWithData({if (description != null) #description: description}));
   @override
-  GameProperty $make(CopyWithData data) => GameProperty(
-      name: data.get(#name, or: $value.name),
-      description: data.get(#description, or: $value.description));
+  GameProperty $make(CopyWithData data) =>
+      GameProperty(description: data.get(#description, or: $value.description));
 
   @override
   GamePropertyCopyWith<$R2, GameProperty, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
       _GamePropertyCopyWithImpl($value, $cast, t);
-}
-
-class LanGameServerMapper extends ClassMapperBase<LanGameServer> {
-  LanGameServerMapper._();
-
-  static LanGameServerMapper? _instance;
-  static LanGameServerMapper ensureInitialized() {
-    if (_instance == null) {
-      MapperContainer.globals.use(_instance = LanGameServerMapper._());
-      GameServerMapper.ensureInitialized();
-      GamePropertyMapper.ensureInitialized();
-    }
-    return _instance!;
-  }
-
-  @override
-  final String id = 'LanGameServer';
-
-  static String _$address(LanGameServer v) => v.address;
-  static const Field<LanGameServer, String> _f$address =
-      Field('address', _$address);
-  static GameProperty _$property(LanGameServer v) => v.property;
-  static const Field<LanGameServer, GameProperty> _f$property =
-      Field('property', _$property);
-
-  @override
-  final MappableFields<LanGameServer> fields = const {
-    #address: _f$address,
-    #property: _f$property,
-  };
-
-  static LanGameServer _instantiate(DecodingData data) {
-    return LanGameServer(
-        address: data.dec(_f$address), property: data.dec(_f$property));
-  }
-
-  @override
-  final Function instantiate = _instantiate;
-
-  static LanGameServer fromMap(Map<String, dynamic> map) {
-    return ensureInitialized().decodeMap<LanGameServer>(map);
-  }
-
-  static LanGameServer fromJson(String json) {
-    return ensureInitialized().decodeJson<LanGameServer>(json);
-  }
-}
-
-mixin LanGameServerMappable {
-  String toJson() {
-    return LanGameServerMapper.ensureInitialized()
-        .encodeJson<LanGameServer>(this as LanGameServer);
-  }
-
-  Map<String, dynamic> toMap() {
-    return LanGameServerMapper.ensureInitialized()
-        .encodeMap<LanGameServer>(this as LanGameServer);
-  }
-
-  LanGameServerCopyWith<LanGameServer, LanGameServer, LanGameServer>
-      get copyWith => _LanGameServerCopyWithImpl(
-          this as LanGameServer, $identity, $identity);
-  @override
-  String toString() {
-    return LanGameServerMapper.ensureInitialized()
-        .stringifyValue(this as LanGameServer);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return LanGameServerMapper.ensureInitialized()
-        .equalsValue(this as LanGameServer, other);
-  }
-
-  @override
-  int get hashCode {
-    return LanGameServerMapper.ensureInitialized()
-        .hashValue(this as LanGameServer);
-  }
-}
-
-extension LanGameServerValueCopy<$R, $Out>
-    on ObjectCopyWith<$R, LanGameServer, $Out> {
-  LanGameServerCopyWith<$R, LanGameServer, $Out> get $asLanGameServer =>
-      $base.as((v, t, t2) => _LanGameServerCopyWithImpl(v, t, t2));
-}
-
-abstract class LanGameServerCopyWith<$R, $In extends LanGameServer, $Out>
-    implements GameServerCopyWith<$R, $In, $Out> {
-  @override
-  GamePropertyCopyWith<$R, GameProperty, GameProperty> get property;
-  @override
-  $R call({String? address, GameProperty? property});
-  LanGameServerCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
-}
-
-class _LanGameServerCopyWithImpl<$R, $Out>
-    extends ClassCopyWithBase<$R, LanGameServer, $Out>
-    implements LanGameServerCopyWith<$R, LanGameServer, $Out> {
-  _LanGameServerCopyWithImpl(super.value, super.then, super.then2);
-
-  @override
-  late final ClassMapperBase<LanGameServer> $mapper =
-      LanGameServerMapper.ensureInitialized();
-  @override
-  GamePropertyCopyWith<$R, GameProperty, GameProperty> get property =>
-      $value.property.copyWith.$chain((v) => call(property: v));
-  @override
-  $R call({String? address, GameProperty? property}) =>
-      $apply(FieldCopyWithData({
-        if (address != null) #address: address,
-        if (property != null) #property: property
-      }));
-  @override
-  LanGameServer $make(CopyWithData data) => LanGameServer(
-      address: data.get(#address, or: $value.address),
-      property: data.get(#property, or: $value.property));
-
-  @override
-  LanGameServerCopyWith<$R2, LanGameServer, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _LanGameServerCopyWithImpl($value, $cast, t);
 }

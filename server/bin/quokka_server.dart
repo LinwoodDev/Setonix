@@ -30,11 +30,6 @@ ArgParser buildParser() {
       help: 'The port to run the server on. Defaults to $kDefaultPort.',
     )
     ..addOption(
-      'name',
-      abbr: 'n',
-      help: 'The name of the server. Will be displayed in the server list.',
-    )
-    ..addOption(
       'description',
       abbr: 'd',
       help:
@@ -76,10 +71,7 @@ Future<void> main(List<String> arguments) async {
     if (results.wasParsed('autosave')) {
       autosave = true;
     }
-    String name = '', description = '';
-    if (results.wasParsed('name')) {
-      name = results['name'];
-    }
+    String description = '';
     if (results.wasParsed('description')) {
       description = results['description'];
     }
@@ -89,7 +81,6 @@ Future<void> main(List<String> arguments) async {
       port: int.tryParse(results['port'] ?? '') ?? kDefaultPort,
       verbose: verbose,
       autosave: autosave,
-      name: name,
       description: description,
     );
     await server.run();

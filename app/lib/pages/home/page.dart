@@ -30,10 +30,10 @@ class HomePage extends StatelessWidget {
           false,
         ),
         (
-          AppLocalizations.of(context).connect,
+          AppLocalizations.of(context).servers,
           PhosphorIconsLight.plugsConnected,
           () => showDialog(
-              context: context, builder: (context) => const AddConnectDialog()),
+              context: context, builder: (context) => const ServersDialog()),
           null,
           false,
         ),

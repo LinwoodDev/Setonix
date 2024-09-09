@@ -21,6 +21,7 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
   final bool nativeTitleBar;
   final bool showConnectOfficial, showConnectCustom, showConnectOnlyFavorites;
   final GameProperty gameProperty;
+  final List<GameServer> servers;
 
   const QuokkaSettings({
     this.localeTag = '',
@@ -33,6 +34,7 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
     this.showConnectOnlyFavorites = false,
     this.lastVersion,
     this.gameProperty = const GameProperty(),
+    this.servers = const [],
   });
 
   Locale? get locale {
@@ -56,6 +58,14 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
         showConnectOnlyFavorites:
             prefs.getBool('showConnectOnlyFavorites') ?? false,
         lastVersion: prefs.getString('lastVersion'),
+        gameProperty: prefs.containsKey('gameProperty')
+            ? GamePropertyMapper.fromJson(prefs.getString('gameProperty')!)
+            : GameProperty.defaultProperty,
+        servers: prefs
+                .getStringList('servers')
+                ?.map((e) => GameServerMapper.fromJson(e))
+                .toList() ??
+            [],
       );
 
   Future<void> save() async {
@@ -75,6 +85,9 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
     } else {
       await prefs.setString('last_version', lastVersion!);
     }
+    await prefs.setString('gameProperty', gameProperty.toJson());
+    await prefs.setStringList(
+        'servers', servers.map((e) => e.toJson()).toList());
   }
 }
 
@@ -144,6 +157,26 @@ class SettingsCubit extends Cubit<QuokkaSettings>
 
   Future<void> changeDataDirectory(String newPath) {
     emit(state.copyWith(dataDirectory: newPath));
+    return save();
+  }
+
+  Future<void> changeGameProperty(GameProperty property) {
+    emit(state.copyWith(gameProperty: property));
+    return save();
+  }
+
+  Future<void> addServer(GameServer server) {
+    emit(state.copyWith.servers.add(server));
+    return save();
+  }
+
+  Future<void> updateServer(int index, GameServer server) {
+    emit(state.copyWith.servers.replace(index, server));
+    return save();
+  }
+
+  Future<void> removeServer(int index) {
+    emit(state.copyWith.servers.removeAt(index));
     return save();
   }
 }
