@@ -206,7 +206,7 @@ class _GridHomeView extends StatelessWidget {
                                     style: (theme.textTheme.headlineSmall ??
                                             const TextStyle())
                                         .copyWith(
-                                      color: theme.colorScheme.primaryFixed,
+                                      color: theme.colorScheme.primary,
                                     ),
                                     child: item.$4!,
                                   ),

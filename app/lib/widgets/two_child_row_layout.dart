@@ -14,7 +14,7 @@ class TwoChildRowLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      if (constraints.maxWidth < LeapBreakpoints.medium) {
+      if (constraints.maxWidth < breakpoint) {
         return Column(
           children: [
             second,

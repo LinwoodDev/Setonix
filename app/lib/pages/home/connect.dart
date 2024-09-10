@@ -10,7 +10,7 @@ import 'package:quokka/widgets/search.dart';
 import 'package:quokka_api/quokka_api.dart';
 
 class ConnectEditDialog extends StatelessWidget {
-  final GameServer? initialValue;
+  final ListGameServer? initialValue;
   final int? index;
 
   const ConnectEditDialog({
@@ -22,6 +22,7 @@ class ConnectEditDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String address = initialValue?.address ?? '';
+    String name = initialValue?.name ?? '';
     bool secure = initialValue?.secure ?? true;
     void connect() {
       Navigator.of(context).pop();
@@ -45,6 +46,17 @@ class ConnectEditDialog extends StatelessWidget {
         children: [
           Text(AppLocalizations.of(context).connectNote),
           const SizedBox(height: 16),
+          if (index != null) ...[
+            TextFormField(
+              initialValue: name,
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context).name,
+                filled: true,
+              ),
+              onChanged: (value) => name = value,
+            ),
+            const SizedBox(height: 8),
+          ],
           TextFormField(
             initialValue: address,
             onChanged: (value) => address = value,
@@ -52,7 +64,7 @@ class ConnectEditDialog extends StatelessWidget {
               labelText: AppLocalizations.of(context).address,
               filled: true,
             ),
-            onFieldSubmitted: (_) => connect(),
+            onFieldSubmitted: index == null ? (_) => connect() : null,
           ),
           const SizedBox(height: 8),
           if (secureSwitchEnabled)
@@ -69,10 +81,11 @@ class ConnectEditDialog extends StatelessWidget {
         ElevatedButton.icon(
           onPressed: () {
             final cubit = context.read<SettingsCubit>();
-            var updated = initialValue ?? GameServer(address: '');
+            var updated = initialValue ?? ListGameServer(address: '');
             updated = updated.copyWith(
               address: address,
               secure: secure,
+              name: name,
             );
             if (index != null) {
               cubit.updateServer(index!, updated);
@@ -106,6 +119,8 @@ class _ServersDialogState extends State<ServersDialog> {
   bool _isMobileOpen = false;
   int? _selected;
 
+  String _search = '';
+
   _buildDetailsChildren(GameServer server) => [
         const ListTile(
           title: Text('Description'),
@@ -124,17 +139,18 @@ class _ServersDialogState extends State<ServersDialog> {
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsCubit, QuokkaSettings>(
         buildWhen: (previous, current) =>
-            previous.showConnectOfficial != current.showConnectOfficial ||
-            previous.showConnectCustom != current.showConnectCustom ||
-            previous.showConnectOnlyFavorites !=
-                current.showConnectOnlyFavorites ||
+            previous.showConnectYour != current.showConnectYour ||
+            previous.showConnectNetwork != current.showConnectNetwork ||
             previous.servers != current.servers,
         builder: (context, settings) {
-          final servers = settings.servers;
+          final servers = settings.servers
+              .where((server) => server.display.toLowerCase().contains(_search))
+              .toList();
           final isMobile =
               MediaQuery.sizeOf(context).width < LeapBreakpoints.medium;
-          final server =
-              _selected == null ? GameServer(address: '') : servers[_selected!];
+          final server = _selected == null
+              ? ListGameServer(address: '')
+              : settings.servers[_selected!];
           final playButton = SizedBox(
             height: 48,
             child: Row(
@@ -280,37 +296,31 @@ class _ServersDialogState extends State<ServersDialog> {
             ),
             content: Column(
               children: [
-                RowSearchView(children: [
-                  InputChip(
-                    label: Text(AppLocalizations.of(context).official),
-                    avatar: const Icon(PhosphorIconsLight.star),
-                    showCheckmark: false,
-                    selected: settings.showConnectOfficial,
-                    onPressed: () => context
-                        .read<SettingsCubit>()
-                        .changeShowConnectOfficial(
-                            !settings.showConnectOfficial),
-                  ),
-                  InputChip(
-                    label: Text(AppLocalizations.of(context).custom),
-                    avatar: const Icon(PhosphorIconsLight.puzzlePiece),
-                    showCheckmark: false,
-                    selected: settings.showConnectCustom,
-                    onPressed: () => context
-                        .read<SettingsCubit>()
-                        .changeShowConnectCustom(!settings.showConnectCustom),
-                  ),
-                  InputChip(
-                    label: Text(AppLocalizations.of(context).onlyFavorites),
-                    avatar: const Icon(PhosphorIconsLight.listHeart),
-                    showCheckmark: false,
-                    selected: settings.showConnectOnlyFavorites,
-                    onPressed: () => context
-                        .read<SettingsCubit>()
-                        .changeShowConnectOnlyFavorites(
-                            !settings.showConnectOnlyFavorites),
-                  ),
-                ]),
+                RowSearchView(
+                    onSearchChanged: (value) => setState(() {
+                          _search = value;
+                        }),
+                    children: const [
+                      /*  InputChip(
+                        label: Text(AppLocalizations.of(context).yourServers),
+                        avatar: const Icon(PhosphorIconsLight.puzzlePiece),
+                        showCheckmark: false,
+                        selected: settings.showConnectYour,
+                        onPressed: () => context
+                            .read<SettingsCubit>()
+                            .changeShowConnectYour(!settings.showConnectYour),
+                      ),
+                      InputChip(
+                        label: Text(AppLocalizations.of(context).inNetwork),
+                        avatar: const Icon(PhosphorIconsLight.globe),
+                        showCheckmark: false,
+                        selected: settings.showConnectNetwork,
+                        onPressed: () => context
+                            .read<SettingsCubit>()
+                            .changeShowConnectNetwork(
+                                !settings.showConnectNetwork),
+                      ), */
+                    ]),
                 const SizedBox(height: 8),
                 Expanded(
                   child: Row(

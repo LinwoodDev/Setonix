@@ -41,7 +41,6 @@ class _GameNoteDialogState extends State<GameNoteDialog> {
   @override
   void dispose() {
     super.dispose();
-    _bloc.process(NoteChanged(_nameController.text, _contentController.text));
     _nameController.dispose();
     _contentController.dispose();
   }
@@ -74,10 +73,22 @@ class _GameNoteDialogState extends State<GameNoteDialog> {
           },
         ),
       ],
-      leading: IconButton.outlined(
-        icon: const Icon(PhosphorIconsLight.x),
-        onPressed: () => Navigator.of(context).pop(),
-      ),
+      actions: [
+        TextButton.icon(
+          icon: const Icon(PhosphorIconsLight.prohibit),
+          label: Text(AppLocalizations.of(context).cancel),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        ElevatedButton.icon(
+          icon: const Icon(PhosphorIconsLight.floppyDisk),
+          label: Text(AppLocalizations.of(context).save),
+          onPressed: () {
+            _bloc.process(
+                NoteChanged(_nameController.text, _contentController.text));
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
       constraints: const BoxConstraints(
         maxWidth: LeapBreakpoints.expanded,
         maxHeight: 1000,
@@ -102,6 +113,7 @@ class _GameNoteDialogState extends State<GameNoteDialog> {
                       ...md.ExtensionSet.gitHubWeb.inlineSyntaxes
                     ],
                   ),
+                  shrinkWrap: true,
                   data: _contentController.text)),
     );
   }

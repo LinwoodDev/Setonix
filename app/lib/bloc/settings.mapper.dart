@@ -37,17 +37,12 @@ class QuokkaSettingsMapper extends ClassMapperBase<QuokkaSettings> {
   static bool _$nativeTitleBar(QuokkaSettings v) => v.nativeTitleBar;
   static const Field<QuokkaSettings, bool> _f$nativeTitleBar =
       Field('nativeTitleBar', _$nativeTitleBar, opt: true, def: false);
-  static bool _$showConnectOfficial(QuokkaSettings v) => v.showConnectOfficial;
-  static const Field<QuokkaSettings, bool> _f$showConnectOfficial =
-      Field('showConnectOfficial', _$showConnectOfficial, opt: true, def: true);
-  static bool _$showConnectCustom(QuokkaSettings v) => v.showConnectCustom;
-  static const Field<QuokkaSettings, bool> _f$showConnectCustom =
-      Field('showConnectCustom', _$showConnectCustom, opt: true, def: true);
-  static bool _$showConnectOnlyFavorites(QuokkaSettings v) =>
-      v.showConnectOnlyFavorites;
-  static const Field<QuokkaSettings, bool> _f$showConnectOnlyFavorites = Field(
-      'showConnectOnlyFavorites', _$showConnectOnlyFavorites,
-      opt: true, def: false);
+  static bool _$showConnectYour(QuokkaSettings v) => v.showConnectYour;
+  static const Field<QuokkaSettings, bool> _f$showConnectYour =
+      Field('showConnectYour', _$showConnectYour, opt: true, def: true);
+  static bool _$showConnectNetwork(QuokkaSettings v) => v.showConnectNetwork;
+  static const Field<QuokkaSettings, bool> _f$showConnectNetwork =
+      Field('showConnectNetwork', _$showConnectNetwork, opt: true, def: true);
   static String? _$lastVersion(QuokkaSettings v) => v.lastVersion;
   static const Field<QuokkaSettings, String> _f$lastVersion =
       Field('lastVersion', _$lastVersion, opt: true);
@@ -66,9 +61,8 @@ class QuokkaSettingsMapper extends ClassMapperBase<QuokkaSettings> {
     #design: _f$design,
     #dataDirectory: _f$dataDirectory,
     #nativeTitleBar: _f$nativeTitleBar,
-    #showConnectOfficial: _f$showConnectOfficial,
-    #showConnectCustom: _f$showConnectCustom,
-    #showConnectOnlyFavorites: _f$showConnectOnlyFavorites,
+    #showConnectYour: _f$showConnectYour,
+    #showConnectNetwork: _f$showConnectNetwork,
     #lastVersion: _f$lastVersion,
     #gameProperty: _f$gameProperty,
     #servers: _f$servers,
@@ -81,9 +75,8 @@ class QuokkaSettingsMapper extends ClassMapperBase<QuokkaSettings> {
         design: data.dec(_f$design),
         dataDirectory: data.dec(_f$dataDirectory),
         nativeTitleBar: data.dec(_f$nativeTitleBar),
-        showConnectOfficial: data.dec(_f$showConnectOfficial),
-        showConnectCustom: data.dec(_f$showConnectCustom),
-        showConnectOnlyFavorites: data.dec(_f$showConnectOnlyFavorites),
+        showConnectYour: data.dec(_f$showConnectYour),
+        showConnectNetwork: data.dec(_f$showConnectNetwork),
         lastVersion: data.dec(_f$lastVersion),
         gameProperty: data.dec(_f$gameProperty),
         servers: data.dec(_f$servers));
@@ -151,9 +144,8 @@ abstract class QuokkaSettingsCopyWith<$R, $In extends QuokkaSettings, $Out>
       String? design,
       String? dataDirectory,
       bool? nativeTitleBar,
-      bool? showConnectOfficial,
-      bool? showConnectCustom,
-      bool? showConnectOnlyFavorites,
+      bool? showConnectYour,
+      bool? showConnectNetwork,
       String? lastVersion,
       GameProperty? gameProperty,
       List<GameServer>? servers});
@@ -183,9 +175,8 @@ class _QuokkaSettingsCopyWithImpl<$R, $Out>
           String? design,
           String? dataDirectory,
           bool? nativeTitleBar,
-          bool? showConnectOfficial,
-          bool? showConnectCustom,
-          bool? showConnectOnlyFavorites,
+          bool? showConnectYour,
+          bool? showConnectNetwork,
           Object? lastVersion = $none,
           GameProperty? gameProperty,
           List<GameServer>? servers}) =>
@@ -195,11 +186,8 @@ class _QuokkaSettingsCopyWithImpl<$R, $Out>
         if (design != null) #design: design,
         if (dataDirectory != null) #dataDirectory: dataDirectory,
         if (nativeTitleBar != null) #nativeTitleBar: nativeTitleBar,
-        if (showConnectOfficial != null)
-          #showConnectOfficial: showConnectOfficial,
-        if (showConnectCustom != null) #showConnectCustom: showConnectCustom,
-        if (showConnectOnlyFavorites != null)
-          #showConnectOnlyFavorites: showConnectOnlyFavorites,
+        if (showConnectYour != null) #showConnectYour: showConnectYour,
+        if (showConnectNetwork != null) #showConnectNetwork: showConnectNetwork,
         if (lastVersion != $none) #lastVersion: lastVersion,
         if (gameProperty != null) #gameProperty: gameProperty,
         if (servers != null) #servers: servers
@@ -211,12 +199,9 @@ class _QuokkaSettingsCopyWithImpl<$R, $Out>
       design: data.get(#design, or: $value.design),
       dataDirectory: data.get(#dataDirectory, or: $value.dataDirectory),
       nativeTitleBar: data.get(#nativeTitleBar, or: $value.nativeTitleBar),
-      showConnectOfficial:
-          data.get(#showConnectOfficial, or: $value.showConnectOfficial),
-      showConnectCustom:
-          data.get(#showConnectCustom, or: $value.showConnectCustom),
-      showConnectOnlyFavorites: data.get(#showConnectOnlyFavorites,
-          or: $value.showConnectOnlyFavorites),
+      showConnectYour: data.get(#showConnectYour, or: $value.showConnectYour),
+      showConnectNetwork:
+          data.get(#showConnectNetwork, or: $value.showConnectNetwork),
       lastVersion: data.get(#lastVersion, or: $value.lastVersion),
       gameProperty: data.get(#gameProperty, or: $value.gameProperty),
       servers: data.get(#servers, or: $value.servers));

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:quokka/widgets/two_child_row_layout.dart';
 
@@ -27,12 +28,13 @@ class TabSearchView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tabBar = TabBar(
-        controller: tabController,
-        isScrollable: true,
-        tabAlignment: TabAlignment.startOffset,
-        indicatorSize: TabBarIndicatorSize.label,
-        onTap: onTabTap,
-        tabs: tabs);
+      controller: tabController,
+      isScrollable: true,
+      tabAlignment: TabAlignment.start,
+      indicatorSize: TabBarIndicatorSize.label,
+      onTap: onTabTap,
+      tabs: tabs,
+    );
     final searchBar = SearchBar(
       constraints: const BoxConstraints(
           minWidth: 200.0, maxWidth: 260.0, minHeight: 56.0),
@@ -42,7 +44,11 @@ class TabSearchView extends StatelessWidget {
       onSubmitted: onSearchSubmitted,
       controller: searchController,
     );
-    return TwoChildRowLayout(primary: tabBar, second: searchBar);
+    return TwoChildRowLayout(
+      primary: tabBar,
+      second: searchBar,
+      breakpoint: LeapBreakpoints.medium,
+    );
   }
 }
 
@@ -75,19 +81,21 @@ class _RowSearchViewState extends State<RowSearchView> {
 
   @override
   Widget build(BuildContext context) {
-    final tabBar = SizedBox(
-      height: 56,
-      child: Scrollbar(
-        controller: _scrollController,
-        child: ListView.separated(
-          controller: _scrollController,
-          scrollDirection: Axis.horizontal,
-          itemCount: widget.children.length,
-          itemBuilder: (context, index) => widget.children[index],
-          separatorBuilder: (context, index) => const SizedBox(width: 8),
-        ),
-      ),
-    );
+    final tabBar = widget.children.isEmpty
+        ? const SizedBox()
+        : SizedBox(
+            height: 56,
+            child: Scrollbar(
+              controller: _scrollController,
+              child: ListView.separated(
+                controller: _scrollController,
+                scrollDirection: Axis.horizontal,
+                itemCount: widget.children.length,
+                itemBuilder: (context, index) => widget.children[index],
+                separatorBuilder: (context, index) => const SizedBox(width: 8),
+              ),
+            ),
+          );
     final searchBar = SearchBar(
       constraints: const BoxConstraints(
           minWidth: 200.0, maxWidth: 260.0, minHeight: 56.0),

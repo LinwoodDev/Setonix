@@ -9,6 +9,7 @@ import 'package:quokka/api/open.dart';
 import 'package:quokka/api/save.dart';
 import 'package:quokka/pages/home/create.dart';
 import 'package:quokka/services/file_system.dart';
+import 'package:quokka/widgets/search.dart';
 import 'package:quokka_api/quokka_api.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -25,6 +26,8 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
   late Stream<List<FileSystemFile<QuokkaData>>> _gamesStream;
   FileSystemFile<QuokkaData>? _selected;
   bool _isMobileOpen = false;
+
+  String _search = '';
 
   @override
   void initState() {
@@ -149,7 +152,11 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
           child: StreamBuilder(
               stream: _gamesStream,
               builder: (context, snapshot) {
-                final games = snapshot.data;
+                final games = snapshot.data
+                    ?.where((e) => e.pathWithoutLeadingSlash
+                        .toLowerCase()
+                        .contains(_search.toLowerCase()))
+                    .toList();
                 if (games == null) {
                   return const Center(child: CircularProgressIndicator());
                 }
@@ -240,6 +247,11 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
         ),
         content: Column(
           children: [
+            RowSearchView(
+              onSearchChanged: (value) => setState(() {
+                _search = value;
+              }),
+            ),
             Expanded(
               child: Row(
                 children: [

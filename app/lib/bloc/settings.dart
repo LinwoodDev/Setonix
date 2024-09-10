@@ -19,9 +19,9 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
   final String? lastVersion;
   @override
   final bool nativeTitleBar;
-  final bool showConnectOfficial, showConnectCustom, showConnectOnlyFavorites;
+  final bool showConnectYour, showConnectNetwork;
   final GameProperty gameProperty;
-  final List<GameServer> servers;
+  final List<ListGameServer> servers;
 
   const QuokkaSettings({
     this.localeTag = '',
@@ -29,9 +29,8 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
     this.design = '',
     this.dataDirectory = '',
     this.nativeTitleBar = false,
-    this.showConnectOfficial = true,
-    this.showConnectCustom = true,
-    this.showConnectOnlyFavorites = false,
+    this.showConnectYour = true,
+    this.showConnectNetwork = true,
     this.lastVersion,
     this.gameProperty = const GameProperty(),
     this.servers = const [],
@@ -53,17 +52,15 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
         dataDirectory: prefs.getString('dataDirectory') ?? '',
         nativeTitleBar: prefs.getBool('nativeTitleBar') ?? false,
         localeTag: prefs.getString('locale') ?? '',
-        showConnectOfficial: prefs.getBool('showConnectOfficial') ?? true,
-        showConnectCustom: prefs.getBool('showConnectCustom') ?? true,
-        showConnectOnlyFavorites:
-            prefs.getBool('showConnectOnlyFavorites') ?? false,
+        showConnectYour: prefs.getBool('showConnectYour') ?? true,
+        showConnectNetwork: prefs.getBool('showConnectNetwork') ?? true,
         lastVersion: prefs.getString('lastVersion'),
         gameProperty: prefs.containsKey('gameProperty')
             ? GamePropertyMapper.fromJson(prefs.getString('gameProperty')!)
             : GameProperty.defaultProperty,
         servers: prefs
                 .getStringList('servers')
-                ?.map((e) => GameServerMapper.fromJson(e))
+                ?.map((e) => ListGameServerMapper.fromJson(e))
                 .toList() ??
             [],
       );
@@ -75,9 +72,8 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
     await prefs.setString('dataDirectory', dataDirectory);
     await prefs.setBool('nativeTitleBar', nativeTitleBar);
     await prefs.setString('locale', localeTag);
-    await prefs.setBool('showConnectOfficial', showConnectOfficial);
-    await prefs.setBool('showConnectCustom', showConnectCustom);
-    await prefs.setBool('showConnectOnlyFavorites', showConnectOnlyFavorites);
+    await prefs.setBool('showConnectYour', showConnectYour);
+    await prefs.setBool('showConnectNetwork', showConnectNetwork);
     if (lastVersion == null) {
       if (prefs.containsKey('last_version')) {
         await prefs.remove('last_version');
@@ -126,18 +122,13 @@ class SettingsCubit extends Cubit<QuokkaSettings>
     return save();
   }
 
-  Future<void> changeShowConnectOfficial(bool value) {
-    emit(state.copyWith(showConnectOfficial: value));
+  Future<void> changeShowConnectNetwork(bool value) {
+    emit(state.copyWith(showConnectNetwork: value));
     return save();
   }
 
-  Future<void> changeShowConnectCustom(bool value) {
-    emit(state.copyWith(showConnectCustom: value));
-    return save();
-  }
-
-  Future<void> changeShowConnectOnlyFavorites(bool value) {
-    emit(state.copyWith(showConnectOnlyFavorites: value));
+  Future<void> changeShowConnectYour(bool value) {
+    emit(state.copyWith(showConnectYour: value));
     return save();
   }
 

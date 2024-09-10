@@ -259,32 +259,36 @@ class _PacksDialogState extends State<PacksDialog>
                               return const SizedBox();
                             }
                             final metadata = pack.getMetadataOrDefault();
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: _selectedPack?.$1 == null
-                                  ? []
-                                  : [
-                                      Header(
-                                        title: Text(metadata.name),
-                                        actions: [
-                                          IconButton.outlined(
-                                            icon: const Icon(
-                                                PhosphorIconsLight.x),
-                                            onPressed: _deselectPack,
-                                          ),
-                                        ],
-                                      ),
-                                      Expanded(
-                                        child: ListView(
-                                          children: _buildDetailsChildren(
-                                            _selectedPack!.$1,
-                                            metadata,
+                            return Padding(
+                              padding: const EdgeInsets.only(
+                                left: 8,
+                                right: 8,
+                                bottom: 8,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: _selectedPack?.$1 == null
+                                    ? []
+                                    : [
+                                        Header(
+                                          title: Text(metadata.name),
+                                          actions: [
+                                            IconButton.outlined(
+                                              icon: const Icon(
+                                                  PhosphorIconsLight.x),
+                                              onPressed: _deselectPack,
+                                            ),
+                                          ],
+                                        ),
+                                        Expanded(
+                                          child: ListView(
+                                            children: _buildDetailsChildren(
+                                              _selectedPack!.$1,
+                                              metadata,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
+                                        Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.stretch,
                                           children: _buildActionsChildren(
@@ -293,8 +297,8 @@ class _PacksDialogState extends State<PacksDialog>
                                             onRemove: onRemove,
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                              ),
                             );
                           },
                         )),
