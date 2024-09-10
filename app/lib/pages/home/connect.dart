@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:quokka/bloc/settings.dart';
+import 'package:quokka/services/network.dart';
 import 'package:quokka/widgets/search.dart';
 import 'package:quokka_api/quokka_api.dart';
 
@@ -117,191 +118,212 @@ class ServersDialog extends StatefulWidget {
 
 class _ServersDialogState extends State<ServersDialog> {
   bool _isMobileOpen = false;
-  int? _selected;
+  (GameServer, int)? _selected;
 
   String _search = '';
 
-  _buildDetailsChildren(GameServer server) => [
-        const ListTile(
-          title: Text('Description'),
-          subtitle: Text(
-            '''Labore commodo amet nisi ad ad aliquip minim. Do minim eiusmod sunt pariatur ullamco mollit nulla consequat enim Lorem deserunt amet. Velit cupidatat officia elit consectetur cillum culpa sunt pariatur magna cupidatat culpa. Occaecat ad mollit qui laboris do nostrud.
-      
-      Ad id adipisicing sunt laboris mollit deserunt id adipisicing culpa. Consequat amet ea velit culpa quis nostrud ullamco ipsum aliquip nostrud labore ipsum irure. Proident aliquip nulla labore aliquip tempor minim velit excepteur ipsum incididunt. Dolore tempor officia voluptate ipsum. Et occaecat deserunt sint id incididunt nisi duis commodo elit pariatur magna voluptate. Id incididunt minim consequat irure laboris culpa laborum ipsum. Dolor fugiat laborum dolor sint adipisicing fugiat.
-      
-      Lorem ullamco laboris do proident occaecat mollit aliquip minim. Do irure consectetur ut do laborum deserunt aliquip dolore consectetur eu. Cupidatat consequat ea occaecat reprehenderit minim voluptate fugiat cillum do labore in. Ullamco eiusmod occaecat eu voluptate elit cupidatat non proident. Reprehenderit Lorem elit est commodo in duis Lorem sunt esse.
-      
-      Nisi sunt irure consectetur officia occaecat. Elit do consequat sit laboris laboris sunt est ex. Amet laboris aliqua nisi anim incididunt pariatur ex. Duis eiusmod Lorem aliqua minim eiusmod laborum sit nulla. Officia eu cupidatat veniam ad mollit sint consectetur laboris elit ipsum. Laborum officia non in aute ut voluptate Lorem culpa id labore qui ea minim ex.''',
+  _buildDetailsChildren(GameProperty? server) => server == null
+      ? [
+          Center(child: Text(AppLocalizations.of(context).error)),
+        ]
+      : [
+          ListTile(
+            title: Text(AppLocalizations.of(context).description),
+            subtitle: Text(server.description),
           ),
-        ),
-      ];
+        ];
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsCubit, QuokkaSettings>(
-        buildWhen: (previous, current) =>
-            previous.showConnectYour != current.showConnectYour ||
-            previous.showConnectNetwork != current.showConnectNetwork ||
-            previous.servers != current.servers,
-        builder: (context, settings) {
-          final servers = settings.servers
-              .where((server) => server.display.toLowerCase().contains(_search))
-              .toList();
-          final isMobile =
-              MediaQuery.sizeOf(context).width < LeapBreakpoints.medium;
-          final server = _selected == null
-              ? ListGameServer(address: '')
-              : settings.servers[_selected!];
-          final playButton = SizedBox(
-            height: 48,
-            child: Row(
+      buildWhen: (previous, current) =>
+          previous.showConnectYour != current.showConnectYour ||
+          previous.showConnectNetwork != current.showConnectNetwork,
+      builder: (context, settings) => StreamBuilder<
+              Map<GameServer, GameProperty?>>(
+          stream: context.read<NetworkService>().fetchServersWithProperties(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (snapshot.hasError) {
+              return Material(
+                child: Center(
+                  child: Text(AppLocalizations.of(context).error),
+                ),
+              );
+            }
+            final allServers = snapshot.data!;
+            final servers = allServers.entries
+                .where((server) =>
+                    server.key.display.toLowerCase().contains(_search))
+                .toList();
+            final isMobile =
+                MediaQuery.sizeOf(context).width < LeapBreakpoints.medium;
+            final property = allServers[_selected?.$1] ?? const GameProperty();
+            final server = _selected?.$1 ?? ListGameServer(address: '');
+            final playButton = SizedBox(
+              height: 48,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    child: FilledButton.icon(
+                      icon: const Icon(PhosphorIconsLight.play),
+                      label: Text(AppLocalizations.of(context).play),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Row(
+                    children: [
+                      IconButton.outlined(
+                        icon: const Icon(PhosphorIconsLight.pencil),
+                        tooltip: AppLocalizations.of(context).edit,
+                        onPressed: () {
+                          if (server is! ListGameServer) return;
+                          showDialog<bool>(
+                            context: context,
+                            builder: (context) => ConnectEditDialog(
+                              initialValue: server,
+                              index: _selected!.$2,
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(width: 8),
+                      IconButton.outlined(
+                        icon: const Icon(PhosphorIconsLight.trash),
+                        tooltip: AppLocalizations.of(context).delete,
+                        onPressed: () => showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title:
+                                Text(AppLocalizations.of(context).deleteServer),
+                            content: Text(AppLocalizations.of(context)
+                                .deleteServerMessage),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                child:
+                                    Text(AppLocalizations.of(context).cancel),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  if (_selected != null) {
+                                    context
+                                        .read<SettingsCubit>()
+                                        .removeServer(_selected!.$2);
+                                  }
+                                  Navigator.of(context).pop();
+                                  if (_isMobileOpen) {
+                                    Navigator.of(context).pop();
+                                  }
+                                  _selected = null;
+                                },
+                                child:
+                                    Text(AppLocalizations.of(context).delete),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+            final listView = Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Expanded(
-                  child: FilledButton.icon(
-                    icon: const Icon(PhosphorIconsLight.play),
-                    label: Text(AppLocalizations.of(context).play),
-                    onPressed: () => Navigator.of(context).pop(),
+                Flexible(
+                  child: ListView.builder(
+                    itemCount: servers.length,
+                    itemBuilder: (context, index) {
+                      final entry = servers[index];
+                      final current = entry.key;
+                      return ListTile(
+                        title: Text(servers[index].key.display),
+                        onTap: () {
+                          setState(() {
+                            _selected = (current, index);
+                            _isMobileOpen = isMobile;
+                          });
+                          if (isMobile) {
+                            showLeapBottomSheet(
+                              context: context,
+                              titleBuilder: (context) => Text(current.display),
+                              childrenBuilder: (context) => [
+                                ..._buildDetailsChildren(entry.value),
+                                const SizedBox(height: 16),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: playButton,
+                                ),
+                              ],
+                            ).then((_) {
+                              if (mounted) {
+                                setState(() => _isMobileOpen = false);
+                              }
+                            });
+                          }
+                        },
+                        selected:
+                            server == current && (!isMobile || _isMobileOpen),
+                      );
+                    },
                   ),
                 ),
-                const SizedBox(width: 8),
-                Row(
-                  children: [
-                    IconButton.outlined(
-                      icon: const Icon(PhosphorIconsLight.pencil),
-                      tooltip: AppLocalizations.of(context).edit,
-                      onPressed: () => showDialog<bool>(
-                        context: context,
-                        builder: (context) => ConnectEditDialog(
-                          initialValue: server,
-                          index: _selected,
-                        ),
-                      ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  height: 48,
+                  child: ElevatedButton.icon(
+                    icon: const Icon(PhosphorIconsLight.plus),
+                    label: Text(AppLocalizations.of(context).create),
+                    onPressed: () => showDialog<bool>(
+                      context: context,
+                      builder: (context) => const ConnectEditDialog(),
                     ),
-                    const SizedBox(width: 8),
-                    IconButton.outlined(
-                      icon: const Icon(PhosphorIconsLight.trash),
-                      tooltip: AppLocalizations.of(context).delete,
-                      onPressed: () => showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title:
-                              Text(AppLocalizations.of(context).deleteServer),
-                          content: Text(
-                              AppLocalizations.of(context).deleteServerMessage),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.of(context).pop(),
-                              child: Text(AppLocalizations.of(context).cancel),
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                if (_selected != null) {
-                                  context
-                                      .read<SettingsCubit>()
-                                      .removeServer(_selected!);
-                                }
-                                Navigator.of(context).pop();
-                                if (_isMobileOpen) Navigator.of(context).pop();
-                                _selected = null;
-                              },
-                              child: Text(AppLocalizations.of(context).delete),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ],
-            ),
-          );
-          final listView = Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Flexible(
-                child: ListView.builder(
-                  itemCount: servers.length,
-                  itemBuilder: (context, index) => ListTile(
-                    title: Text(servers[index].display),
-                    onTap: () {
-                      setState(() {
-                        _selected = index;
-                        _isMobileOpen = isMobile;
-                      });
-                      final server = servers[index];
-                      if (isMobile) {
-                        showLeapBottomSheet(
-                          context: context,
-                          titleBuilder: (context) => Text(server.display),
-                          childrenBuilder: (context) => [
-                            ..._buildDetailsChildren(server),
-                            const SizedBox(height: 16),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: playButton,
-                            ),
-                          ],
-                        ).then((_) {
-                          if (mounted) setState(() => _isMobileOpen = false);
-                        });
-                      }
-                    },
-                    selected:
-                        _selected == index && (!isMobile || _isMobileOpen),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              SizedBox(
-                height: 48,
-                child: ElevatedButton.icon(
-                  icon: const Icon(PhosphorIconsLight.plus),
-                  label: Text(AppLocalizations.of(context).create),
-                  onPressed: () => showDialog<bool>(
-                    context: context,
-                    builder: (context) => const ConnectEditDialog(),
-                  ),
-                ),
-              ),
-            ],
-          );
-          final details = Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  server.display,
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-              ),
-              Expanded(
-                child: ListView(
-                  children: _buildDetailsChildren(server),
-                ),
-              ),
-              const SizedBox(height: 16),
-              playButton,
-            ],
-          );
-          return ResponsiveAlertDialog(
-            title: Text(AppLocalizations.of(context).connect),
-            leading: IconButton.outlined(
-              icon: const Icon(PhosphorIconsLight.x),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            constraints: const BoxConstraints(
-              maxWidth: LeapBreakpoints.expanded,
-              maxHeight: 700,
-            ),
-            content: Column(
+            );
+            final details = Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                RowSearchView(
-                    onSearchChanged: (value) => setState(() {
-                          _search = value;
-                        }),
-                    children: const [
-                      /*  InputChip(
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    server.display,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                ),
+                Expanded(
+                  child: ListView(
+                    children: _buildDetailsChildren(property),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                playButton,
+              ],
+            );
+            return ResponsiveAlertDialog(
+              title: Text(AppLocalizations.of(context).connect),
+              leading: IconButton.outlined(
+                icon: const Icon(PhosphorIconsLight.x),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              constraints: const BoxConstraints(
+                maxWidth: LeapBreakpoints.expanded,
+                maxHeight: 700,
+              ),
+              content: Column(
+                children: [
+                  RowSearchView(
+                      onSearchChanged: (value) => setState(() {
+                            _search = value;
+                          }),
+                      children: const [
+                        /*  InputChip(
                         label: Text(AppLocalizations.of(context).yourServers),
                         avatar: const Icon(PhosphorIconsLight.puzzlePiece),
                         showCheckmark: false,
@@ -320,28 +342,29 @@ class _ServersDialogState extends State<ServersDialog> {
                             .changeShowConnectNetwork(
                                 !settings.showConnectNetwork),
                       ), */
-                    ]),
-                const SizedBox(height: 8),
-                Expanded(
-                  child: Row(
-                    children: [
-                      Expanded(child: listView),
-                      if (!isMobile) ...[
-                        const VerticalDivider(),
-                        Expanded(
-                            child: _selected == null
-                                ? Center(
-                                    child: Text(AppLocalizations.of(context)
-                                        .selectServer),
-                                  )
-                                : details),
+                      ]),
+                  const SizedBox(height: 8),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Expanded(child: listView),
+                        if (!isMobile) ...[
+                          const VerticalDivider(),
+                          Expanded(
+                              child: _selected == null
+                                  ? Center(
+                                      child: Text(AppLocalizations.of(context)
+                                          .selectServer),
+                                    )
+                                  : details),
+                        ],
                       ],
-                    ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          );
-        });
+                ],
+              ),
+            );
+          }),
+    );
   }
 }

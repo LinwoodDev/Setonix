@@ -175,5 +175,6 @@
   "deleteServerMessage": "Are you sure you want to delete the server?",
   "yourServers": "Your servers",
   "lanServers": "LAN servers",
-  "inNetwork": "In network"
+  "inNetwork": "In network",
+  "updateProperty": "Update property"
 }

@@ -14,6 +14,7 @@ part 'hybrid.dart';
 part 'local.dart';
 
 const kDefaultPort = 28006;
+const kBroadcastPort = 28007;
 
 @MappableClass(discriminatorKey: 'type')
 sealed class WorldEvent with WorldEventMappable {

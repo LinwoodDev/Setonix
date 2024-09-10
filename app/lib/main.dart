@@ -14,6 +14,7 @@ import 'package:quokka/pages/settings/data.dart';
 import 'package:quokka/pages/settings/general.dart';
 import 'package:quokka/pages/settings/personalization.dart';
 import 'package:quokka/services/file_system.dart';
+import 'package:quokka/services/network.dart';
 import 'package:quokka/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
@@ -47,13 +48,11 @@ Future<void> main(List<String> args) async {
         BlocProvider.value(value: settingsCubit),
         BlocProvider.value(
             value: WindowCubit(fullScreen: await isFullScreen())),
+        RepositoryProvider.value(
+            value: await NetworkService(settingsCubit).init()),
+        RepositoryProvider(create: (context) => QuokkaFileSystem()),
       ],
-      child: MultiRepositoryProvider(
-        providers: [
-          RepositoryProvider(create: (context) => QuokkaFileSystem()),
-        ],
-        child: QuokkaApp(),
-      ),
+      child: QuokkaApp(),
     ),
   );
 }

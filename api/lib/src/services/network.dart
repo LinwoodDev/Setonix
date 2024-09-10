@@ -11,13 +11,10 @@ Future<bool> Function(HttpRequest request) buildFilterConnections(
       response.headers.add("Access-Control-Allow-Methods", "GET,INFO");
 
       response.statusCode = HttpStatus.ok;
-      final body =
-          request.contentLength < 0 ? '' : await utf8.decodeStream(request);
       String? sendMessage;
       try {
-        final bodyData = jsonDecode(body);
-        final type = bodyData['type'].toString().toLowerCase();
-        if (type == 'info') {
+        final method = request.headers.value('X-Quokka-Method');
+        if (method == 'info') {
           sendMessage =
               jsonEncode((property ?? GameProperty.defaultProperty).toJson());
         }
