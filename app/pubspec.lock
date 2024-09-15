@@ -387,8 +387,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: bb3b74ea95dcb133a19bf9a00942355030961b6e
-      resolved-ref: bb3b74ea95dcb133a19bf9a00942355030961b6e
+      ref: d1fb4e2225b039bc8cd0bbadb6f3e7b459ae2fe4
+      resolved-ref: d1fb4e2225b039bc8cd0bbadb6f3e7b459ae2fe4
       url: "https://github.com/CodeDoctorDE/flex_color_scheme"
     source: git
     version: "8.0.0-dev.1"
@@ -973,10 +973,10 @@ packages:
     dependency: transitive
     description:
       name: sembast
-      sha256: "99f9d53ecdc75db1630797a8b9b2f2050ee5377e49f60f5f6e788431db04224d"
+      sha256: cae6c2b606226c94d9a6a9951b7b0632194077a9d7ea5e8e2300c88d8f19a823
       url: "https://pub.dev"
     source: hosted
-    version: "3.7.3+3"
+    version: "3.7.4"
   share_plus:
     dependency: transitive
     description:
@@ -1138,10 +1138,10 @@ packages:
     dependency: transitive
     description:
       name: synchronized
-      sha256: a824e842b8a054f91a728b783c177c1e4731f6b124f9192468457a8913371255
+      sha256: "51b08572b9f091f8c3eb4d9d4be253f196ff0075d5ec9b10a884026d5b55d7bc"
       url: "https://pub.dev"
     source: hosted
-    version: "3.2.0"
+    version: "3.3.0+2"
   term_glyph:
     dependency: transitive
     description:
@@ -1354,10 +1354,10 @@ packages:
     dependency: transitive
     description:
       name: win32_registry
-      sha256: "723b7f851e5724c55409bb3d5a32b203b3afe8587eaf5dafb93a5fed8ecda0d6"
+      sha256: "21ec76dfc731550fd3e2ce7a33a9ea90b828fdf19a5c3bcf556fa992cfa99852"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.4"
+    version: "1.1.5"
   window_manager:
     dependency: "direct main"
     description:
@@ -1392,4 +1392,4 @@ packages:
     version: "3.1.2"
 sdks:
   dart: ">=3.5.1 <4.0.0"
-  flutter: ">=3.24.2"
+  flutter: ">=3.24.3"

@@ -16,7 +16,7 @@ publish_to: none
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
-  flutter: 3.24.2
+  flutter: 3.24.3
 
 dependencies:
   flutter:
@@ -37,7 +37,7 @@ dependencies:
   flex_color_scheme:
     git:
       url: https://github.com/CodeDoctorDE/flex_color_scheme
-      ref: bb3b74ea95dcb133a19bf9a00942355030961b6e
+      ref: d1fb4e2225b039bc8cd0bbadb6f3e7b459ae2fe4
   flutter_svg: ^2.0.10+1
   window_manager: ^0.4.0
   go_router: ^14.2.2

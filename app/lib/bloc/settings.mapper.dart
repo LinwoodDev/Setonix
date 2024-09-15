@@ -14,7 +14,7 @@ class QuokkaSettingsMapper extends ClassMapperBase<QuokkaSettings> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = QuokkaSettingsMapper._());
       GamePropertyMapper.ensureInitialized();
-      GameServerMapper.ensureInitialized();
+      ListGameServerMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -50,9 +50,12 @@ class QuokkaSettingsMapper extends ClassMapperBase<QuokkaSettings> {
   static const Field<QuokkaSettings, GameProperty> _f$gameProperty = Field(
       'gameProperty', _$gameProperty,
       opt: true, def: const GameProperty());
-  static List<GameServer> _$servers(QuokkaSettings v) => v.servers;
-  static const Field<QuokkaSettings, List<GameServer>> _f$servers =
+  static List<ListGameServer> _$servers(QuokkaSettings v) => v.servers;
+  static const Field<QuokkaSettings, List<ListGameServer>> _f$servers =
       Field('servers', _$servers, opt: true, def: const []);
+  static bool _$highContrast(QuokkaSettings v) => v.highContrast;
+  static const Field<QuokkaSettings, bool> _f$highContrast =
+      Field('highContrast', _$highContrast, opt: true, def: false);
 
   @override
   final MappableFields<QuokkaSettings> fields = const {
@@ -66,6 +69,7 @@ class QuokkaSettingsMapper extends ClassMapperBase<QuokkaSettings> {
     #lastVersion: _f$lastVersion,
     #gameProperty: _f$gameProperty,
     #servers: _f$servers,
+    #highContrast: _f$highContrast,
   };
 
   static QuokkaSettings _instantiate(DecodingData data) {
@@ -79,7 +83,8 @@ class QuokkaSettingsMapper extends ClassMapperBase<QuokkaSettings> {
         showConnectNetwork: data.dec(_f$showConnectNetwork),
         lastVersion: data.dec(_f$lastVersion),
         gameProperty: data.dec(_f$gameProperty),
-        servers: data.dec(_f$servers));
+        servers: data.dec(_f$servers),
+        highContrast: data.dec(_f$highContrast));
   }
 
   @override
@@ -136,8 +141,8 @@ extension QuokkaSettingsValueCopy<$R, $Out>
 abstract class QuokkaSettingsCopyWith<$R, $In extends QuokkaSettings, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   GamePropertyCopyWith<$R, GameProperty, GameProperty> get gameProperty;
-  ListCopyWith<$R, GameServer, GameServerCopyWith<$R, GameServer, GameServer>>
-      get servers;
+  ListCopyWith<$R, ListGameServer,
+      ListGameServerCopyWith<$R, ListGameServer, ListGameServer>> get servers;
   $R call(
       {String? localeTag,
       ThemeMode? theme,
@@ -148,7 +153,8 @@ abstract class QuokkaSettingsCopyWith<$R, $In extends QuokkaSettings, $Out>
       bool? showConnectNetwork,
       String? lastVersion,
       GameProperty? gameProperty,
-      List<GameServer>? servers});
+      List<ListGameServer>? servers,
+      bool? highContrast});
   QuokkaSettingsCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -165,7 +171,8 @@ class _QuokkaSettingsCopyWithImpl<$R, $Out>
   GamePropertyCopyWith<$R, GameProperty, GameProperty> get gameProperty =>
       $value.gameProperty.copyWith.$chain((v) => call(gameProperty: v));
   @override
-  ListCopyWith<$R, GameServer, GameServerCopyWith<$R, GameServer, GameServer>>
+  ListCopyWith<$R, ListGameServer,
+          ListGameServerCopyWith<$R, ListGameServer, ListGameServer>>
       get servers => ListCopyWith($value.servers,
           (v, t) => v.copyWith.$chain(t), (v) => call(servers: v));
   @override
@@ -179,7 +186,8 @@ class _QuokkaSettingsCopyWithImpl<$R, $Out>
           bool? showConnectNetwork,
           Object? lastVersion = $none,
           GameProperty? gameProperty,
-          List<GameServer>? servers}) =>
+          List<ListGameServer>? servers,
+          bool? highContrast}) =>
       $apply(FieldCopyWithData({
         if (localeTag != null) #localeTag: localeTag,
         if (theme != null) #theme: theme,
@@ -190,7 +198,8 @@ class _QuokkaSettingsCopyWithImpl<$R, $Out>
         if (showConnectNetwork != null) #showConnectNetwork: showConnectNetwork,
         if (lastVersion != $none) #lastVersion: lastVersion,
         if (gameProperty != null) #gameProperty: gameProperty,
-        if (servers != null) #servers: servers
+        if (servers != null) #servers: servers,
+        if (highContrast != null) #highContrast: highContrast
       }));
   @override
   QuokkaSettings $make(CopyWithData data) => QuokkaSettings(
@@ -204,7 +213,8 @@ class _QuokkaSettingsCopyWithImpl<$R, $Out>
           data.get(#showConnectNetwork, or: $value.showConnectNetwork),
       lastVersion: data.get(#lastVersion, or: $value.lastVersion),
       gameProperty: data.get(#gameProperty, or: $value.gameProperty),
-      servers: data.get(#servers, or: $value.servers));
+      servers: data.get(#servers, or: $value.servers),
+      highContrast: data.get(#highContrast, or: $value.highContrast));
 
   @override
   QuokkaSettingsCopyWith<$R2, QuokkaSettings, $Out2> $chain<$R2, $Out2>(

@@ -8,7 +8,8 @@ const kClassicTheme = FlexSchemeColor(
 const kClassicThemeData = FlexSchemeData(
     name: '', description: '', light: kClassicTheme, dark: kClassicTheme);
 
-ThemeData getThemeData(String name, bool dark, [ColorScheme? overridden]) {
+ThemeData getThemeData(String name, bool dark,
+    [ColorScheme? overridden, bool highContrast = false]) {
   final color = getFlexThemeColor(name, dark);
   final override = overridden != null && name.isEmpty;
   if (dark) {
@@ -20,6 +21,7 @@ ThemeData getThemeData(String name, bool dark, [ColorScheme? overridden]) {
       fontFamily: 'Comfortaa',
       swapLegacyOnMaterial3: true,
       fontFamilyFallback: ['Roboto'],
+      darkIsTrueBlack: highContrast,
     );
   }
   return FlexThemeData.light(
@@ -30,6 +32,7 @@ ThemeData getThemeData(String name, bool dark, [ColorScheme? overridden]) {
     fontFamily: 'Comfortaa',
     swapLegacyOnMaterial3: true,
     fontFamilyFallback: ['Roboto'],
+    lightIsWhite: highContrast,
   );
 }
 

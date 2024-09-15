@@ -40,6 +40,8 @@ Future<void> main(List<String> args) async {
 
   final prefs = await SharedPreferences.getInstance();
   final settingsCubit = SettingsCubit(prefs);
+  final networkService = NetworkService(settingsCubit);
+  await networkService.init();
 
   await setup(settingsCubit);
   runApp(
@@ -48,8 +50,7 @@ Future<void> main(List<String> args) async {
         BlocProvider.value(value: settingsCubit),
         BlocProvider.value(
             value: WindowCubit(fullScreen: await isFullScreen())),
-        RepositoryProvider.value(
-            value: await NetworkService(settingsCubit).init()),
+        RepositoryProvider.value(value: networkService),
         RepositoryProvider(create: (context) => QuokkaFileSystem()),
       ],
       child: QuokkaApp(),
@@ -82,13 +83,17 @@ class QuokkaApp extends StatelessWidget {
         buildWhen: (previous, current) =>
             previous.design != current.design ||
             previous.theme != current.theme ||
-            previous.locale != current.locale,
+            previous.locale != current.locale ||
+            previous.nativeTitleBar != current.nativeTitleBar ||
+            previous.highContrast != current.highContrast,
         builder: (context, state) => MaterialApp.router(
               debugShowCheckedModeBanner: false,
               routerConfig: _router,
               title: applicationName,
-              theme: getThemeData(state.design, false, lightDynamic),
-              darkTheme: getThemeData(state.design, true, darkDynamic),
+              theme: getThemeData(
+                  state.design, false, lightDynamic, state.highContrast),
+              darkTheme: getThemeData(
+                  state.design, true, darkDynamic, state.highContrast),
               themeMode: state.theme,
               locale: state.localeTag.isEmpty ? null : Locale(state.localeTag),
               localizationsDelegates: const [

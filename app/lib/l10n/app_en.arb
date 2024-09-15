@@ -176,5 +176,6 @@
   "yourServers": "Your servers",
   "lanServers": "LAN servers",
   "inNetwork": "In network",
-  "updateProperty": "Update property"
+  "updateProperty": "Update property",
+  "highContrast": "High contrast"
 }

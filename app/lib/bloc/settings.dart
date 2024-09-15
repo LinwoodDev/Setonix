@@ -22,6 +22,7 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
   final bool showConnectYour, showConnectNetwork;
   final GameProperty gameProperty;
   final List<ListGameServer> servers;
+  final bool highContrast;
 
   const QuokkaSettings({
     this.localeTag = '',
@@ -34,6 +35,7 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
     this.lastVersion,
     this.gameProperty = const GameProperty(),
     this.servers = const [],
+    this.highContrast = false,
   });
 
   Locale? get locale {
@@ -63,6 +65,7 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
                 ?.map((e) => ListGameServerMapper.fromJson(e))
                 .toList() ??
             [],
+        highContrast: prefs.getBool('highContrast') ?? false,
       );
 
   Future<void> save() async {
@@ -84,6 +87,7 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
     await prefs.setString('gameProperty', gameProperty.toJson());
     await prefs.setStringList(
         'servers', servers.map((e) => e.toJson()).toList());
+    await prefs.setBool('highContrast', highContrast);
   }
 }
 
@@ -156,18 +160,23 @@ class SettingsCubit extends Cubit<QuokkaSettings>
     return save();
   }
 
-  Future<void> addServer(GameServer server) {
+  Future<void> addServer(ListGameServer server) {
     emit(state.copyWith.servers.add(server));
     return save();
   }
 
-  Future<void> updateServer(int index, GameServer server) {
+  Future<void> updateServer(int index, ListGameServer server) {
     emit(state.copyWith.servers.replace(index, server));
     return save();
   }
 
   Future<void> removeServer(int index) {
     emit(state.copyWith.servers.removeAt(index));
+    return save();
+  }
+
+  Future<void> changeHighContrast(bool value) {
+    emit(state.copyWith(highContrast: value));
     return save();
   }
 }

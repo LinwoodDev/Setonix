@@ -46,15 +46,17 @@ class _GameNotesDrawerState extends State<GameNotesDrawer> {
                 return ListView.builder(
                   itemCount: notes.length,
                   itemBuilder: (context, index) {
+                    final note = notes[index];
                     return ListTile(
-                      title: Text(notes[index]),
+                      title: Text(note),
                       onTap: () {
                         final bloc = context.read<WorldBloc>();
                         showDialog(
                           context: context,
                           builder: (context) => BlocProvider.value(
-                              value: bloc,
-                              child: GameNoteDialog(note: notes[index])),
+                            value: bloc,
+                            child: GameNoteDialog(note: note),
+                          ),
                         );
                       },
                       trailing: IconButton(
@@ -67,7 +69,7 @@ class _GameNotesDrawerState extends State<GameNotesDrawer> {
                               title:
                                   Text(AppLocalizations.of(context).deleteNote),
                               content: Text(AppLocalizations.of(context)
-                                  .deleteNoteMessage(notes[index])),
+                                  .deleteNoteMessage(note)),
                               actions: [
                                 TextButton(
                                   onPressed: () =>
@@ -86,7 +88,7 @@ class _GameNotesDrawerState extends State<GameNotesDrawer> {
                           );
                           if (!(result ?? false)) return;
                           bloc.process(
-                            NoteRemoved(notes[index]),
+                            NoteRemoved(note),
                           );
                         },
                       ),

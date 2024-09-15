@@ -74,6 +74,16 @@ class PersonalizationSettingsPage extends StatelessWidget {
                               .comingSoon /*_getLocaleName(context, state.localeTag)*/),
                           onTap: null /*() => _openLocaleModal(context)*/,
                         ),
+                        SwitchListTile(
+                          title:
+                              Text(AppLocalizations.of(context).highContrast),
+                          secondary:
+                              const PhosphorIcon(PhosphorIconsLight.circleHalf),
+                          value: state.highContrast,
+                          onChanged: (value) => context
+                              .read<SettingsCubit>()
+                              .changeHighContrast(value),
+                        ),
                       ]),
                 ),
               ),
