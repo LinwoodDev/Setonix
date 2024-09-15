@@ -84,22 +84,16 @@ class LanGameServerMapper extends ClassMapperBase<LanGameServer> {
   static bool _$secure(LanGameServer v) => v.secure;
   static const Field<LanGameServer, bool> _f$secure =
       Field('secure', _$secure, opt: true, def: true);
-  static String _$description(LanGameServer v) => v.description;
-  static const Field<LanGameServer, String> _f$description =
-      Field('description', _$description, opt: true, def: '');
 
   @override
   final MappableFields<LanGameServer> fields = const {
     #address: _f$address,
     #secure: _f$secure,
-    #description: _f$description,
   };
 
   static LanGameServer _instantiate(DecodingData data) {
     return LanGameServer(
-        address: data.dec(_f$address),
-        secure: data.dec(_f$secure),
-        description: data.dec(_f$description));
+        address: data.dec(_f$address), secure: data.dec(_f$secure));
   }
 
   @override
@@ -156,7 +150,7 @@ extension LanGameServerValueCopy<$R, $Out>
 abstract class LanGameServerCopyWith<$R, $In extends LanGameServer, $Out>
     implements GameServerCopyWith<$R, $In, $Out> {
   @override
-  $R call({String? address, bool? secure, String? description});
+  $R call({String? address, bool? secure});
   LanGameServerCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -169,17 +163,14 @@ class _LanGameServerCopyWithImpl<$R, $Out>
   late final ClassMapperBase<LanGameServer> $mapper =
       LanGameServerMapper.ensureInitialized();
   @override
-  $R call({String? address, bool? secure, String? description}) =>
-      $apply(FieldCopyWithData({
+  $R call({String? address, bool? secure}) => $apply(FieldCopyWithData({
         if (address != null) #address: address,
-        if (secure != null) #secure: secure,
-        if (description != null) #description: description
+        if (secure != null) #secure: secure
       }));
   @override
   LanGameServer $make(CopyWithData data) => LanGameServer(
       address: data.get(#address, or: $value.address),
-      secure: data.get(#secure, or: $value.secure),
-      description: data.get(#description, or: $value.description));
+      secure: data.get(#secure, or: $value.secure));
 
   @override
   LanGameServerCopyWith<$R2, LanGameServer, $Out2> $chain<$R2, $Out2>(

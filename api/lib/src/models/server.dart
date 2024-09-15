@@ -19,12 +19,9 @@ sealed class GameServer with GameServerMappable {
 
 @MappableClass()
 final class LanGameServer extends GameServer with LanGameServerMappable {
-  final String description;
-
   LanGameServer({
     required super.address,
     super.secure,
-    this.description = '',
   });
 }
 

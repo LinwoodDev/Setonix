@@ -69,13 +69,16 @@ Future<void> main(List<String> args) async {
       'Updating the version in the server pubspec.yaml from $lastVersion to $newVersion');
   await updateAppImageVersion(version);
   await updateDebianVersion(version);
-  await updateWindowsVersion(version);
   if (results['changelog']) {
-    var changelogFile =
-        File('fastlane/metadata/android/en-US/changelogs/$newBuildNumber.txt');
+    var changelogFile = File('metadata/en-US/changelogs/$newBuildNumber.txt');
     var changelog = await changelogFile.readAsString();
     await updateChangelog(version, changelog);
+    await updateAppData(version);
   }
+
+  // Run flutter pub get in app directory
+  await Process.run('flutter', ['pub', 'get'],
+      workingDirectory: 'app', runInShell: true);
 
   print('Successfully updated!');
 }
@@ -83,7 +86,7 @@ Future<void> main(List<String> args) async {
 Future<void> updateAppImageVersion(String version) async {
   var file = File('app/AppImageBuilder.yml');
   var lines = await file.readAsLines();
-  lines[13] = '    version: $version';
+  lines[16] = '    version: $version';
   lines.add('');
   await file.writeAsString(lines.join('\r\n'));
   print('Successfully updated app image version to $version');
@@ -98,13 +101,23 @@ Future<void> updateDebianVersion(String version) async {
   print('Successfully updated debian version to $version');
 }
 
-Future<void> updateWindowsVersion(String version) async {
-  var file = File('app/windows/runner/Runner.rc');
-  var lines = await file.readAsLines();
-  lines[71] = '#define VERSION_AS_STRING "$version"';
-  lines.add('');
-  await file.writeAsString(lines.join('\r\n'));
-  print('Successfully updated windows version to $version');
+bool isPreRelease(String version) {
+  return version.contains('-');
+}
+
+Future<void> updateAppData(String version) async {
+  var file = File(
+      'app/linux/debian/usr/share/metainfo/dev.linwood.butterfly.appdata.xml');
+  if (isPreRelease(version)) {
+    return;
+  }
+  var currentDate = DateTime.now();
+  var dateString = DateFormat('yyyy-MM-dd').format(currentDate);
+  var line = '\t\t<release version="$version" date="$dateString" />';
+  var lines = List<String>.from(await file.readAsLines());
+  lines.insert(43, line);
+  await file.writeAsString(lines.join('\n'));
+  print('Successfully updated appdata version to $version');
 }
 
 Future<void> updateChangelog(String version, String changelog) async {

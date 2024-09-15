@@ -26,6 +26,8 @@
 
 ---
 
+Quokka is a table sandbox game where you can decide how to play. Spawn cards everywhere you like, add optional rules and play with your friends or alone without internet.
+
 **This project is still in development and not ready for production use. Please join the matrix or discord server for updates!**
 
 **Click [here](https://github.com/LinwoodDev/Quokka/discussions/26) to read about the concept and share your thoughts!**

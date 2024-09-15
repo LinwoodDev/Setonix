@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-	<id>dev.linwood.quokka</id>
-	<name>Linwood Quokka</name>
+	<id>dev.linwood.butterfly</id>
+	<name>Linwood Butterfly</name>
 	<developer_name>Linwood</developer_name>
-	<summary>Play games everywhere you like</summary>
+	<summary>Powerful, minimalistic note-taking</summary>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>AGPL-3.0-only</project_license>
 	<recommends>
@@ -15,17 +15,30 @@
 		<color type="primary" scheme_preference="light">#d0d0d0</color>
 		<color type="primary" scheme_preference="dark">#2f2f2f</color>
 	</branding>
-	<url type="homepage">https://quokka.linwood.dev/</url>
-	<url type="bugtracker">https://github.com/LinwoodDev/Quokka/issues</url>
-	<url type="help">https://quokka.linwood.dev/docs/latest/intro</url>
-	<url type="translate">https://linwood.dev/quokka/crowdin</url>
-	<url type="vcs-browser">https://github.com/LinwoodDev/Quokka.git</url>
-	<url type="contribute">https://github.com/LinwoodDev/Quokka/blob/develop/CONTRIBUTING.md</url>
+	<url type="homepage">https://butterfly.linwood.dev/</url>
+	<url type="bugtracker">https://github.com/LinwoodDev/Butterfly/issues</url>
+	<url type="help">https://butterfly.linwood.dev/docs/latest/intro</url>
+	<url type="translate">https://linwood.dev/butterfly/crowdin</url>
+	<url type="vcs-browser">https://github.com/LinwoodDev/Butterfly.git</url>
+	<url type="contribute">https://github.com/LinwoodDev/Butterfly/blob/develop/CONTRIBUTING.md</url>
 	<description>
-		<p>Coming soon...</p>
+		<p>Quokka is a table sandbox game where you can decide how to play. Spawn cards everywhere you
+			like, add optional rules and play with your friends or alone without internet.
+		</p>
+		<p>Features:</p>
+		<ul>
+			<li>Play games with your friends or alone</li>
+			<li>No internet connection required to play, multiplayer also works offline</li>
+			<li>Configure if you want to play with or without rules</li>
+			<li>Create custom cards, board and dices</li>
+			<li>Pack them all into a package and share it with your friends</li>
+			<li>Load the rules in the server and the client</li>
+			<li>The app is available for android, windows, linux, and in the web. You can use it on your
+				phone, tablet, or computer.</li>
+			<li>The app is open source and free. You can contribute to the project and help to make it
+				better.</li>
+		</ul>
 	</description>
-	<screenshots>
-	</screenshots>
 	<launchable type="desktop-id">dev.linwood.quokka.desktop</launchable>
 	<releases>
 	</releases>

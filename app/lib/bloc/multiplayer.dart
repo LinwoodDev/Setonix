@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:networker/networker.dart';
 import 'package:networker_socket/client.dart';
 import 'package:networker_socket/server.dart';
+import 'package:quokka/services/network.dart';
 import 'package:quokka_api/quokka_api.dart';
 
 part 'multiplayer.mapper.dart';
@@ -60,6 +61,7 @@ final class MultiplayerConnectedState extends MultiplayerState
 }
 
 class MultiplayerCubit extends Cubit<MultiplayerState> {
+  final NetworkService networkService;
   final StreamController<PlayableWorldEvent> _eventController =
       StreamController.broadcast();
 
@@ -78,7 +80,7 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
 
   FatalServerEventError? _fatalError;
 
-  MultiplayerCubit() : super(MultiplayerDisabledState());
+  MultiplayerCubit(this.networkService) : super(MultiplayerDisabledState());
 
   bool get isConnected => state.isConnected;
   bool get isClient => state.isClient;
@@ -134,6 +136,7 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
     final state = this.state;
     if (state is! MultiplayerConnectedState) return;
     state.networker.close();
+    networkService.cancelServerInfo();
     if (emit && state.isServer) {
       this.emit(MultiplayerDisabledState());
     }
@@ -161,15 +164,20 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
     }
   }
 
-  Future<void> create({GameProperty? property}) async {
+  Future<void> create({GameProperty? property, int? port}) async {
     try {
+      port ??= kDefaultPort;
       final server = NetworkerSocketServer(
         InternetAddress.loopbackIPv4,
-        kDefaultPort,
+        port,
         filterConnections: buildFilterConnections(property: property),
       );
       final state = await _addNetworker(server);
       await server.init();
+      networkService.sendServerInfo(LanProperty(
+        description: property?.description ?? 'Quokka Server',
+        port: port,
+      ));
       emit(state);
     } catch (e) {
       emit(MultiplayerDisconnectedState(error: e));

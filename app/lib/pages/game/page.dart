@@ -16,6 +16,7 @@ import 'package:quokka/pages/game/drawer.dart';
 import 'package:quokka/pages/game/notes.dart';
 import 'package:quokka/pages/home/background.dart';
 import 'package:quokka/services/file_system.dart';
+import 'package:quokka/services/network.dart';
 import 'package:quokka_api/quokka_api.dart';
 
 class GamePage extends StatefulWidget {
@@ -53,7 +54,7 @@ class _GamePageState extends State<GamePage> {
   }
 
   Future<Blocs> _initBloc([QuokkaData? data]) async {
-    final cubit = MultiplayerCubit();
+    final cubit = MultiplayerCubit(context.read<NetworkService>());
     final address = widget.address;
     final world = WorldBloc(
       multiplayer: cubit,

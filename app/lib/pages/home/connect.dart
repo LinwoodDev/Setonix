@@ -117,10 +117,17 @@ class ServersDialog extends StatefulWidget {
 }
 
 class _ServersDialogState extends State<ServersDialog> {
+  late final Stream<Map<GameServer, GameProperty?>> _servers;
+
   bool _isMobileOpen = false;
   (GameServer, int)? _selected;
-
   String _search = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _servers = context.read<NetworkService>().fetchServersWithProperties();
+  }
 
   _buildDetailsChildren(GameProperty? server) => server == null
       ? [
@@ -140,7 +147,7 @@ class _ServersDialogState extends State<ServersDialog> {
           previous.showConnectNetwork != current.showConnectNetwork,
       builder: (context, settings) => StreamBuilder<
               Map<GameServer, GameProperty?>>(
-          stream: context.read<NetworkService>().fetchServersWithProperties(),
+          stream: _servers,
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return const Center(child: CircularProgressIndicator());
@@ -159,7 +166,7 @@ class _ServersDialogState extends State<ServersDialog> {
                 .toList();
             final isMobile =
                 MediaQuery.sizeOf(context).width < LeapBreakpoints.medium;
-            final property = allServers[_selected?.$1] ?? const GameProperty();
+            final property = allServers[_selected?.$1];
             final server = _selected?.$1 ?? ListGameServer(address: '');
             final playButton = SizedBox(
               height: 48,
@@ -242,7 +249,12 @@ class _ServersDialogState extends State<ServersDialog> {
                       final entry = servers[index];
                       final current = entry.key;
                       return ListTile(
-                        title: Text(servers[index].key.display),
+                        title: Text(current.display),
+                        leading: switch (current) {
+                          LanGameServer() =>
+                            const Icon(PhosphorIconsLight.globe),
+                          _ => null,
+                        },
                         onTap: () {
                           setState(() {
                             _selected = (current, index);
@@ -351,7 +363,7 @@ class _ServersDialogState extends State<ServersDialog> {
                         if (!isMobile) ...[
                           const VerticalDivider(),
                           Expanded(
-                              child: _selected == null
+                              child: property == null
                                   ? Center(
                                       child: Text(AppLocalizations.of(context)
                                           .selectServer),

@@ -3,7 +3,7 @@ import 'dart:io';
 Future<void> main() {
   // Receive broadcast messages from the udp server
   // and print them to the console.
-  final server = RawDatagramSocket.bind(InternetAddress.anyIPv4, 8889);
+  final server = RawDatagramSocket.bind(InternetAddress.anyIPv4, 28007);
   return server.then((RawDatagramSocket socket) {
     socket.broadcastEnabled = true;
     socket.listen((RawSocketEvent event) {

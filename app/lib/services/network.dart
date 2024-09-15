@@ -7,6 +7,7 @@ import 'package:quokka/bloc/settings.dart';
 import 'package:quokka_api/quokka_api.dart';
 
 const kTimeoutDelay = Duration(seconds: 5);
+const kBroadcastDelay = Duration(seconds: 1);
 
 class NetworkService {
   final SettingsCubit settingsCubit;
@@ -21,12 +22,13 @@ class NetworkService {
     _server.broadcastEnabled = true;
   }
 
-  Stream<List<GameServer>> fetchServers({
+  Stream<List<(GameServer, LanProperty?)>> _fetchServers({
     bool list = true,
   }) async* {
-    List<GameServer> buildServers([List<GameServer> other = const []]) {
+    List<(GameServer, LanProperty?)> buildServers(
+        [List<(GameServer, LanProperty?)> other = const []]) {
       return [
-        if (list) ...settingsCubit.state.servers,
+        if (list) ...settingsCubit.state.servers.map((e) => (e, null)),
         ...other,
       ];
     }
@@ -42,27 +44,54 @@ class NetworkService {
       });
     }
 
-    if (!kIsWeb) return;
+    if (kIsWeb) return;
     yield* _server
         .where((event) => event == RawSocketEvent.read)
         .map((RawSocketEvent event) {
+      removeOld();
       final datagram = _server.receive();
       if (datagram != null) {
         final message = String.fromCharCodes(datagram.data);
         final property = LanPropertyMapper.fromJson(message);
         networkedServers[datagram.address.address] = (DateTime.now(), property);
       }
-      removeOld();
       return buildServers(
         networkedServers.entries
-            .map((e) => LanGameServer(
-                  address: '${e.key}:${e.value.$2.port}',
-                  secure: true,
-                  description: e.value.$2.description,
+            .map((e) => (
+                  LanGameServer(
+                    address: '${e.key}:${e.value.$2.port}',
+                    secure: false,
+                  ),
+                  e.value.$2
                 ))
             .toList(),
       );
     });
+  }
+
+  (Timer, RawDatagramSocket)? _broadcast;
+
+  Future<void> sendServerInfo(LanProperty property) async {
+    if (kIsWeb) return;
+    cancelServerInfo();
+    final message = property.toJson();
+    final data = message.codeUnits;
+    final destination = InternetAddress('255.255.255.255');
+    final socket =
+        await RawDatagramSocket.bind(InternetAddress.anyIPv4, kBroadcastPort);
+    socket.broadcastEnabled = true;
+    _broadcast = (
+      Timer.periodic(kBroadcastDelay, (_) {
+        socket.send(data, destination, kBroadcastPort);
+      }),
+      socket
+    );
+  }
+
+  void cancelServerInfo() {
+    _broadcast?.$1.cancel();
+    _broadcast?.$2.close();
+    _broadcast = null;
   }
 
   Future<GameProperty?> fetchInfo(Uri address) async {
@@ -77,24 +106,32 @@ class NetworkService {
     bool list = true,
   }) async* {
     Map<GameServer, Future<GameProperty?>> cached = {};
-    Future<GameProperty?> fetch(GameServer server) async {
-      return cached[server] = cached[server] ??
+    Future<GameProperty?> fetch(
+        GameServer server, LanProperty? property) async {
+      property ??= const LanProperty();
+      return cached[server] ??
           switch (server) {
             LanGameServer() =>
-              Future.value(GameProperty(description: server.description)),
-            ListGameServer() =>
-              fetchInfo(server.toHttps()).onError((_, __) => null),
+              Future.value(GameProperty(description: property.description)),
+            ListGameServer() => cached[server] =
+                fetchInfo(server.toHttps()).onError((_, __) => null),
           };
     }
 
-    await for (final event in fetchServers(list: list)) {
-      final returned = <GameServer, GameProperty?>{};
-      for (final server in event) {
+    final returned = <GameServer, GameProperty?>{};
+
+    await for (final event in _fetchServers(list: list)) {
+      returned.removeWhere((key, value) => !event.any((e) => e.$1 == key));
+      for (final (server, _) in event) {
         returned[server] = const GameProperty();
       }
 
       yield* Stream.fromFutures(event.map((e) async {
-        returned[e] = await fetch(e);
+        try {
+          returned[e.$1] = await fetch(e.$1, e.$2);
+        } catch (_) {
+          returned[e.$1] = null;
+        }
         return returned;
       }));
     }
