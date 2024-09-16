@@ -2,7 +2,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'vector.dart';
 import 'visual.dart';
 
-part 'object.mapper.dart';
+part 'definition.mapper.dart';
 
 sealed class GameObjectDefinition {}
 
@@ -21,14 +21,18 @@ class FigureDefinition extends GameObjectDefinition
 }
 
 @MappableClass()
-class BoardDefinition extends GameObjectDefinition
-    with BoardDefinitionMappable {
-  final Map<String, VariationDefinition> variations;
-  final VectorDefinition size;
+class BoardDefinition with BoardDefinitionMappable, VisualDefinition {
+  @override
+  final VectorDefinition offset;
+  @override
+  final VectorDefinition? size;
+  @override
+  final String texture;
 
   BoardDefinition({
-    this.variations = const {},
-    this.size = VectorDefinition.one,
+    this.offset = VectorDefinition.zero,
+    this.size,
+    required this.texture,
   });
 }
 

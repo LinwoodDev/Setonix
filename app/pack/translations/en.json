@@ -271,6 +271,52 @@
           "name": "Indigo Chip"
         }
       }
+    },
+    "chess_white": {
+      "name": "White Chess",
+      "variations": {
+        "king": {
+          "name": "White King"
+        },
+        "queen": {
+          "name": "White Queen"
+        },
+        "rook": {
+          "name": "White Rook"
+        },
+        "bishop": {
+          "name": "White Bishop"
+        },
+        "knight": {
+          "name": "White Knight"
+        },
+        "pawn": {
+          "name": "White Pawn"
+        }
+      }
+    },
+    "chess_black": {
+      "name": "Black Chess",
+      "variations": {
+        "king": {
+          "name": "Black King"
+        },
+        "queen": {
+          "name": "Black Queen"
+        },
+        "rook": {
+          "name": "Black Rook"
+        },
+        "bishop": {
+          "name": "Black Bishop"
+        },
+        "knight": {
+          "name": "Black Knight"
+        },
+        "pawn": {
+          "name": "Black Pawn"
+        }
+      }
     }
   }
 }

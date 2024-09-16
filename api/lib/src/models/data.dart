@@ -8,7 +8,7 @@ import 'background.dart';
 import 'deck.dart';
 import 'info.dart';
 import 'meta.dart';
-import 'object.dart';
+import 'definition.dart';
 import 'table.dart';
 import 'translation.dart';
 

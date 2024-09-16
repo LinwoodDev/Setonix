@@ -4,7 +4,7 @@ export 'src/models/data.dart';
 export 'src/models/deck.dart';
 export 'src/models/info.dart';
 export 'src/models/meta.dart';
-export 'src/models/object.dart';
+export 'src/models/definition.dart';
 export 'src/models/server.dart';
 export 'src/models/table.dart';
 export 'src/models/translation.dart';

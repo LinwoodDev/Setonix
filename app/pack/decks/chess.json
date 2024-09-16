@@ -1,0 +1,90 @@
+{
+  "boards": [
+    {
+      "position": [0, 0],
+      "name": "chess"
+    }
+  ],
+  "figures": [
+    {
+      "position": [0, 0],
+      "name": "chess_black",
+      "variation": "rook"
+    },
+    {
+      "position": [1, 0],
+      "name": "chess_black",
+      "variation": "knight"
+    },
+    {
+      "position": [2, 0],
+      "name": "chess_black",
+      "variation": "bishop"
+    },
+    {
+      "position": [3, 0],
+      "name": "chess_black",
+      "variation": "queen"
+    },
+    {
+      "position": [4, 0],
+      "name": "chess_black",
+      "variation": "king"
+    },
+    {
+      "position": [5, 0],
+      "name": "chess_black",
+      "variation": "bishop"
+    },
+    {
+      "position": [6, 0],
+      "name": "chess_black",
+      "variation": "knight"
+    },
+    {
+      "position": [7, 0],
+      "name": "chess_black",
+      "variation": "rook"
+    },
+    {
+      "position": [0, 7],
+      "name": "chess_white",
+      "variation": "rook"
+    },
+    {
+      "position": [1, 7],
+      "name": "chess_white",
+      "variation": "knight"
+    },
+    {
+      "position": [2, 7],
+      "name": "chess_white",
+      "variation": "bishop"
+    },
+    {
+      "position": [3, 7],
+      "name": "chess_white",
+      "variation": "queen"
+    },
+    {
+      "position": [4, 7],
+      "name": "chess_white",
+      "variation": "king"
+    },
+    {
+      "position": [5, 7],
+      "name": "chess_white",
+      "variation": "bishop"
+    },
+    {
+      "position": [6, 7],
+      "name": "chess_white",
+      "variation": "knight"
+    },
+    {
+      "position": [7, 7],
+      "name": "chess_white",
+      "variation": "rook"
+    }
+  ]
+}

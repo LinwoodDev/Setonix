@@ -4,7 +4,7 @@
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
-part of 'object.dart';
+part of 'definition.dart';
 
 class FigureDefinitionMapper extends ClassMapperBase<FigureDefinition> {
   FigureDefinitionMapper._();
@@ -451,7 +451,6 @@ class BoardDefinitionMapper extends ClassMapperBase<BoardDefinition> {
   static BoardDefinitionMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = BoardDefinitionMapper._());
-      VariationDefinitionMapper.ensureInitialized();
       VectorDefinitionMapper.ensureInitialized();
     }
     return _instance!;
@@ -460,24 +459,28 @@ class BoardDefinitionMapper extends ClassMapperBase<BoardDefinition> {
   @override
   final String id = 'BoardDefinition';
 
-  static Map<String, VariationDefinition> _$variations(BoardDefinition v) =>
-      v.variations;
-  static const Field<BoardDefinition, Map<String, VariationDefinition>>
-      _f$variations =
-      Field('variations', _$variations, opt: true, def: const {});
-  static VectorDefinition _$size(BoardDefinition v) => v.size;
+  static VectorDefinition _$offset(BoardDefinition v) => v.offset;
+  static const Field<BoardDefinition, VectorDefinition> _f$offset =
+      Field('offset', _$offset, opt: true, def: VectorDefinition.zero);
+  static VectorDefinition? _$size(BoardDefinition v) => v.size;
   static const Field<BoardDefinition, VectorDefinition> _f$size =
-      Field('size', _$size, opt: true, def: VectorDefinition.one);
+      Field('size', _$size, opt: true);
+  static String _$texture(BoardDefinition v) => v.texture;
+  static const Field<BoardDefinition, String> _f$texture =
+      Field('texture', _$texture);
 
   @override
   final MappableFields<BoardDefinition> fields = const {
-    #variations: _f$variations,
+    #offset: _f$offset,
     #size: _f$size,
+    #texture: _f$texture,
   };
 
   static BoardDefinition _instantiate(DecodingData data) {
     return BoardDefinition(
-        variations: data.dec(_f$variations), size: data.dec(_f$size));
+        offset: data.dec(_f$offset),
+        size: data.dec(_f$size),
+        texture: data.dec(_f$texture));
   }
 
   @override
@@ -533,15 +536,9 @@ extension BoardDefinitionValueCopy<$R, $Out>
 
 abstract class BoardDefinitionCopyWith<$R, $In extends BoardDefinition, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  MapCopyWith<
-      $R,
-      String,
-      VariationDefinition,
-      VariationDefinitionCopyWith<$R, VariationDefinition,
-          VariationDefinition>> get variations;
-  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get size;
-  $R call(
-      {Map<String, VariationDefinition>? variations, VectorDefinition? size});
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get offset;
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>? get size;
+  $R call({VectorDefinition? offset, VectorDefinition? size, String? texture});
   BoardDefinitionCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -555,28 +552,23 @@ class _BoardDefinitionCopyWithImpl<$R, $Out>
   late final ClassMapperBase<BoardDefinition> $mapper =
       BoardDefinitionMapper.ensureInitialized();
   @override
-  MapCopyWith<
-      $R,
-      String,
-      VariationDefinition,
-      VariationDefinitionCopyWith<$R, VariationDefinition,
-          VariationDefinition>> get variations => MapCopyWith($value.variations,
-      (v, t) => v.copyWith.$chain(t), (v) => call(variations: v));
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get offset =>
+      $value.offset.copyWith.$chain((v) => call(offset: v));
   @override
-  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get size =>
-      $value.size.copyWith.$chain((v) => call(size: v));
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>? get size =>
+      $value.size?.copyWith.$chain((v) => call(size: v));
   @override
-  $R call(
-          {Map<String, VariationDefinition>? variations,
-          VectorDefinition? size}) =>
+  $R call({VectorDefinition? offset, Object? size = $none, String? texture}) =>
       $apply(FieldCopyWithData({
-        if (variations != null) #variations: variations,
-        if (size != null) #size: size
+        if (offset != null) #offset: offset,
+        if (size != $none) #size: size,
+        if (texture != null) #texture: texture
       }));
   @override
   BoardDefinition $make(CopyWithData data) => BoardDefinition(
-      variations: data.get(#variations, or: $value.variations),
-      size: data.get(#size, or: $value.size));
+      offset: data.get(#offset, or: $value.offset),
+      size: data.get(#size, or: $value.size),
+      texture: data.get(#texture, or: $value.texture));
 
   @override
   BoardDefinitionCopyWith<$R2, BoardDefinition, $Out2> $chain<$R2, $Out2>(

@@ -34,13 +34,10 @@ class VectorMapHook extends MappingHook {
 class GameTable with GameTableMappable {
   @MappableField(hook: VectorMapHook())
   final Map<VectorDefinition, TableCell> cells;
-  @MappableField(hook: VectorMapHook())
-  final Map<VectorDefinition, GameBoard> boards;
   final ItemLocation? background;
 
   const GameTable({
     this.cells = const {},
-    this.boards = const {},
     this.background,
   });
 
@@ -77,25 +74,20 @@ class GameSeat with GameSeatMappable {
 @MappableClass()
 class TableCell with TableCellMappable {
   final List<GameObject> objects;
+  final List<GameBoard> boards;
   final String? team;
   final int reveal;
   final int? teamReveal;
 
   TableCell({
     this.objects = const [],
+    this.boards = const [],
     this.team,
     this.reveal = -1,
     this.teamReveal,
   });
 
   int get teamRevealValue => teamReveal ?? reveal;
-}
-
-@MappableClass()
-class GameBoard with GameBoardMappable {
-  final ItemLocation asset;
-
-  GameBoard(this.asset);
 }
 
 @MappableClass()
@@ -108,6 +100,17 @@ class GameObject with GameObjectMappable {
     required this.asset,
     this.variation,
     this.hidden = false,
+  });
+}
+
+@MappableClass()
+class GameBoard with GameBoardMappable {
+  final ItemLocation asset;
+  final VectorDefinition offset;
+
+  GameBoard({
+    required this.asset,
+    required this.offset,
   });
 }
 
