@@ -177,5 +177,6 @@
   "lanServers": "LAN servers",
   "inNetwork": "In network",
   "updateProperty": "Update property",
-  "highContrast": "High contrast"
+  "highContrast": "High contrast",
+  "noServers": "There are no servers available"
 }
