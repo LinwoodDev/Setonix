@@ -11,6 +11,14 @@ import 'package:quokka/widgets/search.dart';
 import 'package:quokka_api/quokka_api.dart';
 import 'package:rxdart/rxdart.dart';
 
+void _connect(BuildContext context, String address, bool secure) {
+  Navigator.of(context).pop();
+  GoRouter.of(context).goNamed('connect', queryParameters: {
+    'address': address,
+    'secure': secure.toString(),
+  });
+}
+
 class ConnectEditDialog extends StatelessWidget {
   final ListGameServer? initialValue;
   final int? index;
@@ -26,15 +34,12 @@ class ConnectEditDialog extends StatelessWidget {
     String address = initialValue?.address ?? '';
     String name = initialValue?.name ?? '';
     bool secure = initialValue?.secure ?? true;
-    void connect() {
-      Navigator.of(context).pop();
-      GoRouter.of(context).goNamed('connect', queryParameters: {
-        'address': address,
-        'secure': secure.toString(),
-      });
-    }
 
     final secureSwitchEnabled = !kIsWeb || Uri.base.isScheme('HTTP');
+
+    void connect() {
+      _connect(context, address, secure);
+    }
 
     return ResponsiveAlertDialog(
       title: Text(AppLocalizations.of(context).connect),
@@ -132,16 +137,12 @@ class _ServersDialogState extends State<ServersDialog> {
         .autoConnect();
   }
 
-  _buildDetailsChildren(GameProperty? server) => server == null
-      ? [
-          Center(child: Text(AppLocalizations.of(context).error)),
-        ]
-      : [
-          ListTile(
-            title: Text(AppLocalizations.of(context).description),
-            subtitle: Text(server.description),
-          ),
-        ];
+  _buildDetailsChildren(GameProperty server) => [
+        ListTile(
+          title: Text(AppLocalizations.of(context).description),
+          subtitle: Text(server.description),
+        ),
+      ];
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsCubit, QuokkaSettings>(
@@ -196,7 +197,8 @@ class _ServersDialogState extends State<ServersDialog> {
                       child: FilledButton.icon(
                         icon: const Icon(PhosphorIconsLight.play),
                         label: Text(AppLocalizations.of(context).play),
-                        onPressed: () => Navigator.of(context).pop(),
+                        onPressed: () =>
+                            _connect(context, server.address, server.secure),
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -288,7 +290,8 @@ class _ServersDialogState extends State<ServersDialog> {
                                       titleBuilder: (context) =>
                                           Text(current.display),
                                       childrenBuilder: (context) => [
-                                        ..._buildDetailsChildren(entry.value),
+                                        ..._buildDetailsChildren(entry.value ??
+                                            const GameProperty()),
                                         const SizedBox(height: 16),
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
@@ -320,25 +323,6 @@ class _ServersDialogState extends State<ServersDialog> {
                       ),
                     ),
                   ),
-                ],
-              );
-              final details = Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      server.display,
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                  ),
-                  Expanded(
-                    child: ListView(
-                      children: _buildDetailsChildren(property),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  playButton,
                 ],
               );
               return Column(
@@ -381,7 +365,29 @@ class _ServersDialogState extends State<ServersDialog> {
                                       child: Text(AppLocalizations.of(context)
                                           .selectServer),
                                     )
-                                  : details),
+                                  : Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            server.display,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleLarge,
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: ListView(
+                                            children:
+                                                _buildDetailsChildren(property),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 16),
+                                        playButton,
+                                      ],
+                                    )),
                         ],
                       ],
                     ),
