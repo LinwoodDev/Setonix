@@ -12,6 +12,9 @@ class VectorDefinition with VectorDefinitionMappable {
   static const one = VectorDefinition(1, 1);
 
   String toDisplayString() => '($x, $y)';
+
+  operator +(VectorDefinition other) =>
+      VectorDefinition(x + other.x, y + other.y);
 }
 
 class VectorDefinitionHook extends MappingHook {

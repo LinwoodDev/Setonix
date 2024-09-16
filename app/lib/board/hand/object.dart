@@ -42,24 +42,24 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
   void moveItem(HandItemDropZone zone) {
     final current = toGlobalDefinition(bloc.state);
     switch (zone) {
-      case GameCell e:
-        final global = e.toDefinition();
+      case GameCell():
+        final global = zone.toDefinition();
         bloc.process(ObjectsMoved(
           [item.$2],
           current.table,
-          current.location,
+          current.position,
           global,
         ));
         if (bloc.state.switchCellOnMove) {
           bloc.process(CellSwitched(global));
         }
-      case GameObjectHandItem e:
+      case GameObjectHandItem():
         bloc.process(ObjectIndexChanged(
           current,
           item.$2,
-          e.item.$2,
+          zone.item.$2,
         ));
-      case GameHand _:
+      case GameHand():
         final cell = bloc.state.table.cells[item.$1];
         bloc.process(ObjectIndexChanged(
           current,

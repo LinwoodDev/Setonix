@@ -243,7 +243,7 @@ class GameCell extends PositionComponent
   bool anyRollable(ClientWorldState state) {
     final assetManager = state.assetManager;
     final global = toGlobalDefinition(state);
-    final local = global.location;
+    final local = global.position;
     final cell = state.table.getCell(local);
     if (!state.isCellVisible(global)) return false;
     return cell.objects.any((object) =>

@@ -29,13 +29,13 @@ class FigureDefinitionHandItem
   void moveItem(HandItemDropZone zone) {
     if (zone is! GameCell) return;
     final global = zone.toGlobalDefinition(bloc.state);
-    bloc.process(ObjectsSpawned(global, [
+    bloc.process(ObjectsSpawned.single(global, [
       GameObject(
           asset: ItemLocation(item.$1.namespace, item.$1.id),
           variation: item.$2)
     ]));
     if (bloc.state.switchCellOnMove) {
-      bloc.process(CellSwitched(global.location));
+      bloc.process(CellSwitched(global.position));
     }
   }
 }

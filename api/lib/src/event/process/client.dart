@@ -17,7 +17,7 @@ bool isValidClientEvent(
               0,
               state
                       .getTableOrDefault(event.cell.table)
-                      .getCell(event.cell.location)
+                      .getCell(event.cell.position)
                       .objects
                       .length -
                   1) ??
@@ -25,8 +25,8 @@ bool isValidClientEvent(
       ShuffleCellRequest() => state
           .getTableOrDefault(event.cell.table)
           .cells
-          .containsKey(event.cell.location),
-      ObjectsSpawned() => event.objects.every((e) {
+          .containsKey(event.cell.position),
+      ObjectsSpawned() => event.objects.values.expand((e) => e).every((e) {
           final figure =
               assetManager.getPack(e.asset.namespace)?.getFigure(e.asset.id);
           return figure != null &&
@@ -46,7 +46,7 @@ bool isValidClientEvent(
               0,
               state
                       .getTableOrDefault(event.cell.table)
-                      .getCell(event.cell.location)
+                      .getCell(event.cell.position)
                       .objects
                       .length -
                   1) ??
@@ -55,7 +55,7 @@ bool isValidClientEvent(
           0,
           state
                   .getTableOrDefault(event.cell.table)
-                  .getCell(event.cell.location)
+                  .getCell(event.cell.position)
                   .objects
                   .length -
               1),
@@ -99,7 +99,7 @@ bool isValidClientEvent(
       return (TeamLeft(channel, team), kAnyChannel);
     case CellRollRequest():
       final table = state.getTableOrDefault(event.cell.table);
-      var cell = table.getCell(event.cell.location);
+      var cell = table.getCell(event.cell.position);
       final random = Random();
       GameObject roll(GameObject object) {
         final figure = assetManager
@@ -123,7 +123,7 @@ bool isValidClientEvent(
       return (ObjectsChanged(event.cell, objects), kAnyChannel);
     case ShuffleCellRequest():
       final table = state.getTableOrDefault(event.cell.table);
-      final cell = table.cells[event.cell.location];
+      final cell = table.cells[event.cell.position];
       if (cell == null) return null;
       final positions = List<int>.generate(cell.objects.length, (i) => i)
         ..shuffle();

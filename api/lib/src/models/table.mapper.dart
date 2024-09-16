@@ -664,16 +664,16 @@ class GlobalVectorDefinitionMapper
   static const Field<GlobalVectorDefinition, int> _f$x = Field('x', _$x);
   static int _$y(GlobalVectorDefinition v) => v.y;
   static const Field<GlobalVectorDefinition, int> _f$y = Field('y', _$y);
-  static VectorDefinition _$location(GlobalVectorDefinition v) => v.location;
-  static const Field<GlobalVectorDefinition, VectorDefinition> _f$location =
-      Field('location', _$location, mode: FieldMode.member);
+  static VectorDefinition _$position(GlobalVectorDefinition v) => v.position;
+  static const Field<GlobalVectorDefinition, VectorDefinition> _f$position =
+      Field('position', _$position, mode: FieldMode.member);
 
   @override
   final MappableFields<GlobalVectorDefinition> fields = const {
     #table: _f$table,
     #x: _f$x,
     #y: _f$y,
-    #location: _f$location,
+    #position: _f$position,
   };
 
   static GlobalVectorDefinition _instantiate(DecodingData data) {

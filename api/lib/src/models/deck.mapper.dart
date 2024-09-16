@@ -191,22 +191,22 @@ class FigureDeckDefinitionMapper extends ClassMapperBase<FigureDeckDefinition> {
   static String? _$variation(FigureDeckDefinition v) => v.variation;
   static const Field<FigureDeckDefinition, String> _f$variation =
       Field('variation', _$variation, opt: true);
-  static VectorDefinition _$location(FigureDeckDefinition v) => v.location;
-  static const Field<FigureDeckDefinition, VectorDefinition> _f$location =
-      Field('location', _$location, opt: true, def: VectorDefinition.zero);
+  static VectorDefinition _$position(FigureDeckDefinition v) => v.position;
+  static const Field<FigureDeckDefinition, VectorDefinition> _f$position =
+      Field('position', _$position, opt: true, def: VectorDefinition.zero);
 
   @override
   final MappableFields<FigureDeckDefinition> fields = const {
     #name: _f$name,
     #variation: _f$variation,
-    #location: _f$location,
+    #position: _f$position,
   };
 
   static FigureDeckDefinition _instantiate(DecodingData data) {
     return FigureDeckDefinition(
         name: data.dec(_f$name),
         variation: data.dec(_f$variation),
-        location: data.dec(_f$location));
+        position: data.dec(_f$position));
   }
 
   @override
@@ -266,8 +266,8 @@ abstract class FigureDeckDefinitionCopyWith<
     $R,
     $In extends FigureDeckDefinition,
     $Out> implements ClassCopyWith<$R, $In, $Out> {
-  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get location;
-  $R call({String? name, String? variation, VectorDefinition? location});
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get position;
+  $R call({String? name, String? variation, VectorDefinition? position});
   FigureDeckDefinitionCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -282,22 +282,22 @@ class _FigureDeckDefinitionCopyWithImpl<$R, $Out>
       FigureDeckDefinitionMapper.ensureInitialized();
   @override
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>
-      get location => $value.location.copyWith.$chain((v) => call(location: v));
+      get position => $value.position.copyWith.$chain((v) => call(position: v));
   @override
   $R call(
           {String? name,
           Object? variation = $none,
-          VectorDefinition? location}) =>
+          VectorDefinition? position}) =>
       $apply(FieldCopyWithData({
         if (name != null) #name: name,
         if (variation != $none) #variation: variation,
-        if (location != null) #location: location
+        if (position != null) #position: position
       }));
   @override
   FigureDeckDefinition $make(CopyWithData data) => FigureDeckDefinition(
       name: data.get(#name, or: $value.name),
       variation: data.get(#variation, or: $value.variation),
-      location: data.get(#location, or: $value.location));
+      position: data.get(#position, or: $value.position));
 
   @override
   FigureDeckDefinitionCopyWith<$R2, FigureDeckDefinition, $Out2>
@@ -323,19 +323,19 @@ class BoardDeckDefinitionMapper extends ClassMapperBase<BoardDeckDefinition> {
   static String _$name(BoardDeckDefinition v) => v.name;
   static const Field<BoardDeckDefinition, String> _f$name =
       Field('name', _$name);
-  static VectorDefinition _$location(BoardDeckDefinition v) => v.location;
-  static const Field<BoardDeckDefinition, VectorDefinition> _f$location =
-      Field('location', _$location, opt: true, def: VectorDefinition.zero);
+  static VectorDefinition _$position(BoardDeckDefinition v) => v.position;
+  static const Field<BoardDeckDefinition, VectorDefinition> _f$position =
+      Field('position', _$position, opt: true, def: VectorDefinition.zero);
 
   @override
   final MappableFields<BoardDeckDefinition> fields = const {
     #name: _f$name,
-    #location: _f$location,
+    #position: _f$position,
   };
 
   static BoardDeckDefinition _instantiate(DecodingData data) {
     return BoardDeckDefinition(
-        name: data.dec(_f$name), location: data.dec(_f$location));
+        name: data.dec(_f$name), position: data.dec(_f$position));
   }
 
   @override
@@ -393,8 +393,8 @@ extension BoardDeckDefinitionValueCopy<$R, $Out>
 
 abstract class BoardDeckDefinitionCopyWith<$R, $In extends BoardDeckDefinition,
     $Out> implements ClassCopyWith<$R, $In, $Out> {
-  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get location;
-  $R call({String? name, VectorDefinition? location});
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get position;
+  $R call({String? name, VectorDefinition? position});
   BoardDeckDefinitionCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -409,17 +409,17 @@ class _BoardDeckDefinitionCopyWithImpl<$R, $Out>
       BoardDeckDefinitionMapper.ensureInitialized();
   @override
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>
-      get location => $value.location.copyWith.$chain((v) => call(location: v));
+      get position => $value.position.copyWith.$chain((v) => call(position: v));
   @override
-  $R call({String? name, VectorDefinition? location}) =>
+  $R call({String? name, VectorDefinition? position}) =>
       $apply(FieldCopyWithData({
         if (name != null) #name: name,
-        if (location != null) #location: location
+        if (position != null) #position: position
       }));
   @override
   BoardDeckDefinition $make(CopyWithData data) => BoardDeckDefinition(
       name: data.get(#name, or: $value.name),
-      location: data.get(#location, or: $value.location));
+      position: data.get(#position, or: $value.position));
 
   @override
   BoardDeckDefinitionCopyWith<$R2, BoardDeckDefinition, $Out2>

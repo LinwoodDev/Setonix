@@ -31,15 +31,17 @@ class DeckDefinitionHandItem extends HandItem<PackItem<DeckDefinition>> {
   void moveItem(HandItemDropZone zone) {
     if (zone is! GameCell) return;
     final global = zone.toGlobalDefinition(bloc.state);
-    bloc.process(ObjectsSpawned(
-        global,
-        item.item.figures
-            .map((e) => GameObject(
-                asset: ItemLocation(item.namespace, e.name),
-                variation: e.variation))
-            .toList()));
+    final objects = <VectorDefinition, List<GameObject>>{};
+    for (final e in item.item.figures) {
+      final location = global.position + e.position;
+      objects.putIfAbsent(location, () => []).add(GameObject(
+            asset: ItemLocation(item.namespace, e.name),
+            variation: e.variation,
+          ));
+    }
+    bloc.process(ObjectsSpawned(bloc.state.tableName, objects));
     if (bloc.state.switchCellOnMove) {
-      bloc.process(CellSwitched(global.location));
+      bloc.process(CellSwitched(global.position));
     }
   }
 }

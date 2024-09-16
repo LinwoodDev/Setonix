@@ -1976,7 +1976,7 @@ class ObjectsSpawnedMapper extends SubClassMapperBase<ObjectsSpawned> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ObjectsSpawnedMapper._());
       HybridWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
-      GlobalVectorDefinitionMapper.ensureInitialized();
+      VectorDefinitionMapper.ensureInitialized();
       GameObjectMapper.ensureInitialized();
     }
     return _instance!;
@@ -1985,16 +1985,16 @@ class ObjectsSpawnedMapper extends SubClassMapperBase<ObjectsSpawned> {
   @override
   final String id = 'ObjectsSpawned';
 
-  static GlobalVectorDefinition _$cell(ObjectsSpawned v) => v.cell;
-  static const Field<ObjectsSpawned, GlobalVectorDefinition> _f$cell =
-      Field('cell', _$cell);
-  static List<GameObject> _$objects(ObjectsSpawned v) => v.objects;
-  static const Field<ObjectsSpawned, List<GameObject>> _f$objects =
-      Field('objects', _$objects);
+  static String _$table(ObjectsSpawned v) => v.table;
+  static const Field<ObjectsSpawned, String> _f$table = Field('table', _$table);
+  static Map<VectorDefinition, List<GameObject>> _$objects(ObjectsSpawned v) =>
+      v.objects;
+  static const Field<ObjectsSpawned, Map<VectorDefinition, List<GameObject>>>
+      _f$objects = Field('objects', _$objects);
 
   @override
   final MappableFields<ObjectsSpawned> fields = const {
-    #cell: _f$cell,
+    #table: _f$table,
     #objects: _f$objects,
   };
 
@@ -2007,7 +2007,7 @@ class ObjectsSpawnedMapper extends SubClassMapperBase<ObjectsSpawned> {
       HybridWorldEventMapper.ensureInitialized();
 
   static ObjectsSpawned _instantiate(DecodingData data) {
-    return ObjectsSpawned(data.dec(_f$cell), data.dec(_f$objects));
+    return ObjectsSpawned(data.dec(_f$table), data.dec(_f$objects));
   }
 
   @override
@@ -2063,12 +2063,10 @@ extension ObjectsSpawnedValueCopy<$R, $Out>
 
 abstract class ObjectsSpawnedCopyWith<$R, $In extends ObjectsSpawned, $Out>
     implements HybridWorldEventCopyWith<$R, $In, $Out> {
-  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
-      GlobalVectorDefinition> get cell;
-  ListCopyWith<$R, GameObject, GameObjectCopyWith<$R, GameObject, GameObject>>
-      get objects;
+  MapCopyWith<$R, VectorDefinition, List<GameObject>,
+      ObjectCopyWith<$R, List<GameObject>, List<GameObject>>> get objects;
   @override
-  $R call({GlobalVectorDefinition? cell, List<GameObject>? objects});
+  $R call({String? table, Map<VectorDefinition, List<GameObject>>? objects});
   ObjectsSpawnedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -2082,22 +2080,20 @@ class _ObjectsSpawnedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ObjectsSpawned> $mapper =
       ObjectsSpawnedMapper.ensureInitialized();
   @override
-  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
-          GlobalVectorDefinition>
-      get cell => $value.cell.copyWith.$chain((v) => call(cell: v));
+  MapCopyWith<$R, VectorDefinition, List<GameObject>,
+          ObjectCopyWith<$R, List<GameObject>, List<GameObject>>>
+      get objects => MapCopyWith($value.objects,
+          (v, t) => ObjectCopyWith(v, $identity, t), (v) => call(objects: v));
   @override
-  ListCopyWith<$R, GameObject, GameObjectCopyWith<$R, GameObject, GameObject>>
-      get objects => ListCopyWith($value.objects,
-          (v, t) => v.copyWith.$chain(t), (v) => call(objects: v));
-  @override
-  $R call({GlobalVectorDefinition? cell, List<GameObject>? objects}) =>
+  $R call({String? table, Map<VectorDefinition, List<GameObject>>? objects}) =>
       $apply(FieldCopyWithData({
-        if (cell != null) #cell: cell,
+        if (table != null) #table: table,
         if (objects != null) #objects: objects
       }));
   @override
   ObjectsSpawned $make(CopyWithData data) => ObjectsSpawned(
-      data.get(#cell, or: $value.cell), data.get(#objects, or: $value.objects));
+      data.get(#table, or: $value.table),
+      data.get(#objects, or: $value.objects));
 
   @override
   ObjectsSpawnedCopyWith<$R2, ObjectsSpawned, $Out2> $chain<$R2, $Out2>(

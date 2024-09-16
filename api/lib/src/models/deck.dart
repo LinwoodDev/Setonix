@@ -22,22 +22,22 @@ class DeckDefinition with DeckDefinitionMappable {
 class FigureDeckDefinition with FigureDeckDefinitionMappable {
   final String name;
   final String? variation;
-  final VectorDefinition location;
+  final VectorDefinition position;
 
   FigureDeckDefinition({
     required this.name,
     this.variation,
-    this.location = VectorDefinition.zero,
+    this.position = VectorDefinition.zero,
   });
 }
 
 @MappableClass()
 class BoardDeckDefinition with BoardDeckDefinitionMappable {
   final String name;
-  final VectorDefinition location;
+  final VectorDefinition position;
 
   BoardDeckDefinition({
     required this.name,
-    this.location = VectorDefinition.zero,
+    this.position = VectorDefinition.zero,
   });
 }

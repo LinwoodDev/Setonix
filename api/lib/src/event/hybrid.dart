@@ -16,10 +16,13 @@ final class BackgroundChanged extends HybridWorldEvent
 @MappableClass()
 final class ObjectsSpawned extends HybridWorldEvent
     with ObjectsSpawnedMappable {
-  final GlobalVectorDefinition cell;
-  final List<GameObject> objects;
+  final String table;
+  final Map<VectorDefinition, List<GameObject>> objects;
 
-  ObjectsSpawned(this.cell, this.objects);
+  ObjectsSpawned(this.table, this.objects);
+  ObjectsSpawned.single(GlobalVectorDefinition cell, List<GameObject> objects)
+      : objects = {cell.position: objects},
+        table = cell.table;
 }
 
 @MappableClass()
