@@ -22,7 +22,7 @@ class GameNoteDialog extends StatefulWidget {
 
 class _GameNoteDialogState extends State<GameNoteDialog> {
   late final WorldBloc _bloc;
-  bool _editing = true;
+  bool _editing = true, _expanded = false;
   final TextEditingController _nameController = TextEditingController(),
       _contentController = TextEditingController();
 
@@ -47,6 +47,7 @@ class _GameNoteDialogState extends State<GameNoteDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
     return ResponsiveAlertDialog(
       title: widget.note == null
           ? TextFormField(
@@ -72,6 +73,16 @@ class _GameNoteDialogState extends State<GameNoteDialog> {
             });
           },
         ),
+        if (size.width > LeapBreakpoints.expanded)
+          IconButton(
+            icon: _expanded
+                ? const Icon(PhosphorIconsLight.arrowsInSimple)
+                : const Icon(PhosphorIconsLight.arrowsOutSimple),
+            tooltip: _expanded
+                ? AppLocalizations.of(context).collapse
+                : AppLocalizations.of(context).expand,
+            onPressed: () => setState(() => _expanded = !_expanded),
+          ),
       ],
       actions: [
         TextButton.icon(
@@ -89,13 +100,13 @@ class _GameNoteDialogState extends State<GameNoteDialog> {
           },
         ),
       ],
-      constraints: const BoxConstraints(
-        maxWidth: LeapBreakpoints.expanded,
+      constraints: BoxConstraints(
+        maxWidth: _expanded ? LeapBreakpoints.large : LeapBreakpoints.medium,
         maxHeight: 1000,
       ),
       content: _editing
           ? TextFormField(
-              minLines: 5,
+              minLines: _expanded ? 15 : 6,
               maxLines: 50,
               controller: _contentController,
               decoration: InputDecoration(
@@ -105,16 +116,21 @@ class _GameNoteDialogState extends State<GameNoteDialog> {
             )
           : ListenableBuilder(
               listenable: _contentController,
-              builder: (context, _) => Markdown(
-                  extensionSet: md.ExtensionSet(
-                    md.ExtensionSet.gitHubWeb.blockSyntaxes,
-                    <md.InlineSyntax>[
-                      md.EmojiSyntax(),
-                      ...md.ExtensionSet.gitHubWeb.inlineSyntaxes
-                    ],
-                  ),
-                  shrinkWrap: true,
-                  data: _contentController.text)),
+              builder: (context, _) => ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: _expanded ? 400 : 200,
+                    ),
+                    child: Markdown(
+                        extensionSet: md.ExtensionSet(
+                          md.ExtensionSet.gitHubWeb.blockSyntaxes,
+                          <md.InlineSyntax>[
+                            md.EmojiSyntax(),
+                            ...md.ExtensionSet.gitHubWeb.inlineSyntaxes
+                          ],
+                        ),
+                        shrinkWrap: true,
+                        data: _contentController.text),
+                  )),
     );
   }
 }

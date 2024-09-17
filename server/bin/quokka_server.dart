@@ -48,7 +48,7 @@ const welcomeText = """
   ____            __    __       
  / __ \\__ _____  / /__ / /_____ _
 / /_/ / // / _ \\/  '_//  '_/ _ `/
-\\___\\_\\_,_/\\___/_/\\_\\/_/\\_\\\\_,_/                                                                             
+\\___\\_\\_,_/\\___/_/\\_\\/_/\\_\\\\_,_/
 """;
 Future<void> main(List<String> arguments) async {
   final ArgParser argParser = buildParser();

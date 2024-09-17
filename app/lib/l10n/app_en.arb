@@ -178,5 +178,7 @@
   "inNetwork": "In network",
   "updateProperty": "Update property",
   "highContrast": "High contrast",
-  "noServers": "There are no servers available"
+  "noServers": "There are no servers available",
+  "expand": "Expand",
+  "collapse": "Collapse"
 }
