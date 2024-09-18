@@ -121,6 +121,42 @@ class GameDrawer extends StatelessWidget {
                 );
               },
             ),
+            BlocBuilder<WorldBloc, ClientWorldState>(
+              buildWhen: (previous, current) => previous.zoom != current.zoom,
+              builder: (context, state) => ListTile(
+                leading: const Icon(PhosphorIconsLight.magnifyingGlass),
+                title: Text(
+                  AppLocalizations.of(context).zoom,
+                ),
+                subtitle: Text(
+                  '${(state.zoom * 100).toStringAsFixed(0)}%',
+                ),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: const Icon(PhosphorIconsLight.minus),
+                      tooltip: AppLocalizations.of(context).zoomOut,
+                      onPressed: () =>
+                          context.read<WorldBloc>().process(ZoomChanged(-0.1)),
+                    ),
+                    IconButton(
+                      icon: const Icon(PhosphorIconsLight.plus),
+                      tooltip: AppLocalizations.of(context).zoomIn,
+                      onPressed: () =>
+                          context.read<WorldBloc>().process(ZoomChanged(0.1)),
+                    ),
+                    IconButton(
+                      icon: const Icon(PhosphorIconsLight.clockClockwise),
+                      tooltip: AppLocalizations.of(context).resetZoom,
+                      onPressed: () {
+                        context.read<WorldBloc>().process(ZoomChanged.reset());
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
             ListTile(
               leading: const Icon(PhosphorIconsLight.package),
               title: Text(AppLocalizations.of(context).packs),

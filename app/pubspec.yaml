@@ -37,7 +37,7 @@ dependencies:
   flex_color_scheme:
     git:
       url: https://github.com/CodeDoctorDE/flex_color_scheme
-      ref: d1fb4e2225b039bc8cd0bbadb6f3e7b459ae2fe4
+      ref: fe087eb6b5eb4eb4ed6026a12a515fecb9c8a891
   flutter_svg: ^2.0.10+1
   window_manager: ^0.4.0
   go_router: ^14.2.2

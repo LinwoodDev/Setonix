@@ -1,11 +1,16 @@
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
+import 'package:flame_bloc/flame_bloc.dart';
+import 'package:quokka/bloc/world/bloc.dart';
+import 'package:quokka/bloc/world/state.dart';
 import 'package:quokka/board/cell.dart';
 
-class BoardGrid extends PositionComponent with HasGameRef {
+class BoardGrid extends PositionComponent
+    with HasGameRef, FlameBlocListenable<WorldBloc, ClientWorldState> {
   final Vector2 cellSize;
   static const _padding = 3.0;
   Rect? _lastViewport;
+  double _zoom = 1.0;
 
   BoardGrid({
     required this.cellSize,
@@ -13,11 +18,12 @@ class BoardGrid extends PositionComponent with HasGameRef {
 
   Rect get viewport {
     final Rect viewport = game.camera.visibleWorldRect;
+    final currentSize = cellSizeWithZoom;
     return Rect.fromLTRB(
-      (viewport.left / cellSize.x - _padding).floor() * cellSize.x,
-      (viewport.top / cellSize.y - _padding).floor() * cellSize.y,
-      (viewport.right / cellSize.x + _padding).ceil() * cellSize.x,
-      (viewport.bottom / cellSize.y + _padding).ceil() * cellSize.y,
+      (viewport.left / currentSize.x - _padding).floor() * currentSize.x,
+      (viewport.top / currentSize.y - _padding).floor() * currentSize.y,
+      (viewport.right / currentSize.x + _padding).ceil() * currentSize.x,
+      (viewport.bottom / currentSize.y + _padding).ceil() * currentSize.y,
     );
   }
 
@@ -32,6 +38,7 @@ class BoardGrid extends PositionComponent with HasGameRef {
   void _updateGrid() {
     if (!shouldReset()) return;
     final viewport = this.viewport;
+    final currentSize = cellSizeWithZoom;
     // Remove components that are out of the viewport
     removeAll(children.where((element) {
       if (element is! PositionComponent) return false;
@@ -41,37 +48,39 @@ class BoardGrid extends PositionComponent with HasGameRef {
     final last = _lastViewport ?? Rect.zero;
     // Add components that are in the viewport
     // Top and bottom
-    for (var x = viewport.left; x < viewport.right; x += cellSize.x) {
-      for (var y = viewport.top; y < last.top; y += cellSize.y) {
+    for (var x = viewport.left; x < viewport.right; x += currentSize.x) {
+      for (var y = viewport.top; y < last.top; y += currentSize.y) {
         add(_createCell(
           position: Vector2(x, y),
-          size: cellSize,
+          size: currentSize,
         ));
       }
-      for (var y = last.bottom; y < viewport.bottom; y += cellSize.y) {
+      for (var y = last.bottom; y < viewport.bottom; y += currentSize.y) {
         add(_createCell(
           position: Vector2(x, y),
-          size: cellSize,
+          size: currentSize,
         ));
       }
     }
     // Left and right
-    for (var y = last.top; y < last.bottom; y += cellSize.y) {
-      for (var x = viewport.left; x < last.left; x += cellSize.x) {
+    for (var y = last.top; y < last.bottom; y += currentSize.y) {
+      for (var x = viewport.left; x < last.left; x += currentSize.x) {
         add(_createCell(
           position: Vector2(x, y),
-          size: cellSize,
+          size: currentSize,
         ));
       }
-      for (var x = last.right; x < viewport.right; x += cellSize.x) {
+      for (var x = last.right; x < viewport.right; x += currentSize.x) {
         add(_createCell(
           position: Vector2(x, y),
-          size: cellSize,
+          size: currentSize,
         ));
       }
     }
     _lastViewport = viewport;
   }
+
+  Vector2 get cellSizeWithZoom => cellSize * _zoom;
 
   @override
   void update(double dt) {
@@ -90,4 +99,22 @@ class BoardGrid extends PositionComponent with HasGameRef {
         position: position,
         size: size,
       );
+
+  @override
+  void onInitialState(ClientWorldState state) {
+    _zoom = state.zoom;
+  }
+
+  @override
+  bool listenWhen(ClientWorldState previousState, ClientWorldState newState) =>
+      previousState.zoom != newState.zoom;
+
+  @override
+  void onNewState(ClientWorldState state) {
+    if (_zoom != state.zoom) {
+      _zoom = state.zoom;
+      _lastViewport = null;
+      removeAll(children);
+    }
+  }
 }

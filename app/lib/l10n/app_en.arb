@@ -180,5 +180,9 @@
   "highContrast": "High contrast",
   "noServers": "There are no servers available",
   "expand": "Expand",
-  "collapse": "Collapse"
+  "collapse": "Collapse",
+  "zoom": "Zoom",
+  "zoomIn": "Zoom in",
+  "zoomOut": "Zoom out",
+  "resetZoom": "Reset zoom"
 }

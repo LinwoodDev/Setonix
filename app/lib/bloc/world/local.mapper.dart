@@ -727,3 +727,115 @@ class _DrawerViewChangedCopyWithImpl<$R, $Out>
           Then<$Out2, $R2> t) =>
       _DrawerViewChangedCopyWithImpl($value, $cast, t);
 }
+
+class ZoomChangedMapper extends SubClassMapperBase<ZoomChanged> {
+  ZoomChangedMapper._();
+
+  static ZoomChangedMapper? _instance;
+  static ZoomChangedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = ZoomChangedMapper._());
+      LocalWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'ZoomChanged';
+
+  static double? _$zoom(ZoomChanged v) => v.zoom;
+  static const Field<ZoomChanged, double> _f$zoom = Field('zoom', _$zoom);
+
+  @override
+  final MappableFields<ZoomChanged> fields = const {
+    #zoom: _f$zoom,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'ZoomChanged';
+  @override
+  late final ClassMapperBase superMapper =
+      LocalWorldEventMapper.ensureInitialized();
+
+  static ZoomChanged _instantiate(DecodingData data) {
+    return ZoomChanged(data.dec(_f$zoom));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static ZoomChanged fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<ZoomChanged>(map);
+  }
+
+  static ZoomChanged fromJson(String json) {
+    return ensureInitialized().decodeJson<ZoomChanged>(json);
+  }
+}
+
+mixin ZoomChangedMappable {
+  String toJson() {
+    return ZoomChangedMapper.ensureInitialized()
+        .encodeJson<ZoomChanged>(this as ZoomChanged);
+  }
+
+  Map<String, dynamic> toMap() {
+    return ZoomChangedMapper.ensureInitialized()
+        .encodeMap<ZoomChanged>(this as ZoomChanged);
+  }
+
+  ZoomChangedCopyWith<ZoomChanged, ZoomChanged, ZoomChanged> get copyWith =>
+      _ZoomChangedCopyWithImpl(this as ZoomChanged, $identity, $identity);
+  @override
+  String toString() {
+    return ZoomChangedMapper.ensureInitialized()
+        .stringifyValue(this as ZoomChanged);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return ZoomChangedMapper.ensureInitialized()
+        .equalsValue(this as ZoomChanged, other);
+  }
+
+  @override
+  int get hashCode {
+    return ZoomChangedMapper.ensureInitialized().hashValue(this as ZoomChanged);
+  }
+}
+
+extension ZoomChangedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, ZoomChanged, $Out> {
+  ZoomChangedCopyWith<$R, ZoomChanged, $Out> get $asZoomChanged =>
+      $base.as((v, t, t2) => _ZoomChangedCopyWithImpl(v, t, t2));
+}
+
+abstract class ZoomChangedCopyWith<$R, $In extends ZoomChanged, $Out>
+    implements LocalWorldEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({double? zoom});
+  ZoomChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _ZoomChangedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, ZoomChanged, $Out>
+    implements ZoomChangedCopyWith<$R, ZoomChanged, $Out> {
+  _ZoomChangedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<ZoomChanged> $mapper =
+      ZoomChangedMapper.ensureInitialized();
+  @override
+  $R call({Object? zoom = $none}) =>
+      $apply(FieldCopyWithData({if (zoom != $none) #zoom: zoom}));
+  @override
+  ZoomChanged $make(CopyWithData data) =>
+      ZoomChanged(data.get(#zoom, or: $value.zoom));
+
+  @override
+  ZoomChangedCopyWith<$R2, ZoomChanged, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _ZoomChangedCopyWithImpl($value, $cast, t);
+}

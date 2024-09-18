@@ -172,6 +172,9 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
   static DrawerView _$drawerView(ClientWorldState v) => v.drawerView;
   static const Field<ClientWorldState, DrawerView> _f$drawerView =
       Field('drawerView', _$drawerView, opt: true, def: DrawerView.chat);
+  static double _$zoom(ClientWorldState v) => v.zoom;
+  static const Field<ClientWorldState, double> _f$zoom =
+      Field('zoom', _$zoom, opt: true, def: 1.0);
 
   @override
   final MappableFields<ClientWorldState> fields = const {
@@ -192,6 +195,7 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
     #messages: _f$messages,
     #data: _f$data,
     #drawerView: _f$drawerView,
+    #zoom: _f$zoom,
   };
 
   static ClientWorldState _instantiate(DecodingData data) {
@@ -212,7 +216,8 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
         teamMembers: data.dec(_f$teamMembers),
         messages: data.dec(_f$messages),
         data: data.dec(_f$data),
-        drawerView: data.dec(_f$drawerView));
+        drawerView: data.dec(_f$drawerView),
+        zoom: data.dec(_f$zoom));
   }
 
   @override
@@ -302,7 +307,8 @@ abstract class ClientWorldStateCopyWith<$R, $In extends ClientWorldState, $Out>
       Map<String, Set<int>>? teamMembers,
       List<ChatMessage>? messages,
       QuokkaData? data,
-      DrawerView? drawerView});
+      DrawerView? drawerView,
+      double? zoom});
   ClientWorldStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -360,7 +366,8 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
           Map<String, Set<int>>? teamMembers,
           List<ChatMessage>? messages,
           QuokkaData? data,
-          DrawerView? drawerView}) =>
+          DrawerView? drawerView,
+          double? zoom}) =>
       $apply(FieldCopyWithData({
         if (multiplayer != null) #multiplayer: multiplayer,
         if (colorScheme != null) #colorScheme: colorScheme,
@@ -378,7 +385,8 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
         if (teamMembers != null) #teamMembers: teamMembers,
         if (messages != null) #messages: messages,
         if (data != null) #data: data,
-        if (drawerView != null) #drawerView: drawerView
+        if (drawerView != null) #drawerView: drawerView,
+        if (zoom != null) #zoom: zoom
       }));
   @override
   ClientWorldState $make(CopyWithData data) => ClientWorldState(
@@ -399,7 +407,8 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
       teamMembers: data.get(#teamMembers, or: $value.teamMembers),
       messages: data.get(#messages, or: $value.messages),
       data: data.get(#data, or: $value.data),
-      drawerView: data.get(#drawerView, or: $value.drawerView));
+      drawerView: data.get(#drawerView, or: $value.drawerView),
+      zoom: data.get(#zoom, or: $value.zoom));
 
   @override
   ClientWorldStateCopyWith<$R2, ClientWorldState, $Out2> $chain<$R2, $Out2>(

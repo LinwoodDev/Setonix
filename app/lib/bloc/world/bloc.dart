@@ -89,6 +89,15 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
     on<DrawerViewChanged>((event, emit) {
       emit(state.copyWith(drawerView: event.view));
     });
+    on<ZoomChanged>((event, emit) {
+      var zoom = event.zoom;
+      if (zoom != null) {
+        zoom += state.zoom;
+        zoom = zoom.clamp(0.5, 2.0);
+      }
+      zoom ??= 1;
+      emit(state.copyWith(zoom: zoom));
+    });
   }
 
   Future<void> save() async {
