@@ -27,6 +27,10 @@
     "chips": {
       "name": "Chips",
       "description": "A set of chips."
+    },
+    "chess": {
+      "name": "Chess",
+      "description": "A set of chess pieces."
     }
   },
   "backgrounds": {
@@ -317,6 +321,11 @@
           "name": "Black Pawn"
         }
       }
+    }
+  },
+  "boards": {
+    "chess": {
+      "name": "Chess Board"
     }
   }
 }

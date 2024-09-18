@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:collection/collection.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -10,6 +9,7 @@ import 'package:flutter/material.dart'
 import 'package:flutter/painting.dart';
 import 'package:quokka/bloc/world/bloc.dart';
 import 'package:quokka/bloc/world/state.dart';
+import 'package:quokka/board/hand/board.dart';
 import 'package:quokka/board/hand/deck.dart';
 import 'package:quokka/board/hand/figure.dart';
 import 'package:quokka/board/hand/item.dart';
@@ -46,7 +46,8 @@ class GameHand extends CustomPainterComponent
         ScrollCallbacks,
         CollisionCallbacks,
         HandItemDropZone {
-  final _scrollView = ScrollViewComponent(direction: Axis.horizontal);
+  final _scrollView =
+      ScrollViewComponent(direction: Axis.horizontal, spacing: 16);
 
   /// Should hand be redrawn
   bool _isDirty = true;
@@ -134,11 +135,16 @@ class GameHand extends CustomPainterComponent
 
   void _buildDeckHand(PackItem<DeckDefinition> deck) {
     final deckFigures = deck.item.figures;
+    for (final board in deck.item.boards) {
+      final definition = deck.pack.getBoardItem(board.name, deck.namespace);
+      if (definition == null) continue;
+      _scrollView.addChild(BoardDefinitionHandItem(item: definition));
+    }
     final figures = deckFigures.map((e) {
       final figure = deck.pack.getFigureItem(e.name, deck.namespace);
       if (figure == null) return null;
       return (figure, e.variation);
-    }).whereNotNull();
+    }).nonNulls;
     _addFigures(figures);
   }
 

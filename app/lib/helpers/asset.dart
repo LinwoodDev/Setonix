@@ -65,12 +65,7 @@ class GameAssetManager extends AssetManager {
         ));
   }
 
-  Future<Sprite?> loadFigureSprite(String key, String namespace,
-          [String? variation]) =>
-      loadFigureSpriteFromLocation(
-          ItemLocation.fromString(key, namespace), variation);
-
-  Future<Sprite?> loadFigureSpriteFromLocation(ItemLocation location,
+  Future<Sprite?> loadFigureSprite(ItemLocation location,
       [String? variation]) async {
     final figure = getPack(location.namespace)?.getFigure(location.id);
     if (figure == null) return null;
@@ -80,6 +75,24 @@ class GameAssetManager extends AssetManager {
       location.namespace,
       srcPosition: definition.offset.toVector(),
       srcSize: definition.size?.toVector(),
+    );
+  }
+
+  Future<Sprite?> loadBoardSprite(ItemLocation location,
+      [VectorDefinition? tile]) async {
+    final board = getPack(location.namespace)?.getBoard(location.id);
+    if (board == null) return null;
+    Vector2 offset = board.offset.toVector();
+    Vector2? size = board.size?.toVector();
+    if (tile != null && size != null) {
+      size = size.clone()..divide(board.tiles.toVector());
+      offset += size.clone()..multiply(tile.toVector());
+    }
+    return loadSprite(
+      board.texture,
+      location.namespace,
+      srcPosition: offset,
+      srcSize: size,
     );
   }
 

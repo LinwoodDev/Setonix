@@ -50,6 +50,13 @@ class TranslationsStore {
         BackgroundTranslation(name: key),
         locale,
       );
+
+  BoardTranslation getBoardTranslation(String key, [String? locale]) =>
+      findTranslation(
+        (t) => t.boards[key],
+        BoardTranslation(name: key),
+        locale,
+      );
 }
 
 @MappableClass()
@@ -57,11 +64,13 @@ class PackTranslation with PackTranslationMappable {
   final Map<String, DeckTranslation> decks;
   final Map<String, BackgroundTranslation> backgrounds;
   final Map<String, FigureTranslation> figures;
+  final Map<String, BoardTranslation> boards;
 
   PackTranslation({
     this.decks = const {},
     this.figures = const {},
     this.backgrounds = const {},
+    this.boards = const {},
   });
 }
 
@@ -112,5 +121,14 @@ class FigureTranslation extends DescriptiveTranslation
     required super.name,
     super.description,
     this.variations = const {},
+  });
+}
+
+@MappableClass()
+class BoardTranslation extends DescriptiveTranslation
+    with BoardTranslationMappable {
+  BoardTranslation({
+    required super.name,
+    super.description,
   });
 }

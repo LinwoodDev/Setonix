@@ -23,8 +23,8 @@ class FigureDefinitionHandItem
   }
 
   @override
-  Future<Sprite?> loadIcon(ClientWorldState state) => getAssetManager(state)
-      .loadFigureSpriteFromLocation(item.$1.location, item.$2);
+  Future<Sprite?> loadIcon(ClientWorldState state) =>
+      getAssetManager(state).loadFigureSprite(item.$1.location, item.$2);
   @override
   void moveItem(HandItemDropZone zone) {
     if (zone is! GameCell) return;

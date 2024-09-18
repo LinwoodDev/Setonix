@@ -28,11 +28,13 @@ class BoardDefinition with BoardDefinitionMappable, VisualDefinition {
   final VectorDefinition? size;
   @override
   final String texture;
+  final VectorDefinition tiles;
 
   BoardDefinition({
     this.offset = VectorDefinition.zero,
     this.size,
     required this.texture,
+    this.tiles = VectorDefinition.one,
   });
 }
 

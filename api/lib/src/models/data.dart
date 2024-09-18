@@ -95,7 +95,7 @@ class QuokkaData extends ArchiveData<QuokkaData> {
         ...archive.files.map((e) => e.name),
         ...state.added.keys,
       }
-          .where((e) => e.startsWith(path))
+          .where((e) => e.startsWith(path) && e != path)
           .where((e) => !state.removed.contains(e))
           .map((e) => e.substring(path.length))
           .map((e) {
@@ -160,6 +160,14 @@ class QuokkaData extends ArchiveData<QuokkaData> {
       return null;
     }
   }
+
+  PackItem<BoardDefinition>? getBoardItem(String id, [String namespace = '']) =>
+      PackItem.wrap(
+        pack: this,
+        namespace: namespace,
+        id: id,
+        item: getBoard(id),
+      );
 
   Iterable<String> getBackgrounds() =>
       getAssets('$kPackBackgroundsPath/', true);

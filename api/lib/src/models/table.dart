@@ -74,7 +74,7 @@ class GameSeat with GameSeatMappable {
 @MappableClass()
 class TableCell with TableCellMappable {
   final List<GameObject> objects;
-  final List<GameBoard> boards;
+  final List<BoardTile> boards;
   final String? team;
   final int reveal;
   final int? teamReveal;
@@ -104,13 +104,13 @@ class GameObject with GameObjectMappable {
 }
 
 @MappableClass()
-class GameBoard with GameBoardMappable {
+class BoardTile with BoardTileMappable {
   final ItemLocation asset;
-  final VectorDefinition offset;
+  final VectorDefinition tile;
 
-  GameBoard({
+  BoardTile({
     required this.asset,
-    required this.offset,
+    required this.tile,
   });
 }
 

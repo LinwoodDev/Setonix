@@ -212,7 +212,7 @@ class GameCell extends PositionComponent
     }
     if (top != null) {
       _cardComponent = SpriteComponent(
-          sprite: await state.assetManager.loadFigureSpriteFromLocation(
+          sprite: await state.assetManager.loadFigureSprite(
                   top.asset,
                   top.hidden || !state.isCellVisible(toGlobalDefinition(state))
                       ? null

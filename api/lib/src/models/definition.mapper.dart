@@ -468,19 +468,24 @@ class BoardDefinitionMapper extends ClassMapperBase<BoardDefinition> {
   static String _$texture(BoardDefinition v) => v.texture;
   static const Field<BoardDefinition, String> _f$texture =
       Field('texture', _$texture);
+  static VectorDefinition _$tiles(BoardDefinition v) => v.tiles;
+  static const Field<BoardDefinition, VectorDefinition> _f$tiles =
+      Field('tiles', _$tiles, opt: true, def: VectorDefinition.one);
 
   @override
   final MappableFields<BoardDefinition> fields = const {
     #offset: _f$offset,
     #size: _f$size,
     #texture: _f$texture,
+    #tiles: _f$tiles,
   };
 
   static BoardDefinition _instantiate(DecodingData data) {
     return BoardDefinition(
         offset: data.dec(_f$offset),
         size: data.dec(_f$size),
-        texture: data.dec(_f$texture));
+        texture: data.dec(_f$texture),
+        tiles: data.dec(_f$tiles));
   }
 
   @override
@@ -538,7 +543,12 @@ abstract class BoardDefinitionCopyWith<$R, $In extends BoardDefinition, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get offset;
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>? get size;
-  $R call({VectorDefinition? offset, VectorDefinition? size, String? texture});
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get tiles;
+  $R call(
+      {VectorDefinition? offset,
+      VectorDefinition? size,
+      String? texture,
+      VectorDefinition? tiles});
   BoardDefinitionCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -558,17 +568,26 @@ class _BoardDefinitionCopyWithImpl<$R, $Out>
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>? get size =>
       $value.size?.copyWith.$chain((v) => call(size: v));
   @override
-  $R call({VectorDefinition? offset, Object? size = $none, String? texture}) =>
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get tiles =>
+      $value.tiles.copyWith.$chain((v) => call(tiles: v));
+  @override
+  $R call(
+          {VectorDefinition? offset,
+          Object? size = $none,
+          String? texture,
+          VectorDefinition? tiles}) =>
       $apply(FieldCopyWithData({
         if (offset != null) #offset: offset,
         if (size != $none) #size: size,
-        if (texture != null) #texture: texture
+        if (texture != null) #texture: texture,
+        if (tiles != null) #tiles: tiles
       }));
   @override
   BoardDefinition $make(CopyWithData data) => BoardDefinition(
       offset: data.get(#offset, or: $value.offset),
       size: data.get(#size, or: $value.size),
-      texture: data.get(#texture, or: $value.texture));
+      texture: data.get(#texture, or: $value.texture),
+      tiles: data.get(#tiles, or: $value.tiles));
 
   @override
   BoardDefinitionCopyWith<$R2, BoardDefinition, $Out2> $chain<$R2, $Out2>(

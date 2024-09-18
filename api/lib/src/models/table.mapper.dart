@@ -141,7 +141,7 @@ class TableCellMapper extends ClassMapperBase<TableCell> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = TableCellMapper._());
       GameObjectMapper.ensureInitialized();
-      GameBoardMapper.ensureInitialized();
+      BoardTileMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -152,8 +152,8 @@ class TableCellMapper extends ClassMapperBase<TableCell> {
   static List<GameObject> _$objects(TableCell v) => v.objects;
   static const Field<TableCell, List<GameObject>> _f$objects =
       Field('objects', _$objects, opt: true, def: const []);
-  static List<GameBoard> _$boards(TableCell v) => v.boards;
-  static const Field<TableCell, List<GameBoard>> _f$boards =
+  static List<BoardTile> _$boards(TableCell v) => v.boards;
+  static const Field<TableCell, List<BoardTile>> _f$boards =
       Field('boards', _$boards, opt: true, def: const []);
   static String? _$team(TableCell v) => v.team;
   static const Field<TableCell, String> _f$team =
@@ -235,11 +235,11 @@ abstract class TableCellCopyWith<$R, $In extends TableCell, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, GameObject, GameObjectCopyWith<$R, GameObject, GameObject>>
       get objects;
-  ListCopyWith<$R, GameBoard, GameBoardCopyWith<$R, GameBoard, GameBoard>>
+  ListCopyWith<$R, BoardTile, BoardTileCopyWith<$R, BoardTile, BoardTile>>
       get boards;
   $R call(
       {List<GameObject>? objects,
-      List<GameBoard>? boards,
+      List<BoardTile>? boards,
       String? team,
       int? reveal,
       int? teamReveal});
@@ -259,13 +259,13 @@ class _TableCellCopyWithImpl<$R, $Out>
       get objects => ListCopyWith($value.objects,
           (v, t) => v.copyWith.$chain(t), (v) => call(objects: v));
   @override
-  ListCopyWith<$R, GameBoard, GameBoardCopyWith<$R, GameBoard, GameBoard>>
+  ListCopyWith<$R, BoardTile, BoardTileCopyWith<$R, BoardTile, BoardTile>>
       get boards => ListCopyWith($value.boards, (v, t) => v.copyWith.$chain(t),
           (v) => call(boards: v));
   @override
   $R call(
           {List<GameObject>? objects,
-          List<GameBoard>? boards,
+          List<BoardTile>? boards,
           Object? team = $none,
           int? reveal,
           Object? teamReveal = $none}) =>
@@ -522,13 +522,13 @@ class _ItemLocationCopyWithImpl<$R, $Out>
       _ItemLocationCopyWithImpl($value, $cast, t);
 }
 
-class GameBoardMapper extends ClassMapperBase<GameBoard> {
-  GameBoardMapper._();
+class BoardTileMapper extends ClassMapperBase<BoardTile> {
+  BoardTileMapper._();
 
-  static GameBoardMapper? _instance;
-  static GameBoardMapper ensureInitialized() {
+  static BoardTileMapper? _instance;
+  static BoardTileMapper ensureInitialized() {
     if (_instance == null) {
-      MapperContainer.globals.use(_instance = GameBoardMapper._());
+      MapperContainer.globals.use(_instance = BoardTileMapper._());
       ItemLocationMapper.ensureInitialized();
       VectorDefinitionMapper.ensureInitialized();
     }
@@ -536,110 +536,108 @@ class GameBoardMapper extends ClassMapperBase<GameBoard> {
   }
 
   @override
-  final String id = 'GameBoard';
+  final String id = 'BoardTile';
 
-  static ItemLocation _$asset(GameBoard v) => v.asset;
-  static const Field<GameBoard, ItemLocation> _f$asset =
+  static ItemLocation _$asset(BoardTile v) => v.asset;
+  static const Field<BoardTile, ItemLocation> _f$asset =
       Field('asset', _$asset);
-  static VectorDefinition _$offset(GameBoard v) => v.offset;
-  static const Field<GameBoard, VectorDefinition> _f$offset =
-      Field('offset', _$offset);
+  static VectorDefinition _$tile(BoardTile v) => v.tile;
+  static const Field<BoardTile, VectorDefinition> _f$tile =
+      Field('tile', _$tile);
 
   @override
-  final MappableFields<GameBoard> fields = const {
+  final MappableFields<BoardTile> fields = const {
     #asset: _f$asset,
-    #offset: _f$offset,
+    #tile: _f$tile,
   };
 
-  static GameBoard _instantiate(DecodingData data) {
-    return GameBoard(asset: data.dec(_f$asset), offset: data.dec(_f$offset));
+  static BoardTile _instantiate(DecodingData data) {
+    return BoardTile(asset: data.dec(_f$asset), tile: data.dec(_f$tile));
   }
 
   @override
   final Function instantiate = _instantiate;
 
-  static GameBoard fromMap(Map<String, dynamic> map) {
-    return ensureInitialized().decodeMap<GameBoard>(map);
+  static BoardTile fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<BoardTile>(map);
   }
 
-  static GameBoard fromJson(String json) {
-    return ensureInitialized().decodeJson<GameBoard>(json);
+  static BoardTile fromJson(String json) {
+    return ensureInitialized().decodeJson<BoardTile>(json);
   }
 }
 
-mixin GameBoardMappable {
+mixin BoardTileMappable {
   String toJson() {
-    return GameBoardMapper.ensureInitialized()
-        .encodeJson<GameBoard>(this as GameBoard);
+    return BoardTileMapper.ensureInitialized()
+        .encodeJson<BoardTile>(this as BoardTile);
   }
 
   Map<String, dynamic> toMap() {
-    return GameBoardMapper.ensureInitialized()
-        .encodeMap<GameBoard>(this as GameBoard);
+    return BoardTileMapper.ensureInitialized()
+        .encodeMap<BoardTile>(this as BoardTile);
   }
 
-  GameBoardCopyWith<GameBoard, GameBoard, GameBoard> get copyWith =>
-      _GameBoardCopyWithImpl(this as GameBoard, $identity, $identity);
+  BoardTileCopyWith<BoardTile, BoardTile, BoardTile> get copyWith =>
+      _BoardTileCopyWithImpl(this as BoardTile, $identity, $identity);
   @override
   String toString() {
-    return GameBoardMapper.ensureInitialized()
-        .stringifyValue(this as GameBoard);
+    return BoardTileMapper.ensureInitialized()
+        .stringifyValue(this as BoardTile);
   }
 
   @override
   bool operator ==(Object other) {
-    return GameBoardMapper.ensureInitialized()
-        .equalsValue(this as GameBoard, other);
+    return BoardTileMapper.ensureInitialized()
+        .equalsValue(this as BoardTile, other);
   }
 
   @override
   int get hashCode {
-    return GameBoardMapper.ensureInitialized().hashValue(this as GameBoard);
+    return BoardTileMapper.ensureInitialized().hashValue(this as BoardTile);
   }
 }
 
-extension GameBoardValueCopy<$R, $Out> on ObjectCopyWith<$R, GameBoard, $Out> {
-  GameBoardCopyWith<$R, GameBoard, $Out> get $asGameBoard =>
-      $base.as((v, t, t2) => _GameBoardCopyWithImpl(v, t, t2));
+extension BoardTileValueCopy<$R, $Out> on ObjectCopyWith<$R, BoardTile, $Out> {
+  BoardTileCopyWith<$R, BoardTile, $Out> get $asBoardTile =>
+      $base.as((v, t, t2) => _BoardTileCopyWithImpl(v, t, t2));
 }
 
-abstract class GameBoardCopyWith<$R, $In extends GameBoard, $Out>
+abstract class BoardTileCopyWith<$R, $In extends BoardTile, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation> get asset;
-  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get offset;
-  $R call({ItemLocation? asset, VectorDefinition? offset});
-  GameBoardCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get tile;
+  $R call({ItemLocation? asset, VectorDefinition? tile});
+  BoardTileCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
-class _GameBoardCopyWithImpl<$R, $Out>
-    extends ClassCopyWithBase<$R, GameBoard, $Out>
-    implements GameBoardCopyWith<$R, GameBoard, $Out> {
-  _GameBoardCopyWithImpl(super.value, super.then, super.then2);
+class _BoardTileCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, BoardTile, $Out>
+    implements BoardTileCopyWith<$R, BoardTile, $Out> {
+  _BoardTileCopyWithImpl(super.value, super.then, super.then2);
 
   @override
-  late final ClassMapperBase<GameBoard> $mapper =
-      GameBoardMapper.ensureInitialized();
+  late final ClassMapperBase<BoardTile> $mapper =
+      BoardTileMapper.ensureInitialized();
   @override
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation> get asset =>
       $value.asset.copyWith.$chain((v) => call(asset: v));
   @override
-  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get offset =>
-      $value.offset.copyWith.$chain((v) => call(offset: v));
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get tile =>
+      $value.tile.copyWith.$chain((v) => call(tile: v));
   @override
-  $R call({ItemLocation? asset, VectorDefinition? offset}) =>
-      $apply(FieldCopyWithData({
-        if (asset != null) #asset: asset,
-        if (offset != null) #offset: offset
-      }));
+  $R call({ItemLocation? asset, VectorDefinition? tile}) =>
+      $apply(FieldCopyWithData(
+          {if (asset != null) #asset: asset, if (tile != null) #tile: tile}));
   @override
-  GameBoard $make(CopyWithData data) => GameBoard(
+  BoardTile $make(CopyWithData data) => BoardTile(
       asset: data.get(#asset, or: $value.asset),
-      offset: data.get(#offset, or: $value.offset));
+      tile: data.get(#tile, or: $value.tile));
 
   @override
-  GameBoardCopyWith<$R2, GameBoard, $Out2> $chain<$R2, $Out2>(
+  BoardTileCopyWith<$R2, BoardTile, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _GameBoardCopyWithImpl($value, $cast, t);
+      _BoardTileCopyWithImpl($value, $cast, t);
 }
 
 class GlobalVectorDefinitionMapper

@@ -1,0 +1,6 @@
+{
+  "offset": [0, 0],
+  "size": [160, 160],
+  "texture": "boards/chess.png",
+  "tiles": [10, 10]
+}

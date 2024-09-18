@@ -23,8 +23,8 @@ class DeckDefinitionHandItem extends HandItem<PackItem<DeckDefinition>> {
   Future<Sprite?> loadIcon(ClientWorldState state) async {
     final front = item.item.figures.firstOrNull;
     if (front == null) return null;
-    return getAssetManager(state)
-        .loadFigureSprite(front.name, item.namespace, front.variation);
+    return getAssetManager(state).loadFigureSprite(
+        ItemLocation.fromString(front.name, item.namespace), front.variation);
   }
 
   @override

@@ -29,6 +29,7 @@ class _ScrollViewport extends PositionComponent {
 
 class ScrollViewComponent extends PositionComponent with ScrollCallbacks {
   final Axis direction;
+  final double spacing;
   final _ScrollViewport _view = _ScrollViewport();
   double _nextItemPos = 0;
 
@@ -36,6 +37,7 @@ class ScrollViewComponent extends PositionComponent with ScrollCallbacks {
     required this.direction,
     super.position,
     super.size,
+    this.spacing = 0,
   });
 
   @override
@@ -43,7 +45,7 @@ class ScrollViewComponent extends PositionComponent with ScrollCallbacks {
     add(_view);
   }
 
-  void addChild(PositionComponent child, {double? size, double spacing = 0}) {
+  void addChild(PositionComponent child, {double? size, double? spacing}) {
     child.position = direction == Axis.horizontal
         ? Vector2(_nextItemPos, 0)
         : Vector2(0, _nextItemPos);
@@ -52,7 +54,7 @@ class ScrollViewComponent extends PositionComponent with ScrollCallbacks {
         ? Vector2(size, height)
         : Vector2(width, size);
     _view.add(child);
-    _nextItemPos += size + spacing;
+    _nextItemPos += size + (spacing ?? this.spacing);
   }
 
   void clearChildren() {

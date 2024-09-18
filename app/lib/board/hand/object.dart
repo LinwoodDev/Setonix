@@ -32,7 +32,7 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
 
   @override
   Future<Sprite?> loadIcon(ClientWorldState state) =>
-      getAssetManager(state).loadFigureSpriteFromLocation(
+      getAssetManager(state).loadFigureSprite(
           item.$3.asset,
           item.$3.hidden || !state.isCellVisible(state.toGlobal(item.$1))
               ? null
