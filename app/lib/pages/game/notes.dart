@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:quokka/bloc/world/bloc.dart';
+import 'package:quokka/bloc/world/state.dart';
 import 'package:quokka/pages/game/note.dart';
 import 'package:quokka_api/quokka_api.dart';
 
@@ -39,7 +40,7 @@ class _GameNotesDrawerState extends State<GameNotesDrawer> {
             title: Text(AppLocalizations.of(context).notes),
           ),
           Flexible(
-            child: BlocBuilder<WorldBloc, WorldState>(
+            child: BlocBuilder<WorldBloc, ClientWorldState>(
               buildWhen: (previous, current) => previous.data != current.data,
               builder: (context, state) {
                 final notes = state.data.getNotes().toList();

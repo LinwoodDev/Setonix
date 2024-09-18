@@ -175,7 +175,7 @@ class _GamePageState extends State<GamePage> {
                           DrawerView.notes => const GameNotesDrawer(),
                         },
                       ),
-                      body: BlocListener<WorldBloc, WorldState>(
+                      body: BlocListener<WorldBloc, ClientWorldState>(
                         listenWhen: (previous, current) =>
                             previous.messages.length != current.messages.length,
                         listener: (context, state) {

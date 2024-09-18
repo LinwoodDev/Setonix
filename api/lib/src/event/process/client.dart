@@ -142,7 +142,7 @@ bool isValidClientEvent(
         final definition =
             assetManager.getPack(asset.namespace)?.getBoard(asset.id);
         if (definition == null) return null;
-        final size = definition.size ?? VectorDefinition.one;
+        final size = definition.tiles;
         for (var x = 0; x < size.x; x++) {
           for (var y = 0; y < size.y; y++) {
             final tile = VectorDefinition(x, y);

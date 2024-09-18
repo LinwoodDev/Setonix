@@ -17,7 +17,7 @@ enum WorldOperationMode {
 }
 
 @MappableClass()
-class WorldState with WorldStateMappable {
+final class WorldState with WorldStateMappable {
   final GameTable table;
   final String tableName;
   final GameInfo info;

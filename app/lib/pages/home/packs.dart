@@ -370,7 +370,7 @@ class _InstalledPacksView extends StatelessWidget {
           selected: selectedPack?.$1 == data && (!isMobile || isMobileOpen),
           onTap: () => selectPack(data, key, true),
           leading: bloc != null
-              ? BlocBuilder<WorldBloc, WorldState>(
+              ? BlocBuilder<WorldBloc, ClientWorldState>(
                   bloc: bloc,
                   buildWhen: (previous, current) =>
                       previous.info.packs != current.info.packs,

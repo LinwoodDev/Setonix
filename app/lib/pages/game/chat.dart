@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:quokka/bloc/world/bloc.dart';
+import 'package:quokka/bloc/world/state.dart';
 import 'package:quokka_api/quokka_api.dart';
 
 class GameChatDrawer extends StatefulWidget {
@@ -52,7 +53,7 @@ class _GameChatDrawerState extends State<GameChatDrawer> {
             title: Text(AppLocalizations.of(context).chat),
           ),
           Flexible(
-            child: BlocConsumer<WorldBloc, WorldState>(
+            child: BlocConsumer<WorldBloc, ClientWorldState>(
               listenWhen: (previous, current) =>
                   previous.messages.length != current.messages.length,
               listener: (context, state) {

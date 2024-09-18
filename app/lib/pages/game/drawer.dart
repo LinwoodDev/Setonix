@@ -85,7 +85,7 @@ class GameDrawer extends StatelessWidget {
                           ),
                         ],
                         childrenBuilder: (context) => [
-                          BlocBuilder<WorldBloc, WorldState>(
+                          BlocBuilder<WorldBloc, ClientWorldState>(
                             bloc: bloc,
                             buildWhen: (previous, current) =>
                                 previous.metadata != current.metadata,
@@ -381,7 +381,7 @@ class GameDrawer extends StatelessWidget {
                   );
                   if (!(result ?? false)) return;
                   final state = bloc.state;
-                  var data = state.save();
+                  var data = state.world.save();
                   data = data.setFileMetadata(data
                       .getMetadataOrDefault()
                       .copyWith(name: name, type: FileType.template));
@@ -448,7 +448,7 @@ class GameDrawer extends StatelessWidget {
         ),
       ],
       childrenBuilder: (context) => [
-        BlocBuilder<WorldBloc, WorldState>(
+        BlocBuilder<WorldBloc, ClientWorldState>(
           bloc: bloc,
           buildWhen: (previous, current) =>
               previous.tableName != current.tableName ||

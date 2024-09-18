@@ -106,12 +106,8 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ClientWorldStateMapper._());
       WorldStateMapper.ensureInitialized();
-      GameTableMapper.ensureInitialized();
-      GameInfoMapper.ensureInitialized();
-      FileMetadataMapper.ensureInitialized();
       VectorDefinitionMapper.ensureInitialized();
       ItemLocationMapper.ensureInitialized();
-      ChatMessageMapper.ensureInitialized();
       DrawerViewMapper.ensureInitialized();
     }
     return _instance!;
@@ -129,21 +125,9 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
   static GameAssetManager _$assetManager(ClientWorldState v) => v.assetManager;
   static const Field<ClientWorldState, GameAssetManager> _f$assetManager =
       Field('assetManager', _$assetManager);
-  static String? _$name(ClientWorldState v) => v.name;
-  static const Field<ClientWorldState, String> _f$name =
-      Field('name', _$name, opt: true);
-  static GameTable _$table(ClientWorldState v) => v.table;
-  static const Field<ClientWorldState, GameTable> _f$table =
-      Field('table', _$table, opt: true, def: const GameTable());
-  static String _$tableName(ClientWorldState v) => v.tableName;
-  static const Field<ClientWorldState, String> _f$tableName =
-      Field('tableName', _$tableName, opt: true, def: '');
-  static GameInfo _$info(ClientWorldState v) => v.info;
-  static const Field<ClientWorldState, GameInfo> _f$info =
-      Field('info', _$info, opt: true, def: const GameInfo());
-  static FileMetadata _$metadata(ClientWorldState v) => v.metadata;
-  static const Field<ClientWorldState, FileMetadata> _f$metadata =
-      Field('metadata', _$metadata, opt: true, def: const FileMetadata());
+  static WorldState _$world(ClientWorldState v) => v.world;
+  static const Field<ClientWorldState, WorldState> _f$world =
+      Field('world', _$world);
   static VectorDefinition? _$selectedCell(ClientWorldState v) => v.selectedCell;
   static const Field<ClientWorldState, VectorDefinition> _f$selectedCell =
       Field('selectedCell', _$selectedCell, opt: true);
@@ -156,19 +140,6 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
   static bool _$switchCellOnMove(ClientWorldState v) => v.switchCellOnMove;
   static const Field<ClientWorldState, bool> _f$switchCellOnMove =
       Field('switchCellOnMove', _$switchCellOnMove, opt: true, def: false);
-  static int _$id(ClientWorldState v) => v.id;
-  static const Field<ClientWorldState, int> _f$id =
-      Field('id', _$id, opt: true, def: kAuthorityChannel);
-  static Map<String, Set<int>> _$teamMembers(ClientWorldState v) =>
-      v.teamMembers;
-  static const Field<ClientWorldState, Map<String, Set<int>>> _f$teamMembers =
-      Field('teamMembers', _$teamMembers, opt: true, def: const {});
-  static List<ChatMessage> _$messages(ClientWorldState v) => v.messages;
-  static const Field<ClientWorldState, List<ChatMessage>> _f$messages =
-      Field('messages', _$messages, opt: true, def: const []);
-  static QuokkaData _$data(ClientWorldState v) => v.data;
-  static const Field<ClientWorldState, QuokkaData> _f$data =
-      Field('data', _$data);
   static DrawerView _$drawerView(ClientWorldState v) => v.drawerView;
   static const Field<ClientWorldState, DrawerView> _f$drawerView =
       Field('drawerView', _$drawerView, opt: true, def: DrawerView.chat);
@@ -181,19 +152,11 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
     #multiplayer: _f$multiplayer,
     #colorScheme: _f$colorScheme,
     #assetManager: _f$assetManager,
-    #name: _f$name,
-    #table: _f$table,
-    #tableName: _f$tableName,
-    #info: _f$info,
-    #metadata: _f$metadata,
+    #world: _f$world,
     #selectedCell: _f$selectedCell,
     #selectedDeck: _f$selectedDeck,
     #showHand: _f$showHand,
     #switchCellOnMove: _f$switchCellOnMove,
-    #id: _f$id,
-    #teamMembers: _f$teamMembers,
-    #messages: _f$messages,
-    #data: _f$data,
     #drawerView: _f$drawerView,
     #zoom: _f$zoom,
   };
@@ -203,19 +166,11 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
         multiplayer: data.dec(_f$multiplayer),
         colorScheme: data.dec(_f$colorScheme),
         assetManager: data.dec(_f$assetManager),
-        name: data.dec(_f$name),
-        table: data.dec(_f$table),
-        tableName: data.dec(_f$tableName),
-        info: data.dec(_f$info),
-        metadata: data.dec(_f$metadata),
+        world: data.dec(_f$world),
         selectedCell: data.dec(_f$selectedCell),
         selectedDeck: data.dec(_f$selectedDeck),
         showHand: data.dec(_f$showHand),
         switchCellOnMove: data.dec(_f$switchCellOnMove),
-        id: data.dec(_f$id),
-        teamMembers: data.dec(_f$teamMembers),
-        messages: data.dec(_f$messages),
-        data: data.dec(_f$data),
         drawerView: data.dec(_f$drawerView),
         zoom: data.dec(_f$zoom));
   }
@@ -273,40 +228,20 @@ extension ClientWorldStateValueCopy<$R, $Out>
 }
 
 abstract class ClientWorldStateCopyWith<$R, $In extends ClientWorldState, $Out>
-    implements WorldStateCopyWith<$R, $In, $Out> {
-  @override
-  GameTableCopyWith<$R, GameTable, GameTable> get table;
-  @override
-  GameInfoCopyWith<$R, GameInfo, GameInfo> get info;
-  @override
-  FileMetadataCopyWith<$R, FileMetadata, FileMetadata> get metadata;
+    implements ClassCopyWith<$R, $In, $Out> {
+  WorldStateCopyWith<$R, WorldState, WorldState> get world;
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>?
       get selectedCell;
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get selectedDeck;
-  @override
-  MapCopyWith<$R, String, Set<int>, ObjectCopyWith<$R, Set<int>, Set<int>>>
-      get teamMembers;
-  @override
-  ListCopyWith<$R, ChatMessage,
-      ChatMessageCopyWith<$R, ChatMessage, ChatMessage>> get messages;
-  @override
   $R call(
       {MultiplayerCubit? multiplayer,
       ColorScheme? colorScheme,
       GameAssetManager? assetManager,
-      String? name,
-      GameTable? table,
-      String? tableName,
-      GameInfo? info,
-      FileMetadata? metadata,
+      WorldState? world,
       VectorDefinition? selectedCell,
       ItemLocation? selectedDeck,
       bool? showHand,
       bool? switchCellOnMove,
-      int? id,
-      Map<String, Set<int>>? teamMembers,
-      List<ChatMessage>? messages,
-      QuokkaData? data,
       DrawerView? drawerView,
       double? zoom});
   ClientWorldStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
@@ -322,14 +257,8 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ClientWorldState> $mapper =
       ClientWorldStateMapper.ensureInitialized();
   @override
-  GameTableCopyWith<$R, GameTable, GameTable> get table =>
-      $value.table.copyWith.$chain((v) => call(table: v));
-  @override
-  GameInfoCopyWith<$R, GameInfo, GameInfo> get info =>
-      $value.info.copyWith.$chain((v) => call(info: v));
-  @override
-  FileMetadataCopyWith<$R, FileMetadata, FileMetadata> get metadata =>
-      $value.metadata.copyWith.$chain((v) => call(metadata: v));
+  WorldStateCopyWith<$R, WorldState, WorldState> get world =>
+      $value.world.copyWith.$chain((v) => call(world: v));
   @override
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>?
       get selectedCell =>
@@ -338,53 +267,26 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get selectedDeck =>
       $value.selectedDeck?.copyWith.$chain((v) => call(selectedDeck: v));
   @override
-  MapCopyWith<$R, String, Set<int>, ObjectCopyWith<$R, Set<int>, Set<int>>>
-      get teamMembers => MapCopyWith(
-          $value.teamMembers,
-          (v, t) => ObjectCopyWith(v, $identity, t),
-          (v) => call(teamMembers: v));
-  @override
-  ListCopyWith<$R, ChatMessage,
-          ChatMessageCopyWith<$R, ChatMessage, ChatMessage>>
-      get messages => ListCopyWith($value.messages,
-          (v, t) => v.copyWith.$chain(t), (v) => call(messages: v));
-  @override
   $R call(
           {MultiplayerCubit? multiplayer,
           ColorScheme? colorScheme,
           GameAssetManager? assetManager,
-          Object? name = $none,
-          GameTable? table,
-          String? tableName,
-          GameInfo? info,
-          FileMetadata? metadata,
+          WorldState? world,
           Object? selectedCell = $none,
           Object? selectedDeck = $none,
           bool? showHand,
           bool? switchCellOnMove,
-          int? id,
-          Map<String, Set<int>>? teamMembers,
-          List<ChatMessage>? messages,
-          QuokkaData? data,
           DrawerView? drawerView,
           double? zoom}) =>
       $apply(FieldCopyWithData({
         if (multiplayer != null) #multiplayer: multiplayer,
         if (colorScheme != null) #colorScheme: colorScheme,
         if (assetManager != null) #assetManager: assetManager,
-        if (name != $none) #name: name,
-        if (table != null) #table: table,
-        if (tableName != null) #tableName: tableName,
-        if (info != null) #info: info,
-        if (metadata != null) #metadata: metadata,
+        if (world != null) #world: world,
         if (selectedCell != $none) #selectedCell: selectedCell,
         if (selectedDeck != $none) #selectedDeck: selectedDeck,
         if (showHand != null) #showHand: showHand,
         if (switchCellOnMove != null) #switchCellOnMove: switchCellOnMove,
-        if (id != null) #id: id,
-        if (teamMembers != null) #teamMembers: teamMembers,
-        if (messages != null) #messages: messages,
-        if (data != null) #data: data,
         if (drawerView != null) #drawerView: drawerView,
         if (zoom != null) #zoom: zoom
       }));
@@ -393,20 +295,12 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
       multiplayer: data.get(#multiplayer, or: $value.multiplayer),
       colorScheme: data.get(#colorScheme, or: $value.colorScheme),
       assetManager: data.get(#assetManager, or: $value.assetManager),
-      name: data.get(#name, or: $value.name),
-      table: data.get(#table, or: $value.table),
-      tableName: data.get(#tableName, or: $value.tableName),
-      info: data.get(#info, or: $value.info),
-      metadata: data.get(#metadata, or: $value.metadata),
+      world: data.get(#world, or: $value.world),
       selectedCell: data.get(#selectedCell, or: $value.selectedCell),
       selectedDeck: data.get(#selectedDeck, or: $value.selectedDeck),
       showHand: data.get(#showHand, or: $value.showHand),
       switchCellOnMove:
           data.get(#switchCellOnMove, or: $value.switchCellOnMove),
-      id: data.get(#id, or: $value.id),
-      teamMembers: data.get(#teamMembers, or: $value.teamMembers),
-      messages: data.get(#messages, or: $value.messages),
-      data: data.get(#data, or: $value.data),
       drawerView: data.get(#drawerView, or: $value.drawerView),
       zoom: data.get(#zoom, or: $value.zoom));
 

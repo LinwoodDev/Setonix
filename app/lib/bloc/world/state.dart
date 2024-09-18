@@ -21,7 +21,8 @@ enum DrawerView {
 }
 
 @MappableClass()
-final class ClientWorldState extends WorldState with ClientWorldStateMappable {
+final class ClientWorldState with ClientWorldStateMappable {
+  final WorldState world;
   final MultiplayerCubit multiplayer;
   final GameAssetManager assetManager;
   final ColorScheme colorScheme;
@@ -35,19 +36,11 @@ final class ClientWorldState extends WorldState with ClientWorldStateMappable {
     required this.multiplayer,
     required this.colorScheme,
     required this.assetManager,
-    super.name,
-    super.table,
-    super.tableName,
-    super.info,
-    super.metadata,
+    required this.world,
     this.selectedCell,
     this.selectedDeck,
     this.showHand = false,
     this.switchCellOnMove = false,
-    super.id,
-    super.teamMembers,
-    super.messages,
-    required super.data,
     this.drawerView = DrawerView.chat,
     this.zoom = 1.0,
   });
@@ -55,5 +48,19 @@ final class ClientWorldState extends WorldState with ClientWorldStateMappable {
   QuokkaFileSystem get fileSystem => assetManager.fileSystem;
 
   Iterable<MapEntry<String, QuokkaData>> get packs =>
-      assetManager.packs.where((e) => info.packs.contains(e.key));
+      assetManager.packs.where((e) => world.info.packs.contains(e.key));
+
+  GameTable get table => world.table;
+  String get tableName => world.tableName;
+  GameInfo get info => world.info;
+  Map<String, Set<int>> get teamMembers => world.teamMembers;
+  Channel get id => world.id;
+  bool isCellVisible(GlobalVectorDefinition cell) =>
+      world.isCellVisible(cell, id);
+  GlobalVectorDefinition toGlobal(VectorDefinition position) =>
+      world.toGlobal(position);
+  List<ChatMessage> get messages => world.messages;
+  String? get name => world.name;
+  FileMetadata get metadata => world.metadata;
+  QuokkaData get data => world.data;
 }

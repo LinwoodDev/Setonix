@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' show ColorScheme;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:networker/networker.dart';
@@ -7,6 +8,10 @@ import 'package:quokka/helpers/asset.dart';
 import 'package:quokka/services/file_system.dart';
 import 'package:quokka/bloc/multiplayer.dart';
 import 'package:quokka_api/quokka_api.dart';
+
+WorldState? _compute(
+        (ServerWorldEvent, WorldState, Map<String, FileMetadata>) m) =>
+    processServerEvent(m.$1, m.$2, signature: m.$3);
 
 class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
   bool _remoteEvent = false;
@@ -22,12 +27,14 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
             fileSystem: fileSystem,
           ),
           multiplayer: multiplayer,
-          name: name,
-          data: data ?? QuokkaData.empty(),
           colorScheme: colorScheme,
-          table: table ?? data?.getTable() ?? const GameTable(),
-          metadata: data?.getMetadata() ?? const FileMetadata(),
-          info: data?.getInfo() ?? const GameInfo(),
+          world: WorldState(
+            name: name,
+            data: data ?? QuokkaData.empty(),
+            table: table ?? data?.getTable() ?? const GameTable(),
+            metadata: data?.getMetadata() ?? const FileMetadata(),
+            info: data?.getInfo() ?? const GameInfo(),
+          ),
         )) {
     state.multiplayer
       ..events.listen((event) {
@@ -41,12 +48,15 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
       })
       ..serverEvents.listen(_processEvent);
 
-    on<ServerWorldEvent>((event, emit) {
+    on<ServerWorldEvent>((event, emit) async {
       try {
-        final newState =
-            processServerEvent(event, state, assetManager: state.assetManager);
-        if (newState is! ClientWorldState) return null;
-        emit(newState);
+        final signature = state.assetManager.createSignature();
+        final world = state.world;
+        final newWorld = await compute<
+            (ServerWorldEvent, WorldState, Map<String, FileMetadata>),
+            WorldState?>(_compute, (event, world, signature));
+        if (newWorld == null) return;
+        emit(state.copyWith(world: newWorld));
         return save();
       } on FatalServerEventError catch (e) {
         state.multiplayer.raiseError(e);
@@ -80,10 +90,11 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
       ));
     });
     on<TableSwitched>((event, emit) {
-      emit(state.copyWith(
-        table: state.data.getTableOrDefault(event.name),
+      emit(state.copyWith.world(
+        table: state.world.getTableOrDefault(event.name),
         tableName: event.name,
-        data: state.data.setTable(state.table, state.tableName),
+        data:
+            state.world.data.setTable(state.world.table, state.world.tableName),
       ));
     });
     on<DrawerViewChanged>((event, emit) {
@@ -101,14 +112,14 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
   }
 
   Future<void> save() async {
-    final data = state.save();
-    final name = state.name;
+    final data = state.world.save();
+    final name = state.world.name;
     if (name == null) return;
     return state.fileSystem.worldSystem.updateFile(name, data);
   }
 
   void _processEvent((WorldEvent?, Channel) data) {
-    final value = processClientEvent(data.$1, data.$2, state,
+    final value = processClientEvent(data.$1, data.$2, state.world,
         assetManager: state.assetManager);
     if (value == null) return;
     state.multiplayer.sendServer(value.$1, value.$2);
@@ -131,7 +142,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
         if (multiplayer.isConnected) {
           multiplayer.send(e);
         } else {
-          final event = processClientEvent(e, kAuthorityChannel, state,
+          final event = processClientEvent(e, kAuthorityChannel, state.world,
               assetManager: state.assetManager, allowServerEvents: true);
           if (event != null) add(event.$1);
         }

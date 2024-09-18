@@ -58,15 +58,26 @@ final class InvalidPacksError extends FatalServerEventError {
       'Server requested packs, that are not available on the client (or is empty): $signature';
 }
 
+bool isServerSupported(Map<String, FileMetadata> mySignature,
+    Map<String, FileMetadata> serverSignature) {
+  for (final entry in serverSignature.entries) {
+    final current = mySignature[entry.key];
+    if (current == null || current != entry.value) {
+      return false;
+    }
+  }
+  return true;
+}
+
 WorldState? processServerEvent(
   ServerWorldEvent event,
   WorldState state, {
-  required AssetManager assetManager,
+  required Map<String, FileMetadata> signature,
 }) {
   if (!isValidServerEvent(event, state)) return null;
   switch (event) {
     case WorldInitialized():
-      final supported = assetManager.isServerSupported(event.packsSignature);
+      final supported = isServerSupported(signature, event.packsSignature);
       if (!supported) {
         throw InvalidPacksError(signature: event.packsSignature);
       }
