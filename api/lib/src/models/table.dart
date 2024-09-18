@@ -88,6 +88,8 @@ class TableCell with TableCellMappable {
   });
 
   int get teamRevealValue => teamReveal ?? reveal;
+
+  bool get isEmpty => objects.isEmpty && boards.isEmpty;
 }
 
 @MappableClass()

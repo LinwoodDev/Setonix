@@ -39,7 +39,14 @@ class DeckDefinitionHandItem extends HandItem<PackItem<DeckDefinition>> {
             variation: e.variation,
           ));
     }
-    bloc.process(ObjectsSpawned(bloc.state.tableName, objects));
+    bloc.process(ObjectsSpawned(global.table, objects));
+    final boards = item.item.boards
+        .map((e) => (
+              cell: global.position,
+              asset: ItemLocation(item.namespace, e.name)
+            ))
+        .toList();
+    bloc.process(BoardsSpawnRequest(global.table, boards));
     if (bloc.state.switchCellOnMove) {
       bloc.process(CellSwitched(global.position));
     }

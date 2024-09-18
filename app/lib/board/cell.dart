@@ -36,7 +36,7 @@ class GameCell extends PositionComponent
         FlameBlocListenable<WorldBloc, ClientWorldState>,
         ScrollCallbacks {
   late final SpriteComponent _selectionComponent;
-  SpriteComponent? _cardComponent;
+  SpriteComponent? _cardComponent, _boardComponent;
   late final BoardGrid grid;
   List<Effect>? _effects;
 
@@ -68,6 +68,7 @@ class GameCell extends PositionComponent
     _selectionComponent = SpriteComponent(
       sprite: game.selectionSprite,
       size: size,
+      priority: 1,
     );
     add(_selectionComponent);
   }
@@ -84,7 +85,7 @@ class GameCell extends PositionComponent
         previousState.colorScheme != newState.colorScheme;
   }
 
-  bool get isSelected => bloc.state.selectedCell == toDefinition();
+  bool get isSelected => isMounted && bloc.state.selectedCell == toDefinition();
 
   void _fadeIn() => _updateEffects([
         OpacityEffect.fadeIn(
@@ -157,6 +158,7 @@ class GameCell extends PositionComponent
           false);
 
   GameObject? _currentTop;
+  BoardTile? _currentTile;
   bool _currentVisible = false;
 
   @override
@@ -201,14 +203,27 @@ class GameCell extends PositionComponent
   }
 
   Future<void> _updateTop(ClientWorldState state) async {
-    final top = state.table.cells[toDefinition()]?.objects.firstOrNull;
+    final cell = state.table.cells[toDefinition()];
+    final top = cell?.objects.firstOrNull;
     final visible = state.isCellVisible(toGlobalDefinition(state));
-    if (top == _currentTop && visible == _currentVisible) return;
+    final tile = cell?.boards.lastOrNull;
+    if (top == _currentTop &&
+        visible == _currentVisible &&
+        tile == _currentTile) return;
     _currentTop = top;
     _currentVisible = visible;
-    if (_cardComponent != null) {
-      remove(_cardComponent!);
-      _cardComponent = null;
+    _currentTile = tile;
+    _cardComponent?.removeFromParent();
+    _boardComponent?.removeFromParent();
+    _cardComponent = null;
+    _boardComponent = null;
+    if (tile != null) {
+      _boardComponent = SpriteComponent(
+          sprite:
+              await state.assetManager.loadBoardSprite(tile.asset, tile.tile) ??
+                  game.blankSprite,
+          size: size);
+      await add(_boardComponent!);
     }
     if (top != null) {
       _cardComponent = SpriteComponent(

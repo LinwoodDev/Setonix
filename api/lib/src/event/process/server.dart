@@ -146,7 +146,7 @@ WorldState? processServerEvent(
         ]);
         return table.copyWith(cells: {
           ...table.cells,
-          event.from: from,
+          if (!from.isEmpty) event.from: from,
           event.to: to,
         });
       });
@@ -231,5 +231,14 @@ WorldState? processServerEvent(
           data: state.data.setNote(event.name, event.content));
     case NoteRemoved():
       return state.copyWith(data: state.data.removeNote(event.name));
+    case BoardTilesSpawned():
+      return state.mapTableOrDefault(event.table, (table) {
+        final cells = Map<VectorDefinition, TableCell>.from(table.cells);
+        for (final entry in event.tiles.entries) {
+          cells[entry.key] =
+              table.getCell(entry.key).copyWith.boards.addAll(entry.value);
+        }
+        return table.copyWith(cells: cells);
+      });
   }
 }

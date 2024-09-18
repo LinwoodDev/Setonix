@@ -64,3 +64,12 @@ final class MessageSent extends ServerWorldEvent with MessageSentMappable {
 
   MessageSent(this.user, this.message);
 }
+
+@MappableClass()
+final class BoardTilesSpawned extends ServerWorldEvent
+    with BoardTilesSpawnedMappable {
+  final String table;
+  final Map<VectorDefinition, List<BoardTile>> tiles;
+
+  BoardTilesSpawned(this.table, this.tiles);
+}

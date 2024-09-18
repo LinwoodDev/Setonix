@@ -54,3 +54,19 @@ final class MessageRequest extends ClientWorldEvent
 
   MessageRequest(this.message);
 }
+
+@MappableClass()
+final class BoardsSpawnRequest extends ClientWorldEvent
+    with BoardsSpawnRequestMappable {
+  final String table;
+  final List<
+      ({
+        VectorDefinition cell,
+        ItemLocation asset,
+      })> assets;
+
+  BoardsSpawnRequest(this.table, this.assets);
+  BoardsSpawnRequest.single(GlobalVectorDefinition cell, ItemLocation asset)
+      : table = cell.table,
+        assets = [(cell: cell.position, asset: asset)];
+}

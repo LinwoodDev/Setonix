@@ -136,5 +136,24 @@ bool isValidClientEvent(
           ));
     case MessageRequest():
       return (MessageSent(channel, event.message), kAnyChannel);
+    case BoardsSpawnRequest():
+      final tiles = <VectorDefinition, List<BoardTile>>{};
+      for (final (asset: asset, cell: cell) in event.assets) {
+        final definition =
+            assetManager.getPack(asset.namespace)?.getBoard(asset.id);
+        if (definition == null) return null;
+        final size = definition.size ?? VectorDefinition.one;
+        for (var x = 0; x < size.x; x++) {
+          for (var y = 0; y < size.y; y++) {
+            final tile = VectorDefinition(x, y);
+            final position = cell + tile;
+            tiles.putIfAbsent(position, () => []).add(BoardTile(
+                  asset: asset,
+                  tile: tile,
+                ));
+          }
+        }
+      }
+      return (BoardTilesSpawned(event.table, tiles), kAnyChannel);
   }
 }
