@@ -28,6 +28,7 @@ dependencies:
   path: ^1.9.0
   quokka_api:
     path: ../api
+  bloc_concurrency: ^0.2.5
 
 dev_dependencies:
   lints: ^4.0.0

@@ -25,7 +25,7 @@ class GameTableMapper extends ClassMapperBase<GameTable> {
 
   static Map<VectorDefinition, TableCell> _$cells(GameTable v) => v.cells;
   static const Field<GameTable, Map<VectorDefinition, TableCell>> _f$cells =
-      Field('cells', _$cells, opt: true, def: const {}, hook: VectorMapHook());
+      Field('cells', _$cells, opt: true, def: const {});
   static ItemLocation? _$background(GameTable v) => v.background;
   static const Field<GameTable, ItemLocation> _f$background =
       Field('background', _$background, opt: true);

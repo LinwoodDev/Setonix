@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:isolate';
 
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:consoler/consoler.dart';
 import 'package:networker/networker.dart';
 import 'package:networker_socket/server.dart';
@@ -12,6 +14,12 @@ import 'package:quokka_server/programs/players.dart';
 import 'package:quokka_server/programs/save.dart';
 import 'package:quokka_server/programs/say.dart';
 import 'package:quokka_server/programs/stop.dart';
+
+Future<WorldState?> _computeEvent(ServerWorldEvent event, WorldState state,
+    Map<String, FileMetadata> signature) {
+  return Isolate.run(
+      () => processServerEvent(event, state, signature: signature));
+}
 
 final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
   final Consoler consoler;
@@ -30,13 +38,13 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
           metadata: data.getMetadataOrDefault(),
           info: data.getInfoOrDefault(),
         )) {
-    on<ServerWorldEvent>((event, emit) {
-      final newState = processServerEvent(event, state,
-          signature: assetManager.createSignature());
-      if (newState == null) return null;
+    on<ServerWorldEvent>((event, emit) async {
+      final signature = assetManager.createSignature();
+      final newState = await _computeEvent(event, state, signature);
+      if (newState == null) return;
       emit(newState);
       return save();
-    });
+    }, transformer: sequential());
   }
 
   static Future<QuokkaServer> load({

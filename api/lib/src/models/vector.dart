@@ -8,6 +8,18 @@ class VectorDefinition with VectorDefinitionMappable {
 
   const VectorDefinition(this.x, this.y);
 
+  factory VectorDefinition.fromDisplay(String displayString) {
+    final parts = displayString
+        .replaceAll('(', '')
+        .replaceAll(')', '')
+        .split(',')
+        .map((e) => e.trim())
+        .toList();
+    final x = int.parse(parts[0]);
+    final y = int.parse(parts[1]);
+    return VectorDefinition(x, y);
+  }
+
   static const zero = VectorDefinition(0, 0);
   static const one = VectorDefinition(1, 1);
 
@@ -22,9 +34,20 @@ class VectorDefinitionHook extends MappingHook {
 
   @override
   Object? beforeDecode(Object? value) {
-    if (value is List) {
-      return VectorDefinition(value[0] as int, value[1] as int);
+    if (value is Iterable) {
+      return VectorDefinition(value.first as int, value.last as int);
     }
-    return value;
+    if (value is! String) {
+      return value;
+    }
+    return VectorDefinition.fromDisplay(value);
+  }
+
+  @override
+  Object? beforeEncode(Object? value) {
+    if (value is! VectorDefinition) {
+      return value;
+    }
+    return value.toDisplayString();
   }
 }

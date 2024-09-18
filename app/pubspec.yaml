@@ -89,6 +89,7 @@ dependencies:
   archive: ^3.4.10
   flutter_markdown: ^0.7.3+1
   markdown: ^7.2.2
+  bloc_concurrency: ^0.2.5
 dependency_overrides:
   flutter_secure_storage_web:
     git:

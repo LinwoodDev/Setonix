@@ -1,3 +1,4 @@
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' show ColorScheme;
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -61,7 +62,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
       } on FatalServerEventError catch (e) {
         state.multiplayer.raiseError(e);
       }
-    });
+    }, transformer: sequential());
     on<ColorSchemeChanged>((event, emit) {
       emit(state.copyWith(colorScheme: event.colorScheme));
     });
