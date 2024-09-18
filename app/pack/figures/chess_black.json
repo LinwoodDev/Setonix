@@ -15,17 +15,17 @@
       "offset": [32, 0],
       "size": [16, 16]
     },
-    "rook": {
+    "bishop": {
       "texture": "figures/chess.png",
       "offset": [48, 0],
       "size": [16, 16]
     },
-    "bishop": {
+    "knight": {
       "texture": "figures/chess.png",
       "offset": [64, 0],
       "size": [16, 16]
     },
-    "knight": {
+    "rook": {
       "texture": "figures/chess.png",
       "offset": [80, 0],
       "size": [16, 16]
