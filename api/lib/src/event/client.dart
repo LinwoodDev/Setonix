@@ -70,3 +70,23 @@ final class BoardsSpawnRequest extends ClientWorldEvent
       : table = cell.table,
         assets = [(cell: cell.position, asset: asset)];
 }
+
+@MappableClass()
+final class BoardRemoveRequest extends ClientWorldEvent
+    with BoardRemoveRequestMappable {
+  final GlobalVectorDefinition position;
+  final int index;
+
+  BoardRemoveRequest(this.position, this.index);
+}
+
+@MappableClass()
+final class BoardMoveRequest extends ClientWorldEvent
+    with BoardMoveRequestMappable {
+  final String table;
+  final VectorDefinition from;
+  final VectorDefinition to;
+  final int index;
+
+  BoardMoveRequest(this.table, this.from, this.to, this.index);
+}

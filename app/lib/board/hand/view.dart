@@ -14,6 +14,7 @@ import 'package:quokka/board/hand/deck.dart';
 import 'package:quokka/board/hand/figure.dart';
 import 'package:quokka/board/hand/item.dart';
 import 'package:quokka/board/hand/object.dart';
+import 'package:quokka/board/hand/tile.dart';
 import 'package:quokka/helpers/scroll.dart';
 import 'package:quokka_api/quokka_api.dart';
 
@@ -149,6 +150,10 @@ class GameHand extends CustomPainterComponent
   }
 
   void _buildCellHand(VectorDefinition location, TableCell? cell) {
+    for (final tile in cell?.tiles.asMap().entries ?? const Iterable.empty()) {
+      _scrollView
+          .addChild(BoardTileHandItem(item: (location, tile.key, tile.value)));
+    }
     for (final object
         in cell?.objects.asMap().entries ?? const Iterable.empty()) {
       _scrollView.addChild(

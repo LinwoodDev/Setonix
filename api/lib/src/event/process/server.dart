@@ -247,7 +247,16 @@ WorldState? processServerEvent(
         final cells = Map<VectorDefinition, TableCell>.from(table.cells);
         for (final entry in event.tiles.entries) {
           cells[entry.key] =
-              table.getCell(entry.key).copyWith.boards.addAll(entry.value);
+              table.getCell(entry.key).copyWith.tiles.addAll(entry.value);
+        }
+        return table.copyWith(cells: cells);
+      });
+    case BoardTilesChanged():
+      return state.mapTableOrDefault(event.table, (table) {
+        final cells = Map<VectorDefinition, TableCell>.from(table.cells);
+        for (final entry in event.tiles.entries) {
+          cells[entry.key] =
+              table.getCell(entry.key).copyWith(tiles: entry.value);
         }
         return table.copyWith(cells: cells);
       });

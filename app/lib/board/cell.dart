@@ -206,7 +206,7 @@ class GameCell extends PositionComponent
     final cell = state.table.cells[toDefinition()];
     final top = cell?.objects.firstOrNull;
     final visible = state.isCellVisible(toGlobalDefinition(state));
-    final tile = cell?.boards.lastOrNull;
+    final tile = cell?.tiles.lastOrNull;
     if (top == _currentTop &&
         visible == _currentVisible &&
         tile == _currentTile) return;

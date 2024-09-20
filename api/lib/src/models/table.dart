@@ -46,14 +46,14 @@ class GameSeat with GameSeatMappable {
 @MappableClass()
 class TableCell with TableCellMappable {
   final List<GameObject> objects;
-  final List<BoardTile> boards;
+  final List<BoardTile> tiles;
   final String? team;
   final int reveal;
   final int? teamReveal;
 
   TableCell({
     this.objects = const [],
-    this.boards = const [],
+    this.tiles = const [],
     this.team,
     this.reveal = -1,
     this.teamReveal,
@@ -61,7 +61,7 @@ class TableCell with TableCellMappable {
 
   int get teamRevealValue => teamReveal ?? reveal;
 
-  bool get isEmpty => objects.isEmpty && boards.isEmpty;
+  bool get isEmpty => objects.isEmpty && tiles.isEmpty;
 }
 
 @MappableClass()

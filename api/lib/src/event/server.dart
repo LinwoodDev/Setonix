@@ -73,3 +73,12 @@ final class BoardTilesSpawned extends ServerWorldEvent
 
   BoardTilesSpawned(this.table, this.tiles);
 }
+
+@MappableClass()
+final class BoardTilesChanged extends ServerWorldEvent
+    with BoardTilesChangedMappable {
+  final String table;
+  final Map<VectorDefinition, List<BoardTile>> tiles;
+
+  BoardTilesChanged(this.table, this.tiles);
+}

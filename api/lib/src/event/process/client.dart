@@ -155,5 +155,63 @@ bool isValidClientEvent(
         }
       }
       return (BoardTilesSpawned(event.table, tiles), kAnyChannel);
+    case BoardRemoveRequest():
+      final table = state.getTableOrDefault(event.position.table);
+      final cell = table.getCell(event.position.position);
+      final currentObject = cell.tiles[event.index];
+      final definition = assetManager
+          .getPack(currentObject.asset.namespace)
+          ?.getBoard(currentObject.asset.id);
+      final size = definition?.tiles ?? VectorDefinition.one;
+      final newTiles = <VectorDefinition, List<BoardTile>>{};
+      for (var x = 0; x < size.x; x++) {
+        for (var y = 0; y < size.y; y++) {
+          final position = VectorDefinition(
+              x + event.position.x - currentObject.tile.x,
+              y + event.position.y - currentObject.tile.y);
+          final cell = table.getCell(position);
+          final index = cell.tiles.indexWhere((e) =>
+              e.asset == currentObject.asset && e.tile.x == x && e.tile.y == y);
+          if (index != -1) {
+            final newTilesList = List<BoardTile>.from(cell.tiles)
+              ..removeAt(index);
+            newTiles[position] = newTilesList;
+          }
+        }
+      }
+      return (BoardTilesChanged(event.position.table, newTiles), kAnyChannel);
+    case BoardMoveRequest():
+      final table = state.getTableOrDefault(event.table);
+      final from = table.getCell(event.from);
+      final currentObject = from.tiles[event.index];
+      final definition = assetManager
+          .getPack(currentObject.asset.namespace)
+          ?.getBoard(currentObject.asset.id);
+      final size = definition?.tiles ?? VectorDefinition.one;
+      final newTiles = <VectorDefinition, List<BoardTile>>{};
+      for (var x = 0; x < size.x; x++) {
+        for (var y = 0; y < size.y; y++) {
+          final fromPosition = VectorDefinition(
+              x + event.from.x - currentObject.tile.x,
+              y + event.from.y - currentObject.tile.y);
+          final toPosition = fromPosition + event.to - event.from;
+          final tiles =
+              newTiles[fromPosition] ?? table.getCell(fromPosition).tiles;
+          final index = tiles.indexWhere((e) =>
+              e.asset == currentObject.asset && e.tile.x == x && e.tile.y == y);
+          if (index != -1) {
+            final newTilesList = List<BoardTile>.from(tiles)..removeAt(index);
+            newTiles[fromPosition] = newTilesList;
+            newTiles
+                .putIfAbsent(toPosition,
+                    () => List<BoardTile>.from(table.getCell(toPosition).tiles))
+                .add(BoardTile(
+                  asset: currentObject.asset,
+                  tile: VectorDefinition(x, y),
+                ));
+          }
+        }
+      }
+      return (BoardTilesChanged(event.table, newTiles), kAnyChannel);
   }
 }

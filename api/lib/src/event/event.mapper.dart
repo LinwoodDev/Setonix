@@ -130,6 +130,7 @@ class ServerWorldEventMapper extends SubClassMapperBase<ServerWorldEvent> {
       CellShuffledMapper.ensureInitialized();
       MessageSentMapper.ensureInitialized();
       BoardTilesSpawnedMapper.ensureInitialized();
+      BoardTilesChangedMapper.ensureInitialized();
       HybridWorldEventMapper.ensureInitialized();
     }
     return _instance!;
@@ -1118,6 +1119,141 @@ class _BoardTilesSpawnedCopyWithImpl<$R, $Out>
       _BoardTilesSpawnedCopyWithImpl($value, $cast, t);
 }
 
+class BoardTilesChangedMapper extends SubClassMapperBase<BoardTilesChanged> {
+  BoardTilesChangedMapper._();
+
+  static BoardTilesChangedMapper? _instance;
+  static BoardTilesChangedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = BoardTilesChangedMapper._());
+      ServerWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      VectorDefinitionMapper.ensureInitialized();
+      BoardTileMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'BoardTilesChanged';
+
+  static String _$table(BoardTilesChanged v) => v.table;
+  static const Field<BoardTilesChanged, String> _f$table =
+      Field('table', _$table);
+  static Map<VectorDefinition, List<BoardTile>> _$tiles(BoardTilesChanged v) =>
+      v.tiles;
+  static const Field<BoardTilesChanged, Map<VectorDefinition, List<BoardTile>>>
+      _f$tiles = Field('tiles', _$tiles);
+
+  @override
+  final MappableFields<BoardTilesChanged> fields = const {
+    #table: _f$table,
+    #tiles: _f$tiles,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'BoardTilesChanged';
+  @override
+  late final ClassMapperBase superMapper =
+      ServerWorldEventMapper.ensureInitialized();
+
+  static BoardTilesChanged _instantiate(DecodingData data) {
+    return BoardTilesChanged(data.dec(_f$table), data.dec(_f$tiles));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static BoardTilesChanged fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<BoardTilesChanged>(map);
+  }
+
+  static BoardTilesChanged fromJson(String json) {
+    return ensureInitialized().decodeJson<BoardTilesChanged>(json);
+  }
+}
+
+mixin BoardTilesChangedMappable {
+  String toJson() {
+    return BoardTilesChangedMapper.ensureInitialized()
+        .encodeJson<BoardTilesChanged>(this as BoardTilesChanged);
+  }
+
+  Map<String, dynamic> toMap() {
+    return BoardTilesChangedMapper.ensureInitialized()
+        .encodeMap<BoardTilesChanged>(this as BoardTilesChanged);
+  }
+
+  BoardTilesChangedCopyWith<BoardTilesChanged, BoardTilesChanged,
+          BoardTilesChanged>
+      get copyWith => _BoardTilesChangedCopyWithImpl(
+          this as BoardTilesChanged, $identity, $identity);
+  @override
+  String toString() {
+    return BoardTilesChangedMapper.ensureInitialized()
+        .stringifyValue(this as BoardTilesChanged);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return BoardTilesChangedMapper.ensureInitialized()
+        .equalsValue(this as BoardTilesChanged, other);
+  }
+
+  @override
+  int get hashCode {
+    return BoardTilesChangedMapper.ensureInitialized()
+        .hashValue(this as BoardTilesChanged);
+  }
+}
+
+extension BoardTilesChangedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, BoardTilesChanged, $Out> {
+  BoardTilesChangedCopyWith<$R, BoardTilesChanged, $Out>
+      get $asBoardTilesChanged =>
+          $base.as((v, t, t2) => _BoardTilesChangedCopyWithImpl(v, t, t2));
+}
+
+abstract class BoardTilesChangedCopyWith<$R, $In extends BoardTilesChanged,
+    $Out> implements ServerWorldEventCopyWith<$R, $In, $Out> {
+  MapCopyWith<$R, VectorDefinition, List<BoardTile>,
+      ObjectCopyWith<$R, List<BoardTile>, List<BoardTile>>> get tiles;
+  @override
+  $R call({String? table, Map<VectorDefinition, List<BoardTile>>? tiles});
+  BoardTilesChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class _BoardTilesChangedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, BoardTilesChanged, $Out>
+    implements BoardTilesChangedCopyWith<$R, BoardTilesChanged, $Out> {
+  _BoardTilesChangedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<BoardTilesChanged> $mapper =
+      BoardTilesChangedMapper.ensureInitialized();
+  @override
+  MapCopyWith<$R, VectorDefinition, List<BoardTile>,
+          ObjectCopyWith<$R, List<BoardTile>, List<BoardTile>>>
+      get tiles => MapCopyWith($value.tiles,
+          (v, t) => ObjectCopyWith(v, $identity, t), (v) => call(tiles: v));
+  @override
+  $R call({String? table, Map<VectorDefinition, List<BoardTile>>? tiles}) =>
+      $apply(FieldCopyWithData({
+        if (table != null) #table: table,
+        if (tiles != null) #tiles: tiles
+      }));
+  @override
+  BoardTilesChanged $make(CopyWithData data) => BoardTilesChanged(
+      data.get(#table, or: $value.table), data.get(#tiles, or: $value.tiles));
+
+  @override
+  BoardTilesChangedCopyWith<$R2, BoardTilesChanged, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _BoardTilesChangedCopyWithImpl($value, $cast, t);
+}
+
 class ClientWorldEventMapper extends SubClassMapperBase<ClientWorldEvent> {
   ClientWorldEventMapper._();
 
@@ -1133,6 +1269,8 @@ class ClientWorldEventMapper extends SubClassMapperBase<ClientWorldEvent> {
       PacksChangeRequestMapper.ensureInitialized();
       MessageRequestMapper.ensureInitialized();
       BoardsSpawnRequestMapper.ensureInitialized();
+      BoardRemoveRequestMapper.ensureInitialized();
+      BoardMoveRequestMapper.ensureInitialized();
       HybridWorldEventMapper.ensureInitialized();
     }
     return _instance!;
@@ -2055,6 +2193,293 @@ class _BoardsSpawnRequestCopyWithImpl<$R, $Out>
   BoardsSpawnRequestCopyWith<$R2, BoardsSpawnRequest, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
       _BoardsSpawnRequestCopyWithImpl($value, $cast, t);
+}
+
+class BoardRemoveRequestMapper extends SubClassMapperBase<BoardRemoveRequest> {
+  BoardRemoveRequestMapper._();
+
+  static BoardRemoveRequestMapper? _instance;
+  static BoardRemoveRequestMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = BoardRemoveRequestMapper._());
+      ClientWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      GlobalVectorDefinitionMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'BoardRemoveRequest';
+
+  static GlobalVectorDefinition _$position(BoardRemoveRequest v) => v.position;
+  static const Field<BoardRemoveRequest, GlobalVectorDefinition> _f$position =
+      Field('position', _$position);
+  static int _$index(BoardRemoveRequest v) => v.index;
+  static const Field<BoardRemoveRequest, int> _f$index =
+      Field('index', _$index);
+
+  @override
+  final MappableFields<BoardRemoveRequest> fields = const {
+    #position: _f$position,
+    #index: _f$index,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'BoardRemoveRequest';
+  @override
+  late final ClassMapperBase superMapper =
+      ClientWorldEventMapper.ensureInitialized();
+
+  static BoardRemoveRequest _instantiate(DecodingData data) {
+    return BoardRemoveRequest(data.dec(_f$position), data.dec(_f$index));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static BoardRemoveRequest fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<BoardRemoveRequest>(map);
+  }
+
+  static BoardRemoveRequest fromJson(String json) {
+    return ensureInitialized().decodeJson<BoardRemoveRequest>(json);
+  }
+}
+
+mixin BoardRemoveRequestMappable {
+  String toJson() {
+    return BoardRemoveRequestMapper.ensureInitialized()
+        .encodeJson<BoardRemoveRequest>(this as BoardRemoveRequest);
+  }
+
+  Map<String, dynamic> toMap() {
+    return BoardRemoveRequestMapper.ensureInitialized()
+        .encodeMap<BoardRemoveRequest>(this as BoardRemoveRequest);
+  }
+
+  BoardRemoveRequestCopyWith<BoardRemoveRequest, BoardRemoveRequest,
+          BoardRemoveRequest>
+      get copyWith => _BoardRemoveRequestCopyWithImpl(
+          this as BoardRemoveRequest, $identity, $identity);
+  @override
+  String toString() {
+    return BoardRemoveRequestMapper.ensureInitialized()
+        .stringifyValue(this as BoardRemoveRequest);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return BoardRemoveRequestMapper.ensureInitialized()
+        .equalsValue(this as BoardRemoveRequest, other);
+  }
+
+  @override
+  int get hashCode {
+    return BoardRemoveRequestMapper.ensureInitialized()
+        .hashValue(this as BoardRemoveRequest);
+  }
+}
+
+extension BoardRemoveRequestValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, BoardRemoveRequest, $Out> {
+  BoardRemoveRequestCopyWith<$R, BoardRemoveRequest, $Out>
+      get $asBoardRemoveRequest =>
+          $base.as((v, t, t2) => _BoardRemoveRequestCopyWithImpl(v, t, t2));
+}
+
+abstract class BoardRemoveRequestCopyWith<$R, $In extends BoardRemoveRequest,
+    $Out> implements ClientWorldEventCopyWith<$R, $In, $Out> {
+  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
+      GlobalVectorDefinition> get position;
+  @override
+  $R call({GlobalVectorDefinition? position, int? index});
+  BoardRemoveRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class _BoardRemoveRequestCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, BoardRemoveRequest, $Out>
+    implements BoardRemoveRequestCopyWith<$R, BoardRemoveRequest, $Out> {
+  _BoardRemoveRequestCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<BoardRemoveRequest> $mapper =
+      BoardRemoveRequestMapper.ensureInitialized();
+  @override
+  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
+          GlobalVectorDefinition>
+      get position => $value.position.copyWith.$chain((v) => call(position: v));
+  @override
+  $R call({GlobalVectorDefinition? position, int? index}) =>
+      $apply(FieldCopyWithData({
+        if (position != null) #position: position,
+        if (index != null) #index: index
+      }));
+  @override
+  BoardRemoveRequest $make(CopyWithData data) => BoardRemoveRequest(
+      data.get(#position, or: $value.position),
+      data.get(#index, or: $value.index));
+
+  @override
+  BoardRemoveRequestCopyWith<$R2, BoardRemoveRequest, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _BoardRemoveRequestCopyWithImpl($value, $cast, t);
+}
+
+class BoardMoveRequestMapper extends SubClassMapperBase<BoardMoveRequest> {
+  BoardMoveRequestMapper._();
+
+  static BoardMoveRequestMapper? _instance;
+  static BoardMoveRequestMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = BoardMoveRequestMapper._());
+      ClientWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      VectorDefinitionMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'BoardMoveRequest';
+
+  static String _$table(BoardMoveRequest v) => v.table;
+  static const Field<BoardMoveRequest, String> _f$table =
+      Field('table', _$table);
+  static VectorDefinition _$from(BoardMoveRequest v) => v.from;
+  static const Field<BoardMoveRequest, VectorDefinition> _f$from =
+      Field('from', _$from);
+  static VectorDefinition _$to(BoardMoveRequest v) => v.to;
+  static const Field<BoardMoveRequest, VectorDefinition> _f$to =
+      Field('to', _$to);
+  static int _$index(BoardMoveRequest v) => v.index;
+  static const Field<BoardMoveRequest, int> _f$index = Field('index', _$index);
+
+  @override
+  final MappableFields<BoardMoveRequest> fields = const {
+    #table: _f$table,
+    #from: _f$from,
+    #to: _f$to,
+    #index: _f$index,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'BoardMoveRequest';
+  @override
+  late final ClassMapperBase superMapper =
+      ClientWorldEventMapper.ensureInitialized();
+
+  static BoardMoveRequest _instantiate(DecodingData data) {
+    return BoardMoveRequest(data.dec(_f$table), data.dec(_f$from),
+        data.dec(_f$to), data.dec(_f$index));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static BoardMoveRequest fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<BoardMoveRequest>(map);
+  }
+
+  static BoardMoveRequest fromJson(String json) {
+    return ensureInitialized().decodeJson<BoardMoveRequest>(json);
+  }
+}
+
+mixin BoardMoveRequestMappable {
+  String toJson() {
+    return BoardMoveRequestMapper.ensureInitialized()
+        .encodeJson<BoardMoveRequest>(this as BoardMoveRequest);
+  }
+
+  Map<String, dynamic> toMap() {
+    return BoardMoveRequestMapper.ensureInitialized()
+        .encodeMap<BoardMoveRequest>(this as BoardMoveRequest);
+  }
+
+  BoardMoveRequestCopyWith<BoardMoveRequest, BoardMoveRequest, BoardMoveRequest>
+      get copyWith => _BoardMoveRequestCopyWithImpl(
+          this as BoardMoveRequest, $identity, $identity);
+  @override
+  String toString() {
+    return BoardMoveRequestMapper.ensureInitialized()
+        .stringifyValue(this as BoardMoveRequest);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return BoardMoveRequestMapper.ensureInitialized()
+        .equalsValue(this as BoardMoveRequest, other);
+  }
+
+  @override
+  int get hashCode {
+    return BoardMoveRequestMapper.ensureInitialized()
+        .hashValue(this as BoardMoveRequest);
+  }
+}
+
+extension BoardMoveRequestValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, BoardMoveRequest, $Out> {
+  BoardMoveRequestCopyWith<$R, BoardMoveRequest, $Out>
+      get $asBoardMoveRequest =>
+          $base.as((v, t, t2) => _BoardMoveRequestCopyWithImpl(v, t, t2));
+}
+
+abstract class BoardMoveRequestCopyWith<$R, $In extends BoardMoveRequest, $Out>
+    implements ClientWorldEventCopyWith<$R, $In, $Out> {
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get from;
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get to;
+  @override
+  $R call(
+      {String? table,
+      VectorDefinition? from,
+      VectorDefinition? to,
+      int? index});
+  BoardMoveRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class _BoardMoveRequestCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, BoardMoveRequest, $Out>
+    implements BoardMoveRequestCopyWith<$R, BoardMoveRequest, $Out> {
+  _BoardMoveRequestCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<BoardMoveRequest> $mapper =
+      BoardMoveRequestMapper.ensureInitialized();
+  @override
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get from =>
+      $value.from.copyWith.$chain((v) => call(from: v));
+  @override
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get to =>
+      $value.to.copyWith.$chain((v) => call(to: v));
+  @override
+  $R call(
+          {String? table,
+          VectorDefinition? from,
+          VectorDefinition? to,
+          int? index}) =>
+      $apply(FieldCopyWithData({
+        if (table != null) #table: table,
+        if (from != null) #from: from,
+        if (to != null) #to: to,
+        if (index != null) #index: index
+      }));
+  @override
+  BoardMoveRequest $make(CopyWithData data) => BoardMoveRequest(
+      data.get(#table, or: $value.table),
+      data.get(#from, or: $value.from),
+      data.get(#to, or: $value.to),
+      data.get(#index, or: $value.index));
+
+  @override
+  BoardMoveRequestCopyWith<$R2, BoardMoveRequest, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _BoardMoveRequestCopyWithImpl($value, $cast, t);
 }
 
 class HybridWorldEventMapper extends SubClassMapperBase<HybridWorldEvent> {

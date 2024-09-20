@@ -27,6 +27,8 @@ class VectorDefinition with VectorDefinitionMappable {
 
   operator +(VectorDefinition other) =>
       VectorDefinition(x + other.x, y + other.y);
+  operator -(VectorDefinition other) =>
+      VectorDefinition(x - other.x, y - other.y);
 }
 
 class VectorDefinitionHook extends MappingHook {
