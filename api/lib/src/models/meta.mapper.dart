@@ -92,6 +92,9 @@ class FileMetadataMapper extends ClassMapperBase<FileMetadata> {
   static Set<String> _$dependencies(FileMetadata v) => v.dependencies;
   static const Field<FileMetadata, Set<String>> _f$dependencies =
       Field('dependencies', _$dependencies, opt: true, def: const {});
+  static int _$fileVersion(FileMetadata v) => v.fileVersion;
+  static const Field<FileMetadata, int> _f$fileVersion =
+      Field('fileVersion', _$fileVersion, opt: true, def: kFileVersion);
 
   @override
   final MappableFields<FileMetadata> fields = const {
@@ -102,6 +105,7 @@ class FileMetadataMapper extends ClassMapperBase<FileMetadata> {
     #author: _f$author,
     #version: _f$version,
     #dependencies: _f$dependencies,
+    #fileVersion: _f$fileVersion,
   };
 
   static FileMetadata _instantiate(DecodingData data) {
@@ -112,7 +116,8 @@ class FileMetadataMapper extends ClassMapperBase<FileMetadata> {
         description: data.dec(_f$description),
         author: data.dec(_f$author),
         version: data.dec(_f$version),
-        dependencies: data.dec(_f$dependencies));
+        dependencies: data.dec(_f$dependencies),
+        fileVersion: data.dec(_f$fileVersion));
   }
 
   @override
@@ -174,7 +179,8 @@ abstract class FileMetadataCopyWith<$R, $In extends FileMetadata, $Out>
       String? description,
       String? author,
       String? version,
-      Set<String>? dependencies});
+      Set<String>? dependencies,
+      int? fileVersion});
   FileMetadataCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -194,7 +200,8 @@ class _FileMetadataCopyWithImpl<$R, $Out>
           String? description,
           String? author,
           String? version,
-          Set<String>? dependencies}) =>
+          Set<String>? dependencies,
+          int? fileVersion}) =>
       $apply(FieldCopyWithData({
         if (type != null) #type: type,
         if (namespace != null) #namespace: namespace,
@@ -202,7 +209,8 @@ class _FileMetadataCopyWithImpl<$R, $Out>
         if (description != null) #description: description,
         if (author != null) #author: author,
         if (version != null) #version: version,
-        if (dependencies != null) #dependencies: dependencies
+        if (dependencies != null) #dependencies: dependencies,
+        if (fileVersion != null) #fileVersion: fileVersion
       }));
   @override
   FileMetadata $make(CopyWithData data) => FileMetadata(
@@ -212,7 +220,8 @@ class _FileMetadataCopyWithImpl<$R, $Out>
       description: data.get(#description, or: $value.description),
       author: data.get(#author, or: $value.author),
       version: data.get(#version, or: $value.version),
-      dependencies: data.get(#dependencies, or: $value.dependencies));
+      dependencies: data.get(#dependencies, or: $value.dependencies),
+      fileVersion: data.get(#fileVersion, or: $value.fileVersion));
 
   @override
   FileMetadataCopyWith<$R2, FileMetadata, $Out2> $chain<$R2, $Out2>(

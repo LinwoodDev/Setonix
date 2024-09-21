@@ -250,6 +250,11 @@ class GameDrawer extends StatelessWidget {
                           previous.teamMembers != current.teamMembers,
                       bloc: bloc,
                       builder: (context, state) {
+                        if (state.info.teams.isEmpty) {
+                          return Center(
+                              child:
+                                  Text(AppLocalizations.of(context).noTeams));
+                        }
                         return Column(
                           mainAxisSize: MainAxisSize.min,
                           children: state.info.teams.entries.map((entry) {

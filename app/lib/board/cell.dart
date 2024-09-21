@@ -58,6 +58,9 @@ class GameCell extends PositionComponent
       _selectionComponent.addAll(effects);
       _effects = null;
     }
+    if (isMounted) {
+      _updateTop();
+    }
   }
 
   @override
@@ -144,7 +147,6 @@ class GameCell extends PositionComponent
   @override
   void onInitialState(ClientWorldState state) {
     if (state.selectedCell != toDefinition()) _selectionComponent.opacity = 0;
-    _updateTop(state);
   }
 
   bool isClaimed(ClientWorldState state) => state.info.teams.entries.any(
@@ -199,10 +201,10 @@ class GameCell extends PositionComponent
             opacityTo: 0),
       ]);
     }
-    _updateTop(state);
   }
 
-  Future<void> _updateTop(ClientWorldState state) async {
+  Future<void> _updateTop() async {
+    final state = bloc.state;
     final cell = state.table.cells[toDefinition()];
     final top = cell?.objects.firstOrNull;
     final visible = state.isCellVisible(toGlobalDefinition(state));

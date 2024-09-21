@@ -43,7 +43,6 @@ Quokka is a table sandbox game where you can decide how to play. Spawn cards eve
   * Will be added in 0.3
 * Missing error messages
   * Some errors are not displayed
-* Boards aren't available, currently only figures are supported (see the concept for reference)
 
 ## Features
 

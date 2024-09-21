@@ -156,7 +156,8 @@ WorldState? processServerEvent(
           ...toAdd,
         ]);
         return table.copyWith(cells: {
-          ...table.cells,
+          ...Map<VectorDefinition, TableCell>.from(table.cells)
+            ..remove(event.from),
           if (!from.isEmpty) event.from: from,
           event.to: to,
         });
