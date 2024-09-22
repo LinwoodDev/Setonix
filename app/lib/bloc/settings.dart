@@ -22,6 +22,7 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
   final bool showConnectYour, showConnectNetwork;
   final GameProperty gameProperty;
   final List<ListGameServer> servers;
+  final double zoom;
   final bool highContrast;
 
   const QuokkaSettings({
@@ -36,6 +37,7 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
     this.gameProperty = const GameProperty(),
     this.servers = const [],
     this.highContrast = false,
+    this.zoom = 1,
   });
 
   Locale? get locale {
@@ -66,6 +68,7 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
                 .toList() ??
             [],
         highContrast: prefs.getBool('highContrast') ?? false,
+        zoom: prefs.getDouble('zoom') ?? 1,
       );
 
   Future<void> save() async {
@@ -88,6 +91,7 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
     await prefs.setStringList(
         'servers', servers.map((e) => e.toJson()).toList());
     await prefs.setBool('highContrast', highContrast);
+    await prefs.setDouble('zoom', zoom);
   }
 }
 
@@ -177,6 +181,18 @@ class SettingsCubit extends Cubit<QuokkaSettings>
 
   Future<void> changeHighContrast(bool value) {
     emit(state.copyWith(highContrast: value));
+    return save();
+  }
+
+  Future<void> zoomIn([double value = 0.1]) {
+    emit(state.copyWith(zoom: (state.zoom + value).clamp(0.4, 2)));
+    return save();
+  }
+
+  Future<void> zoomOut([double value = 0.1]) => zoomIn(-value);
+
+  Future<void> resetZoom([double value = 1]) {
+    emit(state.copyWith(zoom: value.clamp(0.4, 2)));
     return save();
   }
 }

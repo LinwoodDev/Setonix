@@ -30,7 +30,6 @@ final class ClientWorldState with ClientWorldStateMappable {
   final ItemLocation? selectedDeck;
   final bool showHand, switchCellOnMove;
   final DrawerView drawerView;
-  final double zoom;
 
   const ClientWorldState({
     required this.multiplayer,
@@ -42,7 +41,6 @@ final class ClientWorldState with ClientWorldStateMappable {
     this.showHand = false,
     this.switchCellOnMove = false,
     this.drawerView = DrawerView.chat,
-    this.zoom = 1.0,
   });
 
   QuokkaFileSystem get fileSystem => assetManager.fileSystem;

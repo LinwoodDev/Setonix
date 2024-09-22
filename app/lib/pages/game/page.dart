@@ -220,6 +220,7 @@ class _GamePageState extends State<GamePage> {
                             builder: (context) => GameWidget(
                                     game: BoardGame(
                                   bloc: context.read<WorldBloc>(),
+                                  settingsCubit: context.read<SettingsCubit>(),
                                   contextMenuController: _contextMenuController,
                                   onEscape: () =>
                                       Scaffold.of(context).openDrawer(),

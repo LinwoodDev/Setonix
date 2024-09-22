@@ -6,6 +6,7 @@ import 'package:flame/game.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:quokka/bloc/settings.dart';
 import 'package:quokka/bloc/world/bloc.dart';
 import 'package:quokka/bloc/world/local.dart';
 import 'package:quokka/bloc/world/state.dart';
@@ -26,6 +27,7 @@ class BoardGame extends FlameGame
   late final GameHand _hand;
   late final BoardGrid grid;
   final WorldBloc bloc;
+  final SettingsCubit settingsCubit;
 
   bool _isShifting = false;
   bool get isShifting => _isShifting;
@@ -34,14 +36,17 @@ class BoardGame extends FlameGame
     required this.bloc,
     required this.contextMenuController,
     required this.onEscape,
+    required this.settingsCubit,
   });
 
   @override
   FutureOr<void> onLoad() async {
     add(ScreenHitbox());
-    final provider =
+    FlameBlocProvider provider =
         FlameBlocProvider<WorldBloc, ClientWorldState>.value(value: bloc);
-    await add(provider);
+    provider = provider;
+    await add(FlameBlocProvider<SettingsCubit, QuokkaSettings>.value(
+        value: settingsCubit, children: [provider]));
     provider.addAll([camera, world]);
     selectionSprite = await Sprite.load('selection.png');
     blankSprite = await Sprite.load('blank.png');
@@ -63,10 +68,6 @@ class BoardGame extends FlameGame
     if (context == null) return;
     bloc.state.assetManager.currentLocale =
         Localizations.localeOf(context).languageCode;
-  }
-
-  void clampZoom(double zoom) {
-    camera.viewfinder.zoom = zoom.clamp(0.3, 3.0);
   }
 
   static const zoomPerScrollUnit = 0.02;

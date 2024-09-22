@@ -58,11 +58,3 @@ final class DrawerViewChanged extends LocalWorldEvent
 
   DrawerViewChanged(this.view);
 }
-
-@MappableClass()
-final class ZoomChanged extends LocalWorldEvent with ZoomChangedMappable {
-  final double? zoom;
-
-  ZoomChanged(this.zoom);
-  ZoomChanged.reset() : zoom = null;
-}

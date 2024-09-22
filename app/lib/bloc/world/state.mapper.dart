@@ -143,9 +143,6 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
   static DrawerView _$drawerView(ClientWorldState v) => v.drawerView;
   static const Field<ClientWorldState, DrawerView> _f$drawerView =
       Field('drawerView', _$drawerView, opt: true, def: DrawerView.chat);
-  static double _$zoom(ClientWorldState v) => v.zoom;
-  static const Field<ClientWorldState, double> _f$zoom =
-      Field('zoom', _$zoom, opt: true, def: 1.0);
 
   @override
   final MappableFields<ClientWorldState> fields = const {
@@ -158,7 +155,6 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
     #showHand: _f$showHand,
     #switchCellOnMove: _f$switchCellOnMove,
     #drawerView: _f$drawerView,
-    #zoom: _f$zoom,
   };
 
   static ClientWorldState _instantiate(DecodingData data) {
@@ -171,8 +167,7 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
         selectedDeck: data.dec(_f$selectedDeck),
         showHand: data.dec(_f$showHand),
         switchCellOnMove: data.dec(_f$switchCellOnMove),
-        drawerView: data.dec(_f$drawerView),
-        zoom: data.dec(_f$zoom));
+        drawerView: data.dec(_f$drawerView));
   }
 
   @override
@@ -242,8 +237,7 @@ abstract class ClientWorldStateCopyWith<$R, $In extends ClientWorldState, $Out>
       ItemLocation? selectedDeck,
       bool? showHand,
       bool? switchCellOnMove,
-      DrawerView? drawerView,
-      double? zoom});
+      DrawerView? drawerView});
   ClientWorldStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -276,8 +270,7 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
           Object? selectedDeck = $none,
           bool? showHand,
           bool? switchCellOnMove,
-          DrawerView? drawerView,
-          double? zoom}) =>
+          DrawerView? drawerView}) =>
       $apply(FieldCopyWithData({
         if (multiplayer != null) #multiplayer: multiplayer,
         if (colorScheme != null) #colorScheme: colorScheme,
@@ -287,8 +280,7 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
         if (selectedDeck != $none) #selectedDeck: selectedDeck,
         if (showHand != null) #showHand: showHand,
         if (switchCellOnMove != null) #switchCellOnMove: switchCellOnMove,
-        if (drawerView != null) #drawerView: drawerView,
-        if (zoom != null) #zoom: zoom
+        if (drawerView != null) #drawerView: drawerView
       }));
   @override
   ClientWorldState $make(CopyWithData data) => ClientWorldState(
@@ -301,8 +293,7 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
       showHand: data.get(#showHand, or: $value.showHand),
       switchCellOnMove:
           data.get(#switchCellOnMove, or: $value.switchCellOnMove),
-      drawerView: data.get(#drawerView, or: $value.drawerView),
-      zoom: data.get(#zoom, or: $value.zoom));
+      drawerView: data.get(#drawerView, or: $value.drawerView));
 
   @override
   ClientWorldStateCopyWith<$R2, ClientWorldState, $Out2> $chain<$R2, $Out2>(

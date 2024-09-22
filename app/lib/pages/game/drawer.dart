@@ -7,6 +7,7 @@ import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:quokka/api/settings.dart';
 import 'package:quokka/bloc/multiplayer.dart';
+import 'package:quokka/bloc/settings.dart';
 import 'package:quokka/bloc/world/bloc.dart';
 import 'package:quokka/bloc/world/local.dart';
 import 'package:quokka/bloc/world/state.dart';
@@ -121,7 +122,7 @@ class GameDrawer extends StatelessWidget {
                 );
               },
             ),
-            BlocBuilder<WorldBloc, ClientWorldState>(
+            BlocBuilder<SettingsCubit, QuokkaSettings>(
               buildWhen: (previous, current) => previous.zoom != current.zoom,
               builder: (context, state) => ListTile(
                 leading: const Icon(PhosphorIconsLight.magnifyingGlass),
@@ -131,27 +132,42 @@ class GameDrawer extends StatelessWidget {
                 subtitle: Text(
                   '${(state.zoom * 100).toStringAsFixed(0)}%',
                 ),
+                onTap: () {
+                  final settingsCubit = context.read<SettingsCubit>();
+                  showLeapBottomSheet(
+                    context: context,
+                    titleBuilder: (context) =>
+                        Text(AppLocalizations.of(context).zoom),
+                    childrenBuilder: (context) => [
+                      ExactSlider(
+                        value: state.zoom * 100,
+                        onChangeEnd: (value) =>
+                            settingsCubit.resetZoom(value / 100),
+                        min: 40,
+                        max: 200,
+                        fractionDigits: 0,
+                      ),
+                    ],
+                  );
+                },
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
                       icon: const Icon(PhosphorIconsLight.minus),
                       tooltip: AppLocalizations.of(context).zoomOut,
-                      onPressed: () =>
-                          context.read<WorldBloc>().process(ZoomChanged(-0.1)),
+                      onPressed: () => context.read<SettingsCubit>().zoomOut(),
                     ),
                     IconButton(
                       icon: const Icon(PhosphorIconsLight.plus),
                       tooltip: AppLocalizations.of(context).zoomIn,
-                      onPressed: () =>
-                          context.read<WorldBloc>().process(ZoomChanged(0.1)),
+                      onPressed: () => context.read<SettingsCubit>().zoomIn(),
                     ),
                     IconButton(
                       icon: const Icon(PhosphorIconsLight.clockClockwise),
                       tooltip: AppLocalizations.of(context).resetZoom,
-                      onPressed: () {
-                        context.read<WorldBloc>().process(ZoomChanged.reset());
-                      },
+                      onPressed: () =>
+                          context.read<SettingsCubit>().resetZoom(),
                     ),
                   ],
                 ),
