@@ -110,8 +110,11 @@ WorldState? processServerEvent(
     case ObjectsChanged():
       return state.mapTableOrDefault(event.cell.table, (table) {
         final cell = table.cells[event.cell.position] ?? TableCell();
-        return table.copyWith.cells.replace(
-            event.cell.position, cell.copyWith(objects: event.objects));
+        final newCell = cell.copyWith(objects: event.objects);
+        if (newCell.isEmpty) {
+          return table.copyWith.cells.remove(event.cell.position);
+        }
+        return table.copyWith.cells.replace(event.cell.position, newCell);
       });
     case CellShuffled(positions: final positions):
       return state.mapTableOrDefault(event.cell.table, (table) {
@@ -172,32 +175,30 @@ WorldState? processServerEvent(
               event.cell.position,
               cell.copyWith.objects.replace(objectIndex,
                   object.copyWith(hidden: event.hide ?? !object.hidden)));
-        } else {
-          final hidden =
-              !(event.hide ?? cell.objects.firstOrNull?.hidden ?? false);
-          return table.copyWith.cells.replace(
-              event.cell.position,
-              cell.copyWith(
-                objects: cell.objects
-                    .map((e) => e.copyWith(hidden: hidden))
-                    .toList(),
-              ));
         }
+        final hidden =
+            !(event.hide ?? cell.objects.firstOrNull?.hidden ?? false);
+        return table.copyWith.cells.replace(
+            event.cell.position,
+            cell.copyWith(
+              objects:
+                  cell.objects.map((e) => e.copyWith(hidden: hidden)).toList(),
+            ));
       });
     case CellItemsCleared():
       return state.mapTableOrDefault(event.cell.table, (table) {
         final cell = table.cells[event.cell.position] ?? TableCell();
         final objectIndex = event.object;
+        var newCell = cell;
         if (objectIndex != null) {
-          return table.copyWith.cells.replace(
-              event.cell.position, cell.copyWith.objects.removeAt(objectIndex));
+          newCell = cell.copyWith.objects.removeAt(objectIndex);
         } else {
-          return table.copyWith.cells.replace(
-              event.cell.position,
-              cell.copyWith(
-                objects: [],
-              ));
+          newCell = cell.copyWith(objects: []);
         }
+        if (newCell.isEmpty) {
+          return table.copyWith.cells.remove(event.cell.position);
+        }
+        return table.copyWith.cells.replace(event.cell.position, newCell);
       });
     case ObjectIndexChanged():
       return state.mapTableOrDefault(event.cell.table, (table) {
@@ -256,8 +257,12 @@ WorldState? processServerEvent(
       return state.mapTableOrDefault(event.table, (table) {
         final cells = Map<VectorDefinition, TableCell>.from(table.cells);
         for (final entry in event.tiles.entries) {
-          cells[entry.key] =
-              table.getCell(entry.key).copyWith(tiles: entry.value);
+          final newCell = table.getCell(entry.key).copyWith(tiles: entry.value);
+          if (newCell.isEmpty) {
+            cells.remove(entry.key);
+          } else {
+            cells[entry.key] = newCell;
+          }
         }
         return table.copyWith(cells: cells);
       });

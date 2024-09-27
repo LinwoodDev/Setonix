@@ -10,11 +10,12 @@ import 'package:quokka_api/quokka_api.dart';
 class GameBoardBackground extends PositionComponent
     with FlameBlocListenable<WorldBloc, ClientWorldState> {
   SpriteComponent? _sprite;
+  bool _isDirty = true;
 
   GameBoardBackground({super.size});
 
   @override
-  void onInitialState(ClientWorldState state) => updateBackground(state);
+  void onInitialState(ClientWorldState state) => _isDirty = true;
 
   @override
   bool listenWhen(ClientWorldState previousState, ClientWorldState newState) =>
@@ -22,7 +23,16 @@ class GameBoardBackground extends PositionComponent
       previousState.info.packs != newState.info.packs;
 
   @override
-  void onNewState(ClientWorldState state) => updateBackground(state);
+  void onNewState(ClientWorldState state) => _isDirty = true;
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+    if (_isDirty) {
+      _isDirty = false;
+      updateBackground(bloc.state);
+    }
+  }
 
   Future<Sprite?> _loadSprite(
       ClientWorldState state, PackItem<BackgroundDefinition>? item) {

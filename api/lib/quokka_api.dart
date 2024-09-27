@@ -1,5 +1,5 @@
 /// The Linwood Quokka API
-library quokka_api;
+library;
 
 export 'models.dart';
 export 'event.dart';

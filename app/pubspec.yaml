@@ -37,7 +37,7 @@ dependencies:
   flex_color_scheme:
     git:
       url: https://github.com/CodeDoctorDE/flex_color_scheme
-      ref: fe087eb6b5eb4eb4ed6026a12a515fecb9c8a891
+      ref: a02195226418926961d3bcd6fc69e89941602073
   flutter_svg: ^2.0.10+1
   window_manager: ^0.4.0
   go_router: ^14.2.2
@@ -100,7 +100,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   build_runner: ^2.4.9
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
   dart_mappable_builder: ^4.2.3
   integration_test:
     sdk: flutter

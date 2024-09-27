@@ -84,7 +84,6 @@ class GameCell extends PositionComponent
         previousState.table.cells[definition] !=
             newState.table.cells[definition] ||
         previousState.teamMembers != newState.teamMembers ||
-        previousState.info.teams != newState.info.teams ||
         previousState.colorScheme != newState.colorScheme;
   }
 
@@ -161,7 +160,7 @@ class GameCell extends PositionComponent
 
   GameObject? _currentTop;
   BoardTile? _currentTile;
-  bool _currentVisible = false;
+  bool _currentVisible = true;
 
   @override
   void onNewState(ClientWorldState state) {
@@ -215,37 +214,38 @@ class GameCell extends PositionComponent
     _currentTop = top;
     _currentVisible = visible;
     _currentTile = tile;
-    _cardComponent?.removeFromParent();
-    _boardComponent?.removeFromParent();
-    _cardComponent = null;
-    _boardComponent = null;
+    final paint = Paint()..isAntiAlias = false;
     if (tile != null) {
-      _boardComponent = SpriteComponent(
-          sprite:
-              await state.assetManager.loadBoardSprite(tile.asset, tile.tile) ??
-                  game.blankSprite,
-          size: size);
-      await add(_boardComponent!);
+      _boardComponent ??= SpriteComponent(
+        size: size,
+        paint: paint,
+      );
+      _boardComponent?.sprite =
+          await state.assetManager.loadBoardSprite(tile.asset, tile.tile) ??
+              game.blankSprite;
+      if (!_boardComponent!.isMounted) {
+        add(_boardComponent!);
+      }
+    } else {
+      _boardComponent?.removeFromParent();
     }
     if (top != null) {
-      _cardComponent = SpriteComponent(
-          sprite: await state.assetManager.loadFigureSprite(
-                  top.asset,
-                  top.hidden || !state.isCellVisible(toGlobalDefinition(state))
-                      ? null
-                      : top.variation) ??
-              game.blankSprite,
-          size: size);
-      await add(_cardComponent!);
+      _cardComponent ??= SpriteComponent(
+        size: size,
+        paint: paint,
+      );
+      _cardComponent?.sprite = await state.assetManager.loadFigureSprite(
+              top.asset,
+              top.hidden || !state.isCellVisible(toGlobalDefinition(state))
+                  ? null
+                  : top.variation) ??
+          game.blankSprite;
+      if (!_cardComponent!.isMounted) {
+        add(_cardComponent!);
+      }
+    } else {
+      _cardComponent?.removeFromParent();
     }
-  }
-
-  late double startZoom;
-
-  @override
-  void onDragStart(DragStartEvent event) {
-    super.onDragStart(event);
-    startZoom = game.camera.viewfinder.zoom;
   }
 
   @override
