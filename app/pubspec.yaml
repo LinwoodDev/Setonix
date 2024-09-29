@@ -117,6 +117,7 @@ flutter:
   assets:
     - assets/images/
     - assets/fonts/
+    - images/
     - assets/pack.qka
   fonts:
     - family: Comfortaa

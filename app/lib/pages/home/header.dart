@@ -96,11 +96,11 @@ class _HeaderHomeViewState extends State<HeaderHomeView> {
                 final logo = Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    /* Image.asset(
+                    Image.asset(
                       'images/logo.png',
                       width: 64,
                     ),
-                    const SizedBox(width: 16), */
+                    const SizedBox(width: 16),
                     Flexible(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,

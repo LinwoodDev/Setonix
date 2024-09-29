@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:quokka/api/open.dart';
-import 'package:quokka/bloc/settings.dart';
-import 'package:quokka/main.dart';
 import 'package:quokka/pages/home/background.dart';
 import 'package:quokka/pages/home/connect.dart';
+import 'package:quokka/pages/home/header.dart';
 import 'package:quokka/pages/home/packs.dart';
 import 'package:quokka/pages/home/play.dart';
 
@@ -48,26 +45,6 @@ class HomePage extends StatelessWidget {
           false,
         ),
         (
-          AppLocalizations.of(context).documentation,
-          PhosphorIconsLight.book,
-          () => openHelp(['intro']),
-          null,
-          true,
-        ),
-        (
-          AppLocalizations.of(context).releaseNotes,
-          PhosphorIconsLight.flag,
-          () => openReleaseNotes(),
-          FutureBuilder<PackageInfo>(
-            future: PackageInfo.fromPlatform(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) return const SizedBox();
-              return Text(snapshot.data?.version ?? '');
-            },
-          ),
-          true,
-        ),
-        (
           AppLocalizations.of(context).settings,
           PhosphorIconsLight.gear,
           () => openSettings(context),
@@ -81,9 +58,6 @@ class HomePage extends StatelessWidget {
     final items = _getItems(context);
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: const WindowTitleBar<SettingsCubit, QuokkaSettings>(
-        title: Text(shortApplicationName),
-      ),
       body: LayoutBuilder(builder: (context, constraints) {
         return Stack(
           children: [
@@ -103,11 +77,12 @@ class HomePage extends StatelessWidget {
                     maxWidth: LeapBreakpoints.expanded,
                   ),
                   padding: const EdgeInsets.symmetric(
-                      vertical: 32.0, horizontal: 8.0),
+                      vertical: 8.0, horizontal: 8.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      HeaderHomeView(),
                       if (constraints.maxWidth < LeapBreakpoints.compact)
                         Card(
                           clipBehavior: Clip.antiAlias,
@@ -154,71 +129,73 @@ class _GridHomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return GridView.extent(
-      shrinkWrap: true,
-      maxCrossAxisExtent: 500,
-      mainAxisSpacing: 8,
-      crossAxisSpacing: 8,
-      children: items.map((item) {
-        return LayoutBuilder(
-            builder: (context, constraints) => Card.outlined(
-                  child: InkWell(
-                    onTap: item.$3,
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                              child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Icon(
-                                item.$2,
-                                size: constraints.maxWidth / 2,
-                                color: theme.colorScheme.primary,
-                              ),
-                              if (item.$5)
-                                Align(
-                                  alignment: Alignment.topRight,
-                                  child: Icon(
-                                    PhosphorIconsFill.arrowSquareOut,
-                                    color: theme.colorScheme.primaryFixed,
-                                  ),
-                                ),
-                            ],
-                          )),
-                          SizedBox(
-                            height: 64,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
+    return LayoutBuilder(
+      builder: (context, constraints) => GridView.count(
+        shrinkWrap: true,
+        crossAxisCount: constraints.maxWidth >= LeapBreakpoints.medium ? 4 : 2,
+        mainAxisSpacing: 8,
+        crossAxisSpacing: 8,
+        children: items.map((item) {
+          return LayoutBuilder(
+              builder: (context, constraints) => Card.outlined(
+                    child: InkWell(
+                      onTap: item.$3,
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                                child: Stack(
+                              alignment: Alignment.center,
                               children: [
-                                Expanded(
-                                  child: Text(
-                                    item.$1,
-                                    style: theme.textTheme.headlineSmall,
-                                  ),
+                                Icon(
+                                  item.$2,
+                                  size: constraints.maxWidth / 2,
+                                  color: theme.colorScheme.primary,
                                 ),
-                                if (item.$4 != null)
-                                  DefaultTextStyle(
-                                    style: (theme.textTheme.headlineSmall ??
-                                            const TextStyle())
-                                        .copyWith(
-                                      color: theme.colorScheme.primary,
+                                if (item.$5)
+                                  Align(
+                                    alignment: Alignment.topRight,
+                                    child: Icon(
+                                      PhosphorIconsFill.arrowSquareOut,
+                                      color: theme.colorScheme.primaryFixed,
                                     ),
-                                    child: item.$4!,
                                   ),
                               ],
+                            )),
+                            SizedBox(
+                              height: 64,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      item.$1,
+                                      style: theme.textTheme.headlineSmall,
+                                    ),
+                                  ),
+                                  if (item.$4 != null)
+                                    DefaultTextStyle(
+                                      style: (theme.textTheme.headlineSmall ??
+                                              const TextStyle())
+                                          .copyWith(
+                                        color: theme.colorScheme.primary,
+                                      ),
+                                      child: item.$4!,
+                                    ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ));
-      }).toList(),
+                  ));
+        }).toList(),
+      ),
     );
   }
 }
