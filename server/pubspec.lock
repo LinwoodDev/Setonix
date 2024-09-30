@@ -82,8 +82,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/consoler"
-      ref: "68d1e59fa9f611ad496b7f341f0b1741f662469e"
-      resolved-ref: "68d1e59fa9f611ad496b7f341f0b1741f662469e"
+      ref: "4ac7cb36efb16b129b36d4ae87eacfaec8a1ee4b"
+      resolved-ref: "4ac7cb36efb16b129b36d4ae87eacfaec8a1ee4b"
       url: "https://github.com/LinwoodDev/dart_pkgs"
     source: git
     version: "1.0.0"
@@ -204,8 +204,8 @@ packages:
     dependency: transitive
     description:
       path: "packages/lw_file_system_api"
-      ref: d9fecade26792a9f79996d373a7ce269b2419fe1
-      resolved-ref: d9fecade26792a9f79996d373a7ce269b2419fe1
+      ref: ec2a673e95addf558106df3f206ef1b691e48e93
+      resolved-ref: ec2a673e95addf558106df3f206ef1b691e48e93
       url: "https://github.com/LinwoodDev/dart_pkgs"
     source: git
     version: "1.0.0"

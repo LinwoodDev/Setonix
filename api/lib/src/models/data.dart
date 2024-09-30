@@ -91,21 +91,6 @@ class QuokkaData extends ArchiveData<QuokkaData> {
 
   FileMetadata getMetadataOrDefault() => getMetadata() ?? const FileMetadata();
 
-  Iterable<String> getAssets(String path, [bool removeExtension = false]) => {
-        ...archive.files.map((e) => e.name),
-        ...state.added.keys,
-      }
-          .where((e) => e.startsWith(path) && e != path)
-          .where((e) => !state.removed.contains(e))
-          .map((e) => e.substring(path.length))
-          .map((e) {
-        if (e.startsWith('/')) e = e.substring(1);
-        if (!removeExtension) return e;
-        final startExtension = e.lastIndexOf('.');
-        if (startExtension == -1) return e;
-        return e.substring(0, startExtension);
-      });
-
   Iterable<String> getDecks() => getAssets(kPackDecksPath, true);
 
   DeckDefinition? getDeck(String id) {

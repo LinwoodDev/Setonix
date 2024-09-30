@@ -12,6 +12,7 @@ class SayProgram extends ConsoleProgram {
   @override
   Future<void> run(String label, List<String> args) async {
     final message = args.join(' ');
+    server.consoler.print("Sent $message", level: LogLevel.info);
     server.process(MessageRequest(message));
   }
 }

@@ -216,32 +216,33 @@ class GameCell extends PositionComponent
     _currentTile = tile;
     final paint = Paint()..isAntiAlias = false;
     if (tile != null) {
-      _boardComponent ??= SpriteComponent(
+      final component = _boardComponent ??= SpriteComponent(
         size: size,
         paint: paint,
       );
-      _boardComponent?.sprite =
+      component.sprite =
           await state.assetManager.loadBoardSprite(tile.asset, tile.tile) ??
               game.blankSprite;
-      if (!_boardComponent!.isMounted) {
-        add(_boardComponent!);
+      if (!component.isMounted) {
+        add(component);
       }
     } else {
       _boardComponent?.removeFromParent();
     }
     if (top != null) {
-      _cardComponent ??= SpriteComponent(
+      final component = _cardComponent ??= SpriteComponent(
         size: size,
         paint: paint,
+        priority: 1,
       );
-      _cardComponent?.sprite = await state.assetManager.loadFigureSprite(
+      component.sprite = await state.assetManager.loadFigureSprite(
               top.asset,
               top.hidden || !state.isCellVisible(toGlobalDefinition(state))
                   ? null
                   : top.variation) ??
           game.blankSprite;
-      if (!_cardComponent!.isMounted) {
-        add(_cardComponent!);
+      if (!component.isMounted) {
+        add(component);
       }
     } else {
       _cardComponent?.removeFromParent();

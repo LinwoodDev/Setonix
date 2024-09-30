@@ -122,12 +122,9 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
           consoler.print(message);
         },
       ));
-  R _runLogZone<R>(R Function() body) => _runStaticLogZone(consoler, body);
 
   Future<void> run() async {
-    _runLogZone(() {
-      consoler.run();
-    });
+    consoler.run();
     log('Server running on ${_server?.address}', level: LogLevel.info);
     await _server?.onClosed.first;
   }
@@ -144,6 +141,12 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
     if (data != null) {
       log('Processing event by ${event.channel}: $process',
           level: LogLevel.verbose);
+    }
+    switch (event.data) {
+      case MessageRequest data:
+        log("Message by ${event.channel}: ${data.message}",
+            level: LogLevel.info);
+      default:
     }
     _pipe?.sendMessage(process.$1, process.$2);
     if (process.$2 == kAnyChannel || process.$2 == kAuthorityChannel) {

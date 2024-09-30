@@ -395,8 +395,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: a02195226418926961d3bcd6fc69e89941602073
-      resolved-ref: a02195226418926961d3bcd6fc69e89941602073
+      ref: "3d01b8e8ff10eb7203bd7d75c03979761ae67e92"
+      resolved-ref: "3d01b8e8ff10eb7203bd7d75c03979761ae67e92"
       url: "https://github.com/CodeDoctorDE/flex_color_scheme"
     source: git
     version: "8.0.0-dev.1"
@@ -672,8 +672,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/lw_file_system"
-      ref: "6401cbb311f161230bdc162c86c5b0bc9fcd5eba"
-      resolved-ref: "6401cbb311f161230bdc162c86c5b0bc9fcd5eba"
+      ref: "49102e314ceeef0c532213411b5e233fb5732726"
+      resolved-ref: "49102e314ceeef0c532213411b5e233fb5732726"
       url: "https://github.com/LinwoodDev/dart_pkgs"
     source: git
     version: "1.0.0"
@@ -681,8 +681,8 @@ packages:
     dependency: transitive
     description:
       path: "packages/lw_file_system_api"
-      ref: d9fecade26792a9f79996d373a7ce269b2419fe1
-      resolved-ref: d9fecade26792a9f79996d373a7ce269b2419fe1
+      ref: ec2a673e95addf558106df3f206ef1b691e48e93
+      resolved-ref: ec2a673e95addf558106df3f206ef1b691e48e93
       url: "https://github.com/LinwoodDev/dart_pkgs"
     source: git
     version: "1.0.0"

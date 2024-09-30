@@ -35,7 +35,7 @@ class ServerAssetManager extends AssetManager {
         _packs[name] = data;
       }
     }
-    final coreIncluded = _packs.containsKey('');
+    final coreIncluded = _packs.containsKey(kCorePackId);
     console.print(
         'Loaded ${_packs.length} pack(s). ${coreIncluded ? '(with core pack)' : '(without core pack)'}',
         level: LogLevel.info);

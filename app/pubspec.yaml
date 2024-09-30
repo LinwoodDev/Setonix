@@ -37,7 +37,7 @@ dependencies:
   flex_color_scheme:
     git:
       url: https://github.com/CodeDoctorDE/flex_color_scheme
-      ref: a02195226418926961d3bcd6fc69e89941602073
+      ref: 3d01b8e8ff10eb7203bd7d75c03979761ae67e92
   flutter_svg: ^2.0.10+1
   window_manager: ^0.4.0
   go_router: ^14.2.2
@@ -75,7 +75,7 @@ dependencies:
   lw_file_system:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs
-      ref: 6401cbb311f161230bdc162c86c5b0bc9fcd5eba
+      ref: 49102e314ceeef0c532213411b5e233fb5732726
       path: packages/lw_file_system
   lw_sysapi:
     git:
