@@ -3,7 +3,7 @@ import 'vector.dart';
 
 part 'table.mapper.dart';
 
-@MappableClass()
+@MappableClass(generateMethods: GenerateMethods.all & ~GenerateMethods.equals)
 class GameTable with GameTableMappable {
   final Map<VectorDefinition, TableCell> cells;
   final ItemLocation? background;

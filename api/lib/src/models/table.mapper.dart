@@ -71,17 +71,6 @@ mixin GameTableMappable {
     return GameTableMapper.ensureInitialized()
         .stringifyValue(this as GameTable);
   }
-
-  @override
-  bool operator ==(Object other) {
-    return GameTableMapper.ensureInitialized()
-        .equalsValue(this as GameTable, other);
-  }
-
-  @override
-  int get hashCode {
-    return GameTableMapper.ensureInitialized().hashValue(this as GameTable);
-  }
 }
 
 extension GameTableValueCopy<$R, $Out> on ObjectCopyWith<$R, GameTable, $Out> {
