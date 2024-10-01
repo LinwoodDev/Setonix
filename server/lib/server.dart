@@ -26,7 +26,7 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
   final Consoler consoler;
   final ServerAssetManager assetManager;
   final String? worldFile;
-  final EventSystem<WorldEvent, ServerWorldEvent> eventSystem = EventSystem();
+  final eventSystem = EventSystem();
   bool _temp = false;
 
   NetworkerSocketServer? _server;
@@ -131,35 +131,33 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
     await _server?.onClosed.first;
   }
 
-  void _onClientEvent(NetworkerPacket<WorldEvent?> event) async {
-    final data = event.data;
-    if (data == null) return;
-    ListenerResult<ServerWorldEvent> process = processClientEvent(
+  void _onClientEvent(NetworkerPacket<WorldEvent?> packet) async {
+    final data = packet.data;
+    final process = processClientEvent(
       data,
-      event.channel,
+      packet.channel,
       state,
       assetManager: assetManager,
     );
     if (process == null) return;
-    process = await eventSystem.dispatch(
-      process.$1,
-      process.$2,
-      data,
-      event.channel,
-      this,
-    );
-    if (process == null) return;
-    log('Processing event by ${event.channel}: $process',
+    final event = Event(this, process.$1, process.$2, data, packet.channel);
+    eventSystem.fire(event);
+    if (event.cancelled) return;
+    log('Processing event by ${event.source}: ${event.serverEvent}',
         level: LogLevel.verbose);
-    switch (event.data) {
+    switch (packet.data) {
       case MessageRequest data:
-        log("Message by ${event.channel}: ${data.message}",
+        log("Message by ${packet.channel}: ${data.message}",
             level: LogLevel.info);
       default:
     }
-    _pipe?.sendMessage(process.$1, process.$2);
-    if (process.$2 == kAnyChannel || process.$2 == kAuthorityChannel) {
-      add(process.$1);
+    sendEvent(event.serverEvent, event.target);
+  }
+
+  void sendEvent(ServerWorldEvent event, Channel target) {
+    _pipe?.sendMessage(event, target);
+    if (target == kAnyChannel || target == kAuthorityChannel) {
+      add(event);
     }
   }
 

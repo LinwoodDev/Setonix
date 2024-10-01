@@ -38,10 +38,29 @@ Future<void> main(List<String> arguments) {
 }
 
 Future<void> onLoad(QuokkaServer server) async {
-  server.eventSystem.addListener(ObjectsMoved, 
-    (serverEvent,target,clientEvent,source,server) {
-      print("Listener was called");
-      return (serverEvent, target);
+  print("on load was called");
+  // Add your custom code here
+  bool toggleCancel = false;
+  // Put the event you want to listen to in the brackets
+  server.eventSystem.on<ObjectsMoved>().listen((e) {
+    print("Listener was called, cancel: $toggleCancel");
+    // Cancel the event every second time and duplicate the objects instead
+    if (toggleCancel) {
+      final event = e.clientEvent;
+      final table = server.state.getTableOrDefault(event.table);
+      final cell = table.getCell(event.from);
+      final objects = List<GameObject>.from(table.getCell(event.to).objects);
+      for (final index in event.objects) {
+        final object = cell.objects[index];
+        objects.add(object);
+      }
+      // Send the event to all clients
+      server.sendEvent(ObjectsSpawned(e.clientEvent.table, {event.to: objects}),
+          kAnyChannel);
+      // Cancel the event
+      e.cancel();
+    }
+    toggleCancel = !toggleCancel;
   });
 }
 ```

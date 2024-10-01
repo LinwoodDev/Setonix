@@ -1,44 +1,83 @@
 import 'dart:async';
 
 import 'package:networker/networker.dart';
+import 'package:quokka_api/quokka_api.dart';
 import 'package:quokka_server/server.dart';
 
-typedef ListenerResult<S> = (S, Channel)?;
+base class Event<T> {
+  final QuokkaServer server;
+  final T clientEvent;
+  final Channel source;
+  ServerWorldEvent serverEvent;
+  Channel target;
+  bool cancelled = false;
 
-typedef EventListener<T, S> = FutureOr<ListenerResult<S>> Function(
-  S serverEvent,
-  Channel target,
-  T clientEvent,
-  Channel source,
-  QuokkaServer server,
-);
+  Event(this.server, this.serverEvent, this.target, this.clientEvent,
+      this.source);
 
-final class EventSystem<T, S> {
-  final Map<T, List<EventListener<T, S>>> _listeners = {};
-
-  void addListener(T event, EventListener<T, S> listener) {
-    _listeners.putIfAbsent(event, () => []).add(listener);
+  Event<C> castEvent<C extends WorldEvent?>() {
+    return _LinkedEvent<C>(this);
   }
 
-  void removeListener(T event, EventListener<T, S> listener) {
-    _listeners[event]?.remove(listener);
+  void cancel() {
+    cancelled = true;
   }
+}
 
-  Future<ListenerResult<S>> dispatch(
-    S serverEvent,
-    Channel target,
-    T clientEvent,
-    Channel source,
-    QuokkaServer server,
-  ) async {
-    final listeners = _listeners[clientEvent];
-    if (listeners == null) return null;
-    ListenerResult<S> result = (serverEvent, target);
-    for (final listener in listeners) {
-      if (result == null) return null;
-      result =
-          await listener(result.$1, result.$2, clientEvent, source, server);
+final class _LinkedEvent<T extends WorldEvent?> implements Event<T> {
+  final Event parent;
+
+  _LinkedEvent(this.parent);
+
+  @override
+  bool get cancelled => parent.cancelled;
+  @override
+  set cancelled(bool value) => parent.cancelled = value;
+
+  @override
+  ServerWorldEvent get serverEvent => parent.serverEvent;
+  @override
+  set serverEvent(ServerWorldEvent value) => parent.serverEvent = value;
+
+  @override
+  Channel get target => parent.target;
+  @override
+  set target(Channel value) => parent.target = value;
+
+  @override
+  void cancel() => parent.cancel();
+
+  @override
+  Event<C> castEvent<C extends WorldEvent?>() => parent.castEvent();
+
+  @override
+  T get clientEvent => parent.clientEvent as T;
+
+  @override
+  QuokkaServer get server => parent.server;
+
+  @override
+  Channel get source => parent.source;
+}
+
+final class EventSystem {
+  final StreamController<Event> _controller =
+      StreamController.broadcast(sync: true);
+
+  Stream<Event<T>> on<T extends WorldEvent?>() {
+    if (T == dynamic) {
+      return _controller.stream as Stream<Event<T>>;
     }
-    return result;
+    return _controller.stream
+        .where((event) => event.clientEvent is T)
+        .map((event) => event.castEvent<T>());
+  }
+
+  void fire(Event event) {
+    _controller.add(event);
+  }
+
+  void dispose() {
+    _controller.close();
   }
 }
