@@ -112,9 +112,13 @@ WorldState? processServerEvent(
         final cell = table.cells[event.cell.position] ?? TableCell();
         final newCell = cell.copyWith(objects: event.objects);
         if (newCell.isEmpty) {
-          return table.copyWith.cells.remove(event.cell.position);
+          return table.copyWith.cellsBox(
+              content: Map<VectorDefinition, TableCell>.from(table.cells)
+                ..remove(event.cell.position));
         }
-        return table.copyWith.cells.replace(event.cell.position, newCell);
+        return table.copyWith.cellsBox(
+            content: Map<VectorDefinition, TableCell>.from(table.cells)
+              ..[event.cell.position] = newCell);
       });
     case CellShuffled(positions: final positions):
       return state.mapTableOrDefault(event.cell.table, (table) {
@@ -124,11 +128,9 @@ WorldState? processServerEvent(
         for (var i = 0; i < positions.length; i++) {
           newObjects[positions[i]] = objects[i];
         }
-        return table.copyWith.cells.replace(
-            event.cell.position,
-            cell.copyWith(
-              objects: newObjects,
-            ));
+        return table.copyWith.cellsBox(
+            content: Map<VectorDefinition, TableCell>.from(table.cells)
+              ..[event.cell.position] = cell.copyWith(objects: newObjects));
       });
     case BackgroundChanged():
       return state.copyWith.table(background: event.background);
@@ -137,8 +139,9 @@ WorldState? processServerEvent(
         var newTable = table;
         for (final entry in event.objects.entries) {
           final cell = newTable.cells[entry.key] ?? TableCell();
-          newTable = newTable.copyWith.cells
-              .replace(entry.key, cell.copyWith(objects: entry.value));
+          newTable = newTable.copyWith.cellsBox(
+              content: Map<VectorDefinition, TableCell>.from(newTable.cells)
+                ..[entry.key] = cell.copyWith(objects: entry.value));
         }
         return newTable;
       });
@@ -158,12 +161,15 @@ WorldState? processServerEvent(
           ...to.objects,
           ...toAdd,
         ]);
-        return table.copyWith(cells: {
-          ...Map<VectorDefinition, TableCell>.from(table.cells)
-            ..remove(event.from),
-          if (!from.isEmpty) event.from: from,
-          event.to: to,
-        });
+        final cells = Map<VectorDefinition, TableCell>.from(table.cells)
+          ..[event.to] = to;
+        if (from.isEmpty) {
+          cells.remove(event.from);
+        } else {
+          cells[event.from] = from;
+        }
+
+        return table.copyWith.cellsBox(content: cells);
       });
     case CellHideChanged():
       return state.mapTableOrDefault(event.cell.table, (table) {
@@ -171,19 +177,20 @@ WorldState? processServerEvent(
         final objectIndex = event.object;
         if (objectIndex != null) {
           final object = cell.objects[objectIndex];
-          return table.copyWith.cells.replace(
-              event.cell.position,
-              cell.copyWith.objects.replace(objectIndex,
-                  object.copyWith(hidden: event.hide ?? !object.hidden)));
+          return table.copyWith.cellsBox(
+              content: Map<VectorDefinition, TableCell>.from(table.cells)
+                ..[event.cell.position] = cell.copyWith.objects.replace(
+                    objectIndex,
+                    object.copyWith(hidden: event.hide ?? !object.hidden)));
         }
         final hidden =
             !(event.hide ?? cell.objects.firstOrNull?.hidden ?? false);
-        return table.copyWith.cells.replace(
-            event.cell.position,
-            cell.copyWith(
-              objects:
-                  cell.objects.map((e) => e.copyWith(hidden: hidden)).toList(),
-            ));
+        return table.copyWith.cellsBox(
+            content: Map<VectorDefinition, TableCell>.from(table.cells)
+              ..[event.cell.position] = cell.copyWith(
+                  objects: cell.objects
+                      .map((e) => e.copyWith(hidden: hidden))
+                      .toList()));
       });
     case CellItemsCleared():
       return state.mapTableOrDefault(event.cell.table, (table) {
@@ -196,9 +203,13 @@ WorldState? processServerEvent(
           newCell = cell.copyWith(objects: []);
         }
         if (newCell.isEmpty) {
-          return table.copyWith.cells.remove(event.cell.position);
+          return table.copyWith.cellsBox(
+              content: Map<VectorDefinition, TableCell>.from(table.cells)
+                ..remove(event.cell.position));
         }
-        return table.copyWith.cells.replace(event.cell.position, newCell);
+        return table.copyWith.cellsBox(
+            content: Map<VectorDefinition, TableCell>.from(table.cells)
+              ..[event.cell.position] = newCell);
       });
     case ObjectIndexChanged():
       return state.mapTableOrDefault(event.cell.table, (table) {
@@ -207,8 +218,9 @@ WorldState? processServerEvent(
         final newObjects = List<GameObject>.from(cell.objects);
         newObjects.removeAt(event.object);
         newObjects.insert(event.index, object);
-        return table.copyWith.cells
-            .replace(event.cell.position, cell.copyWith(objects: newObjects));
+        return table.copyWith.cellsBox(
+            content: Map<VectorDefinition, TableCell>.from(table.cells)
+              ..[event.cell.position] = cell.copyWith(objects: newObjects));
       });
     case TeamChanged():
       return state.copyWith.info.teams.put(event.name, event.team);
@@ -251,7 +263,7 @@ WorldState? processServerEvent(
           cells[entry.key] =
               table.getCell(entry.key).copyWith.tiles.addAll(entry.value);
         }
-        return table.copyWith(cells: cells);
+        return table.copyWith.cellsBox(content: cells);
       });
     case BoardTilesChanged():
       return state.mapTableOrDefault(event.table, (table) {
@@ -264,7 +276,7 @@ WorldState? processServerEvent(
             cells[entry.key] = newCell;
           }
         }
-        return table.copyWith(cells: cells);
+        return table.copyWith.cellsBox(content: cells);
       });
   }
 }

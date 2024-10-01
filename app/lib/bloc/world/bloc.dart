@@ -14,6 +14,8 @@ WorldState? _compute(
         (ServerWorldEvent, WorldState, Map<String, FileMetadata>) m) =>
     processServerEvent(m.$1, m.$2, signature: m.$3);
 
+QuokkaData _saveState(WorldState state) => state.save();
+
 class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
   bool _remoteEvent = false;
   WorldBloc({
@@ -104,7 +106,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
   }
 
   Future<void> save() async {
-    final data = state.world.save();
+    final data = await compute((state) => _saveState(state), state.world);
     final name = state.world.name;
     if (name == null) return;
     return state.fileSystem.worldSystem.updateFile(name, data);

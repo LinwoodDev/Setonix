@@ -75,7 +75,7 @@ final class WorldState with WorldStateMappable {
   GameTable restrict(Channel user) {
     final cells =
         table.cells.keys.map((e) => MapEntry(e, restrictCell(e, user)!));
-    return table.copyWith(cells: Map.fromEntries(cells));
+    return table.copyWith.cellsBox(content: Map.fromEntries(cells));
   }
 
   QuokkaData save() =>

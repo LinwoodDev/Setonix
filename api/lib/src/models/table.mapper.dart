@@ -6,6 +6,101 @@
 
 part of 'table.dart';
 
+class IgnoreEqualityBoxMapper extends ClassMapperBase<IgnoreEqualityBox> {
+  IgnoreEqualityBoxMapper._();
+
+  static IgnoreEqualityBoxMapper? _instance;
+  static IgnoreEqualityBoxMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = IgnoreEqualityBoxMapper._());
+      MapperContainer.globals.useAll([IgnoreForEquality()]);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'IgnoreEqualityBox';
+  @override
+  Function get typeFactory => <T>(f) => f<IgnoreEqualityBox<T>>();
+
+  static dynamic _$content(IgnoreEqualityBox v) => v.content;
+  static dynamic _arg$content<T>(f) => f<T>();
+  static const Field<IgnoreEqualityBox, dynamic> _f$content =
+      Field('content', _$content, arg: _arg$content);
+
+  @override
+  final MappableFields<IgnoreEqualityBox> fields = const {
+    #content: _f$content,
+  };
+
+  static IgnoreEqualityBox<T> _instantiate<T>(DecodingData data) {
+    return IgnoreEqualityBox(data.dec(_f$content));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static IgnoreEqualityBox<T> fromMap<T>(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<IgnoreEqualityBox<T>>(map);
+  }
+
+  static IgnoreEqualityBox<T> fromJson<T>(String json) {
+    return ensureInitialized().decodeJson<IgnoreEqualityBox<T>>(json);
+  }
+}
+
+mixin IgnoreEqualityBoxMappable<T> {
+  String toJson() {
+    return IgnoreEqualityBoxMapper.ensureInitialized()
+        .encodeJson<IgnoreEqualityBox<T>>(this as IgnoreEqualityBox<T>);
+  }
+
+  Map<String, dynamic> toMap() {
+    return IgnoreEqualityBoxMapper.ensureInitialized()
+        .encodeMap<IgnoreEqualityBox<T>>(this as IgnoreEqualityBox<T>);
+  }
+
+  IgnoreEqualityBoxCopyWith<IgnoreEqualityBox<T>, IgnoreEqualityBox<T>,
+          IgnoreEqualityBox<T>, T>
+      get copyWith => _IgnoreEqualityBoxCopyWithImpl(
+          this as IgnoreEqualityBox<T>, $identity, $identity);
+}
+
+extension IgnoreEqualityBoxValueCopy<$R, $Out, T>
+    on ObjectCopyWith<$R, IgnoreEqualityBox<T>, $Out> {
+  IgnoreEqualityBoxCopyWith<$R, IgnoreEqualityBox<T>, $Out, T>
+      get $asIgnoreEqualityBox =>
+          $base.as((v, t, t2) => _IgnoreEqualityBoxCopyWithImpl(v, t, t2));
+}
+
+abstract class IgnoreEqualityBoxCopyWith<$R, $In extends IgnoreEqualityBox<T>,
+    $Out, T> implements ClassCopyWith<$R, $In, $Out> {
+  $R call({T? content});
+  IgnoreEqualityBoxCopyWith<$R2, $In, $Out2, T> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class _IgnoreEqualityBoxCopyWithImpl<$R, $Out, T>
+    extends ClassCopyWithBase<$R, IgnoreEqualityBox<T>, $Out>
+    implements IgnoreEqualityBoxCopyWith<$R, IgnoreEqualityBox<T>, $Out, T> {
+  _IgnoreEqualityBoxCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<IgnoreEqualityBox> $mapper =
+      IgnoreEqualityBoxMapper.ensureInitialized();
+  @override
+  $R call({T? content}) =>
+      $apply(FieldCopyWithData({if (content != null) #content: content}));
+  @override
+  IgnoreEqualityBox<T> $make(CopyWithData data) =>
+      IgnoreEqualityBox(data.get(#content, or: $value.content));
+
+  @override
+  IgnoreEqualityBoxCopyWith<$R2, IgnoreEqualityBox<T>, $Out2, T>
+      $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+          _IgnoreEqualityBoxCopyWithImpl($value, $cast, t);
+}
+
 class GameTableMapper extends ClassMapperBase<GameTable> {
   GameTableMapper._();
 
@@ -13,6 +108,7 @@ class GameTableMapper extends ClassMapperBase<GameTable> {
   static GameTableMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = GameTableMapper._());
+      IgnoreEqualityBoxMapper.ensureInitialized();
       VectorDefinitionMapper.ensureInitialized();
       TableCellMapper.ensureInitialized();
       ItemLocationMapper.ensureInitialized();
@@ -23,22 +119,26 @@ class GameTableMapper extends ClassMapperBase<GameTable> {
   @override
   final String id = 'GameTable';
 
-  static Map<VectorDefinition, TableCell> _$cells(GameTable v) => v.cells;
-  static const Field<GameTable, Map<VectorDefinition, TableCell>> _f$cells =
-      Field('cells', _$cells, opt: true, def: const {});
+  static IgnoreEqualityBox<Map<VectorDefinition, TableCell>> _$cellsBox(
+          GameTable v) =>
+      v.cellsBox;
+  static const Field<GameTable,
+          IgnoreEqualityBox<Map<VectorDefinition, TableCell>>> _f$cellsBox =
+      Field('cellsBox', _$cellsBox,
+          key: 'cells', opt: true, def: const IgnoreEqualityBox({}));
   static ItemLocation? _$background(GameTable v) => v.background;
   static const Field<GameTable, ItemLocation> _f$background =
       Field('background', _$background, opt: true);
 
   @override
   final MappableFields<GameTable> fields = const {
-    #cells: _f$cells,
+    #cellsBox: _f$cellsBox,
     #background: _f$background,
   };
 
   static GameTable _instantiate(DecodingData data) {
     return GameTable(
-        cells: data.dec(_f$cells), background: data.dec(_f$background));
+        cellsBox: data.dec(_f$cellsBox), background: data.dec(_f$background));
   }
 
   @override
@@ -71,6 +171,17 @@ mixin GameTableMappable {
     return GameTableMapper.ensureInitialized()
         .stringifyValue(this as GameTable);
   }
+
+  @override
+  bool operator ==(Object other) {
+    return GameTableMapper.ensureInitialized()
+        .equalsValue(this as GameTable, other);
+  }
+
+  @override
+  int get hashCode {
+    return GameTableMapper.ensureInitialized().hashValue(this as GameTable);
+  }
 }
 
 extension GameTableValueCopy<$R, $Out> on ObjectCopyWith<$R, GameTable, $Out> {
@@ -80,10 +191,15 @@ extension GameTableValueCopy<$R, $Out> on ObjectCopyWith<$R, GameTable, $Out> {
 
 abstract class GameTableCopyWith<$R, $In extends GameTable, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  MapCopyWith<$R, VectorDefinition, TableCell,
-      TableCellCopyWith<$R, TableCell, TableCell>> get cells;
+  IgnoreEqualityBoxCopyWith<
+      $R,
+      IgnoreEqualityBox<Map<VectorDefinition, TableCell>>,
+      IgnoreEqualityBox<Map<VectorDefinition, TableCell>>,
+      Map<VectorDefinition, TableCell>> get cellsBox;
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get background;
-  $R call({Map<VectorDefinition, TableCell>? cells, ItemLocation? background});
+  $R call(
+      {IgnoreEqualityBox<Map<VectorDefinition, TableCell>>? cellsBox,
+      ItemLocation? background});
   GameTableCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -96,24 +212,26 @@ class _GameTableCopyWithImpl<$R, $Out>
   late final ClassMapperBase<GameTable> $mapper =
       GameTableMapper.ensureInitialized();
   @override
-  MapCopyWith<$R, VectorDefinition, TableCell,
-          TableCellCopyWith<$R, TableCell, TableCell>>
-      get cells => MapCopyWith(
-          $value.cells, (v, t) => v.copyWith.$chain(t), (v) => call(cells: v));
+  IgnoreEqualityBoxCopyWith<
+          $R,
+          IgnoreEqualityBox<Map<VectorDefinition, TableCell>>,
+          IgnoreEqualityBox<Map<VectorDefinition, TableCell>>,
+          Map<VectorDefinition, TableCell>>
+      get cellsBox => $value.cellsBox.copyWith.$chain((v) => call(cellsBox: v));
   @override
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get background =>
       $value.background?.copyWith.$chain((v) => call(background: v));
   @override
   $R call(
-          {Map<VectorDefinition, TableCell>? cells,
+          {IgnoreEqualityBox<Map<VectorDefinition, TableCell>>? cellsBox,
           Object? background = $none}) =>
       $apply(FieldCopyWithData({
-        if (cells != null) #cells: cells,
+        if (cellsBox != null) #cellsBox: cellsBox,
         if (background != $none) #background: background
       }));
   @override
   GameTable $make(CopyWithData data) => GameTable(
-      cells: data.get(#cells, or: $value.cells),
+      cellsBox: data.get(#cellsBox, or: $value.cellsBox),
       background: data.get(#background, or: $value.background));
 
   @override
