@@ -10,3 +10,4 @@ export 'programs/players.dart';
 export 'programs/save.dart';
 export 'programs/say.dart';
 export 'programs/stop.dart';
+export 'package:quokka_api/quokka_api.dart';
