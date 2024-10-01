@@ -1,10 +1,10 @@
 import 'package:consoler/consoler.dart';
-import 'package:quokka_server/main.dart';
+import 'package:quokka_server/server.dart';
 
-class PlayersProgram extends ConsoleProgram {
+class KickProgram extends ConsoleProgram {
   final QuokkaServer server;
 
-  PlayersProgram(this.server);
+  KickProgram(this.server);
 
   @override
   String getDescription() => "Kick a player";

@@ -1,192 +1,97 @@
 import 'dart:async';
-import 'dart:io';
-import 'dart:isolate';
 
-import 'package:bloc/bloc.dart';
-import 'package:bloc_concurrency/bloc_concurrency.dart';
-import 'package:consoler/consoler.dart';
-import 'package:networker/networker.dart';
-import 'package:networker_socket/server.dart';
+import 'package:args/args.dart';
 import 'package:quokka_api/quokka_api.dart';
-import 'package:quokka_server/asset.dart';
-import 'package:quokka_server/programs/packs.dart';
-import 'package:quokka_server/programs/players.dart';
-import 'package:quokka_server/programs/save.dart';
-import 'package:quokka_server/programs/say.dart';
-import 'package:quokka_server/programs/stop.dart';
+import 'package:quokka_server/server.dart';
 
-Future<WorldState?> _computeEvent(ServerWorldEvent event, WorldState state,
-    Map<String, FileMetadata> signature) {
-  return Isolate.run(
-      () => processServerEvent(event, state, signature: signature));
+const String version = '0.0.1';
+
+ArgParser buildParser() {
+  return ArgParser()
+    ..addFlag(
+      'help',
+      abbr: 'h',
+      negatable: false,
+      help: 'Print this usage information.',
+    )
+    ..addFlag(
+      'verbose',
+      abbr: 'v',
+      negatable: false,
+      help: 'Show additional command output.',
+    )
+    ..addFlag(
+      'version',
+      abbr: 'V',
+      negatable: false,
+      help: 'Print the tool version.',
+    )
+    ..addOption(
+      'port',
+      abbr: 'p',
+      help: 'The port to run the server on. Defaults to $kDefaultPort.',
+    )
+    ..addOption(
+      'description',
+      abbr: 'd',
+      help:
+          'A description of the server. Will be displayed in the server list.',
+    )
+    ..addOption('autosave',
+        abbr: 'a', help: "Disable saving of the world automatically");
 }
 
-final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
-  final Consoler consoler;
-  final ServerAssetManager assetManager;
-  final String? worldFile;
-  bool _temp = false;
+void printUsage(ArgParser argParser) {
+  print('Usage: server <flags> [arguments]');
+  print(argParser.usage);
+}
 
-  NetworkerSocketServer? _server;
-  NetworkerPipe<dynamic, WorldEvent>? _pipe;
+typedef ServerLoader = FutureOr<void> Function(QuokkaServer server);
 
-  QuokkaServer._(
-      this.worldFile, this.consoler, QuokkaData data, this.assetManager)
-      : super(WorldState(
-          data: data,
-          table: data.getTableOrDefault(),
-          metadata: data.getMetadataOrDefault(),
-          info: data.getInfoOrDefault(),
-        )) {
-    on<ServerWorldEvent>((event, emit) async {
-      final signature = assetManager.createSignature();
-      final newState = await _computeEvent(event, state, signature);
-      if (newState == null) return;
-      emit(newState);
-      return save();
-    }, transformer: sequential());
-  }
+const welcomeText = """
+  ____            __    __       
+ / __ \\__ _____  / /__ / /_____ _
+/ /_/ / // / _ \\/  '_//  '_/ _ `/
+\\___\\_\\_,_/\\___/_/\\_\\/_/\\_\\\\_,_/
+""";
+Future<void> runServer(List<String> arguments, [ServerLoader? onLoad]) async {
+  final ArgParser argParser = buildParser();
+  try {
+    final ArgResults results = argParser.parse(arguments);
+    bool verbose = false, autosave = false;
 
-  static Future<QuokkaServer> load({
-    String? worldFile,
-    bool disableLoading = false,
-  }) async {
-    final assetManager = ServerAssetManager();
-    final consoler = Consoler(
-      defaultProgramConfig: DefaultProgramConfiguration(
-        description: "Quokka server",
-      ),
+    // Process the parsed arguments.
+    if (results.wasParsed('help')) {
+      printUsage(argParser);
+      return;
+    }
+    if (results.wasParsed('version')) {
+      print('server version: $version');
+      return;
+    }
+    if (results.wasParsed('verbose')) {
+      verbose = true;
+    }
+    if (results.wasParsed('autosave')) {
+      autosave = true;
+    }
+    String description = '';
+    if (results.wasParsed('description')) {
+      description = results['description'];
+    }
+    final server = await QuokkaServer.load();
+    await server.init(
+      port: int.tryParse(results['port'] ?? '') ?? kDefaultPort,
+      verbose: verbose,
+      autosave: autosave,
+      description: description,
     );
-    await _runStaticLogZone(
-        consoler, () => assetManager.init(console: consoler));
-    worldFile ??= defaultWorldFile;
-    final file = File(worldFile);
-    QuokkaData? data;
-    if (!disableLoading && await file.exists()) {
-      final bytes = await file.readAsBytes();
-      data = QuokkaData.fromData(bytes);
-    }
-    data ??= QuokkaData.empty().setInfo(GameInfo(
-      packs: assetManager.packs.map((e) => e.key).toList(),
-    ));
-    return QuokkaServer._(worldFile, consoler, data, assetManager);
-  }
-
-  void log(Object? message, {LogLevel? level}) =>
-      consoler.print(message, level: level);
-
-  static final String defaultWorldFile = 'world.qka';
-
-  Map<int, ConnectionInfo> get players =>
-      Map.fromEntries((_server?.clientConnections ?? {})
-          .map((e) => MapEntry(e, _server!.getConnectionInfo(e)!)));
-
-  Future<void> init({
-    int port = kDefaultPort,
-    bool verbose = false,
-    bool autosave = false,
-    String description = '',
-  }) async {
-    if (verbose) {
-      consoler.minLogLevel = LogLevel.verbose;
-    }
-    log("Starting server on port $port", level: LogLevel.info);
-    log('Verbose logging activated', level: LogLevel.verbose);
-    _temp = autosave;
-    final server =
-        _server = NetworkerSocketServer(InternetAddress.anyIPv4, port,
-            filterConnections: buildFilterConnections(
-                property: GameProperty.defaultProperty.copyWith(
-              description: description,
-            )));
-    final transformer = _pipe = NetworkerPipeTransformer<String, WorldEvent>(
-        WorldEventMapper.fromJson, (e) => e.toJson());
-    transformer.read.listen(_onClientEvent);
-    server
-      ..clientConnect.listen(_onJoin)
-      ..clientDisconnect.listen(_onLeave)
-      ..connect(StringNetworkerPlugin()..connect(transformer));
-    await _server?.init();
-
-    consoler.registerProgram('stop', StopProgram(this));
-    consoler.registerProgram('save', SaveProgram(this));
-    consoler.registerProgram('packs', PacksProgram(this));
-    consoler.registerProgram('players', PlayersProgram(this));
-    consoler.registerProgram('say', SayProgram(this));
-    consoler.registerProgram(null, UnknownProgram());
-  }
-
-  static R _runStaticLogZone<R>(Consoler consoler, R Function() body) =>
-      runZoned(body, zoneSpecification: ZoneSpecification(
-        print: (self, parent, zone, message) {
-          consoler.print(message);
-        },
-      ));
-
-  Future<void> run() async {
-    consoler.run();
-    log('Server running on ${_server?.address}', level: LogLevel.info);
-    await _server?.onClosed.first;
-  }
-
-  void _onClientEvent(NetworkerPacket<WorldEvent?> event) async {
-    final data = event.data;
-    final process = processClientEvent(
-      data,
-      event.channel,
-      state,
-      assetManager: assetManager,
-    );
-    if (process == null) return;
-    if (data != null) {
-      log('Processing event by ${event.channel}: $process',
-          level: LogLevel.verbose);
-    }
-    switch (event.data) {
-      case MessageRequest data:
-        log("Message by ${event.channel}: ${data.message}",
-            level: LogLevel.info);
-      default:
-    }
-    _pipe?.sendMessage(process.$1, process.$2);
-    if (process.$2 == kAnyChannel || process.$2 == kAuthorityChannel) {
-      add(process.$1);
-    }
-  }
-
-  void _onJoin((Channel, ConnectionInfo) event) {
-    final (user, info) = event;
-    log('${info.address} ($user) joined the game', level: LogLevel.info);
-    _onClientEvent(NetworkerPacket(null, event.$1));
-  }
-
-  void _onLeave((Channel, ConnectionInfo) event) {
-    final (user, info) = event;
-    log('${info.address} ($user) left the game', level: LogLevel.info);
-  }
-
-  Future<void> save({bool force = false}) async {
-    if (!force && _temp) return;
-    final bytes = state.save().exportAsBytes();
-    await File(defaultWorldFile).writeAsBytes(bytes);
-  }
-
-  @override
-  Future<void> close() async {
-    await super.close();
-    log('Closing...', level: LogLevel.info);
-    _server?.close();
-    consoler.dispose();
-  }
-
-  void process(WorldEvent event) {
-    _onClientEvent(NetworkerPacket(event, kAuthorityChannel));
-  }
-
-  bool kick(int id) {
-    final info = _server?.getConnectionInfo(id);
-    if (info == null) return false;
-    info.close();
-    return true;
+    await onLoad?.call(server);
+    await server.run();
+  } on FormatException catch (e) {
+    // Print usage information if an invalid argument was provided.
+    print(e.message);
+    print('');
+    printUsage(argParser);
   }
 }
