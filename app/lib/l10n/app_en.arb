@@ -185,5 +185,5 @@
   "zoomIn": "Zoom in",
   "zoomOut": "Zoom out",
   "resetZoom": "Reset zoom",
-  "thirdPartyContent": "This content is provided by the third party server. Please make sure you don't share any personal information that you don't want to be shared with the server owner."
+  "thirdPartyContent": "This content is provided by the third party server. Please make sure you don't share any personal information that you don't want to be shared with the server owner. If you don't trust the server, please disconnect using the top left corner menu."
 }

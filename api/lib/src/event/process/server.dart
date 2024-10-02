@@ -43,6 +43,7 @@ bool isValidServerEvent(ServerWorldEvent event, WorldState state) =>
                   .objects
                   .length -
               1),
+      DialogOpened() => event.dialog.isValid(),
       _ => true,
     };
 

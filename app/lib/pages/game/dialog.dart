@@ -18,6 +18,9 @@ class GameDialogOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<WorldBloc, ClientWorldState>(
+      buildWhen: (previous, current) =>
+          previous.world.dialogs.firstOrNull !=
+          current.world.dialogs.firstOrNull,
       builder: (context, state) {
         final dialog = state.world.dialogs.firstOrNull;
         if (dialog == null) {
@@ -36,11 +39,16 @@ class GameDialogOverlay extends StatelessWidget {
 
         return Stack(
           children: [
-            BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-              child: Container(
-                color: Colors.black.withOpacity(0.5),
+            GestureDetector(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                child: Container(
+                  color: Colors.black.withOpacity(0.5),
+                ),
               ),
+              onTap: () {
+                submitValue();
+              },
             ),
             ResponsiveAlertDialog(
               title: Text(dialog.title),
@@ -49,7 +57,7 @@ class GameDialogOverlay extends StatelessWidget {
                 onPressed: () => submitValue(),
               ),
               constraints:
-                  const BoxConstraints(maxWidth: LeapBreakpoints.compact),
+                  const BoxConstraints(maxWidth: LeapBreakpoints.medium),
               content: ListView.separated(
                   shrinkWrap: true,
                   itemCount: dialog.components.length + 1,
@@ -93,6 +101,21 @@ class GameDialogOverlay extends StatelessWidget {
                       case GameDialogTextFieldComponent():
                         final multiline =
                             component.multiline && !component.password;
+                        final initialValue =
+                            value.getValue(component.idOrLabel).getAsString();
+                        void updateComponent(
+                          String text,
+                        ) =>
+                            updateValue(
+                              value.copyWith.values.put(
+                                component.idOrLabel,
+                                GameDialogTextFieldValue(
+                                  value: text,
+                                  component: cIndex,
+                                ),
+                              ),
+                            );
+                        updateComponent(initialValue);
                         return TextFormField(
                           decoration: InputDecoration(
                             labelText: component.label,
@@ -103,17 +126,8 @@ class GameDialogOverlay extends StatelessWidget {
                           ),
                           maxLines: multiline ? null : 1,
                           obscureText: component.password,
-                          onChanged: (input) {
-                            updateValue(
-                              value.copyWith.values.put(
-                                component.idOrLabel,
-                                GameDialogTextFieldValue(
-                                  value: input,
-                                  component: cIndex,
-                                ),
-                              ),
-                            );
-                          },
+                          initialValue: initialValue,
+                          onChanged: updateComponent,
                         );
                     }
                   }),

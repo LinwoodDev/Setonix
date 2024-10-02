@@ -40,6 +40,24 @@ final class GameDialog with GameDialogMappable {
   GameDialog action(GameDialogButton action) => copyWith(
         actions: [...(actions ?? []), action],
       );
+
+  bool isValid() =>
+      (actions?.length ?? 1) <= 10 &&
+      components.length <= 20 &&
+      components.every((e) {
+        switch (e) {
+          case GameDialogMarkdownComponent():
+            return e.content.length <= 5000;
+          case GameDialogTextFieldComponent():
+            return e.label.length <= 50 &&
+                (e.id?.length ?? 0) <= 100 &&
+                (e.placeholder?.length ?? 0) <= 50;
+          default:
+            return false;
+        }
+      }) &&
+      (actions ?? [])
+          .every((e) => e.label.length <= 50 && (e.id?.length ?? 0) <= 100);
 }
 
 @MappableClass()
