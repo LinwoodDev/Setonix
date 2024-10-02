@@ -95,7 +95,7 @@ final class BoardMoveRequest extends ClientWorldEvent
 final class DialogCloseRequest extends ClientWorldEvent
     with DialogCloseRequestMappable {
   final String id;
-  final GameDialogValue value;
+  final GameDialogValue? value;
 
   DialogCloseRequest(this.id, this.value);
 }

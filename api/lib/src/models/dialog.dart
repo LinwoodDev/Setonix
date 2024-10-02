@@ -7,12 +7,39 @@ final class GameDialog with GameDialogMappable {
   final String title;
   final String id;
   final List<GameDialogComponent> components;
+  final List<GameDialogButton>? actions;
 
   GameDialog({
     required this.id,
     required this.title,
     this.components = const [],
+    this.actions,
   });
+
+  GameDialog markdown(String content) => copyWith.components.add(
+        GameDialogMarkdownComponent(content),
+      );
+
+  GameDialog textField(
+    String label, {
+    String? id,
+    String? placeholder,
+    bool multiline = false,
+    bool password = false,
+  }) =>
+      copyWith.components.add(
+        GameDialogTextFieldComponent(
+          label,
+          id: id,
+          placeholder: placeholder,
+          multiline: multiline,
+          password: password,
+        ),
+      );
+
+  GameDialog action(GameDialogButton action) => copyWith(
+        actions: [...(actions ?? []), action],
+      );
 }
 
 @MappableClass()
@@ -47,14 +74,6 @@ final class GameDialogTextFieldComponent extends GameDialogComponent
 }
 
 @MappableClass()
-final class GameDialogActionRowComponent extends GameDialogComponent
-    with GameDialogActionRowComponentMappable {
-  final List<GameDialogButton> actions;
-
-  GameDialogActionRowComponent(this.actions);
-}
-
-@MappableClass()
 final class GameDialogButton with GameDialogButtonMappable {
   final String label;
   final String? id;
@@ -66,9 +85,13 @@ final class GameDialogButton with GameDialogButtonMappable {
 
 @MappableClass()
 base class GameDialogValue with GameDialogValueMappable {
+  final String buttonPressed;
   final Map<String, GameDialogComponentValue> values;
 
-  GameDialogValue([this.values = const {}]);
+  GameDialogValue([
+    this.values = const {},
+    this.buttonPressed = '',
+  ]);
 
   bool hasValue(String key) => values.containsKey(key);
   GameDialogComponentValue getValue(String key) =>
@@ -104,26 +127,4 @@ final class GameDialogTextFieldValue extends GameDialogComponentValue
   bool getAsBool() => value.isNotEmpty;
   @override
   int getAsInt() => int.tryParse(value) ?? 0;
-}
-
-@MappableClass()
-final class GameDialogButtonValue extends GameDialogComponentValue
-    with GameDialogButtonValueMappable {
-  final String label;
-  final int index;
-
-  GameDialogButtonValue({
-    required this.label,
-    required this.index,
-    required super.component,
-  });
-
-  @override
-  String getAsString() => label;
-
-  @override
-  int getAsInt() => index;
-
-  @override
-  bool getAsBool() => true;
 }

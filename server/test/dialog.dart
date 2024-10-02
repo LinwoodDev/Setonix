@@ -17,21 +17,23 @@ Future<void> onLoad(QuokkaServer server) async {
   server.eventSystem.on<ObjectsMoved>().listen((e) {
     print("Listener was called, opening dialog");
     e.sendEvent(DialogOpened(
-        GameDialog(id: "testDialog", title: "TestDialog", components: [
-      GameDialogMarkdownComponent(testContent),
-      GameDialogTextFieldComponent(
-        "TestTextField",
-        id: "testTextField",
-        placeholder: "TestPlaceholder",
-        multiline: true,
-        password: true,
-      ),
-      GameDialogActionRowComponent([
-        GameDialogButton("TestButton"),
-      ]),
-    ])));
+      GameDialog(id: "testDialog", title: "TestDialog")
+          .markdown(testContent)
+          .textField(
+            "TestTextField",
+            id: "testTextField",
+            placeholder: "TestPlaceholder",
+            multiline: true,
+            password: true,
+          )
+          .action(GameDialogButton("TestButton")),
+    ));
   });
   server.eventSystem.on<DialogCloseRequest>().listen((e) {
+    final value = e.clientEvent.value;
     print("Dialog ${e.clientEvent.id} closed, got ${e.clientEvent.value}");
+    if (value == null) {
+      e.cancel();
+    }
   });
 }

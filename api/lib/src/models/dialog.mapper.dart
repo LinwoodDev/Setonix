@@ -14,6 +14,7 @@ class GameDialogMapper extends ClassMapperBase<GameDialog> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = GameDialogMapper._());
       GameDialogComponentMapper.ensureInitialized();
+      GameDialogButtonMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -28,19 +29,24 @@ class GameDialogMapper extends ClassMapperBase<GameDialog> {
   static List<GameDialogComponent> _$components(GameDialog v) => v.components;
   static const Field<GameDialog, List<GameDialogComponent>> _f$components =
       Field('components', _$components, opt: true, def: const []);
+  static List<GameDialogButton>? _$actions(GameDialog v) => v.actions;
+  static const Field<GameDialog, List<GameDialogButton>> _f$actions =
+      Field('actions', _$actions, opt: true);
 
   @override
   final MappableFields<GameDialog> fields = const {
     #id: _f$id,
     #title: _f$title,
     #components: _f$components,
+    #actions: _f$actions,
   };
 
   static GameDialog _instantiate(DecodingData data) {
     return GameDialog(
         id: data.dec(_f$id),
         title: data.dec(_f$title),
-        components: data.dec(_f$components));
+        components: data.dec(_f$components),
+        actions: data.dec(_f$actions));
   }
 
   @override
@@ -99,7 +105,14 @@ abstract class GameDialogCopyWith<$R, $In extends GameDialog, $Out>
       GameDialogComponent,
       GameDialogComponentCopyWith<$R, GameDialogComponent,
           GameDialogComponent>> get components;
-  $R call({String? id, String? title, List<GameDialogComponent>? components});
+  ListCopyWith<$R, GameDialogButton,
+          GameDialogButtonCopyWith<$R, GameDialogButton, GameDialogButton>>?
+      get actions;
+  $R call(
+      {String? id,
+      String? title,
+      List<GameDialogComponent>? components,
+      List<GameDialogButton>? actions});
   GameDialogCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -121,17 +134,30 @@ class _GameDialogCopyWithImpl<$R, $Out>
       (v, t) => v.copyWith.$chain(t),
       (v) => call(components: v));
   @override
-  $R call({String? id, String? title, List<GameDialogComponent>? components}) =>
+  ListCopyWith<$R, GameDialogButton,
+          GameDialogButtonCopyWith<$R, GameDialogButton, GameDialogButton>>?
+      get actions => $value.actions != null
+          ? ListCopyWith($value.actions!, (v, t) => v.copyWith.$chain(t),
+              (v) => call(actions: v))
+          : null;
+  @override
+  $R call(
+          {String? id,
+          String? title,
+          List<GameDialogComponent>? components,
+          Object? actions = $none}) =>
       $apply(FieldCopyWithData({
         if (id != null) #id: id,
         if (title != null) #title: title,
-        if (components != null) #components: components
+        if (components != null) #components: components,
+        if (actions != $none) #actions: actions
       }));
   @override
   GameDialog $make(CopyWithData data) => GameDialog(
       id: data.get(#id, or: $value.id),
       title: data.get(#title, or: $value.title),
-      components: data.get(#components, or: $value.components));
+      components: data.get(#components, or: $value.components),
+      actions: data.get(#actions, or: $value.actions));
 
   @override
   GameDialogCopyWith<$R2, GameDialog, $Out2> $chain<$R2, $Out2>(
@@ -148,7 +174,6 @@ class GameDialogComponentMapper extends ClassMapperBase<GameDialogComponent> {
       MapperContainer.globals.use(_instance = GameDialogComponentMapper._());
       GameDialogMarkdownComponentMapper.ensureInitialized();
       GameDialogTextFieldComponentMapper.ensureInitialized();
-      GameDialogActionRowComponentMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -187,6 +212,118 @@ abstract class GameDialogComponentCopyWith<$R, $In extends GameDialogComponent,
   $R call();
   GameDialogComponentCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
+}
+
+class GameDialogButtonMapper extends ClassMapperBase<GameDialogButton> {
+  GameDialogButtonMapper._();
+
+  static GameDialogButtonMapper? _instance;
+  static GameDialogButtonMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = GameDialogButtonMapper._());
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'GameDialogButton';
+
+  static String _$label(GameDialogButton v) => v.label;
+  static const Field<GameDialogButton, String> _f$label =
+      Field('label', _$label);
+  static String? _$id(GameDialogButton v) => v.id;
+  static const Field<GameDialogButton, String> _f$id =
+      Field('id', _$id, opt: true);
+
+  @override
+  final MappableFields<GameDialogButton> fields = const {
+    #label: _f$label,
+    #id: _f$id,
+  };
+
+  static GameDialogButton _instantiate(DecodingData data) {
+    return GameDialogButton(data.dec(_f$label), id: data.dec(_f$id));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static GameDialogButton fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<GameDialogButton>(map);
+  }
+
+  static GameDialogButton fromJson(String json) {
+    return ensureInitialized().decodeJson<GameDialogButton>(json);
+  }
+}
+
+mixin GameDialogButtonMappable {
+  String toJson() {
+    return GameDialogButtonMapper.ensureInitialized()
+        .encodeJson<GameDialogButton>(this as GameDialogButton);
+  }
+
+  Map<String, dynamic> toMap() {
+    return GameDialogButtonMapper.ensureInitialized()
+        .encodeMap<GameDialogButton>(this as GameDialogButton);
+  }
+
+  GameDialogButtonCopyWith<GameDialogButton, GameDialogButton, GameDialogButton>
+      get copyWith => _GameDialogButtonCopyWithImpl(
+          this as GameDialogButton, $identity, $identity);
+  @override
+  String toString() {
+    return GameDialogButtonMapper.ensureInitialized()
+        .stringifyValue(this as GameDialogButton);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return GameDialogButtonMapper.ensureInitialized()
+        .equalsValue(this as GameDialogButton, other);
+  }
+
+  @override
+  int get hashCode {
+    return GameDialogButtonMapper.ensureInitialized()
+        .hashValue(this as GameDialogButton);
+  }
+}
+
+extension GameDialogButtonValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, GameDialogButton, $Out> {
+  GameDialogButtonCopyWith<$R, GameDialogButton, $Out>
+      get $asGameDialogButton =>
+          $base.as((v, t, t2) => _GameDialogButtonCopyWithImpl(v, t, t2));
+}
+
+abstract class GameDialogButtonCopyWith<$R, $In extends GameDialogButton, $Out>
+    implements ClassCopyWith<$R, $In, $Out> {
+  $R call({String? label, String? id});
+  GameDialogButtonCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class _GameDialogButtonCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, GameDialogButton, $Out>
+    implements GameDialogButtonCopyWith<$R, GameDialogButton, $Out> {
+  _GameDialogButtonCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<GameDialogButton> $mapper =
+      GameDialogButtonMapper.ensureInitialized();
+  @override
+  $R call({String? label, Object? id = $none}) => $apply(FieldCopyWithData(
+      {if (label != null) #label: label, if (id != $none) #id: id}));
+  @override
+  GameDialogButton $make(CopyWithData data) =>
+      GameDialogButton(data.get(#label, or: $value.label),
+          id: data.get(#id, or: $value.id));
+
+  @override
+  GameDialogButtonCopyWith<$R2, GameDialogButton, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _GameDialogButtonCopyWithImpl($value, $cast, t);
 }
 
 class GameDialogMarkdownComponentMapper
@@ -334,12 +471,12 @@ class GameDialogTextFieldComponentMapper
   static String? _$placeholder(GameDialogTextFieldComponent v) => v.placeholder;
   static const Field<GameDialogTextFieldComponent, String> _f$placeholder =
       Field('placeholder', _$placeholder, opt: true);
-  static bool? _$multiline(GameDialogTextFieldComponent v) => v.multiline;
+  static bool _$multiline(GameDialogTextFieldComponent v) => v.multiline;
   static const Field<GameDialogTextFieldComponent, bool> _f$multiline =
-      Field('multiline', _$multiline, opt: true);
-  static bool? _$password(GameDialogTextFieldComponent v) => v.password;
+      Field('multiline', _$multiline, opt: true, def: false);
+  static bool _$password(GameDialogTextFieldComponent v) => v.password;
   static const Field<GameDialogTextFieldComponent, bool> _f$password =
-      Field('password', _$password, opt: true);
+      Field('password', _$password, opt: true, def: false);
 
   @override
   final MappableFields<GameDialogTextFieldComponent> fields = const {
@@ -444,14 +581,14 @@ class _GameDialogTextFieldComponentCopyWithImpl<$R, $Out>
           {String? label,
           Object? id = $none,
           Object? placeholder = $none,
-          Object? multiline = $none,
-          Object? password = $none}) =>
+          bool? multiline,
+          bool? password}) =>
       $apply(FieldCopyWithData({
         if (label != null) #label: label,
         if (id != $none) #id: id,
         if (placeholder != $none) #placeholder: placeholder,
-        if (multiline != $none) #multiline: multiline,
-        if (password != $none) #password: password
+        if (multiline != null) #multiline: multiline,
+        if (password != null) #password: password
       }));
   @override
   GameDialogTextFieldComponent $make(CopyWithData data) =>
@@ -465,247 +602,6 @@ class _GameDialogTextFieldComponentCopyWithImpl<$R, $Out>
   GameDialogTextFieldComponentCopyWith<$R2, GameDialogTextFieldComponent, $Out2>
       $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
           _GameDialogTextFieldComponentCopyWithImpl($value, $cast, t);
-}
-
-class GameDialogActionRowComponentMapper
-    extends ClassMapperBase<GameDialogActionRowComponent> {
-  GameDialogActionRowComponentMapper._();
-
-  static GameDialogActionRowComponentMapper? _instance;
-  static GameDialogActionRowComponentMapper ensureInitialized() {
-    if (_instance == null) {
-      MapperContainer.globals
-          .use(_instance = GameDialogActionRowComponentMapper._());
-      GameDialogComponentMapper.ensureInitialized();
-      GameDialogButtonMapper.ensureInitialized();
-    }
-    return _instance!;
-  }
-
-  @override
-  final String id = 'GameDialogActionRowComponent';
-
-  static List<GameDialogButton> _$actions(GameDialogActionRowComponent v) =>
-      v.actions;
-  static const Field<GameDialogActionRowComponent, List<GameDialogButton>>
-      _f$actions = Field('actions', _$actions);
-
-  @override
-  final MappableFields<GameDialogActionRowComponent> fields = const {
-    #actions: _f$actions,
-  };
-
-  static GameDialogActionRowComponent _instantiate(DecodingData data) {
-    return GameDialogActionRowComponent(data.dec(_f$actions));
-  }
-
-  @override
-  final Function instantiate = _instantiate;
-
-  static GameDialogActionRowComponent fromMap(Map<String, dynamic> map) {
-    return ensureInitialized().decodeMap<GameDialogActionRowComponent>(map);
-  }
-
-  static GameDialogActionRowComponent fromJson(String json) {
-    return ensureInitialized().decodeJson<GameDialogActionRowComponent>(json);
-  }
-}
-
-mixin GameDialogActionRowComponentMappable {
-  String toJson() {
-    return GameDialogActionRowComponentMapper.ensureInitialized()
-        .encodeJson<GameDialogActionRowComponent>(
-            this as GameDialogActionRowComponent);
-  }
-
-  Map<String, dynamic> toMap() {
-    return GameDialogActionRowComponentMapper.ensureInitialized()
-        .encodeMap<GameDialogActionRowComponent>(
-            this as GameDialogActionRowComponent);
-  }
-
-  GameDialogActionRowComponentCopyWith<GameDialogActionRowComponent,
-          GameDialogActionRowComponent, GameDialogActionRowComponent>
-      get copyWith => _GameDialogActionRowComponentCopyWithImpl(
-          this as GameDialogActionRowComponent, $identity, $identity);
-  @override
-  String toString() {
-    return GameDialogActionRowComponentMapper.ensureInitialized()
-        .stringifyValue(this as GameDialogActionRowComponent);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return GameDialogActionRowComponentMapper.ensureInitialized()
-        .equalsValue(this as GameDialogActionRowComponent, other);
-  }
-
-  @override
-  int get hashCode {
-    return GameDialogActionRowComponentMapper.ensureInitialized()
-        .hashValue(this as GameDialogActionRowComponent);
-  }
-}
-
-extension GameDialogActionRowComponentValueCopy<$R, $Out>
-    on ObjectCopyWith<$R, GameDialogActionRowComponent, $Out> {
-  GameDialogActionRowComponentCopyWith<$R, GameDialogActionRowComponent, $Out>
-      get $asGameDialogActionRowComponent => $base.as(
-          (v, t, t2) => _GameDialogActionRowComponentCopyWithImpl(v, t, t2));
-}
-
-abstract class GameDialogActionRowComponentCopyWith<
-    $R,
-    $In extends GameDialogActionRowComponent,
-    $Out> implements GameDialogComponentCopyWith<$R, $In, $Out> {
-  ListCopyWith<$R, GameDialogButton,
-          GameDialogButtonCopyWith<$R, GameDialogButton, GameDialogButton>>
-      get actions;
-  @override
-  $R call({List<GameDialogButton>? actions});
-  GameDialogActionRowComponentCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
-}
-
-class _GameDialogActionRowComponentCopyWithImpl<$R, $Out>
-    extends ClassCopyWithBase<$R, GameDialogActionRowComponent, $Out>
-    implements
-        GameDialogActionRowComponentCopyWith<$R, GameDialogActionRowComponent,
-            $Out> {
-  _GameDialogActionRowComponentCopyWithImpl(
-      super.value, super.then, super.then2);
-
-  @override
-  late final ClassMapperBase<GameDialogActionRowComponent> $mapper =
-      GameDialogActionRowComponentMapper.ensureInitialized();
-  @override
-  ListCopyWith<$R, GameDialogButton,
-          GameDialogButtonCopyWith<$R, GameDialogButton, GameDialogButton>>
-      get actions => ListCopyWith($value.actions,
-          (v, t) => v.copyWith.$chain(t), (v) => call(actions: v));
-  @override
-  $R call({List<GameDialogButton>? actions}) =>
-      $apply(FieldCopyWithData({if (actions != null) #actions: actions}));
-  @override
-  GameDialogActionRowComponent $make(CopyWithData data) =>
-      GameDialogActionRowComponent(data.get(#actions, or: $value.actions));
-
-  @override
-  GameDialogActionRowComponentCopyWith<$R2, GameDialogActionRowComponent, $Out2>
-      $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _GameDialogActionRowComponentCopyWithImpl($value, $cast, t);
-}
-
-class GameDialogButtonMapper extends ClassMapperBase<GameDialogButton> {
-  GameDialogButtonMapper._();
-
-  static GameDialogButtonMapper? _instance;
-  static GameDialogButtonMapper ensureInitialized() {
-    if (_instance == null) {
-      MapperContainer.globals.use(_instance = GameDialogButtonMapper._());
-    }
-    return _instance!;
-  }
-
-  @override
-  final String id = 'GameDialogButton';
-
-  static String _$label(GameDialogButton v) => v.label;
-  static const Field<GameDialogButton, String> _f$label =
-      Field('label', _$label);
-  static String? _$id(GameDialogButton v) => v.id;
-  static const Field<GameDialogButton, String> _f$id =
-      Field('id', _$id, opt: true);
-
-  @override
-  final MappableFields<GameDialogButton> fields = const {
-    #label: _f$label,
-    #id: _f$id,
-  };
-
-  static GameDialogButton _instantiate(DecodingData data) {
-    return GameDialogButton(data.dec(_f$label), id: data.dec(_f$id));
-  }
-
-  @override
-  final Function instantiate = _instantiate;
-
-  static GameDialogButton fromMap(Map<String, dynamic> map) {
-    return ensureInitialized().decodeMap<GameDialogButton>(map);
-  }
-
-  static GameDialogButton fromJson(String json) {
-    return ensureInitialized().decodeJson<GameDialogButton>(json);
-  }
-}
-
-mixin GameDialogButtonMappable {
-  String toJson() {
-    return GameDialogButtonMapper.ensureInitialized()
-        .encodeJson<GameDialogButton>(this as GameDialogButton);
-  }
-
-  Map<String, dynamic> toMap() {
-    return GameDialogButtonMapper.ensureInitialized()
-        .encodeMap<GameDialogButton>(this as GameDialogButton);
-  }
-
-  GameDialogButtonCopyWith<GameDialogButton, GameDialogButton, GameDialogButton>
-      get copyWith => _GameDialogButtonCopyWithImpl(
-          this as GameDialogButton, $identity, $identity);
-  @override
-  String toString() {
-    return GameDialogButtonMapper.ensureInitialized()
-        .stringifyValue(this as GameDialogButton);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return GameDialogButtonMapper.ensureInitialized()
-        .equalsValue(this as GameDialogButton, other);
-  }
-
-  @override
-  int get hashCode {
-    return GameDialogButtonMapper.ensureInitialized()
-        .hashValue(this as GameDialogButton);
-  }
-}
-
-extension GameDialogButtonValueCopy<$R, $Out>
-    on ObjectCopyWith<$R, GameDialogButton, $Out> {
-  GameDialogButtonCopyWith<$R, GameDialogButton, $Out>
-      get $asGameDialogButton =>
-          $base.as((v, t, t2) => _GameDialogButtonCopyWithImpl(v, t, t2));
-}
-
-abstract class GameDialogButtonCopyWith<$R, $In extends GameDialogButton, $Out>
-    implements ClassCopyWith<$R, $In, $Out> {
-  $R call({String? label, String? id});
-  GameDialogButtonCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
-}
-
-class _GameDialogButtonCopyWithImpl<$R, $Out>
-    extends ClassCopyWithBase<$R, GameDialogButton, $Out>
-    implements GameDialogButtonCopyWith<$R, GameDialogButton, $Out> {
-  _GameDialogButtonCopyWithImpl(super.value, super.then, super.then2);
-
-  @override
-  late final ClassMapperBase<GameDialogButton> $mapper =
-      GameDialogButtonMapper.ensureInitialized();
-  @override
-  $R call({String? label, Object? id = $none}) => $apply(FieldCopyWithData(
-      {if (label != null) #label: label, if (id != $none) #id: id}));
-  @override
-  GameDialogButton $make(CopyWithData data) =>
-      GameDialogButton(data.get(#label, or: $value.label),
-          id: data.get(#id, or: $value.id));
-
-  @override
-  GameDialogButtonCopyWith<$R2, GameDialogButton, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _GameDialogButtonCopyWithImpl($value, $cast, t);
 }
 
 class GameDialogValueMapper extends ClassMapperBase<GameDialogValue> {
@@ -727,14 +623,18 @@ class GameDialogValueMapper extends ClassMapperBase<GameDialogValue> {
       v.values;
   static const Field<GameDialogValue, Map<String, GameDialogComponentValue>>
       _f$values = Field('values', _$values, opt: true, def: const {});
+  static String _$buttonPressed(GameDialogValue v) => v.buttonPressed;
+  static const Field<GameDialogValue, String> _f$buttonPressed =
+      Field('buttonPressed', _$buttonPressed, opt: true, def: '');
 
   @override
   final MappableFields<GameDialogValue> fields = const {
     #values: _f$values,
+    #buttonPressed: _f$buttonPressed,
   };
 
   static GameDialogValue _instantiate(DecodingData data) {
-    return GameDialogValue(data.dec(_f$values));
+    return GameDialogValue(data.dec(_f$values), data.dec(_f$buttonPressed));
   }
 
   @override
@@ -796,7 +696,8 @@ abstract class GameDialogValueCopyWith<$R, $In extends GameDialogValue, $Out>
       GameDialogComponentValue,
       GameDialogComponentValueCopyWith<$R, GameDialogComponentValue,
           GameDialogComponentValue>> get values;
-  $R call({Map<String, GameDialogComponentValue>? values});
+  $R call(
+      {Map<String, GameDialogComponentValue>? values, String? buttonPressed});
   GameDialogValueCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -818,11 +719,17 @@ class _GameDialogValueCopyWithImpl<$R, $Out>
           GameDialogComponentValue>> get values => MapCopyWith(
       $value.values, (v, t) => v.copyWith.$chain(t), (v) => call(values: v));
   @override
-  $R call({Map<String, GameDialogComponentValue>? values}) =>
-      $apply(FieldCopyWithData({if (values != null) #values: values}));
+  $R call(
+          {Map<String, GameDialogComponentValue>? values,
+          String? buttonPressed}) =>
+      $apply(FieldCopyWithData({
+        if (values != null) #values: values,
+        if (buttonPressed != null) #buttonPressed: buttonPressed
+      }));
   @override
-  GameDialogValue $make(CopyWithData data) =>
-      GameDialogValue(data.get(#values, or: $value.values));
+  GameDialogValue $make(CopyWithData data) => GameDialogValue(
+      data.get(#values, or: $value.values),
+      data.get(#buttonPressed, or: $value.buttonPressed));
 
   @override
   GameDialogValueCopyWith<$R2, GameDialogValue, $Out2> $chain<$R2, $Out2>(
@@ -840,7 +747,6 @@ class GameDialogComponentValueMapper
       MapperContainer.globals
           .use(_instance = GameDialogComponentValueMapper._());
       GameDialogTextFieldValueMapper.ensureInitialized();
-      GameDialogButtonValueMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -1066,134 +972,4 @@ class _GameDialogTextFieldValueCopyWithImpl<$R, $Out>
   GameDialogTextFieldValueCopyWith<$R2, GameDialogTextFieldValue, $Out2>
       $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
           _GameDialogTextFieldValueCopyWithImpl($value, $cast, t);
-}
-
-class GameDialogButtonValueMapper
-    extends ClassMapperBase<GameDialogButtonValue> {
-  GameDialogButtonValueMapper._();
-
-  static GameDialogButtonValueMapper? _instance;
-  static GameDialogButtonValueMapper ensureInitialized() {
-    if (_instance == null) {
-      MapperContainer.globals.use(_instance = GameDialogButtonValueMapper._());
-      GameDialogComponentValueMapper.ensureInitialized();
-    }
-    return _instance!;
-  }
-
-  @override
-  final String id = 'GameDialogButtonValue';
-
-  static String _$label(GameDialogButtonValue v) => v.label;
-  static const Field<GameDialogButtonValue, String> _f$label =
-      Field('label', _$label);
-  static int _$index(GameDialogButtonValue v) => v.index;
-  static const Field<GameDialogButtonValue, int> _f$index =
-      Field('index', _$index);
-  static int _$component(GameDialogButtonValue v) => v.component;
-  static const Field<GameDialogButtonValue, int> _f$component =
-      Field('component', _$component);
-
-  @override
-  final MappableFields<GameDialogButtonValue> fields = const {
-    #label: _f$label,
-    #index: _f$index,
-    #component: _f$component,
-  };
-
-  static GameDialogButtonValue _instantiate(DecodingData data) {
-    return GameDialogButtonValue(
-        label: data.dec(_f$label),
-        index: data.dec(_f$index),
-        component: data.dec(_f$component));
-  }
-
-  @override
-  final Function instantiate = _instantiate;
-
-  static GameDialogButtonValue fromMap(Map<String, dynamic> map) {
-    return ensureInitialized().decodeMap<GameDialogButtonValue>(map);
-  }
-
-  static GameDialogButtonValue fromJson(String json) {
-    return ensureInitialized().decodeJson<GameDialogButtonValue>(json);
-  }
-}
-
-mixin GameDialogButtonValueMappable {
-  String toJson() {
-    return GameDialogButtonValueMapper.ensureInitialized()
-        .encodeJson<GameDialogButtonValue>(this as GameDialogButtonValue);
-  }
-
-  Map<String, dynamic> toMap() {
-    return GameDialogButtonValueMapper.ensureInitialized()
-        .encodeMap<GameDialogButtonValue>(this as GameDialogButtonValue);
-  }
-
-  GameDialogButtonValueCopyWith<GameDialogButtonValue, GameDialogButtonValue,
-          GameDialogButtonValue>
-      get copyWith => _GameDialogButtonValueCopyWithImpl(
-          this as GameDialogButtonValue, $identity, $identity);
-  @override
-  String toString() {
-    return GameDialogButtonValueMapper.ensureInitialized()
-        .stringifyValue(this as GameDialogButtonValue);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return GameDialogButtonValueMapper.ensureInitialized()
-        .equalsValue(this as GameDialogButtonValue, other);
-  }
-
-  @override
-  int get hashCode {
-    return GameDialogButtonValueMapper.ensureInitialized()
-        .hashValue(this as GameDialogButtonValue);
-  }
-}
-
-extension GameDialogButtonValueValueCopy<$R, $Out>
-    on ObjectCopyWith<$R, GameDialogButtonValue, $Out> {
-  GameDialogButtonValueCopyWith<$R, GameDialogButtonValue, $Out>
-      get $asGameDialogButtonValue =>
-          $base.as((v, t, t2) => _GameDialogButtonValueCopyWithImpl(v, t, t2));
-}
-
-abstract class GameDialogButtonValueCopyWith<
-    $R,
-    $In extends GameDialogButtonValue,
-    $Out> implements GameDialogComponentValueCopyWith<$R, $In, $Out> {
-  @override
-  $R call({String? label, int? index, int? component});
-  GameDialogButtonValueCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
-}
-
-class _GameDialogButtonValueCopyWithImpl<$R, $Out>
-    extends ClassCopyWithBase<$R, GameDialogButtonValue, $Out>
-    implements GameDialogButtonValueCopyWith<$R, GameDialogButtonValue, $Out> {
-  _GameDialogButtonValueCopyWithImpl(super.value, super.then, super.then2);
-
-  @override
-  late final ClassMapperBase<GameDialogButtonValue> $mapper =
-      GameDialogButtonValueMapper.ensureInitialized();
-  @override
-  $R call({String? label, int? index, int? component}) =>
-      $apply(FieldCopyWithData({
-        if (label != null) #label: label,
-        if (index != null) #index: index,
-        if (component != null) #component: component
-      }));
-  @override
-  GameDialogButtonValue $make(CopyWithData data) => GameDialogButtonValue(
-      label: data.get(#label, or: $value.label),
-      index: data.get(#index, or: $value.index),
-      component: data.get(#component, or: $value.component));
-
-  @override
-  GameDialogButtonValueCopyWith<$R2, GameDialogButtonValue, $Out2>
-      $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _GameDialogButtonValueCopyWithImpl($value, $cast, t);
 }

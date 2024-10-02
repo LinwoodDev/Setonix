@@ -184,5 +184,6 @@
   "zoom": "Zoom",
   "zoomIn": "Zoom in",
   "zoomOut": "Zoom out",
-  "resetZoom": "Reset zoom"
+  "resetZoom": "Reset zoom",
+  "thirdPartyContent": "This content is provided by the third party server. Please make sure you don't share any personal information that you don't want to be shared with the server owner."
 }

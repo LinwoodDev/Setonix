@@ -2751,7 +2751,7 @@ class DialogCloseRequestMapper extends SubClassMapperBase<DialogCloseRequest> {
 
   static String _$id(DialogCloseRequest v) => v.id;
   static const Field<DialogCloseRequest, String> _f$id = Field('id', _$id);
-  static GameDialogValue _$value(DialogCloseRequest v) => v.value;
+  static GameDialogValue? _$value(DialogCloseRequest v) => v.value;
   static const Field<DialogCloseRequest, GameDialogValue> _f$value =
       Field('value', _$value);
 
@@ -2828,7 +2828,7 @@ extension DialogCloseRequestValueCopy<$R, $Out>
 
 abstract class DialogCloseRequestCopyWith<$R, $In extends DialogCloseRequest,
     $Out> implements ClientWorldEventCopyWith<$R, $In, $Out> {
-  GameDialogValueCopyWith<$R, GameDialogValue, GameDialogValue> get value;
+  GameDialogValueCopyWith<$R, GameDialogValue, GameDialogValue>? get value;
   @override
   $R call({String? id, GameDialogValue? value});
   DialogCloseRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
@@ -2844,11 +2844,11 @@ class _DialogCloseRequestCopyWithImpl<$R, $Out>
   late final ClassMapperBase<DialogCloseRequest> $mapper =
       DialogCloseRequestMapper.ensureInitialized();
   @override
-  GameDialogValueCopyWith<$R, GameDialogValue, GameDialogValue> get value =>
-      $value.value.copyWith.$chain((v) => call(value: v));
+  GameDialogValueCopyWith<$R, GameDialogValue, GameDialogValue>? get value =>
+      $value.value?.copyWith.$chain((v) => call(value: v));
   @override
-  $R call({String? id, GameDialogValue? value}) => $apply(FieldCopyWithData(
-      {if (id != null) #id: id, if (value != null) #value: value}));
+  $R call({String? id, Object? value = $none}) => $apply(FieldCopyWithData(
+      {if (id != null) #id: id, if (value != $none) #value: value}));
   @override
   DialogCloseRequest $make(CopyWithData data) => DialogCloseRequest(
       data.get(#id, or: $value.id), data.get(#value, or: $value.value));
