@@ -86,13 +86,16 @@ final class BoardTilesChanged extends ServerWorldEvent
 @MappableClass()
 final class DialogOpened extends ServerWorldEvent with DialogOpenedMappable {
   final GameDialog dialog;
+  final bool closeOthers;
 
-  DialogOpened(this.dialog);
+  DialogOpened(this.dialog, {this.closeOthers = false});
 }
 
 @MappableClass()
-final class DialogClosed extends ServerWorldEvent with DialogClosedMappable {
-  final String id;
+final class DialogsClosed extends ServerWorldEvent with DialogsClosedMappable {
+  final List<String>? ids;
 
-  DialogClosed(this.id);
+  DialogsClosed(this.ids);
+  DialogsClosed.single(String id) : ids = [id];
+  DialogsClosed.all() : ids = null;
 }

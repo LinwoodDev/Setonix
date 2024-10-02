@@ -19,9 +19,19 @@ Future<void> onLoad(QuokkaServer server) async {
     e.sendEvent(DialogOpened(
         GameDialog(id: "testDialog", title: "TestDialog", components: [
       GameDialogMarkdownComponent(testContent),
+      GameDialogTextFieldComponent(
+        "TestTextField",
+        id: "testTextField",
+        placeholder: "TestPlaceholder",
+        multiline: true,
+        password: true,
+      ),
       GameDialogActionRowComponent([
         GameDialogButton("TestButton"),
       ]),
     ])));
+  });
+  server.eventSystem.on<DialogCloseRequest>().listen((e) {
+    print("Dialog ${e.clientEvent.id} closed, got ${e.clientEvent.value}");
   });
 }
