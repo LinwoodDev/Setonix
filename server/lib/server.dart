@@ -154,7 +154,7 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
     sendEvent(event.serverEvent, event.target);
   }
 
-  void sendEvent(ServerWorldEvent event, Channel target) {
+  void sendEvent(ServerWorldEvent event, [Channel target = kAnyChannel]) {
     _pipe?.sendMessage(event, target);
     if (target == kAnyChannel || target == kAuthorityChannel) {
       add(event);

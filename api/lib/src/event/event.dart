@@ -5,6 +5,7 @@ import '../models/vector.dart';
 import '../models/meta.dart';
 import '../models/info.dart';
 import '../models/table.dart';
+import '../models/dialog.dart';
 
 part 'event.mapper.dart';
 

@@ -131,6 +131,8 @@ class ServerWorldEventMapper extends SubClassMapperBase<ServerWorldEvent> {
       MessageSentMapper.ensureInitialized();
       BoardTilesSpawnedMapper.ensureInitialized();
       BoardTilesChangedMapper.ensureInitialized();
+      DialogOpenedMapper.ensureInitialized();
+      DialogClosedMapper.ensureInitialized();
       HybridWorldEventMapper.ensureInitialized();
     }
     return _instance!;
@@ -1254,6 +1256,237 @@ class _BoardTilesChangedCopyWithImpl<$R, $Out>
       _BoardTilesChangedCopyWithImpl($value, $cast, t);
 }
 
+class DialogOpenedMapper extends SubClassMapperBase<DialogOpened> {
+  DialogOpenedMapper._();
+
+  static DialogOpenedMapper? _instance;
+  static DialogOpenedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = DialogOpenedMapper._());
+      ServerWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      GameDialogMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'DialogOpened';
+
+  static GameDialog _$dialog(DialogOpened v) => v.dialog;
+  static const Field<DialogOpened, GameDialog> _f$dialog =
+      Field('dialog', _$dialog);
+
+  @override
+  final MappableFields<DialogOpened> fields = const {
+    #dialog: _f$dialog,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'DialogOpened';
+  @override
+  late final ClassMapperBase superMapper =
+      ServerWorldEventMapper.ensureInitialized();
+
+  static DialogOpened _instantiate(DecodingData data) {
+    return DialogOpened(data.dec(_f$dialog));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static DialogOpened fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<DialogOpened>(map);
+  }
+
+  static DialogOpened fromJson(String json) {
+    return ensureInitialized().decodeJson<DialogOpened>(json);
+  }
+}
+
+mixin DialogOpenedMappable {
+  String toJson() {
+    return DialogOpenedMapper.ensureInitialized()
+        .encodeJson<DialogOpened>(this as DialogOpened);
+  }
+
+  Map<String, dynamic> toMap() {
+    return DialogOpenedMapper.ensureInitialized()
+        .encodeMap<DialogOpened>(this as DialogOpened);
+  }
+
+  DialogOpenedCopyWith<DialogOpened, DialogOpened, DialogOpened> get copyWith =>
+      _DialogOpenedCopyWithImpl(this as DialogOpened, $identity, $identity);
+  @override
+  String toString() {
+    return DialogOpenedMapper.ensureInitialized()
+        .stringifyValue(this as DialogOpened);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return DialogOpenedMapper.ensureInitialized()
+        .equalsValue(this as DialogOpened, other);
+  }
+
+  @override
+  int get hashCode {
+    return DialogOpenedMapper.ensureInitialized()
+        .hashValue(this as DialogOpened);
+  }
+}
+
+extension DialogOpenedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, DialogOpened, $Out> {
+  DialogOpenedCopyWith<$R, DialogOpened, $Out> get $asDialogOpened =>
+      $base.as((v, t, t2) => _DialogOpenedCopyWithImpl(v, t, t2));
+}
+
+abstract class DialogOpenedCopyWith<$R, $In extends DialogOpened, $Out>
+    implements ServerWorldEventCopyWith<$R, $In, $Out> {
+  GameDialogCopyWith<$R, GameDialog, GameDialog> get dialog;
+  @override
+  $R call({GameDialog? dialog});
+  DialogOpenedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _DialogOpenedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, DialogOpened, $Out>
+    implements DialogOpenedCopyWith<$R, DialogOpened, $Out> {
+  _DialogOpenedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<DialogOpened> $mapper =
+      DialogOpenedMapper.ensureInitialized();
+  @override
+  GameDialogCopyWith<$R, GameDialog, GameDialog> get dialog =>
+      $value.dialog.copyWith.$chain((v) => call(dialog: v));
+  @override
+  $R call({GameDialog? dialog}) =>
+      $apply(FieldCopyWithData({if (dialog != null) #dialog: dialog}));
+  @override
+  DialogOpened $make(CopyWithData data) =>
+      DialogOpened(data.get(#dialog, or: $value.dialog));
+
+  @override
+  DialogOpenedCopyWith<$R2, DialogOpened, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _DialogOpenedCopyWithImpl($value, $cast, t);
+}
+
+class DialogClosedMapper extends SubClassMapperBase<DialogClosed> {
+  DialogClosedMapper._();
+
+  static DialogClosedMapper? _instance;
+  static DialogClosedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = DialogClosedMapper._());
+      ServerWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'DialogClosed';
+
+  static String _$id(DialogClosed v) => v.id;
+  static const Field<DialogClosed, String> _f$id = Field('id', _$id);
+
+  @override
+  final MappableFields<DialogClosed> fields = const {
+    #id: _f$id,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'DialogClosed';
+  @override
+  late final ClassMapperBase superMapper =
+      ServerWorldEventMapper.ensureInitialized();
+
+  static DialogClosed _instantiate(DecodingData data) {
+    return DialogClosed(data.dec(_f$id));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static DialogClosed fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<DialogClosed>(map);
+  }
+
+  static DialogClosed fromJson(String json) {
+    return ensureInitialized().decodeJson<DialogClosed>(json);
+  }
+}
+
+mixin DialogClosedMappable {
+  String toJson() {
+    return DialogClosedMapper.ensureInitialized()
+        .encodeJson<DialogClosed>(this as DialogClosed);
+  }
+
+  Map<String, dynamic> toMap() {
+    return DialogClosedMapper.ensureInitialized()
+        .encodeMap<DialogClosed>(this as DialogClosed);
+  }
+
+  DialogClosedCopyWith<DialogClosed, DialogClosed, DialogClosed> get copyWith =>
+      _DialogClosedCopyWithImpl(this as DialogClosed, $identity, $identity);
+  @override
+  String toString() {
+    return DialogClosedMapper.ensureInitialized()
+        .stringifyValue(this as DialogClosed);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return DialogClosedMapper.ensureInitialized()
+        .equalsValue(this as DialogClosed, other);
+  }
+
+  @override
+  int get hashCode {
+    return DialogClosedMapper.ensureInitialized()
+        .hashValue(this as DialogClosed);
+  }
+}
+
+extension DialogClosedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, DialogClosed, $Out> {
+  DialogClosedCopyWith<$R, DialogClosed, $Out> get $asDialogClosed =>
+      $base.as((v, t, t2) => _DialogClosedCopyWithImpl(v, t, t2));
+}
+
+abstract class DialogClosedCopyWith<$R, $In extends DialogClosed, $Out>
+    implements ServerWorldEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({String? id});
+  DialogClosedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _DialogClosedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, DialogClosed, $Out>
+    implements DialogClosedCopyWith<$R, DialogClosed, $Out> {
+  _DialogClosedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<DialogClosed> $mapper =
+      DialogClosedMapper.ensureInitialized();
+  @override
+  $R call({String? id}) => $apply(FieldCopyWithData({if (id != null) #id: id}));
+  @override
+  DialogClosed $make(CopyWithData data) =>
+      DialogClosed(data.get(#id, or: $value.id));
+
+  @override
+  DialogClosedCopyWith<$R2, DialogClosed, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _DialogClosedCopyWithImpl($value, $cast, t);
+}
+
 class ClientWorldEventMapper extends SubClassMapperBase<ClientWorldEvent> {
   ClientWorldEventMapper._();
 
@@ -1271,6 +1504,7 @@ class ClientWorldEventMapper extends SubClassMapperBase<ClientWorldEvent> {
       BoardsSpawnRequestMapper.ensureInitialized();
       BoardRemoveRequestMapper.ensureInitialized();
       BoardMoveRequestMapper.ensureInitialized();
+      DialogCloseRequestMapper.ensureInitialized();
       HybridWorldEventMapper.ensureInitialized();
     }
     return _instance!;
@@ -2480,6 +2714,137 @@ class _BoardMoveRequestCopyWithImpl<$R, $Out>
   BoardMoveRequestCopyWith<$R2, BoardMoveRequest, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
       _BoardMoveRequestCopyWithImpl($value, $cast, t);
+}
+
+class DialogCloseRequestMapper extends SubClassMapperBase<DialogCloseRequest> {
+  DialogCloseRequestMapper._();
+
+  static DialogCloseRequestMapper? _instance;
+  static DialogCloseRequestMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = DialogCloseRequestMapper._());
+      ClientWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      GameDialogValueMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'DialogCloseRequest';
+
+  static String _$id(DialogCloseRequest v) => v.id;
+  static const Field<DialogCloseRequest, String> _f$id = Field('id', _$id);
+  static Map<String, GameDialogValue> _$values(DialogCloseRequest v) =>
+      v.values;
+  static const Field<DialogCloseRequest, Map<String, GameDialogValue>>
+      _f$values = Field('values', _$values);
+
+  @override
+  final MappableFields<DialogCloseRequest> fields = const {
+    #id: _f$id,
+    #values: _f$values,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'DialogCloseRequest';
+  @override
+  late final ClassMapperBase superMapper =
+      ClientWorldEventMapper.ensureInitialized();
+
+  static DialogCloseRequest _instantiate(DecodingData data) {
+    return DialogCloseRequest(data.dec(_f$id), data.dec(_f$values));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static DialogCloseRequest fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<DialogCloseRequest>(map);
+  }
+
+  static DialogCloseRequest fromJson(String json) {
+    return ensureInitialized().decodeJson<DialogCloseRequest>(json);
+  }
+}
+
+mixin DialogCloseRequestMappable {
+  String toJson() {
+    return DialogCloseRequestMapper.ensureInitialized()
+        .encodeJson<DialogCloseRequest>(this as DialogCloseRequest);
+  }
+
+  Map<String, dynamic> toMap() {
+    return DialogCloseRequestMapper.ensureInitialized()
+        .encodeMap<DialogCloseRequest>(this as DialogCloseRequest);
+  }
+
+  DialogCloseRequestCopyWith<DialogCloseRequest, DialogCloseRequest,
+          DialogCloseRequest>
+      get copyWith => _DialogCloseRequestCopyWithImpl(
+          this as DialogCloseRequest, $identity, $identity);
+  @override
+  String toString() {
+    return DialogCloseRequestMapper.ensureInitialized()
+        .stringifyValue(this as DialogCloseRequest);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return DialogCloseRequestMapper.ensureInitialized()
+        .equalsValue(this as DialogCloseRequest, other);
+  }
+
+  @override
+  int get hashCode {
+    return DialogCloseRequestMapper.ensureInitialized()
+        .hashValue(this as DialogCloseRequest);
+  }
+}
+
+extension DialogCloseRequestValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, DialogCloseRequest, $Out> {
+  DialogCloseRequestCopyWith<$R, DialogCloseRequest, $Out>
+      get $asDialogCloseRequest =>
+          $base.as((v, t, t2) => _DialogCloseRequestCopyWithImpl(v, t, t2));
+}
+
+abstract class DialogCloseRequestCopyWith<$R, $In extends DialogCloseRequest,
+    $Out> implements ClientWorldEventCopyWith<$R, $In, $Out> {
+  MapCopyWith<$R, String, GameDialogValue,
+      ObjectCopyWith<$R, GameDialogValue, GameDialogValue>> get values;
+  @override
+  $R call({String? id, Map<String, GameDialogValue>? values});
+  DialogCloseRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class _DialogCloseRequestCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, DialogCloseRequest, $Out>
+    implements DialogCloseRequestCopyWith<$R, DialogCloseRequest, $Out> {
+  _DialogCloseRequestCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<DialogCloseRequest> $mapper =
+      DialogCloseRequestMapper.ensureInitialized();
+  @override
+  MapCopyWith<$R, String, GameDialogValue,
+          ObjectCopyWith<$R, GameDialogValue, GameDialogValue>>
+      get values => MapCopyWith($value.values,
+          (v, t) => ObjectCopyWith(v, $identity, t), (v) => call(values: v));
+  @override
+  $R call({String? id, Map<String, GameDialogValue>? values}) =>
+      $apply(FieldCopyWithData(
+          {if (id != null) #id: id, if (values != null) #values: values}));
+  @override
+  DialogCloseRequest $make(CopyWithData data) => DialogCloseRequest(
+      data.get(#id, or: $value.id), data.get(#values, or: $value.values));
+
+  @override
+  DialogCloseRequestCopyWith<$R2, DialogCloseRequest, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _DialogCloseRequestCopyWithImpl($value, $cast, t);
 }
 
 class HybridWorldEventMapper extends SubClassMapperBase<HybridWorldEvent> {

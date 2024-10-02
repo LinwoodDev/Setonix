@@ -3,6 +3,7 @@ import 'package:networker/networker.dart';
 
 import '../models/chat.dart';
 import '../models/data.dart';
+import '../models/dialog.dart';
 import '../models/info.dart';
 import '../models/meta.dart';
 import '../models/table.dart';
@@ -27,6 +28,7 @@ final class WorldState with WorldStateMappable {
   final FileMetadata metadata;
   final QuokkaData data;
   final List<ChatMessage> messages;
+  final List<GameDialog> dialogs;
 
   const WorldState({
     this.name,
@@ -37,6 +39,7 @@ final class WorldState with WorldStateMappable {
     this.teamMembers = const {},
     this.messages = const [],
     this.id = kAuthorityChannel,
+    this.dialogs = const [],
     required this.data,
   });
 

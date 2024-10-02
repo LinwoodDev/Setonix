@@ -4,7 +4,20 @@ import 'package:networker/networker.dart';
 import 'package:quokka_api/quokka_api.dart';
 import 'package:quokka_server/server.dart';
 
-base class Event<T> {
+mixin ServerReference {
+  QuokkaServer get server;
+
+  void sendEvent(ServerWorldEvent event, [Channel target = kAnyChannel]) =>
+      server.sendEvent(event, target);
+
+  WorldState get state => server.state;
+
+  GameTable? getTable(String name) => state.getTable(name);
+  GameTable getTableOrDefault(String name) => state.getTableOrDefault(name);
+}
+
+base class Event<T> with ServerReference {
+  @override
   final QuokkaServer server;
   final T clientEvent;
   final Channel source;
@@ -24,7 +37,9 @@ base class Event<T> {
   }
 }
 
-final class _LinkedEvent<T extends WorldEvent?> implements Event<T> {
+final class _LinkedEvent<T extends WorldEvent?>
+    with ServerReference
+    implements Event<T> {
   final Event parent;
 
   _LinkedEvent(this.parent);

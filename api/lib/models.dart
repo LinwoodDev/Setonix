@@ -2,6 +2,7 @@ export 'src/models/background.dart';
 export 'src/models/chat.dart';
 export 'src/models/data.dart';
 export 'src/models/deck.dart';
+export 'src/models/dialog.dart';
 export 'src/models/info.dart';
 export 'src/models/meta.dart';
 export 'src/models/definition.dart';

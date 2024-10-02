@@ -213,5 +213,7 @@ bool isValidClientEvent(
         }
       }
       return (BoardTilesChanged(event.table, newTiles), kAnyChannel);
+    case DialogCloseRequest():
+      return (DialogClosed(event.id), kAnyChannel);
   }
 }

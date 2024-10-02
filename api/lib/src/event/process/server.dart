@@ -278,5 +278,9 @@ WorldState? processServerEvent(
         }
         return table.copyWith.cellsBox(content: cells);
       });
+    case DialogOpened():
+      return state.copyWith.dialogs.add(event.dialog);
+    case DialogClosed():
+      return state.copyWith.dialogs.where((e) => e.id != event.id);
   }
 }

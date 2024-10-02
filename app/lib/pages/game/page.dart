@@ -12,6 +12,7 @@ import 'package:quokka/bloc/multiplayer.dart';
 import 'package:quokka/bloc/settings.dart';
 import 'package:quokka/board/game.dart';
 import 'package:quokka/pages/game/chat.dart';
+import 'package:quokka/pages/game/dialog.dart';
 import 'package:quokka/pages/game/drawer.dart';
 import 'package:quokka/pages/game/notes.dart';
 import 'package:quokka/pages/home/background.dart';
@@ -216,15 +217,18 @@ class _GamePageState extends State<GamePage> {
                             ),
                           );
                         },
-                        child: Builder(
-                            builder: (context) => GameWidget(
-                                    game: BoardGame(
-                                  bloc: context.read<WorldBloc>(),
-                                  settingsCubit: context.read<SettingsCubit>(),
-                                  contextMenuController: _contextMenuController,
-                                  onEscape: () =>
-                                      Scaffold.of(context).openDrawer(),
-                                ))),
+                        child: GameWidget(
+                          game: BoardGame(
+                            bloc: context.read<WorldBloc>(),
+                            settingsCubit: context.read<SettingsCubit>(),
+                            contextMenuController: _contextMenuController,
+                            onEscape: () => Scaffold.of(context).openDrawer(),
+                          ),
+                          initialActiveOverlays: ['dialogs'],
+                          overlayBuilderMap: {
+                            'dialogs': (context, game) => GameDialogOverlay(),
+                          },
+                        ),
                       ),
                     );
                   },

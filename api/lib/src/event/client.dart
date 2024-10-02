@@ -90,3 +90,14 @@ final class BoardMoveRequest extends ClientWorldEvent
 
   BoardMoveRequest(this.table, this.from, this.to, this.index);
 }
+
+@MappableClass()
+final class DialogCloseRequest extends ClientWorldEvent
+    with DialogCloseRequestMappable {
+  final String id;
+  final Map<String, GameDialogValue> values;
+
+  DialogCloseRequest(this.id, this.values);
+
+  bool hasValue(String key) => values.containsKey(key);
+}

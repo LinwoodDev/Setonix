@@ -82,3 +82,17 @@ final class BoardTilesChanged extends ServerWorldEvent
 
   BoardTilesChanged(this.table, this.tiles);
 }
+
+@MappableClass()
+final class DialogOpened extends ServerWorldEvent with DialogOpenedMappable {
+  final GameDialog dialog;
+
+  DialogOpened(this.dialog);
+}
+
+@MappableClass()
+final class DialogClosed extends ServerWorldEvent with DialogClosedMappable {
+  final String id;
+
+  DialogClosed(this.id);
+}

@@ -63,6 +63,7 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
       GameInfoMapper.ensureInitialized();
       FileMetadataMapper.ensureInitialized();
       ChatMessageMapper.ensureInitialized();
+      GameDialogMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -94,6 +95,9 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
   static int _$id(WorldState v) => v.id;
   static const Field<WorldState, int> _f$id =
       Field('id', _$id, opt: true, def: kAuthorityChannel);
+  static List<GameDialog> _$dialogs(WorldState v) => v.dialogs;
+  static const Field<WorldState, List<GameDialog>> _f$dialogs =
+      Field('dialogs', _$dialogs, opt: true, def: const []);
   static QuokkaData _$data(WorldState v) => v.data;
   static const Field<WorldState, QuokkaData> _f$data = Field('data', _$data);
 
@@ -107,6 +111,7 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
     #teamMembers: _f$teamMembers,
     #messages: _f$messages,
     #id: _f$id,
+    #dialogs: _f$dialogs,
     #data: _f$data,
   };
 
@@ -120,6 +125,7 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
         teamMembers: data.dec(_f$teamMembers),
         messages: data.dec(_f$messages),
         id: data.dec(_f$id),
+        dialogs: data.dec(_f$dialogs),
         data: data.dec(_f$data));
   }
 
@@ -181,6 +187,8 @@ abstract class WorldStateCopyWith<$R, $In extends WorldState, $Out>
       get teamMembers;
   ListCopyWith<$R, ChatMessage,
       ChatMessageCopyWith<$R, ChatMessage, ChatMessage>> get messages;
+  ListCopyWith<$R, GameDialog, GameDialogCopyWith<$R, GameDialog, GameDialog>>
+      get dialogs;
   $R call(
       {String? name,
       GameTable? table,
@@ -190,6 +198,7 @@ abstract class WorldStateCopyWith<$R, $In extends WorldState, $Out>
       Map<String, Set<int>>? teamMembers,
       List<ChatMessage>? messages,
       int? id,
+      List<GameDialog>? dialogs,
       QuokkaData? data});
   WorldStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -223,6 +232,10 @@ class _WorldStateCopyWithImpl<$R, $Out>
       get messages => ListCopyWith($value.messages,
           (v, t) => v.copyWith.$chain(t), (v) => call(messages: v));
   @override
+  ListCopyWith<$R, GameDialog, GameDialogCopyWith<$R, GameDialog, GameDialog>>
+      get dialogs => ListCopyWith($value.dialogs,
+          (v, t) => v.copyWith.$chain(t), (v) => call(dialogs: v));
+  @override
   $R call(
           {Object? name = $none,
           GameTable? table,
@@ -232,6 +245,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
           Map<String, Set<int>>? teamMembers,
           List<ChatMessage>? messages,
           int? id,
+          List<GameDialog>? dialogs,
           QuokkaData? data}) =>
       $apply(FieldCopyWithData({
         if (name != $none) #name: name,
@@ -242,6 +256,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
         if (teamMembers != null) #teamMembers: teamMembers,
         if (messages != null) #messages: messages,
         if (id != null) #id: id,
+        if (dialogs != null) #dialogs: dialogs,
         if (data != null) #data: data
       }));
   @override
@@ -254,6 +269,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
       teamMembers: data.get(#teamMembers, or: $value.teamMembers),
       messages: data.get(#messages, or: $value.messages),
       id: data.get(#id, or: $value.id),
+      dialogs: data.get(#dialogs, or: $value.dialogs),
       data: data.get(#data, or: $value.data));
 
   @override
