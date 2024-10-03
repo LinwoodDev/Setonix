@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:args/args.dart';
 import 'package:quokka_api/quokka_api.dart';
-import 'package:quokka_server/server.dart';
+import 'package:quokka_server/src/server.dart';
 
 const String version = '0.0.1';
 

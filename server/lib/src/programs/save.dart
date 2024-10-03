@@ -1,5 +1,5 @@
 import 'package:consoler/consoler.dart';
-import 'package:quokka_server/server.dart';
+import 'package:quokka_server/src/server.dart';
 
 class SaveProgram extends ConsoleProgram {
   final QuokkaServer server;

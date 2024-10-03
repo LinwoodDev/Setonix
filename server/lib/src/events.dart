@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:networker/networker.dart';
 import 'package:quokka_api/quokka_api.dart';
-import 'package:quokka_server/server.dart';
+import 'package:quokka_server/src/server.dart';
 
 mixin ServerReference {
   QuokkaServer get server;

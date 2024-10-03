@@ -16,7 +16,7 @@ Future<void> onLoad(QuokkaServer server) async {
       final event = e.clientEvent;
       final table = e.getTableOrDefault(event.table);
       final cell = table.getCell(event.from);
-      final objects = List<GameObject>.from(table.getCell(event.to).objects);
+      final objects = <GameObject>[];
       for (final index in event.objects) {
         final object = cell.objects[index];
         objects.add(object);

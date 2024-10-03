@@ -40,26 +40,30 @@ In conclusion, programming has become an indispensable skill in the modern world
 
 Future<void> onLoad(QuokkaServer server) async {
   print("on load was called");
-  server.eventSystem.on<ObjectsMoved>().listen((e) {
-    print("Listener was called, opening dialog");
-    e.sendEvent(DialogOpened(
-      GameDialog(id: "testDialog", title: "TestDialog")
-          .markdown(testContent)
-          .textField(
-            "TestTextField",
-            id: "testTextField",
-            placeholder: "TestPlaceholder",
-            multiline: true,
-            password: true,
-          )
-          .action(GameDialogButton("TestButton")),
-    ));
-  });
-  server.eventSystem.on<DialogCloseRequest>().listen((e) {
-    final value = e.clientEvent.value;
-    print("Dialog ${e.clientEvent.id} closed, got ${e.clientEvent.value}");
-    if (value != null) {
-      e.cancel();
-    }
-  });
+  server.eventSystem
+    ..on<ObjectsMoved>().listen((e) {
+      print("Listener was called, opening dialog");
+      e.sendEvent(DialogOpened(
+        GameDialog(id: "testDialog", title: "TestDialog")
+            .markdown(testContent)
+            .textField(
+              "TestTextField",
+              id: "testTextField",
+              placeholder: "TestPlaceholder",
+              multiline: true,
+              password: true,
+            )
+            .action(GameDialogButton("TestButton")),
+      ));
+    })
+    ..on<Null>().listen((e) {
+      print("play joined");
+    })
+    ..on<DialogCloseRequest>().listen((e) {
+      final value = e.clientEvent.value;
+      print("Dialog ${e.clientEvent.id} closed, got ${e.clientEvent.value}");
+      if (value != null) {
+        e.cancel();
+      }
+    });
 }

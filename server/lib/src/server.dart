@@ -8,13 +8,13 @@ import 'package:consoler/consoler.dart';
 import 'package:networker/networker.dart';
 import 'package:networker_socket/server.dart';
 import 'package:quokka_api/quokka_api.dart';
-import 'package:quokka_server/asset.dart';
-import 'package:quokka_server/events.dart';
-import 'package:quokka_server/programs/packs.dart';
-import 'package:quokka_server/programs/players.dart';
-import 'package:quokka_server/programs/save.dart';
-import 'package:quokka_server/programs/say.dart';
-import 'package:quokka_server/programs/stop.dart';
+import 'package:quokka_server/src/asset.dart';
+import 'package:quokka_server/src/events.dart';
+import 'package:quokka_server/src/programs/packs.dart';
+import 'package:quokka_server/src/programs/players.dart';
+import 'package:quokka_server/src/programs/save.dart';
+import 'package:quokka_server/src/programs/say.dart';
+import 'package:quokka_server/src/programs/stop.dart';
 
 Future<WorldState?> _computeEvent(ServerWorldEvent event, WorldState state,
     Map<String, FileMetadata> signature) {
@@ -27,7 +27,7 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
   final ServerAssetManager assetManager;
   final String? worldFile;
   final eventSystem = EventSystem();
-  bool _temp = false;
+  bool autosave = false;
 
   NetworkerSocketServer? _server;
   NetworkerPipe<dynamic, WorldEvent>? _pipe;
@@ -94,7 +94,7 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
     }
     log("Starting server on port $port", level: LogLevel.info);
     log('Verbose logging activated', level: LogLevel.verbose);
-    _temp = autosave;
+    this.autosave = autosave;
     final server =
         _server = NetworkerSocketServer(InternetAddress.anyIPv4, port,
             filterConnections: buildFilterConnections(
@@ -173,7 +173,7 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
   }
 
   Future<void> save({bool force = false}) async {
-    if (!force && _temp) return;
+    if (!force && autosave) return;
     final bytes = state.save().exportAsBytes();
     await File(defaultWorldFile).writeAsBytes(bytes);
   }
