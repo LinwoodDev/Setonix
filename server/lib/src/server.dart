@@ -9,12 +9,14 @@ import 'package:networker/networker.dart';
 import 'package:networker_socket/server.dart';
 import 'package:quokka_api/quokka_api.dart';
 import 'package:quokka_server/src/asset.dart';
-import 'package:quokka_server/src/events.dart';
+import 'package:quokka_server/src/events/system.dart';
 import 'package:quokka_server/src/programs/packs.dart';
 import 'package:quokka_server/src/programs/players.dart';
 import 'package:quokka_server/src/programs/save.dart';
 import 'package:quokka_server/src/programs/say.dart';
 import 'package:quokka_server/src/programs/stop.dart';
+
+import 'events/model.dart';
 
 Future<WorldState?> _computeEvent(ServerWorldEvent event, WorldState state,
     Map<String, FileMetadata> signature) {
@@ -22,7 +24,7 @@ Future<WorldState?> _computeEvent(ServerWorldEvent event, WorldState state,
       () => processServerEvent(event, state, signature: signature));
 }
 
-final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
+final class QuokkaServer extends Bloc<PlayableWorldEvent, WorldState> {
   final Consoler consoler;
   final ServerAssetManager assetManager;
   final String? worldFile;
@@ -154,7 +156,7 @@ final class QuokkaServer extends Bloc<ServerWorldEvent, WorldState> {
     sendEvent(event.serverEvent, event.target);
   }
 
-  void sendEvent(ServerWorldEvent event, [Channel target = kAnyChannel]) {
+  void sendEvent(PlayableWorldEvent event, [Channel target = kAnyChannel]) {
     _pipe?.sendMessage(event, target);
     if (target == kAnyChannel || target == kAuthorityChannel) {
       add(event);

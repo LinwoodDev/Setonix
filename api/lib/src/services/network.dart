@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:quokka_api/event.dart';
@@ -15,8 +14,7 @@ Future<bool> Function(HttpRequest request) buildFilterConnections(
       try {
         final method = request.headers.value('X-Quokka-Method');
         if (method == 'info') {
-          sendMessage =
-              jsonEncode((property ?? GameProperty.defaultProperty).toJson());
+          sendMessage = (property ?? GameProperty.defaultProperty).toJson();
         }
       } catch (_) {}
       if (sendMessage != null) {

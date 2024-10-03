@@ -66,7 +66,7 @@ class _GamePageState extends State<GamePage> {
     );
     await world.state.assetManager.loadPacks();
     if (address != null) {
-      cubit.connect(address, secure: widget.secure);
+      cubit.connect(buildServerAddress(address, widget.secure));
     }
     return (cubit, world);
   }

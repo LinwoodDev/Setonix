@@ -1,8 +1,9 @@
-import 'dart:async';
+import 'dart:io';
 
 import 'package:networker/networker.dart';
 import 'package:quokka_api/quokka_api.dart';
-import 'package:quokka_server/src/server.dart';
+
+import '../server.dart';
 
 mixin ServerReference {
   QuokkaServer get server;
@@ -75,24 +76,14 @@ final class _LinkedEvent<T extends WorldEvent?>
   Channel get source => parent.source;
 }
 
-final class EventSystem {
-  final StreamController<Event> _controller =
-      StreamController.broadcast(sync: true);
+final class ServerPing {
+  final Uri address;
+  final HttpRequest request;
+  GameProperty response;
 
-  Stream<Event<T>> on<T extends WorldEvent?>() {
-    if (T == dynamic) {
-      return _controller.stream as Stream<Event<T>>;
-    }
-    return _controller.stream
-        .where((event) => event.clientEvent is T)
-        .map((event) => event.castEvent<T>());
-  }
-
-  void fire(Event event) {
-    _controller.add(event);
-  }
-
-  void dispose() {
-    _controller.close();
-  }
+  ServerPing({
+    required this.address,
+    required this.request,
+    required this.response,
+  });
 }

@@ -3,7 +3,8 @@ library;
 
 export 'package:quokka_api/quokka_api.dart';
 export 'src/asset.dart';
-export 'src/events.dart';
+export 'src/events/model.dart';
+export 'src/events/system.dart';
 export 'src/main.dart';
 export 'src/server.dart';
 export 'src/programs/kick.dart';

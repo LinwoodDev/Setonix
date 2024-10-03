@@ -113,6 +113,7 @@ class NetworkService {
       HttpHeaders.contentTypeHeader: 'application/json',
       'X-Quokka-Method': 'info',
     });
+
     return GamePropertyMapper.fromJson(response.body);
   }
 
@@ -128,7 +129,8 @@ class NetworkService {
             LanGameServer() =>
               Future.value(GameProperty(description: property.description)),
             ListGameServer() => cached[server] =
-                fetchInfo(server.toHttps()).onError((_, __) => null),
+                fetchInfo(server.buildAddress(webSockets: false))
+                    .onError((_, __) => null),
           };
     }
 
