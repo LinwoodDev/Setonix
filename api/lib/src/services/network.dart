@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:quokka_api/event.dart';
 
-Future<bool> Function(HttpRequest request) buildFilterConnections(
-        {GameProperty? property}) =>
+Future<bool> Function(HttpRequest request) buildFilterConnections({
+  FutureOr<GameProperty?> Function(HttpRequest request)? loadProperty,
+}) =>
     (request) async {
       final response = request.response;
       response.headers.add("Access-Control-Allow-Origin", "*");
@@ -14,7 +16,9 @@ Future<bool> Function(HttpRequest request) buildFilterConnections(
       try {
         final method = request.headers.value('X-Quokka-Method');
         if (method == 'info') {
-          sendMessage = (property ?? GameProperty.defaultProperty).toJson();
+          sendMessage = ((await loadProperty?.call(request)) ??
+                  GameProperty.defaultProperty)
+              .toJson();
         }
       } catch (_) {}
       if (sendMessage != null) {

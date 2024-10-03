@@ -100,9 +100,11 @@ final class QuokkaServer extends Bloc<PlayableWorldEvent, WorldState> {
     final server =
         _server = NetworkerSocketServer(InternetAddress.anyIPv4, port,
             filterConnections: buildFilterConnections(
-                property: GameProperty.defaultProperty.copyWith(
-              description: description,
-            )));
+                loadProperty: (request) => eventSystem.runPing(
+                    request,
+                    GameProperty.defaultProperty.copyWith(
+                      description: description,
+                    ))));
     final transformer = _pipe = NetworkerPipeTransformer<String, WorldEvent>(
         WorldEventMapper.fromJson, (e) => e.toJson());
     transformer.read.listen(_onClientEvent);

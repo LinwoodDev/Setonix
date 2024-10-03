@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:quokka_api/quokka_api.dart';
 
@@ -25,8 +26,10 @@ final class EventSystem {
     _controller.add(event);
   }
 
-  void firePing(ServerPing ping) {
+  GameProperty runPing(HttpRequest request, GameProperty property) {
+    final ping = ServerPing(request: request, response: property);
     _pingController.add(ping);
+    return ping.response;
   }
 
   void dispose() {

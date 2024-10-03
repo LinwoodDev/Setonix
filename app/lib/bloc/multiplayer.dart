@@ -165,7 +165,8 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
       final server = NetworkerSocketServer(
         InternetAddress.loopbackIPv4,
         port,
-        filterConnections: buildFilterConnections(property: property),
+        filterConnections:
+            buildFilterConnections(loadProperty: (_) => property),
       );
       final state = await _addNetworker(server);
       await server.init();

@@ -77,12 +77,10 @@ final class _LinkedEvent<T extends WorldEvent?>
 }
 
 final class ServerPing {
-  final Uri address;
   final HttpRequest request;
   GameProperty response;
 
   ServerPing({
-    required this.address,
     required this.request,
     required this.response,
   });
