@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/material.dart'
@@ -174,6 +175,7 @@ abstract class HandItem<T> extends PositionComponent
   }
 
   HandItemDragCursorHitbox? _cursorHitbox;
+  SpriteComponent? _dragSprite;
   Vector2 _last = Vector2.zero();
   @override
   void onDragUpdate(DragUpdateEvent event) {
@@ -184,7 +186,17 @@ abstract class HandItem<T> extends PositionComponent
     }
     if (_label.parent != null) _label.removeFromParent();
     priority = priorityDragging;
-    _sprite.position += event.localDelta;
+    final effectController = EffectController(duration: 0.5);
+    final sprite = _dragSprite ??= SpriteComponent(
+      sprite: _sprite.sprite,
+      size: _sprite.size,
+      anchor: Anchor.center,
+    )
+      ..add(ScaleEffect.by(
+          Vector2.all(game.settingsCubit.state.zoom), effectController))
+      ..add(ColorEffect(bloc.state.colorScheme.primary, effectController));
+    add(sprite);
+    sprite.position = event.localEndPosition;
     _last = event.canvasEndPosition;
     _cursorHitbox?.position =
         game.camera.globalToLocal(event.canvasEndPosition);
@@ -193,6 +205,8 @@ abstract class HandItem<T> extends PositionComponent
   @override
   void onDragEnd(DragEndEvent event) {
     super.onDragEnd(event);
+    _dragSprite?.removeFromParent();
+    _dragSprite = null;
     if (isMouseOrLongPressing ?? true) {
       final zone = game
           .componentsAtPoint(_last)
