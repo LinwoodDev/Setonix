@@ -138,7 +138,7 @@ final class QuokkaServer extends Bloc<PlayableWorldEvent, WorldState> {
   void _onClientEvent(NetworkerPacket<WorldEvent?> packet) async {
     final data = packet.data;
     final process = processClientEvent(
-      data,
+      data is UserJoined ? null : data,
       packet.channel,
       state,
       assetManager: assetManager,
@@ -168,13 +168,14 @@ final class QuokkaServer extends Bloc<PlayableWorldEvent, WorldState> {
   void _onJoin((Channel, ConnectionInfo) event) {
     final (user, info) = event;
     log('${info.address} ($user) joined the game', level: LogLevel.info);
-    _onClientEvent(NetworkerPacket(null, event.$1));
+    _onClientEvent(NetworkerPacket(
+        UserJoined(channel: event.$1, info: event.$2), event.$1));
   }
 
   void _onLeave((Channel, ConnectionInfo) event) {
     final (user, info) = event;
     log('${info.address} ($user) left the game', level: LogLevel.info);
-    eventSystem.runLeaveCallback(event.$1, event.$2);
+    eventSystem.runLeaveCallback(this, event.$1, event.$2);
   }
 
   Future<void> save({bool force = false}) async {

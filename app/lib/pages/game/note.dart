@@ -52,6 +52,7 @@ class _GameNoteDialogState extends State<GameNoteDialog> {
       title: widget.note == null
           ? TextFormField(
               controller: _nameController,
+              autofocus: true,
               style: Theme.of(context).textTheme.headlineSmall,
               decoration: InputDecoration(
                 hintText: AppLocalizations.of(context).name,
@@ -108,6 +109,7 @@ class _GameNoteDialogState extends State<GameNoteDialog> {
           ? TextFormField(
               minLines: _expanded ? 15 : 6,
               maxLines: 50,
+              autofocus: widget.note != null,
               controller: _contentController,
               decoration: InputDecoration(
                 hintText: AppLocalizations.of(context).content,

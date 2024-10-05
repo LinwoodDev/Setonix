@@ -1,9 +1,12 @@
 import 'dart:io';
 
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:networker/networker.dart';
 import 'package:quokka_api/quokka_api.dart';
 
 import '../server.dart';
+
+part 'model.mapper.dart';
 
 mixin ServerReference {
   QuokkaServer get server;
@@ -29,7 +32,7 @@ base class Event<T> with ServerReference {
   Event(this.server, this.serverEvent, this.target, this.clientEvent,
       this.source);
 
-  Event<C> castEvent<C extends WorldEvent?>() {
+  Event<C> castEvent<C extends WorldEvent>() {
     return _LinkedEvent<C>(this);
   }
 
@@ -38,6 +41,7 @@ base class Event<T> with ServerReference {
   }
 }
 
+// Allows casting an event to another
 final class _LinkedEvent<T extends WorldEvent?>
     with ServerReference
     implements Event<T> {
@@ -64,7 +68,7 @@ final class _LinkedEvent<T extends WorldEvent?>
   void cancel() => parent.cancel();
 
   @override
-  Event<C> castEvent<C extends WorldEvent?>() => parent.castEvent();
+  Event<C> castEvent<C extends WorldEvent>() => parent.castEvent();
 
   @override
   T get clientEvent => parent.clientEvent as T;
@@ -86,12 +90,23 @@ final class ServerPing {
   });
 }
 
-final class UserLeaveCallback {
+final class UserLeaveCallback with ServerReference {
+  @override
+  final QuokkaServer server;
   final Channel channel;
   final ConnectionInfo info;
 
   UserLeaveCallback({
+    required this.server,
     required this.channel,
     required this.info,
   });
+}
+
+@MappableClass()
+final class UserJoined extends LocalWorldEvent with UserJoinedMappable {
+  final Channel channel;
+  final ConnectionInfo info;
+
+  UserJoined({required this.channel, required this.info});
 }

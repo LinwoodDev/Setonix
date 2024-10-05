@@ -11,7 +11,7 @@ final class EventSystem {
   final StreamController<UserLeaveCallback> _leaveController =
       StreamController.broadcast(sync: true);
 
-  Stream<Event<T>> on<T extends WorldEvent?>() {
+  Stream<Event<T>> on<T extends WorldEvent>() {
     if (T == dynamic) {
       return _controller.stream as Stream<Event<T>>;
     }
@@ -33,8 +33,10 @@ final class EventSystem {
     return ping.response;
   }
 
-  void runLeaveCallback(Channel channel, ConnectionInfo info) {
-    final callback = UserLeaveCallback(channel: channel, info: info);
+  void runLeaveCallback(
+      QuokkaServer server, Channel channel, ConnectionInfo info) {
+    final callback =
+        UserLeaveCallback(server: server, channel: channel, info: info);
     _leaveController.add(callback);
   }
 

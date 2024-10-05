@@ -56,7 +56,7 @@ Future<void> onLoad(QuokkaServer server) async {
             .action(GameDialogButton("TestButton")),
       ));
     })
-    ..on<Null>().listen((e) {
+    ..on<UserJoined>().listen((e) {
       print("play joined");
     })
     ..on<DialogCloseRequest>().listen((e) {
