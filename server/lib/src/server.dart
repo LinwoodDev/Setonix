@@ -174,6 +174,7 @@ final class QuokkaServer extends Bloc<PlayableWorldEvent, WorldState> {
   void _onLeave((Channel, ConnectionInfo) event) {
     final (user, info) = event;
     log('${info.address} ($user) left the game', level: LogLevel.info);
+    eventSystem.runLeaveCallback(event.$1, event.$2);
   }
 
   Future<void> save({bool force = false}) async {

@@ -85,3 +85,13 @@ final class ServerPing {
     required this.response,
   });
 }
+
+final class UserLeaveCallback {
+  final Channel channel;
+  final ConnectionInfo info;
+
+  UserLeaveCallback({
+    required this.channel,
+    required this.info,
+  });
+}
