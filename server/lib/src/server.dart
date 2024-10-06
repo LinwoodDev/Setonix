@@ -49,21 +49,26 @@ final class QuokkaServer extends Bloc<PlayableWorldEvent, WorldState> {
       emit(newState);
       return save();
     }, transformer: sequential());
-    on<ResetWorld>((event, emit) {
+    on<ResetWorld>((event, emit) async {
       final data = QuokkaData.empty().setInfo(GameInfo(
         packs: assetManager.packs.map((e) => e.key).toList(),
       ));
+      final table = data.getTableOrDefault();
+      final metadata = data.getMetadataOrDefault();
+      final info = data.getInfoOrDefault();
       emit(WorldState(
         data: data,
-        table: data.getTableOrDefault(),
-        metadata: data.getMetadataOrDefault(),
-        info: data.getInfoOrDefault(),
+        table: table,
+        metadata: metadata,
+        info: info,
       ));
-      sendEvent(WorldInitialized(
-        table: data.getTableOrDefault(),
-        info: data.getInfoOrDefault(),
-        packsSignature: assetManager.createSignature(),
-      ));
+      _pipe?.sendMessage(
+        WorldInitialized(
+          table: data.getTableOrDefault(),
+          info: data.getInfoOrDefault(),
+          packsSignature: assetManager.createSignature(),
+        ),
+      );
     });
   }
 
@@ -238,7 +243,8 @@ final class QuokkaServer extends Bloc<PlayableWorldEvent, WorldState> {
     return true;
   }
 
-  void resetWorld() {
+  Future<void> resetWorld() async {
     add(ResetWorld());
+    await stream.first;
   }
 }
