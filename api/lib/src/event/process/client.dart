@@ -61,6 +61,15 @@ bool isValidClientEvent(
               1),
       TeamRemoved() => state.info.teams.containsKey(event.team),
       PacksChangeRequest() => channel == kAuthorityChannel,
+      BoardMoveRequest() => event.from != event.to &&
+          event.index.inRange(
+              0,
+              state
+                      .getTableOrDefault(event.table)
+                      .getCell(event.from)
+                      .tiles
+                      .length -
+                  1),
       _ => true,
     };
 

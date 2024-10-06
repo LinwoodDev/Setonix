@@ -12,8 +12,9 @@ Put the following in your `pubspec.yaml`:
 dependencies:
   quokka_server:
     git:
-      url: git://github.com/QuokkaGame/quokka_server.git
+      url: git://github.com/LinwoodDev/Quokka.git
       ref: <last commit or tag>
+      path: server
 ```
 
 And then you can use the server in your code:

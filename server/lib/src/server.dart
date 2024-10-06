@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
+import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
@@ -97,14 +98,28 @@ final class QuokkaServer extends Bloc<PlayableWorldEvent, WorldState> {
     log("Starting server on port $port", level: LogLevel.info);
     log('Verbose logging activated', level: LogLevel.verbose);
     this.autosave = autosave;
+    SecurityContext? securityContext;
+    try {
+      final privateKey = await File('certs/server.key').readAsBytes();
+      final certificate = await File('certs/server.crt').readAsBytes();
+      securityContext = SecurityContext()
+        ..usePrivateKeyBytes(privateKey)
+        ..useCertificateChainBytes(certificate);
+      log('Certificates found, using secure connection', level: LogLevel.info);
+    } on PathNotFoundException catch (_) {
+      log('No certificates found, using insecure connection',
+          level: LogLevel.warning);
+    }
     final server =
         _server = NetworkerSocketServer(InternetAddress.anyIPv4, port,
+            securityContext: securityContext,
             filterConnections: buildFilterConnections(
                 loadProperty: (request) => eventSystem.runPing(
                     request,
                     GameProperty.defaultProperty.copyWith(
                       description: description,
                     ))));
+
     final transformer = _pipe = NetworkerPipeTransformer<String, WorldEvent>(
         WorldEventMapper.fromJson, (e) => e.toJson());
     transformer.read.listen(_onClientEvent);
@@ -137,12 +152,17 @@ final class QuokkaServer extends Bloc<PlayableWorldEvent, WorldState> {
 
   void _onClientEvent(NetworkerPacket<WorldEvent?> packet) async {
     final data = packet.data;
-    final process = processClientEvent(
-      data is UserJoined ? null : data,
-      packet.channel,
-      state,
-      assetManager: assetManager,
-    );
+    (ServerWorldEvent, Channel)? process;
+    try {
+      process = processClientEvent(
+        data is UserJoined ? null : data,
+        packet.channel,
+        state,
+        assetManager: assetManager,
+      );
+    } catch (e) {
+      log('Error processing event: $e', level: LogLevel.error);
+    }
     if (process == null) return;
     final event = Event(this, process.$1, process.$2, data, packet.channel);
     eventSystem.fire(event);

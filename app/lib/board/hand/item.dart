@@ -194,7 +194,8 @@ abstract class HandItem<T> extends PositionComponent
     )
       ..add(ScaleEffect.by(
           Vector2.all(game.settingsCubit.state.zoom), effectController))
-      ..add(ColorEffect(bloc.state.colorScheme.primary, effectController));
+      ..add(ColorEffect(bloc.state.colorScheme.primary, effectController,
+          opacityTo: 0.5));
     add(sprite);
     sprite.position = event.localEndPosition;
     _last = event.canvasEndPosition;
