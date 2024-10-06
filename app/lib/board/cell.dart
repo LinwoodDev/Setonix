@@ -308,7 +308,7 @@ class GameCell extends PositionComponent
                     label: AppLocalizations.of(context).remove,
                     onPressed: () {
                       bloc.process(
-                          CellItemsCleared(toGlobalDefinition(bloc.state)));
+                          ObjectsRemoved(toGlobalDefinition(bloc.state)));
                       onClose();
                     },
                   ),

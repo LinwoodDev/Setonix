@@ -86,7 +86,7 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
           ContextMenuButtonItem(
             label: AppLocalizations.of(context).remove,
             onPressed: () {
-              bloc.process(CellItemsCleared(global, object: item.$2));
+              bloc.process(ObjectsRemoved.single(global, object: item.$2));
               onClose();
             },
           ),

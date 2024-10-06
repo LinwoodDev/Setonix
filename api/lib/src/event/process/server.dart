@@ -193,13 +193,18 @@ WorldState? processServerEvent(
                       .map((e) => e.copyWith(hidden: hidden))
                       .toList()));
       });
-    case CellItemsCleared():
+    case ObjectsRemoved():
       return state.mapTableOrDefault(event.cell.table, (table) {
         final cell = table.cells[event.cell.position] ?? TableCell();
-        final objectIndex = event.object;
+        final objectIndex = event.objects;
         var newCell = cell;
         if (objectIndex != null) {
-          newCell = cell.copyWith.objects.removeAt(objectIndex);
+          final objects = List<GameObject>.from(cell.objects);
+          final indexes = objectIndex.toList()..sort((a, b) => b.compareTo(a));
+          for (final index in indexes) {
+            objects.removeAt(index);
+          }
+          newCell = cell.copyWith();
         } else {
           newCell = cell.copyWith(objects: []);
         }

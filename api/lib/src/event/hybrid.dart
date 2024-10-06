@@ -80,12 +80,14 @@ final class MetadataChanged extends HybridWorldEvent
 }
 
 @MappableClass()
-final class CellItemsCleared extends HybridWorldEvent
-    with CellItemsClearedMappable {
+final class ObjectsRemoved extends HybridWorldEvent
+    with ObjectsRemovedMappable {
   final GlobalVectorDefinition cell;
-  final int? object;
+  final List<int>? objects;
 
-  CellItemsCleared(this.cell, {this.object});
+  ObjectsRemoved(this.cell, {this.objects});
+  ObjectsRemoved.single(this.cell, {int? object})
+      : objects = object == null ? null : [object];
 }
 
 @MappableClass()

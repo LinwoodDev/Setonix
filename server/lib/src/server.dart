@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
-import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
@@ -50,6 +49,22 @@ final class QuokkaServer extends Bloc<PlayableWorldEvent, WorldState> {
       emit(newState);
       return save();
     }, transformer: sequential());
+    on<ResetWorld>((event, emit) {
+      final data = QuokkaData.empty().setInfo(GameInfo(
+        packs: assetManager.packs.map((e) => e.key).toList(),
+      ));
+      emit(WorldState(
+        data: data,
+        table: data.getTableOrDefault(),
+        metadata: data.getMetadataOrDefault(),
+        info: data.getInfoOrDefault(),
+      ));
+      sendEvent(WorldInitialized(
+        table: data.getTableOrDefault(),
+        info: data.getInfoOrDefault(),
+        packsSignature: assetManager.createSignature(),
+      ));
+    });
   }
 
   static Future<QuokkaServer> load({
@@ -221,5 +236,9 @@ final class QuokkaServer extends Bloc<PlayableWorldEvent, WorldState> {
     if (info == null) return false;
     info.close();
     return true;
+  }
+
+  void resetWorld() {
+    add(ResetWorld());
   }
 }

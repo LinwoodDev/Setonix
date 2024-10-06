@@ -110,3 +110,8 @@ final class UserJoined extends LocalWorldEvent with UserJoinedMappable {
 
   UserJoined({required this.channel, required this.info});
 }
+
+@MappableClass()
+final class ResetWorld extends LocalWorldEvent with ResetWorldMappable {
+  ResetWorld();
+}

@@ -2875,7 +2875,7 @@ class HybridWorldEventMapper extends SubClassMapperBase<HybridWorldEvent> {
       TeamChangedMapper.ensureInitialized();
       TeamRemovedMapper.ensureInitialized();
       MetadataChangedMapper.ensureInitialized();
-      CellItemsClearedMapper.ensureInitialized();
+      ObjectsRemovedMapper.ensureInitialized();
       TableRenamedMapper.ensureInitialized();
       TableRemovedMapper.ensureInitialized();
       NoteChangedMapper.ensureInitialized();
@@ -3977,13 +3977,13 @@ class _MetadataChangedCopyWithImpl<$R, $Out>
       _MetadataChangedCopyWithImpl($value, $cast, t);
 }
 
-class CellItemsClearedMapper extends SubClassMapperBase<CellItemsCleared> {
-  CellItemsClearedMapper._();
+class ObjectsRemovedMapper extends SubClassMapperBase<ObjectsRemoved> {
+  ObjectsRemovedMapper._();
 
-  static CellItemsClearedMapper? _instance;
-  static CellItemsClearedMapper ensureInitialized() {
+  static ObjectsRemovedMapper? _instance;
+  static ObjectsRemovedMapper ensureInitialized() {
     if (_instance == null) {
-      MapperContainer.globals.use(_instance = CellItemsClearedMapper._());
+      MapperContainer.globals.use(_instance = ObjectsRemovedMapper._());
       HybridWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
       GlobalVectorDefinitionMapper.ensureInitialized();
     }
@@ -3991,122 +3991,130 @@ class CellItemsClearedMapper extends SubClassMapperBase<CellItemsCleared> {
   }
 
   @override
-  final String id = 'CellItemsCleared';
+  final String id = 'ObjectsRemoved';
 
-  static GlobalVectorDefinition _$cell(CellItemsCleared v) => v.cell;
-  static const Field<CellItemsCleared, GlobalVectorDefinition> _f$cell =
+  static GlobalVectorDefinition _$cell(ObjectsRemoved v) => v.cell;
+  static const Field<ObjectsRemoved, GlobalVectorDefinition> _f$cell =
       Field('cell', _$cell);
-  static int? _$object(CellItemsCleared v) => v.object;
-  static const Field<CellItemsCleared, int> _f$object =
-      Field('object', _$object, opt: true);
+  static List<int>? _$objects(ObjectsRemoved v) => v.objects;
+  static const Field<ObjectsRemoved, List<int>> _f$objects =
+      Field('objects', _$objects, opt: true);
 
   @override
-  final MappableFields<CellItemsCleared> fields = const {
+  final MappableFields<ObjectsRemoved> fields = const {
     #cell: _f$cell,
-    #object: _f$object,
+    #objects: _f$objects,
   };
 
   @override
   final String discriminatorKey = 'type';
   @override
-  final dynamic discriminatorValue = 'CellItemsCleared';
+  final dynamic discriminatorValue = 'ObjectsRemoved';
   @override
   late final ClassMapperBase superMapper =
       HybridWorldEventMapper.ensureInitialized();
 
-  static CellItemsCleared _instantiate(DecodingData data) {
-    return CellItemsCleared(data.dec(_f$cell), object: data.dec(_f$object));
+  static ObjectsRemoved _instantiate(DecodingData data) {
+    return ObjectsRemoved(data.dec(_f$cell), objects: data.dec(_f$objects));
   }
 
   @override
   final Function instantiate = _instantiate;
 
-  static CellItemsCleared fromMap(Map<String, dynamic> map) {
-    return ensureInitialized().decodeMap<CellItemsCleared>(map);
+  static ObjectsRemoved fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<ObjectsRemoved>(map);
   }
 
-  static CellItemsCleared fromJson(String json) {
-    return ensureInitialized().decodeJson<CellItemsCleared>(json);
+  static ObjectsRemoved fromJson(String json) {
+    return ensureInitialized().decodeJson<ObjectsRemoved>(json);
   }
 }
 
-mixin CellItemsClearedMappable {
+mixin ObjectsRemovedMappable {
   String toJson() {
-    return CellItemsClearedMapper.ensureInitialized()
-        .encodeJson<CellItemsCleared>(this as CellItemsCleared);
+    return ObjectsRemovedMapper.ensureInitialized()
+        .encodeJson<ObjectsRemoved>(this as ObjectsRemoved);
   }
 
   Map<String, dynamic> toMap() {
-    return CellItemsClearedMapper.ensureInitialized()
-        .encodeMap<CellItemsCleared>(this as CellItemsCleared);
+    return ObjectsRemovedMapper.ensureInitialized()
+        .encodeMap<ObjectsRemoved>(this as ObjectsRemoved);
   }
 
-  CellItemsClearedCopyWith<CellItemsCleared, CellItemsCleared, CellItemsCleared>
-      get copyWith => _CellItemsClearedCopyWithImpl(
-          this as CellItemsCleared, $identity, $identity);
+  ObjectsRemovedCopyWith<ObjectsRemoved, ObjectsRemoved, ObjectsRemoved>
+      get copyWith => _ObjectsRemovedCopyWithImpl(
+          this as ObjectsRemoved, $identity, $identity);
   @override
   String toString() {
-    return CellItemsClearedMapper.ensureInitialized()
-        .stringifyValue(this as CellItemsCleared);
+    return ObjectsRemovedMapper.ensureInitialized()
+        .stringifyValue(this as ObjectsRemoved);
   }
 
   @override
   bool operator ==(Object other) {
-    return CellItemsClearedMapper.ensureInitialized()
-        .equalsValue(this as CellItemsCleared, other);
+    return ObjectsRemovedMapper.ensureInitialized()
+        .equalsValue(this as ObjectsRemoved, other);
   }
 
   @override
   int get hashCode {
-    return CellItemsClearedMapper.ensureInitialized()
-        .hashValue(this as CellItemsCleared);
+    return ObjectsRemovedMapper.ensureInitialized()
+        .hashValue(this as ObjectsRemoved);
   }
 }
 
-extension CellItemsClearedValueCopy<$R, $Out>
-    on ObjectCopyWith<$R, CellItemsCleared, $Out> {
-  CellItemsClearedCopyWith<$R, CellItemsCleared, $Out>
-      get $asCellItemsCleared =>
-          $base.as((v, t, t2) => _CellItemsClearedCopyWithImpl(v, t, t2));
+extension ObjectsRemovedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, ObjectsRemoved, $Out> {
+  ObjectsRemovedCopyWith<$R, ObjectsRemoved, $Out> get $asObjectsRemoved =>
+      $base.as((v, t, t2) => _ObjectsRemovedCopyWithImpl(v, t, t2));
 }
 
-abstract class CellItemsClearedCopyWith<$R, $In extends CellItemsCleared, $Out>
+abstract class ObjectsRemovedCopyWith<$R, $In extends ObjectsRemoved, $Out>
     implements HybridWorldEventCopyWith<$R, $In, $Out> {
   GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
       GlobalVectorDefinition> get cell;
+  ListCopyWith<$R, int, ObjectCopyWith<$R, int, int>>? get objects;
   @override
-  $R call({GlobalVectorDefinition? cell, int? object});
-  CellItemsClearedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+  $R call({GlobalVectorDefinition? cell, List<int>? objects});
+  ObjectsRemovedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
 
-class _CellItemsClearedCopyWithImpl<$R, $Out>
-    extends ClassCopyWithBase<$R, CellItemsCleared, $Out>
-    implements CellItemsClearedCopyWith<$R, CellItemsCleared, $Out> {
-  _CellItemsClearedCopyWithImpl(super.value, super.then, super.then2);
+class _ObjectsRemovedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, ObjectsRemoved, $Out>
+    implements ObjectsRemovedCopyWith<$R, ObjectsRemoved, $Out> {
+  _ObjectsRemovedCopyWithImpl(super.value, super.then, super.then2);
 
   @override
-  late final ClassMapperBase<CellItemsCleared> $mapper =
-      CellItemsClearedMapper.ensureInitialized();
+  late final ClassMapperBase<ObjectsRemoved> $mapper =
+      ObjectsRemovedMapper.ensureInitialized();
   @override
   GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
           GlobalVectorDefinition>
       get cell => $value.cell.copyWith.$chain((v) => call(cell: v));
   @override
-  $R call({GlobalVectorDefinition? cell, Object? object = $none}) =>
+  ListCopyWith<$R, int, ObjectCopyWith<$R, int, int>>? get objects =>
+      $value.objects != null
+          ? ListCopyWith(
+              $value.objects!,
+              (v, t) => ObjectCopyWith(v, $identity, t),
+              (v) => call(objects: v))
+          : null;
+  @override
+  $R call({GlobalVectorDefinition? cell, Object? objects = $none}) =>
       $apply(FieldCopyWithData({
         if (cell != null) #cell: cell,
-        if (object != $none) #object: object
+        if (objects != $none) #objects: objects
       }));
   @override
-  CellItemsCleared $make(CopyWithData data) =>
-      CellItemsCleared(data.get(#cell, or: $value.cell),
-          object: data.get(#object, or: $value.object));
+  ObjectsRemoved $make(CopyWithData data) =>
+      ObjectsRemoved(data.get(#cell, or: $value.cell),
+          objects: data.get(#objects, or: $value.objects));
 
   @override
-  CellItemsClearedCopyWith<$R2, CellItemsCleared, $Out2> $chain<$R2, $Out2>(
+  ObjectsRemovedCopyWith<$R2, ObjectsRemoved, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _CellItemsClearedCopyWithImpl($value, $cast, t);
+      _ObjectsRemovedCopyWithImpl($value, $cast, t);
 }
 
 class TableRenamedMapper extends SubClassMapperBase<TableRenamed> {
