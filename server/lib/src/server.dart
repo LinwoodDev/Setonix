@@ -170,7 +170,8 @@ final class QuokkaServer extends Bloc<PlayableWorldEvent, WorldState> {
     await _server?.onClosed.first;
   }
 
-  void _onClientEvent(NetworkerPacket<WorldEvent?> packet) async {
+  void _onClientEvent(NetworkerPacket<WorldEvent?> packet,
+      [bool force = false]) async {
     final data = packet.data;
     (ServerWorldEvent, Channel)? process;
     try {
@@ -232,8 +233,8 @@ final class QuokkaServer extends Bloc<PlayableWorldEvent, WorldState> {
     consoler.dispose();
   }
 
-  void process(WorldEvent event) {
-    _onClientEvent(NetworkerPacket(event, kAuthorityChannel));
+  void process(WorldEvent event, [bool force = false]) {
+    _onClientEvent(NetworkerPacket(event, kAuthorityChannel), force);
   }
 
   bool kick(int id) {

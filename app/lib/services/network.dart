@@ -12,7 +12,7 @@ const kBroadcastDelay = Duration(seconds: 1);
 
 class NetworkService {
   final SettingsCubit settingsCubit;
-  late final RawDatagramSocket _server;
+  RawDatagramSocket? _server;
 
   final BehaviorSubject<List<(GameServer, LanProperty?)>> _servers =
       BehaviorSubject.seeded([]);
@@ -20,10 +20,11 @@ class NetworkService {
   NetworkService(this.settingsCubit);
 
   Future<void> init() async {
-    if (kIsWeb) return;
-    _server =
-        await RawDatagramSocket.bind(InternetAddress.anyIPv4, kBroadcastPort);
-    _server.broadcastEnabled = true;
+    if (!kIsWeb) {
+      _server = (await RawDatagramSocket.bind(
+          InternetAddress.anyIPv4, kBroadcastPort))
+        ..broadcastEnabled = true;
+    }
     _fetchServers().listen((event) {
       _servers.add(event);
     });
@@ -31,7 +32,7 @@ class NetworkService {
 
   void dispose() {
     if (kIsWeb) return;
-    _server.close();
+    _server?.close();
   }
 
   Stream<List<(GameServer, LanProperty?)>> _fetchServers({
@@ -56,12 +57,17 @@ class NetworkService {
       });
     }
 
-    if (kIsWeb) return;
+    final settingsStream = settingsCubit.stream.map((event) => buildServers());
+
+    if (kIsWeb) {
+      yield* settingsStream;
+      return;
+    }
     final serverStream = _server
-        .where((event) => event == RawSocketEvent.read)
+        ?.where((event) => event == RawSocketEvent.read)
         .map((RawSocketEvent event) {
       removeOld();
-      final datagram = _server.receive();
+      final datagram = _server?.receive();
       if (datagram != null) {
         final message = String.fromCharCodes(datagram.data);
         final property = LanPropertyMapper.fromJson(message);
@@ -79,8 +85,7 @@ class NetworkService {
             .toList(),
       );
     });
-    final settingsStream = settingsCubit.stream.map((event) => buildServers());
-    yield* Rx.merge([serverStream, settingsStream]);
+    yield* Rx.merge([if (serverStream != null) serverStream, settingsStream]);
   }
 
   (Timer, RawDatagramSocket)? _broadcast;
@@ -109,12 +114,17 @@ class NetworkService {
   }
 
   Future<GameProperty?> fetchInfo(Uri address) async {
-    final response = await http.get(address, headers: {
-      HttpHeaders.contentTypeHeader: 'application/json',
-      'X-Quokka-Method': 'info',
-    });
+    try {
+      final response = await http.get(address, headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        'X-Quokka-Method': 'info',
+      });
+      if (response.statusCode != HttpStatus.ok) return null;
 
-    return GamePropertyMapper.fromJson(response.body);
+      return GamePropertyMapper.fromJson(response.body);
+    } catch (_) {
+      return null;
+    }
   }
 
   Stream<Map<GameServer, GameProperty?>> fetchServersWithProperties({
@@ -135,26 +145,27 @@ class NetworkService {
     }
 
     final returned = <GameServer, GameProperty?>{};
+    yield returned;
 
     await for (final event in _servers) {
       returned.removeWhere((key, value) => !event.any((e) => e.$1 == key));
       for (final (server, _) in event) {
         returned[server] = const GameProperty();
       }
+      yield returned;
 
       if (event.isEmpty) {
-        yield returned;
         continue;
       }
 
-      yield* Stream.fromFutures(event.map((e) async {
+      for (final e in event) {
         try {
           returned[e.$1] = await fetch(e.$1, e.$2);
         } catch (_) {
           returned[e.$1] = null;
         }
-        return returned;
-      }));
+        yield returned;
+      }
     }
   }
 }
