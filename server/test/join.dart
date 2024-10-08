@@ -7,7 +7,7 @@ Future<void> main(List<String> arguments) {
 Future<void> onLoad(QuokkaServer server) async {
   print("on load was called");
   server.eventSystem
-    ..on<UserJoined>().listen((e) {
+    ..on<UserJoined>((e) {
       e.sendEvent(DialogOpened(GameDialog(
         id: "joinDialog",
         title: "Please login",
@@ -21,7 +21,7 @@ Future<void> onLoad(QuokkaServer server) async {
           .action(GameDialogButton("Login", id: "login"))
           .action(GameDialogButton("Register", id: "register"))));
     })
-    ..on<DialogCloseRequest>().listen((e) {
+    ..on<DialogCloseRequest>((e) {
       final event = e.clientEvent;
       if (event.id == "joinDialog") {
         if (event.value?.buttonPressed == "login") {
@@ -31,7 +31,7 @@ Future<void> onLoad(QuokkaServer server) async {
         }
       }
     })
-    ..on<MessageRequest>().listen((e) {
+    ..on<MessageRequest>((e) {
       final event = e.clientEvent;
       if (event.message == "apple") {
         e.cancel();

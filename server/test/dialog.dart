@@ -41,7 +41,7 @@ In conclusion, programming has become an indispensable skill in the modern world
 Future<void> onLoad(QuokkaServer server) async {
   print("on load was called");
   server.eventSystem
-    ..on<ObjectsMoved>().listen((e) {
+    ..on<ObjectsMoved>((e) {
       print("Listener was called, opening dialog");
       e.sendEvent(DialogOpened(
         GameDialog(id: "testDialog", title: "TestDialog")
@@ -56,10 +56,10 @@ Future<void> onLoad(QuokkaServer server) async {
             .action(GameDialogButton("TestButton")),
       ));
     })
-    ..on<UserJoined>().listen((e) {
+    ..on<UserJoined>((e) {
       print("play joined");
     })
-    ..on<DialogCloseRequest>().listen((e) {
+    ..on<DialogCloseRequest>((e) {
       final value = e.clientEvent.value;
       print("Dialog ${e.clientEvent.id} closed, got ${e.clientEvent.value}");
       if (value != null) {

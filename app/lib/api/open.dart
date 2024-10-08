@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:file_selector/file_selector.dart' as fs;
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:quokka/main.dart';
 import 'package:quokka_api/quokka_api.dart';
 import 'package:quokka/services/file_system.dart';
@@ -65,6 +66,18 @@ Future<void> importFileData(
         FileType.template =>
           AppLocalizations.of(context).importTemplateDescription,
       }),
+      actions: [
+        TextButton.icon(
+          onPressed: () => Navigator.of(context).pop(false),
+          label: Text(AppLocalizations.of(context).cancel),
+          icon: Icon(PhosphorIconsLight.prohibit),
+        ),
+        ElevatedButton.icon(
+          onPressed: () => Navigator.of(context).pop(true),
+          label: Text(AppLocalizations.of(context).import),
+          icon: Icon(PhosphorIconsLight.boxArrowDown),
+        ),
+      ],
     ),
   );
   if (!(result ?? false)) return;

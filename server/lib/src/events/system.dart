@@ -11,7 +11,7 @@ final class EventSystem {
   final StreamController<UserLeaveCallback> _leaveController =
       StreamController.broadcast(sync: true);
 
-  Stream<Event<T>> on<T extends WorldEvent>() {
+  Stream<Event<T>> event<T extends WorldEvent>() {
     if (T == dynamic) {
       return _controller.stream as Stream<Event<T>>;
     }
@@ -19,6 +19,9 @@ final class EventSystem {
         .where((event) => event.clientEvent is T)
         .map((event) => event.castEvent<T>());
   }
+
+  void on<T extends WorldEvent>(void Function(Event<T>) callback) =>
+      event<T>().listen(callback);
 
   Stream<ServerPing> get ping => _pingController.stream;
   Stream<UserLeaveCallback> get leave => _leaveController.stream;

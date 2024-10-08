@@ -9,7 +9,7 @@ Future<void> onLoad(QuokkaServer server) async {
   // Add your custom code here
   bool toggleCancel = false;
   // Put the event you want to listen to in the brackets
-  server.eventSystem.on<ObjectsMoved>().listen((e) {
+  server.eventSystem.on<ObjectsMoved>((e) {
     print("Listener was called, cancel: $toggleCancel");
     // Cancel the event every second time and duplicate the objects instead
     if (toggleCancel) {
