@@ -430,10 +430,8 @@ class GameObjectMapper extends ClassMapperBase<GameObject> {
   };
 
   static GameObject _instantiate(DecodingData data) {
-    return GameObject(
-        asset: data.dec(_f$asset),
-        variation: data.dec(_f$variation),
-        hidden: data.dec(_f$hidden));
+    return GameObject(data.dec(_f$asset),
+        variation: data.dec(_f$variation), hidden: data.dec(_f$hidden));
   }
 
   @override
@@ -511,10 +509,10 @@ class _GameObjectCopyWithImpl<$R, $Out>
         if (hidden != null) #hidden: hidden
       }));
   @override
-  GameObject $make(CopyWithData data) => GameObject(
-      asset: data.get(#asset, or: $value.asset),
-      variation: data.get(#variation, or: $value.variation),
-      hidden: data.get(#hidden, or: $value.hidden));
+  GameObject $make(CopyWithData data) =>
+      GameObject(data.get(#asset, or: $value.asset),
+          variation: data.get(#variation, or: $value.variation),
+          hidden: data.get(#hidden, or: $value.hidden));
 
   @override
   GameObjectCopyWith<$R2, GameObject, $Out2> $chain<$R2, $Out2>(
@@ -659,7 +657,7 @@ class BoardTileMapper extends ClassMapperBase<BoardTile> {
   };
 
   static BoardTile _instantiate(DecodingData data) {
-    return BoardTile(asset: data.dec(_f$asset), tile: data.dec(_f$tile));
+    return BoardTile(data.dec(_f$asset), data.dec(_f$tile));
   }
 
   @override
@@ -738,8 +736,7 @@ class _BoardTileCopyWithImpl<$R, $Out>
           {if (asset != null) #asset: asset, if (tile != null) #tile: tile}));
   @override
   BoardTile $make(CopyWithData data) => BoardTile(
-      asset: data.get(#asset, or: $value.asset),
-      tile: data.get(#tile, or: $value.tile));
+      data.get(#asset, or: $value.asset), data.get(#tile, or: $value.tile));
 
   @override
   BoardTileCopyWith<$R2, BoardTile, $Out2> $chain<$R2, $Out2>(

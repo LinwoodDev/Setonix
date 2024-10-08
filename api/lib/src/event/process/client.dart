@@ -156,10 +156,7 @@ bool isValidClientEvent(
           for (var y = 0; y < size.y; y++) {
             final tile = VectorDefinition(x, y);
             final position = cell + tile;
-            tiles.putIfAbsent(position, () => []).add(BoardTile(
-                  asset: asset,
-                  tile: tile,
-                ));
+            tiles.putIfAbsent(position, () => []).add(BoardTile(asset, tile));
           }
         }
       }
@@ -214,10 +211,7 @@ bool isValidClientEvent(
             newTiles
                 .putIfAbsent(toPosition,
                     () => List<BoardTile>.from(table.getCell(toPosition).tiles))
-                .add(BoardTile(
-                  asset: currentObject.asset,
-                  tile: VectorDefinition(x, y),
-                ));
+                .add(BoardTile(currentObject.asset, VectorDefinition(x, y)));
           }
         }
       }

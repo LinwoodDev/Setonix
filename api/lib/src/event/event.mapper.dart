@@ -1009,7 +1009,7 @@ class BoardTilesSpawnedMapper extends SubClassMapperBase<BoardTilesSpawned> {
   static Map<VectorDefinition, List<BoardTile>> _$tiles(BoardTilesSpawned v) =>
       v.tiles;
   static const Field<BoardTilesSpawned, Map<VectorDefinition, List<BoardTile>>>
-      _f$tiles = Field('tiles', _$tiles);
+      _f$tiles = Field('tiles', _$tiles, opt: true, def: const {});
 
   @override
   final MappableFields<BoardTilesSpawned> fields = const {
@@ -1144,7 +1144,7 @@ class BoardTilesChangedMapper extends SubClassMapperBase<BoardTilesChanged> {
   static Map<VectorDefinition, List<BoardTile>> _$tiles(BoardTilesChanged v) =>
       v.tiles;
   static const Field<BoardTilesChanged, Map<VectorDefinition, List<BoardTile>>>
-      _f$tiles = Field('tiles', _$tiles);
+      _f$tiles = Field('tiles', _$tiles, opt: true, def: const {});
 
   @override
   final MappableFields<BoardTilesChanged> fields = const {
@@ -3077,7 +3077,7 @@ class ObjectsSpawnedMapper extends SubClassMapperBase<ObjectsSpawned> {
   static Map<VectorDefinition, List<GameObject>> _$objects(ObjectsSpawned v) =>
       v.objects;
   static const Field<ObjectsSpawned, Map<VectorDefinition, List<GameObject>>>
-      _f$objects = Field('objects', _$objects);
+      _f$objects = Field('objects', _$objects, opt: true, def: const {});
 
   @override
   final MappableFields<ObjectsSpawned> fields = const {
@@ -3204,11 +3204,11 @@ class ObjectsMovedMapper extends SubClassMapperBase<ObjectsMoved> {
   @override
   final String id = 'ObjectsMoved';
 
+  static String _$table(ObjectsMoved v) => v.table;
+  static const Field<ObjectsMoved, String> _f$table = Field('table', _$table);
   static List<int> _$objects(ObjectsMoved v) => v.objects;
   static const Field<ObjectsMoved, List<int>> _f$objects =
       Field('objects', _$objects);
-  static String _$table(ObjectsMoved v) => v.table;
-  static const Field<ObjectsMoved, String> _f$table = Field('table', _$table);
   static VectorDefinition _$from(ObjectsMoved v) => v.from;
   static const Field<ObjectsMoved, VectorDefinition> _f$from =
       Field('from', _$from);
@@ -3217,8 +3217,8 @@ class ObjectsMovedMapper extends SubClassMapperBase<ObjectsMoved> {
 
   @override
   final MappableFields<ObjectsMoved> fields = const {
-    #objects: _f$objects,
     #table: _f$table,
+    #objects: _f$objects,
     #from: _f$from,
     #to: _f$to,
   };
@@ -3232,7 +3232,7 @@ class ObjectsMovedMapper extends SubClassMapperBase<ObjectsMoved> {
       HybridWorldEventMapper.ensureInitialized();
 
   static ObjectsMoved _instantiate(DecodingData data) {
-    return ObjectsMoved(data.dec(_f$objects), data.dec(_f$table),
+    return ObjectsMoved(data.dec(_f$table), data.dec(_f$objects),
         data.dec(_f$from), data.dec(_f$to));
   }
 
@@ -3293,8 +3293,8 @@ abstract class ObjectsMovedCopyWith<$R, $In extends ObjectsMoved, $Out>
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get to;
   @override
   $R call(
-      {List<int>? objects,
-      String? table,
+      {String? table,
+      List<int>? objects,
       VectorDefinition? from,
       VectorDefinition? to});
   ObjectsMovedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -3320,20 +3320,20 @@ class _ObjectsMovedCopyWithImpl<$R, $Out>
       $value.to.copyWith.$chain((v) => call(to: v));
   @override
   $R call(
-          {List<int>? objects,
-          String? table,
+          {String? table,
+          List<int>? objects,
           VectorDefinition? from,
           VectorDefinition? to}) =>
       $apply(FieldCopyWithData({
-        if (objects != null) #objects: objects,
         if (table != null) #table: table,
+        if (objects != null) #objects: objects,
         if (from != null) #from: from,
         if (to != null) #to: to
       }));
   @override
   ObjectsMoved $make(CopyWithData data) => ObjectsMoved(
-      data.get(#objects, or: $value.objects),
       data.get(#table, or: $value.table),
+      data.get(#objects, or: $value.objects),
       data.get(#from, or: $value.from),
       data.get(#to, or: $value.to));
 

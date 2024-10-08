@@ -19,10 +19,32 @@ final class ObjectsSpawned extends HybridWorldEvent
   final String table;
   final Map<VectorDefinition, List<GameObject>> objects;
 
-  ObjectsSpawned(this.table, this.objects);
+  ObjectsSpawned(this.table, [this.objects = const {}]);
   ObjectsSpawned.single(GlobalVectorDefinition cell, List<GameObject> objects)
       : objects = {cell.position: objects},
         table = cell.table;
+
+  ObjectsSpawned.singleObject(GlobalVectorDefinition cell, GameObject object)
+      : objects = {
+          cell.position: [object]
+        },
+        table = cell.table;
+
+  ObjectsSpawned addObjects(int x, int y, List<GameObject> objects) =>
+      copyWith(objects: {
+        ...this.objects,
+        VectorDefinition(x, y): [
+          ...?this.objects[VectorDefinition(x, y)],
+          ...objects
+        ]
+      });
+
+  ObjectsSpawned addObject(int x, int y, GameObject object) =>
+      addObjects(x, y, [object]);
+
+  ObjectsSpawned object(int x, int y, ItemLocation asset,
+          {String variation = '', bool hidden = false}) =>
+      addObject(x, y, GameObject(asset, variation: variation, hidden: hidden));
 }
 
 @MappableClass()
@@ -31,7 +53,7 @@ final class ObjectsMoved extends HybridWorldEvent with ObjectsMovedMappable {
   final String table;
   final VectorDefinition from, to;
 
-  ObjectsMoved(this.objects, this.table, this.from, this.to);
+  ObjectsMoved(this.table, this.objects, this.from, this.to);
 }
 
 @MappableClass()

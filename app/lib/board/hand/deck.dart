@@ -35,7 +35,7 @@ class DeckDefinitionHandItem extends HandItem<PackItem<DeckDefinition>> {
     for (final e in item.item.figures) {
       final location = global.position + e.position;
       objects.putIfAbsent(location, () => []).add(GameObject(
-            asset: ItemLocation(item.namespace, e.name),
+            ItemLocation(item.namespace, e.name),
             variation: e.variation,
           ));
     }

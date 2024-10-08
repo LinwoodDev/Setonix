@@ -117,8 +117,8 @@ class GameObject with GameObjectMappable {
   final String? variation;
   final bool hidden;
 
-  GameObject({
-    required this.asset,
+  GameObject(
+    this.asset, {
     this.variation,
     this.hidden = false,
   });
@@ -129,10 +129,7 @@ class BoardTile with BoardTileMappable {
   final ItemLocation asset;
   final VectorDefinition tile;
 
-  BoardTile({
-    required this.asset,
-    required this.tile,
-  });
+  BoardTile(this.asset, this.tile);
 }
 
 @MappableClass()

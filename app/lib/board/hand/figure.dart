@@ -30,8 +30,7 @@ class FigureDefinitionHandItem
     if (zone is! GameCell) return;
     final global = zone.toGlobalDefinition(bloc.state);
     bloc.process(ObjectsSpawned.single(global, [
-      GameObject(
-          asset: ItemLocation(item.$1.namespace, item.$1.id),
+      GameObject(ItemLocation(item.$1.namespace, item.$1.id),
           variation: item.$2)
     ]));
     if (bloc.state.switchCellOnMove) {

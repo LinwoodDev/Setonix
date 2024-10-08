@@ -45,8 +45,8 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
       case GameCell():
         final global = zone.toDefinition();
         bloc.process(ObjectsMoved(
-          [item.$2],
           current.table,
+          [item.$2],
           current.position,
           global,
         ));

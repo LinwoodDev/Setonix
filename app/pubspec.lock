@@ -371,26 +371,26 @@ packages:
     dependency: "direct main"
     description:
       name: flame
-      sha256: e6873a8540a197a9bfe251e10c9e1f200329041d6e6d70df2cf38aa681cf2ef7
+      sha256: "89d65fdb10b8c4ac46c86b8d5541e560604bf55317c01f3f558d09c4a65953c1"
       url: "https://pub.dev"
     source: hosted
-    version: "1.19.0"
+    version: "1.20.0"
   flame_bloc:
     dependency: "direct main"
     description:
       name: flame_bloc
-      sha256: "13f883e635e656200404dfd7ca900d4eadf1ee0c81834558fe774d44cfd0a53d"
+      sha256: "766be992785bdc9dbaf771395f33761a3ec361af2bb07e2ba294eb041a1da091"
       url: "https://pub.dev"
     source: hosted
-    version: "1.12.1"
+    version: "1.12.2"
   flame_tiled:
     dependency: "direct main"
     description:
       name: flame_tiled
-      sha256: bb00888e0893413ffeb083e24cee3d5f7c08cbae5d8df551f14a564fdf7c5282
+      sha256: "9c8fabdff44cd8ef907660d2530110d68156beccaf468147051bcff465bc48a3"
       url: "https://pub.dev"
     source: hosted
-    version: "1.20.3"
+    version: "1.20.4"
   flex_color_scheme:
     dependency: "direct main"
     description:
@@ -838,10 +838,10 @@ packages:
     dependency: transitive
     description:
       name: path_provider_android
-      sha256: f7544c346a0742aee1450f9e5c0f5269d7c602b9c95fdbcd9fb8f5b1df13b1cc
+      sha256: c464428172cb986b758c6d1724c603097febb8fb855aa265aeecc9280c294d4a
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.11"
+    version: "2.2.12"
   path_provider_foundation:
     dependency: transitive
     description:

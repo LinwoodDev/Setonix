@@ -71,7 +71,32 @@ final class BoardTilesSpawned extends ServerWorldEvent
   final String table;
   final Map<VectorDefinition, List<BoardTile>> tiles;
 
-  BoardTilesSpawned(this.table, this.tiles);
+  BoardTilesSpawned(this.table, [this.tiles = const {}]);
+  BoardTilesSpawned.single(
+      GlobalVectorDefinition position, List<BoardTile> tiles)
+      : table = position.table,
+        tiles = {position.position: tiles};
+  BoardTilesSpawned.singleTile(GlobalVectorDefinition position, BoardTile tile)
+      : table = position.table,
+        tiles = {
+          position.position: [tile]
+        };
+
+  BoardTilesSpawned addTiles(int x, int y, List<BoardTile> tiles) =>
+      copyWith(tiles: {
+        ...this.tiles,
+        VectorDefinition(x, y): [
+          ...?this.tiles[VectorDefinition(x, y)],
+          ...tiles
+        ]
+      });
+
+  BoardTilesSpawned addTile(int x, int y, BoardTile tile) =>
+      addTiles(x, y, [tile]);
+
+  BoardTilesSpawned tile(
+          int x, int y, ItemLocation asset, int tileX, int tileY) =>
+      addTile(x, y, BoardTile(asset, VectorDefinition(tileX, tileY)));
 }
 
 @MappableClass()
@@ -80,7 +105,32 @@ final class BoardTilesChanged extends ServerWorldEvent
   final String table;
   final Map<VectorDefinition, List<BoardTile>> tiles;
 
-  BoardTilesChanged(this.table, this.tiles);
+  BoardTilesChanged(this.table, [this.tiles = const {}]);
+  BoardTilesChanged.single(
+      GlobalVectorDefinition position, List<BoardTile> tiles)
+      : table = position.table,
+        tiles = {position.position: tiles};
+  BoardTilesChanged.singleTile(GlobalVectorDefinition position, BoardTile tile)
+      : table = position.table,
+        tiles = {
+          position.position: [tile]
+        };
+
+  BoardTilesChanged addTiles(int x, int y, List<BoardTile> tiles) =>
+      copyWith(tiles: {
+        ...this.tiles,
+        VectorDefinition(x, y): [
+          ...?this.tiles[VectorDefinition(x, y)],
+          ...tiles
+        ]
+      });
+
+  BoardTilesChanged addTile(int x, int y, BoardTile tile) =>
+      addTiles(x, y, [tile]);
+
+  BoardTilesChanged tile(
+          int x, int y, ItemLocation asset, int tileX, int tileY) =>
+      addTile(x, y, BoardTile(asset, VectorDefinition(tileX, tileY)));
 }
 
 @MappableClass()

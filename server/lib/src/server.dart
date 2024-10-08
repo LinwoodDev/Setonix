@@ -248,4 +248,8 @@ final class QuokkaServer extends Bloc<PlayableWorldEvent, WorldState> {
     add(ResetWorld());
     await stream.first;
   }
+
+  void sendMessage(String message, [Channel target = kAnyChannel]) {
+    process(MessageSent(kAuthorityChannel, message));
+  }
 }
