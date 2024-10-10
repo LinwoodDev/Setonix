@@ -167,16 +167,18 @@ abstract class HandItem<T> extends PositionComponent
     _sprite.y = labelHeight;
   }
 
+  HandItemDragCursorHitbox? _cursorHitbox;
+  SpriteComponent? _dragSprite;
+  Vector2 _last = Vector2.zero();
+
   @override
   void onDragStart(DragStartEvent event) {
     super.onDragStart(event);
     game.world.add(_cursorHitbox =
         HandItemDragCursorHitbox(item: this, position: event.localPosition));
+    _last = event.canvasPosition;
   }
 
-  HandItemDragCursorHitbox? _cursorHitbox;
-  SpriteComponent? _dragSprite;
-  Vector2 _last = Vector2.zero();
   @override
   void onDragUpdate(DragUpdateEvent event) {
     super.onDragUpdate(event);

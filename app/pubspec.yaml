@@ -67,7 +67,7 @@ dependencies:
       path: packages/networker/networker_socket
   # System Information
   dynamic_color: ^1.7.0
-  device_info_plus: ^10.1.0
+  device_info_plus: ^11.0.0
   package_info_plus: ^8.0.0
   path_provider: ^2.1.4
   url_launcher: ^6.2.6
