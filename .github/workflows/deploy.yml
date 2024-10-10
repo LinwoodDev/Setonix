@@ -103,7 +103,7 @@ jobs:
           echo "QUOKKA_FLAVOR=stable" >> $GITHUB_ENV
           echo "WEB_DIR=www" >> $GITHUB_ENV
       - name: Build
-        run: flutter build web web --wasm --release --no-web-resources-cdn --dart-define=flavor=$QUOKKA_FLAVOR
+        run: flutter build web --wasm --release --no-web-resources-cdn --dart-define=flavor=$QUOKKA_FLAVOR
       - name: Deploy to SFTP
         if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main'
         env:
