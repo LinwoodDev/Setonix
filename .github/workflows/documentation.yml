@@ -10,6 +10,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: docs
     steps:
       - name: Checkout your repository using git
         uses: actions/checkout@v4
@@ -18,9 +21,9 @@ jobs:
         with:
           node-version: "20"
       - name: Install dependencies
-        run: npm install
+        run: pnpm install
       - name: Build
-        run: npm run build
+        run: pnpm build
       - name: Deploy to SFTP
         if: github.ref == 'refs/heads/develop'
         env:
