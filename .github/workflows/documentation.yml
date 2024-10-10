@@ -35,7 +35,10 @@ jobs:
           SFTP_HOST: ${{ secrets.SFTP_HOST }}
           SFTP_USERNAME: ${{ secrets.SFTP_USERNAME }}
           SFTP_KEY: ${{ secrets.SFTP_KEY }}
+          SFTP_KNOWN_HOSTS: ${{secrets.SFTP_KNOWN_HOSTS}}
         run: |
           echo "$SFTP_KEY" > sftp_key
           chmod 600 sftp_key
-          scp -i sftp_key -r ./dist $SFTP_USERNAME@$SFTP_HOST:/var/www/www.setonix
+          echo "$SFTP_KNOWN_HOSTS" > known_hosts
+          chmod 600 known_hosts
+          rsync -avz --delete -e "ssh -i sftp_key -o UserKnownHostsFile=known_hosts" dist/ $SFTP_USERNAME@$SFTP_HOST:/path/to/your/website
