@@ -1,4 +1,4 @@
-Quokka is a table sandbox game where you can decide how to play. Spawn cards everywhere you like, add optional rules and play with your friends or alone without internet.
+Setonix is a table sandbox game where you can decide how to play. Spawn cards everywhere you like, add optional rules and play with your friends or alone without internet.
 
 * Play games with your friends or alone
 * No internet connection required to play, multiplayer also works offline

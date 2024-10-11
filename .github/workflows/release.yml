@@ -27,12 +27,12 @@ jobs:
       - name: Setup git
         id: setup
         run: |
-          QUOKKA_VERSION_REGEX="version:\s(.+)\+(.+)"
-          [[ $(grep -E "${QUOKKA_VERSION_REGEX}" app/pubspec.yaml) =~ ${QUOKKA_VERSION_REGEX} ]]
-          QUOKKA_VERSION="${BASH_REMATCH[1]}"
-          echo "QUOKKA_VERSION=${QUOKKA_VERSION}" >> $GITHUB_ENV
-          QUOKKA_BUILD_NUMBER="${BASH_REMATCH[2]}"
-          echo "QUOKKA_BUILD_NUMBER=${QUOKKA_BUILD_NUMBER}" >> $GITHUB_ENV
+          SETONIX_VERSION_REGEX="version:\s(.+)\+(.+)"
+          [[ $(grep -E "${SETONIX_VERSION_REGEX}" app/pubspec.yaml) =~ ${SETONIX_VERSION_REGEX} ]]
+          SETONIX_VERSION="${BASH_REMATCH[1]}"
+          echo "SETONIX_VERSION=${SETONIX_VERSION}" >> $GITHUB_ENV
+          SETONIX_BUILD_NUMBER="${BASH_REMATCH[2]}"
+          echo "SETONIX_BUILD_NUMBER=${SETONIX_BUILD_NUMBER}" >> $GITHUB_ENV
           git config --global user.email "ci@linwood.dev"
           git config --global user.name "Linwood CI"
       - name: Update changelog
@@ -40,9 +40,9 @@ jobs:
           git fetch
           git pull origin
           dart pub get -C tools
-          dart run tools/set_version.dart --build-number keep ${{ env.QUOKKA_VERSION }} --changelog
+          dart run tools/set_version.dart --build-number keep ${{ env.SETONIX_VERSION }} --changelog
           git add .
-          git commit -m "Add changelog of v${{ env.QUOKKA_VERSION }}"
+          git commit -m "Add changelog of v${{ env.SETONIX_VERSION }}"
           git push origin
       - name: Merge in develop
         if: ${{ github.ref == 'refs/heads/main' }}
@@ -57,8 +57,8 @@ jobs:
     needs:
       - update-changelog
     outputs:
-      version: ${{ steps.setup.outputs.QUOKKA_VERSION }}
-      build_number: ${{ steps.setup.outputs.QUOKKA_BUILD_NUMBER }}
+      version: ${{ steps.setup.outputs.SETONIX_VERSION }}
+      build_number: ${{ steps.setup.outputs.SETONIX_BUILD_NUMBER }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -72,21 +72,21 @@ jobs:
         id: setup
         shell: bash
         run: |
-          QUOKKA_VERSION_REGEX="version:\s(.+)\+(.+)"
-          [[ $(grep -E "${QUOKKA_VERSION_REGEX}" app/pubspec.yaml) =~ ${QUOKKA_VERSION_REGEX} ]]
-          QUOKKA_VERSION="${BASH_REMATCH[1]}"
-          echo "QUOKKA_VERSION=${QUOKKA_VERSION}" >> $GITHUB_ENV
-          echo "QUOKKA_VERSION=${QUOKKA_VERSION}" >> $GITHUB_OUTPUT
-          QUOKKA_BUILD_NUMBER="${BASH_REMATCH[2]}"
-          echo "QUOKKA_BUILD_NUMBER=${QUOKKA_BUILD_NUMBER}" >> $GITHUB_ENV
-          echo "QUOKKA_BUILD_NUMBER=${QUOKKA_BUILD_NUMBER}" >> $GITHUB_OUTPUT
+          SETONIX_VERSION_REGEX="version:\s(.+)\+(.+)"
+          [[ $(grep -E "${SETONIX_VERSION_REGEX}" app/pubspec.yaml) =~ ${SETONIX_VERSION_REGEX} ]]
+          SETONIX_VERSION="${BASH_REMATCH[1]}"
+          echo "SETONIX_VERSION=${SETONIX_VERSION}" >> $GITHUB_ENV
+          echo "SETONIX_VERSION=${SETONIX_VERSION}" >> $GITHUB_OUTPUT
+          SETONIX_BUILD_NUMBER="${BASH_REMATCH[2]}"
+          echo "SETONIX_BUILD_NUMBER=${SETONIX_BUILD_NUMBER}" >> $GITHUB_ENV
+          echo "SETONIX_BUILD_NUMBER=${SETONIX_BUILD_NUMBER}" >> $GITHUB_OUTPUT
           git config --global user.email "ci@linwood.dev"
           git config --global user.name "Linwood CI"
       - name: Create tag
         run: |
-          QUOKKA_VERSION="${{ env.QUOKKA_VERSION }}"
-          git tag -fa v${{ env.QUOKKA_VERSION }} -m "Release ${QUOKKA_VERSION}"
-          git push origin v${QUOKKA_VERSION} -f
+          SETONIX_VERSION="${{ env.SETONIX_VERSION }}"
+          git tag -fa v${{ env.SETONIX_VERSION }} -m "Release ${SETONIX_VERSION}"
+          git push origin v${SETONIX_VERSION} -f
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.CI_PAT }}
@@ -95,10 +95,10 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           prerelease: ${{ github.event.inputs.stable != 'true' }}
-          tag_name: v${{ env.QUOKKA_VERSION }}
-          name: v${{ env.QUOKKA_VERSION }}
+          tag_name: v${{ env.SETONIX_VERSION }}
+          name: v${{ env.SETONIX_VERSION }}
           token: ${{ secrets.CI_PAT }}
-          body_path: metadata/en-US/changelogs/${{ env.QUOKKA_BUILD_NUMBER }}.txt
+          body_path: metadata/en-US/changelogs/${{ env.SETONIX_BUILD_NUMBER }}.txt
       - name: Retag stable
         if: ${{ github.event.inputs.stable == 'true' || github.ref == 'refs/heads/main' }}
         run: |
@@ -133,12 +133,12 @@ jobs:
       - name: Setup git
         id: setup
         run: |
-          QUOKKA_VERSION_REGEX="version:\s(.+)\+(.+)"
-          [[ $(grep -E "${QUOKKA_VERSION_REGEX}" app/pubspec.yaml) =~ ${QUOKKA_VERSION_REGEX} ]]
-          QUOKKA_VERSION="${BASH_REMATCH[1]}"
-          echo "QUOKKA_VERSION=${QUOKKA_VERSION}" >> $GITHUB_ENV
-          QUOKKA_BUILD_NUMBER="${BASH_REMATCH[2]}"
-          echo "QUOKKA_BUILD_NUMBER=${QUOKKA_BUILD_NUMBER}" >> $GITHUB_ENV
+          SETONIX_VERSION_REGEX="version:\s(.+)\+(.+)"
+          [[ $(grep -E "${SETONIX_VERSION_REGEX}" app/pubspec.yaml) =~ ${SETONIX_VERSION_REGEX} ]]
+          SETONIX_VERSION="${BASH_REMATCH[1]}"
+          echo "SETONIX_VERSION=${SETONIX_VERSION}" >> $GITHUB_ENV
+          SETONIX_BUILD_NUMBER="${BASH_REMATCH[2]}"
+          echo "SETONIX_BUILD_NUMBER=${SETONIX_BUILD_NUMBER}" >> $GITHUB_ENV
           git config --global user.email "ci@linwood.dev"
           git config --global user.name "Linwood CI"
       - name: Set next version
@@ -182,12 +182,12 @@ jobs:
       - name: Setup git
         id: setup
         run: |
-          QUOKKA_VERSION_REGEX="version:\s(.+)\+(.+)"
-          [[ $(grep -E "${QUOKKA_VERSION_REGEX}" app/pubspec.yaml) =~ ${QUOKKA_VERSION_REGEX} ]]
-          QUOKKA_VERSION="${BASH_REMATCH[1]}"
-          echo "QUOKKA_VERSION=${QUOKKA_VERSION}" >> $GITHUB_ENV
-          QUOKKA_BUILD_NUMBER="${BASH_REMATCH[2]}"
-          echo "QUOKKA_BUILD_NUMBER=${QUOKKA_BUILD_NUMBER}" >> $GITHUB_ENV
+          SETONIX_VERSION_REGEX="version:\s(.+)\+(.+)"
+          [[ $(grep -E "${SETONIX_VERSION_REGEX}" app/pubspec.yaml) =~ ${SETONIX_VERSION_REGEX} ]]
+          SETONIX_VERSION="${BASH_REMATCH[1]}"
+          echo "SETONIX_VERSION=${SETONIX_VERSION}" >> $GITHUB_ENV
+          SETONIX_BUILD_NUMBER="${BASH_REMATCH[2]}"
+          echo "SETONIX_BUILD_NUMBER=${SETONIX_BUILD_NUMBER}" >> $GITHUB_ENV
           git config --global user.email "ci@linwood.dev"
           git config --global user.name "Linwood CI"
       - uses: subosito/flutter-action@v2.16.0
@@ -198,7 +198,7 @@ jobs:
           git fetch
           git pull origin
           dart pub get -C tools
-          dart run tools/set_version.dart --build-number increment ${{ env.QUOKKA_VERSION }} --no-changelog
+          dart run tools/set_version.dart --build-number increment ${{ env.SETONIX_VERSION }} --no-changelog
           git add .
           git commit -m "Bump version"
           git push origin
@@ -220,14 +220,14 @@ jobs:
       - name: Get information
         shell: bash
         run: |
-          QUOKKA_VERSION_REGEX="version:\s(.+)\+(.+)"
-          [[ $(grep -E "${QUOKKA_VERSION_REGEX}" app/pubspec.yaml) =~ ${QUOKKA_VERSION_REGEX} ]]
-          QUOKKA_VERSION="${BASH_REMATCH[1]}"
-          echo "QUOKKA_VERSION=${QUOKKA_VERSION}" >> $GITHUB_ENV
-          QUOKKA_BUILD_NUMBER="${BASH_REMATCH[2]}"
-          echo "QUOKKA_BUILD_NUMBER=${QUOKKA_BUILD_NUMBER}" >> $GITHUB_ENV
-          echo 'QUOKKA_CHANGELOG<<EOF' >> $GITHUB_ENV
-          cat metadata/en-US/changelogs/${QUOKKA_BUILD_NUMBER}.txt >> $GITHUB_ENV
+          SETONIX_VERSION_REGEX="version:\s(.+)\+(.+)"
+          [[ $(grep -E "${SETONIX_VERSION_REGEX}" app/pubspec.yaml) =~ ${SETONIX_VERSION_REGEX} ]]
+          SETONIX_VERSION="${BASH_REMATCH[1]}"
+          echo "SETONIX_VERSION=${SETONIX_VERSION}" >> $GITHUB_ENV
+          SETONIX_BUILD_NUMBER="${BASH_REMATCH[2]}"
+          echo "SETONIX_BUILD_NUMBER=${SETONIX_BUILD_NUMBER}" >> $GITHUB_ENV
+          echo 'SETONIX_CHANGELOG<<EOF' >> $GITHUB_ENV
+          cat metadata/en-US/changelogs/${SETONIX_BUILD_NUMBER}.txt >> $GITHUB_ENV
           echo '' >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
       - name: Discord Webhook Action
@@ -235,23 +235,23 @@ jobs:
         if: ${{ github.event.inputs.stable == 'true' || github.ref == 'refs/heads/main' }}
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
-          embed-title: ${{ env.QUOKKA_VERSION }}
-          embed-description: ${{ env.QUOKKA_CHANGELOG }}
-          embed-url: https://github.com/LinwoodDev/quokka/releases/tag/v${{ env.QUOKKA_VERSION }}
+          embed-title: ${{ env.SETONIX_VERSION }}
+          embed-description: ${{ env.SETONIX_CHANGELOG }}
+          embed-url: https://github.com/LinwoodDev/Setonix/releases/tag/v${{ env.SETONIX_VERSION }}
           content: |
-            Version ${{ env.QUOKKA_VERSION }} released!
-            Download it here: https://quokka.linwood.dev/downloads
-            https://github.com/LinwoodDev/quokka/releases/tag/v${{ env.QUOKKA_VERSION }}
+            Version ${{ env.SETONIX_VERSION }} released!
+            Download it here: https://setonix.world/downloads
+            https://github.com/LinwoodDev/Setonix/releases/tag/v${{ env.SETONIX_VERSION }}
       - name: Discord Webhook Action
         uses: tsickert/discord-webhook@v6.0.0
         if: ${{ github.event.inputs.stable == 'false' && github.ref == 'refs/heads/develop' }}
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
-          embed-title: ${{ env.QUOKKA_VERSION }}
-          embed-description: ${{ env.QUOKKA_CHANGELOG }}
-          embed-url: https://github.com/LinwoodDev/quokka/releases/tag/v${{ env.QUOKKA_VERSION }}
+          embed-title: ${{ env.SETONIX_VERSION }}
+          embed-description: ${{ env.SETONIX_CHANGELOG }}
+          embed-url: https://github.com/LinwoodDev/Setonix/releases/tag/v${{ env.SETONIX_VERSION }}
           content: |
-            Pre-release version ${{ env.QUOKKA_VERSION }} released!
-            Download it here: https://quokka.linwood.dev/downloads
+            Pre-release version ${{ env.SETONIX_VERSION }} released!
+            Download it here: https://setonix.world/downloads
             Please note that this is a pre-release version and is not intended for production use.
-            Read more about it here: https://quokka.linwood.dev/nightly
+            Read more about it here: https://setonix.world/nightly

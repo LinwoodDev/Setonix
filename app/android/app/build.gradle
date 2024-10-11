@@ -30,7 +30,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "dev.linwood.quokka"
+    namespace = "dev.linwood.setonix"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -40,7 +40,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "dev.linwood.quokka"
+        applicationId = "dev.linwood.setonix"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdk = flutter.minSdkVersion
@@ -55,17 +55,17 @@ android {
         production {
             dimension "default"
             applicationIdSuffix ""
-            manifestPlaceholders = [appName: "Quokka"]
+            manifestPlaceholders = [appName: "Setonix"]
         }
         development {
             dimension "default"
             applicationIdSuffix ""
-            manifestPlaceholders = [appName: "Quokka Nightly"]
+            manifestPlaceholders = [appName: "Setonix Nightly"]
         }
         nightly {
             dimension "default"
             applicationIdSuffix ".nightly"
-            manifestPlaceholders = [appName: "Quokka Nightly"]
+            manifestPlaceholders = [appName: "Setonix Nightly"]
         }
     }
 

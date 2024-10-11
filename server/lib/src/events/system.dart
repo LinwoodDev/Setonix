@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:quokka_server/quokka_server.dart';
+import 'package:setonix_server/setonix_server.dart';
 
 final class EventSystem {
   final StreamController<Event> _controller =
@@ -37,7 +37,7 @@ final class EventSystem {
   }
 
   void runLeaveCallback(
-      QuokkaServer server, Channel channel, ConnectionInfo info) {
+      SetonixServer server, Channel channel, ConnectionInfo info) {
     final callback =
         UserLeaveCallback(server: server, channel: channel, info: info);
     _leaveController.add(callback);

@@ -2,7 +2,7 @@
 title: Branding
 ---
 
-These assets are licensed under the [CC-BY-SA-4.0](https://github.com/LinwoodDev/Quokka/blob/develop/BRANDING_LICENSE).
+These assets are licensed under the [CC-BY-SA-4.0](https://github.com/LinwoodDev/Setonix/blob/develop/BRANDING_LICENSE).
 
 ## Logo
 

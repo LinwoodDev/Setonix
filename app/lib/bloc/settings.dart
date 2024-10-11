@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:quokka_api/quokka_api.dart';
+import 'package:setonix_api/setonix_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:window_manager/window_manager.dart';
 
 part 'settings.mapper.dart';
 
 @MappableClass()
-class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
+class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
   final String localeTag;
   final ThemeMode theme;
   final String design;
@@ -25,7 +25,7 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
   final double zoom;
   final bool highContrast;
 
-  const QuokkaSettings({
+  const SetonixSettings({
     this.localeTag = '',
     this.theme = ThemeMode.system,
     this.design = '',
@@ -50,7 +50,7 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
     return Locale(localeTag);
   }
 
-  factory QuokkaSettings.fromPrefs(SharedPreferences prefs) => QuokkaSettings(
+  factory SetonixSettings.fromPrefs(SharedPreferences prefs) => SetonixSettings(
         theme: ThemeMode.values.byName(prefs.getString('theme') ?? 'system'),
         design: prefs.getString('design') ?? '',
         dataDirectory: prefs.getString('dataDirectory') ?? '',
@@ -95,10 +95,10 @@ class QuokkaSettings with QuokkaSettingsMappable implements LeapSettings {
   }
 }
 
-class SettingsCubit extends Cubit<QuokkaSettings>
-    with LeapSettingsBlocBaseMixin<QuokkaSettings> {
+class SettingsCubit extends Cubit<SetonixSettings>
+    with LeapSettingsBlocBaseMixin<SetonixSettings> {
   SettingsCubit(SharedPreferences prefs)
-      : super(QuokkaSettings.fromPrefs(prefs));
+      : super(SetonixSettings.fromPrefs(prefs));
 
   Future<void> changeTheme(ThemeMode theme) {
     emit(state.copyWith(theme: theme));

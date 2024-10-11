@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Linwood Setonix
+Comment=Play games everywhere you like 
+Exec=/usr/bin/linwood-setonix %f
+Icon=/usr/share/linwood-setonix/data/flutter_assets/images/logo.svg
+Terminal=false
+Type=Application
+Categories=Game;

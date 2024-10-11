@@ -1,9 +1,9 @@
-Name:           linwood-quokka
+Name:           linwood-setonix
 Version:        1.0.0
 Release:        1%{?dist}
 Summary:        Play games everywhere you like
 BuildArch:      x86_64
-URL:            https://github.com/LinwoodDev/Quokka
+URL:            https://github.com/LinwoodDev/Setonix
 License:        AGPLv3
 Source0:        %{name}-%{version}.tar.gz
 

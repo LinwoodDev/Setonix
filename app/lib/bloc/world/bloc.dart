@@ -3,27 +3,27 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' show ColorScheme;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:networker/networker.dart';
-import 'package:quokka/bloc/world/local.dart';
-import 'package:quokka/bloc/world/state.dart';
-import 'package:quokka/helpers/asset.dart';
-import 'package:quokka/services/file_system.dart';
-import 'package:quokka/bloc/multiplayer.dart';
-import 'package:quokka_api/quokka_api.dart';
+import 'package:setonix/bloc/world/local.dart';
+import 'package:setonix/bloc/world/state.dart';
+import 'package:setonix/helpers/asset.dart';
+import 'package:setonix/services/file_system.dart';
+import 'package:setonix/bloc/multiplayer.dart';
+import 'package:setonix_api/setonix_api.dart';
 
 WorldState? _compute(
         (ServerWorldEvent, WorldState, Map<String, FileMetadata>) m) =>
     processServerEvent(m.$1, m.$2, signature: m.$3);
 
-QuokkaData _saveState(WorldState state) => state.save();
+SetonixData _saveState(WorldState state) => state.save();
 
 class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
   bool _remoteEvent = false;
   WorldBloc({
     required MultiplayerCubit multiplayer,
     required ColorScheme colorScheme,
-    required QuokkaFileSystem fileSystem,
+    required SetonixFileSystem fileSystem,
     String? name,
-    QuokkaData? data,
+    SetonixData? data,
     GameTable? table,
   }) : super(ClientWorldState(
           assetManager: GameAssetManager(
@@ -33,7 +33,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
           colorScheme: colorScheme,
           world: WorldState(
             name: name,
-            data: data ?? QuokkaData.empty(),
+            data: data ?? SetonixData.empty(),
             table: table ?? data?.getTable() ?? const GameTable(),
             metadata: data?.getMetadata() ?? const FileMetadata(),
             info: data?.getInfo() ?? const GameInfo(),

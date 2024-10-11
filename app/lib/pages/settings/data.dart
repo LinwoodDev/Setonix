@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:quokka/services/file_system.dart';
+import 'package:setonix/services/file_system.dart';
 
 import '../../bloc/settings.dart';
 
@@ -18,7 +18,7 @@ class DataSettingsPage extends StatelessWidget {
     final settingsCubit = context.read<SettingsCubit>();
     Future<void> changePath(String newPath) async {
       final oldPath = settingsCubit.state.dataDirectory;
-      final worldSystem = context.read<QuokkaFileSystem>().worldSystem;
+      final worldSystem = context.read<SetonixFileSystem>().worldSystem;
       if (!(await worldSystem.moveAbsolute(oldPath, newPath))) {
         return;
       }
@@ -27,12 +27,12 @@ class DataSettingsPage extends StatelessWidget {
 
     return Scaffold(
         backgroundColor: inView ? Colors.transparent : null,
-        appBar: WindowTitleBar<SettingsCubit, QuokkaSettings>(
+        appBar: WindowTitleBar<SettingsCubit, SetonixSettings>(
           inView: inView,
           backgroundColor: inView ? Colors.transparent : null,
           title: Text(AppLocalizations.of(context).data),
         ),
-        body: BlocBuilder<SettingsCubit, QuokkaSettings>(
+        body: BlocBuilder<SettingsCubit, SetonixSettings>(
           builder: (context, state) {
             return ListView(children: [
               if (!kIsWeb)

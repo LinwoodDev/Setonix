@@ -9,18 +9,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
-import 'package:quokka/bloc/world/bloc.dart';
-import 'package:quokka/bloc/world/local.dart';
-import 'package:quokka/bloc/world/state.dart';
-import 'package:quokka/board/background.dart';
-import 'package:quokka/board/game.dart';
-import 'package:quokka/board/grid.dart';
-import 'package:quokka/board/hand/item.dart';
-import 'package:quokka/helpers/scroll.dart';
-import 'package:quokka/helpers/secondary.dart';
-import 'package:quokka/helpers/vector.dart';
-import 'package:quokka/helpers/visualizer.dart';
-import 'package:quokka_api/quokka_api.dart';
+import 'package:setonix/bloc/world/bloc.dart';
+import 'package:setonix/bloc/world/local.dart';
+import 'package:setonix/bloc/world/state.dart';
+import 'package:setonix/board/background.dart';
+import 'package:setonix/board/game.dart';
+import 'package:setonix/board/grid.dart';
+import 'package:setonix/board/hand/item.dart';
+import 'package:setonix/helpers/scroll.dart';
+import 'package:setonix/helpers/secondary.dart';
+import 'package:setonix/helpers/vector.dart';
+import 'package:setonix/helpers/visualizer.dart';
+import 'package:setonix_api/setonix_api.dart';
 
 class GameCell extends PositionComponent
     with

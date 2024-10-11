@@ -2,14 +2,14 @@ import 'dart:io';
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:networker/networker.dart';
-import 'package:quokka_api/quokka_api.dart';
+import 'package:setonix_api/setonix_api.dart';
 
 import '../server.dart';
 
 part 'model.mapper.dart';
 
 mixin ServerReference {
-  QuokkaServer get server;
+  SetonixServer get server;
 
   void sendEvent(ServerWorldEvent event, [Channel target = kAnyChannel]) =>
       server.sendEvent(event, target);
@@ -22,7 +22,7 @@ mixin ServerReference {
 
 base class Event<T> with ServerReference {
   @override
-  final QuokkaServer server;
+  final SetonixServer server;
   final T clientEvent;
   final Channel source;
   ServerWorldEvent serverEvent;
@@ -74,7 +74,7 @@ final class _LinkedEvent<T extends WorldEvent?>
   T get clientEvent => parent.clientEvent as T;
 
   @override
-  QuokkaServer get server => parent.server;
+  SetonixServer get server => parent.server;
 
   @override
   Channel get source => parent.source;
@@ -92,7 +92,7 @@ final class ServerPing {
 
 final class UserLeaveCallback with ServerReference {
   @override
-  final QuokkaServer server;
+  final SetonixServer server;
   final Channel channel;
   final ConnectionInfo info;
 

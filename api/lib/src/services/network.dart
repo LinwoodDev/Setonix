@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:quokka_api/event.dart';
+import 'package:setonix_api/event.dart';
 
 Future<bool> Function(HttpRequest request) buildFilterConnections({
   FutureOr<GameProperty?> Function(HttpRequest request)? loadProperty,
@@ -14,7 +14,7 @@ Future<bool> Function(HttpRequest request) buildFilterConnections({
       response.statusCode = HttpStatus.ok;
       String? sendMessage;
       try {
-        final method = request.headers.value('X-Quokka-Method');
+        final method = request.headers.value('X-Setonix-Method');
         if (method == 'info') {
           sendMessage = ((await loadProperty?.call(request)) ??
                   GameProperty.defaultProperty)

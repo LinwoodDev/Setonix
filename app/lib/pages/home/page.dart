@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:quokka/pages/home/background.dart';
-import 'package:quokka/pages/home/connect.dart';
-import 'package:quokka/pages/home/header.dart';
-import 'package:quokka/pages/home/packs.dart';
-import 'package:quokka/pages/home/play.dart';
+import 'package:setonix/pages/home/background.dart';
+import 'package:setonix/pages/home/connect.dart';
+import 'package:setonix/pages/home/header.dart';
+import 'package:setonix/pages/home/packs.dart';
+import 'package:setonix/pages/home/play.dart';
 
 import '../../api/settings.dart';
 

@@ -54,46 +54,46 @@ jobs:
         if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.release.prerelease) }}
         run: |
           flutter build apk -v --release --flavor nightly --dart-define=flavor=nightly
-          cp build/app/outputs/flutter-apk/app-nightly-release.apk linwood-quokka-android.apk
+          cp build/app/outputs/flutter-apk/app-nightly-release.apk linwood-setonix-android.apk
       - name: 🏭 Build production
         if: ${{ github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease) }}
         run: |
           flutter build apk -v --release --flavor production
-          cp build/app/outputs/flutter-apk/app-production-release.apk linwood-quokka-android.apk
+          cp build/app/outputs/flutter-apk/app-production-release.apk linwood-setonix-android.apk
       - name: Archive
         uses: actions/upload-artifact@v4
         with:
           name: apk-build
-          path: app/linwood-quokka-android.apk
+          path: app/linwood-setonix-android.apk
       - name: 🏭 Build architecture nightly
         if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.release.prerelease) }}
         run: |
           flutter build apk -v --release --target-platform android-arm,android-arm64,android-x64 --split-per-abi --flavor nightly --dart-define=flavor=nightly
-          cp build/app/outputs/flutter-apk/app-armeabi-v7a-nightly-release.apk linwood-quokka-android-arm.apk
-          cp build/app/outputs/flutter-apk/app-arm64-v8a-nightly-release.apk linwood-quokka-android-arm64.apk
-          cp build/app/outputs/flutter-apk/app-x86_64-nightly-release.apk linwood-quokka-android-x86_64.apk
+          cp build/app/outputs/flutter-apk/app-armeabi-v7a-nightly-release.apk linwood-setonix-android-arm.apk
+          cp build/app/outputs/flutter-apk/app-arm64-v8a-nightly-release.apk linwood-setonix-android-arm64.apk
+          cp build/app/outputs/flutter-apk/app-x86_64-nightly-release.apk linwood-setonix-android-x86_64.apk
       - name: 🏭 Build architecture production
         if: ${{ github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease) }}
         run: |
           flutter build apk -v --release --target-platform android-arm,android-arm64,android-x64 --split-per-abi --flavor production
-          cp build/app/outputs/flutter-apk/app-armeabi-v7a-production-release.apk linwood-quokka-android-arm.apk
-          cp build/app/outputs/flutter-apk/app-arm64-v8a-production-release.apk linwood-quokka-android-arm64.apk
-          cp build/app/outputs/flutter-apk/app-x86_64-production-release.apk linwood-quokka-android-x86_64.apk
+          cp build/app/outputs/flutter-apk/app-armeabi-v7a-production-release.apk linwood-setonix-android-arm.apk
+          cp build/app/outputs/flutter-apk/app-arm64-v8a-production-release.apk linwood-setonix-android-arm64.apk
+          cp build/app/outputs/flutter-apk/app-x86_64-production-release.apk linwood-setonix-android-x86_64.apk
       - name: Archive
         uses: actions/upload-artifact@v4
         with:
           name: apk-arm-build
-          path: app/linwood-quokka-android-arm.apk
+          path: app/linwood-setonix-android-arm.apk
       - name: Archive
         uses: actions/upload-artifact@v4
         with:
           name: apk-arm64-build
-          path: app/linwood-quokka-android-arm64.apk
+          path: app/linwood-setonix-android-arm64.apk
       - name: Archive
         uses: actions/upload-artifact@v4
         with:
           name: apk-x86_64-build
-          path: app/linwood-quokka-android-x86_64.apk
+          path: app/linwood-setonix-android-x86_64.apk
   build-windows:
     runs-on: windows-2022
     defaults:
@@ -134,13 +134,13 @@ jobs:
       - name: Build setup
         shell: pwsh
         run: |
-          Get-Content pubspec.yaml | Select-String -Pattern 'version:\s(.+)\+'  | % {Set-Item -Path Env:QUOKKA_VERSION -Value "$($_.matches.groups[1])"}
-          & 'C:/Program Files (x86)/Inno Setup 6/ISCC.exe' /DMyAppVersion=$Env:QUOKKA_VERSION QuokkaSetup.iss
+          Get-Content pubspec.yaml | Select-String -Pattern 'version:\s(.+)\+'  | % {Set-Item -Path Env:SETONIX_VERSION -Value "$($_.matches.groups[1])"}
+          & 'C:/Program Files (x86)/Inno Setup 6/ISCC.exe' /DMyAppVersion=$Env:SETONIX_VERSION SetonixSetup.iss
         # flutter pub run msix:create
       - name: Copy portable start script
         run: |
           cp scripts/start.bat build/windows/x64/runner/Release/
-          cp build/windows/x64/linwood-quokka-windows-setup.exe linwood-quokka-windows-setup-x86_64.exe
+          cp build/windows/x64/linwood-setonix-windows-setup.exe linwood-setonix-windows-setup-x86_64.exe
       - name: Archive
         uses: actions/upload-artifact@v4
         with:
@@ -152,7 +152,7 @@ jobs:
         with:
           name: windows-setup
           path: |
-            app/linwood-quokka-windows-setup-x86_64.exe
+            app/linwood-setonix-windows-setup-x86_64.exe
   build-linux:
     runs-on: ubuntu-24.04
     defaults:
@@ -214,12 +214,12 @@ jobs:
           flutter build linux -v --release --dart-define=flavor=production
       - name: 🏭 Make binary executable
         run: |
-          chmod +x build/linux/x64/release/bundle/quokka
+          chmod +x build/linux/x64/release/bundle/setonix
       - name: Build .deb executable
         run: |
           cp -fr build/linux/x64/release/bundle linux/debian/usr/bin
           dpkg-deb --build --root-owner-group linux/debian
-          cp linux/*.deb linwood-quokka-linux-x86_64.deb
+          cp linux/*.deb linwood-setonix-linux-x86_64.deb
       - name: Build .rpm executable
         run: |
           bash scripts/build-rpm.sh
@@ -231,13 +231,13 @@ jobs:
           appimage-builder --recipe AppImageBuilder.yml --skip-test
       - name: Copy nessessary files
         run: |
-          cp assets/images/logo.svg build/linux/x64/release/bundle/dev.linwood.quokka.svg
+          cp assets/images/logo.svg build/linux/x64/release/bundle/dev.linwood.setonix.svg
           mkdir -p build/linux/x64/release/bundle/usr/share
           cp -r linux/debian/usr/share build/linux/x64/release/bundle/usr
       - name: Rename AppImage
         run: |
           ls
-          mv ./*.AppImage linwood-quokka-linux-x86_64.AppImage
+          mv ./*.AppImage linwood-setonix-linux-x86_64.AppImage
       - name: Copy portable start script
         run: |
           chmod +x scripts/start.sh
@@ -253,19 +253,19 @@ jobs:
         with:
           name: linux-deb
           path: |
-            app/linwood-quokka-linux-x86_64.deb
+            app/linwood-setonix-linux-x86_64.deb
       - name: Archive .rpm
         uses: actions/upload-artifact@v4
         with:
           name: linux-rpm
           path: |
-            app/build/linwood-quokka-linux-x86_64.rpm
+            app/build/linwood-setonix-linux-x86_64.rpm
       - name: Archive .AppImage
         uses: actions/upload-artifact@v4
         with:
           name: linux-appimage
           path: |
-            app/linwood-quokka-linux-x86_64.AppImage
+            app/linwood-setonix-linux-x86_64.AppImage
   build-flatpak:
     name: build-flatpak
     runs-on: ubuntu-22.04
@@ -327,11 +327,11 @@ jobs:
           flutter build linux -v --release --dart-define=flavor=production
       - name: Copy nessessary files
         run: |
-          cp assets/images/logo.svg build/linux/x64/release/bundle/dev.linwood.quokka.svg
+          cp assets/images/logo.svg build/linux/x64/release/bundle/dev.linwood.setonix.svg
           mkdir -p build/linux/x64/release/bundle/usr/share
           cp -r linux/debian/usr/share build/linux/x64/release/bundle/usr
       - name: Compress Flutter build
-        run: tar -C build/linux/x64/release/bundle -czf linwood-quokka-linux-portable-x86_64.tar.gz .
+        run: tar -C build/linux/x64/release/bundle -czf linwood-setonix-linux-portable-x86_64.tar.gz .
       #    - name: Install flatpak
       #      run: |
       #        sudo apt-get update
@@ -345,12 +345,12 @@ jobs:
       #      run: |
       #        flatpak run org.flatpak.Builder -v --force-clean --sandbox --delete-build-dirs --user --install-deps-from=flathub --arch=x86_64 flatpak_app flatpak.json --bundle-sources
       #        flatpak build-export export flatpak_app -v
-      #        flatpak build-bundle export linwood-quokka-linux.flatpak dev.linwood.quokka -v
+      #        flatpak build-bundle export linwood-setonix-linux.flatpak dev.linwood.setonix -v
       #    - name: Upload .flatpak artifact to workflow
       #      uses: actions/upload-artifact@v4
       #      with:
       #        name: linux-flatpak
-      #        path: app/linwood-quokka-linux.flatpak
+      #        path: app/linwood-setonix-linux.flatpak
       - name: Archive old portable
         uses: actions/upload-artifact@v4
         with:
@@ -389,7 +389,7 @@ jobs:
           flutter build macos -v --release
       - name: Zip file
         working-directory: app/build/macos/Build/Products/Release
-        run: zip --symlinks -qr linwood-quokka-macos.zip quokka.app
+        run: zip --symlinks -qr linwood-setonix-macos.zip setonix.app
       - name: Setup node
         uses: actions/setup-node@v4
         with:
@@ -400,19 +400,19 @@ jobs:
           npm install -g appdmg
       - name: Create dmg
         run: |
-          appdmg DmgSetup.json linwood-quokka-macos.dmg
+          appdmg DmgSetup.json linwood-setonix-macos.dmg
       - name: Archive
         uses: actions/upload-artifact@v4
         with:
           name: macos-build
           path: |
-            app/build/macos/Build/Products/Release/linwood-quokka-macos.zip
+            app/build/macos/Build/Products/Release/linwood-setonix-macos.zip
       - name: Archive
         uses: actions/upload-artifact@v4
         with:
           name: macos-dmg
           path: |
-            app/linwood-quokka-macos.dmg
+            app/linwood-setonix-macos.dmg
 
   build-ipa:
     name: build-ipa (iOS)
@@ -447,14 +447,14 @@ jobs:
           rm -rf Payload
           mkdir Payload
           cp -R Runner.app Payload/
-          rm -f linwood-quokka-ios.ipa
-          zip -vr linwood-quokka-ios.ipa Payload/
-      #          ls -l linwood-quokka-ios.ipa
+          rm -f linwood-setonix-ios.ipa
+          zip -vr linwood-setonix-ios.ipa Payload/
+      #          ls -l linwood-setonix-ios.ipa
       - name: Archive
         uses: actions/upload-artifact@v4
         with:
           name: ipa-build
-          path: app/build/ios/iphoneos/linwood-quokka-ios.ipa
+          path: app/build/ios/iphoneos/linwood-setonix-ios.ipa
           compression-level: 0 #ipa is already compressed
 
   # build-snap:
@@ -475,7 +475,7 @@ jobs:
   #         architecture: ${{ matrix.architecture }}
   #     - uses: actions/upload-artifact@v4
   #       with:
-  #         name: quokka-snap
+  #         name: setonix-snap
   #         path: ${{ steps.build.outputs.snap }}
   build-server:
     defaults:
@@ -507,11 +507,11 @@ jobs:
           flutter doctor -v
       - name: Compile
         run: |
-          dart compile exe bin/quokka_server.dart
+          dart compile exe bin/setonix_server.dart
       - name: Create directory
         run: |
           mkdir -p server-build
-          mv bin/quokka_server.exe server-build/
+          mv bin/setonix_server.exe server-build/
           mkdir -p server-build/packs
       - name: Build nessesary files
         working-directory: ./
@@ -530,8 +530,8 @@ jobs:
     runs-on: ubuntu-24.04
     if: github.event_name != 'pull_request'
     outputs:
-      version: ${{ steps.setup.outputs.QUOKKA_VERSION }}
-      build_number: ${{ steps.setup.outputs.QUOKKA_BUILD_NUMBER }}
+      version: ${{ steps.setup.outputs.SETONIX_VERSION }}
+      build_number: ${{ steps.setup.outputs.SETONIX_BUILD_NUMBER }}
     needs:
       - build-apk
       - build-windows
@@ -550,14 +550,14 @@ jobs:
       - name: Setup git
         id: setup
         run: |
-          QUOKKA_VERSION_REGEX="version:\s(.+)\+(.+)"
-          [[ $(grep -E "${QUOKKA_VERSION_REGEX}" app/pubspec.yaml) =~ ${QUOKKA_VERSION_REGEX} ]]
-          QUOKKA_VERSION="${BASH_REMATCH[1]}"
-          echo "QUOKKA_VERSION=${QUOKKA_VERSION}" >> $GITHUB_ENV
-          echo "QUOKKA_VERSION=${QUOKKA_VERSION}" >> $GITHUB_OUTPUT
-          QUOKKA_BUILD_NUMBER="${BASH_REMATCH[2]}"
-          echo "QUOKKA_BUILD_NUMBER=${QUOKKA_BUILD_NUMBER}" >> $GITHUB_ENV
-          echo "QUOKKA_BUILD_NUMBER=${QUOKKA_BUILD_NUMBER}" >> $GITHUB_OUTPUT
+          SETONIX_VERSION_REGEX="version:\s(.+)\+(.+)"
+          [[ $(grep -E "${SETONIX_VERSION_REGEX}" app/pubspec.yaml) =~ ${SETONIX_VERSION_REGEX} ]]
+          SETONIX_VERSION="${BASH_REMATCH[1]}"
+          echo "SETONIX_VERSION=${SETONIX_VERSION}" >> $GITHUB_ENV
+          echo "SETONIX_VERSION=${SETONIX_VERSION}" >> $GITHUB_OUTPUT
+          SETONIX_BUILD_NUMBER="${BASH_REMATCH[2]}"
+          echo "SETONIX_BUILD_NUMBER=${SETONIX_BUILD_NUMBER}" >> $GITHUB_ENV
+          echo "SETONIX_BUILD_NUMBER=${SETONIX_BUILD_NUMBER}" >> $GITHUB_OUTPUT
           git config --global user.email "ci@linwood.dev"
           git config --global user.name "Linwood CI"
       - uses: actions/download-artifact@v4
@@ -619,12 +619,12 @@ jobs:
           path: server-build-macos/
       - name: 📦 Zip artifacts
         run: |
-          zip -r linwood-quokka-windows-x86_64.zip windows-build/*
-          tar -C linux-build -czf linwood-quokka-linux-x86_64.tar.gz .
-          tar -C linux-alternative-portable -czf linwood-quokka-linux-alternative-x86_64.tar.gz .
-          zip -r linwood-quokka-server-windows-x86_64.zip server-build-windows/*
-          tar -C server-build-linux -czf linwood-quokka-server-linux-x86_64.tar.gz .
-          zip -r linwood-quokka-server-macos.zip server-build-macos/*
+          zip -r linwood-setonix-windows-x86_64.zip windows-build/*
+          tar -C linux-build -czf linwood-setonix-linux-x86_64.tar.gz .
+          tar -C linux-alternative-portable -czf linwood-setonix-linux-alternative-x86_64.tar.gz .
+          zip -r linwood-setonix-server-windows-x86_64.zip server-build-windows/*
+          tar -C server-build-linux -czf linwood-setonix-server-linux-x86_64.tar.gz .
+          zip -r linwood-setonix-server-macos.zip server-build-macos/*
       - name: Configure git
         if: ${{ github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main' }}
         run: |
@@ -640,20 +640,20 @@ jobs:
           prerelease: true
           tag_name: stable
           files: |
-            linwood-quokka-windows-setup-x86_64.exe
-            linwood-quokka-windows-x86_64.zip
-            linwood-quokka-linux-x86_64.tar.gz
-            linwood-quokka-linux-alternative-x86_64.tar.gz
-            linwood-quokka-linux-x86_64.deb
-            linwood-quokka-linux-x86_64.rpm
-            linwood-quokka-linux-x86_64.AppImage
-            linwood-quokka-macos.zip
-            linwood-quokka-macos.dmg
-            linwood-quokka-android.apk
-            linwood-quokka-ios.ipa
-            linwood-quokka-server-linux-x86_64.tar.gz
-            linwood-quokka-server-windows-x86_64.zip
-            linwood-quokka-server-macos.zip
+            linwood-setonix-windows-setup-x86_64.exe
+            linwood-setonix-windows-x86_64.zip
+            linwood-setonix-linux-x86_64.tar.gz
+            linwood-setonix-linux-alternative-x86_64.tar.gz
+            linwood-setonix-linux-x86_64.deb
+            linwood-setonix-linux-x86_64.rpm
+            linwood-setonix-linux-x86_64.AppImage
+            linwood-setonix-macos.zip
+            linwood-setonix-macos.dmg
+            linwood-setonix-android.apk
+            linwood-setonix-ios.ipa
+            linwood-setonix-server-linux-x86_64.tar.gz
+            linwood-setonix-server-windows-x86_64.zip
+            linwood-setonix-server-macos.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: 🚀 Deploy nightly
@@ -664,23 +664,23 @@ jobs:
           prerelease: true
           tag_name: nightly
           files: |
-            linwood-quokka-windows-setup-x86_64.exe
-            linwood-quokka-windows-x86_64.zip
-            linwood-quokka-linux-x86_64.tar.gz
-            linwood-quokka-linux-alternative-x86_64.tar.gz
-            linwood-quokka-linux-x86_64.deb
-            linwood-quokka-linux-x86_64.rpm
-            linwood-quokka-linux-x86_64.AppImage
-            linwood-quokka-macos.zip
-            linwood-quokka-macos.dmg
-            linwood-quokka-android.apk
-            linwood-quokka-android-arm.apk
-            linwood-quokka-android-arm64.apk
-            linwood-quokka-android-x86_64.apk
-            linwood-quokka-ios.ipa
-            linwood-quokka-server-linux-x86_64.tar.gz
-            linwood-quokka-server-windows-x86_64.zip
-            linwood-quokka-server-macos.zip
+            linwood-setonix-windows-setup-x86_64.exe
+            linwood-setonix-windows-x86_64.zip
+            linwood-setonix-linux-x86_64.tar.gz
+            linwood-setonix-linux-alternative-x86_64.tar.gz
+            linwood-setonix-linux-x86_64.deb
+            linwood-setonix-linux-x86_64.rpm
+            linwood-setonix-linux-x86_64.AppImage
+            linwood-setonix-macos.zip
+            linwood-setonix-macos.dmg
+            linwood-setonix-android.apk
+            linwood-setonix-android-arm.apk
+            linwood-setonix-android-arm64.apk
+            linwood-setonix-android-x86_64.apk
+            linwood-setonix-ios.ipa
+            linwood-setonix-server-linux-x86_64.tar.gz
+            linwood-setonix-server-windows-x86_64.zip
+            linwood-setonix-server-macos.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Release
@@ -689,23 +689,23 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         with:
           files: |
-            linwood-quokka-windows-setup-x86_64.exe
-            linwood-quokka-windows-x86_64.zip
-            linwood-quokka-linux-x86_64.tar.gz
-            linwood-quokka-linux-alternative-x86_64.tar.gz
-            linwood-quokka-linux-x86_64.deb
-            linwood-quokka-linux-x86_64.rpm
-            linwood-quokka-linux-x86_64.AppImage
-            linwood-quokka-macos.zip
-            linwood-quokka-macos.dmg
-            linwood-quokka-android.apk
-            linwood-quokka-android-arm.apk
-            linwood-quokka-android-arm64.apk
-            linwood-quokka-android-x86_64.apk
-            linwood-quokka-ios.ipa
-            linwood-quokka-server-linux-x86_64.tar.gz
-            linwood-quokka-server-windows-x86_64.zip
-            linwood-quokka-server-macos.zip
+            linwood-setonix-windows-setup-x86_64.exe
+            linwood-setonix-windows-x86_64.zip
+            linwood-setonix-linux-x86_64.tar.gz
+            linwood-setonix-linux-alternative-x86_64.tar.gz
+            linwood-setonix-linux-x86_64.deb
+            linwood-setonix-linux-x86_64.rpm
+            linwood-setonix-linux-x86_64.AppImage
+            linwood-setonix-macos.zip
+            linwood-setonix-macos.dmg
+            linwood-setonix-android.apk
+            linwood-setonix-android-arm.apk
+            linwood-setonix-android-arm64.apk
+            linwood-setonix-android-x86_64.apk
+            linwood-setonix-ios.ipa
+            linwood-setonix-server-linux-x86_64.tar.gz
+            linwood-setonix-server-windows-x86_64.zip
+            linwood-setonix-server-macos.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   deploy-to-play-store:
@@ -775,14 +775,14 @@ jobs:
       - if: ${{ github.ref == 'refs/tags/stable' }}
         uses: vedantmgoyal2009/winget-releaser@v2
         with:
-          identifier: LinwoodCloud.Quokka
+          identifier: LinwoodCloud.Setonix
           version: ${{ needs.deploy.outputs.version }}
           release-tag: v${{ needs.deploy.outputs.version }}
           token: ${{ secrets.CI_PAT }}
       - if: ${{ github.ref == 'refs/tags/nightly' }}
         uses: vedantmgoyal2009/winget-releaser@v2
         with:
-          identifier: LinwoodCloud.Quokka.Nightly
+          identifier: LinwoodCloud.Setonix.Nightly
           version: ${{ needs.deploy.outputs.version }}
           release-tag: v${{ needs.deploy.outputs.version }}
           token: ${{ secrets.CI_PAT }}

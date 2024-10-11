@@ -1,4 +1,4 @@
-import 'package:quokka_server/quokka_server.dart';
+import 'package:setonix_server/setonix_server.dart';
 
 Future<void> main(List<String> arguments) {
   return runServer(arguments, onLoad);
@@ -38,7 +38,7 @@ Programming, once a niche skill, has become an essential tool in almost every in
 In conclusion, programming has become an indispensable skill in the modern world. It drives technological innovation, fuels economic growth, supports education and research, enables global connectivity, and fosters creativity. As technology continues to evolve, the importance of programming will only increase.
 """;
 
-Future<void> onLoad(QuokkaServer server) async {
+Future<void> onLoad(SetonixServer server) async {
   print("on load was called");
   server.eventSystem
     ..on<ObjectsMoved>((e) {

@@ -1,10 +1,10 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart' show ColorScheme;
 import 'package:networker/networker.dart';
-import 'package:quokka/helpers/asset.dart';
-import 'package:quokka/services/file_system.dart';
-import 'package:quokka/bloc/multiplayer.dart';
-import 'package:quokka_api/quokka_api.dart';
+import 'package:setonix/helpers/asset.dart';
+import 'package:setonix/services/file_system.dart';
+import 'package:setonix/bloc/multiplayer.dart';
+import 'package:setonix_api/setonix_api.dart';
 
 part 'state.mapper.dart';
 
@@ -43,9 +43,9 @@ final class ClientWorldState with ClientWorldStateMappable {
     this.drawerView = DrawerView.chat,
   });
 
-  QuokkaFileSystem get fileSystem => assetManager.fileSystem;
+  SetonixFileSystem get fileSystem => assetManager.fileSystem;
 
-  Iterable<MapEntry<String, QuokkaData>> get packs =>
+  Iterable<MapEntry<String, SetonixData>> get packs =>
       assetManager.packs.where((e) => world.info.packs.contains(e.key));
 
   GameTable get table => world.table;
@@ -60,5 +60,5 @@ final class ClientWorldState with ClientWorldStateMappable {
   List<ChatMessage> get messages => world.messages;
   String? get name => world.name;
   FileMetadata get metadata => world.metadata;
-  QuokkaData get data => world.data;
+  SetonixData get data => world.data;
 }

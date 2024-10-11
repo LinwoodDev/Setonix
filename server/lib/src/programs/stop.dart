@@ -1,8 +1,8 @@
 import 'package:consoler/consoler.dart';
-import 'package:quokka_server/src/server.dart';
+import 'package:setonix_server/src/server.dart';
 
 class StopProgram extends ConsoleProgram {
-  final QuokkaServer server;
+  final SetonixServer server;
 
   StopProgram(this.server);
   @override

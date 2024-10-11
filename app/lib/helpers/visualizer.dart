@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quokka_api/quokka_api.dart';
+import 'package:setonix_api/setonix_api.dart';
 
 extension TeamColorVisualizer on TeamColor {
   Color get color => switch (this) {

@@ -7,14 +7,14 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:consoler/consoler.dart';
 import 'package:networker/networker.dart';
 import 'package:networker_socket/server.dart';
-import 'package:quokka_api/quokka_api.dart';
-import 'package:quokka_server/src/asset.dart';
-import 'package:quokka_server/src/events/system.dart';
-import 'package:quokka_server/src/programs/packs.dart';
-import 'package:quokka_server/src/programs/players.dart';
-import 'package:quokka_server/src/programs/save.dart';
-import 'package:quokka_server/src/programs/say.dart';
-import 'package:quokka_server/src/programs/stop.dart';
+import 'package:setonix_api/setonix_api.dart';
+import 'package:setonix_server/src/asset.dart';
+import 'package:setonix_server/src/events/system.dart';
+import 'package:setonix_server/src/programs/packs.dart';
+import 'package:setonix_server/src/programs/players.dart';
+import 'package:setonix_server/src/programs/save.dart';
+import 'package:setonix_server/src/programs/say.dart';
+import 'package:setonix_server/src/programs/stop.dart';
 
 import 'events/model.dart';
 
@@ -24,7 +24,7 @@ Future<WorldState?> _computeEvent(ServerWorldEvent event, WorldState state,
       () => processServerEvent(event, state, signature: signature));
 }
 
-final class QuokkaServer extends Bloc<PlayableWorldEvent, WorldState> {
+final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
   final Consoler consoler;
   final ServerAssetManager assetManager;
   final String? worldFile;
@@ -34,8 +34,8 @@ final class QuokkaServer extends Bloc<PlayableWorldEvent, WorldState> {
   NetworkerSocketServer? _server;
   NetworkerPipe<dynamic, WorldEvent>? _pipe;
 
-  QuokkaServer._(
-      this.worldFile, this.consoler, QuokkaData data, this.assetManager)
+  SetonixServer._(
+      this.worldFile, this.consoler, SetonixData data, this.assetManager)
       : super(WorldState(
           data: data,
           table: data.getTableOrDefault(),
@@ -50,7 +50,7 @@ final class QuokkaServer extends Bloc<PlayableWorldEvent, WorldState> {
       return save();
     }, transformer: sequential());
     on<ResetWorld>((event, emit) async {
-      final data = QuokkaData.empty().setInfo(GameInfo(
+      final data = SetonixData.empty().setInfo(GameInfo(
         packs: assetManager.packs.map((e) => e.key).toList(),
       ));
       final table = data.getTableOrDefault();
@@ -72,29 +72,29 @@ final class QuokkaServer extends Bloc<PlayableWorldEvent, WorldState> {
     });
   }
 
-  static Future<QuokkaServer> load({
+  static Future<SetonixServer> load({
     String? worldFile,
     bool disableLoading = false,
   }) async {
     final assetManager = ServerAssetManager();
     final consoler = Consoler(
       defaultProgramConfig: DefaultProgramConfiguration(
-        description: "Quokka server",
+        description: "Setonix server",
       ),
     );
     await _runStaticLogZone(
         consoler, () => assetManager.init(console: consoler));
     worldFile ??= defaultWorldFile;
     final file = File(worldFile);
-    QuokkaData? data;
+    SetonixData? data;
     if (!disableLoading && await file.exists()) {
       final bytes = await file.readAsBytes();
-      data = QuokkaData.fromData(bytes);
+      data = SetonixData.fromData(bytes);
     }
-    data ??= QuokkaData.empty().setInfo(GameInfo(
+    data ??= SetonixData.empty().setInfo(GameInfo(
       packs: assetManager.packs.map((e) => e.key).toList(),
     ));
-    return QuokkaServer._(worldFile, consoler, data, assetManager);
+    return SetonixServer._(worldFile, consoler, data, assetManager);
   }
 
   void log(Object? message, {LogLevel? level}) =>

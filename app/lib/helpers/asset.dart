@@ -4,17 +4,17 @@ import 'package:flame/game.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:quokka/helpers/vector.dart';
-import 'package:quokka/services/file_system.dart';
-import 'package:quokka_api/quokka_api.dart';
+import 'package:setonix/helpers/vector.dart';
+import 'package:setonix/services/file_system.dart';
+import 'package:setonix_api/setonix_api.dart';
 
 class GameAssetManager extends AssetManager {
   String currentLocale;
-  final Map<String, QuokkaData> _loadedPacks = {};
+  final Map<String, SetonixData> _loadedPacks = {};
   final Map<String, TranslationsStore> _loadedTranslations = {};
   final Map<ItemLocation?, Future<Image>> _cachedImages = {};
 
-  final QuokkaFileSystem fileSystem;
+  final SetonixFileSystem fileSystem;
 
   GameAssetManager({
     required this.fileSystem,
@@ -22,7 +22,7 @@ class GameAssetManager extends AssetManager {
   });
 
   @override
-  Iterable<MapEntry<String, QuokkaData>> get packs => _loadedPacks.entries;
+  Iterable<MapEntry<String, SetonixData>> get packs => _loadedPacks.entries;
 
   Uint8List? getTexture(String key, String namespace) =>
       getTextureFromLocation(ItemLocation.fromString(key, namespace));
@@ -97,7 +97,7 @@ class GameAssetManager extends AssetManager {
   }
 
   @override
-  QuokkaData? getPack(String key) => _loadedPacks[key];
+  SetonixData? getPack(String key) => _loadedPacks[key];
 
   Future<void> loadPacks() async {
     final files = await fileSystem.getPacks();

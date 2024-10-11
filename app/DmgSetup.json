@@ -1,9 +1,14 @@
 {
-  "title": "Linwood Quokka",
-  "icon": "build/macos/Build/Products/Release/quokka.app/Contents/Resources/AppIcon.icns",
+  "title": "Linwood Setonix",
+  "icon": "build/macos/Build/Products/Release/setonix.app/Contents/Resources/AppIcon.icns",
   "background-color": "#1b1b1d",
   "contents": [
     { "x": 448, "y": 344, "type": "link", "path": "/Applications" },
-    { "x": 192, "y": 344, "type": "file", "path": "build/macos/Build/Products/Release/quokka.app" }
+    {
+      "x": 192,
+      "y": 344,
+      "type": "file",
+      "path": "build/macos/Build/Products/Release/setonix.app"
+    }
   ]
 }

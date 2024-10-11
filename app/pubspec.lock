@@ -954,13 +954,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.2"
-  quokka_api:
-    dependency: "direct main"
-    description:
-      path: "../api"
-      relative: true
-    source: path
-    version: "0.1.0"
   rxdart:
     dependency: "direct main"
     description:
@@ -985,6 +978,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.7.5"
+  setonix_api:
+    dependency: "direct main"
+    description:
+      path: "../api"
+      relative: true
+    source: path
+    version: "0.1.0"
   share_plus:
     dependency: transitive
     description:

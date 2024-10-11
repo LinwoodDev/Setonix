@@ -1,4 +1,4 @@
-/// The Linwood Quokka API
+/// The Linwood Setonix API
 library;
 
 export 'models.dart';

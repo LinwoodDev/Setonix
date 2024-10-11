@@ -1,2 +1,2 @@
-package_name("dev.linwood.quokka") # e.g. com.krausefx.app
+package_name("dev.linwood.setonix") # e.g. com.krausefx.app
 json_key_file("play-store-credentials.json")

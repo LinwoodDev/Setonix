@@ -1,8 +1,8 @@
 [Desktop Entry]
-Name=Linwood Quokka
+Name=Linwood Setonix
 Comment=Play games everywhere you like 
-Exec=quokka %f
-Icon=dev.linwood.quokka
+Exec=setonix %f
+Icon=dev.linwood.setonix
 Terminal=false
 Type=Application
 Categories=Game;

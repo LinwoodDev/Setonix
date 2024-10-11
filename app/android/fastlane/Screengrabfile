@@ -7,7 +7,7 @@ app_apk_path '../build/app/outputs/apk/production/debug/app-production-debug.apk
 tests_apk_path '../build/app/outputs/apk/androidTest/production/debug/app-production-debug-androidTest.apk'
 locales ['en-US', 'fr-FR', 'de-DE']
 test_instrumentation_runner 'androidx.test.runner.AndroidJUnitRunner'
-app_package_name 'dev.linwood.quokka'
+app_package_name 'dev.linwood.setonix'
 # clear all previously generated screenshots in your local output directory before creating new ones
 clear_previous_screenshots true
 

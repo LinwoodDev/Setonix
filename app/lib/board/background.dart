@@ -3,9 +3,9 @@ import 'dart:ui';
 
 import 'package:flame/components.dart';
 import 'package:flame_bloc/flame_bloc.dart';
-import 'package:quokka/bloc/world/bloc.dart';
-import 'package:quokka/bloc/world/state.dart';
-import 'package:quokka_api/quokka_api.dart';
+import 'package:setonix/bloc/world/bloc.dart';
+import 'package:setonix/bloc/world/state.dart';
+import 'package:setonix_api/setonix_api.dart';
 
 class GameBoardBackground extends PositionComponent
     with FlameBlocListenable<WorldBloc, ClientWorldState> {

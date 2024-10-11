@@ -1,9 +1,9 @@
 import 'package:consoler/consoler.dart';
-import 'package:quokka_api/quokka_api.dart';
-import 'package:quokka_server/src/server.dart';
+import 'package:setonix_api/setonix_api.dart';
+import 'package:setonix_server/src/server.dart';
 
 class SayProgram extends ConsoleProgram {
-  final QuokkaServer server;
+  final SetonixServer server;
 
   SayProgram(this.server);
   @override

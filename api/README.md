@@ -1,3 +1,3 @@
-# Quokka API
+# Setonix API
 
 Read more [here](../README.md).

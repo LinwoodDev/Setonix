@@ -1,4 +1,4 @@
-name: quokka
+name: setonix
 description: Play games without internet
 
 # The following defines the version and build number for your application.
@@ -82,7 +82,7 @@ dependencies:
       url: https://github.com/LinwoodDev/dart_pkgs
       ref: 21808e89bb6239f0b39367d0c00b0b14f5273992
       path: packages/lw_sysapi
-  quokka_api:
+  setonix_api:
     path: ../api
   # Serialization
   dart_mappable: ^4.2.2

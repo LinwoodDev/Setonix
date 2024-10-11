@@ -1,9 +1,9 @@
-Package: linwood-quokka
+Package: linwood-setonix
 Version: 0.1.0
 Section: base
 Priority: optional
-Homepage: https://github.com/LinwoodDev/Quokka
+Homepage: https://github.com/LinwoodDev/Setonix
 Architecture: amd64
 Maintainer: Linwood <contact@linwood.dev>
-Description: Linwood Quokka
+Description: Linwood Setonix
   Play games everywhere you like

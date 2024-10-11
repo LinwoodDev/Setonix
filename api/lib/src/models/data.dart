@@ -25,12 +25,12 @@ const kGameTablePath = 'tables';
 const kGameTeamPath = 'teams.json';
 const kGameNotesPath = 'notes';
 
-class QuokkaData extends ArchiveData<QuokkaData> {
-  QuokkaData(super.archive, {super.state});
-  QuokkaData.empty() : super.empty();
+class SetonixData extends ArchiveData<SetonixData> {
+  SetonixData(super.archive, {super.state});
+  SetonixData.empty() : super.empty();
 
-  factory QuokkaData.fromData(Uint8List data) {
-    return QuokkaData(ZipDecoder().decodeBytes(data));
+  factory SetonixData.fromData(Uint8List data) {
+    return SetonixData(ZipDecoder().decodeBytes(data));
   }
 
   GameTable? getTable([String name = '']) {
@@ -43,12 +43,12 @@ class QuokkaData extends ArchiveData<QuokkaData> {
   GameTable getTableOrDefault([String name = '']) =>
       getTable(name) ?? GameTable();
 
-  QuokkaData setTable(GameTable table, [String name = '']) => setAsset(
+  SetonixData setTable(GameTable table, [String name = '']) => setAsset(
         '$kGameTablePath/$name.json',
         utf8.encode(table.toJson()),
       );
 
-  QuokkaData removeTable(String name) =>
+  SetonixData removeTable(String name) =>
       removeAsset('$kGameTablePath/$name.json');
 
   Iterable<String> getTables() => getAssets(kGameTablePath, true);
@@ -59,12 +59,13 @@ class QuokkaData extends ArchiveData<QuokkaData> {
     return utf8.decode(data);
   }
 
-  QuokkaData setNote(String name, String content) => setAsset(
+  SetonixData setNote(String name, String content) => setAsset(
         '$kGameNotesPath/$name.md',
         utf8.encode(content),
       );
 
-  QuokkaData removeNote(String name) => removeAsset('$kGameNotesPath/$name.md');
+  SetonixData removeNote(String name) =>
+      removeAsset('$kGameNotesPath/$name.md');
 
   Iterable<String> getNotes() => getAssets(kGameNotesPath, true);
 
@@ -86,7 +87,7 @@ class QuokkaData extends ArchiveData<QuokkaData> {
 
   GameInfo getInfoOrDefault() => getInfo() ?? const GameInfo();
 
-  QuokkaData setInfo(GameInfo info) =>
+  SetonixData setInfo(GameInfo info) =>
       setAsset(kPackInfoPath, utf8.encode(info.toJson()));
 
   FileMetadata getMetadataOrDefault() => getMetadata() ?? const FileMetadata();
@@ -193,14 +194,14 @@ class QuokkaData extends ArchiveData<QuokkaData> {
     return PackTranslationMapper.fromJson(content);
   }
 
-  QuokkaData setFileMetadata(FileMetadata metadata) => setAsset(
+  SetonixData setFileMetadata(FileMetadata metadata) => setAsset(
         kPackMetadataPath,
         utf8.encode(metadata.toJson()),
       );
 
   @override
-  QuokkaData updateState(ArchiveState state) =>
-      QuokkaData(archive, state: state);
+  SetonixData updateState(ArchiveState state) =>
+      SetonixData(archive, state: state);
 
   Digest getChecksum() {
     final metadata = getMetadataOrDefault().toJson();
@@ -216,7 +217,7 @@ class QuokkaData extends ArchiveData<QuokkaData> {
 }
 
 final class PackItem<T> {
-  final QuokkaData pack;
+  final SetonixData pack;
   final ItemLocation location;
   final T item;
 
@@ -227,7 +228,7 @@ final class PackItem<T> {
   });
 
   factory PackItem.fromRaw(
-          {required QuokkaData pack,
+          {required SetonixData pack,
           required String namespace,
           required String path,
           required T item}) =>
@@ -238,7 +239,7 @@ final class PackItem<T> {
       );
 
   static PackItem<T>? wrap<T>(
-      {required QuokkaData pack,
+      {required SetonixData pack,
       required String namespace,
       T? item,
       String? id}) {

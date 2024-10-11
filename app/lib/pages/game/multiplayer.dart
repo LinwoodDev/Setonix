@@ -5,8 +5,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:networker/networker.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:quokka/bloc/multiplayer.dart';
-import 'package:quokka/bloc/settings.dart';
+import 'package:setonix/bloc/multiplayer.dart';
+import 'package:setonix/bloc/settings.dart';
 
 class MultiplayerDialog extends StatelessWidget {
   const MultiplayerDialog({super.key});

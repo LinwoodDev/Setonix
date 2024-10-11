@@ -1,5 +1,5 @@
-name: quokka_server
-description: The Linwood Quokka game server
+name: setonix_server
+description: The Linwood Setonix game server
 version: 0.1.0
 publish_to: none
 
@@ -26,7 +26,7 @@ dependencies:
       ref: 4ac7cb36efb16b129b36d4ae87eacfaec8a1ee4b
       path: packages/consoler
   path: ^1.9.0
-  quokka_api:
+  setonix_api:
     path: ../api
   bloc_concurrency: ^0.2.5
   dart_mappable: ^4.2.2

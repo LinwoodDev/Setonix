@@ -1,12 +1,12 @@
-import 'package:quokka_api/quokka_api.dart';
+import 'package:setonix_api/setonix_api.dart';
 
 const kCorePackId = "core";
 
 abstract class AssetManager {
-  QuokkaData? getPack(String key);
+  SetonixData? getPack(String key);
   bool hasPack(String key);
 
-  Iterable<MapEntry<String, QuokkaData>> get packs;
+  Iterable<MapEntry<String, SetonixData>> get packs;
 
   Map<String, FileMetadata> createSignature([Set<String>? packs]) {
     final signature = <String, FileMetadata>{};

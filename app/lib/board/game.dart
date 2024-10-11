@@ -6,14 +6,14 @@ import 'package:flame/game.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:quokka/bloc/settings.dart';
-import 'package:quokka/bloc/world/bloc.dart';
-import 'package:quokka/bloc/world/local.dart';
-import 'package:quokka/bloc/world/state.dart';
-import 'package:quokka/board/grid.dart';
-import 'package:quokka/board/hand/view.dart';
-import 'package:quokka/helpers/scroll.dart';
-import 'package:quokka/helpers/secondary.dart';
+import 'package:setonix/bloc/settings.dart';
+import 'package:setonix/bloc/world/bloc.dart';
+import 'package:setonix/bloc/world/local.dart';
+import 'package:setonix/bloc/world/state.dart';
+import 'package:setonix/board/grid.dart';
+import 'package:setonix/board/hand/view.dart';
+import 'package:setonix/helpers/scroll.dart';
+import 'package:setonix/helpers/secondary.dart';
 
 class BoardGame extends FlameGame
     with
@@ -45,7 +45,7 @@ class BoardGame extends FlameGame
     FlameBlocProvider provider =
         FlameBlocProvider<WorldBloc, ClientWorldState>.value(value: bloc);
     provider = provider;
-    await add(FlameBlocProvider<SettingsCubit, QuokkaSettings>.value(
+    await add(FlameBlocProvider<SettingsCubit, SetonixSettings>.value(
         value: settingsCubit, children: [provider]));
     provider.addAll([camera, world]);
     selectionSprite = await Sprite.load('selection.png');

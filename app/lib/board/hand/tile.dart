@@ -1,10 +1,10 @@
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:quokka/bloc/world/state.dart';
-import 'package:quokka/board/cell.dart';
-import 'package:quokka/board/hand/item.dart';
-import 'package:quokka_api/quokka_api.dart';
+import 'package:setonix/bloc/world/state.dart';
+import 'package:setonix/board/cell.dart';
+import 'package:setonix/board/hand/item.dart';
+import 'package:setonix_api/setonix_api.dart';
 
 class BoardTileHandItem extends HandItem<(VectorDefinition, int, BoardTile)> {
   BoardTileHandItem({required super.item});

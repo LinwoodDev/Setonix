@@ -1,11 +1,11 @@
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame_bloc/flame_bloc.dart';
-import 'package:quokka/bloc/settings.dart';
-import 'package:quokka/board/cell.dart';
+import 'package:setonix/bloc/settings.dart';
+import 'package:setonix/board/cell.dart';
 
 class BoardGrid extends PositionComponent
-    with HasGameRef, FlameBlocListenable<SettingsCubit, QuokkaSettings> {
+    with HasGameRef, FlameBlocListenable<SettingsCubit, SetonixSettings> {
   final Vector2 cellSize;
   static const _padding = 3.0;
   Rect? _lastViewport;
@@ -100,16 +100,16 @@ class BoardGrid extends PositionComponent
       );
 
   @override
-  void onInitialState(QuokkaSettings state) {
+  void onInitialState(SetonixSettings state) {
     _zoom = state.zoom;
   }
 
   @override
-  bool listenWhen(QuokkaSettings previousState, QuokkaSettings newState) =>
+  bool listenWhen(SetonixSettings previousState, SetonixSettings newState) =>
       previousState.zoom != newState.zoom;
 
   @override
-  void onNewState(QuokkaSettings state) {
+  void onNewState(SetonixSettings state) {
     if (_zoom != state.zoom) {
       _zoom = state.zoom;
       _lastViewport = null;

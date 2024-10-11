@@ -1,30 +1,30 @@
 import 'package:lw_file_system/lw_file_system.dart';
-import 'package:quokka/api/open.dart';
-import 'package:quokka/api/storage.dart';
-import 'package:quokka_api/quokka_api.dart';
+import 'package:setonix/api/open.dart';
+import 'package:setonix/api/storage.dart';
+import 'package:setonix_api/setonix_api.dart';
 
-class QuokkaFileSystem {
-  QuokkaData? _corePack;
-  final TypedKeyFileSystem<QuokkaData> packSystem, templateSystem, worldSystem;
+class SetonixFileSystem {
+  SetonixData? _corePack;
+  final TypedKeyFileSystem<SetonixData> packSystem, templateSystem, worldSystem;
 
   static _onDatabaseUpgrade(event) =>
       initStores(event, ['packs', 'templates', 'worlds']);
 
-  QuokkaFileSystem({
-    QuokkaData? corePack,
+  SetonixFileSystem({
+    SetonixData? corePack,
   })  : _corePack = corePack,
         packSystem = TypedKeyFileSystem.build(
           FileSystemConfig(
             passwordStorage: SecureStoragePasswordStorage(),
             storeName: 'packs',
             getDirectory: (storage) async =>
-                '${await getQuokkaDirectory()}/Packs',
-            database: 'quokka.db',
+                '${await getSetonixDirectory()}/Packs',
+            database: 'setonix.db',
             databaseVersion: 1,
             keySuffix: '.qka',
             onDatabaseUpgrade: _onDatabaseUpgrade,
           ),
-          onDecode: QuokkaData.fromData,
+          onDecode: SetonixData.fromData,
           onEncode: (data) => data.exportAsBytes(),
         ),
         templateSystem = TypedKeyFileSystem.build(
@@ -32,13 +32,13 @@ class QuokkaFileSystem {
             passwordStorage: SecureStoragePasswordStorage(),
             storeName: 'templates',
             getDirectory: (storage) async =>
-                '${await getQuokkaDirectory()}/Templates',
-            database: 'quokka.db',
+                '${await getSetonixDirectory()}/Templates',
+            database: 'setonix.db',
             databaseVersion: 1,
             keySuffix: '.qka',
             onDatabaseUpgrade: _onDatabaseUpgrade,
           ),
-          onDecode: QuokkaData.fromData,
+          onDecode: SetonixData.fromData,
           onEncode: (data) => data.exportAsBytes(),
         ),
         worldSystem = TypedKeyFileSystem.build(
@@ -46,20 +46,20 @@ class QuokkaFileSystem {
             passwordStorage: SecureStoragePasswordStorage(),
             storeName: 'worlds',
             getDirectory: (storage) async =>
-                '${await getQuokkaDirectory()}/Worlds',
-            database: 'quokka.db',
+                '${await getSetonixDirectory()}/Worlds',
+            database: 'setonix.db',
             databaseVersion: 1,
             keySuffix: '.qka',
             onDatabaseUpgrade: _onDatabaseUpgrade,
           ),
-          onDecode: QuokkaData.fromData,
+          onDecode: SetonixData.fromData,
           onEncode: (data) => data.exportAsBytes(),
         );
 
-  Future<QuokkaData?> fetchCorePack() async =>
+  Future<SetonixData?> fetchCorePack() async =>
       _corePack ?? (_corePack = await getCorePack());
 
-  Future<List<FileSystemFile<QuokkaData>>> getPacks({
+  Future<List<FileSystemFile<SetonixData>>> getPacks({
     bool fetchCore = true,
     bool force = false,
   }) async {
@@ -72,6 +72,6 @@ class QuokkaFileSystem {
     ];
   }
 
-  Future<QuokkaData?> getPack(String packId) =>
+  Future<SetonixData?> getPack(String packId) =>
       packId == kCorePackId ? fetchCorePack() : packSystem.getFile(packId);
 }

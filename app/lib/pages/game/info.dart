@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:quokka_api/quokka_api.dart';
+import 'package:setonix_api/setonix_api.dart';
 
 class EditInfoDialog extends StatelessWidget {
   final FileMetadata value;

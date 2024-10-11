@@ -2,14 +2,14 @@ import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
 
-const quokkaSubDirectory = '/Linwood/Quokka';
+const setonixSubDirectory = '/Linwood/Setonix';
 
-Future<String> getQuokkaDirectory() async {
+Future<String> getSetonixDirectory() async {
   String? path;
   if (Platform.isAndroid) {
     path ??= (await getExternalStorageDirectory())?.path;
   }
   path ??= (await getApplicationDocumentsDirectory()).path;
-  path += quokkaSubDirectory;
+  path += setonixSubDirectory;
   return path;
 }

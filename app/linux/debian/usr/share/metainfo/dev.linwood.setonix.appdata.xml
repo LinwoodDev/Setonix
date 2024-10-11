@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-	<id>dev.linwood.butterfly</id>
-	<name>Linwood Butterfly</name>
+	<id>dev.linwood.setonix</id>
+	<name>Linwood Setonix</name>
 	<developer_name>Linwood</developer_name>
-	<summary>Powerful, minimalistic note-taking</summary>
+	<summary>Powerful, customizable, cross-platform, opensource table sandbox game</summary>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>AGPL-3.0-only</project_license>
 	<recommends>
@@ -15,14 +15,14 @@
 		<color type="primary" scheme_preference="light">#d0d0d0</color>
 		<color type="primary" scheme_preference="dark">#2f2f2f</color>
 	</branding>
-	<url type="homepage">https://butterfly.linwood.dev/</url>
-	<url type="bugtracker">https://github.com/LinwoodDev/Butterfly/issues</url>
-	<url type="help">https://butterfly.linwood.dev/docs/latest/intro</url>
-	<url type="translate">https://linwood.dev/butterfly/crowdin</url>
-	<url type="vcs-browser">https://github.com/LinwoodDev/Butterfly.git</url>
-	<url type="contribute">https://github.com/LinwoodDev/Butterfly/blob/develop/CONTRIBUTING.md</url>
+	<url type="homepage">https://setonix.world/</url>
+	<url type="bugtracker">https://github.com/LinwoodDev/Setonix/issues</url>
+	<url type="help">https://setonix.world/docs/v1/intro</url>
+	<url type="translate">https://linwood.dev/setonix/crowdin</url>
+	<url type="vcs-browser">https://github.com/LinwoodDev/Setonix.git</url>
+	<url type="contribute">https://github.com/LinwoodDev/Setonix/blob/develop/CONTRIBUTING.md</url>
 	<description>
-		<p>Quokka is a table sandbox game where you can decide how to play. Spawn cards everywhere you
+		<p>Setonix is a table sandbox game where you can decide how to play. Spawn cards everywhere you
 			like, add optional rules and play with your friends or alone without internet.
 		</p>
 		<p>Features:</p>
@@ -39,7 +39,7 @@
 				better.</li>
 		</ul>
 	</description>
-	<launchable type="desktop-id">dev.linwood.quokka.desktop</launchable>
+	<launchable type="desktop-id">dev.linwood.setonix.desktop</launchable>
 	<releases>
 	</releases>
 	<content_rating type="oars-1.1" />

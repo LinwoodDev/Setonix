@@ -1,6 +1,6 @@
-// Fetch version value fromy yaml file https://raw.githubusercontent.com/LinwoodDev/Quokka/nightly/app/pubspec.yaml
+// Fetch version value fromy yaml file https://raw.githubusercontent.com/LinwoodDev/Setonix/nightly/app/pubspec.yaml
 const nightlyUrl =
-  "https://raw.githubusercontent.com/LinwoodDev/Quokka/nightly/app/pubspec.yaml";
+  "https://raw.githubusercontent.com/LinwoodDev/Setonix/nightly/app/pubspec.yaml";
 const nightlyVersion = await fetch(nightlyUrl)
   .then((res) => res.text())
   .then((text) => {
@@ -11,7 +11,7 @@ const nightlyVersion = await fetch(nightlyUrl)
 
 // stable
 const stableUrl =
-  "https://raw.githubusercontent.com/LinwoodDev/Quokka/stable/app/pubspec.yaml";
+  "https://raw.githubusercontent.com/LinwoodDev/Setonix/stable/app/pubspec.yaml";
 const stableVersion = await fetch(stableUrl)
   .then((res) => res.text())
   .then((text) => {
@@ -22,7 +22,7 @@ const stableVersion = await fetch(stableUrl)
 
 // develop
 const developUrl =
-  "https://raw.githubusercontent.com/LinwoodDev/Quokka/develop/app/pubspec.yaml";
+  "https://raw.githubusercontent.com/LinwoodDev/Setonix/develop/app/pubspec.yaml";
 const developVersion = await fetch(developUrl)
   .then((res) => res.text())
   .then((text) => {
@@ -33,7 +33,7 @@ const developVersion = await fetch(developUrl)
 
 // main
 const mainUrl =
-  "https://raw.githubusercontent.com/LinwoodDev/Quokka/main/app/pubspec.yaml";
+  "https://raw.githubusercontent.com/LinwoodDev/Setonix/main/app/pubspec.yaml";
 const mainVersion = await fetch(mainUrl)
   .then((res) => res.text())
   .then((text) => {

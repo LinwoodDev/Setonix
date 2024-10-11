@@ -98,8 +98,8 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
   static List<GameDialog> _$dialogs(WorldState v) => v.dialogs;
   static const Field<WorldState, List<GameDialog>> _f$dialogs =
       Field('dialogs', _$dialogs, opt: true, def: const []);
-  static QuokkaData _$data(WorldState v) => v.data;
-  static const Field<WorldState, QuokkaData> _f$data = Field('data', _$data);
+  static SetonixData _$data(WorldState v) => v.data;
+  static const Field<WorldState, SetonixData> _f$data = Field('data', _$data);
 
   @override
   final MappableFields<WorldState> fields = const {
@@ -199,7 +199,7 @@ abstract class WorldStateCopyWith<$R, $In extends WorldState, $Out>
       List<ChatMessage>? messages,
       int? id,
       List<GameDialog>? dialogs,
-      QuokkaData? data});
+      SetonixData? data});
   WorldStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -246,7 +246,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
           List<ChatMessage>? messages,
           int? id,
           List<GameDialog>? dialogs,
-          QuokkaData? data}) =>
+          SetonixData? data}) =>
       $apply(FieldCopyWithData({
         if (name != $none) #name: name,
         if (table != null) #table: table,

@@ -8,14 +8,14 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:material_leap/l10n/leap_localizations.dart';
 import 'package:material_leap/material_leap.dart';
-import 'package:quokka/pages/game/page.dart';
-import 'package:quokka/pages/home/page.dart';
-import 'package:quokka/pages/settings/data.dart';
-import 'package:quokka/pages/settings/general.dart';
-import 'package:quokka/pages/settings/personalization.dart';
-import 'package:quokka/services/file_system.dart';
-import 'package:quokka/services/network.dart';
-import 'package:quokka/theme.dart';
+import 'package:setonix/pages/game/page.dart';
+import 'package:setonix/pages/home/page.dart';
+import 'package:setonix/pages/settings/data.dart';
+import 'package:setonix/pages/settings/general.dart';
+import 'package:setonix/pages/settings/personalization.dart';
+import 'package:setonix/services/file_system.dart';
+import 'package:setonix/services/network.dart';
+import 'package:setonix/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:window_manager/window_manager.dart';
@@ -51,9 +51,9 @@ Future<void> main(List<String> args) async {
         BlocProvider.value(
             value: WindowCubit(fullScreen: await isFullScreen())),
         RepositoryProvider.value(value: networkService),
-        RepositoryProvider(create: (context) => QuokkaFileSystem()),
+        RepositoryProvider(create: (context) => SetonixFileSystem()),
       ],
-      child: QuokkaApp(),
+      child: SetonixApp(),
     ),
   );
 }
@@ -65,8 +65,8 @@ List<Locale> getLocales() =>
         .where((l) => !kUnsupportedLanguages.contains(l.toString()))
         .toList();
 
-class QuokkaApp extends StatelessWidget {
-  QuokkaApp({super.key});
+class SetonixApp extends StatelessWidget {
+  SetonixApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +79,7 @@ class QuokkaApp extends StatelessWidget {
 
   Widget _buildApp(ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
     final virtualWindowFrameBuilder = VirtualWindowFrameInit();
-    return BlocBuilder<SettingsCubit, QuokkaSettings>(
+    return BlocBuilder<SettingsCubit, SetonixSettings>(
         buildWhen: (previous, current) =>
             previous.design != current.design ||
             previous.theme != current.theme ||
@@ -162,6 +162,6 @@ class QuokkaApp extends StatelessWidget {
 const flavor = String.fromEnvironment('flavor');
 const isNightly =
     flavor == 'nightly' || flavor == 'dev' || flavor == 'development';
-const shortApplicationName = isNightly ? 'Quokka Nightly' : 'Quokka';
+const shortApplicationName = isNightly ? 'Setonix Nightly' : 'Setonix';
 const applicationName = 'Linwood $shortApplicationName';
 const applicationMinorVersion = '0.1';

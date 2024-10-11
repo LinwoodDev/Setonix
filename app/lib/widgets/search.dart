@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:quokka/widgets/two_child_row_layout.dart';
+import 'package:setonix/widgets/two_child_row_layout.dart';
 
 const searchConstraints =
     BoxConstraints(minWidth: 200.0, maxWidth: 260.0, minHeight: 56.0);

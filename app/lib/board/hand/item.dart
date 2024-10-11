@@ -11,13 +11,13 @@ import 'package:flutter/material.dart'
         ContextMenuButtonItem,
         TextSelectionToolbarAnchors;
 import 'package:flutter/widgets.dart';
-import 'package:quokka/bloc/world/bloc.dart';
-import 'package:quokka/bloc/world/state.dart';
-import 'package:quokka/board/game.dart';
-import 'package:quokka/board/hand/view.dart';
-import 'package:quokka/helpers/asset.dart';
-import 'package:quokka/helpers/secondary.dart';
-import 'package:quokka/helpers/drag.dart';
+import 'package:setonix/bloc/world/bloc.dart';
+import 'package:setonix/bloc/world/state.dart';
+import 'package:setonix/board/game.dart';
+import 'package:setonix/board/hand/view.dart';
+import 'package:setonix/helpers/asset.dart';
+import 'package:setonix/helpers/secondary.dart';
+import 'package:setonix/helpers/drag.dart';
 
 class HandItemDragCursorHitbox extends PositionComponent
     with CollisionCallbacks {

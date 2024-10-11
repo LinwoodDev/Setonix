@@ -17,6 +17,6 @@ All other licenses can you found in the settings.
 
 ## Useful links
 
-* [GitHub](https://github.com/LinwoodDev/Quokka)
+* [GitHub](https://github.com/LinwoodDev/Setonix)
 * [Discord](https://go.linwood.dev/discord)
 * [Matrix](https://go.linwood.dev/matrix)

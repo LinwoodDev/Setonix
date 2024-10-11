@@ -3,9 +3,9 @@ import 'package:file_selector/file_selector.dart' as fs;
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:quokka/main.dart';
-import 'package:quokka_api/quokka_api.dart';
-import 'package:quokka/services/file_system.dart';
+import 'package:setonix/main.dart';
+import 'package:setonix_api/setonix_api.dart';
+import 'package:setonix/services/file_system.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Future<bool> openReleaseNotes() {
@@ -13,7 +13,7 @@ Future<bool> openReleaseNotes() {
       Uri(
           scheme: 'https',
           host: 'go.linwood.dev',
-          pathSegments: ['quokka', applicationMinorVersion]),
+          pathSegments: ['setonix', applicationMinorVersion]),
       mode: LaunchMode.externalApplication);
 }
 
@@ -21,35 +21,35 @@ Future<bool> openHelp(List<String> pageLocation, [String? fragment]) {
   return launchUrl(
     Uri(
         scheme: 'https',
-        host: 'quokka.linwood.dev',
+        host: 'setonix.world',
         fragment: fragment,
         pathSegments: ['docs', 'v1', ...pageLocation]),
   );
 }
 
 Future<void> importFile(
-    BuildContext context, QuokkaFileSystem fileSystem) async {
+    BuildContext context, SetonixFileSystem fileSystem) async {
   final result = await fs.openFile(
     acceptedTypeGroups: [
       fs.XTypeGroup(
         label: AppLocalizations.of(context).packs,
         extensions: const ['qka'],
-        uniformTypeIdentifiers: const ['dev.linwood.quokka.pack'],
+        uniformTypeIdentifiers: const ['dev.linwood.setonix.pack'],
         mimeTypes: const ['application/octet-stream', 'application/zip'],
       )
     ],
   );
   if (result == null) return;
   final bytes = await result.readAsBytes();
-  final data = QuokkaData.fromData(bytes);
+  final data = SetonixData.fromData(bytes);
   if (context.mounted) return importFileData(context, fileSystem, data);
 }
 
-Future<QuokkaData?> getCorePack() async => QuokkaData.fromData(
+Future<SetonixData?> getCorePack() async => SetonixData.fromData(
     (await rootBundle.load('assets/pack.qka')).buffer.asUint8List());
 
-Future<void> importFileData(
-    BuildContext context, QuokkaFileSystem fileSystem, QuokkaData data) async {
+Future<void> importFileData(BuildContext context, SetonixFileSystem fileSystem,
+    SetonixData data) async {
   final metadata = data.getMetadataOrDefault();
   final type = metadata.type;
   final result = await showDialog<bool>(

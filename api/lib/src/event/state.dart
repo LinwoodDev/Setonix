@@ -26,7 +26,7 @@ final class WorldState with WorldStateMappable {
   final Channel id;
   final Map<String, Set<Channel>> teamMembers;
   final FileMetadata metadata;
-  final QuokkaData data;
+  final SetonixData data;
   final List<ChatMessage> messages;
   final List<GameDialog> dialogs;
 
@@ -81,7 +81,7 @@ final class WorldState with WorldStateMappable {
     return table.copyWith.cellsBox(content: Map.fromEntries(cells));
   }
 
-  QuokkaData save() =>
+  SetonixData save() =>
       data.setTable(table, tableName).setInfo(info).setFileMetadata(metadata);
 
   GameTable? getTable(String name) =>

@@ -1,6 +1,6 @@
 import 'package:dart_leap/dart_leap.dart';
 import 'package:networker/networker.dart';
-import 'package:quokka_api/quokka_api.dart';
+import 'package:setonix_api/setonix_api.dart';
 
 bool isValidServerEvent(ServerWorldEvent event, WorldState state) =>
     switch (event) {

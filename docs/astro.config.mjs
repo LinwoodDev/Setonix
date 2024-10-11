@@ -6,13 +6,13 @@ import remarkGemoji from "remark-gemoji";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://quokka.linwood.dev",
+  site: "https://setonix.world",
   markdown: {
     remarkPlugins: [remarkHeadingID, remarkGemoji],
   },
   integrations: [
     starlight({
-      title: "Linwood Quokka",
+      title: "Linwood Setonix",
       customCss: ["./src/styles/custom.css"],
       social: {
         github: "https://github.com/withastro/starlight",
@@ -21,7 +21,7 @@ export default defineConfig({
         mastodon: "https://floss.social/@linwood",
         matrix: "https://linwood.dev/matrix",
         discord: "https://linwood.dev/discord",
-        github: "https://github.com/LinwoodDev/Quokka",
+        github: "https://github.com/LinwoodDev/Setonix",
       },
       logo: {
         src: "./public/img/logo.svg",

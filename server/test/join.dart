@@ -1,10 +1,10 @@
-import 'package:quokka_server/quokka_server.dart';
+import 'package:setonix_server/setonix_server.dart';
 
 Future<void> main(List<String> arguments) {
   return runServer(arguments, onLoad);
 }
 
-Future<void> onLoad(QuokkaServer server) async {
+Future<void> onLoad(SetonixServer server) async {
   print("on load was called");
   server.eventSystem
     ..on<UserJoined>((e) {

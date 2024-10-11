@@ -31,12 +31,12 @@ class PersonalizationSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: inView ? Colors.transparent : null,
-        appBar: WindowTitleBar<SettingsCubit, QuokkaSettings>(
+        appBar: WindowTitleBar<SettingsCubit, SetonixSettings>(
           inView: inView,
           backgroundColor: inView ? Colors.transparent : null,
           title: Text(AppLocalizations.of(context).personalization),
         ),
-        body: BlocBuilder<SettingsCubit, QuokkaSettings>(
+        body: BlocBuilder<SettingsCubit, SetonixSettings>(
           builder: (context, state) {
             final design = state.design;
             return ListView(children: [

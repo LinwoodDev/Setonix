@@ -4,12 +4,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lw_file_system/lw_file_system.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:quokka/api/open.dart';
-import 'package:quokka/bloc/world/bloc.dart';
-import 'package:quokka/bloc/world/state.dart';
-import 'package:quokka/services/file_system.dart';
-import 'package:quokka/widgets/search.dart';
-import 'package:quokka_api/quokka_api.dart';
+import 'package:setonix/api/open.dart';
+import 'package:setonix/bloc/world/bloc.dart';
+import 'package:setonix/bloc/world/state.dart';
+import 'package:setonix/services/file_system.dart';
+import 'package:setonix/widgets/search.dart';
+import 'package:setonix_api/setonix_api.dart';
 
 class PacksDialog extends StatefulWidget {
   final WorldBloc? bloc;
@@ -30,11 +30,11 @@ class _PacksDialogState extends State<PacksDialog>
     vsync: this,
     duration: const Duration(milliseconds: 100),
   );
-  late final QuokkaFileSystem _fileSystem = context.read<QuokkaFileSystem>();
+  late final SetonixFileSystem _fileSystem = context.read<SetonixFileSystem>();
   late final TabController _tabController;
   final TextEditingController _searchController = TextEditingController();
-  Future<List<FileSystemFile<QuokkaData>>>? _packsFuture;
-  (QuokkaData, String, bool)? _selectedPack;
+  Future<List<FileSystemFile<SetonixData>>>? _packsFuture;
+  (SetonixData, String, bool)? _selectedPack;
 
   @override
   void initState() {
@@ -67,7 +67,7 @@ class _PacksDialogState extends State<PacksDialog>
 
   bool get isWorldLoaded => widget.bloc != null;
 
-  List<Widget> _buildDetailsChildren(QuokkaData pack, FileMetadata metadata) =>
+  List<Widget> _buildDetailsChildren(SetonixData pack, FileMetadata metadata) =>
       [
         Padding(
           padding: const EdgeInsets.all(8.0),
@@ -76,7 +76,7 @@ class _PacksDialogState extends State<PacksDialog>
       ];
 
   List<Widget> _buildActionsChildren(
-    QuokkaData pack, {
+    SetonixData pack, {
     VoidCallback? onInstall,
     VoidCallback? onRemove,
   }) =>
@@ -120,7 +120,7 @@ class _PacksDialogState extends State<PacksDialog>
   Widget build(BuildContext context) {
     final currentSize = MediaQuery.sizeOf(context).width;
     final isMobile = currentSize < LeapBreakpoints.medium;
-    Future<void> selectPack(QuokkaData pack, String id, bool installed) async {
+    Future<void> selectPack(SetonixData pack, String id, bool installed) async {
       _controller.forward();
       setState(() {
         _selectedPack = (pack, id, installed);
@@ -182,7 +182,7 @@ class _PacksDialogState extends State<PacksDialog>
           ),
           const SizedBox(height: 8),
           Expanded(
-            child: FutureBuilder<List<FileSystemFile<QuokkaData>>>(
+            child: FutureBuilder<List<FileSystemFile<SetonixData>>>(
               future: _packsFuture,
               builder: (context, snapshot) {
                 final packs = snapshot.data ?? [];
@@ -337,10 +337,10 @@ class _PacksDialogState extends State<PacksDialog>
 }
 
 class _InstalledPacksView extends StatelessWidget {
-  final List<FileSystemFile<QuokkaData>> filtered;
-  final List<FileSystemFile<QuokkaData>> packs;
-  final (QuokkaData, String, bool)? selectedPack;
-  final void Function(QuokkaData, String, bool) selectPack;
+  final List<FileSystemFile<SetonixData>> filtered;
+  final List<FileSystemFile<SetonixData>> packs;
+  final (SetonixData, String, bool)? selectedPack;
+  final void Function(SetonixData, String, bool) selectPack;
   final bool isMobile;
   final bool isMobileOpen;
   final WorldBloc? bloc;

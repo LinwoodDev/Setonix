@@ -60,7 +60,7 @@ class GameProperty with GamePropertyMappable {
   });
 
   static const defaultProperty = GameProperty(
-    description: 'A server for Quokka.',
+    description: 'A server for Setonix.',
   );
 }
 

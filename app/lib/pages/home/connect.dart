@@ -5,10 +5,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:quokka/bloc/settings.dart';
-import 'package:quokka/services/network.dart';
-import 'package:quokka/widgets/search.dart';
-import 'package:quokka_api/quokka_api.dart';
+import 'package:setonix/bloc/settings.dart';
+import 'package:setonix/services/network.dart';
+import 'package:setonix/widgets/search.dart';
+import 'package:setonix_api/setonix_api.dart';
 import 'package:rxdart/rxdart.dart';
 
 void _connect(BuildContext context, String address, bool secure) {
@@ -145,7 +145,7 @@ class _ServersDialogState extends State<ServersDialog> {
       ];
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingsCubit, QuokkaSettings>(
+    return BlocBuilder<SettingsCubit, SetonixSettings>(
       buildWhen: (previous, current) =>
           previous.showConnectYour != current.showConnectYour ||
           previous.showConnectNetwork != current.showConnectNetwork,

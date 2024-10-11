@@ -12,7 +12,7 @@ Future<void> main() {
     Timer.periodic(Duration(seconds: 1), (Timer t) {
       //String word = words[Random().nextInt(words.length)];
       var word =
-          '{"port":28006,"description":"A server for Quokka. ${DateTime.now()}"}';
+          '{"port":28006,"description":"A server for Setonix. ${DateTime.now()}"}';
       List<int> data = utf8.encode(word);
       udpSocket.send(data, destination, 28007);
       print('sent $word');

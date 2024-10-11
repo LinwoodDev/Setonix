@@ -6,8 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:networker/networker.dart';
 import 'package:networker_socket/client.dart';
 import 'package:networker_socket/server.dart';
-import 'package:quokka/services/network.dart';
-import 'package:quokka_api/quokka_api.dart';
+import 'package:setonix/services/network.dart';
+import 'package:setonix_api/setonix_api.dart';
 
 part 'multiplayer.mapper.dart';
 
@@ -171,7 +171,7 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
       final state = await _addNetworker(server);
       await server.init();
       networkService.sendServerInfo(LanProperty(
-        description: property?.description ?? 'Quokka Server',
+        description: property?.description ?? 'Setonix Server',
         port: port,
       ));
       emit(state);

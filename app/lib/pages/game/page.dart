@@ -5,26 +5,26 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:quokka/bloc/world/bloc.dart';
-import 'package:quokka/bloc/world/local.dart';
-import 'package:quokka/bloc/world/state.dart';
-import 'package:quokka/bloc/multiplayer.dart';
-import 'package:quokka/bloc/settings.dart';
-import 'package:quokka/board/game.dart';
-import 'package:quokka/pages/game/chat.dart';
-import 'package:quokka/pages/game/dialog.dart';
-import 'package:quokka/pages/game/drawer.dart';
-import 'package:quokka/pages/game/notes.dart';
-import 'package:quokka/pages/home/background.dart';
-import 'package:quokka/services/file_system.dart';
-import 'package:quokka/services/network.dart';
-import 'package:quokka_api/quokka_api.dart';
+import 'package:setonix/bloc/world/bloc.dart';
+import 'package:setonix/bloc/world/local.dart';
+import 'package:setonix/bloc/world/state.dart';
+import 'package:setonix/bloc/multiplayer.dart';
+import 'package:setonix/bloc/settings.dart';
+import 'package:setonix/board/game.dart';
+import 'package:setonix/pages/game/chat.dart';
+import 'package:setonix/pages/game/dialog.dart';
+import 'package:setonix/pages/game/drawer.dart';
+import 'package:setonix/pages/game/notes.dart';
+import 'package:setonix/pages/home/background.dart';
+import 'package:setonix/services/file_system.dart';
+import 'package:setonix/services/network.dart';
+import 'package:setonix_api/setonix_api.dart';
 
 class GamePage extends StatefulWidget {
   final String? name;
   final String? address;
   final bool secure;
-  final QuokkaData? data;
+  final SetonixData? data;
 
   const GamePage({
     super.key,
@@ -54,12 +54,12 @@ class _GamePageState extends State<GamePage> {
     });
   }
 
-  Future<Blocs> _initBloc([QuokkaData? data]) async {
+  Future<Blocs> _initBloc([SetonixData? data]) async {
     final cubit = MultiplayerCubit(context.read<NetworkService>());
     final address = widget.address;
     final world = WorldBloc(
       multiplayer: cubit,
-      fileSystem: context.read<QuokkaFileSystem>(),
+      fileSystem: context.read<SetonixFileSystem>(),
       name: widget.name,
       data: data,
       colorScheme: Theme.of(context).colorScheme,
@@ -76,11 +76,11 @@ class _GamePageState extends State<GamePage> {
     if (address != null) {
       return _initBloc();
     }
-    final worldSystem = context.read<QuokkaFileSystem>().worldSystem;
+    final worldSystem = context.read<SetonixFileSystem>().worldSystem;
     final name = widget.name;
     final data = (widget.data ??
             (name == null ? null : await worldSystem.getFile(name))) ??
-        QuokkaData.empty();
+        SetonixData.empty();
     return _initBloc(data);
   }
 
@@ -138,7 +138,7 @@ class _GamePageState extends State<GamePage> {
                       );
                     }
                     return Scaffold(
-                      appBar: WindowTitleBar<SettingsCubit, QuokkaSettings>(
+                      appBar: WindowTitleBar<SettingsCubit, SetonixSettings>(
                         title: Text(AppLocalizations.of(context).game),
                         height: 50,
                         actions: [

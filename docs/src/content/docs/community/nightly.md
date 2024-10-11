@@ -4,7 +4,7 @@ title: Nightly Builds
 
 :::warning
 
-Do not use the nightly version of Quokka for production.
+Do not use the nightly version of Setonix for production.
 
 :::
 

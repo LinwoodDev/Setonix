@@ -1,8 +1,8 @@
 import 'package:flame/widgets.dart';
-import 'package:quokka/bloc/world/state.dart';
-import 'package:quokka/board/cell.dart';
-import 'package:quokka/board/hand/item.dart';
-import 'package:quokka_api/quokka_api.dart';
+import 'package:setonix/bloc/world/state.dart';
+import 'package:setonix/board/cell.dart';
+import 'package:setonix/board/hand/item.dart';
+import 'package:setonix_api/setonix_api.dart';
 
 class BoardDefinitionHandItem extends HandItem<PackItem<BoardDefinition>> {
   BoardDefinitionHandItem({required super.item});

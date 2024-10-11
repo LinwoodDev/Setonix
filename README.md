@@ -1,22 +1,22 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/LinwoodDev/Quokka/develop/app/images/logo.png" width="350px" />
+<img src="https://raw.githubusercontent.com/LinwoodDev/Setonix/develop/app/images/logo.png" width="350px" />
 
-# Quokka
+# Setonix
 
 > WIP: 🃏 Powerful, customizable, cross-platform, opensource table sandbox game 🃏
 
-[![Latest release)](https://img.shields.io/github/v/release/LinwoodDev/Quokka?color=A28DDB&style=for-the-badge&logo=github&logoColor=A28DDB)](https://github.com/LinwoodDev/Quokka/releases)
-[![GitHub License badge](https://img.shields.io/github/license/LinwoodDev/Quokka?color=A28DDB&style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiBmaWxsPSIjZWJiNzMzIiB2aWV3Qm94PSIwIDAgMjU2IDI1NiI%2BPHJlY3Qgd2lkdGg9IjI1NiIgaGVpZ2h0PSIyNTYiIGZpbGw9Im5vbmUiPjwvcmVjdD48cmVjdCB4PSIzMiIgeT0iNDgiIHdpZHRoPSIxOTIiIGhlaWdodD0iMTYwIiByeD0iOCIgc3Ryb2tlLXdpZHRoPSIxNiIgc3Ryb2tlPSIjZWJiNzMzIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGZpbGw9Im5vbmUiPjwvcmVjdD48bGluZSB4MT0iNzYiIHkxPSI5NiIgeDI9IjE4MCIgeTI9Ijk2IiBmaWxsPSJub25lIiBzdHJva2U9IiNlYmI3MzMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxNiI%2BPC9saW5lPjxsaW5lIHgxPSI3NiIgeTE9IjEyOCIgeDI9IjE4MCIgeTI9IjEyOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZWJiNzMzIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMTYiPjwvbGluZT48bGluZSB4MT0iNzYiIHkxPSIxNjAiIHgyPSIxODAiIHkyPSIxNjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ViYjczMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjE2Ij48L2xpbmU%2BPC9zdmc%2B)](https://github.com/LinwoodDev/Quokka/blob/main/LICENSE)
-[![GitHub Repo stars](https://img.shields.io/github/stars/LinwoodDev/Quokka?color=A28DDB&logo=github&logoColor=A28DDB&style=for-the-badge)](https://github.com/LinwoodDev/Quokka)
+[![Latest release)](https://img.shields.io/github/v/release/LinwoodDev/Setonix?color=A28DDB&style=for-the-badge&logo=github&logoColor=A28DDB)](https://github.com/LinwoodDev/Setonix/releases)
+[![GitHub License badge](https://img.shields.io/github/license/LinwoodDev/Setonix?color=A28DDB&style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiBmaWxsPSIjZWJiNzMzIiB2aWV3Qm94PSIwIDAgMjU2IDI1NiI%2BPHJlY3Qgd2lkdGg9IjI1NiIgaGVpZ2h0PSIyNTYiIGZpbGw9Im5vbmUiPjwvcmVjdD48cmVjdCB4PSIzMiIgeT0iNDgiIHdpZHRoPSIxOTIiIGhlaWdodD0iMTYwIiByeD0iOCIgc3Ryb2tlLXdpZHRoPSIxNiIgc3Ryb2tlPSIjZWJiNzMzIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGZpbGw9Im5vbmUiPjwvcmVjdD48bGluZSB4MT0iNzYiIHkxPSI5NiIgeDI9IjE4MCIgeTI9Ijk2IiBmaWxsPSJub25lIiBzdHJva2U9IiNlYmI3MzMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxNiI%2BPC9saW5lPjxsaW5lIHgxPSI3NiIgeTE9IjEyOCIgeDI9IjE4MCIgeTI9IjEyOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZWJiNzMzIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMTYiPjwvbGluZT48bGluZSB4MT0iNzYiIHkxPSIxNjAiIHgyPSIxODAiIHkyPSIxNjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ViYjczMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjE2Ij48L2xpbmU%2BPC9zdmc%2B)](https://github.com/LinwoodDev/Setonix/blob/main/LICENSE)
+[![GitHub Repo stars](https://img.shields.io/github/stars/LinwoodDev/Setonix?color=A28DDB&logo=github&logoColor=A28DDB&style=for-the-badge)](https://github.com/LinwoodDev/Setonix)
 [![Matrix badge](https://img.shields.io/matrix/linwood:matrix.org?style=for-the-badge&color=A28DDB&logo=matrix&logoColor=A28DDB&label=Matrix)](https://linwood.dev/matrix)
 [![Discord badge](https://img.shields.io/discord/735424757142519848?style=for-the-badge&color=A28DDB&logo=discord&logoColor=A28DDB&label=Discord)](https://discord.linwood.dev)
-[![Download](https://img.shields.io/github/downloads/LinwoodDev/Quokka/total?color=A28DDB&style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiBmaWxsPSIjZWJiNzMzIiB2aWV3Qm94PSIwIDAgMjU2IDI1NiI+PHJlY3Qgd2lkdGg9IjI1NiIgaGVpZ2h0PSIyNTYiIGZpbGw9Im5vbmUiPjwvcmVjdD48cG9seWxpbmUgcG9pbnRzPSI4NiAxMTAuMDExIDEyOCAxNTIgMTcwIDExMC4wMTEiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ViYjczMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjE2Ij48L3BvbHlsaW5lPjxsaW5lIHgxPSIxMjgiIHkxPSI0MCIgeDI9IjEyOCIgeTI9IjE1MS45NzA1NyIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZWJiNzMzIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMTYiPjwvbGluZT48cGF0aCBkPSJNMjE2LDE1MnY1NmE4LDgsMCwwLDEtOCw4SDQ4YTgsOCwwLDAsMS04LThWMTUyIiBmaWxsPSJub25lIiBzdHJva2U9IiNlYmI3MzMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxNiI+PC9wYXRoPjwvc3ZnPg==)](https://quokka.linwood.dev)
+[![Download](https://img.shields.io/github/downloads/LinwoodDev/Setonix/total?color=A28DDB&style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiBmaWxsPSIjZWJiNzMzIiB2aWV3Qm94PSIwIDAgMjU2IDI1NiI+PHJlY3Qgd2lkdGg9IjI1NiIgaGVpZ2h0PSIyNTYiIGZpbGw9Im5vbmUiPjwvcmVjdD48cG9seWxpbmUgcG9pbnRzPSI4NiAxMTAuMDExIDEyOCAxNTIgMTcwIDExMC4wMTEiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ViYjczMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjE2Ij48L3BvbHlsaW5lPjxsaW5lIHgxPSIxMjgiIHkxPSI0MCIgeDI9IjEyOCIgeTI9IjE1MS45NzA1NyIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZWJiNzMzIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMTYiPjwvbGluZT48cGF0aCBkPSJNMjE2LDE1MnY1NmE4LDgsMCwwLDEtOCw4SDQ4YTgsOCwwLDAsMS04LThWMTUyIiBmaWxsPSJub25lIiBzdHJva2U9IiNlYmI3MzMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxNiI+PC9wYXRoPjwvc3ZnPg==)](https://setonix.world)
 </div>
 
 <p align="center">
-    <a href="http://quokka.linwood.dev"><b>Website</b></a> •
-    <a href="http://quokka.linwood.dev/downloads"><b>Download</b></a> •
+    <a href="http://setonix.world"><b>Website</b></a> •
+    <a href="http://setonix.world/downloads"><b>Download</b></a> •
     <a href="https://go.linwood.dev/matrix"><b>Matrix</b></a> •
     <a href="https://go.linwood.dev/discord"><b>Discord</b></a> •
     <a href="https://floss.social/@linwood"><b>Mastodon</b></a> •
@@ -26,11 +26,11 @@
 
 ---
 
-Quokka is a table sandbox game where you can decide how to play. Spawn cards everywhere you like, add optional rules and play with your friends or alone without internet.
+Setonix is a table sandbox game where you can decide how to play. Spawn cards everywhere you like, add optional rules and play with your friends or alone without internet.
 
 **This project is still in development and not ready for production use. Please join the matrix or discord server for updates!**
 
-**Click [here](https://github.com/LinwoodDev/Quokka/discussions/26) to read about the concept and share your thoughts!**
+**Click [here](https://github.com/LinwoodDev/Setonix/discussions/26) to read about the concept and share your thoughts!**
 
 ## Limitations of the preview
 
@@ -60,7 +60,7 @@ Quokka is a table sandbox game where you can decide how to play. Spawn cards eve
 
 ## Contributing
 
-We are happy to see that you are interested in contributing to Quokka.
+We are happy to see that you are interested in contributing to Setonix.
 To get started, visit [the contributing guide](CONTRIBUTING.md).
 
 ## License

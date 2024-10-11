@@ -5,18 +5,18 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:quokka/api/settings.dart';
-import 'package:quokka/bloc/multiplayer.dart';
-import 'package:quokka/bloc/settings.dart';
-import 'package:quokka/bloc/world/bloc.dart';
-import 'package:quokka/bloc/world/local.dart';
-import 'package:quokka/bloc/world/state.dart';
-import 'package:quokka/helpers/visualizer.dart';
-import 'package:quokka/pages/game/info.dart';
-import 'package:quokka/pages/game/multiplayer.dart';
-import 'package:quokka/pages/game/team.dart';
-import 'package:quokka/pages/home/packs.dart';
-import 'package:quokka_api/quokka_api.dart';
+import 'package:setonix/api/settings.dart';
+import 'package:setonix/bloc/multiplayer.dart';
+import 'package:setonix/bloc/settings.dart';
+import 'package:setonix/bloc/world/bloc.dart';
+import 'package:setonix/bloc/world/local.dart';
+import 'package:setonix/bloc/world/state.dart';
+import 'package:setonix/helpers/visualizer.dart';
+import 'package:setonix/pages/game/info.dart';
+import 'package:setonix/pages/game/multiplayer.dart';
+import 'package:setonix/pages/game/team.dart';
+import 'package:setonix/pages/home/packs.dart';
+import 'package:setonix_api/setonix_api.dart';
 
 class GameDrawer extends StatelessWidget {
   const GameDrawer({
@@ -122,7 +122,7 @@ class GameDrawer extends StatelessWidget {
                 );
               },
             ),
-            BlocBuilder<SettingsCubit, QuokkaSettings>(
+            BlocBuilder<SettingsCubit, SetonixSettings>(
               buildWhen: (previous, current) => previous.zoom != current.zoom,
               builder: (context, state) => ListTile(
                 leading: const Icon(PhosphorIconsLight.magnifyingGlass),

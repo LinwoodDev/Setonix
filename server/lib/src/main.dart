@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:args/args.dart';
-import 'package:quokka_api/quokka_api.dart';
-import 'package:quokka_server/src/server.dart';
+import 'package:setonix_api/setonix_api.dart';
+import 'package:setonix_server/src/server.dart';
 
 const String version = '0.0.1';
 
@@ -46,7 +46,7 @@ void printUsage(ArgParser argParser) {
   print(argParser.usage);
 }
 
-typedef ServerLoader = FutureOr<void> Function(QuokkaServer server);
+typedef ServerLoader = FutureOr<void> Function(SetonixServer server);
 
 const welcomeText = """
   ____            __    __       
@@ -79,7 +79,7 @@ Future<void> runServer(List<String> arguments, [ServerLoader? onLoad]) async {
     if (results.wasParsed('description')) {
       description = results['description'];
     }
-    final server = await QuokkaServer.load();
+    final server = await SetonixServer.load();
     await server.init(
       port: int.tryParse(results['port'] ?? '') ?? kDefaultPort,
       verbose: verbose,

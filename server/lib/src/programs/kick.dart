@@ -1,8 +1,8 @@
 import 'package:consoler/consoler.dart';
-import 'package:quokka_server/src/server.dart';
+import 'package:setonix_server/src/server.dart';
 
 class KickProgram extends ConsoleProgram {
-  final QuokkaServer server;
+  final SetonixServer server;
 
   KickProgram(this.server);
 

@@ -2,13 +2,13 @@ import 'dart:io';
 
 import 'package:consoler/consoler.dart';
 import 'package:path/path.dart' as p;
-import 'package:quokka_api/quokka_api.dart';
+import 'package:setonix_api/setonix_api.dart';
 
 class ServerAssetManager extends AssetManager {
-  final Map<String, QuokkaData> _packs = {};
+  final Map<String, SetonixData> _packs = {};
   static const _qkaExtension = 'qka';
   @override
-  Iterable<MapEntry<String, QuokkaData>> get packs => _packs.entries;
+  Iterable<MapEntry<String, SetonixData>> get packs => _packs.entries;
 
   Future<void> init({required Consoler console, bool verbose = false}) async {
     _packs.clear();
@@ -20,7 +20,7 @@ class ServerAssetManager extends AssetManager {
     }
     await for (final file in directory.list()) {
       if (file is File) {
-        final data = QuokkaData.fromData(await file.readAsBytes());
+        final data = SetonixData.fromData(await file.readAsBytes());
         final fileName = p.basename(file.path);
         final extension = fileName.split('.').last;
         if (extension != _qkaExtension) {
@@ -48,7 +48,7 @@ class ServerAssetManager extends AssetManager {
   }
 
   @override
-  QuokkaData? getPack(String key) => _packs[key];
+  SetonixData? getPack(String key) => _packs[key];
 
   @override
   bool hasPack(String key) => _packs.containsKey(key);

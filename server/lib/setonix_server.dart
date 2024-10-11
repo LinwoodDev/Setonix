@@ -1,7 +1,7 @@
-/// Official quokka server library
+/// Official setonix server library
 library;
 
-export 'package:quokka_api/quokka_api.dart';
+export 'package:setonix_api/setonix_api.dart';
 export 'src/asset.dart';
 export 'src/events/model.dart';
 export 'src/events/system.dart';

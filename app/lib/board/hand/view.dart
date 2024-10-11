@@ -7,16 +7,16 @@ import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/material.dart'
     show Canvas, Color, Colors, CustomPainter, Paint, PaintingStyle, Rect, Size;
 import 'package:flutter/painting.dart';
-import 'package:quokka/bloc/world/bloc.dart';
-import 'package:quokka/bloc/world/state.dart';
-import 'package:quokka/board/hand/board.dart';
-import 'package:quokka/board/hand/deck.dart';
-import 'package:quokka/board/hand/figure.dart';
-import 'package:quokka/board/hand/item.dart';
-import 'package:quokka/board/hand/object.dart';
-import 'package:quokka/board/hand/tile.dart';
-import 'package:quokka/helpers/scroll.dart';
-import 'package:quokka_api/quokka_api.dart';
+import 'package:setonix/bloc/world/bloc.dart';
+import 'package:setonix/bloc/world/state.dart';
+import 'package:setonix/board/hand/board.dart';
+import 'package:setonix/board/hand/deck.dart';
+import 'package:setonix/board/hand/figure.dart';
+import 'package:setonix/board/hand/item.dart';
+import 'package:setonix/board/hand/object.dart';
+import 'package:setonix/board/hand/tile.dart';
+import 'package:setonix/helpers/scroll.dart';
+import 'package:setonix_api/setonix_api.dart';
 
 class GameHandCustomPainter extends CustomPainter {
   final bool showHand;

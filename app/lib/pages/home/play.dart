@@ -5,12 +5,12 @@ import 'package:go_router/go_router.dart';
 import 'package:lw_file_system/lw_file_system.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:quokka/api/open.dart';
-import 'package:quokka/api/save.dart';
-import 'package:quokka/pages/home/create.dart';
-import 'package:quokka/services/file_system.dart';
-import 'package:quokka/widgets/search.dart';
-import 'package:quokka_api/quokka_api.dart';
+import 'package:setonix/api/open.dart';
+import 'package:setonix/api/save.dart';
+import 'package:setonix/pages/home/create.dart';
+import 'package:setonix/services/file_system.dart';
+import 'package:setonix/widgets/search.dart';
+import 'package:setonix_api/setonix_api.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PlayDialog extends StatefulWidget {
@@ -21,10 +21,10 @@ class PlayDialog extends StatefulWidget {
 }
 
 class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
-  late final TypedKeyFileSystem<QuokkaData> _worldSystem;
-  late final QuokkaFileSystem _fileSystem;
-  late Stream<List<FileSystemFile<QuokkaData>>> _gamesStream;
-  FileSystemFile<QuokkaData>? _selected;
+  late final TypedKeyFileSystem<SetonixData> _worldSystem;
+  late final SetonixFileSystem _fileSystem;
+  late Stream<List<FileSystemFile<SetonixData>>> _gamesStream;
+  FileSystemFile<SetonixData>? _selected;
   bool _isMobileOpen = false;
 
   String _search = '';
@@ -32,12 +32,12 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _fileSystem = context.read<QuokkaFileSystem>();
+    _fileSystem = context.read<SetonixFileSystem>();
     _worldSystem = _fileSystem.worldSystem;
     _gamesStream = ValueConnectableStream(_fetchGames()).autoConnect();
   }
 
-  Stream<List<FileSystemFile<QuokkaData>>> _fetchGames() async* {
+  Stream<List<FileSystemFile<SetonixData>>> _fetchGames() async* {
     await _worldSystem.initialize();
     yield* _worldSystem.fetchFiles();
   }

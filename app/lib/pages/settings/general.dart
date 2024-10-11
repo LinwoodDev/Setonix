@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:quokka/api/open.dart';
+import 'package:setonix/api/open.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:quokka/bloc/settings.dart';
+import 'package:setonix/bloc/settings.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 
@@ -45,7 +45,7 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
 
   Future<Meta> _fetchMeta() async {
     final response =
-        await http.get(Uri.parse('https://docs.quokka.linwood.dev/meta.json'));
+        await http.get(Uri.parse('https://docs.setonix.world/meta.json'));
     return Meta.fromJson({...json.decode(response.body)});
   }
 
@@ -53,7 +53,7 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: widget.inView ? Colors.transparent : null,
-      appBar: WindowTitleBar<SettingsCubit, QuokkaSettings>(
+      appBar: WindowTitleBar<SettingsCubit, SetonixSettings>(
         title: Text(AppLocalizations.of(context).general),
         backgroundColor: widget.inView ? Colors.transparent : null,
         inView: widget.inView,
@@ -164,7 +164,7 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
                                     onTap: () async {
                                       await launchUrl(
                                           Uri.parse(
-                                              'https://quokka.linwood.dev/downloads'),
+                                              'https://setonix.world/downloads'),
                                           mode: LaunchMode.externalApplication);
                                     },
                                   ),
@@ -185,8 +185,7 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
                               const PhosphorIcon(PhosphorIconsLight.article),
                           title:
                               Text(AppLocalizations.of(context).documentation),
-                          onTap: () => launchUrl(
-                              Uri.https('quokka.linwood.dev', ''),
+                          onTap: () => launchUrl(Uri.https('setonix.world', ''),
                               mode: LaunchMode.externalApplication)),
                       ListTile(
                           leading: const PhosphorIcon(PhosphorIconsLight.flag),
@@ -210,20 +209,20 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
                               const PhosphorIcon(PhosphorIconsLight.translate),
                           title: const Text('Crowdin'),
                           onTap: () => launchUrl(
-                              Uri.https('go.linwood.dev', 'quokka/crowdin'),
+                              Uri.https('go.linwood.dev', 'setonix/crowdin'),
                               mode: LaunchMode.externalApplication)),
                       ListTile(
                           leading: const PhosphorIcon(PhosphorIconsLight.code),
                           title: Text(AppLocalizations.of(context).source),
                           onTap: () => launchUrl(
-                              Uri.https('go.linwood.dev', 'quokka/source'),
+                              Uri.https('go.linwood.dev', 'setonix/source'),
                               mode: LaunchMode.externalApplication)),
                       ListTile(
                           leading: const PhosphorIcon(
                               PhosphorIconsLight.arrowCounterClockwise),
                           title: Text(AppLocalizations.of(context).changelog),
                           onTap: () => launchUrl(
-                              Uri.https('quokka.linwood.dev', 'changelog'),
+                              Uri.https('setonix.world', 'changelog'),
                               mode: LaunchMode.externalApplication)),
                     ]),
               ),
@@ -239,7 +238,7 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
                           leading: const PhosphorIcon(PhosphorIconsLight.stack),
                           title: Text(AppLocalizations.of(context).license),
                           onTap: () => launchUrl(
-                              Uri.https('go.linwood.dev', 'quokka/license'),
+                              Uri.https('go.linwood.dev', 'setonix/license'),
                               mode: LaunchMode.externalApplication)),
                       ListTile(
                           leading: const PhosphorIcon(
@@ -254,7 +253,7 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
                           title:
                               Text(AppLocalizations.of(context).privacypolicy),
                           onTap: () => launchUrl(
-                              Uri.https('quokka.linwood.dev', 'privacypolicy'),
+                              Uri.https('setonix.world', 'privacypolicy'),
                               mode: LaunchMode.externalApplication)),
                       ListTile(
                         title: Text(

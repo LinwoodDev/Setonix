@@ -5,10 +5,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lw_file_system/lw_file_system.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:quokka/api/open.dart';
-import 'package:quokka/api/save.dart';
-import 'package:quokka/services/file_system.dart';
-import 'package:quokka_api/quokka_api.dart';
+import 'package:setonix/api/open.dart';
+import 'package:setonix/api/save.dart';
+import 'package:setonix/services/file_system.dart';
+import 'package:setonix_api/setonix_api.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CreateDialog extends StatefulWidget {
@@ -25,10 +25,10 @@ class _CreateDialogState extends State<CreateDialog>
   final GlobalKey _pageKey = GlobalKey();
   final TextEditingController _nameController = TextEditingController(),
       _descriptionController = TextEditingController();
-  late final TypedKeyFileSystem<QuokkaData> _templateSystem, _worldSystem;
-  late final QuokkaFileSystem _fileSystem;
-  late Stream<List<FileSystemFile<QuokkaData>>> _templatesStream;
-  late final Future<List<FileSystemFile<QuokkaData>>> _packsFuture;
+  late final TypedKeyFileSystem<SetonixData> _templateSystem, _worldSystem;
+  late final SetonixFileSystem _fileSystem;
+  late Stream<List<FileSystemFile<SetonixData>>> _templatesStream;
+  late final Future<List<FileSystemFile<SetonixData>>> _packsFuture;
 
   String? _selectedTemplate;
   PackItem<BackgroundTranslation>? _background;
@@ -39,7 +39,7 @@ class _CreateDialogState extends State<CreateDialog>
   @override
   void initState() {
     super.initState();
-    _fileSystem = context.read<QuokkaFileSystem>();
+    _fileSystem = context.read<SetonixFileSystem>();
     _worldSystem = _fileSystem.worldSystem;
     _templateSystem = _fileSystem.templateSystem;
     _templatesStream = ValueConnectableStream(_loadTemplates()).autoConnect();
@@ -51,7 +51,7 @@ class _CreateDialogState extends State<CreateDialog>
   void _reloadTemplates() => setState(() => _templatesStream =
       ValueConnectableStream(_loadTemplates()).autoConnect());
 
-  Stream<List<FileSystemFile<QuokkaData>>> _loadTemplates() async* {
+  Stream<List<FileSystemFile<SetonixData>>> _loadTemplates() async* {
     await _templateSystem.initialize();
     yield* _templateSystem.fetchFiles();
   }
@@ -297,7 +297,7 @@ class _CreateDialogState extends State<CreateDialog>
                   _selectedTemplate == null || _tabController.index == 0
                       ? null
                       : await _templateSystem.getFile(_selectedTemplate!);
-              template ??= QuokkaData.empty().setInfo(
+              template ??= SetonixData.empty().setInfo(
                 GameInfo(
                   packs: _selectedPacks ??
                       (await _packsFuture).map((e) => e.path).toList(),
@@ -367,7 +367,7 @@ class _CreateDialogState extends State<CreateDialog>
 }
 
 class _CustomCreateView extends StatelessWidget {
-  final Future<List<FileSystemFile<QuokkaData>>> packsFuture;
+  final Future<List<FileSystemFile<SetonixData>>> packsFuture;
   final List<String>? selectedPacksId;
   final void Function(List<String>) onPacksSelected;
 
@@ -379,7 +379,7 @@ class _CustomCreateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<FileSystemFile<QuokkaData>>>(
+    return FutureBuilder<List<FileSystemFile<SetonixData>>>(
         future: packsFuture,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {

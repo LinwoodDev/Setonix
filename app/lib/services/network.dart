@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:quokka/bloc/settings.dart';
-import 'package:quokka_api/quokka_api.dart';
+import 'package:setonix/bloc/settings.dart';
+import 'package:setonix_api/setonix_api.dart';
 import 'package:rxdart/rxdart.dart';
 
 const kTimeoutDelay = Duration(seconds: 5);
@@ -117,7 +117,7 @@ class NetworkService {
     try {
       final response = await http.get(address, headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
-        'X-Quokka-Method': 'info',
+        'X-Setonix-Method': 'info',
       });
       if (response.statusCode != HttpStatus.ok) return null;
 

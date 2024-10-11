@@ -6,13 +6,13 @@
 
 part of 'settings.dart';
 
-class QuokkaSettingsMapper extends ClassMapperBase<QuokkaSettings> {
-  QuokkaSettingsMapper._();
+class SetonixSettingsMapper extends ClassMapperBase<SetonixSettings> {
+  SetonixSettingsMapper._();
 
-  static QuokkaSettingsMapper? _instance;
-  static QuokkaSettingsMapper ensureInitialized() {
+  static SetonixSettingsMapper? _instance;
+  static SetonixSettingsMapper ensureInitialized() {
     if (_instance == null) {
-      MapperContainer.globals.use(_instance = QuokkaSettingsMapper._());
+      MapperContainer.globals.use(_instance = SetonixSettingsMapper._());
       GamePropertyMapper.ensureInitialized();
       ListGameServerMapper.ensureInitialized();
     }
@@ -20,48 +20,48 @@ class QuokkaSettingsMapper extends ClassMapperBase<QuokkaSettings> {
   }
 
   @override
-  final String id = 'QuokkaSettings';
+  final String id = 'SetonixSettings';
 
-  static String _$localeTag(QuokkaSettings v) => v.localeTag;
-  static const Field<QuokkaSettings, String> _f$localeTag =
+  static String _$localeTag(SetonixSettings v) => v.localeTag;
+  static const Field<SetonixSettings, String> _f$localeTag =
       Field('localeTag', _$localeTag, opt: true, def: '');
-  static ThemeMode _$theme(QuokkaSettings v) => v.theme;
-  static const Field<QuokkaSettings, ThemeMode> _f$theme =
+  static ThemeMode _$theme(SetonixSettings v) => v.theme;
+  static const Field<SetonixSettings, ThemeMode> _f$theme =
       Field('theme', _$theme, opt: true, def: ThemeMode.system);
-  static String _$design(QuokkaSettings v) => v.design;
-  static const Field<QuokkaSettings, String> _f$design =
+  static String _$design(SetonixSettings v) => v.design;
+  static const Field<SetonixSettings, String> _f$design =
       Field('design', _$design, opt: true, def: '');
-  static String _$dataDirectory(QuokkaSettings v) => v.dataDirectory;
-  static const Field<QuokkaSettings, String> _f$dataDirectory =
+  static String _$dataDirectory(SetonixSettings v) => v.dataDirectory;
+  static const Field<SetonixSettings, String> _f$dataDirectory =
       Field('dataDirectory', _$dataDirectory, opt: true, def: '');
-  static bool _$nativeTitleBar(QuokkaSettings v) => v.nativeTitleBar;
-  static const Field<QuokkaSettings, bool> _f$nativeTitleBar =
+  static bool _$nativeTitleBar(SetonixSettings v) => v.nativeTitleBar;
+  static const Field<SetonixSettings, bool> _f$nativeTitleBar =
       Field('nativeTitleBar', _$nativeTitleBar, opt: true, def: false);
-  static bool _$showConnectYour(QuokkaSettings v) => v.showConnectYour;
-  static const Field<QuokkaSettings, bool> _f$showConnectYour =
+  static bool _$showConnectYour(SetonixSettings v) => v.showConnectYour;
+  static const Field<SetonixSettings, bool> _f$showConnectYour =
       Field('showConnectYour', _$showConnectYour, opt: true, def: true);
-  static bool _$showConnectNetwork(QuokkaSettings v) => v.showConnectNetwork;
-  static const Field<QuokkaSettings, bool> _f$showConnectNetwork =
+  static bool _$showConnectNetwork(SetonixSettings v) => v.showConnectNetwork;
+  static const Field<SetonixSettings, bool> _f$showConnectNetwork =
       Field('showConnectNetwork', _$showConnectNetwork, opt: true, def: true);
-  static String? _$lastVersion(QuokkaSettings v) => v.lastVersion;
-  static const Field<QuokkaSettings, String> _f$lastVersion =
+  static String? _$lastVersion(SetonixSettings v) => v.lastVersion;
+  static const Field<SetonixSettings, String> _f$lastVersion =
       Field('lastVersion', _$lastVersion, opt: true);
-  static GameProperty _$gameProperty(QuokkaSettings v) => v.gameProperty;
-  static const Field<QuokkaSettings, GameProperty> _f$gameProperty = Field(
+  static GameProperty _$gameProperty(SetonixSettings v) => v.gameProperty;
+  static const Field<SetonixSettings, GameProperty> _f$gameProperty = Field(
       'gameProperty', _$gameProperty,
       opt: true, def: const GameProperty());
-  static List<ListGameServer> _$servers(QuokkaSettings v) => v.servers;
-  static const Field<QuokkaSettings, List<ListGameServer>> _f$servers =
+  static List<ListGameServer> _$servers(SetonixSettings v) => v.servers;
+  static const Field<SetonixSettings, List<ListGameServer>> _f$servers =
       Field('servers', _$servers, opt: true, def: const []);
-  static bool _$highContrast(QuokkaSettings v) => v.highContrast;
-  static const Field<QuokkaSettings, bool> _f$highContrast =
+  static bool _$highContrast(SetonixSettings v) => v.highContrast;
+  static const Field<SetonixSettings, bool> _f$highContrast =
       Field('highContrast', _$highContrast, opt: true, def: false);
-  static double _$zoom(QuokkaSettings v) => v.zoom;
-  static const Field<QuokkaSettings, double> _f$zoom =
+  static double _$zoom(SetonixSettings v) => v.zoom;
+  static const Field<SetonixSettings, double> _f$zoom =
       Field('zoom', _$zoom, opt: true, def: 1);
 
   @override
-  final MappableFields<QuokkaSettings> fields = const {
+  final MappableFields<SetonixSettings> fields = const {
     #localeTag: _f$localeTag,
     #theme: _f$theme,
     #design: _f$design,
@@ -76,8 +76,8 @@ class QuokkaSettingsMapper extends ClassMapperBase<QuokkaSettings> {
     #zoom: _f$zoom,
   };
 
-  static QuokkaSettings _instantiate(DecodingData data) {
-    return QuokkaSettings(
+  static SetonixSettings _instantiate(DecodingData data) {
+    return SetonixSettings(
         localeTag: data.dec(_f$localeTag),
         theme: data.dec(_f$theme),
         design: data.dec(_f$design),
@@ -95,55 +95,55 @@ class QuokkaSettingsMapper extends ClassMapperBase<QuokkaSettings> {
   @override
   final Function instantiate = _instantiate;
 
-  static QuokkaSettings fromMap(Map<String, dynamic> map) {
-    return ensureInitialized().decodeMap<QuokkaSettings>(map);
+  static SetonixSettings fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<SetonixSettings>(map);
   }
 
-  static QuokkaSettings fromJson(String json) {
-    return ensureInitialized().decodeJson<QuokkaSettings>(json);
+  static SetonixSettings fromJson(String json) {
+    return ensureInitialized().decodeJson<SetonixSettings>(json);
   }
 }
 
-mixin QuokkaSettingsMappable {
+mixin SetonixSettingsMappable {
   String toJson() {
-    return QuokkaSettingsMapper.ensureInitialized()
-        .encodeJson<QuokkaSettings>(this as QuokkaSettings);
+    return SetonixSettingsMapper.ensureInitialized()
+        .encodeJson<SetonixSettings>(this as SetonixSettings);
   }
 
   Map<String, dynamic> toMap() {
-    return QuokkaSettingsMapper.ensureInitialized()
-        .encodeMap<QuokkaSettings>(this as QuokkaSettings);
+    return SetonixSettingsMapper.ensureInitialized()
+        .encodeMap<SetonixSettings>(this as SetonixSettings);
   }
 
-  QuokkaSettingsCopyWith<QuokkaSettings, QuokkaSettings, QuokkaSettings>
-      get copyWith => _QuokkaSettingsCopyWithImpl(
-          this as QuokkaSettings, $identity, $identity);
+  SetonixSettingsCopyWith<SetonixSettings, SetonixSettings, SetonixSettings>
+      get copyWith => _SetonixSettingsCopyWithImpl(
+          this as SetonixSettings, $identity, $identity);
   @override
   String toString() {
-    return QuokkaSettingsMapper.ensureInitialized()
-        .stringifyValue(this as QuokkaSettings);
+    return SetonixSettingsMapper.ensureInitialized()
+        .stringifyValue(this as SetonixSettings);
   }
 
   @override
   bool operator ==(Object other) {
-    return QuokkaSettingsMapper.ensureInitialized()
-        .equalsValue(this as QuokkaSettings, other);
+    return SetonixSettingsMapper.ensureInitialized()
+        .equalsValue(this as SetonixSettings, other);
   }
 
   @override
   int get hashCode {
-    return QuokkaSettingsMapper.ensureInitialized()
-        .hashValue(this as QuokkaSettings);
+    return SetonixSettingsMapper.ensureInitialized()
+        .hashValue(this as SetonixSettings);
   }
 }
 
-extension QuokkaSettingsValueCopy<$R, $Out>
-    on ObjectCopyWith<$R, QuokkaSettings, $Out> {
-  QuokkaSettingsCopyWith<$R, QuokkaSettings, $Out> get $asQuokkaSettings =>
-      $base.as((v, t, t2) => _QuokkaSettingsCopyWithImpl(v, t, t2));
+extension SetonixSettingsValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, SetonixSettings, $Out> {
+  SetonixSettingsCopyWith<$R, SetonixSettings, $Out> get $asSetonixSettings =>
+      $base.as((v, t, t2) => _SetonixSettingsCopyWithImpl(v, t, t2));
 }
 
-abstract class QuokkaSettingsCopyWith<$R, $In extends QuokkaSettings, $Out>
+abstract class SetonixSettingsCopyWith<$R, $In extends SetonixSettings, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   GamePropertyCopyWith<$R, GameProperty, GameProperty> get gameProperty;
   ListCopyWith<$R, ListGameServer,
@@ -161,18 +161,18 @@ abstract class QuokkaSettingsCopyWith<$R, $In extends QuokkaSettings, $Out>
       List<ListGameServer>? servers,
       bool? highContrast,
       double? zoom});
-  QuokkaSettingsCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+  SetonixSettingsCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
 
-class _QuokkaSettingsCopyWithImpl<$R, $Out>
-    extends ClassCopyWithBase<$R, QuokkaSettings, $Out>
-    implements QuokkaSettingsCopyWith<$R, QuokkaSettings, $Out> {
-  _QuokkaSettingsCopyWithImpl(super.value, super.then, super.then2);
+class _SetonixSettingsCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, SetonixSettings, $Out>
+    implements SetonixSettingsCopyWith<$R, SetonixSettings, $Out> {
+  _SetonixSettingsCopyWithImpl(super.value, super.then, super.then2);
 
   @override
-  late final ClassMapperBase<QuokkaSettings> $mapper =
-      QuokkaSettingsMapper.ensureInitialized();
+  late final ClassMapperBase<SetonixSettings> $mapper =
+      SetonixSettingsMapper.ensureInitialized();
   @override
   GamePropertyCopyWith<$R, GameProperty, GameProperty> get gameProperty =>
       $value.gameProperty.copyWith.$chain((v) => call(gameProperty: v));
@@ -210,7 +210,7 @@ class _QuokkaSettingsCopyWithImpl<$R, $Out>
         if (zoom != null) #zoom: zoom
       }));
   @override
-  QuokkaSettings $make(CopyWithData data) => QuokkaSettings(
+  SetonixSettings $make(CopyWithData data) => SetonixSettings(
       localeTag: data.get(#localeTag, or: $value.localeTag),
       theme: data.get(#theme, or: $value.theme),
       design: data.get(#design, or: $value.design),
@@ -226,7 +226,7 @@ class _QuokkaSettingsCopyWithImpl<$R, $Out>
       zoom: data.get(#zoom, or: $value.zoom));
 
   @override
-  QuokkaSettingsCopyWith<$R2, QuokkaSettings, $Out2> $chain<$R2, $Out2>(
+  SetonixSettingsCopyWith<$R2, SetonixSettings, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _QuokkaSettingsCopyWithImpl($value, $cast, t);
+      _SetonixSettingsCopyWithImpl($value, $cast, t);
 }

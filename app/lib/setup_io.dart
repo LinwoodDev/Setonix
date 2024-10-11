@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:material_leap/material_leap.dart';
-import 'package:quokka/main.dart';
+import 'package:setonix/main.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'bloc/settings.dart';
