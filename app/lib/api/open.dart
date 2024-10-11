@@ -81,7 +81,7 @@ Future<void> importFileData(BuildContext context, SetonixFileSystem fileSystem,
     ),
   );
   if (!(result ?? false)) return;
-  final namespace = metadata.namespace;
+  final namespace = metadata.id;
   switch (type) {
     case FileType.pack:
       await fileSystem.packSystem.updateFile(namespace, data);
