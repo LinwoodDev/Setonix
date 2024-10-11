@@ -137,6 +137,9 @@ class _ServersDialogState extends State<ServersDialog> {
         .autoConnect();
   }
 
+  _buildDetails(BuildContext context, GameProperty property) =>
+      Text('${property.currentPlayers}/${property.maxPlayers ?? '?'}');
+
   _buildDetailsChildren(GameProperty server) => [
         ListTile(
           title: Text(AppLocalizations.of(context).description),
@@ -288,7 +291,20 @@ class _ServersDialogState extends State<ServersDialog> {
                                     showLeapBottomSheet(
                                       context: context,
                                       titleBuilder: (context) =>
-                                          Text(current.display),
+                                          Text(server.display),
+                                      actionsBuilder: (context) => [
+                                        if (property != null) ...[
+                                          DefaultTextStyle(
+                                            style: Theme.of(context)
+                                                    .textTheme
+                                                    .headlineSmall ??
+                                                const TextStyle(fontSize: 20),
+                                            child: _buildDetails(
+                                                context, property),
+                                          ),
+                                          const SizedBox(width: 8),
+                                        ],
+                                      ],
                                       childrenBuilder: (context) => [
                                         ..._buildDetailsChildren(entry.value ??
                                             const GameProperty()),
@@ -371,11 +387,26 @@ class _ServersDialogState extends State<ServersDialog> {
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            server.display,
+                                          child: DefaultTextStyle(
                                             style: Theme.of(context)
-                                                .textTheme
-                                                .titleLarge,
+                                                    .textTheme
+                                                    .titleLarge ??
+                                                const TextStyle(),
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Text(
+                                                    server.display,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .titleLarge,
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 8),
+                                                _buildDetails(
+                                                    context, property),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                         Expanded(

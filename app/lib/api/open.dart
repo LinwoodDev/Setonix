@@ -33,7 +33,7 @@ Future<void> importFile(
     acceptedTypeGroups: [
       fs.XTypeGroup(
         label: AppLocalizations.of(context).packs,
-        extensions: const ['qka'],
+        extensions: const ['stnx'],
         uniformTypeIdentifiers: const ['dev.linwood.setonix.pack'],
         mimeTypes: const ['application/octet-stream', 'application/zip'],
       )
@@ -46,7 +46,7 @@ Future<void> importFile(
 }
 
 Future<SetonixData?> getCorePack() async => SetonixData.fromData(
-    (await rootBundle.load('assets/pack.qka')).buffer.asUint8List());
+    (await rootBundle.load('assets/pack.stnx')).buffer.asUint8List());
 
 Future<void> importFileData(BuildContext context, SetonixFileSystem fileSystem,
     SetonixData data) async {

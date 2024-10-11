@@ -37,7 +37,7 @@ dependencies:
   flex_color_scheme:
     git:
       url: https://github.com/CodeDoctorDE/flex_color_scheme
-      ref: 3d01b8e8ff10eb7203bd7d75c03979761ae67e92
+      ref: 51ffe64f67fccd61db4ef8f56b41b2d640d3249a
   flutter_svg: ^2.0.10+1
   window_manager: ^0.4.0
   go_router: ^14.2.2
@@ -118,7 +118,7 @@ flutter:
     - assets/images/
     - assets/fonts/
     - images/
-    - assets/pack.qka
+    - assets/pack.stnx
   fonts:
     - family: Comfortaa
       fonts:

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:setonix/bloc/settings.dart';
+import 'package:setonix/main.dart';
 import 'package:setonix/pages/home/background.dart';
 import 'package:setonix/pages/home/connect.dart';
 import 'package:setonix/pages/home/header.dart';
@@ -58,6 +60,10 @@ class HomePage extends StatelessWidget {
     final items = _getItems(context);
     final theme = Theme.of(context);
     return Scaffold(
+      appBar: WindowTitleBar<SettingsCubit, SetonixSettings>(
+        title: Text(applicationName),
+        onlyShowOnDesktop: true,
+      ),
       body: LayoutBuilder(builder: (context, constraints) {
         return Stack(
           children: [

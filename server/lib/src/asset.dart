@@ -6,7 +6,7 @@ import 'package:setonix_api/setonix_api.dart';
 
 class ServerAssetManager extends AssetManager {
   final Map<String, SetonixData> _packs = {};
-  static const _qkaExtension = 'qka';
+  static const _stnxExtension = 'stnx';
   @override
   Iterable<MapEntry<String, SetonixData>> get packs => _packs.entries;
 
@@ -23,14 +23,14 @@ class ServerAssetManager extends AssetManager {
         final data = SetonixData.fromData(await file.readAsBytes());
         final fileName = p.basename(file.path);
         final extension = fileName.split('.').last;
-        if (extension != _qkaExtension) {
+        if (extension != _stnxExtension) {
           console.print(
               'WARNING: Invalid pack file extension: $fileName. Skipping.',
               level: LogLevel.warning);
           continue;
         }
         var name =
-            fileName.substring(0, fileName.length - _qkaExtension.length - 1);
+            fileName.substring(0, fileName.length - _stnxExtension.length - 1);
         if (name.isEmpty) name = kCorePackId;
         _packs[name] = data;
       }

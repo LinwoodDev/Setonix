@@ -162,16 +162,23 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
   Future<void> create({GameProperty? property, int? port}) async {
     try {
       port ??= kDefaultPort;
+      final prop = property ?? GameProperty.defaultProperty;
       final server = NetworkerSocketServer(
         InternetAddress.loopbackIPv4,
         port,
-        filterConnections:
-            buildFilterConnections(loadProperty: (_) => property),
+        filterConnections: buildFilterConnections(loadProperty: (_) {
+          final state = this.state;
+          if (state is! MultiplayerConnectedState) return prop;
+          final networker = state.networker;
+          if (networker is! NetworkerServer) return prop;
+          return prop.copyWith(
+              currentPlayers: networker.clientConnections.length);
+        }),
       );
       final state = await _addNetworker(server);
       await server.init();
       networkService.sendServerInfo(LanProperty(
-        description: property?.description ?? 'Setonix Server',
+        description: prop.description,
         port: port,
       ));
       emit(state);

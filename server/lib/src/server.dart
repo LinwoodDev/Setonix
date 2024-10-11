@@ -100,7 +100,9 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
   void log(Object? message, {LogLevel? level}) =>
       consoler.print(message, level: level);
 
-  static final String defaultWorldFile = 'world.qka';
+  static final String defaultWorldFile = 'world.stnx';
+
+  int _maxPlayers = 10;
 
   Map<int, ConnectionInfo> get players =>
       Map.fromEntries((_server?.clientConnections ?? {})
@@ -108,6 +110,7 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
 
   Future<void> init({
     int port = kDefaultPort,
+    int maxPlayers = 10,
     bool verbose = false,
     bool autosave = false,
     String description = '',
@@ -118,6 +121,7 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
     log("Starting server on port $port", level: LogLevel.info);
     log('Verbose logging activated', level: LogLevel.verbose);
     this.autosave = autosave;
+    _maxPlayers = maxPlayers;
     SecurityContext? securityContext;
     try {
       final privateKey = await File('certs/server.key').readAsBytes();
@@ -138,6 +142,8 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
                     request,
                     GameProperty.defaultProperty.copyWith(
                       description: description,
+                      maxPlayers: maxPlayers,
+                      currentPlayers: _server?.clientConnections.length,
                     ))));
 
     final transformer = _pipe = NetworkerPipeTransformer<String, WorldEvent>(
@@ -208,6 +214,12 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
 
   void _onJoin((Channel, ConnectionInfo) event) {
     final (user, info) = event;
+    if (players.length > _maxPlayers) {
+      log('Server is full, rejecting connection from ${info.address}',
+          level: LogLevel.warning);
+      info.close();
+      return;
+    }
     log('${info.address} ($user) joined the game', level: LogLevel.info);
     _onClientEvent(NetworkerPacket(
         UserJoined(channel: event.$1, info: event.$2), event.$1));

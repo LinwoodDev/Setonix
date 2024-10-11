@@ -520,7 +520,7 @@ jobs:
           dart pub get
           cd ..
           dart run tools/generate.dart
-          cp app/assets/pack.qka server/server-build/packs/.qka
+          cp app/assets/pack.stnx server/server-build/packs/.stnx
       - name: Archive
         uses: actions/upload-artifact@v4
         with:

@@ -395,8 +395,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "3d01b8e8ff10eb7203bd7d75c03979761ae67e92"
-      resolved-ref: "3d01b8e8ff10eb7203bd7d75c03979761ae67e92"
+      ref: "51ffe64f67fccd61db4ef8f56b41b2d640d3249a"
+      resolved-ref: "51ffe64f67fccd61db4ef8f56b41b2d640d3249a"
       url: "https://github.com/CodeDoctorDE/flex_color_scheme"
     source: git
     version: "8.0.0-dev.1"

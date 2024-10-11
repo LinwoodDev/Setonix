@@ -1,6 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 
 import '../event/event.dart';
+import 'meta.dart';
 
 part 'server.mapper.dart';
 
@@ -54,9 +55,15 @@ Uri buildServerAddress(String input, bool secure, {bool webSockets = true}) {
 @MappableClass()
 class GameProperty with GamePropertyMappable {
   final String description;
+  final int? maxPlayers;
+  final int currentPlayers;
+  final Map<String, FileMetadata> packsSignature;
 
   const GameProperty({
     this.description = '',
+    this.maxPlayers,
+    this.currentPlayers = 0,
+    this.packsSignature = const {},
   });
 
   static const defaultProperty = GameProperty(
@@ -70,7 +77,10 @@ class LanProperty extends GameProperty with LanPropertyMappable {
 
   const LanProperty({
     this.port = kDefaultPort,
+    super.currentPlayers,
+    super.maxPlayers,
     super.description,
+    super.packsSignature,
   });
 }
 
@@ -80,6 +90,9 @@ class ListProperty extends GameProperty with ListPropertyMappable {
 
   const ListProperty({
     required this.index,
+    super.currentPlayers,
+    super.maxPlayers,
     super.description,
+    super.packsSignature,
   });
 }

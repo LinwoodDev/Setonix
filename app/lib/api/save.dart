@@ -7,7 +7,7 @@ Future<void> exportData(BuildContext context, SetonixData data, String name) =>
     exportFile(
       context: context,
       bytes: data.exportAsBytes(),
-      fileExtension: 'qka',
+      fileExtension: 'stnx',
       fileName: name,
       label: AppLocalizations.of(context).game,
       mimeType: 'application/octet-stream',
