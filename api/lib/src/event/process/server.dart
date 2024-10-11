@@ -63,7 +63,7 @@ bool isServerSupported(Map<String, FileMetadata> mySignature,
     Map<String, FileMetadata> serverSignature) {
   for (final entry in serverSignature.entries) {
     final current = mySignature[entry.key];
-    if (current == null || current != entry.value) {
+    if (current == null || !current.supports(entry.value)) {
       return false;
     }
   }

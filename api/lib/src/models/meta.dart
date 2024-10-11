@@ -32,4 +32,18 @@ final class FileMetadata with FileMetadataMappable {
     this.dependencies = const {},
     this.fileVersion = kFileVersion,
   });
+
+  bool supports(FileMetadata metadata) {
+    if (metadata.fileVersion != fileVersion ||
+        metadata.type != type ||
+        metadata.name != name) {
+      return false;
+    }
+    if (metadata.dependencies.isNotEmpty) {
+      for (final dependency in metadata.dependencies) {
+        if (!dependencies.contains(dependency)) return false;
+      }
+    }
+    return true;
+  }
 }
