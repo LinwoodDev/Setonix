@@ -46,7 +46,16 @@ final class ObjectsChanged extends ServerWorldEvent
   final GlobalVectorDefinition cell;
   final List<GameObject> objects;
 
-  ObjectsChanged(this.cell, this.objects);
+  ObjectsChanged(this.cell, [this.objects = const []]);
+
+  ObjectsChanged addObjects(List<GameObject> objects) =>
+      copyWith.objects.addAll(objects);
+
+  ObjectsChanged addObject(GameObject object) => addObjects([object]);
+
+  ObjectsChanged object(ItemLocation asset,
+          {String? variation, bool hidden = false}) =>
+      addObject(GameObject(asset, variation: variation, hidden: hidden));
 }
 
 @MappableClass()
@@ -54,7 +63,22 @@ final class CellShuffled extends ServerWorldEvent with CellShuffledMappable {
   final GlobalVectorDefinition cell;
   final List<int> positions;
 
-  CellShuffled(this.cell, this.positions);
+  CellShuffled(this.cell, [this.positions = const []]);
+
+  CellShuffled addPositions(List<int> positions) =>
+      copyWith(positions: [...this.positions, ...positions]);
+
+  CellShuffled addPosition(int position) => addPositions([position]);
+
+  Map<int, GameObject> getObjects(WorldState state) {
+    final cellObject =
+        state.getTableOrDefault(cell.table).getCell(cell.position);
+    return Map.fromEntries(positions.map((e) {
+      final object = cellObject.objects.elementAtOrNull(e);
+      if (object == null) return null;
+      return MapEntry(e, object);
+    }).nonNulls);
+  }
 }
 
 @MappableClass()

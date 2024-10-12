@@ -106,11 +106,8 @@ class GameHand extends CustomPainterComponent
     final cell = state.table.cells[selected];
     if (selected == null) {
       final deck = state.selectedDeck;
-      final packItem = deck != null
-          ? state.assetManager
-              .getPack(deck.namespace)
-              ?.getDeckItem(deck.id, deck.namespace)
-          : null;
+      final packItem =
+          deck != null ? state.assetManager.getDeckItem(deck) : null;
       if (packItem != null) {
         _buildDeckHand(packItem);
       } else {

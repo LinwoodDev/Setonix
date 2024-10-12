@@ -621,7 +621,7 @@ class ObjectsChangedMapper extends SubClassMapperBase<ObjectsChanged> {
       Field('cell', _$cell);
   static List<GameObject> _$objects(ObjectsChanged v) => v.objects;
   static const Field<ObjectsChanged, List<GameObject>> _f$objects =
-      Field('objects', _$objects);
+      Field('objects', _$objects, opt: true, def: const []);
 
   @override
   final MappableFields<ObjectsChanged> fields = const {
@@ -757,7 +757,7 @@ class CellShuffledMapper extends SubClassMapperBase<CellShuffled> {
       Field('cell', _$cell);
   static List<int> _$positions(CellShuffled v) => v.positions;
   static const Field<CellShuffled, List<int>> _f$positions =
-      Field('positions', _$positions);
+      Field('positions', _$positions, opt: true, def: const []);
 
   @override
   final MappableFields<CellShuffled> fields = const {
@@ -2324,7 +2324,7 @@ class BoardsSpawnRequestMapper extends SubClassMapperBase<BoardsSpawnRequest> {
       v.assets;
   static const Field<BoardsSpawnRequest,
           List<_t$_R0<ItemLocation, VectorDefinition>>> _f$assets =
-      Field('assets', _$assets);
+      Field('assets', _$assets, opt: true, def: const []);
 
   @override
   final MappableFields<BoardsSpawnRequest> fields = const {

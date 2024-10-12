@@ -67,7 +67,7 @@ class GameAssetManager extends AssetManager {
 
   Future<Sprite?> loadFigureSprite(ItemLocation location,
       [String? variation]) async {
-    final figure = getPack(location.namespace)?.getFigure(location.id);
+    final figure = getFigure(location);
     if (figure == null) return null;
     final definition = figure.variations[variation] ?? figure.back;
     return loadSprite(
@@ -80,7 +80,7 @@ class GameAssetManager extends AssetManager {
 
   Future<Sprite?> loadBoardSprite(ItemLocation location,
       [VectorDefinition? tile]) async {
-    final board = getPack(location.namespace)?.getBoard(location.id);
+    final board = getBoard(location);
     if (board == null) return null;
     Vector2 offset = board.offset.toVector();
     Vector2? size = board.size?.toVector();

@@ -1,4 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
+import '../services/asset.dart';
 import 'vector.dart';
 
 part 'table.mapper.dart';
@@ -137,7 +138,8 @@ class ItemLocation with ItemLocationMappable {
   final String namespace, id;
 
   ItemLocation(this.namespace, this.id);
-  factory ItemLocation.fromString(String location, String namespace) {
+  factory ItemLocation.fromString(String location, [String? namespace]) {
+    namespace ??= kCorePackId;
     final splitted = location.split(':');
     if (splitted.length < 2) {
       return ItemLocation(namespace, splitted[0]);

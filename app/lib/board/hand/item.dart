@@ -33,7 +33,7 @@ class HandItemDragCursorHitbox extends PositionComponent
   void onLoad() {
     add(CircleHitbox(
       collisionType: CollisionType.active,
-      radius: 1,
+      radius: 0,
     ));
   }
 

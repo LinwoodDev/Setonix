@@ -46,10 +46,7 @@ class GameBoardBackground extends PositionComponent
             state,
             backgroundLocation == null
                 ? null
-                : state.assetManager
-                    .getPack(backgroundLocation.namespace)
-                    ?.getBackgroundItem(
-                        backgroundLocation.id, backgroundLocation.namespace)) ??
+                : state.assetManager.getBackgroundItem(backgroundLocation)) ??
         await _loadSprite(
             state,
             state.packs

@@ -192,10 +192,12 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
     }
     if (process == null) return;
     final event = Event(this, process.$1, process.$2, data, packet.channel);
-    eventSystem.fire(event);
-    if (event.cancelled) return;
-    log('Processing event by ${event.source}: ${event.serverEvent}',
-        level: LogLevel.verbose);
+    if (force) {
+      eventSystem.fire(event);
+      if (event.cancelled) return;
+      log('Processing event by ${event.source}: ${event.serverEvent}',
+          level: LogLevel.verbose);
+    }
     switch (packet.data) {
       case MessageRequest data:
         log("Message by ${packet.channel}: ${data.message}",
@@ -245,7 +247,7 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
     consoler.dispose();
   }
 
-  void process(WorldEvent event, [bool force = false]) {
+  void process(WorldEvent event, [bool force = true]) {
     _onClientEvent(NetworkerPacket(event, kAuthorityChannel), force);
   }
 
@@ -263,5 +265,26 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
 
   void sendMessage(String message, [Channel target = kAnyChannel]) {
     process(MessageSent(kAuthorityChannel, message));
+  }
+
+  bool spawnDeck(ItemLocation location, GlobalVectorDefinition cell) {
+    final definition = assetManager.getDeck(location);
+    if (definition == null) return false;
+    final boardSpawn = BoardsSpawnRequest(cell.table);
+    for (final board in definition.boards) {
+      boardSpawn.board(cell.position + board.position,
+          ItemLocation.fromString(board.name, location.namespace));
+    }
+    final objectSpawn = ObjectsSpawned(cell.table);
+    for (final object in definition.figures) {
+      objectSpawn.objectWithLocation(
+        object.position + cell.position,
+        ItemLocation.fromString(object.name, location.namespace),
+        variation: object.variation,
+      );
+    }
+    process(boardSpawn);
+    process(objectSpawn);
+    return true;
   }
 }

@@ -90,11 +90,7 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
               onClose();
             },
           ),
-          if (getAssetManager(bloc.state)
-                  .getPack(location.namespace)
-                  ?.getFigure(location.id)
-                  ?.rollable ??
-              true)
+          if (getAssetManager(bloc.state).getFigure(location)?.rollable ?? true)
             ContextMenuButtonItem(
               label: AppLocalizations.of(context).roll,
               onPressed: () {

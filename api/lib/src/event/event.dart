@@ -1,11 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:networker/networker.dart';
-
-import '../models/vector.dart';
-import '../models/meta.dart';
-import '../models/info.dart';
-import '../models/table.dart';
-import '../models/dialog.dart';
+import 'package:setonix_api/event.dart';
 
 part 'event.mapper.dart';
 

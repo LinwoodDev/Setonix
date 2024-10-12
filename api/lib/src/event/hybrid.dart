@@ -31,20 +31,31 @@ final class ObjectsSpawned extends HybridWorldEvent
         table = cell.table;
 
   ObjectsSpawned addObjects(int x, int y, List<GameObject> objects) =>
+      addObjectsWithLocation(VectorDefinition(x, y), objects);
+  ObjectsSpawned addObjectsWithLocation(
+          VectorDefinition location, List<GameObject> objects) =>
       copyWith(objects: {
         ...this.objects,
-        VectorDefinition(x, y): [
-          ...?this.objects[VectorDefinition(x, y)],
-          ...objects
-        ]
+        location: [...?this.objects[location], ...objects]
       });
 
   ObjectsSpawned addObject(int x, int y, GameObject object) =>
       addObjects(x, y, [object]);
 
+  ObjectsSpawned addObjectWithLocation(
+          VectorDefinition location, GameObject object) =>
+      addObjectsWithLocation(location, [object]);
+
   ObjectsSpawned object(int x, int y, ItemLocation asset,
-          {String variation = '', bool hidden = false}) =>
-      addObject(x, y, GameObject(asset, variation: variation, hidden: hidden));
+          {String? variation, bool hidden = false}) =>
+      objectWithLocation(VectorDefinition(x, y), asset,
+          variation: variation, hidden: hidden);
+
+  ObjectsSpawned objectWithLocation(
+          VectorDefinition location, ItemLocation asset,
+          {String? variation, bool hidden = false}) =>
+      addObjectWithLocation(
+          location, GameObject(asset, variation: variation, hidden: hidden));
 }
 
 @MappableClass()
@@ -54,6 +65,16 @@ final class ObjectsMoved extends HybridWorldEvent with ObjectsMovedMappable {
   final VectorDefinition from, to;
 
   ObjectsMoved(this.table, this.objects, this.from, this.to);
+
+  Map<int, GameObject> getObjects(WorldState state) {
+    final table = state.getTableOrDefault(this.table);
+    final cell = table.getCell(from);
+    return Map.fromEntries(objects.map((e) {
+      final object = cell.objects.elementAtOrNull(e);
+      if (object == null) return null;
+      return MapEntry(e, object);
+    }).nonNulls);
+  }
 }
 
 @MappableClass()
@@ -66,6 +87,14 @@ final class CellHideChanged extends HybridWorldEvent
   CellHideChanged(this.cell, {this.object, this.hide});
   CellHideChanged.show(this.cell, {this.object}) : hide = false;
   CellHideChanged.hide(this.cell, {this.object}) : hide = true;
+
+  GameObject? getObject(WorldState state) => object == null
+      ? null
+      : state
+          .getTable(cell.table)
+          ?.getCell(cell.position)
+          .objects
+          .elementAtOrNull(object!);
 }
 
 @MappableClass()
@@ -76,6 +105,15 @@ final class ObjectIndexChanged extends HybridWorldEvent
   final int index;
 
   ObjectIndexChanged(this.cell, this.object, this.index);
+  ObjectIndexChanged.fromLocal(
+      String table, VectorDefinition position, this.object, this.index)
+      : cell = GlobalVectorDefinition.fromLocal(table, position);
+
+  GameObject? getObject(WorldState state) => state
+      .getTable(cell.table)
+      ?.getCell(cell.position)
+      .objects
+      .elementAtOrNull(object);
 }
 
 @MappableClass()
@@ -110,6 +148,19 @@ final class ObjectsRemoved extends HybridWorldEvent
   ObjectsRemoved(this.cell, {this.objects});
   ObjectsRemoved.single(this.cell, {int? object})
       : objects = object == null ? null : [object];
+
+  ObjectsRemoved object(int object) => copyWith(objects: [...?objects, object]);
+
+  Map<int, GameObject>? getObjects(WorldState state) {
+    if (objects == null) return null;
+    final cellObject =
+        state.getTableOrDefault(cell.table).getCell(cell.position);
+    return Map.fromEntries(objects!.map((e) {
+      final object = cellObject.objects.elementAtOrNull(e);
+      if (object == null) return null;
+      return MapEntry(e, object);
+    }).nonNulls);
+  }
 }
 
 @MappableClass()

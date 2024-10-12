@@ -265,11 +265,7 @@ class GameCell extends PositionComponent
     final cell = state.table.getCell(local);
     if (!state.isCellVisible(global)) return false;
     return cell.objects.any((object) =>
-        (assetManager
-                .getPack(object.asset.namespace)
-                ?.getFigure(object.asset.id)
-                ?.rollable ??
-            false) &&
+        (assetManager.getFigure(object.asset)?.rollable ?? false) &&
         state.isCellVisible(global));
   }
 

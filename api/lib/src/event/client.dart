@@ -29,6 +29,13 @@ final class CellRollRequest extends ClientWorldEvent
   final int? object;
 
   CellRollRequest(this.cell, {this.object});
+
+  GameObject? getObject(WorldState state) {
+    if (object == null) return null;
+    final table = state.getTableOrDefault(cell.table);
+    final cellObjects = table.getCell(cell.position);
+    return cellObjects.objects.elementAtOrNull(object!);
+  }
 }
 
 @MappableClass()
@@ -65,10 +72,16 @@ final class BoardsSpawnRequest extends ClientWorldEvent
         ItemLocation asset,
       })> assets;
 
-  BoardsSpawnRequest(this.table, this.assets);
+  BoardsSpawnRequest(this.table, [this.assets = const []]);
   BoardsSpawnRequest.single(GlobalVectorDefinition cell, ItemLocation asset)
       : table = cell.table,
         assets = [(cell: cell.position, asset: asset)];
+  BoardsSpawnRequest.fromLocal(
+      this.table, VectorDefinition cell, ItemLocation asset)
+      : assets = [(cell: cell, asset: asset)];
+
+  BoardsSpawnRequest board(VectorDefinition cell, ItemLocation asset) =>
+      copyWith.assets.add((cell: cell, asset: asset));
 }
 
 @MappableClass()
@@ -78,6 +91,12 @@ final class BoardRemoveRequest extends ClientWorldEvent
   final int index;
 
   BoardRemoveRequest(this.position, this.index);
+
+  BoardTile? getTile(WorldState state) {
+    final table = state.getTableOrDefault(position.table);
+    final cell = table.getCell(position.position);
+    return cell.tiles.elementAtOrNull(index);
+  }
 }
 
 @MappableClass()
@@ -89,6 +108,14 @@ final class BoardMoveRequest extends ClientWorldEvent
   final int index;
 
   BoardMoveRequest(this.table, this.from, this.to, this.index);
+
+  BoardTile? getTile(WorldState state) {
+    final table = state.getTableOrDefault(this.table);
+    final cell = table.getCell(from);
+    return cell.tiles.elementAtOrNull(index);
+  }
+
+  VectorDefinition delta() => to - from;
 }
 
 @MappableClass()

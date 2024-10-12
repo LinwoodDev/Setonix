@@ -27,8 +27,7 @@ bool isValidClientEvent(
           .cells
           .containsKey(event.cell.position),
       ObjectsSpawned() => event.objects.values.expand((e) => e).every((e) {
-          final figure =
-              assetManager.getPack(e.asset.namespace)?.getFigure(e.asset.id);
+          final figure = assetManager.getFigure(e.asset);
           return figure != null &&
               (e.variation == null ||
                   figure.variations.containsKey(e.variation));
@@ -111,9 +110,7 @@ bool isValidClientEvent(
       var cell = table.getCell(event.cell.position);
       final random = Random();
       GameObject roll(GameObject object) {
-        final figure = assetManager
-            .getPack(object.asset.namespace)
-            ?.getFigure(object.asset.id);
+        final figure = assetManager.getFigure(object.asset);
         if (figure == null || !figure.rollable) return object;
         final variations = figure.variations.keys.toList();
         if (variations.isEmpty) return object;
@@ -148,8 +145,7 @@ bool isValidClientEvent(
     case BoardsSpawnRequest():
       final tiles = <VectorDefinition, List<BoardTile>>{};
       for (final (asset: asset, cell: cell) in event.assets) {
-        final definition =
-            assetManager.getPack(asset.namespace)?.getBoard(asset.id);
+        final definition = assetManager.getBoard(asset);
         if (definition == null) return null;
         final size = definition.tiles;
         for (var x = 0; x < size.x; x++) {
@@ -165,9 +161,7 @@ bool isValidClientEvent(
       final table = state.getTableOrDefault(event.position.table);
       final cell = table.getCell(event.position.position);
       final currentObject = cell.tiles[event.index];
-      final definition = assetManager
-          .getPack(currentObject.asset.namespace)
-          ?.getBoard(currentObject.asset.id);
+      final definition = assetManager.getBoard(currentObject.asset);
       final size = definition?.tiles ?? VectorDefinition.one;
       final newTiles = <VectorDefinition, List<BoardTile>>{};
       for (var x = 0; x < size.x; x++) {
@@ -190,9 +184,7 @@ bool isValidClientEvent(
       final table = state.getTableOrDefault(event.table);
       final from = table.getCell(event.from);
       final currentObject = from.tiles[event.index];
-      final definition = assetManager
-          .getPack(currentObject.asset.namespace)
-          ?.getBoard(currentObject.asset.id);
+      final definition = assetManager.getBoard(currentObject.asset);
       final size = definition?.tiles ?? VectorDefinition.one;
       final newTiles = <VectorDefinition, List<BoardTile>>{};
       for (var x = 0; x < size.x; x++) {
