@@ -1,8 +1,11 @@
+import 'package:archive/archive.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:lw_file_system/lw_file_system.dart';
+import 'package:lw_sysapi/lw_sysapi.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:setonix/services/file_system.dart';
@@ -83,6 +86,38 @@ class DataSettingsPage extends StatelessWidget {
                               }
                             },
                           ),
+                          ListTile(
+                            title: Text(AppLocalizations.of(context).export),
+                            leading:
+                                const PhosphorIcon(PhosphorIconsLight.export),
+                            onTap: () async {
+                              final worldSystem =
+                                  context.read<SetonixFileSystem>().worldSystem;
+                              final archive = Archive();
+                              final keys = await worldSystem.getKeys();
+                              for (final key in keys) {
+                                final entity =
+                                    await worldSystem.fileSystem.getFile(key);
+                                if (entity == null) continue;
+                                archive.addFile(
+                                  ArchiveFile(
+                                      '$key.stnx', entity.length, entity),
+                                );
+                              }
+                              final bytes = ZipEncoder().encode(archive);
+                              if (context.mounted && bytes != null) {
+                                exportFile(
+                                  context: context,
+                                  bytes: bytes,
+                                  fileExtension: 'zip',
+                                  mimeType: 'application/zip',
+                                  uniformTypeIdentifier: 'public.zip-archive',
+                                  fileName: 'output',
+                                  label: AppLocalizations.of(context).export,
+                                );
+                              }
+                            },
+                          )
                         ]),
                   ),
                 ),
