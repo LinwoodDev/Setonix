@@ -2306,9 +2306,8 @@ class BoardsSpawnRequestMapper extends SubClassMapperBase<BoardsSpawnRequest> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = BoardsSpawnRequestMapper._());
       ClientWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
-      _t$_R0Mapper.ensureInitialized();
-      ItemLocationMapper.ensureInitialized();
       VectorDefinitionMapper.ensureInitialized();
+      ItemLocationMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -2319,12 +2318,12 @@ class BoardsSpawnRequestMapper extends SubClassMapperBase<BoardsSpawnRequest> {
   static String _$table(BoardsSpawnRequest v) => v.table;
   static const Field<BoardsSpawnRequest, String> _f$table =
       Field('table', _$table);
-  static List<_t$_R0<ItemLocation, VectorDefinition>> _$assets(
+  static Map<VectorDefinition, List<ItemLocation>> _$assets(
           BoardsSpawnRequest v) =>
       v.assets;
   static const Field<BoardsSpawnRequest,
-          List<_t$_R0<ItemLocation, VectorDefinition>>> _f$assets =
-      Field('assets', _$assets, opt: true, def: const []);
+          Map<VectorDefinition, List<ItemLocation>>> _f$assets =
+      Field('assets', _$assets, opt: true, def: const {});
 
   @override
   final MappableFields<BoardsSpawnRequest> fields = const {
@@ -2399,14 +2398,10 @@ extension BoardsSpawnRequestValueCopy<$R, $Out>
 
 abstract class BoardsSpawnRequestCopyWith<$R, $In extends BoardsSpawnRequest,
     $Out> implements ClientWorldEventCopyWith<$R, $In, $Out> {
-  ListCopyWith<
-      $R,
-      _t$_R0<ItemLocation, VectorDefinition>,
-      ObjectCopyWith<$R, _t$_R0<ItemLocation, VectorDefinition>,
-          _t$_R0<ItemLocation, VectorDefinition>>> get assets;
+  MapCopyWith<$R, VectorDefinition, List<ItemLocation>,
+      ObjectCopyWith<$R, List<ItemLocation>, List<ItemLocation>>> get assets;
   @override
-  $R call(
-      {String? table, List<_t$_R0<ItemLocation, VectorDefinition>>? assets});
+  $R call({String? table, Map<VectorDefinition, List<ItemLocation>>? assets});
   BoardsSpawnRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -2420,18 +2415,12 @@ class _BoardsSpawnRequestCopyWithImpl<$R, $Out>
   late final ClassMapperBase<BoardsSpawnRequest> $mapper =
       BoardsSpawnRequestMapper.ensureInitialized();
   @override
-  ListCopyWith<
-      $R,
-      _t$_R0<ItemLocation, VectorDefinition>,
-      ObjectCopyWith<$R, _t$_R0<ItemLocation, VectorDefinition>,
-          _t$_R0<ItemLocation, VectorDefinition>>> get assets => ListCopyWith(
-      $value.assets,
-      (v, t) => ObjectCopyWith(v, $identity, t),
-      (v) => call(assets: v));
+  MapCopyWith<$R, VectorDefinition, List<ItemLocation>,
+          ObjectCopyWith<$R, List<ItemLocation>, List<ItemLocation>>>
+      get assets => MapCopyWith($value.assets,
+          (v, t) => ObjectCopyWith(v, $identity, t), (v) => call(assets: v));
   @override
-  $R call(
-          {String? table,
-          List<_t$_R0<ItemLocation, VectorDefinition>>? assets}) =>
+  $R call({String? table, Map<VectorDefinition, List<ItemLocation>>? assets}) =>
       $apply(FieldCopyWithData({
         if (table != null) #table: table,
         if (assets != null) #assets: assets
@@ -4631,52 +4620,4 @@ abstract class LocalWorldEventCopyWith<$R, $In extends LocalWorldEvent, $Out>
   $R call();
   LocalWorldEventCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
-}
-
-typedef _t$_R0<A, B> = ({A asset, B cell});
-
-class _t$_R0Mapper extends RecordMapperBase<_t$_R0> {
-  static _t$_R0Mapper? _instance;
-  _t$_R0Mapper._();
-
-  static _t$_R0Mapper ensureInitialized() {
-    if (_instance == null) {
-      MapperContainer.globals.use(_instance = _t$_R0Mapper._());
-      MapperBase.addType(<A, B>(f) => f<({A asset, B cell})>());
-    }
-    return _instance!;
-  }
-
-  static dynamic _$asset(_t$_R0 v) => v.asset;
-  static dynamic _arg$asset<A, B>(f) => f<A>();
-  static const Field<_t$_R0, dynamic> _f$asset =
-      Field('asset', _$asset, arg: _arg$asset);
-  static dynamic _$cell(_t$_R0 v) => v.cell;
-  static dynamic _arg$cell<A, B>(f) => f<B>();
-  static const Field<_t$_R0, dynamic> _f$cell =
-      Field('cell', _$cell, arg: _arg$cell);
-
-  @override
-  final MappableFields<_t$_R0> fields = const {
-    #asset: _f$asset,
-    #cell: _f$cell,
-  };
-
-  @override
-  Function get typeFactory => <A, B>(f) => f<_t$_R0<A, B>>();
-
-  static _t$_R0<A, B> _instantiate<A, B>(DecodingData<_t$_R0> data) {
-    return (asset: data.dec(_f$asset), cell: data.dec(_f$cell));
-  }
-
-  @override
-  final Function instantiate = _instantiate;
-
-  static _t$_R0<A, B> fromMap<A, B>(Map<String, dynamic> map) {
-    return ensureInitialized().decodeMap<_t$_R0<A, B>>(map);
-  }
-
-  static _t$_R0<A, B> fromJson<A, B>(String json) {
-    return ensureInitialized().decodeJson<_t$_R0<A, B>>(json);
-  }
 }

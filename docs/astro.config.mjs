@@ -43,7 +43,20 @@ export default defineConfig({
             },
             {
               label: "Packs",
-              link: "/docs/v1/packs",
+              items: [
+                {
+                  label: "Overview",
+                  link: "/docs/v1/packs/overview",
+                },
+                {
+                  label: "Metadata",
+                  link: "/docs/v1/packs/meta",
+                },
+              ],
+            },
+            {
+              label: "Server",
+              link: "/docs/v1/server",
             },
           ],
         },

@@ -144,7 +144,8 @@ bool isValidClientEvent(
       return (MessageSent(channel, event.message), kAnyChannel);
     case BoardsSpawnRequest():
       final tiles = <VectorDefinition, List<BoardTile>>{};
-      for (final (asset: asset, cell: cell) in event.assets) {
+      for (final (cell, asset) in event.assets.entries
+          .expand((e) => e.value.map((l) => (e.key, l)))) {
         final definition = assetManager.getBoard(asset);
         if (definition == null) return null;
         final size = definition.tiles;

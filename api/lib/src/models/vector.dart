@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dart_mappable/dart_mappable.dart';
 
 part 'vector.mapper.dart';
@@ -29,6 +31,14 @@ class VectorDefinition with VectorDefinitionMappable {
       VectorDefinition(x + other.x, y + other.y);
   operator -(VectorDefinition other) =>
       VectorDefinition(x - other.x, y - other.y);
+
+  bool inBounds(VectorDefinition first, VectorDefinition last) {
+    final minX = min(first.x, last.x);
+    final maxX = max(first.x, last.x);
+    final minY = min(first.y, last.y);
+    final maxY = max(first.y, last.y);
+    return x >= minX && x <= maxX && y >= minY && y <= maxY;
+  }
 }
 
 class VectorDefinitionHook extends MappingHook {

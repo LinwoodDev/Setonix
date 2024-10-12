@@ -66,22 +66,37 @@ final class MessageRequest extends ClientWorldEvent
 final class BoardsSpawnRequest extends ClientWorldEvent
     with BoardsSpawnRequestMappable {
   final String table;
-  final List<
-      ({
-        VectorDefinition cell,
-        ItemLocation asset,
-      })> assets;
+  final Map<VectorDefinition, List<ItemLocation>> assets;
 
-  BoardsSpawnRequest(this.table, [this.assets = const []]);
+  BoardsSpawnRequest(this.table, [this.assets = const {}]);
   BoardsSpawnRequest.single(GlobalVectorDefinition cell, ItemLocation asset)
       : table = cell.table,
-        assets = [(cell: cell.position, asset: asset)];
+        assets = {
+          cell.position: [asset]
+        };
   BoardsSpawnRequest.fromLocal(
       this.table, VectorDefinition cell, ItemLocation asset)
-      : assets = [(cell: cell, asset: asset)];
+      : assets = {
+          cell: [asset]
+        };
+
+  BoardsSpawnRequest boards(VectorDefinition cell, List<ItemLocation> assets) =>
+      copyWith(
+        assets: {
+          ...this.assets,
+          cell: [...this.assets[cell] ?? [], ...assets],
+        },
+      );
 
   BoardsSpawnRequest board(VectorDefinition cell, ItemLocation asset) =>
-      copyWith.assets.add((cell: cell, asset: asset));
+      boards(cell, [asset]);
+
+  bool inBounds(VectorDefinition start, VectorDefinition end) {
+    for (final entry in assets.entries) {
+      if (!entry.key.inBounds(start, end)) return false;
+    }
+    return true;
+  }
 }
 
 @MappableClass()

@@ -56,6 +56,13 @@ final class ObjectsSpawned extends HybridWorldEvent
           {String? variation, bool hidden = false}) =>
       addObjectWithLocation(
           location, GameObject(asset, variation: variation, hidden: hidden));
+
+  bool inBounds(VectorDefinition start, VectorDefinition end) {
+    for (final entry in objects.entries) {
+      if (!entry.key.inBounds(start, end)) return false;
+    }
+    return true;
+  }
 }
 
 @MappableClass()

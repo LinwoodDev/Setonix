@@ -267,7 +267,8 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
     process(MessageSent(kAuthorityChannel, message));
   }
 
-  bool spawnDeck(ItemLocation location, GlobalVectorDefinition cell) {
+  bool spawnDeck(ItemLocation location, GlobalVectorDefinition cell,
+      [bool force = true]) {
     final definition = assetManager.getDeck(location);
     if (definition == null) return false;
     final boardSpawn = BoardsSpawnRequest(cell.table);
@@ -283,8 +284,8 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
         variation: object.variation,
       );
     }
-    process(boardSpawn);
-    process(objectSpawn);
+    process(boardSpawn, force);
+    process(objectSpawn, force);
     return true;
   }
 }

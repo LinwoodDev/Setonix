@@ -40,12 +40,13 @@ class DeckDefinitionHandItem extends HandItem<PackItem<DeckDefinition>> {
           ));
     }
     bloc.process(ObjectsSpawned(global.table, objects));
-    final boards = item.item.boards
-        .map((e) => (
-              cell: global.position,
-              asset: ItemLocation(item.namespace, e.name)
-            ))
-        .toList();
+    final boards = <VectorDefinition, List<ItemLocation>>{};
+    for (final e in item.item.boards) {
+      final location = global.position + e.position;
+      boards
+          .putIfAbsent(location, () => [])
+          .add(ItemLocation(item.namespace, e.name));
+    }
     bloc.process(BoardsSpawnRequest(global.table, boards));
     if (bloc.state.switchCellOnMove) {
       bloc.process(CellSwitched(global.position));

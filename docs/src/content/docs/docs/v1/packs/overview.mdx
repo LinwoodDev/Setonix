@@ -1,0 +1,51 @@
+---
+title: Packs
+---
+
+There is one built-in core pack with basic cards, a dice and chips. See `app/pack` for reference. For creating your own pack, mirror the setup, change to your liking and create a zip directory (make sure there is no extra folder in there). Change the file extension to `.stnx` and you are ready to share it.
+To import it, open the app and go to `Packs`. Then click on the import button in the top right corner.
+
+You can find the code for the core pack [here](https://github.com/LinwoodDev/Quokka/blob/develop/app/pack).
+
+## Pack Structure
+
+import { FileTree } from '@astrojs/starlight/components';
+
+<FileTree>
+
+- backgrounds
+  - cards.json
+  - grid.json
+- boards
+  - chess.json
+- decks
+  - chess.json
+  - chips.json
+  - dices.json
+  - doko.json
+  - doko9.json
+  - full.json
+  - poker.json
+  - skat.json
+- figures
+  - cards.json
+  - chess_black.json
+  - chess_white.json
+  - chips.json
+  - d6.json
+- textures
+  - backgrounds
+    - cards.png
+    - grid.png
+  - boards
+    - chess.png
+  - figures
+    - cards.png
+    - chess.png
+    - chips.png
+    - d6.png
+- translations
+  - en.json
+- pack.json
+
+</FileTree>
