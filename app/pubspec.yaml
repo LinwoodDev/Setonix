@@ -34,10 +34,7 @@ dependencies:
       url: https://github.com/LinwoodDev/dart_pkgs.git
       ref: 065b5b2808517551559f7cd27d6f9a8b294ffebf
       path: packages/material_leap
-  flex_color_scheme:
-    git:
-      url: https://github.com/CodeDoctorDE/flex_color_scheme
-      ref: 51ffe64f67fccd61db4ef8f56b41b2d640d3249a
+  flex_color_scheme: ^8.0.0-dev.1
   flutter_svg: ^2.0.10+1
   window_manager: ^0.4.0
   go_router: ^14.2.2

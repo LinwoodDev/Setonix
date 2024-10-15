@@ -727,3 +727,241 @@ class _DrawerViewChangedCopyWithImpl<$R, $Out>
           Then<$Out2, $R2> t) =>
       _DrawerViewChangedCopyWithImpl($value, $cast, t);
 }
+
+class SearchTermChangedMapper extends SubClassMapperBase<SearchTermChanged> {
+  SearchTermChangedMapper._();
+
+  static SearchTermChangedMapper? _instance;
+  static SearchTermChangedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = SearchTermChangedMapper._());
+      LocalWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'SearchTermChanged';
+
+  static String _$term(SearchTermChanged v) => v.term;
+  static const Field<SearchTermChanged, String> _f$term = Field('term', _$term);
+
+  @override
+  final MappableFields<SearchTermChanged> fields = const {
+    #term: _f$term,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'SearchTermChanged';
+  @override
+  late final ClassMapperBase superMapper =
+      LocalWorldEventMapper.ensureInitialized();
+
+  static SearchTermChanged _instantiate(DecodingData data) {
+    return SearchTermChanged(data.dec(_f$term));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static SearchTermChanged fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<SearchTermChanged>(map);
+  }
+
+  static SearchTermChanged fromJson(String json) {
+    return ensureInitialized().decodeJson<SearchTermChanged>(json);
+  }
+}
+
+mixin SearchTermChangedMappable {
+  String toJson() {
+    return SearchTermChangedMapper.ensureInitialized()
+        .encodeJson<SearchTermChanged>(this as SearchTermChanged);
+  }
+
+  Map<String, dynamic> toMap() {
+    return SearchTermChangedMapper.ensureInitialized()
+        .encodeMap<SearchTermChanged>(this as SearchTermChanged);
+  }
+
+  SearchTermChangedCopyWith<SearchTermChanged, SearchTermChanged,
+          SearchTermChanged>
+      get copyWith => _SearchTermChangedCopyWithImpl(
+          this as SearchTermChanged, $identity, $identity);
+  @override
+  String toString() {
+    return SearchTermChangedMapper.ensureInitialized()
+        .stringifyValue(this as SearchTermChanged);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return SearchTermChangedMapper.ensureInitialized()
+        .equalsValue(this as SearchTermChanged, other);
+  }
+
+  @override
+  int get hashCode {
+    return SearchTermChangedMapper.ensureInitialized()
+        .hashValue(this as SearchTermChanged);
+  }
+}
+
+extension SearchTermChangedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, SearchTermChanged, $Out> {
+  SearchTermChangedCopyWith<$R, SearchTermChanged, $Out>
+      get $asSearchTermChanged =>
+          $base.as((v, t, t2) => _SearchTermChangedCopyWithImpl(v, t, t2));
+}
+
+abstract class SearchTermChangedCopyWith<$R, $In extends SearchTermChanged,
+    $Out> implements LocalWorldEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({String? term});
+  SearchTermChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class _SearchTermChangedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, SearchTermChanged, $Out>
+    implements SearchTermChangedCopyWith<$R, SearchTermChanged, $Out> {
+  _SearchTermChangedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<SearchTermChanged> $mapper =
+      SearchTermChangedMapper.ensureInitialized();
+  @override
+  $R call({String? term}) =>
+      $apply(FieldCopyWithData({if (term != null) #term: term}));
+  @override
+  SearchTermChanged $make(CopyWithData data) =>
+      SearchTermChanged(data.get(#term, or: $value.term));
+
+  @override
+  SearchTermChangedCopyWith<$R2, SearchTermChanged, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _SearchTermChangedCopyWithImpl($value, $cast, t);
+}
+
+class ShowDuplicatesChangedMapper
+    extends SubClassMapperBase<ShowDuplicatesChanged> {
+  ShowDuplicatesChangedMapper._();
+
+  static ShowDuplicatesChangedMapper? _instance;
+  static ShowDuplicatesChangedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = ShowDuplicatesChangedMapper._());
+      LocalWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'ShowDuplicatesChanged';
+
+  static bool? _$value(ShowDuplicatesChanged v) => v.value;
+  static const Field<ShowDuplicatesChanged, bool> _f$value =
+      Field('value', _$value);
+
+  @override
+  final MappableFields<ShowDuplicatesChanged> fields = const {
+    #value: _f$value,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'ShowDuplicatesChanged';
+  @override
+  late final ClassMapperBase superMapper =
+      LocalWorldEventMapper.ensureInitialized();
+
+  static ShowDuplicatesChanged _instantiate(DecodingData data) {
+    return ShowDuplicatesChanged(data.dec(_f$value));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static ShowDuplicatesChanged fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<ShowDuplicatesChanged>(map);
+  }
+
+  static ShowDuplicatesChanged fromJson(String json) {
+    return ensureInitialized().decodeJson<ShowDuplicatesChanged>(json);
+  }
+}
+
+mixin ShowDuplicatesChangedMappable {
+  String toJson() {
+    return ShowDuplicatesChangedMapper.ensureInitialized()
+        .encodeJson<ShowDuplicatesChanged>(this as ShowDuplicatesChanged);
+  }
+
+  Map<String, dynamic> toMap() {
+    return ShowDuplicatesChangedMapper.ensureInitialized()
+        .encodeMap<ShowDuplicatesChanged>(this as ShowDuplicatesChanged);
+  }
+
+  ShowDuplicatesChangedCopyWith<ShowDuplicatesChanged, ShowDuplicatesChanged,
+          ShowDuplicatesChanged>
+      get copyWith => _ShowDuplicatesChangedCopyWithImpl(
+          this as ShowDuplicatesChanged, $identity, $identity);
+  @override
+  String toString() {
+    return ShowDuplicatesChangedMapper.ensureInitialized()
+        .stringifyValue(this as ShowDuplicatesChanged);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return ShowDuplicatesChangedMapper.ensureInitialized()
+        .equalsValue(this as ShowDuplicatesChanged, other);
+  }
+
+  @override
+  int get hashCode {
+    return ShowDuplicatesChangedMapper.ensureInitialized()
+        .hashValue(this as ShowDuplicatesChanged);
+  }
+}
+
+extension ShowDuplicatesChangedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, ShowDuplicatesChanged, $Out> {
+  ShowDuplicatesChangedCopyWith<$R, ShowDuplicatesChanged, $Out>
+      get $asShowDuplicatesChanged =>
+          $base.as((v, t, t2) => _ShowDuplicatesChangedCopyWithImpl(v, t, t2));
+}
+
+abstract class ShowDuplicatesChangedCopyWith<
+    $R,
+    $In extends ShowDuplicatesChanged,
+    $Out> implements LocalWorldEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({bool? value});
+  ShowDuplicatesChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class _ShowDuplicatesChangedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, ShowDuplicatesChanged, $Out>
+    implements ShowDuplicatesChangedCopyWith<$R, ShowDuplicatesChanged, $Out> {
+  _ShowDuplicatesChangedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<ShowDuplicatesChanged> $mapper =
+      ShowDuplicatesChangedMapper.ensureInitialized();
+  @override
+  $R call({Object? value = $none}) =>
+      $apply(FieldCopyWithData({if (value != $none) #value: value}));
+  @override
+  ShowDuplicatesChanged $make(CopyWithData data) =>
+      ShowDuplicatesChanged(data.get(#value, or: $value.value));
+
+  @override
+  ShowDuplicatesChangedCopyWith<$R2, ShowDuplicatesChanged, $Out2>
+      $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+          _ShowDuplicatesChangedCopyWithImpl($value, $cast, t);
+}

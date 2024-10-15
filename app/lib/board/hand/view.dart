@@ -95,7 +95,9 @@ class GameHand extends CustomPainterComponent
           newState.table.cells[newState.selectedCell] ||
       previousState.colorScheme != newState.colorScheme ||
       previousState.info.packs != newState.info.packs ||
-      previousState.info.teams != newState.info.teams;
+      previousState.info.teams != newState.info.teams ||
+      previousState.showDuplicates != newState.showDuplicates ||
+      previousState.searchTerm != newState.searchTerm;
 
   void _buildHand(ClientWorldState state) {
     _scrollView.clearChildren();
@@ -109,7 +111,7 @@ class GameHand extends CustomPainterComponent
       final packItem =
           deck != null ? state.assetManager.getDeckItem(deck) : null;
       if (packItem != null) {
-        _buildDeckHand(packItem);
+        _buildDeckHand(state, packItem, state.showDuplicates);
       } else {
         _buildFreeHand(state);
       }
@@ -121,18 +123,44 @@ class GameHand extends CustomPainterComponent
   void _buildFreeHand(ClientWorldState state) {
     final decks = state.packs.expand((e) => e.value.getDeckItems(e.key));
     for (final deck in decks) {
-      _scrollView.addChild(DeckDefinitionHandItem(item: deck));
+      final item = DeckDefinitionHandItem(item: deck);
+      if (item.matches(state, state.searchTerm)) _scrollView.addChild(item);
     }
   }
 
-  void _addFigures(Iterable<(PackItem<FigureDefinition>, String?)> figures) {
+  void _addFigures(ClientWorldState state,
+      Iterable<(PackItem<FigureDefinition>, String?)> figures) {
     for (final figure in figures) {
-      _scrollView.addChild(FigureDefinitionHandItem(item: figure));
+      final item = FigureDefinitionHandItem(item: figure);
+      if (item.matches(state, state.searchTerm)) _scrollView.addChild(item);
     }
   }
 
-  void _buildDeckHand(PackItem<DeckDefinition> deck) {
-    final deckFigures = deck.item.figures;
+  void _buildDeckHand(ClientWorldState state, PackItem<DeckDefinition> deck,
+      bool showDuplicates) {
+    Iterable<FigureDeckDefinition> deckFigures = deck.item.figures;
+    Iterable<BoardDeckDefinition> boards = deck.item.boards;
+    if (!showDuplicates) {
+      boards = boards.fold<Set<BoardDeckDefinition>>(
+        <BoardDeckDefinition>{},
+        (previousValue, element) {
+          if (!previousValue.any((e) => element.name == e.name)) {
+            previousValue.add(element);
+          }
+          return previousValue;
+        },
+      );
+      deckFigures = deckFigures.fold<Set<FigureDeckDefinition>>(
+        <FigureDeckDefinition>{},
+        (previousValue, element) {
+          if (!previousValue.any((e) =>
+              element.name == e.name && element.variation == e.variation)) {
+            previousValue.add(element);
+          }
+          return previousValue;
+        },
+      );
+    }
     for (final board in deck.item.boards) {
       final definition = deck.pack.getBoardItem(board.name, deck.namespace);
       if (definition == null) continue;
@@ -143,7 +171,7 @@ class GameHand extends CustomPainterComponent
       if (figure == null) return null;
       return (figure, e.variation);
     }).nonNulls;
-    _addFigures(figures);
+    _addFigures(state, figures);
   }
 
   void _buildCellHand(VectorDefinition location, TableCell? cell) {

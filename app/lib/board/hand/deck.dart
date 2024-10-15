@@ -3,6 +3,7 @@ import 'package:setonix/bloc/world/local.dart';
 import 'package:setonix/bloc/world/state.dart';
 import 'package:setonix/board/cell.dart';
 import 'package:setonix/board/hand/item.dart';
+import 'package:setonix/helpers/string.dart';
 import 'package:setonix_api/setonix_api.dart';
 
 class DeckDefinitionHandItem extends HandItem<PackItem<DeckDefinition>> {
@@ -13,6 +14,10 @@ class DeckDefinitionHandItem extends HandItem<PackItem<DeckDefinition>> {
       .getTranslations(item.namespace)
       .getDeckTranslation(item.id)
       .name;
+
+  bool matches(ClientWorldState state, String term) =>
+      item.location.toString().equalsIgnoreCase(term) ||
+      getLabel(state).equalsIgnoreCase(term);
 
   @override
   void onTapUp(event) {

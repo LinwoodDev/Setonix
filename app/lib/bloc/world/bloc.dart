@@ -103,6 +103,13 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
     on<DrawerViewChanged>((event, emit) {
       emit(state.copyWith(drawerView: event.view));
     });
+    on<SearchTermChanged>((event, emit) {
+      emit(state.copyWith(searchTerm: event.term));
+    });
+    on<ShowDuplicatesChanged>((event, emit) {
+      emit(
+          state.copyWith(showDuplicates: event.value ?? !state.showDuplicates));
+    });
   }
 
   Future<void> save() async {

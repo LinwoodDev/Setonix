@@ -58,3 +58,20 @@ final class DrawerViewChanged extends LocalWorldEvent
 
   DrawerViewChanged(this.view);
 }
+
+@MappableClass()
+final class SearchTermChanged extends LocalWorldEvent
+    with SearchTermChangedMappable {
+  final String term;
+
+  SearchTermChanged(this.term);
+}
+
+@MappableClass()
+final class ShowDuplicatesChanged extends LocalWorldEvent
+    with ShowDuplicatesChangedMappable {
+  final bool? value;
+
+  ShowDuplicatesChanged(this.value);
+  ShowDuplicatesChanged.toggle() : value = null;
+}

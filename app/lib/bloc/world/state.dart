@@ -30,6 +30,8 @@ final class ClientWorldState with ClientWorldStateMappable {
   final ItemLocation? selectedDeck;
   final bool showHand, switchCellOnMove;
   final DrawerView drawerView;
+  final String searchTerm;
+  final bool showDuplicates;
 
   const ClientWorldState({
     required this.multiplayer,
@@ -41,6 +43,8 @@ final class ClientWorldState with ClientWorldStateMappable {
     this.showHand = false,
     this.switchCellOnMove = false,
     this.drawerView = DrawerView.chat,
+    this.searchTerm = '',
+    this.showDuplicates = false,
   });
 
   SetonixFileSystem get fileSystem => assetManager.fileSystem;

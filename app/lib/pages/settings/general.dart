@@ -45,7 +45,7 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
 
   Future<Meta> _fetchMeta() async {
     final response =
-        await http.get(Uri.parse('https://docs.setonix.world/meta.json'));
+        await http.get(Uri.parse('https://setonix.world/meta.json'));
     return Meta.fromJson({...json.decode(response.body)});
   }
 

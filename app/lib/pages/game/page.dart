@@ -14,6 +14,7 @@ import 'package:setonix/board/game.dart';
 import 'package:setonix/pages/game/chat.dart';
 import 'package:setonix/pages/game/dialog.dart';
 import 'package:setonix/pages/game/drawer.dart';
+import 'package:setonix/pages/game/filter.dart';
 import 'package:setonix/pages/game/notes.dart';
 import 'package:setonix/pages/home/background.dart';
 import 'package:setonix/services/file_system.dart';
@@ -224,9 +225,10 @@ class _GamePageState extends State<GamePage> {
                             contextMenuController: _contextMenuController,
                             onEscape: () => Scaffold.of(context).openDrawer(),
                           ),
-                          initialActiveOverlays: ['dialogs'],
+                          initialActiveOverlays: ['dialogs', 'filter'],
                           overlayBuilderMap: {
                             'dialogs': (context, game) => GameDialogOverlay(),
+                            'filter': (context, game) => GameFilterView(),
                           },
                         ),
                       ),
