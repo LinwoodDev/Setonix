@@ -44,6 +44,7 @@ typedef Blocs = (MultiplayerCubit, WorldBloc);
 class _GamePageState extends State<GamePage> {
   Future<Blocs>? _bloc;
   final ContextMenuController _contextMenuController = ContextMenuController();
+  final FocusNode _focusNode = FocusNode();
 
   @override
   void initState() {
@@ -99,6 +100,7 @@ class _GamePageState extends State<GamePage> {
   @override
   void dispose() {
     super.dispose();
+    _focusNode.dispose();
     _bloc?.then((bloc) {
       bloc.$1.close();
       bloc.$2.close();
@@ -161,9 +163,12 @@ class _GamePageState extends State<GamePage> {
                                           .enterEditMode
                                       : AppLocalizations.of(context)
                                           .exitEditMode,
-                                  onPressed: () => context
-                                      .read<WorldBloc>()
-                                      .process(HandChanged.toggle()),
+                                  onPressed: () {
+                                    context
+                                        .read<WorldBloc>()
+                                        .process(HandChanged.toggle());
+                                    _focusNode.requestFocus();
+                                  },
                                 );
                               })
                         ],
@@ -225,6 +230,7 @@ class _GamePageState extends State<GamePage> {
                             contextMenuController: _contextMenuController,
                             onEscape: () => Scaffold.of(context).openDrawer(),
                           ),
+                          focusNode: _focusNode,
                           initialActiveOverlays: ['dialogs', 'filter'],
                           overlayBuilderMap: {
                             'dialogs': (context, game) => GameDialogOverlay(),

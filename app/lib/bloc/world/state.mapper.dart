@@ -148,7 +148,7 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
       Field('searchTerm', _$searchTerm, opt: true, def: '');
   static bool _$showDuplicates(ClientWorldState v) => v.showDuplicates;
   static const Field<ClientWorldState, bool> _f$showDuplicates =
-      Field('showDuplicates', _$showDuplicates, opt: true, def: true);
+      Field('showDuplicates', _$showDuplicates, opt: true, def: false);
 
   @override
   final MappableFields<ClientWorldState> fields = const {
