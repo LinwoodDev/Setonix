@@ -18,7 +18,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9
+          package_json_file: docs/package.json
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
@@ -101,7 +101,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: |
           echo "SETONIX_FLAVOR=stable" >> $GITHUB_ENV
-          echo "WEB_DIR=www" >> $GITHUB_ENV
+          echo "WEB_DIR=web" >> $GITHUB_ENV
       - name: Build
         run: flutter build web --wasm --release --no-web-resources-cdn --dart-define=flavor=$SETONIX_FLAVOR
       - name: Deploy to SFTP

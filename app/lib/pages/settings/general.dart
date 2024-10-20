@@ -245,7 +245,7 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
                               PhosphorIconsLight.identificationCard),
                           title: Text(AppLocalizations.of(context).imprint),
                           onTap: () => launchUrl(
-                              Uri.https('go.linwood.dev', 'impress'),
+                              Uri.https('go.linwood.dev', 'imprint'),
                               mode: LaunchMode.externalApplication)),
                       ListTile(
                           leading:

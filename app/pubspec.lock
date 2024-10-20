@@ -227,18 +227,18 @@ packages:
     dependency: "direct main"
     description:
       name: dart_mappable
-      sha256: "47269caf2060533c29b823ff7fa9706502355ffcb61e7f2a374e3a0fb2f2c3f0"
+      sha256: f69a961ae8589724ebb542e588f228ae844c5f78028899cbe2cc718977c1b382
       url: "https://pub.dev"
     source: hosted
-    version: "4.2.2"
+    version: "4.3.0"
   dart_mappable_builder:
     dependency: "direct dev"
     description:
       name: dart_mappable_builder
-      sha256: ab5cf9086862d3fceb9773e945b5f95cc5471a28c782a4fc451bd400a4e0c64e
+      sha256: "04a6e7117382f8a8689b3e363bee6c3de8c9ea4332e664148fe01bd576eb1126"
       url: "https://pub.dev"
     source: hosted
-    version: "4.2.3"
+    version: "4.3.0"
   dart_style:
     dependency: transitive
     description:
@@ -781,10 +781,10 @@ packages:
     dependency: transitive
     description:
       name: ordered_set
-      sha256: "3129515e563a14817adebbdeee2acbb845fc69b6fc99a94349b641d1c829d5cd"
+      sha256: fc861bb51fc863cd3e0718e21768af9586e0d5022b91a0fd4437636456cdb7d0
       url: "https://pub.dev"
     source: hosted
-    version: "6.1.0"
+    version: "6.1.1"
   package_config:
     dependency: transitive
     description:
@@ -1353,10 +1353,10 @@ packages:
     dependency: transitive
     description:
       name: win32
-      sha256: "2294c64768987ea280b43a3d8357d42d5679f3e2b5b69b602be45b2abbd165b0"
+      sha256: "2735daae5150e8b1dfeb3eb0544b4d3af0061e9e82cef063adcd583bdae4306a"
       url: "https://pub.dev"
     source: hosted
-    version: "5.6.1"
+    version: "5.7.0"
   win32_registry:
     dependency: transitive
     description:
