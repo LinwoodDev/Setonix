@@ -1,0 +1,2 @@
+* Add internet permission to android
+* Fix app crashing if socket cannot be created

@@ -21,9 +21,11 @@ class NetworkService {
 
   Future<void> init() async {
     if (!kIsWeb) {
-      _server = (await RawDatagramSocket.bind(
-          InternetAddress.anyIPv4, kBroadcastPort))
-        ..broadcastEnabled = true;
+      try {
+        _server = (await RawDatagramSocket.bind(
+            InternetAddress.anyIPv4, kBroadcastPort))
+          ..broadcastEnabled = true;
+      } catch (_) {}
     }
     _fetchServers().listen((event) {
       _servers.add(event);
