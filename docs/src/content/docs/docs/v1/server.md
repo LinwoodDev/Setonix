@@ -97,4 +97,4 @@ Future<void> onLoad(SetonixServer server) async {
 
 See the [API documentation](https://api.setonix.world/) for more information about the server software.
 
-There are examples, you can find [here](https://github.com/LinwoodDev/Quokka/blob/develop/server/example).
+There are examples, you can find [here](https://github.com/LinwoodDev/Setonix/blob/develop/server/example).

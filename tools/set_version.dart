@@ -107,7 +107,7 @@ bool isPreRelease(String version) {
 
 Future<void> updateAppData(String version) async {
   var file = File(
-      'app/linux/debian/usr/share/metainfo/dev.linwood.butterfly.appdata.xml');
+      'app/linux/debian/usr/share/metainfo/dev.linwood.setonix.appdata.xml');
   if (isPreRelease(version)) {
     return;
   }
