@@ -983,7 +983,7 @@ packages:
       path: "../api"
       relative: true
     source: path
-    version: "0.1.1"
+    version: "0.1.2"
   share_plus:
     dependency: transitive
     description:
