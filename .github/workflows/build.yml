@@ -765,24 +765,24 @@ jobs:
           PLAY_STORE_CREDENTIALS: ${{ secrets.PLAY_STORE_CREDENTIALS }}
         run: bundle exec fastlane beta
         working-directory: app/android
-  publish-winget:
-    needs: [deploy]
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.CI_PAT }}
-      - if: ${{ github.ref == 'refs/tags/stable' }}
-        uses: vedantmgoyal2009/winget-releaser@v2
-        with:
-          identifier: LinwoodCloud.Setonix
-          version: ${{ needs.deploy.outputs.version }}
-          release-tag: v${{ needs.deploy.outputs.version }}
-          token: ${{ secrets.CI_PAT }}
-      - if: ${{ github.ref == 'refs/tags/nightly' }}
-        uses: vedantmgoyal2009/winget-releaser@v2
-        with:
-          identifier: LinwoodCloud.Setonix.Nightly
-          version: ${{ needs.deploy.outputs.version }}
-          release-tag: v${{ needs.deploy.outputs.version }}
-          token: ${{ secrets.CI_PAT }}
+  #publish-winget:
+  #  needs: [deploy]
+  #  runs-on: windows-latest
+  #  steps:
+  #    - uses: actions/checkout@v4
+  #      with:
+  #        token: ${{ secrets.CI_PAT }}
+  #    - if: ${{ github.ref == 'refs/tags/stable' }}
+  #      uses: vedantmgoyal2009/winget-releaser@v2
+  #      with:
+  #        identifier: LinwoodCloud.Setonix
+  #        version: ${{ needs.deploy.outputs.version }}
+  #        release-tag: v${{ needs.deploy.outputs.version }}
+  #        token: ${{ secrets.CI_PAT }}
+  #    - if: ${{ github.ref == 'refs/tags/nightly' }}
+  #      uses: vedantmgoyal2009/winget-releaser@v2
+  #      with:
+  #        identifier: LinwoodCloud.Setonix.Nightly
+  #        version: ${{ needs.deploy.outputs.version }}
+  #        release-tag: v${{ needs.deploy.outputs.version }}
+  #        token: ${{ secrets.CI_PAT }}

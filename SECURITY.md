@@ -2,9 +2,9 @@
 
 ## Supported Versions
 
-| Version | Supported |                                             |
-| ------- | --------- | ------------------------------------------- |
-| -       | :warning: | [Docs](https://setonix.world/docs/v1/intro) |
+| Version | Supported |                                                                                                                  |
+| ------- | --------- | ---------------------------------------------------------------------------------------------------------------- |
+| 0.1.0   | :warning: | [Docs](https://setonix.world/docs/v1/intro) [Release](https://github.com/LinwoodDev/Setonix/releases/tag/v0.1.0) |
 
 Currently there is no version released yet.
 Because of that, there is also no main branch.
