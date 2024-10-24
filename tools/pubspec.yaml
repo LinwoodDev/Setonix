@@ -12,3 +12,8 @@ dependencies:
   shelf_web_socket: ^2.0.0
   web_socket_channel: ^3.0.0
   yaml: ^3.1.2
+  generate_leap:
+    git:
+      url: https://github.com/LinwoodDev/dart_pkgs
+      ref: 40b8553ab86ab4f06d9f689268a65d65ed936fda
+      path: packages/generate_leap

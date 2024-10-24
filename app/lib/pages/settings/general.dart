@@ -45,7 +45,7 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
 
   Future<Meta> _fetchMeta() async {
     final response =
-        await http.get(Uri.parse('https://setonix.world/meta.json'));
+        await http.get(Uri.parse('https://setonix.linwood.dev/meta.json'));
     return Meta.fromJson({...json.decode(response.body)});
   }
 
@@ -164,7 +164,7 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
                                     onTap: () async {
                                       await launchUrl(
                                           Uri.parse(
-                                              'https://setonix.world/downloads'),
+                                              'https://setonix.linwood.dev/downloads'),
                                           mode: LaunchMode.externalApplication);
                                     },
                                   ),
@@ -185,7 +185,8 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
                               const PhosphorIcon(PhosphorIconsLight.article),
                           title:
                               Text(AppLocalizations.of(context).documentation),
-                          onTap: () => launchUrl(Uri.https('setonix.world', ''),
+                          onTap: () => launchUrl(
+                              Uri.https('setonix.linwood.dev', ''),
                               mode: LaunchMode.externalApplication)),
                       ListTile(
                           leading: const PhosphorIcon(PhosphorIconsLight.flag),
@@ -222,7 +223,7 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
                               PhosphorIconsLight.arrowCounterClockwise),
                           title: Text(AppLocalizations.of(context).changelog),
                           onTap: () => launchUrl(
-                              Uri.https('setonix.world', 'changelog'),
+                              Uri.https('setonix.linwood.dev', 'changelog'),
                               mode: LaunchMode.externalApplication)),
                     ]),
               ),
@@ -253,7 +254,7 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
                           title:
                               Text(AppLocalizations.of(context).privacypolicy),
                           onTap: () => launchUrl(
-                              Uri.https('setonix.world', 'privacypolicy'),
+                              Uri.https('setonix.linwood.dev', 'privacypolicy'),
                               mode: LaunchMode.externalApplication)),
                       ListTile(
                         title: Text(

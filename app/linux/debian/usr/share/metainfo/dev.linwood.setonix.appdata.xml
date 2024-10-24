@@ -15,9 +15,9 @@
 		<color type="primary" scheme_preference="light">#d0d0d0</color>
 		<color type="primary" scheme_preference="dark">#2f2f2f</color>
 	</branding>
-	<url type="homepage">https://setonix.world/</url>
+	<url type="homepage">https://setonix.linwood.dev/</url>
 	<url type="bugtracker">https://github.com/LinwoodDev/Setonix/issues</url>
-	<url type="help">https://setonix.world/docs/v1/intro</url>
+	<url type="help">https://setonix.linwood.dev/docs/v1/intro</url>
 	<url type="translate">https://linwood.dev/setonix/crowdin</url>
 	<url type="vcs-browser">https://github.com/LinwoodDev/Setonix.git</url>
 	<url type="contribute">https://github.com/LinwoodDev/Setonix/blob/develop/CONTRIBUTING.md</url>

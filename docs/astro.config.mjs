@@ -77,7 +77,7 @@ export default defineConfig({
             },
             {
               label: "Changelog",
-              link: "/community/changelog/",
+              link: "/changelog/",
             },
             {
               label: "Contributing",

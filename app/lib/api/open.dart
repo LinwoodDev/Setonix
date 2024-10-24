@@ -21,7 +21,7 @@ Future<bool> openHelp(List<String> pageLocation, [String? fragment]) {
   return launchUrl(
     Uri(
         scheme: 'https',
-        host: 'setonix.world',
+        host: 'setonix.linwood.dev',
         fragment: fragment,
         pathSegments: ['docs', 'v1', ...pageLocation]),
   );

@@ -57,7 +57,7 @@ Source: "{#BaseDirRelease}\*"; DestDir: "{app}"; Flags: ignoreversion recursesub
 
 [Icons]
 Name: "{group}\Visit Website"; Filename: "https://www.linwood.dev/"
-Name: "{group}\Setonix Documentation"; Filename: "https://setonix.world/"
+Name: "{group}\Setonix Documentation"; Filename: "https://setonix.linwood.dev/"
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
