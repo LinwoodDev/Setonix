@@ -209,8 +209,8 @@ jobs:
       - name: 📦 Get dependencies
         run: |
           flutter clean
-          flutter pub get
           flutter doctor -v
+          flutter pub get
       - name: Build nessesary files
         working-directory: ./
         run: |
@@ -688,7 +688,9 @@ jobs:
           path: server-build-macos/
       - name: 📦 Zip artifacts
         run: |
-          zip -r linwood-setonix-windows-x86_64.zip windows-build/*
+          cd windows-build
+          zip -r ../linwood-setonix-windows-x86_64.zip *
+          cd ..
           tar -C linux-x86_64-build -czf linwood-setonix-linux-x86_64.tar.gz .
           tar -C linux-arm64-build -czf linwood-setonix-linux-arm64.tar.gz .
           zip -r linwood-setonix-server-windows-x86_64.zip server-build-windows-x86_64/*
