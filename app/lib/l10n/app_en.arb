@@ -1,7 +1,7 @@
 {
   "servers": "Servers",
   "connect": "Connect",
-  "create": "Create",
+  "add": "Add",
   "minimize": "Minimize",
   "maximize": "Maximize",
   "restore": "Restore",

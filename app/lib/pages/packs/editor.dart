@@ -128,19 +128,101 @@ class _EditorPacksViewState extends State<_EditorPacksView> {
         Align(
           alignment: Alignment.bottomRight,
           child: FloatingActionButton.extended(
-            onPressed: () async {
-              final name = await showDialog(
-                  context: context, builder: (context) => NameDialog());
-              if (name == null) return;
-              await _fileSystem.editorSystem.createFile(
-                  name,
-                  SetonixData.empty().setMetadata(FileMetadata(
-                    name: name,
-                    type: FileType.pack,
-                  )));
-              _reloadPacks();
-            },
-            label: Text(AppLocalizations.of(context).create),
+            onPressed: () => showLeapBottomSheet(
+              context: context,
+              titleBuilder: (context) => Text(AppLocalizations.of(context).add),
+              childrenBuilder: (context) => [
+                ListTile(
+                  title: Text(LeapLocalizations.of(context).create),
+                  leading: const Icon(PhosphorIconsLight.plusCircle),
+                  onTap: () async {
+                    final name = await showDialog(
+                        context: context, builder: (context) => NameDialog());
+                    if (name == null) return;
+                    await _fileSystem.editorSystem.createFile(
+                        name,
+                        SetonixData.empty().setMetadata(FileMetadata(
+                          name: name,
+                          type: FileType.pack,
+                        )));
+                    _reloadPacks();
+                  },
+                ),
+                ListTile(
+                  title: Text(AppLocalizations.of(context).installed),
+                  leading: const Icon(PhosphorIconsLight.download),
+                  onTap: () async {
+                    final packs = await _fileSystem.packSystem.getFiles();
+                    if (packs.isEmpty || !context.mounted) {
+                      return;
+                    }
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Text(AppLocalizations.of(context).import),
+                        scrollable: true,
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: packs.map((pack) {
+                            final file = pack.data!;
+                            final data = file.load();
+                            final metadata = data.getMetadataOrDefault();
+                            return ListTile(
+                              title: Text(metadata.name),
+                              subtitle: Text(pack.identifier),
+                              onTap: () async {
+                                await _fileSystem.editorSystem.createFile(
+                                    metadata.name,
+                                    SetonixData.fromData(data.exportAsBytes()));
+                                _reloadPacks();
+                              },
+                            );
+                          }).toList(),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(false),
+                            child: Text(AppLocalizations.of(context).cancel),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+                ListTile(
+                  title: Text(AppLocalizations.of(context).import),
+                  leading: const Icon(PhosphorIconsLight.arrowSquareIn),
+                  onTap: () async {
+                    final result = await fs.openFile(
+                      acceptedTypeGroups: [
+                        fs.XTypeGroup(
+                          label: AppLocalizations.of(context).packs,
+                          extensions: const ['stnx'],
+                          uniformTypeIdentifiers: const [
+                            'dev.linwood.setonix.pack'
+                          ],
+                          mimeTypes: const [
+                            'application/octet-stream',
+                            'application/zip'
+                          ],
+                        )
+                      ],
+                    );
+                    if (result == null) return;
+                    final bytes = await result.readAsBytes();
+                    final data = SetonixFile(bytes).load();
+                    final metadata = data.getMetadataOrDefault();
+                    if (metadata.type != FileType.pack) {
+                      return;
+                    }
+                    await _fileSystem.editorSystem
+                        .createFile(metadata.name, data);
+                    _reloadPacks();
+                  },
+                ),
+              ],
+            ),
+            label: Text(AppLocalizations.of(context).add),
             icon: const Icon(PhosphorIconsLight.plus),
           ),
         ),

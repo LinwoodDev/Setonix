@@ -1,0 +1,4 @@
+* Add lua scripting support
+* Add importing system for editor
+
+Read more here: https://linwood.dev/setonix/0.4.0

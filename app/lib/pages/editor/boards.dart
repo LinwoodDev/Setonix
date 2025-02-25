@@ -76,7 +76,7 @@ class BoardsEditorPage extends StatelessWidget {
           if (name == null) return;
           cubit.setBoard(name, BoardDefinition(texture: ''));
         },
-        label: Text(AppLocalizations.of(context).create),
+        label: Text(LeapLocalizations.of(context).create),
         icon: const Icon(PhosphorIconsLight.plus),
       ),
     );
