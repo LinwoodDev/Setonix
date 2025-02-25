@@ -131,11 +131,12 @@ class _EditorPacksViewState extends State<_EditorPacksView> {
             onPressed: () => showLeapBottomSheet(
               context: context,
               titleBuilder: (context) => Text(AppLocalizations.of(context).add),
-              childrenBuilder: (context) => [
+              childrenBuilder: (ctx) => [
                 ListTile(
-                  title: Text(LeapLocalizations.of(context).create),
+                  title: Text(LeapLocalizations.of(ctx).create),
                   leading: const Icon(PhosphorIconsLight.plusCircle),
                   onTap: () async {
+                    Navigator.of(ctx).pop();
                     final name = await showDialog(
                         context: context, builder: (context) => NameDialog());
                     if (name == null) return;
@@ -156,6 +157,7 @@ class _EditorPacksViewState extends State<_EditorPacksView> {
                     if (packs.isEmpty || !context.mounted) {
                       return;
                     }
+                    Navigator.of(ctx).pop();
                     showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
@@ -171,9 +173,9 @@ class _EditorPacksViewState extends State<_EditorPacksView> {
                               title: Text(metadata.name),
                               subtitle: Text(pack.identifier),
                               onTap: () async {
-                                await _fileSystem.editorSystem.createFile(
-                                    metadata.name,
-                                    SetonixData.fromData(data.exportAsBytes()));
+                                Navigator.of(context).pop();
+                                await _fileSystem.editorSystem
+                                    .createFile(metadata.name, data);
                                 _reloadPacks();
                               },
                             );
@@ -193,6 +195,7 @@ class _EditorPacksViewState extends State<_EditorPacksView> {
                   title: Text(AppLocalizations.of(context).import),
                   leading: const Icon(PhosphorIconsLight.arrowSquareIn),
                   onTap: () async {
+                    Navigator.of(ctx).pop();
                     final result = await fs.openFile(
                       acceptedTypeGroups: [
                         fs.XTypeGroup(

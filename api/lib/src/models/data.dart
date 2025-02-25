@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:archive/archive.dart';
 import 'package:crypto/crypto.dart';
 import 'package:lw_file_system_api/lw_file_system_api.dart';
 import 'background.dart';
@@ -204,10 +203,6 @@ class SetonixData extends ArchiveData<SetonixData> {
         if (translation == null) return null;
         return MapEntry(e, translation);
       }).nonNulls;
-
-  @override
-  Uint8List exportAsBytes() => ZipEncoder(password: state.password)
-      .encodeBytes(export(), autoClose: true);
 
   PackTranslation? getTranslation([String id = kFallbackLocale]) {
     final data = getAsset('$kPackTranslationsPath/$id.json');
