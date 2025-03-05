@@ -205,7 +205,9 @@ jobs:
           cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
           cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
       - name: ✅ Enable platforms
-        run: flutter config --enable-linux-desktop
+        run: |
+          rm -f "$(dirname "$(dirname "$(command -v flutter)")")/engine/src/.gn"
+          flutter config --enable-linux-desktop
       - name: 📦 Get dependencies
         run: |
           flutter clean
@@ -231,6 +233,10 @@ jobs:
       - name: 🏭 Make binary executable
         run: |
           chmod +x build/linux/${{ matrix.arch.dir }}/release/bundle/setonix
+      - name: Update files to arm64
+        if: ${{ matrix.arch.name == 'arm64' }}
+        run: |
+          sed -i 's/^Architecture: amd64/Architecture: arm64/' linux/debian/DEBIAN/control
       - name: Build .deb executable
         run: |
           cp -fr build/linux/${{ matrix.arch.dir }}/release/bundle linux/debian/usr/bin
@@ -335,7 +341,9 @@ jobs:
           cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
           cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
       - name: ✅ Enable platforms
-        run: flutter config --enable-linux-desktop
+        run: |
+          rm -f "$(dirname "$(dirname "$(command -v flutter)")")/engine/src/.gn"
+          flutter config --enable-linux-desktop
       - name: 📦 Get dependencies
         run: |
           flutter clean

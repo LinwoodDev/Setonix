@@ -26,6 +26,7 @@ pub struct PluginCallback {
     pub(crate) process_event: DartCallback2<String, Option<bool>>,
     pub(crate) send_event: DartCallback2<String, Option<Channel>>,
     pub(crate) state_field_access: Arc<dyn Fn(StateFieldAccess) -> DartFnFuture<String> + Send + Sync>,
+    pub(crate) state_field_change: Arc<dyn Fn(StateFieldAccess, String) -> DartFnFuture<()> + Send + Sync>,
 }
 
 impl Default for PluginCallback {
@@ -40,6 +41,7 @@ impl Default for PluginCallback {
             process_event: Arc::new(|_, _| Box::pin(async {})),
             send_event: Arc::new(|_, _| Box::pin(async {})),
             state_field_access: Arc::new(|_| Box::pin(async { "".to_string() })),
+            state_field_change: Arc::new(|_, _| Box::pin(async {})),
         }
     }
 }
@@ -62,6 +64,11 @@ impl PluginCallback {
     #[frb(sync)]
     pub fn change_state_field_access(&mut self, state_field_access: impl Fn(StateFieldAccess) -> DartFnFuture<String> + 'static + Send + Sync) {
         self.state_field_access = Arc::new(Box::new(state_field_access)); // or sth like that
+    }
+
+    #[frb(sync)]
+    pub fn change_state_field_change(&mut self, state_field_change: impl Fn(StateFieldAccess, String) -> DartFnFuture<()> + 'static + Send + Sync) {
+        self.state_field_change = Arc::new(Box::new(state_field_change)); // or sth like that
     }
 }
 
