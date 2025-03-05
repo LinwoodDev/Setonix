@@ -18,12 +18,6 @@ impl LuaUserData for LuauStateUserData {
                 let serialized = lua.to_value(&result).unwrap();
                 Ok(serialized)
             });
-            fields.add_field_method_set(name, move |_, this: &mut LuauStateUserData, value: LuaValue| {
-                let callback = this.0.state_field_change.clone();
-                let value = serde_json::to_string(&value).unwrap();
-                block_on(callback(field.clone(), value));
-                Ok(())
-            });
         }
     }
 }

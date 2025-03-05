@@ -72,11 +72,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
-  FutureOr<void> Function(StateFieldAccess, String)
-      dco_decode_DartFn_Inputs_state_field_access_String_Output_unit_AnyhowException(
-          dynamic raw);
-
-  @protected
   Object dco_decode_DartOpaque(dynamic raw);
 
   @protected
@@ -285,12 +280,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void
       sse_encode_DartFn_Inputs_state_field_access_Output_String_AnyhowException(
           FutureOr<String> Function(StateFieldAccess) self,
-          SseSerializer serializer);
-
-  @protected
-  void
-      sse_encode_DartFn_Inputs_state_field_access_String_Output_unit_AnyhowException(
-          FutureOr<void> Function(StateFieldAccess, String) self,
           SseSerializer serializer);
 
   @protected

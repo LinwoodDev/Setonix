@@ -24,10 +24,6 @@ abstract class PluginCallback implements RustOpaqueInterface {
   void changeStateFieldAccess(
       {required FutureOr<String> Function(StateFieldAccess) stateFieldAccess});
 
-  void changeStateFieldChange(
-      {required FutureOr<void> Function(StateFieldAccess, String)
-          stateFieldChange});
-
   static PluginCallback default_() =>
       RustLib.instance.api.crateApiPluginPluginCallbackDefault();
 }
