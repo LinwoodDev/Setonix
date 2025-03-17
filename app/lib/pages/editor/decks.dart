@@ -67,7 +67,7 @@ class DecksEditorPage extends StatelessWidget {
           if (name == null) return;
           cubit.setDeck(name, DeckDefinition());
         },
-        label: Text(AppLocalizations.of(context).create),
+        label: Text(LeapLocalizations.of(context).create),
         icon: const Icon(PhosphorIconsLight.plus),
       ),
     );
@@ -202,7 +202,7 @@ class _DeckEditorDialogState extends State<DeckEditorDialog> {
                             });
                           },
                           icon: const Icon(PhosphorIconsLight.plus),
-                          label: Text(AppLocalizations.of(context).create),
+                          label: Text(LeapLocalizations.of(context).create),
                         ),
                       ),
                     ],
@@ -262,7 +262,7 @@ class _DeckEditorDialogState extends State<DeckEditorDialog> {
                             });
                           },
                           icon: const Icon(PhosphorIconsLight.plus),
-                          label: Text(AppLocalizations.of(context).create),
+                          label: Text(LeapLocalizations.of(context).create),
                         ),
                       ),
                     ],

@@ -205,12 +205,14 @@ jobs:
           cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
           cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
       - name: ✅ Enable platforms
-        run: flutter config --enable-linux-desktop
+        run: |
+          rm -f "$(dirname "$(dirname "$(command -v flutter)")")/engine/src/.gn"
+          flutter config --enable-linux-desktop
       - name: 📦 Get dependencies
         run: |
           flutter clean
-          flutter pub get
           flutter doctor -v
+          flutter pub get
       - name: Build nessesary files
         working-directory: ./
         run: |
@@ -231,6 +233,10 @@ jobs:
       - name: 🏭 Make binary executable
         run: |
           chmod +x build/linux/${{ matrix.arch.dir }}/release/bundle/setonix
+      - name: Update files to arm64
+        if: ${{ matrix.arch.name == 'arm64' }}
+        run: |
+          sed -i 's/^Architecture: amd64/Architecture: arm64/' linux/debian/DEBIAN/control
       - name: Build .deb executable
         run: |
           cp -fr build/linux/${{ matrix.arch.dir }}/release/bundle linux/debian/usr/bin
@@ -335,7 +341,9 @@ jobs:
           cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
           cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
       - name: ✅ Enable platforms
-        run: flutter config --enable-linux-desktop
+        run: |
+          rm -f "$(dirname "$(dirname "$(command -v flutter)")")/engine/src/.gn"
+          flutter config --enable-linux-desktop
       - name: 📦 Get dependencies
         run: |
           flutter clean
@@ -519,12 +527,16 @@ jobs:
         os:
           - name: ubuntu-24.04
             label: linux-x86_64
+            rust: libsetonix_plugin.so
           - name: ubuntu-24.04-arm
             label: linux-arm64
+            rust: libsetonix_plugin.so
           - name: windows-2025
             label: windows-x86_64
+            rust: setonix_plugin.dll
           - name: macos-latest
             label: macos
+            rust: libsetonix_plugin.dylib
     runs-on: ${{ matrix.os.name }}
     steps:
       - name: ⬆️ Checkout
@@ -544,6 +556,10 @@ jobs:
           flutter clean
           flutter pub get
           flutter doctor -v
+      - name: Compile rust
+        working-directory: plugin/rust
+        run: |
+          cargo build --release
       - name: Compile
         run: |
           dart compile exe bin/setonix_server.dart
@@ -552,6 +568,10 @@ jobs:
           mkdir -p server-build
           mv bin/setonix_server.exe server-build/
           mkdir -p server-build/packs
+      - name: Move rust lib
+        working-directory: ./
+        run: |
+          cp plugin/rust/target/release/${{ matrix.os.rust }} server/server-build/
       - name: Build nessesary files
         working-directory: ./
         run: |
@@ -676,7 +696,9 @@ jobs:
           path: server-build-macos/
       - name: 📦 Zip artifacts
         run: |
-          zip -r linwood-setonix-windows-x86_64.zip windows-build/*
+          cd windows-build
+          zip -r ../linwood-setonix-windows-x86_64.zip *
+          cd ..
           tar -C linux-x86_64-build -czf linwood-setonix-linux-x86_64.tar.gz .
           tar -C linux-arm64-build -czf linwood-setonix-linux-arm64.tar.gz .
           zip -r linwood-setonix-server-windows-x86_64.zip server-build-windows-x86_64/*
@@ -855,7 +877,7 @@ jobs:
       - name: Setup Fastlane
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.3.6"
+          ruby-version: "3.3.7"
           bundler-cache: true
           working-directory: app/android
       - name: 🚀 Deploy to Play Store

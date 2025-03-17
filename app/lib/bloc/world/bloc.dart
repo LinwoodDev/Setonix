@@ -9,6 +9,7 @@ import 'package:setonix/helpers/asset.dart';
 import 'package:setonix/services/file_system.dart';
 import 'package:setonix/bloc/multiplayer.dart';
 import 'package:setonix_api/setonix_api.dart';
+import 'package:setonix_plugin/setonix_plugin.dart';
 
 ServerProcessed _compute(
         (ServerWorldEvent, WorldState, List<SignatureMetadata>) m) =>
@@ -17,6 +18,7 @@ ServerProcessed _compute(
 SetonixData _saveState(WorldState state) => state.save();
 
 class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
+  late final PluginSystem pluginSystem;
   bool _remoteEvent = false;
   WorldBloc({
     required MultiplayerCubit multiplayer,
@@ -39,6 +41,16 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
             info: data?.getInfo() ?? const GameInfo(),
           ),
         )) {
+    pluginSystem = PluginSystem(
+      onProcess: (p0, p1, [force = false]) {
+        process(p1);
+      },
+      onSendEvent: (p0, p1) {
+        _processEvent(p1);
+      },
+      playersGetter: () => state.multiplayer.clients.toList(),
+      stateGetter: () => state.world,
+    );
     state.multiplayer
       ..events.listen((event) {
         _remoteEvent = true;
@@ -113,6 +125,9 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
       emit(
           state.copyWith(showDuplicates: event.value ?? !state.showDuplicates));
     });
+    if (!state.multiplayer.isClient) {
+      _loadScript(state.world.info.script);
+    }
   }
 
   Future<void> save() async {
@@ -161,5 +176,13 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
       case ServerWorldEvent e:
         add(e);
     }
+  }
+
+  Future<void> _loadScript(String? script) async {
+    try {
+      if (script == null) return;
+      pluginSystem.loadLuaPlugin(state.assetManager, script);
+      // ignore: empty_catches
+    } catch (e) {}
   }
 }

@@ -117,7 +117,7 @@ class TeamDialogState extends State<TeamDialog> {
                         Navigator.of(context).pop();
                       },
                 child: Text(_isCreate()
-                    ? AppLocalizations.of(context).create
+                    ? LeapLocalizations.of(context).create
                     : AppLocalizations.of(context).edit),
               );
             },

@@ -104,7 +104,7 @@ class _GameNotesDrawerState extends State<GameNotesDrawer> {
             height: 48,
             child: ElevatedButton.icon(
               icon: const Icon(PhosphorIconsLight.plus),
-              label: Text(AppLocalizations.of(context).create),
+              label: Text(LeapLocalizations.of(context).create),
               onPressed: () {
                 final bloc = context.read<WorldBloc>();
                 showDialog(

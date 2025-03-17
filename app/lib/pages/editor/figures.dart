@@ -76,7 +76,7 @@ class FiguresEditorPage extends StatelessWidget {
           cubit.setFigure(
               name, FigureDefinition(back: FigureBackDefinition(texture: '')));
         },
-        label: Text(AppLocalizations.of(context).create),
+        label: Text(LeapLocalizations.of(context).create),
         icon: const Icon(PhosphorIconsLight.plus),
       ),
     );
@@ -242,7 +242,7 @@ class _FigureEditorDialogState extends State<FigureEditorDialog> {
                               );
                             });
                           },
-                          label: Text(AppLocalizations.of(context).create),
+                          label: Text(LeapLocalizations.of(context).create),
                           icon: Icon(PhosphorIconsLight.plus),
                         ),
                       ),

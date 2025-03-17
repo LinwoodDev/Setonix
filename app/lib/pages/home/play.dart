@@ -220,7 +220,7 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
                 height: 48,
                 child: ElevatedButton.icon(
                   icon: const Icon(PhosphorIconsLight.plus),
-                  label: Text(AppLocalizations.of(context).create),
+                  label: Text(LeapLocalizations.of(context).create),
                   onPressed: () => showDialog<bool>(
                     context: context,
                     builder: (context) => const CreateDialog(),

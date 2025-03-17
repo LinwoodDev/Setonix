@@ -52,7 +52,7 @@ class TexturesEditorPage extends StatelessWidget {
           if (name == null) return;
           cubit.setTexture(name, bytes);
         },
-        label: Text(AppLocalizations.of(context).create),
+        label: Text(LeapLocalizations.of(context).create),
         icon: const Icon(PhosphorIconsLight.plus),
       ),
     );

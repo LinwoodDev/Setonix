@@ -67,7 +67,7 @@ class BackgroundsEditorPage extends StatelessWidget {
           if (name == null) return;
           cubit.setBackground(name, BackgroundDefinition(texture: ''));
         },
-        label: Text(AppLocalizations.of(context).create),
+        label: Text(LeapLocalizations.of(context).create),
         icon: const Icon(PhosphorIconsLight.plus),
       ),
     );

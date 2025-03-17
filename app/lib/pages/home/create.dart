@@ -225,7 +225,7 @@ class _CreateDialogState extends State<CreateDialog>
       ],
     );
     return ResponsiveAlertDialog(
-      title: Text(AppLocalizations.of(context).create),
+      title: Text(LeapLocalizations.of(context).create),
       constraints: const BoxConstraints(
         maxWidth: LeapBreakpoints.expanded,
         maxHeight: 700,
@@ -320,7 +320,7 @@ class _CreateDialogState extends State<CreateDialog>
                 Navigator.of(context).pop(true);
               }
             },
-            label: Text(AppLocalizations.of(context).create),
+            label: Text(LeapLocalizations.of(context).create),
             icon: const Icon(PhosphorIconsLight.plus),
           ),
         ]

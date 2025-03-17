@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:archive/archive.dart';
 import 'package:crypto/crypto.dart';
 import 'package:lw_file_system_api/lw_file_system_api.dart';
 import 'background.dart';
 import 'deck.dart';
 import 'info.dart';
 import 'meta.dart';
+import 'mode.dart';
 import 'definition.dart';
 import 'table.dart';
 import 'translation.dart';
@@ -20,6 +20,8 @@ const kPackBoardsPath = 'boards';
 const kPackTexturesPath = 'textures';
 const kPackTranslationsPath = 'translations';
 const kPackBackgroundsPath = 'backgrounds';
+const kPackScriptsPath = 'scripts';
+const kPackModesPath = 'modes';
 
 const kGameTablePath = 'tables';
 const kGameTeamPath = 'teams.json';
@@ -202,10 +204,6 @@ class SetonixData extends ArchiveData<SetonixData> {
         return MapEntry(e, translation);
       }).nonNulls;
 
-  @override
-  Uint8List exportAsBytes() => ZipEncoder(password: state.password)
-      .encodeBytes(export(), autoClose: true);
-
   PackTranslation? getTranslation([String id = kFallbackLocale]) {
     final data = getAsset('$kPackTranslationsPath/$id.json');
     if (data == null) return null;
@@ -273,6 +271,27 @@ class SetonixData extends ArchiveData<SetonixData> {
 
   SetonixData removeTexture(String texture) =>
       removeAsset('$kPackTexturesPath/$texture');
+
+  String? getScript(String id) {
+    final data = getAsset('$kPackScriptsPath/$id');
+    if (data == null) return null;
+    return utf8.decode(data);
+  }
+
+  Iterable<String> getModes() => getAssets(kPackModesPath, true);
+
+  GameMode? getMode(String id) {
+    final data = getAsset('$kPackModesPath/$id.json');
+    if (data == null) return null;
+    final content = utf8.decode(data);
+    return GameModeMapper.fromJson(content);
+  }
+
+  Map<String, GameMode> getModesData() => Map.fromEntries(getModes().map((e) {
+        final mode = getMode(e);
+        if (mode == null) return null;
+        return MapEntry(e, mode);
+      }).nonNulls);
 }
 
 class SetonixFile {
