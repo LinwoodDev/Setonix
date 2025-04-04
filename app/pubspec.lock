@@ -217,6 +217,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.6"
+  cryptography_plus:
+    dependency: transitive
+    description:
+      name: cryptography_plus
+      sha256: "34db787df4f4740a39474b6fb0a610aa6dc13a5b5b68754b4787a79939ac0454"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.7.1"
   dart_leap:
     dependency: transitive
     description:
@@ -699,8 +707,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/lw_sysapi"
-      ref: "742b507106900b65490551d42a2ef4c7d049889a"
-      resolved-ref: "742b507106900b65490551d42a2ef4c7d049889a"
+      ref: e901983295b103f2fe27738e8f2cbf35941d99ea
+      resolved-ref: e901983295b103f2fe27738e8f2cbf35941d99ea
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "0.0.1"
@@ -732,8 +740,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/material_leap"
-      ref: ec1b82c9fe4d1bf3bd18d7fed311b8ae1301b9d7
-      resolved-ref: ec1b82c9fe4d1bf3bd18d7fed311b8ae1301b9d7
+      ref: e901983295b103f2fe27738e8f2cbf35941d99ea
+      resolved-ref: e901983295b103f2fe27738e8f2cbf35941d99ea
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "0.0.1"
@@ -765,8 +773,17 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/networker/networker"
-      ref: "0bdc62d3af7f31e19a694d9cd39fe020dced8754"
-      resolved-ref: "0bdc62d3af7f31e19a694d9cd39fe020dced8754"
+      ref: "2e0ab5b548cb8e2d64ca24e0d7b4a6cfcc6d57fe"
+      resolved-ref: "2e0ab5b548cb8e2d64ca24e0d7b4a6cfcc6d57fe"
+      url: "https://github.com/LinwoodDev/dart_pkgs.git"
+    source: git
+    version: "1.0.0"
+  networker_crypto:
+    dependency: transitive
+    description:
+      path: "packages/networker/networker_crypto"
+      ref: "1cc2988f680758fcb45c88b3905b0312d8c5a513"
+      resolved-ref: "1cc2988f680758fcb45c88b3905b0312d8c5a513"
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "1.0.0"
@@ -774,8 +791,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/networker/networker_socket"
-      ref: fa036587c2a26db6455dd063701aef32b3531800
-      resolved-ref: fa036587c2a26db6455dd063701aef32b3531800
+      ref: "72c7cdd7a60d98c3a7f587122da83dc8b99b7ed0"
+      resolved-ref: "72c7cdd7a60d98c3a7f587122da83dc8b99b7ed0"
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "1.0.0"
@@ -1189,6 +1206,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.1"
+  swamp_api:
+    dependency: "direct main"
+    description:
+      path: api
+      ref: ea0a20e7c7f93e102b7db63e4093f0847a84634c
+      resolved-ref: ea0a20e7c7f93e102b7db63e4093f0847a84634c
+      url: "https://github.com/LinwoodDev/Swamp.git"
+    source: git
+    version: "1.0.0"
   sync_http:
     dependency: transitive
     description:
@@ -1455,4 +1481,4 @@ packages:
     version: "3.1.3"
 sdks:
   dart: ">=3.7.0 <4.0.0"
-  flutter: ">=3.29.1"
+  flutter: ">=3.29.2"

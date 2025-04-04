@@ -33,6 +33,11 @@ jobs:
       - name: Install dependencies
         run: |
           flutter pub get
+      - name: Run flutter gen-l10n
+        if: matrix.projects == 'app'
+        run: |
+          flutter gen-l10n
+          dart format lib/src/generated
       - name: Install app specific dependencies
         if: matrix.projects == 'app'
         run: |

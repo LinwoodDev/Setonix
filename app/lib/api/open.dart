@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:file_selector/file_selector.dart' as fs;
 import 'package:flutter/services.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:setonix/main.dart';
 import 'package:setonix_api/setonix_api.dart';

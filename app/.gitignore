@@ -33,6 +33,7 @@
 .pub-cache/
 .pub/
 /build/
+/lib/src/generated
 
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages

@@ -1,6 +1,6 @@
 import 'package:flame/components.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:setonix/bloc/world/local.dart';
 import 'package:setonix/bloc/world/state.dart';
 import 'package:setonix/board/cell.dart';
