@@ -8,6 +8,41 @@ import 'package:setonix_api/setonix_api.dart';
 import 'package:setonix/services/file_system.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+const kLaunchHost = 'launch.setonix.linwood.dev';
+
+Uri getLaunchUri(
+        {String? path,
+        List<String>? pathSegments,
+        String? fragment,
+        String? query,
+        Map<String, dynamic>? queryParameters,
+        String? userInfo}) =>
+    Uri(
+      scheme: 'https',
+      host: kLaunchHost,
+      path: path,
+      pathSegments: pathSegments,
+      fragment: fragment,
+      query: query,
+      queryParameters: queryParameters,
+      userInfo: userInfo,
+    );
+
+Uri getConnectUri(String url, [String? type]) => getLaunchUri(
+      pathSegments: ['connect'],
+      queryParameters: {
+        'url': url,
+        if (type != null) 'type': type,
+      },
+    );
+
+String parseConnectUri(Uri uri) {
+  if (uri.host != kLaunchHost) {
+    return uri.toString();
+  }
+  return uri.queryParameters['url'] ?? uri.toString();
+}
+
 Future<bool> openReleaseNotes() {
   return launchUrl(
       Uri(

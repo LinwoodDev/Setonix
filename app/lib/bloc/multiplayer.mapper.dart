@@ -106,7 +106,8 @@ mixin MultiplayerDisabledStateMappable {
 
   MultiplayerDisabledStateCopyWith<MultiplayerDisabledState,
           MultiplayerDisabledState, MultiplayerDisabledState>
-      get copyWith => _MultiplayerDisabledStateCopyWithImpl(
+      get copyWith => _MultiplayerDisabledStateCopyWithImpl<
+              MultiplayerDisabledState, MultiplayerDisabledState>(
           this as MultiplayerDisabledState, $identity, $identity);
   @override
   String toString() {
@@ -130,8 +131,8 @@ mixin MultiplayerDisabledStateMappable {
 extension MultiplayerDisabledStateValueCopy<$R, $Out>
     on ObjectCopyWith<$R, MultiplayerDisabledState, $Out> {
   MultiplayerDisabledStateCopyWith<$R, MultiplayerDisabledState, $Out>
-      get $asMultiplayerDisabledState => $base
-          .as((v, t, t2) => _MultiplayerDisabledStateCopyWithImpl(v, t, t2));
+      get $asMultiplayerDisabledState => $base.as((v, t, t2) =>
+          _MultiplayerDisabledStateCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class MultiplayerDisabledStateCopyWith<
@@ -162,7 +163,7 @@ class _MultiplayerDisabledStateCopyWithImpl<$R, $Out>
   @override
   MultiplayerDisabledStateCopyWith<$R2, MultiplayerDisabledState, $Out2>
       $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _MultiplayerDisabledStateCopyWithImpl($value, $cast, t);
+          _MultiplayerDisabledStateCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class MultiplayerConnectingStateMapper
@@ -216,7 +217,8 @@ mixin MultiplayerConnectingStateMappable {
 
   MultiplayerConnectingStateCopyWith<MultiplayerConnectingState,
           MultiplayerConnectingState, MultiplayerConnectingState>
-      get copyWith => _MultiplayerConnectingStateCopyWithImpl(
+      get copyWith => _MultiplayerConnectingStateCopyWithImpl<
+              MultiplayerConnectingState, MultiplayerConnectingState>(
           this as MultiplayerConnectingState, $identity, $identity);
   @override
   String toString() {
@@ -240,8 +242,8 @@ mixin MultiplayerConnectingStateMappable {
 extension MultiplayerConnectingStateValueCopy<$R, $Out>
     on ObjectCopyWith<$R, MultiplayerConnectingState, $Out> {
   MultiplayerConnectingStateCopyWith<$R, MultiplayerConnectingState, $Out>
-      get $asMultiplayerConnectingState => $base
-          .as((v, t, t2) => _MultiplayerConnectingStateCopyWithImpl(v, t, t2));
+      get $asMultiplayerConnectingState => $base.as((v, t, t2) =>
+          _MultiplayerConnectingStateCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class MultiplayerConnectingStateCopyWith<
@@ -273,7 +275,7 @@ class _MultiplayerConnectingStateCopyWithImpl<$R, $Out>
   @override
   MultiplayerConnectingStateCopyWith<$R2, MultiplayerConnectingState, $Out2>
       $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _MultiplayerConnectingStateCopyWithImpl($value, $cast, t);
+          _MultiplayerConnectingStateCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class MultiplayerDisconnectedStateMapper
@@ -341,7 +343,8 @@ mixin MultiplayerDisconnectedStateMappable {
 
   MultiplayerDisconnectedStateCopyWith<MultiplayerDisconnectedState,
           MultiplayerDisconnectedState, MultiplayerDisconnectedState>
-      get copyWith => _MultiplayerDisconnectedStateCopyWithImpl(
+      get copyWith => _MultiplayerDisconnectedStateCopyWithImpl<
+              MultiplayerDisconnectedState, MultiplayerDisconnectedState>(
           this as MultiplayerDisconnectedState, $identity, $identity);
   @override
   String toString() {
@@ -365,8 +368,8 @@ mixin MultiplayerDisconnectedStateMappable {
 extension MultiplayerDisconnectedStateValueCopy<$R, $Out>
     on ObjectCopyWith<$R, MultiplayerDisconnectedState, $Out> {
   MultiplayerDisconnectedStateCopyWith<$R, MultiplayerDisconnectedState, $Out>
-      get $asMultiplayerDisconnectedState => $base.as(
-          (v, t, t2) => _MultiplayerDisconnectedStateCopyWithImpl(v, t, t2));
+      get $asMultiplayerDisconnectedState => $base.as((v, t, t2) =>
+          _MultiplayerDisconnectedStateCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class MultiplayerDisconnectedStateCopyWith<
@@ -412,7 +415,8 @@ class _MultiplayerDisconnectedStateCopyWithImpl<$R, $Out>
   @override
   MultiplayerDisconnectedStateCopyWith<$R2, MultiplayerDisconnectedState, $Out2>
       $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _MultiplayerDisconnectedStateCopyWithImpl($value, $cast, t);
+          _MultiplayerDisconnectedStateCopyWithImpl<$R2, $Out2>(
+              $value, $cast, t);
 }
 
 class MultiplayerConnectedStateMapper
@@ -433,9 +437,10 @@ class MultiplayerConnectedStateMapper
   @override
   final String id = 'MultiplayerConnectedState';
 
-  static NetworkerBase _$networker(MultiplayerConnectedState v) => v.networker;
-  static const Field<MultiplayerConnectedState, NetworkerBase> _f$networker =
-      Field('networker', _$networker);
+  static NetworkerBase<dynamic> _$networker(MultiplayerConnectedState v) =>
+      v.networker;
+  static const Field<MultiplayerConnectedState, NetworkerBase<dynamic>>
+      _f$networker = Field('networker', _$networker);
   static SimpleNetworkerPipe<WorldEvent> _$pipe(MultiplayerConnectedState v) =>
       v.pipe;
   static const Field<MultiplayerConnectedState, SimpleNetworkerPipe<WorldEvent>>
@@ -478,7 +483,8 @@ mixin MultiplayerConnectedStateMappable {
 
   MultiplayerConnectedStateCopyWith<MultiplayerConnectedState,
           MultiplayerConnectedState, MultiplayerConnectedState>
-      get copyWith => _MultiplayerConnectedStateCopyWithImpl(
+      get copyWith => _MultiplayerConnectedStateCopyWithImpl<
+              MultiplayerConnectedState, MultiplayerConnectedState>(
           this as MultiplayerConnectedState, $identity, $identity);
   @override
   String toString() {
@@ -502,8 +508,8 @@ mixin MultiplayerConnectedStateMappable {
 extension MultiplayerConnectedStateValueCopy<$R, $Out>
     on ObjectCopyWith<$R, MultiplayerConnectedState, $Out> {
   MultiplayerConnectedStateCopyWith<$R, MultiplayerConnectedState, $Out>
-      get $asMultiplayerConnectedState => $base
-          .as((v, t, t2) => _MultiplayerConnectedStateCopyWithImpl(v, t, t2));
+      get $asMultiplayerConnectedState => $base.as((v, t, t2) =>
+          _MultiplayerConnectedStateCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class MultiplayerConnectedStateCopyWith<
@@ -511,7 +517,9 @@ abstract class MultiplayerConnectedStateCopyWith<
     $In extends MultiplayerConnectedState,
     $Out> implements MultiplayerStateCopyWith<$R, $In, $Out> {
   @override
-  $R call({NetworkerBase? networker, SimpleNetworkerPipe<WorldEvent>? pipe});
+  $R call(
+      {NetworkerBase<dynamic>? networker,
+      SimpleNetworkerPipe<WorldEvent>? pipe});
   MultiplayerConnectedStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -526,7 +534,9 @@ class _MultiplayerConnectedStateCopyWithImpl<$R, $Out>
   late final ClassMapperBase<MultiplayerConnectedState> $mapper =
       MultiplayerConnectedStateMapper.ensureInitialized();
   @override
-  $R call({NetworkerBase? networker, SimpleNetworkerPipe<WorldEvent>? pipe}) =>
+  $R call(
+          {NetworkerBase<dynamic>? networker,
+          SimpleNetworkerPipe<WorldEvent>? pipe}) =>
       $apply(FieldCopyWithData({
         if (networker != null) #networker: networker,
         if (pipe != null) #pipe: pipe
@@ -539,5 +549,5 @@ class _MultiplayerConnectedStateCopyWithImpl<$R, $Out>
   @override
   MultiplayerConnectedStateCopyWith<$R2, MultiplayerConnectedState, $Out2>
       $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _MultiplayerConnectedStateCopyWithImpl($value, $cast, t);
+          _MultiplayerConnectedStateCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

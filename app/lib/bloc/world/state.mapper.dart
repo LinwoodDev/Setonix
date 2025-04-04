@@ -25,9 +25,9 @@ class WorldOperationModeMapper extends EnumMapper<WorldOperationMode> {
   @override
   WorldOperationMode decode(dynamic value) {
     switch (value) {
-      case 'figures':
+      case r'figures':
         return WorldOperationMode.figures;
-      case 'boards':
+      case r'boards':
         return WorldOperationMode.boards;
       default:
         throw MapperException.unknownEnumValue(value);
@@ -38,9 +38,9 @@ class WorldOperationModeMapper extends EnumMapper<WorldOperationMode> {
   dynamic encode(WorldOperationMode self) {
     switch (self) {
       case WorldOperationMode.figures:
-        return 'figures';
+        return r'figures';
       case WorldOperationMode.boards:
-        return 'boards';
+        return r'boards';
     }
   }
 }
@@ -71,9 +71,9 @@ class DrawerViewMapper extends EnumMapper<DrawerView> {
   @override
   DrawerView decode(dynamic value) {
     switch (value) {
-      case 'chat':
+      case r'chat':
         return DrawerView.chat;
-      case 'notes':
+      case r'notes':
         return DrawerView.notes;
       default:
         throw MapperException.unknownEnumValue(value);
@@ -84,9 +84,9 @@ class DrawerViewMapper extends EnumMapper<DrawerView> {
   dynamic encode(DrawerView self) {
     switch (self) {
       case DrawerView.chat:
-        return 'chat';
+        return r'chat';
       case DrawerView.notes:
-        return 'notes';
+        return r'notes';
     }
   }
 }
@@ -204,8 +204,9 @@ mixin ClientWorldStateMappable {
   }
 
   ClientWorldStateCopyWith<ClientWorldState, ClientWorldState, ClientWorldState>
-      get copyWith => _ClientWorldStateCopyWithImpl(
-          this as ClientWorldState, $identity, $identity);
+      get copyWith =>
+          _ClientWorldStateCopyWithImpl<ClientWorldState, ClientWorldState>(
+              this as ClientWorldState, $identity, $identity);
   @override
   String toString() {
     return ClientWorldStateMapper.ensureInitialized()
@@ -228,8 +229,8 @@ mixin ClientWorldStateMappable {
 extension ClientWorldStateValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ClientWorldState, $Out> {
   ClientWorldStateCopyWith<$R, ClientWorldState, $Out>
-      get $asClientWorldState =>
-          $base.as((v, t, t2) => _ClientWorldStateCopyWithImpl(v, t, t2));
+      get $asClientWorldState => $base
+          .as((v, t, t2) => _ClientWorldStateCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class ClientWorldStateCopyWith<$R, $In extends ClientWorldState, $Out>
@@ -316,5 +317,5 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
   @override
   ClientWorldStateCopyWith<$R2, ClientWorldState, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _ClientWorldStateCopyWithImpl($value, $cast, t);
+      _ClientWorldStateCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

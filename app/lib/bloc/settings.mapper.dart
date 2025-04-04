@@ -59,6 +59,9 @@ class SetonixSettingsMapper extends ClassMapperBase<SetonixSettings> {
   static double _$zoom(SetonixSettings v) => v.zoom;
   static const Field<SetonixSettings, double> _f$zoom =
       Field('zoom', _$zoom, opt: true, def: 1);
+  static List<String> _$swamps(SetonixSettings v) => v.swamps;
+  static const Field<SetonixSettings, List<String>> _f$swamps =
+      Field('swamps', _$swamps, opt: true, def: const []);
 
   @override
   final MappableFields<SetonixSettings> fields = const {
@@ -74,6 +77,7 @@ class SetonixSettingsMapper extends ClassMapperBase<SetonixSettings> {
     #servers: _f$servers,
     #highContrast: _f$highContrast,
     #zoom: _f$zoom,
+    #swamps: _f$swamps,
   };
 
   static SetonixSettings _instantiate(DecodingData data) {
@@ -89,7 +93,8 @@ class SetonixSettingsMapper extends ClassMapperBase<SetonixSettings> {
         gameProperty: data.dec(_f$gameProperty),
         servers: data.dec(_f$servers),
         highContrast: data.dec(_f$highContrast),
-        zoom: data.dec(_f$zoom));
+        zoom: data.dec(_f$zoom),
+        swamps: data.dec(_f$swamps));
   }
 
   @override
@@ -116,8 +121,9 @@ mixin SetonixSettingsMappable {
   }
 
   SetonixSettingsCopyWith<SetonixSettings, SetonixSettings, SetonixSettings>
-      get copyWith => _SetonixSettingsCopyWithImpl(
-          this as SetonixSettings, $identity, $identity);
+      get copyWith =>
+          _SetonixSettingsCopyWithImpl<SetonixSettings, SetonixSettings>(
+              this as SetonixSettings, $identity, $identity);
   @override
   String toString() {
     return SetonixSettingsMapper.ensureInitialized()
@@ -140,7 +146,7 @@ mixin SetonixSettingsMappable {
 extension SetonixSettingsValueCopy<$R, $Out>
     on ObjectCopyWith<$R, SetonixSettings, $Out> {
   SetonixSettingsCopyWith<$R, SetonixSettings, $Out> get $asSetonixSettings =>
-      $base.as((v, t, t2) => _SetonixSettingsCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _SetonixSettingsCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class SetonixSettingsCopyWith<$R, $In extends SetonixSettings, $Out>
@@ -148,6 +154,7 @@ abstract class SetonixSettingsCopyWith<$R, $In extends SetonixSettings, $Out>
   GamePropertyCopyWith<$R, GameProperty, GameProperty> get gameProperty;
   ListCopyWith<$R, ListGameServer,
       ListGameServerCopyWith<$R, ListGameServer, ListGameServer>> get servers;
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get swamps;
   $R call(
       {String? localeTag,
       ThemeMode? theme,
@@ -160,7 +167,8 @@ abstract class SetonixSettingsCopyWith<$R, $In extends SetonixSettings, $Out>
       GameProperty? gameProperty,
       List<ListGameServer>? servers,
       bool? highContrast,
-      double? zoom});
+      double? zoom,
+      List<String>? swamps});
   SetonixSettingsCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -182,6 +190,10 @@ class _SetonixSettingsCopyWithImpl<$R, $Out>
       get servers => ListCopyWith($value.servers,
           (v, t) => v.copyWith.$chain(t), (v) => call(servers: v));
   @override
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get swamps =>
+      ListCopyWith($value.swamps, (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(swamps: v));
+  @override
   $R call(
           {String? localeTag,
           ThemeMode? theme,
@@ -194,7 +206,8 @@ class _SetonixSettingsCopyWithImpl<$R, $Out>
           GameProperty? gameProperty,
           List<ListGameServer>? servers,
           bool? highContrast,
-          double? zoom}) =>
+          double? zoom,
+          List<String>? swamps}) =>
       $apply(FieldCopyWithData({
         if (localeTag != null) #localeTag: localeTag,
         if (theme != null) #theme: theme,
@@ -207,7 +220,8 @@ class _SetonixSettingsCopyWithImpl<$R, $Out>
         if (gameProperty != null) #gameProperty: gameProperty,
         if (servers != null) #servers: servers,
         if (highContrast != null) #highContrast: highContrast,
-        if (zoom != null) #zoom: zoom
+        if (zoom != null) #zoom: zoom,
+        if (swamps != null) #swamps: swamps
       }));
   @override
   SetonixSettings $make(CopyWithData data) => SetonixSettings(
@@ -223,10 +237,11 @@ class _SetonixSettingsCopyWithImpl<$R, $Out>
       gameProperty: data.get(#gameProperty, or: $value.gameProperty),
       servers: data.get(#servers, or: $value.servers),
       highContrast: data.get(#highContrast, or: $value.highContrast),
-      zoom: data.get(#zoom, or: $value.zoom));
+      zoom: data.get(#zoom, or: $value.zoom),
+      swamps: data.get(#swamps, or: $value.swamps));
 
   @override
   SetonixSettingsCopyWith<$R2, SetonixSettings, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _SetonixSettingsCopyWithImpl($value, $cast, t);
+      _SetonixSettingsCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

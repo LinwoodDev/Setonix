@@ -24,6 +24,7 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
   final List<ListGameServer> servers;
   final double zoom;
   final bool highContrast;
+  final List<String> swamps;
 
   const SetonixSettings({
     this.localeTag = '',
@@ -38,6 +39,7 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
     this.servers = const [],
     this.highContrast = false,
     this.zoom = 1,
+    this.swamps = const [],
   });
 
   Locale? get locale {
@@ -69,6 +71,7 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
             [],
         highContrast: prefs.getBool('highContrast') ?? false,
         zoom: prefs.getDouble('zoom') ?? 1,
+        swamps: prefs.getStringList('swamps') ?? [],
       );
 
   Future<void> save() async {
@@ -92,6 +95,7 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
         'servers', servers.map((e) => e.toJson()).toList());
     await prefs.setBool('highContrast', highContrast);
     await prefs.setDouble('zoom', zoom);
+    await prefs.setStringList('swamps', swamps);
   }
 }
 
@@ -193,6 +197,11 @@ class SettingsCubit extends Cubit<SetonixSettings>
 
   Future<void> resetZoom([double value = 1]) {
     emit(state.copyWith(zoom: value.clamp(0.4, 2)));
+    return save();
+  }
+
+  Future<void> changeSwamp(String swamp) {
+    emit(state.copyWith(swamps: [swamp]));
     return save();
   }
 }

@@ -71,7 +71,8 @@ mixin HandChangedMappable {
   }
 
   HandChangedCopyWith<HandChanged, HandChanged, HandChanged> get copyWith =>
-      _HandChangedCopyWithImpl(this as HandChanged, $identity, $identity);
+      _HandChangedCopyWithImpl<HandChanged, HandChanged>(
+          this as HandChanged, $identity, $identity);
   @override
   String toString() {
     return HandChangedMapper.ensureInitialized()
@@ -93,7 +94,7 @@ mixin HandChangedMappable {
 extension HandChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, HandChanged, $Out> {
   HandChangedCopyWith<$R, HandChanged, $Out> get $asHandChanged =>
-      $base.as((v, t, t2) => _HandChangedCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _HandChangedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class HandChangedCopyWith<$R, $In extends HandChanged, $Out>
@@ -126,7 +127,7 @@ class _HandChangedCopyWithImpl<$R, $Out>
   @override
   HandChangedCopyWith<$R2, HandChanged, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _HandChangedCopyWithImpl($value, $cast, t);
+      _HandChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class CellSwitchedMapper extends SubClassMapperBase<CellSwitched> {
@@ -194,7 +195,8 @@ mixin CellSwitchedMappable {
   }
 
   CellSwitchedCopyWith<CellSwitched, CellSwitched, CellSwitched> get copyWith =>
-      _CellSwitchedCopyWithImpl(this as CellSwitched, $identity, $identity);
+      _CellSwitchedCopyWithImpl<CellSwitched, CellSwitched>(
+          this as CellSwitched, $identity, $identity);
   @override
   String toString() {
     return CellSwitchedMapper.ensureInitialized()
@@ -217,7 +219,7 @@ mixin CellSwitchedMappable {
 extension CellSwitchedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, CellSwitched, $Out> {
   CellSwitchedCopyWith<$R, CellSwitched, $Out> get $asCellSwitched =>
-      $base.as((v, t, t2) => _CellSwitchedCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _CellSwitchedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class CellSwitchedCopyWith<$R, $In extends CellSwitched, $Out>
@@ -250,7 +252,7 @@ class _CellSwitchedCopyWithImpl<$R, $Out>
   @override
   CellSwitchedCopyWith<$R2, CellSwitched, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _CellSwitchedCopyWithImpl($value, $cast, t);
+      _CellSwitchedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ColorSchemeChangedMapper extends SubClassMapperBase<ColorSchemeChanged> {
@@ -314,8 +316,8 @@ mixin ColorSchemeChangedMappable {
 
   ColorSchemeChangedCopyWith<ColorSchemeChanged, ColorSchemeChanged,
           ColorSchemeChanged>
-      get copyWith => _ColorSchemeChangedCopyWithImpl(
-          this as ColorSchemeChanged, $identity, $identity);
+      get copyWith => _ColorSchemeChangedCopyWithImpl<ColorSchemeChanged,
+          ColorSchemeChanged>(this as ColorSchemeChanged, $identity, $identity);
   @override
   String toString() {
     return ColorSchemeChangedMapper.ensureInitialized()
@@ -338,8 +340,8 @@ mixin ColorSchemeChangedMappable {
 extension ColorSchemeChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ColorSchemeChanged, $Out> {
   ColorSchemeChangedCopyWith<$R, ColorSchemeChanged, $Out>
-      get $asColorSchemeChanged =>
-          $base.as((v, t, t2) => _ColorSchemeChangedCopyWithImpl(v, t, t2));
+      get $asColorSchemeChanged => $base.as(
+          (v, t, t2) => _ColorSchemeChangedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class ColorSchemeChangedCopyWith<$R, $In extends ColorSchemeChanged,
@@ -368,7 +370,7 @@ class _ColorSchemeChangedCopyWithImpl<$R, $Out>
   @override
   ColorSchemeChangedCopyWith<$R2, ColorSchemeChanged, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _ColorSchemeChangedCopyWithImpl($value, $cast, t);
+      _ColorSchemeChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class SwitchCellOnMoveChangedMapper
@@ -434,7 +436,8 @@ mixin SwitchCellOnMoveChangedMappable {
 
   SwitchCellOnMoveChangedCopyWith<SwitchCellOnMoveChanged,
           SwitchCellOnMoveChanged, SwitchCellOnMoveChanged>
-      get copyWith => _SwitchCellOnMoveChangedCopyWithImpl(
+      get copyWith => _SwitchCellOnMoveChangedCopyWithImpl<
+              SwitchCellOnMoveChanged, SwitchCellOnMoveChanged>(
           this as SwitchCellOnMoveChanged, $identity, $identity);
   @override
   String toString() {
@@ -458,8 +461,8 @@ mixin SwitchCellOnMoveChangedMappable {
 extension SwitchCellOnMoveChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, SwitchCellOnMoveChanged, $Out> {
   SwitchCellOnMoveChangedCopyWith<$R, SwitchCellOnMoveChanged, $Out>
-      get $asSwitchCellOnMoveChanged => $base
-          .as((v, t, t2) => _SwitchCellOnMoveChangedCopyWithImpl(v, t, t2));
+      get $asSwitchCellOnMoveChanged => $base.as((v, t, t2) =>
+          _SwitchCellOnMoveChangedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class SwitchCellOnMoveChangedCopyWith<
@@ -491,7 +494,7 @@ class _SwitchCellOnMoveChangedCopyWithImpl<$R, $Out>
   @override
   SwitchCellOnMoveChangedCopyWith<$R2, SwitchCellOnMoveChanged, $Out2>
       $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _SwitchCellOnMoveChangedCopyWithImpl($value, $cast, t);
+          _SwitchCellOnMoveChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class TableSwitchedMapper extends SubClassMapperBase<TableSwitched> {
@@ -554,7 +557,7 @@ mixin TableSwitchedMappable {
   }
 
   TableSwitchedCopyWith<TableSwitched, TableSwitched, TableSwitched>
-      get copyWith => _TableSwitchedCopyWithImpl(
+      get copyWith => _TableSwitchedCopyWithImpl<TableSwitched, TableSwitched>(
           this as TableSwitched, $identity, $identity);
   @override
   String toString() {
@@ -578,7 +581,7 @@ mixin TableSwitchedMappable {
 extension TableSwitchedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, TableSwitched, $Out> {
   TableSwitchedCopyWith<$R, TableSwitched, $Out> get $asTableSwitched =>
-      $base.as((v, t, t2) => _TableSwitchedCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _TableSwitchedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class TableSwitchedCopyWith<$R, $In extends TableSwitched, $Out>
@@ -606,7 +609,7 @@ class _TableSwitchedCopyWithImpl<$R, $Out>
   @override
   TableSwitchedCopyWith<$R2, TableSwitched, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _TableSwitchedCopyWithImpl($value, $cast, t);
+      _TableSwitchedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class DrawerViewChangedMapper extends SubClassMapperBase<DrawerViewChanged> {
@@ -671,8 +674,9 @@ mixin DrawerViewChangedMappable {
 
   DrawerViewChangedCopyWith<DrawerViewChanged, DrawerViewChanged,
           DrawerViewChanged>
-      get copyWith => _DrawerViewChangedCopyWithImpl(
-          this as DrawerViewChanged, $identity, $identity);
+      get copyWith =>
+          _DrawerViewChangedCopyWithImpl<DrawerViewChanged, DrawerViewChanged>(
+              this as DrawerViewChanged, $identity, $identity);
   @override
   String toString() {
     return DrawerViewChangedMapper.ensureInitialized()
@@ -695,8 +699,8 @@ mixin DrawerViewChangedMappable {
 extension DrawerViewChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, DrawerViewChanged, $Out> {
   DrawerViewChangedCopyWith<$R, DrawerViewChanged, $Out>
-      get $asDrawerViewChanged =>
-          $base.as((v, t, t2) => _DrawerViewChangedCopyWithImpl(v, t, t2));
+      get $asDrawerViewChanged => $base
+          .as((v, t, t2) => _DrawerViewChangedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class DrawerViewChangedCopyWith<$R, $In extends DrawerViewChanged,
@@ -725,7 +729,7 @@ class _DrawerViewChangedCopyWithImpl<$R, $Out>
   @override
   DrawerViewChangedCopyWith<$R2, DrawerViewChanged, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _DrawerViewChangedCopyWithImpl($value, $cast, t);
+      _DrawerViewChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class SearchTermChangedMapper extends SubClassMapperBase<SearchTermChanged> {
@@ -788,8 +792,9 @@ mixin SearchTermChangedMappable {
 
   SearchTermChangedCopyWith<SearchTermChanged, SearchTermChanged,
           SearchTermChanged>
-      get copyWith => _SearchTermChangedCopyWithImpl(
-          this as SearchTermChanged, $identity, $identity);
+      get copyWith =>
+          _SearchTermChangedCopyWithImpl<SearchTermChanged, SearchTermChanged>(
+              this as SearchTermChanged, $identity, $identity);
   @override
   String toString() {
     return SearchTermChangedMapper.ensureInitialized()
@@ -812,8 +817,8 @@ mixin SearchTermChangedMappable {
 extension SearchTermChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, SearchTermChanged, $Out> {
   SearchTermChangedCopyWith<$R, SearchTermChanged, $Out>
-      get $asSearchTermChanged =>
-          $base.as((v, t, t2) => _SearchTermChangedCopyWithImpl(v, t, t2));
+      get $asSearchTermChanged => $base
+          .as((v, t, t2) => _SearchTermChangedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class SearchTermChangedCopyWith<$R, $In extends SearchTermChanged,
@@ -842,7 +847,7 @@ class _SearchTermChangedCopyWithImpl<$R, $Out>
   @override
   SearchTermChangedCopyWith<$R2, SearchTermChanged, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _SearchTermChangedCopyWithImpl($value, $cast, t);
+      _SearchTermChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ShowDuplicatesChangedMapper
@@ -906,9 +911,9 @@ mixin ShowDuplicatesChangedMappable {
   }
 
   ShowDuplicatesChangedCopyWith<ShowDuplicatesChanged, ShowDuplicatesChanged,
-          ShowDuplicatesChanged>
-      get copyWith => _ShowDuplicatesChangedCopyWithImpl(
-          this as ShowDuplicatesChanged, $identity, $identity);
+      ShowDuplicatesChanged> get copyWith => _ShowDuplicatesChangedCopyWithImpl<
+          ShowDuplicatesChanged, ShowDuplicatesChanged>(
+      this as ShowDuplicatesChanged, $identity, $identity);
   @override
   String toString() {
     return ShowDuplicatesChangedMapper.ensureInitialized()
@@ -931,8 +936,8 @@ mixin ShowDuplicatesChangedMappable {
 extension ShowDuplicatesChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ShowDuplicatesChanged, $Out> {
   ShowDuplicatesChangedCopyWith<$R, ShowDuplicatesChanged, $Out>
-      get $asShowDuplicatesChanged =>
-          $base.as((v, t, t2) => _ShowDuplicatesChangedCopyWithImpl(v, t, t2));
+      get $asShowDuplicatesChanged => $base.as(
+          (v, t, t2) => _ShowDuplicatesChangedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class ShowDuplicatesChangedCopyWith<
@@ -963,5 +968,5 @@ class _ShowDuplicatesChangedCopyWithImpl<$R, $Out>
   @override
   ShowDuplicatesChangedCopyWith<$R2, ShowDuplicatesChanged, $Out2>
       $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _ShowDuplicatesChangedCopyWithImpl($value, $cast, t);
+          _ShowDuplicatesChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

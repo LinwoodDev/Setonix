@@ -226,5 +226,19 @@
   "figure": "Figure",
   "variation": "Variation",
   "position": "Position",
-  "tiles": "Tiles"
+  "tiles": "Tiles",
+  "webSocket": "Web Socket",
+  "shouldANumber": "This value should be valid number",
+  "noConnections": "No connections",
+  "server": "Server",
+  "client": "Client",
+  "defaultUserName": "User {index}",
+  "@defaultUserName": {
+    "placeholders": {
+      "index": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  }
 }

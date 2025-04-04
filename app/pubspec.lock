@@ -217,8 +217,16 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.6"
+  cryptography_flutter_plus:
+    dependency: "direct main"
+    description:
+      name: cryptography_flutter_plus
+      sha256: "35a8c270aae0abaac7125a6b6b33c2b3daa0ea90d85320aa7d588b6dd6c2edc9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.4"
   cryptography_plus:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: cryptography_plus
       sha256: "34db787df4f4740a39474b6fb0a610aa6dc13a5b5b68754b4787a79939ac0454"
@@ -258,6 +266,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
+  dbus:
+    dependency: transitive
+    description:
+      name: dbus
+      sha256: "79e0c23480ff85dc68de79e2cd6334add97e48f7f4865d17686dd6ea81a47e8c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.11"
   device_info_plus:
     dependency: "direct main"
     description:
@@ -769,6 +785,23 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+  network_info_plus:
+    dependency: "direct main"
+    description:
+      path: "packages/network_info_plus/network_info_plus"
+      ref: "9bd0c023f2dc209576dc66bf989048ba218127b6"
+      resolved-ref: "9bd0c023f2dc209576dc66bf989048ba218127b6"
+      url: "https://github.com/CodeDoctorDE/plus_plugins.git"
+    source: git
+    version: "6.1.3"
+  network_info_plus_platform_interface:
+    dependency: transitive
+    description:
+      name: network_info_plus_platform_interface
+      sha256: "7e7496a8a9d8136859b8881affc613c4a21304afeb6c324bcefc4bd0aff6b94b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.2"
   networker:
     dependency: "direct main"
     description:
@@ -796,6 +829,14 @@ packages:
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "1.0.0"
+  nm:
+    dependency: transitive
+    description:
+      name: nm
+      sha256: "2c9aae4127bdc8993206464fcc063611e0e36e72018696cd9631023a31b24254"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.0"
   ordered_set:
     dependency: transitive
     description:

@@ -98,6 +98,13 @@ dependencies:
     path: rust_builder
   setonix_plugin:
     path: ../plugin
+  cryptography_plus: ^2.7.1
+  cryptography_flutter_plus: ^2.3.2
+  network_info_plus:
+    git:
+      url: https://github.com/CodeDoctorDE/plus_plugins.git
+      ref: 9bd0c023f2dc209576dc66bf989048ba218127b6
+      path: packages/network_info_plus/network_info_plus
 dev_dependencies:
   flutter_test:
     sdk: flutter

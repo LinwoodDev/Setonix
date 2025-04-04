@@ -1,0 +1,146 @@
+part of 'dialog.dart';
+
+class StartMultiplayerDialog extends StatefulWidget {
+  const StartMultiplayerDialog({super.key});
+
+  @override
+  State<StartMultiplayerDialog> createState() => _StartMultiplayerDialogState();
+}
+
+class _StartMultiplayerDialogState extends State<StartMultiplayerDialog>
+    with TickerProviderStateMixin {
+  final GlobalKey<FormState> _formKey = GlobalKey();
+  late final SettingsCubit _settingsCubit;
+  late String _defaultSwamp;
+  late final TabController _tabController;
+  final TextEditingController _webSocketPortController =
+      TextEditingController(text: kDefaultPort.toString());
+  late final TextEditingController _swampAddressController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+    _settingsCubit = context.read<SettingsCubit>();
+    _defaultSwamp = _settingsCubit.state.swamps.firstOrNull ?? '';
+    _swampAddressController = TextEditingController(text: _defaultSwamp);
+  }
+
+  void _start() {
+    if (kIsWeb) return;
+    final multiplayer = context.read<MultiplayerCubit>();
+    if (_tabController.index == 0) {
+      final swamp = _swampAddressController.text;
+      multiplayer.createSwamp(Uri.parse(swamp));
+      if (swamp != _defaultSwamp) {
+        _settingsCubit.changeSwamp(swamp);
+      }
+      return;
+    }
+    multiplayer.createSocket(port: int.tryParse(_webSocketPortController.text));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _webSocketPortController.dispose();
+    _swampAddressController.dispose();
+    _tabController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: DefaultTabController(
+        length: 2,
+        child: ResponsiveAlertDialog(
+          title: Text(AppLocalizations.of(context).multiplayer),
+          leading: IconButton.outlined(
+            onPressed: () => Navigator.pop(context),
+            icon: Icon(PhosphorIconsLight.x),
+            tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
+          ),
+          constraints: BoxConstraints(maxWidth: 400, maxHeight: 400),
+          content: Column(
+            children: [
+              TabBar(
+                controller: _tabController,
+                tabs: [
+                  HorizontalTab(
+                    label: const Text('Swamp'),
+                    icon: Icon(PhosphorIconsLight.globe),
+                  ),
+                  HorizontalTab(
+                    label: Text(AppLocalizations.of(context).webSocket),
+                    icon: Icon(PhosphorIconsLight.wifiHigh),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TextFormField(
+                          decoration: InputDecoration(
+                            labelText: AppLocalizations.of(context).address,
+                            hintText: 'example.com',
+                            filled: true,
+                          ),
+                          controller: _swampAddressController,
+                        ),
+                      ],
+                    ),
+                    kIsWeb
+                        ? Text(AppLocalizations.of(context).webNotSupported)
+                        : Column(
+                            children: [
+                              TextFormField(
+                                decoration: InputDecoration(
+                                  labelText: AppLocalizations.of(context).port,
+                                  hintText: kDefaultPort.toString(),
+                                  filled: true,
+                                ),
+                                controller: _webSocketPortController,
+                                keyboardType: TextInputType.number,
+                                validator: (value) {
+                                  if (value?.isEmpty ?? true) {
+                                    return LeapLocalizations.of(context)
+                                        .shouldNotEmpty;
+                                  }
+                                  final number = int.tryParse(value!);
+                                  if (number == null) {
+                                    return AppLocalizations.of(context)
+                                        .shouldANumber;
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ],
+                          ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            ElevatedButton.icon(
+              onPressed: kIsWeb
+                  ? null
+                  : () {
+                      if (!(_formKey.currentState?.validate() ?? false)) return;
+                      _start();
+                    },
+              icon: Icon(PhosphorIconsLight.play),
+              label: Text(AppLocalizations.of(context).start),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

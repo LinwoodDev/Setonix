@@ -1,15 +1,30 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:cryptography_plus/cryptography_plus.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:network_info_plus/network_info_plus.dart';
 import 'package:networker/networker.dart';
 import 'package:networker_socket/client.dart';
 import 'package:networker_socket/server.dart';
 import 'package:setonix/services/network.dart';
 import 'package:setonix_api/setonix_api.dart';
+import 'package:swamp_api/swamp_api.dart';
 
 part 'multiplayer.mapper.dart';
+
+enum ConnectionTechnology {
+  webSocket,
+  swamp;
+
+  static ConnectionTechnology fromScheme(String scheme) {
+    if (NetworkerSocketClient.supportedSchemes.contains(scheme)) {
+      return webSocket;
+    }
+    return swamp;
+  }
+}
 
 @MappableClass()
 sealed class MultiplayerState with MultiplayerStateMappable {
@@ -58,6 +73,21 @@ final class MultiplayerConnectedState extends MultiplayerState
   Stream<Set<int>>? get clientChange => networker is NetworkerServer
       ? (networker as NetworkerServer).clientChange
       : null;
+
+  Future<Uri> getShareAddress() async {
+    if (networker is SwampConnection) {
+      return (networker as SwampConnection).getSecureAddress();
+    }
+    if (networker is NetworkerSocketServer) {
+      final ip = await NetworkInfo().getWifiIP();
+      return Uri(
+        scheme: 'ws',
+        host: ip ?? InternetAddress.loopbackIPv4.address,
+        port: (networker as NetworkerSocketServer).port,
+      );
+    }
+    return networker.address;
+  }
 }
 
 class MultiplayerCubit extends Cubit<MultiplayerState> {
@@ -150,7 +180,40 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
     }
   }
 
-  Future<void> connect(Uri address) async {
+  Cipher _buildCipher() => AesGcm.with256bits();
+
+  Future<SwampConnection> _createSwamp(Uri uri) {
+    if (uri.scheme.isEmpty) {
+      uri = uri.replace(scheme: 'wss');
+    }
+    final cipher = _buildCipher();
+    return SwampConnection.buildSecure(uri, cipher);
+  }
+
+  Future<void> connect(Uri uri, [ConnectionTechnology? technology]) =>
+      switch (technology ?? ConnectionTechnology.fromScheme(uri.scheme)) {
+        ConnectionTechnology.webSocket => connectSocket(uri),
+        ConnectionTechnology.swamp => connectSwamp(uri)
+      };
+
+  Future<void> connectSwamp(Uri address) async {
+    try {
+      emit(MultiplayerConnectingState());
+      final connection = await _createSwamp(address);
+      final state = await _addNetworker(connection);
+      connection.onClosed.listen((_) {
+        if (isClosed) return;
+        emit(MultiplayerDisconnectedState(oldState: state, error: _fatalError));
+        _fatalError = null;
+      }, onError: (e) => emit(MultiplayerDisconnectedState(error: e)));
+      await connection.init();
+      emit(state);
+    } catch (e) {
+      emit(MultiplayerDisconnectedState(error: e));
+    }
+  }
+
+  Future<void> connectSocket(Uri address) async {
     try {
       emit(MultiplayerConnectingState());
       final client = NetworkerSocketClient(address);
@@ -167,7 +230,18 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
     }
   }
 
-  Future<void> create({GameProperty? property, int? port}) async {
+  Future<void> createSwamp(Uri uri) async {
+    try {
+      final server = await _createSwamp(uri);
+      final state = await _addNetworker(server);
+      await server.init();
+      emit(state);
+    } catch (e) {
+      emit(MultiplayerDisconnectedState(error: e));
+    }
+  }
+
+  Future<void> createSocket({GameProperty? property, int? port}) async {
     try {
       port ??= kDefaultPort;
       final prop = property ?? GameProperty.defaultProperty;

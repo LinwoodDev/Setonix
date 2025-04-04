@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:setonix/pages/game/multiplayer/dialog.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_leap/material_leap.dart';
@@ -13,7 +14,6 @@ import 'package:setonix/bloc/world/local.dart';
 import 'package:setonix/bloc/world/state.dart';
 import 'package:setonix/helpers/visualizer.dart';
 import 'package:setonix/pages/game/info.dart';
-import 'package:setonix/pages/game/multiplayer.dart';
 import 'package:setonix/pages/game/team.dart';
 import 'package:setonix/pages/packs/dialog.dart';
 import 'package:setonix_api/setonix_api.dart';
