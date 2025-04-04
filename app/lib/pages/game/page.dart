@@ -1,6 +1,8 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:setonix/api/open.dart';
+import 'package:setonix/pages/game/dialog.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -11,7 +13,6 @@ import 'package:setonix/bloc/multiplayer.dart';
 import 'package:setonix/bloc/settings.dart';
 import 'package:setonix/board/game.dart';
 import 'package:setonix/pages/game/chat.dart';
-import 'package:setonix/pages/game/dialog.dart';
 import 'package:setonix/pages/game/drawer.dart';
 import 'package:setonix/pages/game/error.dart';
 import 'package:setonix/pages/game/filter.dart';
@@ -67,7 +68,8 @@ class _GamePageState extends State<GamePage> {
     );
     await world.state.assetManager.loadPacks();
     if (address != null) {
-      cubit.connect(buildServerAddress(address, widget.secure));
+      cubit.connect(buildServerAddress(
+          parseConnectUri(Uri.parse(address)), widget.secure));
     }
     return (cubit, world);
   }

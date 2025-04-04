@@ -25,9 +25,9 @@ class WorldOperationModeMapper extends EnumMapper<WorldOperationMode> {
   @override
   WorldOperationMode decode(dynamic value) {
     switch (value) {
-      case 'figures':
+      case r'figures':
         return WorldOperationMode.figures;
-      case 'boards':
+      case r'boards':
         return WorldOperationMode.boards;
       default:
         throw MapperException.unknownEnumValue(value);
@@ -38,9 +38,9 @@ class WorldOperationModeMapper extends EnumMapper<WorldOperationMode> {
   dynamic encode(WorldOperationMode self) {
     switch (self) {
       case WorldOperationMode.figures:
-        return 'figures';
+        return r'figures';
       case WorldOperationMode.boards:
-        return 'boards';
+        return r'boards';
     }
   }
 }
@@ -158,7 +158,8 @@ mixin WorldStateMappable {
   }
 
   WorldStateCopyWith<WorldState, WorldState, WorldState> get copyWith =>
-      _WorldStateCopyWithImpl(this as WorldState, $identity, $identity);
+      _WorldStateCopyWithImpl<WorldState, WorldState>(
+          this as WorldState, $identity, $identity);
   @override
   String toString() {
     return WorldStateMapper.ensureInitialized()
@@ -180,7 +181,7 @@ mixin WorldStateMappable {
 extension WorldStateValueCopy<$R, $Out>
     on ObjectCopyWith<$R, WorldState, $Out> {
   WorldStateCopyWith<$R, WorldState, $Out> get $asWorldState =>
-      $base.as((v, t, t2) => _WorldStateCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _WorldStateCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class WorldStateCopyWith<$R, $In extends WorldState, $Out>
@@ -290,5 +291,5 @@ class _WorldStateCopyWithImpl<$R, $Out>
   @override
   WorldStateCopyWith<$R2, WorldState, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _WorldStateCopyWithImpl($value, $cast, t);
+      _WorldStateCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

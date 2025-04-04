@@ -61,8 +61,9 @@ mixin VectorDefinitionMappable {
   }
 
   VectorDefinitionCopyWith<VectorDefinition, VectorDefinition, VectorDefinition>
-      get copyWith => _VectorDefinitionCopyWithImpl(
-          this as VectorDefinition, $identity, $identity);
+      get copyWith =>
+          _VectorDefinitionCopyWithImpl<VectorDefinition, VectorDefinition>(
+              this as VectorDefinition, $identity, $identity);
   @override
   String toString() {
     return VectorDefinitionMapper.ensureInitialized()
@@ -85,8 +86,8 @@ mixin VectorDefinitionMappable {
 extension VectorDefinitionValueCopy<$R, $Out>
     on ObjectCopyWith<$R, VectorDefinition, $Out> {
   VectorDefinitionCopyWith<$R, VectorDefinition, $Out>
-      get $asVectorDefinition =>
-          $base.as((v, t, t2) => _VectorDefinitionCopyWithImpl(v, t, t2));
+      get $asVectorDefinition => $base
+          .as((v, t, t2) => _VectorDefinitionCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class VectorDefinitionCopyWith<$R, $In extends VectorDefinition, $Out>
@@ -114,5 +115,5 @@ class _VectorDefinitionCopyWithImpl<$R, $Out>
   @override
   VectorDefinitionCopyWith<$R2, VectorDefinition, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _VectorDefinitionCopyWithImpl($value, $cast, t);
+      _VectorDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

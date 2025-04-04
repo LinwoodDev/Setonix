@@ -8,7 +8,7 @@ import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:setonix/pages/editor/shell.dart';
-import 'package:setonix/pages/game/multiplayer/page.dart';
+import 'package:setonix/pages/game/page.dart';
 import 'package:setonix/pages/home/page.dart';
 import 'package:setonix/pages/settings/data.dart';
 import 'package:setonix/pages/settings/general.dart';

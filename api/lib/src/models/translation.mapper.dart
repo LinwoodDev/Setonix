@@ -80,8 +80,9 @@ mixin PackTranslationMappable {
   }
 
   PackTranslationCopyWith<PackTranslation, PackTranslation, PackTranslation>
-      get copyWith => _PackTranslationCopyWithImpl(
-          this as PackTranslation, $identity, $identity);
+      get copyWith =>
+          _PackTranslationCopyWithImpl<PackTranslation, PackTranslation>(
+              this as PackTranslation, $identity, $identity);
   @override
   String toString() {
     return PackTranslationMapper.ensureInitialized()
@@ -104,7 +105,7 @@ mixin PackTranslationMappable {
 extension PackTranslationValueCopy<$R, $Out>
     on ObjectCopyWith<$R, PackTranslation, $Out> {
   PackTranslationCopyWith<$R, PackTranslation, $Out> get $asPackTranslation =>
-      $base.as((v, t, t2) => _PackTranslationCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _PackTranslationCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class PackTranslationCopyWith<$R, $In extends PackTranslation, $Out>
@@ -187,7 +188,7 @@ class _PackTranslationCopyWithImpl<$R, $Out>
   @override
   PackTranslationCopyWith<$R2, PackTranslation, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _PackTranslationCopyWithImpl($value, $cast, t);
+      _PackTranslationCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class DeckTranslationMapper extends ClassMapperBase<DeckTranslation> {
@@ -246,8 +247,9 @@ mixin DeckTranslationMappable {
   }
 
   DeckTranslationCopyWith<DeckTranslation, DeckTranslation, DeckTranslation>
-      get copyWith => _DeckTranslationCopyWithImpl(
-          this as DeckTranslation, $identity, $identity);
+      get copyWith =>
+          _DeckTranslationCopyWithImpl<DeckTranslation, DeckTranslation>(
+              this as DeckTranslation, $identity, $identity);
   @override
   String toString() {
     return DeckTranslationMapper.ensureInitialized()
@@ -270,7 +272,7 @@ mixin DeckTranslationMappable {
 extension DeckTranslationValueCopy<$R, $Out>
     on ObjectCopyWith<$R, DeckTranslation, $Out> {
   DeckTranslationCopyWith<$R, DeckTranslation, $Out> get $asDeckTranslation =>
-      $base.as((v, t, t2) => _DeckTranslationCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _DeckTranslationCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class DeckTranslationCopyWith<$R, $In extends DeckTranslation, $Out>
@@ -303,7 +305,7 @@ class _DeckTranslationCopyWithImpl<$R, $Out>
   @override
   DeckTranslationCopyWith<$R2, DeckTranslation, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _DeckTranslationCopyWithImpl($value, $cast, t);
+      _DeckTranslationCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class DescriptiveTranslationMapper
@@ -438,8 +440,9 @@ mixin FigureTranslationMappable {
 
   FigureTranslationCopyWith<FigureTranslation, FigureTranslation,
           FigureTranslation>
-      get copyWith => _FigureTranslationCopyWithImpl(
-          this as FigureTranslation, $identity, $identity);
+      get copyWith =>
+          _FigureTranslationCopyWithImpl<FigureTranslation, FigureTranslation>(
+              this as FigureTranslation, $identity, $identity);
   @override
   String toString() {
     return FigureTranslationMapper.ensureInitialized()
@@ -462,8 +465,8 @@ mixin FigureTranslationMappable {
 extension FigureTranslationValueCopy<$R, $Out>
     on ObjectCopyWith<$R, FigureTranslation, $Out> {
   FigureTranslationCopyWith<$R, FigureTranslation, $Out>
-      get $asFigureTranslation =>
-          $base.as((v, t, t2) => _FigureTranslationCopyWithImpl(v, t, t2));
+      get $asFigureTranslation => $base
+          .as((v, t, t2) => _FigureTranslationCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class FigureTranslationCopyWith<$R, $In extends FigureTranslation,
@@ -520,7 +523,7 @@ class _FigureTranslationCopyWithImpl<$R, $Out>
   @override
   FigureTranslationCopyWith<$R2, FigureTranslation, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _FigureTranslationCopyWithImpl($value, $cast, t);
+      _FigureTranslationCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class FigureVariationTranslationMapper
@@ -585,7 +588,8 @@ mixin FigureVariationTranslationMappable {
 
   FigureVariationTranslationCopyWith<FigureVariationTranslation,
           FigureVariationTranslation, FigureVariationTranslation>
-      get copyWith => _FigureVariationTranslationCopyWithImpl(
+      get copyWith => _FigureVariationTranslationCopyWithImpl<
+              FigureVariationTranslation, FigureVariationTranslation>(
           this as FigureVariationTranslation, $identity, $identity);
   @override
   String toString() {
@@ -609,8 +613,8 @@ mixin FigureVariationTranslationMappable {
 extension FigureVariationTranslationValueCopy<$R, $Out>
     on ObjectCopyWith<$R, FigureVariationTranslation, $Out> {
   FigureVariationTranslationCopyWith<$R, FigureVariationTranslation, $Out>
-      get $asFigureVariationTranslation => $base
-          .as((v, t, t2) => _FigureVariationTranslationCopyWithImpl(v, t, t2));
+      get $asFigureVariationTranslation => $base.as((v, t, t2) =>
+          _FigureVariationTranslationCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class FigureVariationTranslationCopyWith<
@@ -648,7 +652,7 @@ class _FigureVariationTranslationCopyWithImpl<$R, $Out>
   @override
   FigureVariationTranslationCopyWith<$R2, FigureVariationTranslation, $Out2>
       $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _FigureVariationTranslationCopyWithImpl($value, $cast, t);
+          _FigureVariationTranslationCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class BackgroundTranslationMapper
@@ -709,9 +713,9 @@ mixin BackgroundTranslationMappable {
   }
 
   BackgroundTranslationCopyWith<BackgroundTranslation, BackgroundTranslation,
-          BackgroundTranslation>
-      get copyWith => _BackgroundTranslationCopyWithImpl(
-          this as BackgroundTranslation, $identity, $identity);
+      BackgroundTranslation> get copyWith => _BackgroundTranslationCopyWithImpl<
+          BackgroundTranslation, BackgroundTranslation>(
+      this as BackgroundTranslation, $identity, $identity);
   @override
   String toString() {
     return BackgroundTranslationMapper.ensureInitialized()
@@ -734,8 +738,8 @@ mixin BackgroundTranslationMappable {
 extension BackgroundTranslationValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BackgroundTranslation, $Out> {
   BackgroundTranslationCopyWith<$R, BackgroundTranslation, $Out>
-      get $asBackgroundTranslation =>
-          $base.as((v, t, t2) => _BackgroundTranslationCopyWithImpl(v, t, t2));
+      get $asBackgroundTranslation => $base.as(
+          (v, t, t2) => _BackgroundTranslationCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class BackgroundTranslationCopyWith<
@@ -770,7 +774,7 @@ class _BackgroundTranslationCopyWithImpl<$R, $Out>
   @override
   BackgroundTranslationCopyWith<$R2, BackgroundTranslation, $Out2>
       $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _BackgroundTranslationCopyWithImpl($value, $cast, t);
+          _BackgroundTranslationCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class BoardTranslationMapper extends ClassMapperBase<BoardTranslation> {
@@ -829,8 +833,9 @@ mixin BoardTranslationMappable {
   }
 
   BoardTranslationCopyWith<BoardTranslation, BoardTranslation, BoardTranslation>
-      get copyWith => _BoardTranslationCopyWithImpl(
-          this as BoardTranslation, $identity, $identity);
+      get copyWith =>
+          _BoardTranslationCopyWithImpl<BoardTranslation, BoardTranslation>(
+              this as BoardTranslation, $identity, $identity);
   @override
   String toString() {
     return BoardTranslationMapper.ensureInitialized()
@@ -853,8 +858,8 @@ mixin BoardTranslationMappable {
 extension BoardTranslationValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BoardTranslation, $Out> {
   BoardTranslationCopyWith<$R, BoardTranslation, $Out>
-      get $asBoardTranslation =>
-          $base.as((v, t, t2) => _BoardTranslationCopyWithImpl(v, t, t2));
+      get $asBoardTranslation => $base
+          .as((v, t, t2) => _BoardTranslationCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class BoardTranslationCopyWith<$R, $In extends BoardTranslation, $Out>
@@ -887,5 +892,5 @@ class _BoardTranslationCopyWithImpl<$R, $Out>
   @override
   BoardTranslationCopyWith<$R2, BoardTranslation, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _BoardTranslationCopyWithImpl($value, $cast, t);
+      _BoardTranslationCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

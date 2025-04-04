@@ -120,7 +120,7 @@ mixin LanGameServerMappable {
   }
 
   LanGameServerCopyWith<LanGameServer, LanGameServer, LanGameServer>
-      get copyWith => _LanGameServerCopyWithImpl(
+      get copyWith => _LanGameServerCopyWithImpl<LanGameServer, LanGameServer>(
           this as LanGameServer, $identity, $identity);
   @override
   String toString() {
@@ -144,7 +144,7 @@ mixin LanGameServerMappable {
 extension LanGameServerValueCopy<$R, $Out>
     on ObjectCopyWith<$R, LanGameServer, $Out> {
   LanGameServerCopyWith<$R, LanGameServer, $Out> get $asLanGameServer =>
-      $base.as((v, t, t2) => _LanGameServerCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _LanGameServerCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class LanGameServerCopyWith<$R, $In extends LanGameServer, $Out>
@@ -175,7 +175,7 @@ class _LanGameServerCopyWithImpl<$R, $Out>
   @override
   LanGameServerCopyWith<$R2, LanGameServer, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _LanGameServerCopyWithImpl($value, $cast, t);
+      _LanGameServerCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ListGameServerMapper extends ClassMapperBase<ListGameServer> {
@@ -241,8 +241,9 @@ mixin ListGameServerMappable {
   }
 
   ListGameServerCopyWith<ListGameServer, ListGameServer, ListGameServer>
-      get copyWith => _ListGameServerCopyWithImpl(
-          this as ListGameServer, $identity, $identity);
+      get copyWith =>
+          _ListGameServerCopyWithImpl<ListGameServer, ListGameServer>(
+              this as ListGameServer, $identity, $identity);
   @override
   String toString() {
     return ListGameServerMapper.ensureInitialized()
@@ -265,7 +266,7 @@ mixin ListGameServerMappable {
 extension ListGameServerValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ListGameServer, $Out> {
   ListGameServerCopyWith<$R, ListGameServer, $Out> get $asListGameServer =>
-      $base.as((v, t, t2) => _ListGameServerCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _ListGameServerCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class ListGameServerCopyWith<$R, $In extends ListGameServer, $Out>
@@ -300,7 +301,7 @@ class _ListGameServerCopyWithImpl<$R, $Out>
   @override
   ListGameServerCopyWith<$R2, ListGameServer, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _ListGameServerCopyWithImpl($value, $cast, t);
+      _ListGameServerCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class GamePropertyMapper extends ClassMapperBase<GameProperty> {
@@ -375,7 +376,8 @@ mixin GamePropertyMappable {
   }
 
   GamePropertyCopyWith<GameProperty, GameProperty, GameProperty> get copyWith =>
-      _GamePropertyCopyWithImpl(this as GameProperty, $identity, $identity);
+      _GamePropertyCopyWithImpl<GameProperty, GameProperty>(
+          this as GameProperty, $identity, $identity);
   @override
   String toString() {
     return GamePropertyMapper.ensureInitialized()
@@ -398,7 +400,7 @@ mixin GamePropertyMappable {
 extension GamePropertyValueCopy<$R, $Out>
     on ObjectCopyWith<$R, GameProperty, $Out> {
   GamePropertyCopyWith<$R, GameProperty, $Out> get $asGameProperty =>
-      $base.as((v, t, t2) => _GamePropertyCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _GamePropertyCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class GamePropertyCopyWith<$R, $In extends GameProperty, $Out>
@@ -448,7 +450,7 @@ class _GamePropertyCopyWithImpl<$R, $Out>
   @override
   GamePropertyCopyWith<$R2, GameProperty, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _GamePropertyCopyWithImpl($value, $cast, t);
+      _GamePropertyCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class LanPropertyMapper extends ClassMapperBase<LanProperty> {
@@ -526,7 +528,8 @@ mixin LanPropertyMappable {
   }
 
   LanPropertyCopyWith<LanProperty, LanProperty, LanProperty> get copyWith =>
-      _LanPropertyCopyWithImpl(this as LanProperty, $identity, $identity);
+      _LanPropertyCopyWithImpl<LanProperty, LanProperty>(
+          this as LanProperty, $identity, $identity);
   @override
   String toString() {
     return LanPropertyMapper.ensureInitialized()
@@ -548,7 +551,7 @@ mixin LanPropertyMappable {
 extension LanPropertyValueCopy<$R, $Out>
     on ObjectCopyWith<$R, LanProperty, $Out> {
   LanPropertyCopyWith<$R, LanProperty, $Out> get $asLanProperty =>
-      $base.as((v, t, t2) => _LanPropertyCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _LanPropertyCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class LanPropertyCopyWith<$R, $In extends LanProperty, $Out>
@@ -604,7 +607,7 @@ class _LanPropertyCopyWithImpl<$R, $Out>
   @override
   LanPropertyCopyWith<$R2, LanProperty, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _LanPropertyCopyWithImpl($value, $cast, t);
+      _LanPropertyCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ListPropertyMapper extends ClassMapperBase<ListProperty> {
@@ -682,7 +685,8 @@ mixin ListPropertyMappable {
   }
 
   ListPropertyCopyWith<ListProperty, ListProperty, ListProperty> get copyWith =>
-      _ListPropertyCopyWithImpl(this as ListProperty, $identity, $identity);
+      _ListPropertyCopyWithImpl<ListProperty, ListProperty>(
+          this as ListProperty, $identity, $identity);
   @override
   String toString() {
     return ListPropertyMapper.ensureInitialized()
@@ -705,7 +709,7 @@ mixin ListPropertyMappable {
 extension ListPropertyValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ListProperty, $Out> {
   ListPropertyCopyWith<$R, ListProperty, $Out> get $asListProperty =>
-      $base.as((v, t, t2) => _ListPropertyCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _ListPropertyCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class ListPropertyCopyWith<$R, $In extends ListProperty, $Out>
@@ -761,5 +765,5 @@ class _ListPropertyCopyWithImpl<$R, $Out>
   @override
   ListPropertyCopyWith<$R2, ListProperty, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _ListPropertyCopyWithImpl($value, $cast, t);
+      _ListPropertyCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

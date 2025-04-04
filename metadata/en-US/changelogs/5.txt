@@ -1,4 +1,5 @@
 * Add importing system for editor
+* Add launch app link for android
 * Improve multiplayer ui
 * Add swamp multiplayer support
 * Upgrade to flutter 3.29

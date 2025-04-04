@@ -36,11 +36,15 @@ Uri getConnectUri(String url, [String? type]) => getLaunchUri(
       },
     );
 
-String parseConnectUri(Uri uri) {
+Uri parseConnectUri(Uri uri) {
   if (uri.host != kLaunchHost) {
-    return uri.toString();
+    return uri;
   }
-  return uri.queryParameters['url'] ?? uri.toString();
+  final param = uri.queryParameters['url'];
+  if (param == null) {
+    return uri;
+  }
+  return Uri.parse(param);
 }
 
 Future<bool> openReleaseNotes() {

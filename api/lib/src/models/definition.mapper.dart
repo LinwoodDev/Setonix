@@ -72,8 +72,9 @@ mixin FigureDefinitionMappable {
   }
 
   FigureDefinitionCopyWith<FigureDefinition, FigureDefinition, FigureDefinition>
-      get copyWith => _FigureDefinitionCopyWithImpl(
-          this as FigureDefinition, $identity, $identity);
+      get copyWith =>
+          _FigureDefinitionCopyWithImpl<FigureDefinition, FigureDefinition>(
+              this as FigureDefinition, $identity, $identity);
   @override
   String toString() {
     return FigureDefinitionMapper.ensureInitialized()
@@ -96,8 +97,8 @@ mixin FigureDefinitionMappable {
 extension FigureDefinitionValueCopy<$R, $Out>
     on ObjectCopyWith<$R, FigureDefinition, $Out> {
   FigureDefinitionCopyWith<$R, FigureDefinition, $Out>
-      get $asFigureDefinition =>
-          $base.as((v, t, t2) => _FigureDefinitionCopyWithImpl(v, t, t2));
+      get $asFigureDefinition => $base
+          .as((v, t, t2) => _FigureDefinitionCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class FigureDefinitionCopyWith<$R, $In extends FigureDefinition, $Out>
@@ -156,7 +157,7 @@ class _FigureDefinitionCopyWithImpl<$R, $Out>
   @override
   FigureDefinitionCopyWith<$R2, FigureDefinition, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _FigureDefinitionCopyWithImpl($value, $cast, t);
+      _FigureDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class VariationDefinitionMapper extends ClassMapperBase<VariationDefinition> {
@@ -228,9 +229,9 @@ mixin VariationDefinitionMappable {
   }
 
   VariationDefinitionCopyWith<VariationDefinition, VariationDefinition,
-          VariationDefinition>
-      get copyWith => _VariationDefinitionCopyWithImpl(
-          this as VariationDefinition, $identity, $identity);
+      VariationDefinition> get copyWith => _VariationDefinitionCopyWithImpl<
+          VariationDefinition, VariationDefinition>(
+      this as VariationDefinition, $identity, $identity);
   @override
   String toString() {
     return VariationDefinitionMapper.ensureInitialized()
@@ -253,8 +254,8 @@ mixin VariationDefinitionMappable {
 extension VariationDefinitionValueCopy<$R, $Out>
     on ObjectCopyWith<$R, VariationDefinition, $Out> {
   VariationDefinitionCopyWith<$R, VariationDefinition, $Out>
-      get $asVariationDefinition =>
-          $base.as((v, t, t2) => _VariationDefinitionCopyWithImpl(v, t, t2));
+      get $asVariationDefinition => $base.as(
+          (v, t, t2) => _VariationDefinitionCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class VariationDefinitionCopyWith<$R, $In extends VariationDefinition,
@@ -309,7 +310,7 @@ class _VariationDefinitionCopyWithImpl<$R, $Out>
   @override
   VariationDefinitionCopyWith<$R2, VariationDefinition, $Out2>
       $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _VariationDefinitionCopyWithImpl($value, $cast, t);
+          _VariationDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class FigureBackDefinitionMapper extends ClassMapperBase<FigureBackDefinition> {
@@ -376,9 +377,9 @@ mixin FigureBackDefinitionMappable {
   }
 
   FigureBackDefinitionCopyWith<FigureBackDefinition, FigureBackDefinition,
-          FigureBackDefinition>
-      get copyWith => _FigureBackDefinitionCopyWithImpl(
-          this as FigureBackDefinition, $identity, $identity);
+      FigureBackDefinition> get copyWith => _FigureBackDefinitionCopyWithImpl<
+          FigureBackDefinition, FigureBackDefinition>(
+      this as FigureBackDefinition, $identity, $identity);
   @override
   String toString() {
     return FigureBackDefinitionMapper.ensureInitialized()
@@ -401,8 +402,8 @@ mixin FigureBackDefinitionMappable {
 extension FigureBackDefinitionValueCopy<$R, $Out>
     on ObjectCopyWith<$R, FigureBackDefinition, $Out> {
   FigureBackDefinitionCopyWith<$R, FigureBackDefinition, $Out>
-      get $asFigureBackDefinition =>
-          $base.as((v, t, t2) => _FigureBackDefinitionCopyWithImpl(v, t, t2));
+      get $asFigureBackDefinition => $base.as(
+          (v, t, t2) => _FigureBackDefinitionCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class FigureBackDefinitionCopyWith<
@@ -449,7 +450,7 @@ class _FigureBackDefinitionCopyWithImpl<$R, $Out>
   @override
   FigureBackDefinitionCopyWith<$R2, FigureBackDefinition, $Out2>
       $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _FigureBackDefinitionCopyWithImpl($value, $cast, t);
+          _FigureBackDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class BoardDefinitionMapper extends ClassMapperBase<BoardDefinition> {
@@ -521,8 +522,9 @@ mixin BoardDefinitionMappable {
   }
 
   BoardDefinitionCopyWith<BoardDefinition, BoardDefinition, BoardDefinition>
-      get copyWith => _BoardDefinitionCopyWithImpl(
-          this as BoardDefinition, $identity, $identity);
+      get copyWith =>
+          _BoardDefinitionCopyWithImpl<BoardDefinition, BoardDefinition>(
+              this as BoardDefinition, $identity, $identity);
   @override
   String toString() {
     return BoardDefinitionMapper.ensureInitialized()
@@ -545,7 +547,7 @@ mixin BoardDefinitionMappable {
 extension BoardDefinitionValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BoardDefinition, $Out> {
   BoardDefinitionCopyWith<$R, BoardDefinition, $Out> get $asBoardDefinition =>
-      $base.as((v, t, t2) => _BoardDefinitionCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _BoardDefinitionCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class BoardDefinitionCopyWith<$R, $In extends BoardDefinition, $Out>
@@ -604,5 +606,5 @@ class _BoardDefinitionCopyWithImpl<$R, $Out>
   @override
   BoardDefinitionCopyWith<$R2, BoardDefinition, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _BoardDefinitionCopyWithImpl($value, $cast, t);
+      _BoardDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

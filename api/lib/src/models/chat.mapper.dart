@@ -67,7 +67,8 @@ mixin ChatMessageMappable {
   }
 
   ChatMessageCopyWith<ChatMessage, ChatMessage, ChatMessage> get copyWith =>
-      _ChatMessageCopyWithImpl(this as ChatMessage, $identity, $identity);
+      _ChatMessageCopyWithImpl<ChatMessage, ChatMessage>(
+          this as ChatMessage, $identity, $identity);
   @override
   String toString() {
     return ChatMessageMapper.ensureInitialized()
@@ -89,7 +90,7 @@ mixin ChatMessageMappable {
 extension ChatMessageValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ChatMessage, $Out> {
   ChatMessageCopyWith<$R, ChatMessage, $Out> get $asChatMessage =>
-      $base.as((v, t, t2) => _ChatMessageCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _ChatMessageCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class ChatMessageCopyWith<$R, $In extends ChatMessage, $Out>
@@ -122,5 +123,5 @@ class _ChatMessageCopyWithImpl<$R, $Out>
   @override
   ChatMessageCopyWith<$R2, ChatMessage, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _ChatMessageCopyWithImpl($value, $cast, t);
+      _ChatMessageCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

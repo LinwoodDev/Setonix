@@ -25,27 +25,27 @@ class TeamColorMapper extends EnumMapper<TeamColor> {
   @override
   TeamColor decode(dynamic value) {
     switch (value) {
-      case 'pink':
+      case r'pink':
         return TeamColor.pink;
-      case 'red':
+      case r'red':
         return TeamColor.red;
-      case 'orange':
+      case r'orange':
         return TeamColor.orange;
-      case 'yellow':
+      case r'yellow':
         return TeamColor.yellow;
-      case 'green':
+      case r'green':
         return TeamColor.green;
-      case 'blue':
+      case r'blue':
         return TeamColor.blue;
-      case 'indigo':
+      case r'indigo':
         return TeamColor.indigo;
-      case 'purple':
+      case r'purple':
         return TeamColor.purple;
-      case 'brown':
+      case r'brown':
         return TeamColor.brown;
-      case 'white':
+      case r'white':
         return TeamColor.white;
-      case 'black':
+      case r'black':
         return TeamColor.black;
       default:
         throw MapperException.unknownEnumValue(value);
@@ -56,27 +56,27 @@ class TeamColorMapper extends EnumMapper<TeamColor> {
   dynamic encode(TeamColor self) {
     switch (self) {
       case TeamColor.pink:
-        return 'pink';
+        return r'pink';
       case TeamColor.red:
-        return 'red';
+        return r'red';
       case TeamColor.orange:
-        return 'orange';
+        return r'orange';
       case TeamColor.yellow:
-        return 'yellow';
+        return r'yellow';
       case TeamColor.green:
-        return 'green';
+        return r'green';
       case TeamColor.blue:
-        return 'blue';
+        return r'blue';
       case TeamColor.indigo:
-        return 'indigo';
+        return r'indigo';
       case TeamColor.purple:
-        return 'purple';
+        return r'purple';
       case TeamColor.brown:
-        return 'brown';
+        return r'brown';
       case TeamColor.white:
-        return 'white';
+        return r'white';
       case TeamColor.black:
-        return 'black';
+        return r'black';
     }
   }
 }
@@ -151,7 +151,8 @@ mixin GameInfoMappable {
   }
 
   GameInfoCopyWith<GameInfo, GameInfo, GameInfo> get copyWith =>
-      _GameInfoCopyWithImpl(this as GameInfo, $identity, $identity);
+      _GameInfoCopyWithImpl<GameInfo, GameInfo>(
+          this as GameInfo, $identity, $identity);
   @override
   String toString() {
     return GameInfoMapper.ensureInitialized().stringifyValue(this as GameInfo);
@@ -171,7 +172,7 @@ mixin GameInfoMappable {
 
 extension GameInfoValueCopy<$R, $Out> on ObjectCopyWith<$R, GameInfo, $Out> {
   GameInfoCopyWith<$R, GameInfo, $Out> get $asGameInfo =>
-      $base.as((v, t, t2) => _GameInfoCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _GameInfoCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class GameInfoCopyWith<$R, $In extends GameInfo, $Out>
@@ -218,7 +219,7 @@ class _GameInfoCopyWithImpl<$R, $Out>
   @override
   GameInfoCopyWith<$R2, GameInfo, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _GameInfoCopyWithImpl($value, $cast, t);
+      _GameInfoCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class GameTeamMapper extends ClassMapperBase<GameTeam> {
@@ -286,7 +287,8 @@ mixin GameTeamMappable {
   }
 
   GameTeamCopyWith<GameTeam, GameTeam, GameTeam> get copyWith =>
-      _GameTeamCopyWithImpl(this as GameTeam, $identity, $identity);
+      _GameTeamCopyWithImpl<GameTeam, GameTeam>(
+          this as GameTeam, $identity, $identity);
   @override
   String toString() {
     return GameTeamMapper.ensureInitialized().stringifyValue(this as GameTeam);
@@ -306,7 +308,7 @@ mixin GameTeamMappable {
 
 extension GameTeamValueCopy<$R, $Out> on ObjectCopyWith<$R, GameTeam, $Out> {
   GameTeamCopyWith<$R, GameTeam, $Out> get $asGameTeam =>
-      $base.as((v, t, t2) => _GameTeamCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _GameTeamCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class GameTeamCopyWith<$R, $In extends GameTeam, $Out>
@@ -345,5 +347,5 @@ class _GameTeamCopyWithImpl<$R, $Out>
   @override
   GameTeamCopyWith<$R2, GameTeam, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _GameTeamCopyWithImpl($value, $cast, t);
+      _GameTeamCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

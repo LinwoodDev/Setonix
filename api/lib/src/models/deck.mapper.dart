@@ -64,8 +64,9 @@ mixin DeckDefinitionMappable {
   }
 
   DeckDefinitionCopyWith<DeckDefinition, DeckDefinition, DeckDefinition>
-      get copyWith => _DeckDefinitionCopyWithImpl(
-          this as DeckDefinition, $identity, $identity);
+      get copyWith =>
+          _DeckDefinitionCopyWithImpl<DeckDefinition, DeckDefinition>(
+              this as DeckDefinition, $identity, $identity);
   @override
   String toString() {
     return DeckDefinitionMapper.ensureInitialized()
@@ -88,7 +89,7 @@ mixin DeckDefinitionMappable {
 extension DeckDefinitionValueCopy<$R, $Out>
     on ObjectCopyWith<$R, DeckDefinition, $Out> {
   DeckDefinitionCopyWith<$R, DeckDefinition, $Out> get $asDeckDefinition =>
-      $base.as((v, t, t2) => _DeckDefinitionCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _DeckDefinitionCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class DeckDefinitionCopyWith<$R, $In extends DeckDefinition, $Out>
@@ -147,7 +148,7 @@ class _DeckDefinitionCopyWithImpl<$R, $Out>
   @override
   DeckDefinitionCopyWith<$R2, DeckDefinition, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _DeckDefinitionCopyWithImpl($value, $cast, t);
+      _DeckDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class FigureDeckDefinitionMapper extends ClassMapperBase<FigureDeckDefinition> {
@@ -213,9 +214,9 @@ mixin FigureDeckDefinitionMappable {
   }
 
   FigureDeckDefinitionCopyWith<FigureDeckDefinition, FigureDeckDefinition,
-          FigureDeckDefinition>
-      get copyWith => _FigureDeckDefinitionCopyWithImpl(
-          this as FigureDeckDefinition, $identity, $identity);
+      FigureDeckDefinition> get copyWith => _FigureDeckDefinitionCopyWithImpl<
+          FigureDeckDefinition, FigureDeckDefinition>(
+      this as FigureDeckDefinition, $identity, $identity);
   @override
   String toString() {
     return FigureDeckDefinitionMapper.ensureInitialized()
@@ -238,8 +239,8 @@ mixin FigureDeckDefinitionMappable {
 extension FigureDeckDefinitionValueCopy<$R, $Out>
     on ObjectCopyWith<$R, FigureDeckDefinition, $Out> {
   FigureDeckDefinitionCopyWith<$R, FigureDeckDefinition, $Out>
-      get $asFigureDeckDefinition =>
-          $base.as((v, t, t2) => _FigureDeckDefinitionCopyWithImpl(v, t, t2));
+      get $asFigureDeckDefinition => $base.as(
+          (v, t, t2) => _FigureDeckDefinitionCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class FigureDeckDefinitionCopyWith<
@@ -282,7 +283,7 @@ class _FigureDeckDefinitionCopyWithImpl<$R, $Out>
   @override
   FigureDeckDefinitionCopyWith<$R2, FigureDeckDefinition, $Out2>
       $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _FigureDeckDefinitionCopyWithImpl($value, $cast, t);
+          _FigureDeckDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class BoardDeckDefinitionMapper extends ClassMapperBase<BoardDeckDefinition> {
@@ -342,9 +343,9 @@ mixin BoardDeckDefinitionMappable {
   }
 
   BoardDeckDefinitionCopyWith<BoardDeckDefinition, BoardDeckDefinition,
-          BoardDeckDefinition>
-      get copyWith => _BoardDeckDefinitionCopyWithImpl(
-          this as BoardDeckDefinition, $identity, $identity);
+      BoardDeckDefinition> get copyWith => _BoardDeckDefinitionCopyWithImpl<
+          BoardDeckDefinition, BoardDeckDefinition>(
+      this as BoardDeckDefinition, $identity, $identity);
   @override
   String toString() {
     return BoardDeckDefinitionMapper.ensureInitialized()
@@ -367,8 +368,8 @@ mixin BoardDeckDefinitionMappable {
 extension BoardDeckDefinitionValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BoardDeckDefinition, $Out> {
   BoardDeckDefinitionCopyWith<$R, BoardDeckDefinition, $Out>
-      get $asBoardDeckDefinition =>
-          $base.as((v, t, t2) => _BoardDeckDefinitionCopyWithImpl(v, t, t2));
+      get $asBoardDeckDefinition => $base.as(
+          (v, t, t2) => _BoardDeckDefinitionCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class BoardDeckDefinitionCopyWith<$R, $In extends BoardDeckDefinition,
@@ -404,5 +405,5 @@ class _BoardDeckDefinitionCopyWithImpl<$R, $Out>
   @override
   BoardDeckDefinitionCopyWith<$R2, BoardDeckDefinition, $Out2>
       $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _BoardDeckDefinitionCopyWithImpl($value, $cast, t);
+          _BoardDeckDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

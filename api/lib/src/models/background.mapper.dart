@@ -75,9 +75,9 @@ mixin BackgroundDefinitionMappable {
   }
 
   BackgroundDefinitionCopyWith<BackgroundDefinition, BackgroundDefinition,
-          BackgroundDefinition>
-      get copyWith => _BackgroundDefinitionCopyWithImpl(
-          this as BackgroundDefinition, $identity, $identity);
+      BackgroundDefinition> get copyWith => _BackgroundDefinitionCopyWithImpl<
+          BackgroundDefinition, BackgroundDefinition>(
+      this as BackgroundDefinition, $identity, $identity);
   @override
   String toString() {
     return BackgroundDefinitionMapper.ensureInitialized()
@@ -100,8 +100,8 @@ mixin BackgroundDefinitionMappable {
 extension BackgroundDefinitionValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BackgroundDefinition, $Out> {
   BackgroundDefinitionCopyWith<$R, BackgroundDefinition, $Out>
-      get $asBackgroundDefinition =>
-          $base.as((v, t, t2) => _BackgroundDefinitionCopyWithImpl(v, t, t2));
+      get $asBackgroundDefinition => $base.as(
+          (v, t, t2) => _BackgroundDefinitionCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class BackgroundDefinitionCopyWith<
@@ -158,5 +158,5 @@ class _BackgroundDefinitionCopyWithImpl<$R, $Out>
   @override
   BackgroundDefinitionCopyWith<$R2, BackgroundDefinition, $Out2>
       $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _BackgroundDefinitionCopyWithImpl($value, $cast, t);
+          _BackgroundDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

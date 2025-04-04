@@ -62,15 +62,17 @@ mixin IgnoreEqualityBoxMappable<T> {
 
   IgnoreEqualityBoxCopyWith<IgnoreEqualityBox<T>, IgnoreEqualityBox<T>,
           IgnoreEqualityBox<T>, T>
-      get copyWith => _IgnoreEqualityBoxCopyWithImpl(
-          this as IgnoreEqualityBox<T>, $identity, $identity);
+      get copyWith => _IgnoreEqualityBoxCopyWithImpl<
+          IgnoreEqualityBox<T>,
+          IgnoreEqualityBox<T>,
+          T>(this as IgnoreEqualityBox<T>, $identity, $identity);
 }
 
 extension IgnoreEqualityBoxValueCopy<$R, $Out, T>
     on ObjectCopyWith<$R, IgnoreEqualityBox<T>, $Out> {
   IgnoreEqualityBoxCopyWith<$R, IgnoreEqualityBox<T>, $Out, T>
-      get $asIgnoreEqualityBox =>
-          $base.as((v, t, t2) => _IgnoreEqualityBoxCopyWithImpl(v, t, t2));
+      get $asIgnoreEqualityBox => $base.as(
+          (v, t, t2) => _IgnoreEqualityBoxCopyWithImpl<$R, $Out, T>(v, t, t2));
 }
 
 abstract class IgnoreEqualityBoxCopyWith<$R, $In extends IgnoreEqualityBox<T>,
@@ -89,8 +91,8 @@ class _IgnoreEqualityBoxCopyWithImpl<$R, $Out, T>
   late final ClassMapperBase<IgnoreEqualityBox> $mapper =
       IgnoreEqualityBoxMapper.ensureInitialized();
   @override
-  $R call({T? content}) =>
-      $apply(FieldCopyWithData({if (content != null) #content: content}));
+  $R call({Object? content = $none}) =>
+      $apply(FieldCopyWithData({if (content != $none) #content: content}));
   @override
   IgnoreEqualityBox<T> $make(CopyWithData data) =>
       IgnoreEqualityBox(data.get(#content, or: $value.content));
@@ -98,7 +100,7 @@ class _IgnoreEqualityBoxCopyWithImpl<$R, $Out, T>
   @override
   IgnoreEqualityBoxCopyWith<$R2, IgnoreEqualityBox<T>, $Out2, T>
       $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _IgnoreEqualityBoxCopyWithImpl($value, $cast, t);
+          _IgnoreEqualityBoxCopyWithImpl<$R2, $Out2, T>($value, $cast, t);
 }
 
 class GameTableMapper extends ClassMapperBase<GameTable> {
@@ -165,7 +167,8 @@ mixin GameTableMappable {
   }
 
   GameTableCopyWith<GameTable, GameTable, GameTable> get copyWith =>
-      _GameTableCopyWithImpl(this as GameTable, $identity, $identity);
+      _GameTableCopyWithImpl<GameTable, GameTable>(
+          this as GameTable, $identity, $identity);
   @override
   String toString() {
     return GameTableMapper.ensureInitialized()
@@ -186,7 +189,7 @@ mixin GameTableMappable {
 
 extension GameTableValueCopy<$R, $Out> on ObjectCopyWith<$R, GameTable, $Out> {
   GameTableCopyWith<$R, GameTable, $Out> get $asGameTable =>
-      $base.as((v, t, t2) => _GameTableCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _GameTableCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class GameTableCopyWith<$R, $In extends GameTable, $Out>
@@ -237,7 +240,7 @@ class _GameTableCopyWithImpl<$R, $Out>
   @override
   GameTableCopyWith<$R2, GameTable, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _GameTableCopyWithImpl($value, $cast, t);
+      _GameTableCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class TableCellMapper extends ClassMapperBase<TableCell> {
@@ -297,7 +300,8 @@ mixin TableCellMappable {
   }
 
   TableCellCopyWith<TableCell, TableCell, TableCell> get copyWith =>
-      _TableCellCopyWithImpl(this as TableCell, $identity, $identity);
+      _TableCellCopyWithImpl<TableCell, TableCell>(
+          this as TableCell, $identity, $identity);
   @override
   String toString() {
     return TableCellMapper.ensureInitialized()
@@ -318,7 +322,7 @@ mixin TableCellMappable {
 
 extension TableCellValueCopy<$R, $Out> on ObjectCopyWith<$R, TableCell, $Out> {
   TableCellCopyWith<$R, TableCell, $Out> get $asTableCell =>
-      $base.as((v, t, t2) => _TableCellCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _TableCellCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class TableCellCopyWith<$R, $In extends TableCell, $Out>
@@ -361,7 +365,7 @@ class _TableCellCopyWithImpl<$R, $Out>
   @override
   TableCellCopyWith<$R2, TableCell, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _TableCellCopyWithImpl($value, $cast, t);
+      _TableCellCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class GameObjectMapper extends ClassMapperBase<GameObject> {
@@ -425,7 +429,8 @@ mixin GameObjectMappable {
   }
 
   GameObjectCopyWith<GameObject, GameObject, GameObject> get copyWith =>
-      _GameObjectCopyWithImpl(this as GameObject, $identity, $identity);
+      _GameObjectCopyWithImpl<GameObject, GameObject>(
+          this as GameObject, $identity, $identity);
   @override
   String toString() {
     return GameObjectMapper.ensureInitialized()
@@ -447,7 +452,7 @@ mixin GameObjectMappable {
 extension GameObjectValueCopy<$R, $Out>
     on ObjectCopyWith<$R, GameObject, $Out> {
   GameObjectCopyWith<$R, GameObject, $Out> get $asGameObject =>
-      $base.as((v, t, t2) => _GameObjectCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _GameObjectCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class GameObjectCopyWith<$R, $In extends GameObject, $Out>
@@ -484,7 +489,7 @@ class _GameObjectCopyWithImpl<$R, $Out>
   @override
   GameObjectCopyWith<$R2, GameObject, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _GameObjectCopyWithImpl($value, $cast, t);
+      _GameObjectCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ItemLocationMapper extends ClassMapperBase<ItemLocation> {
@@ -541,7 +546,8 @@ mixin ItemLocationMappable {
   }
 
   ItemLocationCopyWith<ItemLocation, ItemLocation, ItemLocation> get copyWith =>
-      _ItemLocationCopyWithImpl(this as ItemLocation, $identity, $identity);
+      _ItemLocationCopyWithImpl<ItemLocation, ItemLocation>(
+          this as ItemLocation, $identity, $identity);
   @override
   String toString() {
     return ItemLocationMapper.ensureInitialized()
@@ -564,7 +570,7 @@ mixin ItemLocationMappable {
 extension ItemLocationValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ItemLocation, $Out> {
   ItemLocationCopyWith<$R, ItemLocation, $Out> get $asItemLocation =>
-      $base.as((v, t, t2) => _ItemLocationCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _ItemLocationCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class ItemLocationCopyWith<$R, $In extends ItemLocation, $Out>
@@ -591,7 +597,7 @@ class _ItemLocationCopyWithImpl<$R, $Out>
   @override
   ItemLocationCopyWith<$R2, ItemLocation, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _ItemLocationCopyWithImpl($value, $cast, t);
+      _ItemLocationCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class BoardTileMapper extends ClassMapperBase<BoardTile> {
@@ -651,7 +657,8 @@ mixin BoardTileMappable {
   }
 
   BoardTileCopyWith<BoardTile, BoardTile, BoardTile> get copyWith =>
-      _BoardTileCopyWithImpl(this as BoardTile, $identity, $identity);
+      _BoardTileCopyWithImpl<BoardTile, BoardTile>(
+          this as BoardTile, $identity, $identity);
   @override
   String toString() {
     return BoardTileMapper.ensureInitialized()
@@ -672,7 +679,7 @@ mixin BoardTileMappable {
 
 extension BoardTileValueCopy<$R, $Out> on ObjectCopyWith<$R, BoardTile, $Out> {
   BoardTileCopyWith<$R, BoardTile, $Out> get $asBoardTile =>
-      $base.as((v, t, t2) => _BoardTileCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _BoardTileCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class BoardTileCopyWith<$R, $In extends BoardTile, $Out>
@@ -708,7 +715,7 @@ class _BoardTileCopyWithImpl<$R, $Out>
   @override
   BoardTileCopyWith<$R2, BoardTile, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _BoardTileCopyWithImpl($value, $cast, t);
+      _BoardTileCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class GlobalVectorDefinitionMapper
@@ -775,7 +782,8 @@ mixin GlobalVectorDefinitionMappable {
 
   GlobalVectorDefinitionCopyWith<GlobalVectorDefinition, GlobalVectorDefinition,
           GlobalVectorDefinition>
-      get copyWith => _GlobalVectorDefinitionCopyWithImpl(
+      get copyWith => _GlobalVectorDefinitionCopyWithImpl<
+              GlobalVectorDefinition, GlobalVectorDefinition>(
           this as GlobalVectorDefinition, $identity, $identity);
   @override
   String toString() {
@@ -799,8 +807,8 @@ mixin GlobalVectorDefinitionMappable {
 extension GlobalVectorDefinitionValueCopy<$R, $Out>
     on ObjectCopyWith<$R, GlobalVectorDefinition, $Out> {
   GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition, $Out>
-      get $asGlobalVectorDefinition =>
-          $base.as((v, t, t2) => _GlobalVectorDefinitionCopyWithImpl(v, t, t2));
+      get $asGlobalVectorDefinition => $base.as((v, t, t2) =>
+          _GlobalVectorDefinitionCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class GlobalVectorDefinitionCopyWith<
@@ -836,7 +844,7 @@ class _GlobalVectorDefinitionCopyWithImpl<$R, $Out>
   @override
   GlobalVectorDefinitionCopyWith<$R2, GlobalVectorDefinition, $Out2>
       $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _GlobalVectorDefinitionCopyWithImpl($value, $cast, t);
+          _GlobalVectorDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class GameSeatMapper extends ClassMapperBase<GameSeat> {
@@ -890,7 +898,8 @@ mixin GameSeatMappable {
   }
 
   GameSeatCopyWith<GameSeat, GameSeat, GameSeat> get copyWith =>
-      _GameSeatCopyWithImpl(this as GameSeat, $identity, $identity);
+      _GameSeatCopyWithImpl<GameSeat, GameSeat>(
+          this as GameSeat, $identity, $identity);
   @override
   String toString() {
     return GameSeatMapper.ensureInitialized().stringifyValue(this as GameSeat);
@@ -910,7 +919,7 @@ mixin GameSeatMappable {
 
 extension GameSeatValueCopy<$R, $Out> on ObjectCopyWith<$R, GameSeat, $Out> {
   GameSeatCopyWith<$R, GameSeat, $Out> get $asGameSeat =>
-      $base.as((v, t, t2) => _GameSeatCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _GameSeatCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class GameSeatCopyWith<$R, $In extends GameSeat, $Out>
@@ -937,5 +946,5 @@ class _GameSeatCopyWithImpl<$R, $Out>
   @override
   GameSeatCopyWith<$R2, GameSeat, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _GameSeatCopyWithImpl($value, $cast, t);
+      _GameSeatCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

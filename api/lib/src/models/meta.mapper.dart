@@ -25,11 +25,11 @@ class FileTypeMapper extends EnumMapper<FileType> {
   @override
   FileType decode(dynamic value) {
     switch (value) {
-      case 'pack':
+      case r'pack':
         return FileType.pack;
-      case 'game':
+      case r'game':
         return FileType.game;
-      case 'template':
+      case r'template':
         return FileType.template;
       default:
         throw MapperException.unknownEnumValue(value);
@@ -40,11 +40,11 @@ class FileTypeMapper extends EnumMapper<FileType> {
   dynamic encode(FileType self) {
     switch (self) {
       case FileType.pack:
-        return 'pack';
+        return r'pack';
       case FileType.game:
-        return 'game';
+        return r'game';
       case FileType.template:
-        return 'template';
+        return r'template';
     }
   }
 }
@@ -139,7 +139,8 @@ mixin FileMetadataMappable {
   }
 
   FileMetadataCopyWith<FileMetadata, FileMetadata, FileMetadata> get copyWith =>
-      _FileMetadataCopyWithImpl(this as FileMetadata, $identity, $identity);
+      _FileMetadataCopyWithImpl<FileMetadata, FileMetadata>(
+          this as FileMetadata, $identity, $identity);
   @override
   String toString() {
     return FileMetadataMapper.ensureInitialized()
@@ -162,7 +163,7 @@ mixin FileMetadataMappable {
 extension FileMetadataValueCopy<$R, $Out>
     on ObjectCopyWith<$R, FileMetadata, $Out> {
   FileMetadataCopyWith<$R, FileMetadata, $Out> get $asFileMetadata =>
-      $base.as((v, t, t2) => _FileMetadataCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _FileMetadataCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class FileMetadataCopyWith<$R, $In extends FileMetadata, $Out>
@@ -217,7 +218,7 @@ class _FileMetadataCopyWithImpl<$R, $Out>
   @override
   FileMetadataCopyWith<$R2, FileMetadata, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _FileMetadataCopyWithImpl($value, $cast, t);
+      _FileMetadataCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class SignatureMetadataMapper extends ClassMapperBase<SignatureMetadata> {
@@ -283,8 +284,9 @@ mixin SignatureMetadataMappable {
 
   SignatureMetadataCopyWith<SignatureMetadata, SignatureMetadata,
           SignatureMetadata>
-      get copyWith => _SignatureMetadataCopyWithImpl(
-          this as SignatureMetadata, $identity, $identity);
+      get copyWith =>
+          _SignatureMetadataCopyWithImpl<SignatureMetadata, SignatureMetadata>(
+              this as SignatureMetadata, $identity, $identity);
   @override
   String toString() {
     return SignatureMetadataMapper.ensureInitialized()
@@ -307,8 +309,8 @@ mixin SignatureMetadataMappable {
 extension SignatureMetadataValueCopy<$R, $Out>
     on ObjectCopyWith<$R, SignatureMetadata, $Out> {
   SignatureMetadataCopyWith<$R, SignatureMetadata, $Out>
-      get $asSignatureMetadata =>
-          $base.as((v, t, t2) => _SignatureMetadataCopyWithImpl(v, t, t2));
+      get $asSignatureMetadata => $base
+          .as((v, t, t2) => _SignatureMetadataCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class SignatureMetadataCopyWith<$R, $In extends SignatureMetadata,
@@ -353,7 +355,7 @@ class _SignatureMetadataCopyWithImpl<$R, $Out>
   @override
   SignatureMetadataCopyWith<$R2, SignatureMetadata, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _SignatureMetadataCopyWithImpl($value, $cast, t);
+      _SignatureMetadataCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class DataMetadataMapper extends ClassMapperBase<DataMetadata> {
@@ -419,7 +421,8 @@ mixin DataMetadataMappable {
   }
 
   DataMetadataCopyWith<DataMetadata, DataMetadata, DataMetadata> get copyWith =>
-      _DataMetadataCopyWithImpl(this as DataMetadata, $identity, $identity);
+      _DataMetadataCopyWithImpl<DataMetadata, DataMetadata>(
+          this as DataMetadata, $identity, $identity);
   @override
   String toString() {
     return DataMetadataMapper.ensureInitialized()
@@ -442,7 +445,7 @@ mixin DataMetadataMappable {
 extension DataMetadataValueCopy<$R, $Out>
     on ObjectCopyWith<$R, DataMetadata, $Out> {
   DataMetadataCopyWith<$R, DataMetadata, $Out> get $asDataMetadata =>
-      $base.as((v, t, t2) => _DataMetadataCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _DataMetadataCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class DataMetadataCopyWith<$R, $In extends DataMetadata, $Out>
@@ -489,5 +492,5 @@ class _DataMetadataCopyWithImpl<$R, $Out>
   @override
   DataMetadataCopyWith<$R2, DataMetadata, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _DataMetadataCopyWithImpl($value, $cast, t);
+      _DataMetadataCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

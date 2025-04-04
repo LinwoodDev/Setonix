@@ -78,7 +78,8 @@ mixin GameDialogMappable {
   }
 
   GameDialogCopyWith<GameDialog, GameDialog, GameDialog> get copyWith =>
-      _GameDialogCopyWithImpl(this as GameDialog, $identity, $identity);
+      _GameDialogCopyWithImpl<GameDialog, GameDialog>(
+          this as GameDialog, $identity, $identity);
   @override
   String toString() {
     return GameDialogMapper.ensureInitialized()
@@ -100,7 +101,7 @@ mixin GameDialogMappable {
 extension GameDialogValueCopy<$R, $Out>
     on ObjectCopyWith<$R, GameDialog, $Out> {
   GameDialogCopyWith<$R, GameDialog, $Out> get $asGameDialog =>
-      $base.as((v, t, t2) => _GameDialogCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _GameDialogCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class GameDialogCopyWith<$R, $In extends GameDialog, $Out>
@@ -171,7 +172,7 @@ class _GameDialogCopyWithImpl<$R, $Out>
   @override
   GameDialogCopyWith<$R2, GameDialog, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _GameDialogCopyWithImpl($value, $cast, t);
+      _GameDialogCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class GameDialogComponentMapper extends ClassMapperBase<GameDialogComponent> {
@@ -278,8 +279,9 @@ mixin GameDialogButtonMappable {
   }
 
   GameDialogButtonCopyWith<GameDialogButton, GameDialogButton, GameDialogButton>
-      get copyWith => _GameDialogButtonCopyWithImpl(
-          this as GameDialogButton, $identity, $identity);
+      get copyWith =>
+          _GameDialogButtonCopyWithImpl<GameDialogButton, GameDialogButton>(
+              this as GameDialogButton, $identity, $identity);
   @override
   String toString() {
     return GameDialogButtonMapper.ensureInitialized()
@@ -302,8 +304,8 @@ mixin GameDialogButtonMappable {
 extension GameDialogButtonValueCopy<$R, $Out>
     on ObjectCopyWith<$R, GameDialogButton, $Out> {
   GameDialogButtonCopyWith<$R, GameDialogButton, $Out>
-      get $asGameDialogButton =>
-          $base.as((v, t, t2) => _GameDialogButtonCopyWithImpl(v, t, t2));
+      get $asGameDialogButton => $base
+          .as((v, t, t2) => _GameDialogButtonCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class GameDialogButtonCopyWith<$R, $In extends GameDialogButton, $Out>
@@ -332,7 +334,7 @@ class _GameDialogButtonCopyWithImpl<$R, $Out>
   @override
   GameDialogButtonCopyWith<$R2, GameDialogButton, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _GameDialogButtonCopyWithImpl($value, $cast, t);
+      _GameDialogButtonCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class GameDialogMarkdownComponentMapper
@@ -392,7 +394,8 @@ mixin GameDialogMarkdownComponentMappable {
 
   GameDialogMarkdownComponentCopyWith<GameDialogMarkdownComponent,
           GameDialogMarkdownComponent, GameDialogMarkdownComponent>
-      get copyWith => _GameDialogMarkdownComponentCopyWithImpl(
+      get copyWith => _GameDialogMarkdownComponentCopyWithImpl<
+              GameDialogMarkdownComponent, GameDialogMarkdownComponent>(
           this as GameDialogMarkdownComponent, $identity, $identity);
   @override
   String toString() {
@@ -416,8 +419,8 @@ mixin GameDialogMarkdownComponentMappable {
 extension GameDialogMarkdownComponentValueCopy<$R, $Out>
     on ObjectCopyWith<$R, GameDialogMarkdownComponent, $Out> {
   GameDialogMarkdownComponentCopyWith<$R, GameDialogMarkdownComponent, $Out>
-      get $asGameDialogMarkdownComponent => $base
-          .as((v, t, t2) => _GameDialogMarkdownComponentCopyWithImpl(v, t, t2));
+      get $asGameDialogMarkdownComponent => $base.as((v, t, t2) =>
+          _GameDialogMarkdownComponentCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class GameDialogMarkdownComponentCopyWith<
@@ -451,7 +454,8 @@ class _GameDialogMarkdownComponentCopyWithImpl<$R, $Out>
   @override
   GameDialogMarkdownComponentCopyWith<$R2, GameDialogMarkdownComponent, $Out2>
       $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _GameDialogMarkdownComponentCopyWithImpl($value, $cast, t);
+          _GameDialogMarkdownComponentCopyWithImpl<$R2, $Out2>(
+              $value, $cast, t);
 }
 
 class GameDialogTextFieldComponentMapper
@@ -531,7 +535,8 @@ mixin GameDialogTextFieldComponentMappable {
 
   GameDialogTextFieldComponentCopyWith<GameDialogTextFieldComponent,
           GameDialogTextFieldComponent, GameDialogTextFieldComponent>
-      get copyWith => _GameDialogTextFieldComponentCopyWithImpl(
+      get copyWith => _GameDialogTextFieldComponentCopyWithImpl<
+              GameDialogTextFieldComponent, GameDialogTextFieldComponent>(
           this as GameDialogTextFieldComponent, $identity, $identity);
   @override
   String toString() {
@@ -555,8 +560,8 @@ mixin GameDialogTextFieldComponentMappable {
 extension GameDialogTextFieldComponentValueCopy<$R, $Out>
     on ObjectCopyWith<$R, GameDialogTextFieldComponent, $Out> {
   GameDialogTextFieldComponentCopyWith<$R, GameDialogTextFieldComponent, $Out>
-      get $asGameDialogTextFieldComponent => $base.as(
-          (v, t, t2) => _GameDialogTextFieldComponentCopyWithImpl(v, t, t2));
+      get $asGameDialogTextFieldComponent => $base.as((v, t, t2) =>
+          _GameDialogTextFieldComponentCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class GameDialogTextFieldComponentCopyWith<
@@ -610,7 +615,8 @@ class _GameDialogTextFieldComponentCopyWithImpl<$R, $Out>
   @override
   GameDialogTextFieldComponentCopyWith<$R2, GameDialogTextFieldComponent, $Out2>
       $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _GameDialogTextFieldComponentCopyWithImpl($value, $cast, t);
+          _GameDialogTextFieldComponentCopyWithImpl<$R2, $Out2>(
+              $value, $cast, t);
 }
 
 class GameDialogValueMapper extends ClassMapperBase<GameDialogValue> {
@@ -670,8 +676,9 @@ mixin GameDialogValueMappable {
   }
 
   GameDialogValueCopyWith<GameDialogValue, GameDialogValue, GameDialogValue>
-      get copyWith => _GameDialogValueCopyWithImpl(
-          this as GameDialogValue, $identity, $identity);
+      get copyWith =>
+          _GameDialogValueCopyWithImpl<GameDialogValue, GameDialogValue>(
+              this as GameDialogValue, $identity, $identity);
   @override
   String toString() {
     return GameDialogValueMapper.ensureInitialized()
@@ -694,7 +701,7 @@ mixin GameDialogValueMappable {
 extension GameDialogValueValueCopy<$R, $Out>
     on ObjectCopyWith<$R, GameDialogValue, $Out> {
   GameDialogValueCopyWith<$R, GameDialogValue, $Out> get $asGameDialogValue =>
-      $base.as((v, t, t2) => _GameDialogValueCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _GameDialogValueCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class GameDialogValueCopyWith<$R, $In extends GameDialogValue, $Out>
@@ -743,7 +750,7 @@ class _GameDialogValueCopyWithImpl<$R, $Out>
   @override
   GameDialogValueCopyWith<$R2, GameDialogValue, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _GameDialogValueCopyWithImpl($value, $cast, t);
+      _GameDialogValueCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class GameDialogComponentValueMapper
@@ -801,7 +808,8 @@ mixin GameDialogComponentValueMappable {
 
   GameDialogComponentValueCopyWith<GameDialogComponentValue,
           GameDialogComponentValue, GameDialogComponentValue>
-      get copyWith => _GameDialogComponentValueCopyWithImpl(
+      get copyWith => _GameDialogComponentValueCopyWithImpl<
+              GameDialogComponentValue, GameDialogComponentValue>(
           this as GameDialogComponentValue, $identity, $identity);
   @override
   String toString() {
@@ -825,8 +833,8 @@ mixin GameDialogComponentValueMappable {
 extension GameDialogComponentValueValueCopy<$R, $Out>
     on ObjectCopyWith<$R, GameDialogComponentValue, $Out> {
   GameDialogComponentValueCopyWith<$R, GameDialogComponentValue, $Out>
-      get $asGameDialogComponentValue => $base
-          .as((v, t, t2) => _GameDialogComponentValueCopyWithImpl(v, t, t2));
+      get $asGameDialogComponentValue => $base.as((v, t, t2) =>
+          _GameDialogComponentValueCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class GameDialogComponentValueCopyWith<
@@ -857,7 +865,7 @@ class _GameDialogComponentValueCopyWithImpl<$R, $Out>
   @override
   GameDialogComponentValueCopyWith<$R2, GameDialogComponentValue, $Out2>
       $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _GameDialogComponentValueCopyWithImpl($value, $cast, t);
+          _GameDialogComponentValueCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class GameDialogTextFieldValueMapper
@@ -920,7 +928,8 @@ mixin GameDialogTextFieldValueMappable {
 
   GameDialogTextFieldValueCopyWith<GameDialogTextFieldValue,
           GameDialogTextFieldValue, GameDialogTextFieldValue>
-      get copyWith => _GameDialogTextFieldValueCopyWithImpl(
+      get copyWith => _GameDialogTextFieldValueCopyWithImpl<
+              GameDialogTextFieldValue, GameDialogTextFieldValue>(
           this as GameDialogTextFieldValue, $identity, $identity);
   @override
   String toString() {
@@ -944,8 +953,8 @@ mixin GameDialogTextFieldValueMappable {
 extension GameDialogTextFieldValueValueCopy<$R, $Out>
     on ObjectCopyWith<$R, GameDialogTextFieldValue, $Out> {
   GameDialogTextFieldValueCopyWith<$R, GameDialogTextFieldValue, $Out>
-      get $asGameDialogTextFieldValue => $base
-          .as((v, t, t2) => _GameDialogTextFieldValueCopyWithImpl(v, t, t2));
+      get $asGameDialogTextFieldValue => $base.as((v, t, t2) =>
+          _GameDialogTextFieldValueCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class GameDialogTextFieldValueCopyWith<
@@ -980,5 +989,5 @@ class _GameDialogTextFieldValueCopyWithImpl<$R, $Out>
   @override
   GameDialogTextFieldValueCopyWith<$R2, GameDialogTextFieldValue, $Out2>
       $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _GameDialogTextFieldValueCopyWithImpl($value, $cast, t);
+          _GameDialogTextFieldValueCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

@@ -276,8 +276,9 @@ mixin WorldInitializedMappable {
   }
 
   WorldInitializedCopyWith<WorldInitialized, WorldInitialized, WorldInitialized>
-      get copyWith => _WorldInitializedCopyWithImpl(
-          this as WorldInitialized, $identity, $identity);
+      get copyWith =>
+          _WorldInitializedCopyWithImpl<WorldInitialized, WorldInitialized>(
+              this as WorldInitialized, $identity, $identity);
   @override
   String toString() {
     return WorldInitializedMapper.ensureInitialized()
@@ -300,8 +301,8 @@ mixin WorldInitializedMappable {
 extension WorldInitializedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, WorldInitialized, $Out> {
   WorldInitializedCopyWith<$R, WorldInitialized, $Out>
-      get $asWorldInitialized =>
-          $base.as((v, t, t2) => _WorldInitializedCopyWithImpl(v, t, t2));
+      get $asWorldInitialized => $base
+          .as((v, t, t2) => _WorldInitializedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class WorldInitializedCopyWith<$R, $In extends WorldInitialized, $Out>
@@ -383,7 +384,7 @@ class _WorldInitializedCopyWithImpl<$R, $Out>
   @override
   WorldInitializedCopyWith<$R2, WorldInitialized, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _WorldInitializedCopyWithImpl($value, $cast, t);
+      _WorldInitializedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class TeamJoinedMapper extends SubClassMapperBase<TeamJoined> {
@@ -448,7 +449,8 @@ mixin TeamJoinedMappable {
   }
 
   TeamJoinedCopyWith<TeamJoined, TeamJoined, TeamJoined> get copyWith =>
-      _TeamJoinedCopyWithImpl(this as TeamJoined, $identity, $identity);
+      _TeamJoinedCopyWithImpl<TeamJoined, TeamJoined>(
+          this as TeamJoined, $identity, $identity);
   @override
   String toString() {
     return TeamJoinedMapper.ensureInitialized()
@@ -470,7 +472,7 @@ mixin TeamJoinedMappable {
 extension TeamJoinedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, TeamJoined, $Out> {
   TeamJoinedCopyWith<$R, TeamJoined, $Out> get $asTeamJoined =>
-      $base.as((v, t, t2) => _TeamJoinedCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _TeamJoinedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class TeamJoinedCopyWith<$R, $In extends TeamJoined, $Out>
@@ -498,7 +500,7 @@ class _TeamJoinedCopyWithImpl<$R, $Out>
   @override
   TeamJoinedCopyWith<$R2, TeamJoined, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _TeamJoinedCopyWithImpl($value, $cast, t);
+      _TeamJoinedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class TeamLeftMapper extends SubClassMapperBase<TeamLeft> {
@@ -563,7 +565,8 @@ mixin TeamLeftMappable {
   }
 
   TeamLeftCopyWith<TeamLeft, TeamLeft, TeamLeft> get copyWith =>
-      _TeamLeftCopyWithImpl(this as TeamLeft, $identity, $identity);
+      _TeamLeftCopyWithImpl<TeamLeft, TeamLeft>(
+          this as TeamLeft, $identity, $identity);
   @override
   String toString() {
     return TeamLeftMapper.ensureInitialized().stringifyValue(this as TeamLeft);
@@ -583,7 +586,7 @@ mixin TeamLeftMappable {
 
 extension TeamLeftValueCopy<$R, $Out> on ObjectCopyWith<$R, TeamLeft, $Out> {
   TeamLeftCopyWith<$R, TeamLeft, $Out> get $asTeamLeft =>
-      $base.as((v, t, t2) => _TeamLeftCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _TeamLeftCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class TeamLeftCopyWith<$R, $In extends TeamLeft, $Out>
@@ -611,7 +614,7 @@ class _TeamLeftCopyWithImpl<$R, $Out>
   @override
   TeamLeftCopyWith<$R2, TeamLeft, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _TeamLeftCopyWithImpl($value, $cast, t);
+      _TeamLeftCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ObjectsChangedMapper extends SubClassMapperBase<ObjectsChanged> {
@@ -680,8 +683,9 @@ mixin ObjectsChangedMappable {
   }
 
   ObjectsChangedCopyWith<ObjectsChanged, ObjectsChanged, ObjectsChanged>
-      get copyWith => _ObjectsChangedCopyWithImpl(
-          this as ObjectsChanged, $identity, $identity);
+      get copyWith =>
+          _ObjectsChangedCopyWithImpl<ObjectsChanged, ObjectsChanged>(
+              this as ObjectsChanged, $identity, $identity);
   @override
   String toString() {
     return ObjectsChangedMapper.ensureInitialized()
@@ -704,7 +708,7 @@ mixin ObjectsChangedMappable {
 extension ObjectsChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ObjectsChanged, $Out> {
   ObjectsChangedCopyWith<$R, ObjectsChanged, $Out> get $asObjectsChanged =>
-      $base.as((v, t, t2) => _ObjectsChangedCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _ObjectsChangedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class ObjectsChangedCopyWith<$R, $In extends ObjectsChanged, $Out>
@@ -748,7 +752,7 @@ class _ObjectsChangedCopyWithImpl<$R, $Out>
   @override
   ObjectsChangedCopyWith<$R2, ObjectsChanged, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _ObjectsChangedCopyWithImpl($value, $cast, t);
+      _ObjectsChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class CellShuffledMapper extends SubClassMapperBase<CellShuffled> {
@@ -816,7 +820,8 @@ mixin CellShuffledMappable {
   }
 
   CellShuffledCopyWith<CellShuffled, CellShuffled, CellShuffled> get copyWith =>
-      _CellShuffledCopyWithImpl(this as CellShuffled, $identity, $identity);
+      _CellShuffledCopyWithImpl<CellShuffled, CellShuffled>(
+          this as CellShuffled, $identity, $identity);
   @override
   String toString() {
     return CellShuffledMapper.ensureInitialized()
@@ -839,7 +844,7 @@ mixin CellShuffledMappable {
 extension CellShuffledValueCopy<$R, $Out>
     on ObjectCopyWith<$R, CellShuffled, $Out> {
   CellShuffledCopyWith<$R, CellShuffled, $Out> get $asCellShuffled =>
-      $base.as((v, t, t2) => _CellShuffledCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _CellShuffledCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class CellShuffledCopyWith<$R, $In extends CellShuffled, $Out>
@@ -882,7 +887,7 @@ class _CellShuffledCopyWithImpl<$R, $Out>
   @override
   CellShuffledCopyWith<$R2, CellShuffled, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _CellShuffledCopyWithImpl($value, $cast, t);
+      _CellShuffledCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class MessageSentMapper extends SubClassMapperBase<MessageSent> {
@@ -948,7 +953,8 @@ mixin MessageSentMappable {
   }
 
   MessageSentCopyWith<MessageSent, MessageSent, MessageSent> get copyWith =>
-      _MessageSentCopyWithImpl(this as MessageSent, $identity, $identity);
+      _MessageSentCopyWithImpl<MessageSent, MessageSent>(
+          this as MessageSent, $identity, $identity);
   @override
   String toString() {
     return MessageSentMapper.ensureInitialized()
@@ -970,7 +976,7 @@ mixin MessageSentMappable {
 extension MessageSentValueCopy<$R, $Out>
     on ObjectCopyWith<$R, MessageSent, $Out> {
   MessageSentCopyWith<$R, MessageSent, $Out> get $asMessageSent =>
-      $base.as((v, t, t2) => _MessageSentCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _MessageSentCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class MessageSentCopyWith<$R, $In extends MessageSent, $Out>
@@ -998,7 +1004,7 @@ class _MessageSentCopyWithImpl<$R, $Out>
   @override
   MessageSentCopyWith<$R2, MessageSent, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _MessageSentCopyWithImpl($value, $cast, t);
+      _MessageSentCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class BoardTilesSpawnedMapper extends SubClassMapperBase<BoardTilesSpawned> {
@@ -1069,8 +1075,9 @@ mixin BoardTilesSpawnedMappable {
 
   BoardTilesSpawnedCopyWith<BoardTilesSpawned, BoardTilesSpawned,
           BoardTilesSpawned>
-      get copyWith => _BoardTilesSpawnedCopyWithImpl(
-          this as BoardTilesSpawned, $identity, $identity);
+      get copyWith =>
+          _BoardTilesSpawnedCopyWithImpl<BoardTilesSpawned, BoardTilesSpawned>(
+              this as BoardTilesSpawned, $identity, $identity);
   @override
   String toString() {
     return BoardTilesSpawnedMapper.ensureInitialized()
@@ -1093,8 +1100,8 @@ mixin BoardTilesSpawnedMappable {
 extension BoardTilesSpawnedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BoardTilesSpawned, $Out> {
   BoardTilesSpawnedCopyWith<$R, BoardTilesSpawned, $Out>
-      get $asBoardTilesSpawned =>
-          $base.as((v, t, t2) => _BoardTilesSpawnedCopyWithImpl(v, t, t2));
+      get $asBoardTilesSpawned => $base
+          .as((v, t, t2) => _BoardTilesSpawnedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class BoardTilesSpawnedCopyWith<$R, $In extends BoardTilesSpawned,
@@ -1133,7 +1140,7 @@ class _BoardTilesSpawnedCopyWithImpl<$R, $Out>
   @override
   BoardTilesSpawnedCopyWith<$R2, BoardTilesSpawned, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _BoardTilesSpawnedCopyWithImpl($value, $cast, t);
+      _BoardTilesSpawnedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class BoardTilesChangedMapper extends SubClassMapperBase<BoardTilesChanged> {
@@ -1204,8 +1211,9 @@ mixin BoardTilesChangedMappable {
 
   BoardTilesChangedCopyWith<BoardTilesChanged, BoardTilesChanged,
           BoardTilesChanged>
-      get copyWith => _BoardTilesChangedCopyWithImpl(
-          this as BoardTilesChanged, $identity, $identity);
+      get copyWith =>
+          _BoardTilesChangedCopyWithImpl<BoardTilesChanged, BoardTilesChanged>(
+              this as BoardTilesChanged, $identity, $identity);
   @override
   String toString() {
     return BoardTilesChangedMapper.ensureInitialized()
@@ -1228,8 +1236,8 @@ mixin BoardTilesChangedMappable {
 extension BoardTilesChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BoardTilesChanged, $Out> {
   BoardTilesChangedCopyWith<$R, BoardTilesChanged, $Out>
-      get $asBoardTilesChanged =>
-          $base.as((v, t, t2) => _BoardTilesChangedCopyWithImpl(v, t, t2));
+      get $asBoardTilesChanged => $base
+          .as((v, t, t2) => _BoardTilesChangedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class BoardTilesChangedCopyWith<$R, $In extends BoardTilesChanged,
@@ -1268,7 +1276,7 @@ class _BoardTilesChangedCopyWithImpl<$R, $Out>
   @override
   BoardTilesChangedCopyWith<$R2, BoardTilesChanged, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _BoardTilesChangedCopyWithImpl($value, $cast, t);
+      _BoardTilesChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class DialogOpenedMapper extends SubClassMapperBase<DialogOpened> {
@@ -1337,7 +1345,8 @@ mixin DialogOpenedMappable {
   }
 
   DialogOpenedCopyWith<DialogOpened, DialogOpened, DialogOpened> get copyWith =>
-      _DialogOpenedCopyWithImpl(this as DialogOpened, $identity, $identity);
+      _DialogOpenedCopyWithImpl<DialogOpened, DialogOpened>(
+          this as DialogOpened, $identity, $identity);
   @override
   String toString() {
     return DialogOpenedMapper.ensureInitialized()
@@ -1360,7 +1369,7 @@ mixin DialogOpenedMappable {
 extension DialogOpenedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, DialogOpened, $Out> {
   DialogOpenedCopyWith<$R, DialogOpened, $Out> get $asDialogOpened =>
-      $base.as((v, t, t2) => _DialogOpenedCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _DialogOpenedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class DialogOpenedCopyWith<$R, $In extends DialogOpened, $Out>
@@ -1395,7 +1404,7 @@ class _DialogOpenedCopyWithImpl<$R, $Out>
   @override
   DialogOpenedCopyWith<$R2, DialogOpened, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _DialogOpenedCopyWithImpl($value, $cast, t);
+      _DialogOpenedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class DialogsClosedMapper extends SubClassMapperBase<DialogsClosed> {
@@ -1457,7 +1466,7 @@ mixin DialogsClosedMappable {
   }
 
   DialogsClosedCopyWith<DialogsClosed, DialogsClosed, DialogsClosed>
-      get copyWith => _DialogsClosedCopyWithImpl(
+      get copyWith => _DialogsClosedCopyWithImpl<DialogsClosed, DialogsClosed>(
           this as DialogsClosed, $identity, $identity);
   @override
   String toString() {
@@ -1481,7 +1490,7 @@ mixin DialogsClosedMappable {
 extension DialogsClosedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, DialogsClosed, $Out> {
   DialogsClosedCopyWith<$R, DialogsClosed, $Out> get $asDialogsClosed =>
-      $base.as((v, t, t2) => _DialogsClosedCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _DialogsClosedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class DialogsClosedCopyWith<$R, $In extends DialogsClosed, $Out>
@@ -1516,7 +1525,7 @@ class _DialogsClosedCopyWithImpl<$R, $Out>
   @override
   DialogsClosedCopyWith<$R2, DialogsClosed, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _DialogsClosedCopyWithImpl($value, $cast, t);
+      _DialogsClosedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ImagesUpdatedMapper extends SubClassMapperBase<ImagesUpdated> {
@@ -1580,7 +1589,7 @@ mixin ImagesUpdatedMappable {
   }
 
   ImagesUpdatedCopyWith<ImagesUpdated, ImagesUpdated, ImagesUpdated>
-      get copyWith => _ImagesUpdatedCopyWithImpl(
+      get copyWith => _ImagesUpdatedCopyWithImpl<ImagesUpdated, ImagesUpdated>(
           this as ImagesUpdated, $identity, $identity);
   @override
   String toString() {
@@ -1604,7 +1613,7 @@ mixin ImagesUpdatedMappable {
 extension ImagesUpdatedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ImagesUpdated, $Out> {
   ImagesUpdatedCopyWith<$R, ImagesUpdated, $Out> get $asImagesUpdated =>
-      $base.as((v, t, t2) => _ImagesUpdatedCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _ImagesUpdatedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class ImagesUpdatedCopyWith<$R, $In extends ImagesUpdated, $Out>
@@ -1638,7 +1647,7 @@ class _ImagesUpdatedCopyWithImpl<$R, $Out>
   @override
   ImagesUpdatedCopyWith<$R2, ImagesUpdated, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _ImagesUpdatedCopyWithImpl($value, $cast, t);
+      _ImagesUpdatedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ClientWorldEventMapper extends SubClassMapperBase<ClientWorldEvent> {
@@ -1770,8 +1779,9 @@ mixin TeamJoinRequestMappable {
   }
 
   TeamJoinRequestCopyWith<TeamJoinRequest, TeamJoinRequest, TeamJoinRequest>
-      get copyWith => _TeamJoinRequestCopyWithImpl(
-          this as TeamJoinRequest, $identity, $identity);
+      get copyWith =>
+          _TeamJoinRequestCopyWithImpl<TeamJoinRequest, TeamJoinRequest>(
+              this as TeamJoinRequest, $identity, $identity);
   @override
   String toString() {
     return TeamJoinRequestMapper.ensureInitialized()
@@ -1794,7 +1804,7 @@ mixin TeamJoinRequestMappable {
 extension TeamJoinRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, TeamJoinRequest, $Out> {
   TeamJoinRequestCopyWith<$R, TeamJoinRequest, $Out> get $asTeamJoinRequest =>
-      $base.as((v, t, t2) => _TeamJoinRequestCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _TeamJoinRequestCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class TeamJoinRequestCopyWith<$R, $In extends TeamJoinRequest, $Out>
@@ -1823,7 +1833,7 @@ class _TeamJoinRequestCopyWithImpl<$R, $Out>
   @override
   TeamJoinRequestCopyWith<$R2, TeamJoinRequest, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _TeamJoinRequestCopyWithImpl($value, $cast, t);
+      _TeamJoinRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class TeamLeaveRequestMapper extends SubClassMapperBase<TeamLeaveRequest> {
@@ -1885,8 +1895,9 @@ mixin TeamLeaveRequestMappable {
   }
 
   TeamLeaveRequestCopyWith<TeamLeaveRequest, TeamLeaveRequest, TeamLeaveRequest>
-      get copyWith => _TeamLeaveRequestCopyWithImpl(
-          this as TeamLeaveRequest, $identity, $identity);
+      get copyWith =>
+          _TeamLeaveRequestCopyWithImpl<TeamLeaveRequest, TeamLeaveRequest>(
+              this as TeamLeaveRequest, $identity, $identity);
   @override
   String toString() {
     return TeamLeaveRequestMapper.ensureInitialized()
@@ -1909,8 +1920,8 @@ mixin TeamLeaveRequestMappable {
 extension TeamLeaveRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, TeamLeaveRequest, $Out> {
   TeamLeaveRequestCopyWith<$R, TeamLeaveRequest, $Out>
-      get $asTeamLeaveRequest =>
-          $base.as((v, t, t2) => _TeamLeaveRequestCopyWithImpl(v, t, t2));
+      get $asTeamLeaveRequest => $base
+          .as((v, t, t2) => _TeamLeaveRequestCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class TeamLeaveRequestCopyWith<$R, $In extends TeamLeaveRequest, $Out>
@@ -1939,7 +1950,7 @@ class _TeamLeaveRequestCopyWithImpl<$R, $Out>
   @override
   TeamLeaveRequestCopyWith<$R2, TeamLeaveRequest, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _TeamLeaveRequestCopyWithImpl($value, $cast, t);
+      _TeamLeaveRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class CellRollRequestMapper extends SubClassMapperBase<CellRollRequest> {
@@ -2007,8 +2018,9 @@ mixin CellRollRequestMappable {
   }
 
   CellRollRequestCopyWith<CellRollRequest, CellRollRequest, CellRollRequest>
-      get copyWith => _CellRollRequestCopyWithImpl(
-          this as CellRollRequest, $identity, $identity);
+      get copyWith =>
+          _CellRollRequestCopyWithImpl<CellRollRequest, CellRollRequest>(
+              this as CellRollRequest, $identity, $identity);
   @override
   String toString() {
     return CellRollRequestMapper.ensureInitialized()
@@ -2031,7 +2043,7 @@ mixin CellRollRequestMappable {
 extension CellRollRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, CellRollRequest, $Out> {
   CellRollRequestCopyWith<$R, CellRollRequest, $Out> get $asCellRollRequest =>
-      $base.as((v, t, t2) => _CellRollRequestCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _CellRollRequestCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class CellRollRequestCopyWith<$R, $In extends CellRollRequest, $Out>
@@ -2070,7 +2082,7 @@ class _CellRollRequestCopyWithImpl<$R, $Out>
   @override
   CellRollRequestCopyWith<$R2, CellRollRequest, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _CellRollRequestCopyWithImpl($value, $cast, t);
+      _CellRollRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ShuffleCellRequestMapper extends SubClassMapperBase<ShuffleCellRequest> {
@@ -2135,8 +2147,8 @@ mixin ShuffleCellRequestMappable {
 
   ShuffleCellRequestCopyWith<ShuffleCellRequest, ShuffleCellRequest,
           ShuffleCellRequest>
-      get copyWith => _ShuffleCellRequestCopyWithImpl(
-          this as ShuffleCellRequest, $identity, $identity);
+      get copyWith => _ShuffleCellRequestCopyWithImpl<ShuffleCellRequest,
+          ShuffleCellRequest>(this as ShuffleCellRequest, $identity, $identity);
   @override
   String toString() {
     return ShuffleCellRequestMapper.ensureInitialized()
@@ -2159,8 +2171,8 @@ mixin ShuffleCellRequestMappable {
 extension ShuffleCellRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ShuffleCellRequest, $Out> {
   ShuffleCellRequestCopyWith<$R, ShuffleCellRequest, $Out>
-      get $asShuffleCellRequest =>
-          $base.as((v, t, t2) => _ShuffleCellRequestCopyWithImpl(v, t, t2));
+      get $asShuffleCellRequest => $base.as(
+          (v, t, t2) => _ShuffleCellRequestCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class ShuffleCellRequestCopyWith<$R, $In extends ShuffleCellRequest,
@@ -2195,7 +2207,7 @@ class _ShuffleCellRequestCopyWithImpl<$R, $Out>
   @override
   ShuffleCellRequestCopyWith<$R2, ShuffleCellRequest, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _ShuffleCellRequestCopyWithImpl($value, $cast, t);
+      _ShuffleCellRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class PacksChangeRequestMapper extends SubClassMapperBase<PacksChangeRequest> {
@@ -2259,8 +2271,8 @@ mixin PacksChangeRequestMappable {
 
   PacksChangeRequestCopyWith<PacksChangeRequest, PacksChangeRequest,
           PacksChangeRequest>
-      get copyWith => _PacksChangeRequestCopyWithImpl(
-          this as PacksChangeRequest, $identity, $identity);
+      get copyWith => _PacksChangeRequestCopyWithImpl<PacksChangeRequest,
+          PacksChangeRequest>(this as PacksChangeRequest, $identity, $identity);
   @override
   String toString() {
     return PacksChangeRequestMapper.ensureInitialized()
@@ -2283,8 +2295,8 @@ mixin PacksChangeRequestMappable {
 extension PacksChangeRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, PacksChangeRequest, $Out> {
   PacksChangeRequestCopyWith<$R, PacksChangeRequest, $Out>
-      get $asPacksChangeRequest =>
-          $base.as((v, t, t2) => _PacksChangeRequestCopyWithImpl(v, t, t2));
+      get $asPacksChangeRequest => $base.as(
+          (v, t, t2) => _PacksChangeRequestCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class PacksChangeRequestCopyWith<$R, $In extends PacksChangeRequest,
@@ -2318,7 +2330,7 @@ class _PacksChangeRequestCopyWithImpl<$R, $Out>
   @override
   PacksChangeRequestCopyWith<$R2, PacksChangeRequest, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _PacksChangeRequestCopyWithImpl($value, $cast, t);
+      _PacksChangeRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class MessageRequestMapper extends SubClassMapperBase<MessageRequest> {
@@ -2381,8 +2393,9 @@ mixin MessageRequestMappable {
   }
 
   MessageRequestCopyWith<MessageRequest, MessageRequest, MessageRequest>
-      get copyWith => _MessageRequestCopyWithImpl(
-          this as MessageRequest, $identity, $identity);
+      get copyWith =>
+          _MessageRequestCopyWithImpl<MessageRequest, MessageRequest>(
+              this as MessageRequest, $identity, $identity);
   @override
   String toString() {
     return MessageRequestMapper.ensureInitialized()
@@ -2405,7 +2418,7 @@ mixin MessageRequestMappable {
 extension MessageRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, MessageRequest, $Out> {
   MessageRequestCopyWith<$R, MessageRequest, $Out> get $asMessageRequest =>
-      $base.as((v, t, t2) => _MessageRequestCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _MessageRequestCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class MessageRequestCopyWith<$R, $In extends MessageRequest, $Out>
@@ -2434,7 +2447,7 @@ class _MessageRequestCopyWithImpl<$R, $Out>
   @override
   MessageRequestCopyWith<$R2, MessageRequest, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _MessageRequestCopyWithImpl($value, $cast, t);
+      _MessageRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class BoardsSpawnRequestMapper extends SubClassMapperBase<BoardsSpawnRequest> {
@@ -2507,8 +2520,8 @@ mixin BoardsSpawnRequestMappable {
 
   BoardsSpawnRequestCopyWith<BoardsSpawnRequest, BoardsSpawnRequest,
           BoardsSpawnRequest>
-      get copyWith => _BoardsSpawnRequestCopyWithImpl(
-          this as BoardsSpawnRequest, $identity, $identity);
+      get copyWith => _BoardsSpawnRequestCopyWithImpl<BoardsSpawnRequest,
+          BoardsSpawnRequest>(this as BoardsSpawnRequest, $identity, $identity);
   @override
   String toString() {
     return BoardsSpawnRequestMapper.ensureInitialized()
@@ -2531,8 +2544,8 @@ mixin BoardsSpawnRequestMappable {
 extension BoardsSpawnRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BoardsSpawnRequest, $Out> {
   BoardsSpawnRequestCopyWith<$R, BoardsSpawnRequest, $Out>
-      get $asBoardsSpawnRequest =>
-          $base.as((v, t, t2) => _BoardsSpawnRequestCopyWithImpl(v, t, t2));
+      get $asBoardsSpawnRequest => $base.as(
+          (v, t, t2) => _BoardsSpawnRequestCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class BoardsSpawnRequestCopyWith<$R, $In extends BoardsSpawnRequest,
@@ -2571,7 +2584,7 @@ class _BoardsSpawnRequestCopyWithImpl<$R, $Out>
   @override
   BoardsSpawnRequestCopyWith<$R2, BoardsSpawnRequest, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _BoardsSpawnRequestCopyWithImpl($value, $cast, t);
+      _BoardsSpawnRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class BoardRemoveRequestMapper extends SubClassMapperBase<BoardRemoveRequest> {
@@ -2640,8 +2653,8 @@ mixin BoardRemoveRequestMappable {
 
   BoardRemoveRequestCopyWith<BoardRemoveRequest, BoardRemoveRequest,
           BoardRemoveRequest>
-      get copyWith => _BoardRemoveRequestCopyWithImpl(
-          this as BoardRemoveRequest, $identity, $identity);
+      get copyWith => _BoardRemoveRequestCopyWithImpl<BoardRemoveRequest,
+          BoardRemoveRequest>(this as BoardRemoveRequest, $identity, $identity);
   @override
   String toString() {
     return BoardRemoveRequestMapper.ensureInitialized()
@@ -2664,8 +2677,8 @@ mixin BoardRemoveRequestMappable {
 extension BoardRemoveRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BoardRemoveRequest, $Out> {
   BoardRemoveRequestCopyWith<$R, BoardRemoveRequest, $Out>
-      get $asBoardRemoveRequest =>
-          $base.as((v, t, t2) => _BoardRemoveRequestCopyWithImpl(v, t, t2));
+      get $asBoardRemoveRequest => $base.as(
+          (v, t, t2) => _BoardRemoveRequestCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class BoardRemoveRequestCopyWith<$R, $In extends BoardRemoveRequest,
@@ -2704,7 +2717,7 @@ class _BoardRemoveRequestCopyWithImpl<$R, $Out>
   @override
   BoardRemoveRequestCopyWith<$R2, BoardRemoveRequest, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _BoardRemoveRequestCopyWithImpl($value, $cast, t);
+      _BoardRemoveRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class BoardMoveRequestMapper extends SubClassMapperBase<BoardMoveRequest> {
@@ -2780,8 +2793,9 @@ mixin BoardMoveRequestMappable {
   }
 
   BoardMoveRequestCopyWith<BoardMoveRequest, BoardMoveRequest, BoardMoveRequest>
-      get copyWith => _BoardMoveRequestCopyWithImpl(
-          this as BoardMoveRequest, $identity, $identity);
+      get copyWith =>
+          _BoardMoveRequestCopyWithImpl<BoardMoveRequest, BoardMoveRequest>(
+              this as BoardMoveRequest, $identity, $identity);
   @override
   String toString() {
     return BoardMoveRequestMapper.ensureInitialized()
@@ -2804,8 +2818,8 @@ mixin BoardMoveRequestMappable {
 extension BoardMoveRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BoardMoveRequest, $Out> {
   BoardMoveRequestCopyWith<$R, BoardMoveRequest, $Out>
-      get $asBoardMoveRequest =>
-          $base.as((v, t, t2) => _BoardMoveRequestCopyWithImpl(v, t, t2));
+      get $asBoardMoveRequest => $base
+          .as((v, t, t2) => _BoardMoveRequestCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class BoardMoveRequestCopyWith<$R, $In extends BoardMoveRequest, $Out>
@@ -2858,7 +2872,7 @@ class _BoardMoveRequestCopyWithImpl<$R, $Out>
   @override
   BoardMoveRequestCopyWith<$R2, BoardMoveRequest, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _BoardMoveRequestCopyWithImpl($value, $cast, t);
+      _BoardMoveRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class DialogCloseRequestMapper extends SubClassMapperBase<DialogCloseRequest> {
@@ -2926,8 +2940,8 @@ mixin DialogCloseRequestMappable {
 
   DialogCloseRequestCopyWith<DialogCloseRequest, DialogCloseRequest,
           DialogCloseRequest>
-      get copyWith => _DialogCloseRequestCopyWithImpl(
-          this as DialogCloseRequest, $identity, $identity);
+      get copyWith => _DialogCloseRequestCopyWithImpl<DialogCloseRequest,
+          DialogCloseRequest>(this as DialogCloseRequest, $identity, $identity);
   @override
   String toString() {
     return DialogCloseRequestMapper.ensureInitialized()
@@ -2950,8 +2964,8 @@ mixin DialogCloseRequestMappable {
 extension DialogCloseRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, DialogCloseRequest, $Out> {
   DialogCloseRequestCopyWith<$R, DialogCloseRequest, $Out>
-      get $asDialogCloseRequest =>
-          $base.as((v, t, t2) => _DialogCloseRequestCopyWithImpl(v, t, t2));
+      get $asDialogCloseRequest => $base.as(
+          (v, t, t2) => _DialogCloseRequestCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class DialogCloseRequestCopyWith<$R, $In extends DialogCloseRequest,
@@ -2984,7 +2998,7 @@ class _DialogCloseRequestCopyWithImpl<$R, $Out>
   @override
   DialogCloseRequestCopyWith<$R2, DialogCloseRequest, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _DialogCloseRequestCopyWithImpl($value, $cast, t);
+      _DialogCloseRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ImagesRequestMapper extends SubClassMapperBase<ImagesRequest> {
@@ -3046,7 +3060,7 @@ mixin ImagesRequestMappable {
   }
 
   ImagesRequestCopyWith<ImagesRequest, ImagesRequest, ImagesRequest>
-      get copyWith => _ImagesRequestCopyWithImpl(
+      get copyWith => _ImagesRequestCopyWithImpl<ImagesRequest, ImagesRequest>(
           this as ImagesRequest, $identity, $identity);
   @override
   String toString() {
@@ -3070,7 +3084,7 @@ mixin ImagesRequestMappable {
 extension ImagesRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ImagesRequest, $Out> {
   ImagesRequestCopyWith<$R, ImagesRequest, $Out> get $asImagesRequest =>
-      $base.as((v, t, t2) => _ImagesRequestCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _ImagesRequestCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class ImagesRequestCopyWith<$R, $In extends ImagesRequest, $Out>
@@ -3103,7 +3117,7 @@ class _ImagesRequestCopyWithImpl<$R, $Out>
   @override
   ImagesRequestCopyWith<$R2, ImagesRequest, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _ImagesRequestCopyWithImpl($value, $cast, t);
+      _ImagesRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ModeChangeRequestMapper extends SubClassMapperBase<ModeChangeRequest> {
@@ -3168,8 +3182,9 @@ mixin ModeChangeRequestMappable {
 
   ModeChangeRequestCopyWith<ModeChangeRequest, ModeChangeRequest,
           ModeChangeRequest>
-      get copyWith => _ModeChangeRequestCopyWithImpl(
-          this as ModeChangeRequest, $identity, $identity);
+      get copyWith =>
+          _ModeChangeRequestCopyWithImpl<ModeChangeRequest, ModeChangeRequest>(
+              this as ModeChangeRequest, $identity, $identity);
   @override
   String toString() {
     return ModeChangeRequestMapper.ensureInitialized()
@@ -3192,8 +3207,8 @@ mixin ModeChangeRequestMappable {
 extension ModeChangeRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ModeChangeRequest, $Out> {
   ModeChangeRequestCopyWith<$R, ModeChangeRequest, $Out>
-      get $asModeChangeRequest =>
-          $base.as((v, t, t2) => _ModeChangeRequestCopyWithImpl(v, t, t2));
+      get $asModeChangeRequest => $base
+          .as((v, t, t2) => _ModeChangeRequestCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class ModeChangeRequestCopyWith<$R, $In extends ModeChangeRequest,
@@ -3226,7 +3241,7 @@ class _ModeChangeRequestCopyWithImpl<$R, $Out>
   @override
   ModeChangeRequestCopyWith<$R2, ModeChangeRequest, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _ModeChangeRequestCopyWithImpl($value, $cast, t);
+      _ModeChangeRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class HybridWorldEventMapper extends SubClassMapperBase<HybridWorldEvent> {
@@ -3364,8 +3379,9 @@ mixin BackgroundChangedMappable {
 
   BackgroundChangedCopyWith<BackgroundChanged, BackgroundChanged,
           BackgroundChanged>
-      get copyWith => _BackgroundChangedCopyWithImpl(
-          this as BackgroundChanged, $identity, $identity);
+      get copyWith =>
+          _BackgroundChangedCopyWithImpl<BackgroundChanged, BackgroundChanged>(
+              this as BackgroundChanged, $identity, $identity);
   @override
   String toString() {
     return BackgroundChangedMapper.ensureInitialized()
@@ -3388,8 +3404,8 @@ mixin BackgroundChangedMappable {
 extension BackgroundChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BackgroundChanged, $Out> {
   BackgroundChangedCopyWith<$R, BackgroundChanged, $Out>
-      get $asBackgroundChanged =>
-          $base.as((v, t, t2) => _BackgroundChangedCopyWithImpl(v, t, t2));
+      get $asBackgroundChanged => $base
+          .as((v, t, t2) => _BackgroundChangedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class BackgroundChangedCopyWith<$R, $In extends BackgroundChanged,
@@ -3422,7 +3438,7 @@ class _BackgroundChangedCopyWithImpl<$R, $Out>
   @override
   BackgroundChangedCopyWith<$R2, BackgroundChanged, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _BackgroundChangedCopyWithImpl($value, $cast, t);
+      _BackgroundChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ObjectsSpawnedMapper extends SubClassMapperBase<ObjectsSpawned> {
@@ -3491,8 +3507,9 @@ mixin ObjectsSpawnedMappable {
   }
 
   ObjectsSpawnedCopyWith<ObjectsSpawned, ObjectsSpawned, ObjectsSpawned>
-      get copyWith => _ObjectsSpawnedCopyWithImpl(
-          this as ObjectsSpawned, $identity, $identity);
+      get copyWith =>
+          _ObjectsSpawnedCopyWithImpl<ObjectsSpawned, ObjectsSpawned>(
+              this as ObjectsSpawned, $identity, $identity);
   @override
   String toString() {
     return ObjectsSpawnedMapper.ensureInitialized()
@@ -3515,7 +3532,7 @@ mixin ObjectsSpawnedMappable {
 extension ObjectsSpawnedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ObjectsSpawned, $Out> {
   ObjectsSpawnedCopyWith<$R, ObjectsSpawned, $Out> get $asObjectsSpawned =>
-      $base.as((v, t, t2) => _ObjectsSpawnedCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _ObjectsSpawnedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class ObjectsSpawnedCopyWith<$R, $In extends ObjectsSpawned, $Out>
@@ -3555,7 +3572,7 @@ class _ObjectsSpawnedCopyWithImpl<$R, $Out>
   @override
   ObjectsSpawnedCopyWith<$R2, ObjectsSpawned, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _ObjectsSpawnedCopyWithImpl($value, $cast, t);
+      _ObjectsSpawnedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ObjectsMovedMapper extends SubClassMapperBase<ObjectsMoved> {
@@ -3630,7 +3647,8 @@ mixin ObjectsMovedMappable {
   }
 
   ObjectsMovedCopyWith<ObjectsMoved, ObjectsMoved, ObjectsMoved> get copyWith =>
-      _ObjectsMovedCopyWithImpl(this as ObjectsMoved, $identity, $identity);
+      _ObjectsMovedCopyWithImpl<ObjectsMoved, ObjectsMoved>(
+          this as ObjectsMoved, $identity, $identity);
   @override
   String toString() {
     return ObjectsMovedMapper.ensureInitialized()
@@ -3653,7 +3671,7 @@ mixin ObjectsMovedMappable {
 extension ObjectsMovedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ObjectsMoved, $Out> {
   ObjectsMovedCopyWith<$R, ObjectsMoved, $Out> get $asObjectsMoved =>
-      $base.as((v, t, t2) => _ObjectsMovedCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _ObjectsMovedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class ObjectsMovedCopyWith<$R, $In extends ObjectsMoved, $Out>
@@ -3710,7 +3728,7 @@ class _ObjectsMovedCopyWithImpl<$R, $Out>
   @override
   ObjectsMovedCopyWith<$R2, ObjectsMoved, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _ObjectsMovedCopyWithImpl($value, $cast, t);
+      _ObjectsMovedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class CellHideChangedMapper extends SubClassMapperBase<CellHideChanged> {
@@ -3783,8 +3801,9 @@ mixin CellHideChangedMappable {
   }
 
   CellHideChangedCopyWith<CellHideChanged, CellHideChanged, CellHideChanged>
-      get copyWith => _CellHideChangedCopyWithImpl(
-          this as CellHideChanged, $identity, $identity);
+      get copyWith =>
+          _CellHideChangedCopyWithImpl<CellHideChanged, CellHideChanged>(
+              this as CellHideChanged, $identity, $identity);
   @override
   String toString() {
     return CellHideChangedMapper.ensureInitialized()
@@ -3807,7 +3826,7 @@ mixin CellHideChangedMappable {
 extension CellHideChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, CellHideChanged, $Out> {
   CellHideChangedCopyWith<$R, CellHideChanged, $Out> get $asCellHideChanged =>
-      $base.as((v, t, t2) => _CellHideChangedCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _CellHideChangedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class CellHideChangedCopyWith<$R, $In extends CellHideChanged, $Out>
@@ -3851,7 +3870,7 @@ class _CellHideChangedCopyWithImpl<$R, $Out>
   @override
   CellHideChangedCopyWith<$R2, CellHideChanged, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _CellHideChangedCopyWithImpl($value, $cast, t);
+      _CellHideChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ObjectIndexChangedMapper extends SubClassMapperBase<ObjectIndexChanged> {
@@ -3925,8 +3944,8 @@ mixin ObjectIndexChangedMappable {
 
   ObjectIndexChangedCopyWith<ObjectIndexChanged, ObjectIndexChanged,
           ObjectIndexChanged>
-      get copyWith => _ObjectIndexChangedCopyWithImpl(
-          this as ObjectIndexChanged, $identity, $identity);
+      get copyWith => _ObjectIndexChangedCopyWithImpl<ObjectIndexChanged,
+          ObjectIndexChanged>(this as ObjectIndexChanged, $identity, $identity);
   @override
   String toString() {
     return ObjectIndexChangedMapper.ensureInitialized()
@@ -3949,8 +3968,8 @@ mixin ObjectIndexChangedMappable {
 extension ObjectIndexChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ObjectIndexChanged, $Out> {
   ObjectIndexChangedCopyWith<$R, ObjectIndexChanged, $Out>
-      get $asObjectIndexChanged =>
-          $base.as((v, t, t2) => _ObjectIndexChangedCopyWithImpl(v, t, t2));
+      get $asObjectIndexChanged => $base.as(
+          (v, t, t2) => _ObjectIndexChangedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class ObjectIndexChangedCopyWith<$R, $In extends ObjectIndexChanged,
@@ -3991,7 +4010,7 @@ class _ObjectIndexChangedCopyWithImpl<$R, $Out>
   @override
   ObjectIndexChangedCopyWith<$R2, ObjectIndexChanged, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _ObjectIndexChangedCopyWithImpl($value, $cast, t);
+      _ObjectIndexChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class TeamChangedMapper extends SubClassMapperBase<TeamChanged> {
@@ -4057,7 +4076,8 @@ mixin TeamChangedMappable {
   }
 
   TeamChangedCopyWith<TeamChanged, TeamChanged, TeamChanged> get copyWith =>
-      _TeamChangedCopyWithImpl(this as TeamChanged, $identity, $identity);
+      _TeamChangedCopyWithImpl<TeamChanged, TeamChanged>(
+          this as TeamChanged, $identity, $identity);
   @override
   String toString() {
     return TeamChangedMapper.ensureInitialized()
@@ -4079,7 +4099,7 @@ mixin TeamChangedMappable {
 extension TeamChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, TeamChanged, $Out> {
   TeamChangedCopyWith<$R, TeamChanged, $Out> get $asTeamChanged =>
-      $base.as((v, t, t2) => _TeamChangedCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _TeamChangedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class TeamChangedCopyWith<$R, $In extends TeamChanged, $Out>
@@ -4111,7 +4131,7 @@ class _TeamChangedCopyWithImpl<$R, $Out>
   @override
   TeamChangedCopyWith<$R2, TeamChanged, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _TeamChangedCopyWithImpl($value, $cast, t);
+      _TeamChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class TeamRemovedMapper extends SubClassMapperBase<TeamRemoved> {
@@ -4173,7 +4193,8 @@ mixin TeamRemovedMappable {
   }
 
   TeamRemovedCopyWith<TeamRemoved, TeamRemoved, TeamRemoved> get copyWith =>
-      _TeamRemovedCopyWithImpl(this as TeamRemoved, $identity, $identity);
+      _TeamRemovedCopyWithImpl<TeamRemoved, TeamRemoved>(
+          this as TeamRemoved, $identity, $identity);
   @override
   String toString() {
     return TeamRemovedMapper.ensureInitialized()
@@ -4195,7 +4216,7 @@ mixin TeamRemovedMappable {
 extension TeamRemovedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, TeamRemoved, $Out> {
   TeamRemovedCopyWith<$R, TeamRemoved, $Out> get $asTeamRemoved =>
-      $base.as((v, t, t2) => _TeamRemovedCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _TeamRemovedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class TeamRemovedCopyWith<$R, $In extends TeamRemoved, $Out>
@@ -4223,7 +4244,7 @@ class _TeamRemovedCopyWithImpl<$R, $Out>
   @override
   TeamRemovedCopyWith<$R2, TeamRemoved, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _TeamRemovedCopyWithImpl($value, $cast, t);
+      _TeamRemovedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class MetadataChangedMapper extends SubClassMapperBase<MetadataChanged> {
@@ -4287,8 +4308,9 @@ mixin MetadataChangedMappable {
   }
 
   MetadataChangedCopyWith<MetadataChanged, MetadataChanged, MetadataChanged>
-      get copyWith => _MetadataChangedCopyWithImpl(
-          this as MetadataChanged, $identity, $identity);
+      get copyWith =>
+          _MetadataChangedCopyWithImpl<MetadataChanged, MetadataChanged>(
+              this as MetadataChanged, $identity, $identity);
   @override
   String toString() {
     return MetadataChangedMapper.ensureInitialized()
@@ -4311,7 +4333,7 @@ mixin MetadataChangedMappable {
 extension MetadataChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, MetadataChanged, $Out> {
   MetadataChangedCopyWith<$R, MetadataChanged, $Out> get $asMetadataChanged =>
-      $base.as((v, t, t2) => _MetadataChangedCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _MetadataChangedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class MetadataChangedCopyWith<$R, $In extends MetadataChanged, $Out>
@@ -4344,7 +4366,7 @@ class _MetadataChangedCopyWithImpl<$R, $Out>
   @override
   MetadataChangedCopyWith<$R2, MetadataChanged, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _MetadataChangedCopyWithImpl($value, $cast, t);
+      _MetadataChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ObjectsRemovedMapper extends SubClassMapperBase<ObjectsRemoved> {
@@ -4412,8 +4434,9 @@ mixin ObjectsRemovedMappable {
   }
 
   ObjectsRemovedCopyWith<ObjectsRemoved, ObjectsRemoved, ObjectsRemoved>
-      get copyWith => _ObjectsRemovedCopyWithImpl(
-          this as ObjectsRemoved, $identity, $identity);
+      get copyWith =>
+          _ObjectsRemovedCopyWithImpl<ObjectsRemoved, ObjectsRemoved>(
+              this as ObjectsRemoved, $identity, $identity);
   @override
   String toString() {
     return ObjectsRemovedMapper.ensureInitialized()
@@ -4436,7 +4459,7 @@ mixin ObjectsRemovedMappable {
 extension ObjectsRemovedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ObjectsRemoved, $Out> {
   ObjectsRemovedCopyWith<$R, ObjectsRemoved, $Out> get $asObjectsRemoved =>
-      $base.as((v, t, t2) => _ObjectsRemovedCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _ObjectsRemovedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class ObjectsRemovedCopyWith<$R, $In extends ObjectsRemoved, $Out>
@@ -4484,7 +4507,7 @@ class _ObjectsRemovedCopyWithImpl<$R, $Out>
   @override
   ObjectsRemovedCopyWith<$R2, ObjectsRemoved, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _ObjectsRemovedCopyWithImpl($value, $cast, t);
+      _ObjectsRemovedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class TableRenamedMapper extends SubClassMapperBase<TableRenamed> {
@@ -4550,7 +4573,8 @@ mixin TableRenamedMappable {
   }
 
   TableRenamedCopyWith<TableRenamed, TableRenamed, TableRenamed> get copyWith =>
-      _TableRenamedCopyWithImpl(this as TableRenamed, $identity, $identity);
+      _TableRenamedCopyWithImpl<TableRenamed, TableRenamed>(
+          this as TableRenamed, $identity, $identity);
   @override
   String toString() {
     return TableRenamedMapper.ensureInitialized()
@@ -4573,7 +4597,7 @@ mixin TableRenamedMappable {
 extension TableRenamedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, TableRenamed, $Out> {
   TableRenamedCopyWith<$R, TableRenamed, $Out> get $asTableRenamed =>
-      $base.as((v, t, t2) => _TableRenamedCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _TableRenamedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class TableRenamedCopyWith<$R, $In extends TableRenamed, $Out>
@@ -4601,7 +4625,7 @@ class _TableRenamedCopyWithImpl<$R, $Out>
   @override
   TableRenamedCopyWith<$R2, TableRenamed, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _TableRenamedCopyWithImpl($value, $cast, t);
+      _TableRenamedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class TableRemovedMapper extends SubClassMapperBase<TableRemoved> {
@@ -4663,7 +4687,8 @@ mixin TableRemovedMappable {
   }
 
   TableRemovedCopyWith<TableRemoved, TableRemoved, TableRemoved> get copyWith =>
-      _TableRemovedCopyWithImpl(this as TableRemoved, $identity, $identity);
+      _TableRemovedCopyWithImpl<TableRemoved, TableRemoved>(
+          this as TableRemoved, $identity, $identity);
   @override
   String toString() {
     return TableRemovedMapper.ensureInitialized()
@@ -4686,7 +4711,7 @@ mixin TableRemovedMappable {
 extension TableRemovedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, TableRemoved, $Out> {
   TableRemovedCopyWith<$R, TableRemoved, $Out> get $asTableRemoved =>
-      $base.as((v, t, t2) => _TableRemovedCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _TableRemovedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class TableRemovedCopyWith<$R, $In extends TableRemoved, $Out>
@@ -4714,7 +4739,7 @@ class _TableRemovedCopyWithImpl<$R, $Out>
   @override
   TableRemovedCopyWith<$R2, TableRemoved, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _TableRemovedCopyWithImpl($value, $cast, t);
+      _TableRemovedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class NoteChangedMapper extends SubClassMapperBase<NoteChanged> {
@@ -4780,7 +4805,8 @@ mixin NoteChangedMappable {
   }
 
   NoteChangedCopyWith<NoteChanged, NoteChanged, NoteChanged> get copyWith =>
-      _NoteChangedCopyWithImpl(this as NoteChanged, $identity, $identity);
+      _NoteChangedCopyWithImpl<NoteChanged, NoteChanged>(
+          this as NoteChanged, $identity, $identity);
   @override
   String toString() {
     return NoteChangedMapper.ensureInitialized()
@@ -4802,7 +4828,7 @@ mixin NoteChangedMappable {
 extension NoteChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, NoteChanged, $Out> {
   NoteChangedCopyWith<$R, NoteChanged, $Out> get $asNoteChanged =>
-      $base.as((v, t, t2) => _NoteChangedCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _NoteChangedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class NoteChangedCopyWith<$R, $In extends NoteChanged, $Out>
@@ -4830,7 +4856,7 @@ class _NoteChangedCopyWithImpl<$R, $Out>
   @override
   NoteChangedCopyWith<$R2, NoteChanged, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _NoteChangedCopyWithImpl($value, $cast, t);
+      _NoteChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class NoteRemovedMapper extends SubClassMapperBase<NoteRemoved> {
@@ -4892,7 +4918,8 @@ mixin NoteRemovedMappable {
   }
 
   NoteRemovedCopyWith<NoteRemoved, NoteRemoved, NoteRemoved> get copyWith =>
-      _NoteRemovedCopyWithImpl(this as NoteRemoved, $identity, $identity);
+      _NoteRemovedCopyWithImpl<NoteRemoved, NoteRemoved>(
+          this as NoteRemoved, $identity, $identity);
   @override
   String toString() {
     return NoteRemovedMapper.ensureInitialized()
@@ -4914,7 +4941,7 @@ mixin NoteRemovedMappable {
 extension NoteRemovedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, NoteRemoved, $Out> {
   NoteRemovedCopyWith<$R, NoteRemoved, $Out> get $asNoteRemoved =>
-      $base.as((v, t, t2) => _NoteRemovedCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _NoteRemovedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class NoteRemovedCopyWith<$R, $In extends NoteRemoved, $Out>
@@ -4942,7 +4969,7 @@ class _NoteRemovedCopyWithImpl<$R, $Out>
   @override
   NoteRemovedCopyWith<$R2, NoteRemoved, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _NoteRemovedCopyWithImpl($value, $cast, t);
+      _NoteRemovedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class LocalWorldEventMapper extends SubClassMapperBase<LocalWorldEvent> {

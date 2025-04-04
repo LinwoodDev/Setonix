@@ -40,16 +40,18 @@ final class ListGameServer extends GameServer with ListGameServerMappable {
   String get display => name.isEmpty ? address : name;
 
   Uri buildAddress({bool webSockets = true}) =>
-      buildServerAddress(address, secure, webSockets: webSockets);
+      buildServerAddress(Uri.parse(address), secure, webSockets: webSockets);
 }
 
-Uri buildServerAddress(String input, bool secure, {bool webSockets = true}) {
-  final splitted = input.split(':');
-  return Uri(
-    scheme: (webSockets ? 'ws' : 'http') + (secure ? 's' : ''),
-    host: splitted[0],
-    port: splitted.length <= 1 ? kDefaultPort : int.parse(splitted[1]),
-  );
+Uri buildServerAddress(Uri uri, bool secure, {bool webSockets = true}) {
+  if (uri.scheme.isEmpty) {
+    uri =
+        uri.replace(scheme: (webSockets ? 'ws' : 'http') + (secure ? 's' : ''));
+  }
+  if (!uri.hasPort) {
+    uri = uri.replace(port: kDefaultPort);
+  }
+  return uri;
 }
 
 @MappableClass()

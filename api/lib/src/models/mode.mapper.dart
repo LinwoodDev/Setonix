@@ -74,7 +74,8 @@ mixin GameModeMappable {
   }
 
   GameModeCopyWith<GameMode, GameMode, GameMode> get copyWith =>
-      _GameModeCopyWithImpl(this as GameMode, $identity, $identity);
+      _GameModeCopyWithImpl<GameMode, GameMode>(
+          this as GameMode, $identity, $identity);
   @override
   String toString() {
     return GameModeMapper.ensureInitialized().stringifyValue(this as GameMode);
@@ -94,7 +95,7 @@ mixin GameModeMappable {
 
 extension GameModeValueCopy<$R, $Out> on ObjectCopyWith<$R, GameMode, $Out> {
   GameModeCopyWith<$R, GameMode, $Out> get $asGameMode =>
-      $base.as((v, t, t2) => _GameModeCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _GameModeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class GameModeCopyWith<$R, $In extends GameMode, $Out>
@@ -150,5 +151,5 @@ class _GameModeCopyWithImpl<$R, $Out>
   @override
   GameModeCopyWith<$R2, GameMode, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _GameModeCopyWithImpl($value, $cast, t);
+      _GameModeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
