@@ -102,7 +102,7 @@ final class ProcessMessage {
   ProcessMessage(this.event, this.force);
 }
 
-base class SetonixPlugin {
+class SetonixPlugin {
   final EventSystem eventSystem = EventSystem();
   final StreamController<ProcessMessage> _onProcessController =
       StreamController.broadcast();

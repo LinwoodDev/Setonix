@@ -1,8 +1,7 @@
-* Add lua scripting support
 * Add importing system for editor
 * Improve multiplayer ui
 * Add swamp multiplayer support
 * Upgrade to flutter 3.29
 * Update to agb 8.9
 
-Read more here: https://linwood.dev/setonix/0.4.0
+Read more here: https://linwood.dev/setonix/0.3.1

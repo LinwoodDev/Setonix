@@ -6,7 +6,7 @@ export 'src/rust/api/luau.dart';
 export 'events.dart';
 
 Future<void> initPluginSystem() {
-  return RustLib.init();
+  return Future.value();
 }
 
 void disposePluginSystem() {

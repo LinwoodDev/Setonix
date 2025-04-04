@@ -131,7 +131,7 @@ class ViewMultiplayerDialog extends StatelessWidget {
         OutlinedButton(
           child: Text(AppLocalizations.of(context).stop),
           onPressed: () {
-            context.read<MultiplayerCubit>().close();
+            context.read<MultiplayerCubit>().disconnect();
           },
         ),
         TextButton(

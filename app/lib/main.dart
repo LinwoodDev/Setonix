@@ -47,9 +47,6 @@ Future<void> main(List<String> args) async {
   await setup(settingsCubit);
 
   await initPluginSystem();
-  if (kDebugMode) {
-    print('6 + 8 = ${await simpleAdderTwinNormal(a: 6, b: 8)}');
-  }
   runApp(
     MultiBlocProvider(
       providers: [

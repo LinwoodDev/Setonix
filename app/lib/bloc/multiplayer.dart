@@ -165,15 +165,15 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
   }
 
   @override
-  Future<void> close() {
-    disconnect(false);
+  Future<void> close() async {
+    await disconnect(false);
     return super.close();
   }
 
-  void disconnect([bool emit = true]) {
+  Future<void> disconnect([bool emit = true]) async {
     final state = this.state;
     if (state is! MultiplayerConnectedState) return;
-    state.networker.close();
+    await state.networker.close();
     networkService.cancelServerInfo();
     if (emit && state.isServer) {
       this.emit(MultiplayerDisabledState());
