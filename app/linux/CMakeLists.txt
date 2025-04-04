@@ -9,6 +9,14 @@ set(BINARY_NAME "setonix")
 # https://wiki.gnome.org/HowDoI/ChooseApplicationID
 set(APPLICATION_ID "dev.linwood.setonix")
 
+# Fix flutter_secure_storage_linux build error on newer versions of CMake. 
+include(CheckCXXCompilerFlag)
+check_cxx_compiler_flag("-Wno-error=deprecated-literal-operator" COMPILER_SUPPORTS_NO_ERROR_DEPRECATED_LITERAL_OPERATOR)
+if(COMPILER_SUPPORTS_NO_ERROR_DEPRECATED_LITERAL_OPERATOR)
+  message(STATUS "Disabling error for deprecated literal operator")
+  add_definitions(-Wno-error=deprecated-literal-operator)
+endif()
+
 # Explicitly opt in to modern CMake behaviors to avoid warnings with recent
 # versions of CMake.
 cmake_policy(SET CMP0063 NEW)

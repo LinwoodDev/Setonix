@@ -47,8 +47,8 @@ dependencies:
   rxdart: ^0.28.0
   collection: ^1.18.0
   flame_bloc: ^1.12.7
-  flame: ">=1.25.0 <1.26.0"
-  flame_tiled: ">=2.0.1 <2.1.0"
+  flame: ">=1.27.0 <1.28.0"
+  flame_tiled: ^3.0.0
   # Networking
   http: ^1.2.1
   web_socket_channel: ^3.0.0
