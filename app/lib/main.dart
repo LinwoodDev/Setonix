@@ -22,7 +22,7 @@ import 'package:window_manager/window_manager.dart';
 import 'package:setonix_plugin/setonix_plugin.dart';
 
 import 'bloc/settings.dart';
-import 'pages/settings/page.dart';
+import 'pages/settings/home.dart';
 
 import 'setup.dart'
     if (dart.library.html) 'setup_web.dart'

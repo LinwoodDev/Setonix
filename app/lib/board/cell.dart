@@ -396,7 +396,7 @@ class GameCell extends PositionComponent
     if (game.isShifting) {
       delta = Vector2(delta.y, delta.x);
     }
-    game.camera.moveBy(delta);
+    game.camera.moveBy(delta / game.settingsCubit.state.scrollSensitivity);
     return false;
   }
 }

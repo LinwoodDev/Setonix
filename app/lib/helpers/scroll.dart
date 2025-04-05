@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/widgets.dart';
+import 'package:setonix/board/game.dart';
 
 mixin ScrollCallbacks on Component {
   bool onScroll(PointerScrollInfo info) => false;
@@ -27,7 +28,8 @@ class _ScrollViewport extends PositionComponent {
   }
 }
 
-class ScrollViewComponent extends PositionComponent with ScrollCallbacks {
+class ScrollViewComponent extends PositionComponent
+    with ScrollCallbacks, HasGameRef<BoardGame> {
   final Axis direction;
   final double spacing;
   final _ScrollViewport _view = _ScrollViewport();
@@ -88,7 +90,7 @@ class ScrollViewComponent extends PositionComponent with ScrollCallbacks {
           : info.scrollDelta.global.x;
     }
     final scrollDelta = delta / 4;
-    scroll(-scrollDelta);
+    scroll(-scrollDelta / game.settingsCubit.state.scrollSensitivity);
     return true;
   }
 }

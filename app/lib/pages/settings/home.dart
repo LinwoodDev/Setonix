@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:setonix/pages/settings/input.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_leap/material_leap.dart';
@@ -11,7 +12,8 @@ import 'personalization.dart';
 enum SettingsView {
   general,
   data,
-  personalization;
+  personalization,
+  inputs;
 
   bool get isEnabled => true;
 
@@ -20,12 +22,14 @@ enum SettingsView {
         SettingsView.data => AppLocalizations.of(context).data,
         SettingsView.personalization =>
           AppLocalizations.of(context).personalization,
+        SettingsView.inputs => AppLocalizations.of(context).inputs,
       };
 
   IconGetter get icon => switch (this) {
         SettingsView.general => PhosphorIcons.gear,
         SettingsView.data => PhosphorIcons.database,
         SettingsView.personalization => PhosphorIcons.monitor,
+        SettingsView.inputs => PhosphorIcons.keyboard,
       };
   String get path => '/settings/$name';
 }
@@ -119,6 +123,7 @@ class _SettingsPageState extends State<SettingsPage> {
             SettingsView.data => const DataSettingsPage(inView: true),
             SettingsView.personalization =>
               const PersonalizationSettingsPage(inView: true),
+            SettingsView.inputs => const InputsSettingsPage(inView: true),
           };
           return Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             SizedBox(width: 300, child: navigation),

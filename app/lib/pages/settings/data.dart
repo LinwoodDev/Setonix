@@ -8,6 +8,7 @@ import 'package:lw_sysapi/lw_sysapi.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:setonix/services/file_system.dart';
+import 'package:setonix/theme.dart';
 
 import '../../bloc/settings.dart';
 
@@ -39,9 +40,9 @@ class DataSettingsPage extends StatelessWidget {
             return ListView(children: [
               if (!kIsWeb)
                 Card(
-                  margin: const EdgeInsets.all(8),
+                  margin: settingsCardMargin,
                   child: Padding(
-                    padding: const EdgeInsets.all(32),
+                    padding: settingsCardPadding,
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [

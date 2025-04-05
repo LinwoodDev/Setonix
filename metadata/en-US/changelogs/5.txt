@@ -2,6 +2,7 @@
 * Add launch app link for android
 * Improve multiplayer ui
 * Add swamp multiplayer support
+* Add scroll sensitivity setting
 * Upgrade to flutter 3.29
 * Update to agb 8.9
 

@@ -8,6 +8,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:setonix/bloc/settings.dart';
+import 'package:setonix/theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 
@@ -64,15 +65,18 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
           final currentVersion = snapshot.data?.version ?? '?';
           return ListView(children: [
             Card(
-              margin: const EdgeInsets.all(8),
+              margin: settingsCardMargin,
               child: Padding(
-                padding: const EdgeInsets.all(32),
+                padding: settingsCardPadding,
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(
-                        AppLocalizations.of(context).update,
-                        style: Theme.of(context).textTheme.headlineSmall,
+                      Padding(
+                        padding: settingsCardTitlePadding,
+                        child: Text(
+                          AppLocalizations.of(context).update,
+                          style: Theme.of(context).textTheme.headlineSmall,
+                        ),
                       ),
                       const SizedBox(height: 16),
                       ListTile(
@@ -174,9 +178,9 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
               ),
             ),
             Card(
-              margin: const EdgeInsets.all(8),
+              margin: settingsCardMargin,
               child: Padding(
-                padding: const EdgeInsets.all(32),
+                padding: settingsCardPadding,
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -229,9 +233,9 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
               ),
             ),
             Card(
-              margin: const EdgeInsets.all(8),
+              margin: settingsCardMargin,
               child: Padding(
-                padding: const EdgeInsets.all(32),
+                padding: settingsCardPadding,
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [

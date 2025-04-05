@@ -9,6 +9,7 @@ import 'package:flutter/material.dart'
 import 'package:flutter/painting.dart';
 import 'package:setonix/bloc/world/bloc.dart';
 import 'package:setonix/bloc/world/state.dart';
+import 'package:setonix/board/game.dart';
 import 'package:setonix/board/hand/board.dart';
 import 'package:setonix/board/hand/deck.dart';
 import 'package:setonix/board/hand/figure.dart';
@@ -46,7 +47,8 @@ class GameHand extends CustomPainterComponent
         TapCallbacks,
         ScrollCallbacks,
         CollisionCallbacks,
-        HandItemDropZone {
+        HandItemDropZone,
+        HasGameRef<BoardGame> {
   final _scrollView =
       ScrollViewComponent(direction: Axis.horizontal, spacing: 16);
 
@@ -220,7 +222,7 @@ class GameHand extends CustomPainterComponent
       delta = info.scrollDelta.global.y;
     }
     delta /= 4;
-    scroll(-delta);
+    scroll(-delta / game.settingsCubit.state.scrollSensitivity);
     return true;
   }
 

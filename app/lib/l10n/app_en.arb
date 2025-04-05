@@ -240,5 +240,7 @@
         "example": "1"
       }
     }
-  }
+  },
+  "inputs": "Inputs",
+  "scroll": "Scroll"
 }

@@ -25,6 +25,7 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
   final double zoom;
   final bool highContrast;
   final List<String> swamps;
+  final double scrollSensitivity;
 
   const SetonixSettings({
     this.localeTag = '',
@@ -40,6 +41,7 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
     this.highContrast = false,
     this.zoom = 1,
     this.swamps = const [],
+    this.scrollSensitivity = 1,
   });
 
   Locale? get locale {
@@ -72,6 +74,7 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
         highContrast: prefs.getBool('highContrast') ?? false,
         zoom: prefs.getDouble('zoom') ?? 1,
         swamps: prefs.getStringList('swamps') ?? [],
+        scrollSensitivity: prefs.getDouble('scrollSensitivity') ?? 1,
       );
 
   Future<void> save() async {
@@ -96,6 +99,7 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
     await prefs.setBool('highContrast', highContrast);
     await prefs.setDouble('zoom', zoom);
     await prefs.setStringList('swamps', swamps);
+    await prefs.setDouble('scrollSensitivity', scrollSensitivity);
   }
 }
 
@@ -202,6 +206,11 @@ class SettingsCubit extends Cubit<SetonixSettings>
 
   Future<void> changeSwamp(String swamp) {
     emit(state.copyWith(swamps: [swamp]));
+    return save();
+  }
+
+  Future<void> changeScrollSensitivity(double value) {
+    emit(state.copyWith(scrollSensitivity: value));
     return save();
   }
 }

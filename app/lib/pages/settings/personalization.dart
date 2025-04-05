@@ -41,9 +41,9 @@ class PersonalizationSettingsPage extends StatelessWidget {
             final design = state.design;
             return ListView(children: [
               Card(
-                margin: const EdgeInsets.all(8),
+                margin: settingsCardMargin,
                 child: Padding(
-                  padding: const EdgeInsets.all(32),
+                  padding: settingsCardPadding,
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -89,9 +89,9 @@ class PersonalizationSettingsPage extends StatelessWidget {
               ),
               if (!kIsWeb && (Platform.isWindows || Platform.isLinux))
                 Card(
-                  margin: const EdgeInsets.all(8),
+                  margin: settingsCardMargin,
                   child: Padding(
-                    padding: const EdgeInsets.all(32),
+                    padding: settingsCardPadding,
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [

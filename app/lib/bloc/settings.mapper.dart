@@ -62,6 +62,9 @@ class SetonixSettingsMapper extends ClassMapperBase<SetonixSettings> {
   static List<String> _$swamps(SetonixSettings v) => v.swamps;
   static const Field<SetonixSettings, List<String>> _f$swamps =
       Field('swamps', _$swamps, opt: true, def: const []);
+  static double _$scrollSensitivity(SetonixSettings v) => v.scrollSensitivity;
+  static const Field<SetonixSettings, double> _f$scrollSensitivity =
+      Field('scrollSensitivity', _$scrollSensitivity, opt: true, def: 1);
 
   @override
   final MappableFields<SetonixSettings> fields = const {
@@ -78,6 +81,7 @@ class SetonixSettingsMapper extends ClassMapperBase<SetonixSettings> {
     #highContrast: _f$highContrast,
     #zoom: _f$zoom,
     #swamps: _f$swamps,
+    #scrollSensitivity: _f$scrollSensitivity,
   };
 
   static SetonixSettings _instantiate(DecodingData data) {
@@ -94,7 +98,8 @@ class SetonixSettingsMapper extends ClassMapperBase<SetonixSettings> {
         servers: data.dec(_f$servers),
         highContrast: data.dec(_f$highContrast),
         zoom: data.dec(_f$zoom),
-        swamps: data.dec(_f$swamps));
+        swamps: data.dec(_f$swamps),
+        scrollSensitivity: data.dec(_f$scrollSensitivity));
   }
 
   @override
@@ -168,7 +173,8 @@ abstract class SetonixSettingsCopyWith<$R, $In extends SetonixSettings, $Out>
       List<ListGameServer>? servers,
       bool? highContrast,
       double? zoom,
-      List<String>? swamps});
+      List<String>? swamps,
+      double? scrollSensitivity});
   SetonixSettingsCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -207,7 +213,8 @@ class _SetonixSettingsCopyWithImpl<$R, $Out>
           List<ListGameServer>? servers,
           bool? highContrast,
           double? zoom,
-          List<String>? swamps}) =>
+          List<String>? swamps,
+          double? scrollSensitivity}) =>
       $apply(FieldCopyWithData({
         if (localeTag != null) #localeTag: localeTag,
         if (theme != null) #theme: theme,
@@ -221,7 +228,8 @@ class _SetonixSettingsCopyWithImpl<$R, $Out>
         if (servers != null) #servers: servers,
         if (highContrast != null) #highContrast: highContrast,
         if (zoom != null) #zoom: zoom,
-        if (swamps != null) #swamps: swamps
+        if (swamps != null) #swamps: swamps,
+        if (scrollSensitivity != null) #scrollSensitivity: scrollSensitivity
       }));
   @override
   SetonixSettings $make(CopyWithData data) => SetonixSettings(
@@ -238,7 +246,9 @@ class _SetonixSettingsCopyWithImpl<$R, $Out>
       servers: data.get(#servers, or: $value.servers),
       highContrast: data.get(#highContrast, or: $value.highContrast),
       zoom: data.get(#zoom, or: $value.zoom),
-      swamps: data.get(#swamps, or: $value.swamps));
+      swamps: data.get(#swamps, or: $value.swamps),
+      scrollSensitivity:
+          data.get(#scrollSensitivity, or: $value.scrollSensitivity));
 
   @override
   SetonixSettingsCopyWith<$R2, SetonixSettings, $Out2> $chain<$R2, $Out2>(
