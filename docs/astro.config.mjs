@@ -8,7 +8,7 @@ import manifest from "./webmanifest.json";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://butterfly.linwood.dev",
+  site: "https://setonix.world",
   markdown: {
     remarkPlugins: [remarkHeadingID, remarkGemoji],
   },

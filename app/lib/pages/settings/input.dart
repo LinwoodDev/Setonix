@@ -31,6 +31,21 @@ class InputsSettingsPage extends StatelessWidget {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
+                          Padding(
+                            padding: settingsCardTitlePadding,
+                            child: Column(
+                              spacing: 8,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context).sensitivity,
+                                  style: TextTheme.of(context).headlineSmall,
+                                ),
+                                Text(AppLocalizations.of(context)
+                                    .sensitivityHint),
+                              ],
+                            ),
+                          ),
                           ExactSlider(
                             min: 10,
                             max: 1000,

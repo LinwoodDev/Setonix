@@ -242,5 +242,7 @@
     }
   },
   "inputs": "Inputs",
-  "scroll": "Scroll"
+  "scroll": "Scroll",
+  "sensitivity": "Sensitivity",
+  "sensitivityHint": "The higher the value, the more sensitive the input"
 }
