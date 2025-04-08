@@ -22,6 +22,14 @@ class DecksEditorPage extends StatelessWidget {
             child: BlocBuilder<EditorCubit, SetonixData>(
               builder: (context, state) {
                 final decks = state.getDeckItems();
+                if (decks.isEmpty) {
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(AppLocalizations.of(context).noData),
+                    ),
+                  );
+                }
                 return Column(
                   children: decks.map((deck) {
                     final id = deck.id;

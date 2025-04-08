@@ -143,6 +143,14 @@ class _TexturesColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (textures.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(AppLocalizations.of(context).noData),
+        ),
+      );
+    }
     return Column(
       children: textures.entries.map((entry) {
         final texture = entry.key;

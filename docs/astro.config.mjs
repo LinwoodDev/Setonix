@@ -16,25 +16,22 @@ export default defineConfig({
     starlight({
       title: "Linwood Setonix",
       customCss: ["./src/styles/custom.css"],
-      social: {
-        github: "https://github.com/withastro/starlight",
-      },
-      social: {
-        mastodon: "https://floss.social/@linwood",
-        matrix: "https://linwood.dev/matrix",
-        discord: "https://linwood.dev/discord",
-        github: "https://github.com/LinwoodDev/Setonix",
+      social: [
+        {icon: "mastodon", label: "Mastodon", href: "https://floss.social/@linwood"},
+        {icon: "matrix", label: "Matrix", href: "https://linwood.dev/matrix"},
+        {icon: "discord", label: "Discord", href: "https://linwood.dev/discord"},
+        {icon: "blueSky", label: "Bluesky", href: "https://bsky.app/profile/linwood.dev"},
+        {icon: "github", label: "GitHub", href: "https://github.com/LinwoodDev/Butterfly"},
+      ],
+      components: {
+        Head: "./src/components/Head.astro",
+        Footer: "./src/components/Footer.astro",
+        ContentPanel: "./src/components/ContentPanel.astro",
       },
       logo: {
         src: "./public/img/logo.svg",
       },
       favicon: "./img/docs.svg",
-      components: {
-        SocialIcons: "./src/components/CustomSocialIcons.astro",
-        Head: "./src/components/Head.astro",
-        Footer: "./src/components/Footer.astro",
-        ContentPanel: "./src/components/ContentPanel.astro",
-      },
       sidebar: [
         {
           label: "Guides",

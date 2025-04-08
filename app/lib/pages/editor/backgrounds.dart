@@ -22,6 +22,14 @@ class BackgroundsEditorPage extends StatelessWidget {
             child: BlocBuilder<EditorCubit, SetonixData>(
               builder: (context, state) {
                 final backgrounds = state.getBackgroundItems();
+                if (backgrounds.isEmpty) {
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(AppLocalizations.of(context).noData),
+                    ),
+                  );
+                }
                 return Column(
                   children: backgrounds.map((background) {
                     final id = background.id;

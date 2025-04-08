@@ -3,6 +3,7 @@
 * Improve multiplayer ui
 * Add swamp multiplayer support
 * Add scroll sensitivity setting
+* Add remaining empty indicator to editor tabs
 * Upgrade to flutter 3.29
 * Update to agb 8.9
 
