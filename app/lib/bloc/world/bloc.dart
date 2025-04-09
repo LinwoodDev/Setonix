@@ -17,6 +17,29 @@ ServerProcessed _compute(
 
 SetonixData _saveState(WorldState state) => state.save();
 
+class _WorldServerInterfaceImpl implements ServerInterface {
+  final WorldBloc bloc;
+
+  _WorldServerInterfaceImpl(this.bloc);
+
+  @override
+  void process(WorldEvent event, {bool force = false, required String plugin}) {
+    bloc.process(event);
+  }
+
+  @override
+  void sendEvent(PlayableWorldEvent event,
+      {Channel target = kAnyChannel, required String plugin}) {
+    bloc._processEvent(NetworkerPacket(event, target));
+  }
+
+  @override
+  WorldState get state => bloc.state.world;
+
+  @override
+  List<int> get players => bloc.state.multiplayer.clients.toList();
+}
+
 class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
   late final PluginSystem pluginSystem;
   bool _remoteEvent = false;
@@ -41,16 +64,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
             info: data?.getInfo() ?? const GameInfo(),
           ),
         )) {
-    pluginSystem = PluginSystem(
-      onProcess: (p0, p1, [force = false]) {
-        process(p1);
-      },
-      onSendEvent: (packet, worldName) {
-        _processEvent(packet);
-      },
-      playersGetter: () => state.multiplayer.clients.toList(),
-      stateGetter: () => state.world,
-    );
+    pluginSystem = PluginSystem(server: _WorldServerInterfaceImpl(this));
     state.multiplayer
       ..events.listen((event) {
         _remoteEvent = true;

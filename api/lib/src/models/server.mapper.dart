@@ -822,7 +822,8 @@ mixin PlayerInfoMappable {
   }
 
   PlayerInfoCopyWith<PlayerInfo, PlayerInfo, PlayerInfo> get copyWith =>
-      _PlayerInfoCopyWithImpl(this as PlayerInfo, $identity, $identity);
+      _PlayerInfoCopyWithImpl<PlayerInfo, PlayerInfo>(
+          this as PlayerInfo, $identity, $identity);
   @override
   String toString() {
     return PlayerInfoMapper.ensureInitialized()
@@ -844,7 +845,7 @@ mixin PlayerInfoMappable {
 extension PlayerInfoValueCopy<$R, $Out>
     on ObjectCopyWith<$R, PlayerInfo, $Out> {
   PlayerInfoCopyWith<$R, PlayerInfo, $Out> get $asPlayerInfo =>
-      $base.as((v, t, t2) => _PlayerInfoCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _PlayerInfoCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class PlayerInfoCopyWith<$R, $In extends PlayerInfo, $Out>
@@ -871,7 +872,7 @@ class _PlayerInfoCopyWithImpl<$R, $Out>
   @override
   PlayerInfoCopyWith<$R2, PlayerInfo, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _PlayerInfoCopyWithImpl($value, $cast, t);
+      _PlayerInfoCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ServerStateMapper extends ClassMapperBase<ServerState> {
@@ -930,7 +931,8 @@ mixin ServerStateMappable {
   }
 
   ServerStateCopyWith<ServerState, ServerState, ServerState> get copyWith =>
-      _ServerStateCopyWithImpl(this as ServerState, $identity, $identity);
+      _ServerStateCopyWithImpl<ServerState, ServerState>(
+          this as ServerState, $identity, $identity);
   @override
   String toString() {
     return ServerStateMapper.ensureInitialized()
@@ -952,7 +954,7 @@ mixin ServerStateMappable {
 extension ServerStateValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ServerState, $Out> {
   ServerStateCopyWith<$R, ServerState, $Out> get $asServerState =>
-      $base.as((v, t, t2) => _ServerStateCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _ServerStateCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class ServerStateCopyWith<$R, $In extends ServerState, $Out>
@@ -989,5 +991,5 @@ class _ServerStateCopyWithImpl<$R, $Out>
   @override
   ServerStateCopyWith<$R2, ServerState, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _ServerStateCopyWithImpl($value, $cast, t);
+      _ServerStateCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

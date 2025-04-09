@@ -1713,8 +1713,8 @@ mixin ServerStateUpdatedMappable {
 
   ServerStateUpdatedCopyWith<ServerStateUpdated, ServerStateUpdated,
           ServerStateUpdated>
-      get copyWith => _ServerStateUpdatedCopyWithImpl(
-          this as ServerStateUpdated, $identity, $identity);
+      get copyWith => _ServerStateUpdatedCopyWithImpl<ServerStateUpdated,
+          ServerStateUpdated>(this as ServerStateUpdated, $identity, $identity);
   @override
   String toString() {
     return ServerStateUpdatedMapper.ensureInitialized()
@@ -1737,8 +1737,8 @@ mixin ServerStateUpdatedMappable {
 extension ServerStateUpdatedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ServerStateUpdated, $Out> {
   ServerStateUpdatedCopyWith<$R, ServerStateUpdated, $Out>
-      get $asServerStateUpdated =>
-          $base.as((v, t, t2) => _ServerStateUpdatedCopyWithImpl(v, t, t2));
+      get $asServerStateUpdated => $base.as(
+          (v, t, t2) => _ServerStateUpdatedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class ServerStateUpdatedCopyWith<$R, $In extends ServerStateUpdated,
@@ -1771,7 +1771,7 @@ class _ServerStateUpdatedCopyWithImpl<$R, $Out>
   @override
   ServerStateUpdatedCopyWith<$R2, ServerStateUpdated, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _ServerStateUpdatedCopyWithImpl($value, $cast, t);
+      _ServerStateUpdatedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ClientWorldEventMapper extends SubClassMapperBase<ClientWorldEvent> {

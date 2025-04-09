@@ -12,13 +12,20 @@ Future<ServerProcessed> _computeEvent(ServerWorldEvent event, WorldState state,
       () => processServerEvent(event, state, signature: signature));
 }
 
-class WorldBloc extends Bloc<PlayableWorldEvent, WorldState> {
+class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
+    with ServerInterface {
   final SetonixServer server;
   final String worldName;
+  late final PluginSystem _pluginSystem;
+  late final SetonixPlugin _serverPlugin;
+
+  PluginSystem get pluginSystem => _pluginSystem;
 
   ServerAssetManager get assetManager => server.assetManager;
 
   bool get autosave => server.autosave;
+
+  EventSystem get eventSystem => _serverPlugin.eventSystem;
 
   WorldBloc(SetonixData data, this.server, this.worldName)
       : super(WorldState(
@@ -27,6 +34,10 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState> {
           metadata: data.getMetadataOrDefault(),
           info: data.getInfoOrDefault(),
         )) {
+    _pluginSystem = PluginSystem(
+      server: this,
+    );
+    _serverPlugin = _pluginSystem.registerPlugin('', SetonixPlugin.new);
     on<ServerWorldEvent>((event, emit) async {
       final signature = assetManager.createSignature();
       final processed =
@@ -103,7 +114,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState> {
       worldName: worldName,
     );
     if (!force) {
-      server.eventSystem.fire(event);
+      server.defaultEventSystem.fire(event);
       if (event.cancelled) return;
       server.log(
           'Processing event by ${event.source}: ${limitOutput(event.clientEvent)}, answered with ${limitOutput(event.serverEvent)}',
@@ -124,11 +135,17 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState> {
     }
   }
 
-  void process(WorldEvent event, [bool force = true]) {
+  @override
+  void process(WorldEvent event, {bool force = true, String? plugin}) {
     onClientEvent(NetworkerPacket(event, kAuthorityChannel), force: force);
   }
 
-  void sendEvent(PlayableWorldEvent event, {required Channel target}) {
+  @override
+  void sendEvent(PlayableWorldEvent event,
+      {Channel target = kAnyChannel, String? plugin}) {
     server.sendEvent(event, target: target, worldName: worldName);
   }
+
+  @override
+  List<int> get players => server.players.keys.toList(growable: false);
 }

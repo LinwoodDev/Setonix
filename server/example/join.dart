@@ -6,7 +6,7 @@ Future<void> main(List<String> arguments) {
 
 Future<void> onLoad(SetonixServer server) async {
   print("on load was called");
-  server.eventSystem
+  server.defaultEventSystem
     ..on<UserJoined>((e) {
       server.sendEvent(DialogOpened(GameDialog(
         id: "joinDialog",

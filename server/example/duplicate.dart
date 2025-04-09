@@ -9,12 +9,12 @@ Future<void> onLoad(SetonixServer server) async {
   // Add your custom code here
   bool toggleCancel = false;
   // Put the event you want to listen to in the brackets
-  server.eventSystem.on<ObjectsMoved>((e) {
+  server.defaultEventSystem.on<ObjectsMoved>((e) {
     print("Listener was called, cancel: $toggleCancel");
     // Cancel the event every second time and duplicate the objects instead
     if (toggleCancel) {
       final event = e.clientEvent;
-      final table = server.state.getTableOrDefault(event.table);
+      final table = server.defaultState.getTableOrDefault(event.table);
       final cell = table.getCell(event.from);
       final objects = <GameObject>[];
       for (final index in event.objects) {

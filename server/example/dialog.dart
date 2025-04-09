@@ -44,7 +44,7 @@ Future<void> onLoad(SetonixServer server) async {
   print("on load was called");
   final image = await File("../app/images/logo.png").readAsBytes();
   server.process(ImagesUpdated.single('logo', image));
-  server.eventSystem
+  server.defaultEventSystem
     ..on<ObjectsMoved>((e) {
       print("Listener was called, opening dialog");
       server.sendEvent(DialogOpened(

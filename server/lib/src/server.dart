@@ -30,14 +30,11 @@ final class SetonixServer {
   final Map<String, WorldBloc> _worlds = {};
   final Map<Channel, String> _userWorlds = {};
   late final PluginSystem pluginSystem;
-  final SetonixPlugin _serverPlugin;
   bool autosave = false, _multiWorld = false;
   bool get multiWorld => _multiWorld;
 
   NetworkerSocketServer? _server;
   NetworkerPipe<dynamic, WorldEvent>? _pipe;
-
-  EventSystem get eventSystem => _serverPlugin.eventSystem;
 
   Set<Channel> get channels => _server?.clientConnections ?? {};
 
@@ -49,7 +46,9 @@ final class SetonixServer {
         defaultWorldName,
       ));
 
-  WorldState get state => defaultWorld.state;
+  EventSystem get defaultEventSystem => defaultWorld.eventSystem;
+
+  WorldState get defaultState => defaultWorld.state;
 
   WorldBloc? getWorld(String name) => _worlds[name];
 
@@ -63,23 +62,7 @@ final class SetonixServer {
       getUserWorld(channel)?.state;
 
   SetonixServer._(
-      this.worldFile, this.consoler, SetonixData data, this.assetManager)
-      : _serverPlugin = SetonixPlugin() {
-    pluginSystem = PluginSystem(
-      onProcess: (p0, p1, [force = false]) {
-        process(p1, force);
-      },
-      onSendEvent: (
-        p0,
-        p1,
-      ) {
-        sendEvent(p0.data, target: p0.channel, worldName: p1);
-      },
-      playersGetter: () => players.keys.toList(),
-      stateGetter: () => state,
-    );
-    pluginSystem.registerPlugin('', SetonixPlugin());
-  }
+      this.worldFile, this.consoler, SetonixData data, this.assetManager);
 
   static Future<SetonixServer> load({
     String? worldFile,
@@ -152,11 +135,12 @@ final class SetonixServer {
       log('No certificates found, using insecure connection',
           level: LogLevel.warning);
     }
-    final server =
-        _server = NetworkerSocketServer(InternetAddress.anyIPv4, port,
-            securityContext: securityContext,
-            filterConnections: buildFilterConnections(
-                loadProperty: (request) => eventSystem.runPing(
+    final server = _server = NetworkerSocketServer(
+        InternetAddress.anyIPv4, port,
+        securityContext: securityContext,
+        filterConnections: buildFilterConnections(
+            loadProperty: (request) =>
+                getWorld(request.uri.path)?.eventSystem.runPing(
                     request,
                     GameProperty.defaultProperty.copyWith(
                       description: description,
@@ -228,7 +212,7 @@ final class SetonixServer {
   void _onLeave((Channel, ConnectionInfo) event) {
     final (user, info) = event;
     log('${info.address} ($user) left the game', level: LogLevel.info);
-    eventSystem.runLeaveCallback(event.$1, event.$2);
+    getUserWorld(user)?.eventSystem.runLeaveCallback(event.$1, event.$2);
   }
 
   Future<void> saveAll({bool force = false}) async {
