@@ -18,11 +18,13 @@ const kBroadcastPort = 28007;
 
 @MappableClass(discriminatorKey: 'type')
 sealed class WorldEvent with WorldEventMappable {
-  WorldEvent();
+  const WorldEvent();
 }
 
 /// Events that can be processed by the event management system
 /// This can be a ServerWorldEvent or a LocalWorldEvent
 @MappableClass(discriminatorKey: 'type')
 sealed class PlayableWorldEvent extends WorldEvent
-    with PlayableWorldEventMappable {}
+    with PlayableWorldEventMappable {
+  const PlayableWorldEvent();
+}

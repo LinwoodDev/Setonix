@@ -1,4 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:networker/networker.dart';
 
 import '../event/event.dart';
 import 'meta.dart';
@@ -97,4 +98,23 @@ class ListProperty extends GameProperty with ListPropertyMappable {
     super.description,
     super.packsSignature,
   });
+}
+
+@MappableClass()
+final class PlayerInfo with PlayerInfoMappable {
+  final Channel id;
+  final String? name;
+
+  const PlayerInfo({
+    required this.id,
+    this.name,
+  });
+}
+
+@MappableClass()
+final class ServerState with ServerStateMappable {
+  final String? link;
+  final List<PlayerInfo> players;
+
+  const ServerState({this.link, this.players = const []});
 }

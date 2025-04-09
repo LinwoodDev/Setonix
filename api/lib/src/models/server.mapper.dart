@@ -767,3 +767,227 @@ class _ListPropertyCopyWithImpl<$R, $Out>
           Then<$Out2, $R2> t) =>
       _ListPropertyCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+
+class PlayerInfoMapper extends ClassMapperBase<PlayerInfo> {
+  PlayerInfoMapper._();
+
+  static PlayerInfoMapper? _instance;
+  static PlayerInfoMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = PlayerInfoMapper._());
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'PlayerInfo';
+
+  static int _$id(PlayerInfo v) => v.id;
+  static const Field<PlayerInfo, int> _f$id = Field('id', _$id);
+  static String? _$name(PlayerInfo v) => v.name;
+  static const Field<PlayerInfo, String> _f$name =
+      Field('name', _$name, opt: true);
+
+  @override
+  final MappableFields<PlayerInfo> fields = const {
+    #id: _f$id,
+    #name: _f$name,
+  };
+
+  static PlayerInfo _instantiate(DecodingData data) {
+    return PlayerInfo(id: data.dec(_f$id), name: data.dec(_f$name));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static PlayerInfo fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<PlayerInfo>(map);
+  }
+
+  static PlayerInfo fromJson(String json) {
+    return ensureInitialized().decodeJson<PlayerInfo>(json);
+  }
+}
+
+mixin PlayerInfoMappable {
+  String toJson() {
+    return PlayerInfoMapper.ensureInitialized()
+        .encodeJson<PlayerInfo>(this as PlayerInfo);
+  }
+
+  Map<String, dynamic> toMap() {
+    return PlayerInfoMapper.ensureInitialized()
+        .encodeMap<PlayerInfo>(this as PlayerInfo);
+  }
+
+  PlayerInfoCopyWith<PlayerInfo, PlayerInfo, PlayerInfo> get copyWith =>
+      _PlayerInfoCopyWithImpl(this as PlayerInfo, $identity, $identity);
+  @override
+  String toString() {
+    return PlayerInfoMapper.ensureInitialized()
+        .stringifyValue(this as PlayerInfo);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return PlayerInfoMapper.ensureInitialized()
+        .equalsValue(this as PlayerInfo, other);
+  }
+
+  @override
+  int get hashCode {
+    return PlayerInfoMapper.ensureInitialized().hashValue(this as PlayerInfo);
+  }
+}
+
+extension PlayerInfoValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, PlayerInfo, $Out> {
+  PlayerInfoCopyWith<$R, PlayerInfo, $Out> get $asPlayerInfo =>
+      $base.as((v, t, t2) => _PlayerInfoCopyWithImpl(v, t, t2));
+}
+
+abstract class PlayerInfoCopyWith<$R, $In extends PlayerInfo, $Out>
+    implements ClassCopyWith<$R, $In, $Out> {
+  $R call({int? id, String? name});
+  PlayerInfoCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _PlayerInfoCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, PlayerInfo, $Out>
+    implements PlayerInfoCopyWith<$R, PlayerInfo, $Out> {
+  _PlayerInfoCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<PlayerInfo> $mapper =
+      PlayerInfoMapper.ensureInitialized();
+  @override
+  $R call({int? id, Object? name = $none}) => $apply(FieldCopyWithData(
+      {if (id != null) #id: id, if (name != $none) #name: name}));
+  @override
+  PlayerInfo $make(CopyWithData data) => PlayerInfo(
+      id: data.get(#id, or: $value.id), name: data.get(#name, or: $value.name));
+
+  @override
+  PlayerInfoCopyWith<$R2, PlayerInfo, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _PlayerInfoCopyWithImpl($value, $cast, t);
+}
+
+class ServerStateMapper extends ClassMapperBase<ServerState> {
+  ServerStateMapper._();
+
+  static ServerStateMapper? _instance;
+  static ServerStateMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = ServerStateMapper._());
+      PlayerInfoMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'ServerState';
+
+  static String? _$link(ServerState v) => v.link;
+  static const Field<ServerState, String> _f$link =
+      Field('link', _$link, opt: true);
+  static List<PlayerInfo> _$players(ServerState v) => v.players;
+  static const Field<ServerState, List<PlayerInfo>> _f$players =
+      Field('players', _$players, opt: true, def: const []);
+
+  @override
+  final MappableFields<ServerState> fields = const {
+    #link: _f$link,
+    #players: _f$players,
+  };
+
+  static ServerState _instantiate(DecodingData data) {
+    return ServerState(link: data.dec(_f$link), players: data.dec(_f$players));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static ServerState fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<ServerState>(map);
+  }
+
+  static ServerState fromJson(String json) {
+    return ensureInitialized().decodeJson<ServerState>(json);
+  }
+}
+
+mixin ServerStateMappable {
+  String toJson() {
+    return ServerStateMapper.ensureInitialized()
+        .encodeJson<ServerState>(this as ServerState);
+  }
+
+  Map<String, dynamic> toMap() {
+    return ServerStateMapper.ensureInitialized()
+        .encodeMap<ServerState>(this as ServerState);
+  }
+
+  ServerStateCopyWith<ServerState, ServerState, ServerState> get copyWith =>
+      _ServerStateCopyWithImpl(this as ServerState, $identity, $identity);
+  @override
+  String toString() {
+    return ServerStateMapper.ensureInitialized()
+        .stringifyValue(this as ServerState);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return ServerStateMapper.ensureInitialized()
+        .equalsValue(this as ServerState, other);
+  }
+
+  @override
+  int get hashCode {
+    return ServerStateMapper.ensureInitialized().hashValue(this as ServerState);
+  }
+}
+
+extension ServerStateValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, ServerState, $Out> {
+  ServerStateCopyWith<$R, ServerState, $Out> get $asServerState =>
+      $base.as((v, t, t2) => _ServerStateCopyWithImpl(v, t, t2));
+}
+
+abstract class ServerStateCopyWith<$R, $In extends ServerState, $Out>
+    implements ClassCopyWith<$R, $In, $Out> {
+  ListCopyWith<$R, PlayerInfo, PlayerInfoCopyWith<$R, PlayerInfo, PlayerInfo>>
+      get players;
+  $R call({String? link, List<PlayerInfo>? players});
+  ServerStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _ServerStateCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, ServerState, $Out>
+    implements ServerStateCopyWith<$R, ServerState, $Out> {
+  _ServerStateCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<ServerState> $mapper =
+      ServerStateMapper.ensureInitialized();
+  @override
+  ListCopyWith<$R, PlayerInfo, PlayerInfoCopyWith<$R, PlayerInfo, PlayerInfo>>
+      get players => ListCopyWith($value.players,
+          (v, t) => v.copyWith.$chain(t), (v) => call(players: v));
+  @override
+  $R call({Object? link = $none, List<PlayerInfo>? players}) =>
+      $apply(FieldCopyWithData({
+        if (link != $none) #link: link,
+        if (players != null) #players: players
+      }));
+  @override
+  ServerState $make(CopyWithData data) => ServerState(
+      link: data.get(#link, or: $value.link),
+      players: data.get(#players, or: $value.players));
+
+  @override
+  ServerStateCopyWith<$R2, ServerState, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _ServerStateCopyWithImpl($value, $cast, t);
+}

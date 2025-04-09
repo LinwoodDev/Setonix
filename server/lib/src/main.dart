@@ -40,7 +40,9 @@ ArgParser buildParser() {
     ..addOption('autosave',
         abbr: 'a', help: "Disable saving of the world automatically")
     ..addOption('max-players',
-        abbr: 'm', help: "Maximum number of players", defaultsTo: '10');
+        abbr: 'm', help: "Maximum number of players", defaultsTo: '10')
+    ..addOption('room-mode',
+        abbr: 'r', help: "Enable room mode", defaultsTo: 'false');
 }
 
 void printUsage(ArgParser argParser) {
@@ -60,7 +62,7 @@ Future<void> runServer(List<String> arguments, [ServerLoader? onLoad]) async {
   final ArgParser argParser = buildParser();
   try {
     final ArgResults results = argParser.parse(arguments);
-    bool verbose = false, autosave = false;
+    bool verbose = false, autosave = false, roomMode = false;
     int maxPlayers = 10;
 
     // Process the parsed arguments.
@@ -81,6 +83,9 @@ Future<void> runServer(List<String> arguments, [ServerLoader? onLoad]) async {
     if (results.wasParsed('max-players')) {
       maxPlayers = int.tryParse(results['max-players'] ?? '') ?? maxPlayers;
     }
+    if (results.wasParsed('room-mode')) {
+      roomMode = true;
+    }
     String description = '';
     if (results.wasParsed('description')) {
       description = results['description'];
@@ -92,6 +97,7 @@ Future<void> runServer(List<String> arguments, [ServerLoader? onLoad]) async {
       autosave: autosave,
       description: description,
       maxPlayers: maxPlayers,
+      roomMode: roomMode,
     );
     await onLoad?.call(server);
     await server.run();

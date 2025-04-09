@@ -326,5 +326,9 @@ ServerProcessed processServerEvent(
           ...event.images,
         },
       ));
+    case ServerStateUpdated():
+      return ServerProcessed(state.copyWith(
+        serverState: event.state,
+      ));
   }
 }

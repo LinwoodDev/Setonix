@@ -8,6 +8,7 @@ import '../models/data.dart';
 import '../models/dialog.dart';
 import '../models/info.dart';
 import '../models/meta.dart';
+import '../models/server.dart';
 import '../models/table.dart';
 import '../models/vector.dart';
 
@@ -32,6 +33,7 @@ final class WorldState with WorldStateMappable {
   final List<ChatMessage> messages;
   final List<GameDialog> dialogs;
   final Map<String, Uint8List> images;
+  final ServerState serverState;
 
   const WorldState({
     this.name,
@@ -44,6 +46,7 @@ final class WorldState with WorldStateMappable {
     this.id = kAuthorityChannel,
     this.dialogs = const [],
     this.images = const {},
+    this.serverState = const ServerState(),
     required this.data,
   });
 

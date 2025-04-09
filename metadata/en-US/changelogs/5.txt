@@ -1,5 +1,6 @@
 * Add importing system for editor
 * Add launch app link for android
+* Add option for server to send link information
 * Improve multiplayer ui
 * Add swamp multiplayer support
 * Add scroll sensitivity setting

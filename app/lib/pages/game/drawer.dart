@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:setonix/pages/game/multiplayer/dialog.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
@@ -97,6 +98,68 @@ class GameDrawer extends StatelessWidget {
                       );
                     },
                   ),
+                );
+              },
+            ),
+            const SizedBox(height: 4),
+            BlocBuilder<MultiplayerCubit, MultiplayerState>(
+              builder: (context, state) {
+                return BlocBuilder<WorldBloc, ClientWorldState>(
+                  buildWhen: (previous, current) =>
+                      previous.world.serverState != current.world.serverState,
+                  builder: (context, worldState) {
+                    Future<String> address;
+                    final link = worldState.world.serverState.link;
+                    if (link != null) {
+                      address = Future.value(link);
+                    } else if (state is MultiplayerConnectedState) {
+                      address = state.getShareAddress().then((value) {
+                        return value.toString();
+                      });
+                    } else {
+                      return const SizedBox.shrink();
+                    }
+                    return FutureBuilder<String>(
+                        future: address,
+                        builder: (context, snapshot) {
+                          return Card.filled(
+                            clipBehavior: Clip.antiAlias,
+                            child: InkWell(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    Text(
+                                      AppLocalizations.of(context).address,
+                                      textAlign: TextAlign.center,
+                                      style: theme.textTheme.headlineSmall,
+                                    ),
+                                    if (snapshot.hasData)
+                                      Text(
+                                        snapshot.data!,
+                                        maxLines: 5,
+                                      ),
+                                  ],
+                                ),
+                              ),
+                              onTap: () {
+                                if (snapshot.hasData) {
+                                  Clipboard.setData(
+                                      ClipboardData(text: snapshot.data!));
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content: Text(LeapLocalizations.of(context)
+                                        .copyMessage),
+                                  ));
+                                }
+                              },
+                            ),
+                          );
+                        });
+                  },
                 );
               },
             ),

@@ -37,7 +37,8 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
   final String? worldFile;
   late final PluginSystem pluginSystem;
   final SetonixPlugin _serverPlugin;
-  bool autosave = false;
+  bool autosave = false, _roomMode = false;
+  bool get roomMode => _roomMode;
 
   NetworkerSocketServer? _server;
   NetworkerPipe<dynamic, WorldEvent>? _pipe;
@@ -125,6 +126,7 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
     int maxPlayers = 10,
     bool verbose = false,
     bool autosave = false,
+    bool roomMode = false,
     String description = '',
   }) async {
     if (verbose) {
@@ -140,6 +142,7 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
           level: LogLevel.warning);
     }
     this.autosave = autosave;
+    _roomMode = roomMode;
     _maxPlayers = maxPlayers;
     SecurityContext? securityContext;
     try {

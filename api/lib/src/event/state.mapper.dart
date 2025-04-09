@@ -64,6 +64,7 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
       FileMetadataMapper.ensureInitialized();
       ChatMessageMapper.ensureInitialized();
       GameDialogMapper.ensureInitialized();
+      ServerStateMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -101,6 +102,9 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
   static Map<String, Uint8List> _$images(WorldState v) => v.images;
   static const Field<WorldState, Map<String, Uint8List>> _f$images =
       Field('images', _$images, opt: true, def: const {});
+  static ServerState _$serverState(WorldState v) => v.serverState;
+  static const Field<WorldState, ServerState> _f$serverState =
+      Field('serverState', _$serverState, opt: true, def: const ServerState());
   static SetonixData _$data(WorldState v) => v.data;
   static const Field<WorldState, SetonixData> _f$data = Field('data', _$data);
 
@@ -116,6 +120,7 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
     #id: _f$id,
     #dialogs: _f$dialogs,
     #images: _f$images,
+    #serverState: _f$serverState,
     #data: _f$data,
   };
 
@@ -131,6 +136,7 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
         id: data.dec(_f$id),
         dialogs: data.dec(_f$dialogs),
         images: data.dec(_f$images),
+        serverState: data.dec(_f$serverState),
         data: data.dec(_f$data));
   }
 
@@ -197,6 +203,7 @@ abstract class WorldStateCopyWith<$R, $In extends WorldState, $Out>
       get dialogs;
   MapCopyWith<$R, String, Uint8List, ObjectCopyWith<$R, Uint8List, Uint8List>>
       get images;
+  ServerStateCopyWith<$R, ServerState, ServerState> get serverState;
   $R call(
       {String? name,
       GameTable? table,
@@ -208,6 +215,7 @@ abstract class WorldStateCopyWith<$R, $In extends WorldState, $Out>
       int? id,
       List<GameDialog>? dialogs,
       Map<String, Uint8List>? images,
+      ServerState? serverState,
       SetonixData? data});
   WorldStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -249,6 +257,9 @@ class _WorldStateCopyWithImpl<$R, $Out>
       get images => MapCopyWith($value.images,
           (v, t) => ObjectCopyWith(v, $identity, t), (v) => call(images: v));
   @override
+  ServerStateCopyWith<$R, ServerState, ServerState> get serverState =>
+      $value.serverState.copyWith.$chain((v) => call(serverState: v));
+  @override
   $R call(
           {Object? name = $none,
           GameTable? table,
@@ -260,6 +271,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
           int? id,
           List<GameDialog>? dialogs,
           Map<String, Uint8List>? images,
+          ServerState? serverState,
           SetonixData? data}) =>
       $apply(FieldCopyWithData({
         if (name != $none) #name: name,
@@ -272,6 +284,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
         if (id != null) #id: id,
         if (dialogs != null) #dialogs: dialogs,
         if (images != null) #images: images,
+        if (serverState != null) #serverState: serverState,
         if (data != null) #data: data
       }));
   @override
@@ -286,6 +299,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
       id: data.get(#id, or: $value.id),
       dialogs: data.get(#dialogs, or: $value.dialogs),
       images: data.get(#images, or: $value.images),
+      serverState: data.get(#serverState, or: $value.serverState),
       data: data.get(#data, or: $value.data));
 
   @override

@@ -134,6 +134,7 @@ class ServerWorldEventMapper extends SubClassMapperBase<ServerWorldEvent> {
       DialogOpenedMapper.ensureInitialized();
       DialogsClosedMapper.ensureInitialized();
       ImagesUpdatedMapper.ensureInitialized();
+      ServerStateUpdatedMapper.ensureInitialized();
       HybridWorldEventMapper.ensureInitialized();
     }
     return _instance!;
@@ -1648,6 +1649,129 @@ class _ImagesUpdatedCopyWithImpl<$R, $Out>
   ImagesUpdatedCopyWith<$R2, ImagesUpdated, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
       _ImagesUpdatedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+class ServerStateUpdatedMapper extends SubClassMapperBase<ServerStateUpdated> {
+  ServerStateUpdatedMapper._();
+
+  static ServerStateUpdatedMapper? _instance;
+  static ServerStateUpdatedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = ServerStateUpdatedMapper._());
+      ServerWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      ServerStateMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'ServerStateUpdated';
+
+  static ServerState _$state(ServerStateUpdated v) => v.state;
+  static const Field<ServerStateUpdated, ServerState> _f$state =
+      Field('state', _$state);
+
+  @override
+  final MappableFields<ServerStateUpdated> fields = const {
+    #state: _f$state,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'ServerStateUpdated';
+  @override
+  late final ClassMapperBase superMapper =
+      ServerWorldEventMapper.ensureInitialized();
+
+  static ServerStateUpdated _instantiate(DecodingData data) {
+    return ServerStateUpdated(data.dec(_f$state));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static ServerStateUpdated fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<ServerStateUpdated>(map);
+  }
+
+  static ServerStateUpdated fromJson(String json) {
+    return ensureInitialized().decodeJson<ServerStateUpdated>(json);
+  }
+}
+
+mixin ServerStateUpdatedMappable {
+  String toJson() {
+    return ServerStateUpdatedMapper.ensureInitialized()
+        .encodeJson<ServerStateUpdated>(this as ServerStateUpdated);
+  }
+
+  Map<String, dynamic> toMap() {
+    return ServerStateUpdatedMapper.ensureInitialized()
+        .encodeMap<ServerStateUpdated>(this as ServerStateUpdated);
+  }
+
+  ServerStateUpdatedCopyWith<ServerStateUpdated, ServerStateUpdated,
+          ServerStateUpdated>
+      get copyWith => _ServerStateUpdatedCopyWithImpl(
+          this as ServerStateUpdated, $identity, $identity);
+  @override
+  String toString() {
+    return ServerStateUpdatedMapper.ensureInitialized()
+        .stringifyValue(this as ServerStateUpdated);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return ServerStateUpdatedMapper.ensureInitialized()
+        .equalsValue(this as ServerStateUpdated, other);
+  }
+
+  @override
+  int get hashCode {
+    return ServerStateUpdatedMapper.ensureInitialized()
+        .hashValue(this as ServerStateUpdated);
+  }
+}
+
+extension ServerStateUpdatedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, ServerStateUpdated, $Out> {
+  ServerStateUpdatedCopyWith<$R, ServerStateUpdated, $Out>
+      get $asServerStateUpdated =>
+          $base.as((v, t, t2) => _ServerStateUpdatedCopyWithImpl(v, t, t2));
+}
+
+abstract class ServerStateUpdatedCopyWith<$R, $In extends ServerStateUpdated,
+    $Out> implements ServerWorldEventCopyWith<$R, $In, $Out> {
+  ServerStateCopyWith<$R, ServerState, ServerState> get state;
+  @override
+  $R call({ServerState? state});
+  ServerStateUpdatedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class _ServerStateUpdatedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, ServerStateUpdated, $Out>
+    implements ServerStateUpdatedCopyWith<$R, ServerStateUpdated, $Out> {
+  _ServerStateUpdatedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<ServerStateUpdated> $mapper =
+      ServerStateUpdatedMapper.ensureInitialized();
+  @override
+  ServerStateCopyWith<$R, ServerState, ServerState> get state =>
+      $value.state.copyWith.$chain((v) => call(state: v));
+  @override
+  $R call({ServerState? state}) =>
+      $apply(FieldCopyWithData({if (state != null) #state: state}));
+  @override
+  ServerStateUpdated $make(CopyWithData data) =>
+      ServerStateUpdated(data.get(#state, or: $value.state));
+
+  @override
+  ServerStateUpdatedCopyWith<$R2, ServerStateUpdated, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _ServerStateUpdatedCopyWithImpl($value, $cast, t);
 }
 
 class ClientWorldEventMapper extends SubClassMapperBase<ClientWorldEvent> {

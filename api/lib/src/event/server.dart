@@ -4,7 +4,9 @@ part of 'event.dart';
 /// Naming convention: present tense + Event
 @MappableClass(discriminatorKey: 'type')
 sealed class ServerWorldEvent extends PlayableWorldEvent
-    with ServerWorldEventMappable {}
+    with ServerWorldEventMappable {
+  const ServerWorldEvent();
+}
 
 @MappableClass()
 final class WorldInitialized extends ServerWorldEvent
@@ -211,6 +213,14 @@ class Base64IdMapHook extends SimpleMapper<Map<String, Uint8List>> {
 final class ImagesUpdated extends ServerWorldEvent with ImagesUpdatedMappable {
   final Map<String, Uint8List> images;
 
-  ImagesUpdated(this.images);
+  const ImagesUpdated(this.images);
   ImagesUpdated.single(String id, Uint8List image) : images = {id: image};
+}
+
+@MappableClass()
+final class ServerStateUpdated extends ServerWorldEvent
+    with ServerStateUpdatedMappable {
+  final ServerState state;
+
+  const ServerStateUpdated(this.state);
 }
