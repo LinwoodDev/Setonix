@@ -6,16 +6,25 @@ import 'package:setonix_api/setonix_api.dart';
 
 part 'model.mapper.dart';
 
+const defaultWorldName = '';
+
 base class Event<T extends WorldEvent> {
   final T clientEvent;
   final Channel source;
+  final String worldName;
   ServerWorldEvent serverEvent;
   Channel target;
   bool cancelled = false;
   Set<Channel>? needsUpdate;
 
-  Event(this.serverEvent, this.target, this.clientEvent, this.source,
-      this.needsUpdate);
+  Event({
+    required this.serverEvent,
+    required this.target,
+    required this.clientEvent,
+    required this.source,
+    this.worldName = defaultWorldName,
+    this.needsUpdate,
+  });
 
   Event<C> castEvent<C extends WorldEvent>() {
     return _LinkedEvent<C>(this);
@@ -65,6 +74,9 @@ final class _LinkedEvent<T extends WorldEvent> implements Event<T> {
 
   @override
   set needsUpdate(Set<Channel>? value) => parent.needsUpdate = value;
+
+  @override
+  String get worldName => parent.worldName;
 }
 
 final class ServerPing {

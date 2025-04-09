@@ -1,14 +1,12 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:isolate';
 
-import 'package:bloc/bloc.dart';
-import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:consoler/consoler.dart';
 import 'package:networker/networker.dart';
 import 'package:networker_socket/server.dart';
 import 'package:setonix_api/setonix_api.dart';
 import 'package:setonix_server/src/asset.dart';
+import 'package:setonix_server/src/bloc.dart';
 import 'package:setonix_server/src/programs/packs.dart';
 import 'package:setonix_server/src/programs/players.dart';
 import 'package:setonix_server/src/programs/reset.dart';
@@ -17,13 +15,7 @@ import 'package:setonix_server/src/programs/say.dart';
 import 'package:setonix_server/src/programs/stop.dart';
 import 'package:setonix_plugin/setonix_plugin.dart';
 
-Future<ServerProcessed> _computeEvent(ServerWorldEvent event, WorldState state,
-    List<SignatureMetadata> signature) {
-  return Isolate.run(
-      () => processServerEvent(event, state, signature: signature));
-}
-
-String _limitOutput(Object? value, [int limit = 500]) {
+String limitOutput(Object? value, [int limit = 500]) {
   final string = value.toString();
   if (string.length > limit) {
     return '${string.substring(0, limit)}...';
@@ -31,58 +23,62 @@ String _limitOutput(Object? value, [int limit = 500]) {
   return string;
 }
 
-final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
+final class SetonixServer {
   final Consoler consoler;
   final ServerAssetManager assetManager;
   final String? worldFile;
+  final Map<String, WorldBloc> _worlds = {};
+  final Map<Channel, String> _userWorlds = {};
   late final PluginSystem pluginSystem;
   final SetonixPlugin _serverPlugin;
-  bool autosave = false, _roomMode = false;
-  bool get roomMode => _roomMode;
+  bool autosave = false, _multiWorld = false;
+  bool get multiWorld => _multiWorld;
 
   NetworkerSocketServer? _server;
   NetworkerPipe<dynamic, WorldEvent>? _pipe;
 
   EventSystem get eventSystem => _serverPlugin.eventSystem;
 
+  Set<Channel> get channels => _server?.clientConnections ?? {};
+
+  WorldBloc get defaultWorld =>
+      _worlds[defaultWorldName] ??
+      (_worlds[defaultWorldName] = WorldBloc(
+        SetonixData.empty(),
+        this,
+        defaultWorldName,
+      ));
+
+  WorldState get state => defaultWorld.state;
+
+  WorldBloc? getWorld(String name) => _worlds[name];
+
+  String getUserWorldName(Channel channel) =>
+      _userWorlds[channel] ?? defaultWorldName;
+
+  WorldBloc? getUserWorld(Channel channel) =>
+      getWorld(getUserWorldName(channel));
+
+  WorldState? getUserWorldState(Channel channel) =>
+      getUserWorld(channel)?.state;
+
   SetonixServer._(
       this.worldFile, this.consoler, SetonixData data, this.assetManager)
-      : _serverPlugin = SetonixPlugin(),
-        super(WorldState(
-          data: data,
-          table: data.getTableOrDefault(),
-          metadata: data.getMetadataOrDefault(),
-          info: data.getInfoOrDefault(),
-        )) {
+      : _serverPlugin = SetonixPlugin() {
     pluginSystem = PluginSystem(
       onProcess: (p0, p1, [force = false]) {
         process(p1, force);
       },
-      onSendEvent: (p0, p1) {
-        sendEvent(p1.data, p1.channel);
+      onSendEvent: (
+        p0,
+        p1,
+      ) {
+        sendEvent(p0.data, target: p0.channel, worldName: p1);
       },
       playersGetter: () => players.keys.toList(),
       stateGetter: () => state,
     );
     pluginSystem.registerPlugin('', SetonixPlugin());
-    on<ServerWorldEvent>((event, emit) async {
-      final signature = assetManager.createSignature();
-      final processed =
-          await _computeEvent(event, state, signature.values.toList());
-      final newState = processed.state;
-      processed.responses.forEach(process);
-      if (event is WorldInitialized) {
-        log("World initialized${(event.info?.script != null) ? " with script ${event.info?.script}" : ""}",
-            level: LogLevel.info);
-        await _loadScript((newState ?? state).info.script);
-      }
-      if (newState == null) return;
-      emit(newState);
-      return save();
-    }, transformer: sequential());
-    on<ImagesUpdated>((event, emit) {
-      emit(state.copyWith(images: event.images));
-    });
   }
 
   static Future<SetonixServer> load({
@@ -126,7 +122,7 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
     int maxPlayers = 10,
     bool verbose = false,
     bool autosave = false,
-    bool roomMode = false,
+    bool multiWorld = false,
     String description = '',
   }) async {
     if (verbose) {
@@ -142,7 +138,7 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
           level: LogLevel.warning);
     }
     this.autosave = autosave;
-    _roomMode = roomMode;
+    _multiWorld = multiWorld;
     _maxPlayers = maxPlayers;
     SecurityContext? securityContext;
     try {
@@ -176,7 +172,6 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
       ..clientDisconnect.listen(_onLeave)
       ..connect(StringNetworkerPlugin()..connect(transformer));
     await _server?.init();
-    await _loadScript(state.info.script);
 
     consoler.registerPrograms({
       'stop': StopProgram(this),
@@ -189,6 +184,13 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
     });
   }
 
+  void _onClientEvent(NetworkerPacket<WorldEvent> packet,
+          {bool force = false, String? worldName}) =>
+      getWorld(worldName ?? defaultWorldName)?.onClientEvent(
+        packet,
+        force: force,
+      );
+
   static R _runStaticLogZone<R>(Consoler consoler, R Function() body) =>
       runZoned(body, zoneSpecification: ZoneSpecification(
         print: (self, parent, zone, message) {
@@ -196,68 +198,17 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
         },
       ));
 
-  Future<void> _loadScript(String? script) async {
-    try {
-      if (script == null) return;
-      pluginSystem.loadLuaPlugin(assetManager, script);
-    } catch (e) {
-      log('Error loading script: $e', level: LogLevel.error);
-    }
-  }
-
   Future<void> run() async {
     consoler.run();
     log('Server running on ${_server?.address}', level: LogLevel.info);
     await _server?.onClosed.first;
   }
 
-  void _onClientEvent(NetworkerPacket<WorldEvent> packet,
-      [bool force = false]) async {
-    final data = packet.data;
-    ServerResponse? process;
-    try {
-      process = processClientEvent(
-        data is UserJoined ? null : data,
-        packet.channel,
-        state,
-        assetManager: assetManager,
-        allowServerEvents: packet.isServer,
-      );
-    } catch (e) {
-      log('Error processing event: $e', level: LogLevel.error);
-    }
-    if (process == null) return;
-    final event = Event(
-      process.main.data,
-      process.main.channel,
-      data,
-      packet.channel,
-      process.needsUpdate,
-    );
-    if (!force) {
-      eventSystem.fire(event);
-      if (event.cancelled) return;
-      log('Processing event by ${event.source}: ${_limitOutput(event.clientEvent)}, answered with ${_limitOutput(event.serverEvent)}',
-          level: LogLevel.verbose);
-    }
-    switch (packet.data) {
-      case MessageRequest data:
-        log("Message by ${packet.channel}: ${data.message}",
-            level: LogLevel.info);
-      default:
-    }
-    sendEvent(event.serverEvent, event.target);
-    final updatePackets = process.buildUpdatePacketsFor(
-        state, _server?.clientConnections ?? {}, event.needsUpdate);
-    for (final packet in updatePackets) {
-      sendEvent(packet.data, packet.channel);
-    }
-  }
-
-  void sendEvent(PlayableWorldEvent event, [Channel target = kAnyChannel]) {
+  void sendEvent(PlayableWorldEvent event,
+      {Channel target = kAnyChannel, String? worldName}) {
     _pipe?.sendMessage(event, target);
     if (target == kAnyChannel || target == kAuthorityChannel) {
-      add(event);
+      getWorld(worldName ?? defaultWorldName)?.add(event);
     }
   }
 
@@ -280,22 +231,21 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
     eventSystem.runLeaveCallback(event.$1, event.$2);
   }
 
-  Future<void> save({bool force = false}) async {
-    if (!force && autosave) return;
-    final bytes = state.save().exportAsBytes();
-    await File(defaultWorldFile).writeAsBytes(bytes);
+  Future<void> saveAll({bool force = false}) async {
+    await Future.wait(_worlds.values.map((e) => e.save(force: force)));
   }
 
-  @override
   Future<void> close() async {
-    await super.close();
+    for (final world in _worlds.values) {
+      await world.close();
+    }
     log('Closing...', level: LogLevel.info);
     _server?.close();
     consoler.dispose();
   }
 
   void process(WorldEvent event, [bool force = true]) {
-    _onClientEvent(NetworkerPacket(event, kAuthorityChannel), force);
+    _onClientEvent(NetworkerPacket(event, kAuthorityChannel), force: force);
   }
 
   bool kick(int id) {
@@ -303,11 +253,6 @@ final class SetonixServer extends Bloc<PlayableWorldEvent, WorldState> {
     if (info == null) return false;
     info.close();
     return true;
-  }
-
-  Future<void> resetWorld([ItemLocation? mode]) async {
-    process(ModeChangeRequest(mode));
-    await stream.first;
   }
 
   void sendMessage(String message, [Channel target = kAnyChannel]) {

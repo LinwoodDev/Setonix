@@ -1,6 +1,5 @@
 import 'package:consoler/consoler.dart';
-import 'package:setonix_api/setonix_api.dart';
-import 'package:setonix_server/src/server.dart';
+import 'package:setonix_server/setonix_server.dart';
 
 class ResetProgram extends ConsoleProgram {
   final SetonixServer server;
@@ -12,16 +11,16 @@ class ResetProgram extends ConsoleProgram {
       "Reset the world. Specify a game mode to allow playing games.";
 
   @override
-  String getUsage() => 'reset [<Mode>]';
+  String getUsage() => 'reset [<World>]';
 
   @override
   Future<void> run(String label, List<String> args) async {
     if (args.length > 1) {
       server.log("Wrong usage, use ${getUsage()}", level: LogLevel.error);
     }
-    final mode = args.isEmpty ? null : ItemLocation.fromString(args[0]);
+    final worldName = args.elementAtOrNull(0) ?? defaultWorldName;
     server.log("Resetting world...", level: LogLevel.info);
-    await server.resetWorld(mode);
+    await server.getWorld(worldName)?.resetWorld();
     server.log("World reset successful", level: LogLevel.info);
   }
 }

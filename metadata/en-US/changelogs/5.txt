@@ -1,5 +1,5 @@
 * Add importing system for editor
-* Add launch app link for android
+* Add launch app link for android ([#37](https://github.com/LinwoodDev/Setonix/issues/37))
 * Add option for server to send link information
 * Improve multiplayer ui
 * Add swamp multiplayer support

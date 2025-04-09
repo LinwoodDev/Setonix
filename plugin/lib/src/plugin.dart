@@ -10,7 +10,7 @@ import 'package:setonix_plugin/src/rust/frb_generated.dart';
 
 typedef PluginProcessCallback = void Function(String, WorldEvent, [bool force]);
 typedef PluginSendEventCallback = void Function(
-    String, NetworkerPacket<PlayableWorldEvent>);
+    NetworkerPacket<PlayableWorldEvent> packet, String? worldName);
 
 final class PluginSystem {
   final Map<
@@ -18,7 +18,7 @@ final class PluginSystem {
       (
         SetonixPlugin,
         StreamSubscription<ProcessMessage>,
-        StreamSubscription<NetworkerPacket<PlayableWorldEvent>>
+        StreamSubscription<SentEvent>
       )> _plugins = {};
   final PluginProcessCallback _onProcess;
   final PluginSendEventCallback _onSendEvent;
@@ -36,8 +36,8 @@ final class PluginSystem {
   void registerPlugin(String name, SetonixPlugin plugin) {
     final processSub = plugin.onProcess
         .listen((message) => _onProcess(name, message.event, message.force));
-    final sendSub =
-        plugin.onSendEvent.listen((event) => _onSendEvent(name, event));
+    final sendSub = plugin.onSendEvent
+        .listen((event) => _onSendEvent(event.event, event.worldName));
     _plugins[name] = (plugin, processSub, sendSub);
   }
 
@@ -102,22 +102,30 @@ final class ProcessMessage {
   ProcessMessage(this.event, this.force);
 }
 
+final class SentEvent {
+  final NetworkerPacket<PlayableWorldEvent> event;
+  final String? worldName;
+
+  SentEvent(this.event, [this.worldName]);
+}
+
 class SetonixPlugin {
   final EventSystem eventSystem = EventSystem();
   final StreamController<ProcessMessage> _onProcessController =
       StreamController.broadcast();
-  final StreamController<NetworkerPacket<PlayableWorldEvent>>
-      _onSendEventController = StreamController.broadcast();
+  final StreamController<SentEvent> _onSendEventController =
+      StreamController.broadcast();
 
   Stream<ProcessMessage> get onProcess => _onProcessController.stream;
-  Stream<NetworkerPacket<PlayableWorldEvent>> get onSendEvent =>
-      _onSendEventController.stream;
+  Stream<SentEvent> get onSendEvent => _onSendEventController.stream;
 
   void process(WorldEvent event, {bool force = false}) =>
       _onProcessController.add(ProcessMessage(event, force));
 
-  void sendEvent(PlayableWorldEvent event, [Channel target = kAnyChannel]) =>
-      _onSendEventController.add(NetworkerPacket(event, target));
+  void sendEvent(PlayableWorldEvent event,
+          {Channel target = kAnyChannel, String? worldName}) =>
+      _onSendEventController
+          .add(SentEvent(NetworkerPacket(event, target), worldName));
 
   void dispose() {
     eventSystem.dispose();
@@ -148,7 +156,7 @@ final class RustSetonixPlugin extends SetonixPlugin {
     });
     callback.changeSendEvent(sendEvent: (eventSerizalized, target) {
       final event = PlayableWorldEventMapper.fromJson(eventSerizalized);
-      instance.sendEvent(event, target ?? kAnyChannel);
+      instance.sendEvent(event, target: target ?? kAnyChannel);
     });
     callback.changeStateFieldAccess(stateFieldAccess: (field) {
       final state = pluginSystem.stateGetter();

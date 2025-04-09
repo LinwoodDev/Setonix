@@ -45,8 +45,8 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
       onProcess: (p0, p1, [force = false]) {
         process(p1);
       },
-      onSendEvent: (p0, p1) {
-        _processEvent(p1);
+      onSendEvent: (packet, worldName) {
+        _processEvent(packet);
       },
       playersGetter: () => state.multiplayer.clients.toList(),
       stateGetter: () => state.world,
