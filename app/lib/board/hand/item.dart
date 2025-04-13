@@ -105,7 +105,8 @@ abstract class HandItem<T> extends PositionComponent
   final SpriteComponent _sprite = SpriteComponent();
   late final TextComponent<TextPaint> _label;
 
-  HandItem({required this.item}) : super(size: Vector2(100, 0));
+  HandItem({required this.item})
+      : super(size: Vector2(100, 0), anchor: Anchor.bottomCenter);
 
   GameHand get hand => findParent<GameHand>()!;
 
@@ -244,4 +245,12 @@ abstract class HandItem<T> extends PositionComponent
       contextItemsBuilder;
 
   void moveItem(HandItemDropZone zone) {}
+
+  void changeLabelVisibility(bool visible) {
+    if (visible) {
+      _label.removeFromParent();
+    } else if (_label.parent == null) {
+      add(_label);
+    }
+  }
 }

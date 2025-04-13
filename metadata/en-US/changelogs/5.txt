@@ -2,6 +2,7 @@
 * Add launch app link for android ([#37](https://github.com/LinwoodDev/Setonix/issues/37))
 * Add option for server to send link information
 * Improve multiplayer ui
+* Improve card rendering layout
 * Add swamp multiplayer support
 * Add scroll sensitivity setting
 * Add remaining empty indicator to editor tabs
