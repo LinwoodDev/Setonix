@@ -16,7 +16,7 @@ publish_to: none
 
 environment:
   sdk: ">=3.5.0 <4.0.0"
-  flutter: 3.29.2
+  flutter: 3.29.3
 
 dependencies:
   flutter:
@@ -37,7 +37,7 @@ dependencies:
   flex_color_scheme: ^8.1.0
   flutter_svg: ^2.0.10+1
   window_manager: ^0.4.0
-  go_router: ^14.2.2
+  go_router: ^15.0.0
   # Database
   shared_preferences: ^2.3.1
   # Generation
@@ -46,8 +46,8 @@ dependencies:
   flutter_bloc: ^9.0.0
   rxdart: ^0.28.0
   collection: ^1.18.0
-  flame_bloc: ^1.12.7
-  flame: ">=1.27.0 <1.28.0"
+  flame_bloc: ^1.12.11
+  flame: ">=1.28.0 <1.29.0"
   flame_tiled: ^3.0.0
   # Networking
   http: ^1.2.1
@@ -65,7 +65,7 @@ dependencies:
   swamp_api:
     git:
       url: https://github.com/LinwoodDev/Swamp.git
-      ref: ea0a20e7c7f93e102b7db63e4093f0847a84634c
+      ref: 6af5c4ce6b3a422d06bef5a55b3f0e4caa322869
       path: api
   # System Information
   dynamic_color: ^1.7.0

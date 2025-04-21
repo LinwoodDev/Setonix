@@ -5,7 +5,7 @@ import 'package:setonix/bloc/settings.dart';
 import 'package:setonix/board/cell.dart';
 
 class BoardGrid extends PositionComponent
-    with HasGameRef, FlameBlocListenable<SettingsCubit, SetonixSettings> {
+    with HasGameReference, FlameBlocListenable<SettingsCubit, SetonixSettings> {
   final Vector2 cellSize;
   static const _padding = 3.0;
   Rect? _lastViewport;

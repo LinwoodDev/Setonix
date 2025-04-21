@@ -24,7 +24,7 @@ import 'package:setonix_api/setonix_api.dart';
 
 class GameCell extends PositionComponent
     with
-        HasGameRef<BoardGame>,
+        HasGameReference<BoardGame>,
         HoverCallbacks,
         TapCallbacks,
         DragCallbacks,

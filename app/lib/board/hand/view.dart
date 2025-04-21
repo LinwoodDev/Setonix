@@ -48,7 +48,7 @@ class GameHand extends CustomPainterComponent
         ScrollCallbacks,
         CollisionCallbacks,
         HandItemDropZone,
-        HasGameRef<BoardGame> {
+        HasGameReference<BoardGame> {
   double _currentScroll = 0;
 
   /// Should hand be redrawn

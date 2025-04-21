@@ -91,7 +91,7 @@ const priorityNormal = 0;
 
 abstract class HandItem<T> extends PositionComponent
     with
-        HasGameRef<BoardGame>,
+        HasGameReference<BoardGame>,
         CollisionCallbacks,
         HandItemDropZone,
         DragCallbacks,

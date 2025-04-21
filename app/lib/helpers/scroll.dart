@@ -29,7 +29,7 @@ class _ScrollViewport extends PositionComponent {
 }
 
 class ScrollViewComponent extends PositionComponent
-    with ScrollCallbacks, HasGameRef<BoardGame> {
+    with ScrollCallbacks, HasGameReference<BoardGame> {
   final Axis direction;
   final double spacing;
   final _ScrollViewport _view = _ScrollViewport();
