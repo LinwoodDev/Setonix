@@ -6,6 +6,68 @@
 
 part of 'settings.dart';
 
+class ThemeDensityMapper extends EnumMapper<ThemeDensity> {
+  ThemeDensityMapper._();
+
+  static ThemeDensityMapper? _instance;
+  static ThemeDensityMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = ThemeDensityMapper._());
+    }
+    return _instance!;
+  }
+
+  static ThemeDensity fromValue(dynamic value) {
+    ensureInitialized();
+    return MapperContainer.globals.fromValue(value);
+  }
+
+  @override
+  ThemeDensity decode(dynamic value) {
+    switch (value) {
+      case r'system':
+        return ThemeDensity.system;
+      case r'maximize':
+        return ThemeDensity.maximize;
+      case r'desktop':
+        return ThemeDensity.desktop;
+      case r'compact':
+        return ThemeDensity.compact;
+      case r'comfortable':
+        return ThemeDensity.comfortable;
+      case r'standard':
+        return ThemeDensity.standard;
+      default:
+        throw MapperException.unknownEnumValue(value);
+    }
+  }
+
+  @override
+  dynamic encode(ThemeDensity self) {
+    switch (self) {
+      case ThemeDensity.system:
+        return r'system';
+      case ThemeDensity.maximize:
+        return r'maximize';
+      case ThemeDensity.desktop:
+        return r'desktop';
+      case ThemeDensity.compact:
+        return r'compact';
+      case ThemeDensity.comfortable:
+        return r'comfortable';
+      case ThemeDensity.standard:
+        return r'standard';
+    }
+  }
+}
+
+extension ThemeDensityMapperExtension on ThemeDensity {
+  String toValue() {
+    ThemeDensityMapper.ensureInitialized();
+    return MapperContainer.globals.toValue<ThemeDensity>(this) as String;
+  }
+}
+
 class SetonixSettingsMapper extends ClassMapperBase<SetonixSettings> {
   SetonixSettingsMapper._();
 
@@ -13,8 +75,10 @@ class SetonixSettingsMapper extends ClassMapperBase<SetonixSettings> {
   static SetonixSettingsMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = SetonixSettingsMapper._());
+      MapperContainer.globals.useAll([ThemeModeMapper()]);
       GamePropertyMapper.ensureInitialized();
       ListGameServerMapper.ensureInitialized();
+      ThemeDensityMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -62,6 +126,9 @@ class SetonixSettingsMapper extends ClassMapperBase<SetonixSettings> {
   static List<String> _$swamps(SetonixSettings v) => v.swamps;
   static const Field<SetonixSettings, List<String>> _f$swamps =
       Field('swamps', _$swamps, opt: true, def: const []);
+  static ThemeDensity _$density(SetonixSettings v) => v.density;
+  static const Field<SetonixSettings, ThemeDensity> _f$density =
+      Field('density', _$density, opt: true, def: ThemeDensity.system);
   static double _$scrollSensitivity(SetonixSettings v) => v.scrollSensitivity;
   static const Field<SetonixSettings, double> _f$scrollSensitivity =
       Field('scrollSensitivity', _$scrollSensitivity, opt: true, def: 1);
@@ -81,6 +148,7 @@ class SetonixSettingsMapper extends ClassMapperBase<SetonixSettings> {
     #highContrast: _f$highContrast,
     #zoom: _f$zoom,
     #swamps: _f$swamps,
+    #density: _f$density,
     #scrollSensitivity: _f$scrollSensitivity,
   };
 
@@ -99,6 +167,7 @@ class SetonixSettingsMapper extends ClassMapperBase<SetonixSettings> {
         highContrast: data.dec(_f$highContrast),
         zoom: data.dec(_f$zoom),
         swamps: data.dec(_f$swamps),
+        density: data.dec(_f$density),
         scrollSensitivity: data.dec(_f$scrollSensitivity));
   }
 
@@ -174,6 +243,7 @@ abstract class SetonixSettingsCopyWith<$R, $In extends SetonixSettings, $Out>
       bool? highContrast,
       double? zoom,
       List<String>? swamps,
+      ThemeDensity? density,
       double? scrollSensitivity});
   SetonixSettingsCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
@@ -214,6 +284,7 @@ class _SetonixSettingsCopyWithImpl<$R, $Out>
           bool? highContrast,
           double? zoom,
           List<String>? swamps,
+          ThemeDensity? density,
           double? scrollSensitivity}) =>
       $apply(FieldCopyWithData({
         if (localeTag != null) #localeTag: localeTag,
@@ -229,6 +300,7 @@ class _SetonixSettingsCopyWithImpl<$R, $Out>
         if (highContrast != null) #highContrast: highContrast,
         if (zoom != null) #zoom: zoom,
         if (swamps != null) #swamps: swamps,
+        if (density != null) #density: density,
         if (scrollSensitivity != null) #scrollSensitivity: scrollSensitivity
       }));
   @override
@@ -247,6 +319,7 @@ class _SetonixSettingsCopyWithImpl<$R, $Out>
       highContrast: data.get(#highContrast, or: $value.highContrast),
       zoom: data.get(#zoom, or: $value.zoom),
       swamps: data.get(#swamps, or: $value.swamps),
+      density: data.get(#density, or: $value.density),
       scrollSensitivity:
           data.get(#scrollSensitivity, or: $value.scrollSensitivity));
 

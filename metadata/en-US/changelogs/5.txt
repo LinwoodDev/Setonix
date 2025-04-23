@@ -1,6 +1,8 @@
 * Add importing system for editor
 * Add launch app link for android ([#37](https://github.com/LinwoodDev/Setonix/issues/37))
 * Add option for server to send link information
+* Add import and export settings
+* Add density settings
 * Improve multiplayer ui
 * Improve card rendering layout
 * Add swamp multiplayer support

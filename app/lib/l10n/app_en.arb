@@ -244,5 +244,10 @@
   "inputs": "Inputs",
   "scroll": "Scroll",
   "sensitivity": "Sensitivity",
-  "sensitivityHint": "The higher the value, the more sensitive the input"
+  "sensitivityHint": "The higher the value, the more sensitive the input",
+  "density": "Density",
+  "desktop": "Desktop",
+  "compact": "Compact",
+  "standard": "Standard",
+  "comfortable": "Comfortable"
 }

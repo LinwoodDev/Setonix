@@ -10,7 +10,42 @@ import 'package:window_manager/window_manager.dart';
 
 part 'settings.mapper.dart';
 
-@MappableClass()
+@MappableEnum()
+enum ThemeDensity {
+  system,
+  maximize,
+  desktop,
+  compact,
+  comfortable,
+  standard;
+
+  VisualDensity toFlutter() => switch (this) {
+        ThemeDensity.maximize =>
+          const VisualDensity(horizontal: -4, vertical: -4),
+        ThemeDensity.desktop =>
+          const VisualDensity(horizontal: -3, vertical: -3),
+        ThemeDensity.compact => VisualDensity.compact,
+        ThemeDensity.comfortable => VisualDensity.comfortable,
+        ThemeDensity.standard => VisualDensity.standard,
+        ThemeDensity.system => VisualDensity.adaptivePlatformDensity,
+      };
+}
+
+final class ThemeModeMapper extends SimpleMapper<ThemeMode> {
+  const ThemeModeMapper();
+
+  @override
+  ThemeMode decode(Object value) {
+    return ThemeMode.values.byName(value.toString());
+  }
+
+  @override
+  String encode(ThemeMode value) {
+    return value.name;
+  }
+}
+
+@MappableClass(includeCustomMappers: [ThemeModeMapper()])
 class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
   final String localeTag;
   final ThemeMode theme;
@@ -26,6 +61,7 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
   final bool highContrast;
   final List<String> swamps;
   final double scrollSensitivity;
+  final ThemeDensity density;
 
   const SetonixSettings({
     this.localeTag = '',
@@ -41,6 +77,7 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
     this.highContrast = false,
     this.zoom = 1,
     this.swamps = const [],
+    this.density = ThemeDensity.system,
     this.scrollSensitivity = 1,
   });
 
@@ -75,6 +112,9 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
         zoom: prefs.getDouble('zoom') ?? 1,
         swamps: prefs.getStringList('swamps') ?? [],
         scrollSensitivity: prefs.getDouble('scrollSensitivity') ?? 1,
+        density: ThemeDensity.values.byName(
+          prefs.getString('density') ?? ThemeDensity.system.name,
+        ),
       );
 
   Future<void> save() async {
@@ -100,6 +140,7 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
     await prefs.setDouble('zoom', zoom);
     await prefs.setStringList('swamps', swamps);
     await prefs.setDouble('scrollSensitivity', scrollSensitivity);
+    await prefs.setString('density', density.name);
   }
 }
 
@@ -212,5 +253,20 @@ class SettingsCubit extends Cubit<SetonixSettings>
   Future<void> changeScrollSensitivity(double value) {
     emit(state.copyWith(scrollSensitivity: value));
     return save();
+  }
+
+  Future<void> changeDensity(ThemeDensity value) {
+    emit(state.copyWith(density: value));
+    return save();
+  }
+
+  Future<void> importSettings(String data) {
+    final settings = SetonixSettingsMapper.fromJson(data);
+    emit(settings);
+    return state.save();
+  }
+
+  Future<String> exportSettings() async {
+    return state.toJson();
   }
 }

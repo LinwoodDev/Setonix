@@ -27,6 +27,16 @@ class PersonalizationSettingsPage extends StatelessWidget {
       ? LocaleNames.of(context)?.nameOf(locale.replaceAll('-', '_')) ?? locale
       : AppLocalizations.of(context).systemLocale;
 
+  String _getDensityName(BuildContext context, ThemeDensity density) =>
+      switch (density) {
+        ThemeDensity.system => AppLocalizations.of(context).systemTheme,
+        ThemeDensity.maximize => LeapLocalizations.of(context).maximize,
+        ThemeDensity.desktop => AppLocalizations.of(context).desktop,
+        ThemeDensity.compact => AppLocalizations.of(context).compact,
+        ThemeDensity.standard => AppLocalizations.of(context).standard,
+        ThemeDensity.comfortable => AppLocalizations.of(context).comfortable,
+      };
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,6 +84,14 @@ class PersonalizationSettingsPage extends StatelessWidget {
                               .comingSoon /*_getLocaleName(context, state.localeTag)*/),
                           onTap: null /*() => _openLocaleModal(context)*/,
                         ),
+                        ListTile(
+                          leading:
+                              const PhosphorIcon(PhosphorIconsLight.gridNine),
+                          title: Text(AppLocalizations.of(context).density),
+                          subtitle:
+                              Text(_getDensityName(context, state.density)),
+                          onTap: () => _openDensityModal(context),
+                        ),
                         SwitchListTile(
                           title:
                               Text(AppLocalizations.of(context).highContrast),
@@ -111,6 +129,29 @@ class PersonalizationSettingsPage extends StatelessWidget {
             ]);
           },
         ));
+  }
+
+  void _openDensityModal(BuildContext context) {
+    final cubit = context.read<SettingsCubit>();
+    final density = cubit.state.density;
+
+    showLeapBottomSheet(
+        context: context,
+        titleBuilder: (ctx) => Text(AppLocalizations.of(context).density),
+        childrenBuilder: (context) {
+          void changeDensity(ThemeDensity density) {
+            cubit.changeDensity(density);
+            Navigator.of(context).pop();
+          }
+
+          return ThemeDensity.values
+              .map((e) => ListTile(
+                    title: Text(_getDensityName(context, e)),
+                    selected: e == density,
+                    onTap: () => changeDensity(e),
+                  ))
+              .toList();
+        });
   }
 
   void _openDesignModal(BuildContext context) {
