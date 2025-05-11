@@ -10,9 +10,6 @@ import 'package:material_leap/material_leap.dart';
 import 'package:setonix/pages/editor/shell.dart';
 import 'package:setonix/pages/game/page.dart';
 import 'package:setonix/pages/home/page.dart';
-import 'package:setonix/pages/settings/data.dart';
-import 'package:setonix/pages/settings/general.dart';
-import 'package:setonix/pages/settings/personalization.dart';
 import 'package:setonix/services/file_system.dart';
 import 'package:setonix/services/network.dart';
 import 'package:setonix/theme.dart';
@@ -157,21 +154,12 @@ class SetonixApp extends StatelessWidget {
           GoRoute(
             path: 'settings',
             builder: (context, state) => const SettingsPage(),
-            routes: [
-              GoRoute(
-                path: 'general',
-                builder: (context, state) => const GeneralSettingsPage(),
-              ),
-              GoRoute(
-                path: 'data',
-                builder: (context, state) => const DataSettingsPage(),
-              ),
-              GoRoute(
-                path: 'personalization',
-                builder: (context, state) =>
-                    const PersonalizationSettingsPage(),
-              ),
-            ],
+            routes: SettingsView.values
+                .map((e) => GoRoute(
+                      path: e.name,
+                      builder: (context, state) => e.buildContent(),
+                    ))
+                .toList(),
           ),
         ],
       ),

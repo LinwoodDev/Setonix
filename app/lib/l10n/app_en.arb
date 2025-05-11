@@ -249,5 +249,7 @@
   "desktop": "Desktop",
   "compact": "Compact",
   "standard": "Standard",
-  "comfortable": "Comfortable"
+  "comfortable": "Comfortable",
+  "accounts": "Accounts",
+  "create": "Create"
 }

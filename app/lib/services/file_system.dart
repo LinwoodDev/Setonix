@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:cryptography_plus/cryptography_plus.dart';
 import 'package:file_selector/file_selector.dart' as fs;
 import 'package:http/http.dart' as http;
 import 'package:idb_shim/idb.dart';
@@ -34,11 +35,15 @@ class SetonixFileSystem {
       worldSystem,
       editorSystem;
   final TypedKeyFileSystem<DataMetadata> dataInfoSystem;
+  final KeyFileSystem privateKeySystem, publicKeySystem;
 
   static Future<void> _onDatabaseUpgrade(VersionChangeEvent event) async {
     await initStores(event, ['packs', 'templates', 'worlds']);
     if (event.oldVersion < 2) {
       event.database.createObjectStore('packs-data');
+    }
+    if (event.oldVersion < 3) {
+      event.database.createObjectStore('keys');
     }
   }
 
@@ -116,6 +121,30 @@ class SetonixFileSystem {
           ),
           onDecode: SetonixData.fromData,
           onEncode: (data) => data.exportAsBytes(),
+        ),
+        privateKeySystem = KeyFileSystem.fromPlatform(
+          FileSystemConfig(
+            passwordStorage: SecureStoragePasswordStorage(),
+            storeName: 'keys',
+            getDirectory: (storage) async =>
+                '${await getSetonixDirectory()}/Keys',
+            database: 'setonix.db',
+            databaseVersion: kDatabaseVersion,
+            keySuffix: '.key',
+            onDatabaseUpgrade: _onDatabaseUpgrade,
+          ),
+        ),
+        publicKeySystem = KeyFileSystem.fromPlatform(
+          FileSystemConfig(
+            passwordStorage: SecureStoragePasswordStorage(),
+            storeName: 'keys',
+            getDirectory: (storage) async =>
+                '${await getSetonixDirectory()}/Keys',
+            database: 'setonix.db',
+            databaseVersion: kDatabaseVersion,
+            keySuffix: '.pub',
+            onDatabaseUpgrade: _onDatabaseUpgrade,
+          ),
         );
 
   Future<SetonixFile?> fetchCorePack() async =>
@@ -196,5 +225,16 @@ class SetonixFileSystem {
     for (final pack in packIds) {
       await updateServerLastUsed(pack, serverAddress);
     }
+  }
+
+  Future<void> generateKey(String name) async {
+    final generator = Ed25519();
+    final keyPair = await generator.newKeyPair();
+    final privateKey = await keyPair.extractPrivateKeyBytes();
+    final publicKey = await keyPair.extractPublicKey();
+    await privateKeySystem.createFileWithName(Uint8List.fromList(privateKey),
+        name: name);
+    await publicKeySystem
+        .createFileWithName(Uint8List.fromList(publicKey.bytes), name: name);
   }
 }
