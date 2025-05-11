@@ -30,11 +30,13 @@ final class LanGameServer extends GameServer with LanGameServerMappable {
 @MappableClass()
 final class ListGameServer extends GameServer with ListGameServerMappable {
   final String name;
+  final bool highlighted;
 
   ListGameServer({
     this.name = '',
     required super.address,
     super.secure = true,
+    this.highlighted = false,
   });
 
   @override
@@ -117,4 +119,11 @@ final class ServerState with ServerStateMappable {
   final List<PlayerInfo> players;
 
   const ServerState({this.link, this.players = const []});
+}
+
+@MappableClass()
+final class ServerList with ServerListMappable {
+  final List<ListGameServer> servers;
+
+  const ServerList({this.servers = const []});
 }

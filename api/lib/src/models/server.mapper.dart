@@ -202,19 +202,24 @@ class ListGameServerMapper extends ClassMapperBase<ListGameServer> {
   static bool _$secure(ListGameServer v) => v.secure;
   static const Field<ListGameServer, bool> _f$secure =
       Field('secure', _$secure, opt: true, def: true);
+  static bool _$highlighted(ListGameServer v) => v.highlighted;
+  static const Field<ListGameServer, bool> _f$highlighted =
+      Field('highlighted', _$highlighted, opt: true, def: false);
 
   @override
   final MappableFields<ListGameServer> fields = const {
     #name: _f$name,
     #address: _f$address,
     #secure: _f$secure,
+    #highlighted: _f$highlighted,
   };
 
   static ListGameServer _instantiate(DecodingData data) {
     return ListGameServer(
         name: data.dec(_f$name),
         address: data.dec(_f$address),
-        secure: data.dec(_f$secure));
+        secure: data.dec(_f$secure),
+        highlighted: data.dec(_f$highlighted));
   }
 
   @override
@@ -272,7 +277,7 @@ extension ListGameServerValueCopy<$R, $Out>
 abstract class ListGameServerCopyWith<$R, $In extends ListGameServer, $Out>
     implements GameServerCopyWith<$R, $In, $Out> {
   @override
-  $R call({String? name, String? address, bool? secure});
+  $R call({String? name, String? address, bool? secure, bool? highlighted});
   ListGameServerCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -286,17 +291,19 @@ class _ListGameServerCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ListGameServer> $mapper =
       ListGameServerMapper.ensureInitialized();
   @override
-  $R call({String? name, String? address, bool? secure}) =>
+  $R call({String? name, String? address, bool? secure, bool? highlighted}) =>
       $apply(FieldCopyWithData({
         if (name != null) #name: name,
         if (address != null) #address: address,
-        if (secure != null) #secure: secure
+        if (secure != null) #secure: secure,
+        if (highlighted != null) #highlighted: highlighted
       }));
   @override
   ListGameServer $make(CopyWithData data) => ListGameServer(
       name: data.get(#name, or: $value.name),
       address: data.get(#address, or: $value.address),
-      secure: data.get(#secure, or: $value.secure));
+      secure: data.get(#secure, or: $value.secure),
+      highlighted: data.get(#highlighted, or: $value.highlighted));
 
   @override
   ListGameServerCopyWith<$R2, ListGameServer, $Out2> $chain<$R2, $Out2>(
@@ -992,4 +999,116 @@ class _ServerStateCopyWithImpl<$R, $Out>
   ServerStateCopyWith<$R2, ServerState, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
       _ServerStateCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+class ServerListMapper extends ClassMapperBase<ServerList> {
+  ServerListMapper._();
+
+  static ServerListMapper? _instance;
+  static ServerListMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = ServerListMapper._());
+      ListGameServerMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'ServerList';
+
+  static List<ListGameServer> _$servers(ServerList v) => v.servers;
+  static const Field<ServerList, List<ListGameServer>> _f$servers =
+      Field('servers', _$servers, opt: true, def: const []);
+
+  @override
+  final MappableFields<ServerList> fields = const {
+    #servers: _f$servers,
+  };
+
+  static ServerList _instantiate(DecodingData data) {
+    return ServerList(servers: data.dec(_f$servers));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static ServerList fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<ServerList>(map);
+  }
+
+  static ServerList fromJson(String json) {
+    return ensureInitialized().decodeJson<ServerList>(json);
+  }
+}
+
+mixin ServerListMappable {
+  String toJson() {
+    return ServerListMapper.ensureInitialized()
+        .encodeJson<ServerList>(this as ServerList);
+  }
+
+  Map<String, dynamic> toMap() {
+    return ServerListMapper.ensureInitialized()
+        .encodeMap<ServerList>(this as ServerList);
+  }
+
+  ServerListCopyWith<ServerList, ServerList, ServerList> get copyWith =>
+      _ServerListCopyWithImpl<ServerList, ServerList>(
+          this as ServerList, $identity, $identity);
+  @override
+  String toString() {
+    return ServerListMapper.ensureInitialized()
+        .stringifyValue(this as ServerList);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return ServerListMapper.ensureInitialized()
+        .equalsValue(this as ServerList, other);
+  }
+
+  @override
+  int get hashCode {
+    return ServerListMapper.ensureInitialized().hashValue(this as ServerList);
+  }
+}
+
+extension ServerListValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, ServerList, $Out> {
+  ServerListCopyWith<$R, ServerList, $Out> get $asServerList =>
+      $base.as((v, t, t2) => _ServerListCopyWithImpl<$R, $Out>(v, t, t2));
+}
+
+abstract class ServerListCopyWith<$R, $In extends ServerList, $Out>
+    implements ClassCopyWith<$R, $In, $Out> {
+  ListCopyWith<$R, ListGameServer,
+      ListGameServerCopyWith<$R, ListGameServer, ListGameServer>> get servers;
+  $R call({List<ListGameServer>? servers});
+  ServerListCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _ServerListCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, ServerList, $Out>
+    implements ServerListCopyWith<$R, ServerList, $Out> {
+  _ServerListCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<ServerList> $mapper =
+      ServerListMapper.ensureInitialized();
+  @override
+  ListCopyWith<$R, ListGameServer,
+          ListGameServerCopyWith<$R, ListGameServer, ListGameServer>>
+      get servers => ListCopyWith($value.servers,
+          (v, t) => v.copyWith.$chain(t), (v) => call(servers: v));
+  @override
+  $R call({List<ListGameServer>? servers}) =>
+      $apply(FieldCopyWithData({if (servers != null) #servers: servers}));
+  @override
+  ServerList $make(CopyWithData data) =>
+      ServerList(servers: data.get(#servers, or: $value.servers));
+
+  @override
+  ServerListCopyWith<$R2, ServerList, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _ServerListCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
