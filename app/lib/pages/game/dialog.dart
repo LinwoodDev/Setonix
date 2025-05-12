@@ -3,8 +3,8 @@ import 'dart:ui';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:markdown_widget/markdown_widget.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -109,13 +109,16 @@ class GameDialogOverlay extends StatelessWidget {
                           final component = dialog.components[cIndex];
                           switch (component) {
                             case GameDialogMarkdownComponent():
-                              return MarkdownBody(
-                                extensionSet: md.ExtensionSet(
-                                  md.ExtensionSet.gitHubWeb.blockSyntaxes,
-                                  <md.InlineSyntax>[
-                                    md.EmojiSyntax(),
-                                    ...md.ExtensionSet.gitHubWeb.inlineSyntaxes
-                                  ],
+                              return MarkdownWidget(
+                                markdownGenerator: MarkdownGenerator(
+                                  extensionSet: md.ExtensionSet(
+                                    md.ExtensionSet.gitHubWeb.blockSyntaxes,
+                                    <md.InlineSyntax>[
+                                      md.EmojiSyntax(),
+                                      ...md
+                                          .ExtensionSet.gitHubWeb.inlineSyntaxes
+                                    ],
+                                  ),
                                 ),
                                 data: component.content,
                               );
