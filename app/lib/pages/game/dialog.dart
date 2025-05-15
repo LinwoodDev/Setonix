@@ -110,6 +110,8 @@ class GameDialogOverlay extends StatelessWidget {
                           switch (component) {
                             case GameDialogMarkdownComponent():
                               return MarkdownWidget(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
                                 markdownGenerator: MarkdownGenerator(
                                   extensionSet: md.ExtensionSet(
                                     md.ExtensionSet.gitHubWeb.blockSyntaxes,
