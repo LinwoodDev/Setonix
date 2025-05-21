@@ -4,7 +4,7 @@ environment:
 dependencies:
   archive: ^4.0.1
   args: ^2.5.0
-  lints: ^5.0.0
+  lints: ^6.0.0
   shelf: ^1.4.1
   shelf_proxy: ^1.0.4
   shelf_static: ^1.1.2
