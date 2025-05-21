@@ -4157,11 +4157,15 @@ class TeamChangedMapper extends SubClassMapperBase<TeamChanged> {
   static const Field<TeamChanged, String> _f$name = Field('name', _$name);
   static GameTeam _$team(TeamChanged v) => v.team;
   static const Field<TeamChanged, GameTeam> _f$team = Field('team', _$team);
+  static String? _$newName(TeamChanged v) => v.newName;
+  static const Field<TeamChanged, String> _f$newName =
+      Field('newName', _$newName, mode: FieldMode.member);
 
   @override
   final MappableFields<TeamChanged> fields = const {
     #name: _f$name,
     #team: _f$team,
+    #newName: _f$newName,
   };
 
   @override

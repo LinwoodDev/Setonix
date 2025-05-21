@@ -250,8 +250,15 @@ ServerProcessed processServerEvent(
       var newName = event.newName;
       var teamMembers = Map<String, Set<int>>.from(state.teamMembers);
       if (newName != null) {
-        info = info.copyWith.teams.remove(event.name);
-        info = info.copyWith.teams.put(newName, event.team);
+        final teams = Map<String, GameTeam>.fromEntries(info.teams.entries.map(
+          (e) {
+            if (e.key == event.name) {
+              return MapEntry(newName, event.team);
+            }
+            return e;
+          },
+        ));
+        info = info.copyWith(teams: teams);
         teamMembers[newName] = teamMembers.remove(event.name) ?? {};
       } else {
         info = info.copyWith.teams.put(event.name, event.team);
