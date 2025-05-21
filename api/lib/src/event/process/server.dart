@@ -246,8 +246,20 @@ ServerProcessed processServerEvent(
               ..[event.cell.position] = cell.copyWith(objects: newObjects));
       }));
     case TeamChanged():
-      return ServerProcessed(
-          state.copyWith.info.teams.put(event.name, event.team));
+      var info = state.info;
+      var newName = event.newName;
+      var teamMembers = Map<String, Set<int>>.from(state.teamMembers);
+      if (newName != null) {
+        info = info.copyWith.teams.remove(event.name);
+        info = info.copyWith.teams.put(newName, event.team);
+        teamMembers[newName] = teamMembers.remove(event.name) ?? {};
+      } else {
+        info = info.copyWith.teams.put(event.name, event.team);
+      }
+      return ServerProcessed(state.copyWith(
+        info: info,
+        teamMembers: teamMembers,
+      ));
     case TeamRemoved():
       return ServerProcessed(state.copyWith(
         info: state.info.copyWith.teams.remove(event.team),

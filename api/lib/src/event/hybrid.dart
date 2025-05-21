@@ -127,8 +127,10 @@ final class ObjectIndexChanged extends HybridWorldEvent
 final class TeamChanged extends HybridWorldEvent with TeamChangedMappable {
   final String name;
   final GameTeam team;
+  final String? newName;
 
-  TeamChanged(this.name, this.team);
+  TeamChanged(this.name, this.team) : newName = null;
+  TeamChanged.rename(this.name, this.newName, this.team);
 }
 
 @MappableClass()

@@ -112,8 +112,10 @@ class TeamDialogState extends State<TeamDialog> {
                           description: _descriptionController.text,
                           color: _color,
                         );
-                        _bloc.add(TeamChanged(
-                            widget.team ?? _nameController.text, team));
+                        _bloc.add(TeamChanged.rename(
+                            widget.team ?? _nameController.text,
+                            _nameController.text,
+                            team));
                         Navigator.of(context).pop();
                       },
                 child: Text(_isCreate()
