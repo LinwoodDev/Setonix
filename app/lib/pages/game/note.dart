@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:markdown_widget/markdown_widget.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -122,13 +122,15 @@ class _GameNoteDialogState extends State<GameNoteDialog> {
                     constraints: BoxConstraints(
                       minHeight: _expanded ? 400 : 200,
                     ),
-                    child: Markdown(
-                        extensionSet: md.ExtensionSet(
-                          md.ExtensionSet.gitHubWeb.blockSyntaxes,
-                          <md.InlineSyntax>[
-                            md.EmojiSyntax(),
-                            ...md.ExtensionSet.gitHubWeb.inlineSyntaxes
-                          ],
+                    child: MarkdownWidget(
+                        markdownGenerator: MarkdownGenerator(
+                          extensionSet: md.ExtensionSet(
+                            md.ExtensionSet.gitHubWeb.blockSyntaxes,
+                            <md.InlineSyntax>[
+                              md.EmojiSyntax(),
+                              ...md.ExtensionSet.gitHubWeb.inlineSyntaxes
+                            ],
+                          ),
                         ),
                         shrinkWrap: true,
                         data: _contentController.text),
