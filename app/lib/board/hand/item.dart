@@ -122,12 +122,12 @@ abstract class HandItem<T> extends PositionComponent
   @override
   Future<void> onLoad() async {
     super.onLoad();
+    _sprite.size = Vector2.all(height - labelHeight);
     _sprite.sprite = game.blankSprite;
     add(_sprite);
   }
 
   void _resetPosition() {
-    _sprite.position = Vector2(0, labelHeight);
     priority = priorityNormal;
     if (!_label.isMounted) add(_label);
     final cursor = _cursorHitbox;

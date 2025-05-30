@@ -102,17 +102,7 @@ class PersonalizationSettingsPage extends StatelessWidget {
                               .read<SettingsCubit>()
                               .changeHighContrast(value),
                         ),
-                      ]),
-                ),
-              ),
-              if (!kIsWeb && (Platform.isWindows || Platform.isLinux))
-                Card(
-                  margin: settingsCardMargin,
-                  child: Padding(
-                    padding: settingsCardPadding,
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
+                        if (!kIsWeb && (Platform.isWindows || Platform.isLinux))
                           SwitchListTile(
                             value: state.nativeTitleBar,
                             title: Text(
@@ -123,9 +113,29 @@ class PersonalizationSettingsPage extends StatelessWidget {
                                 .read<SettingsCubit>()
                                 .changeNativeTitleBar(value),
                           ),
-                        ]),
-                  ),
+                      ]),
                 ),
+              ),
+              Card(
+                margin: settingsCardMargin,
+                child: Padding(
+                  padding: settingsCardPadding,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        SwitchListTile(
+                          title:
+                              Text(AppLocalizations.of(context).stackedCards),
+                          secondary:
+                              const PhosphorIcon(PhosphorIconsLight.stack),
+                          value: state.stackedCards,
+                          onChanged: (value) => context
+                              .read<SettingsCubit>()
+                              .changeStackedCards(value),
+                        ),
+                      ]),
+                ),
+              ),
             ]);
           },
         ));

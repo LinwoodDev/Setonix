@@ -249,5 +249,6 @@
   "desktop": "Desktop",
   "compact": "Compact",
   "standard": "Standard",
-  "comfortable": "Comfortable"
+  "comfortable": "Comfortable",
+  "stackedCards": "Stacked cards"
 }
