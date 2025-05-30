@@ -150,7 +150,7 @@ abstract class HandItem<T> extends PositionComponent
     _sprite.sprite = await loadIcon(state) ?? game.blankSprite;
   }
 
-  _buildPaint(ClientWorldState state) => TextPaint(
+  TextPaint _buildPaint(ClientWorldState state) => TextPaint(
         style: TextStyle(fontSize: 14, color: state.colorScheme.onSurface),
       );
 

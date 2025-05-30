@@ -27,9 +27,9 @@ class VectorDefinition with VectorDefinitionMappable {
 
   String toDisplayString() => '($x, $y)';
 
-  operator +(VectorDefinition other) =>
+  VectorDefinition operator +(VectorDefinition other) =>
       VectorDefinition(x + other.x, y + other.y);
-  operator -(VectorDefinition other) =>
+  VectorDefinition operator -(VectorDefinition other) =>
       VectorDefinition(x - other.x, y - other.y);
 
   bool inBounds(VectorDefinition first, VectorDefinition last) {
