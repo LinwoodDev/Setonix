@@ -97,8 +97,8 @@ class GameHand extends CustomPainterComponent
       previousState.showDuplicates != newState.showDuplicates ||
       previousState.searchTerm != newState.searchTerm;
   static const itemAngle = 0.01;
-  static const activeItemWidth = 100;
-  static const itemWidth = 60;
+  static const activeItemWidth = 130;
+  static const itemWidth = 80;
   static const itemYOffset = 3;
   void _layoutChildren() {
     final childrenLength = children.length;
@@ -236,7 +236,7 @@ class GameHand extends CustomPainterComponent
         ..continuePropagation = true;
       return;
     }
-    scroll(event.localDelta.x);
+    dragScroll(event.localDelta.x);
   }
 
   @override
@@ -249,7 +249,7 @@ class GameHand extends CustomPainterComponent
       delta = info.scrollDelta.global.y;
     }
     delta /= 4;
-    scroll(-delta / game.settingsCubit.state.scrollSensitivity);
+    scroll(delta > 0 ? -1 : 1);
     return true;
   }
 
@@ -264,9 +264,11 @@ class GameHand extends CustomPainterComponent
     super.onDragEnd(event);
   }
 
+  void dragScroll(double delta) => scroll(delta * 0.1);
+
   void scroll(double delta) {
     if (!isShowing) return;
-    _currentScroll += delta < 0 ? -1 : 1;
+    _currentScroll += delta;
     _needsLayout = true;
   }
 }

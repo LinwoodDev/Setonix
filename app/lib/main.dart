@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:setonix/pages/settings/input.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:material_leap/material_leap.dart';
@@ -170,6 +171,10 @@ class SetonixApp extends StatelessWidget {
                 path: 'personalization',
                 builder: (context, state) =>
                     const PersonalizationSettingsPage(),
+              ),
+              GoRoute(
+                path: 'inputs',
+                builder: (context, state) => const InputsSettingsPage(),
               ),
             ],
           ),

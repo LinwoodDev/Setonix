@@ -184,7 +184,7 @@ abstract class HandItem<T> extends PositionComponent
   void onDragUpdate(DragUpdateEvent event) {
     super.onDragUpdate(event);
     if (!(isMouseOrLongPressing ?? false)) {
-      hand.scroll(event.localDelta.x);
+      hand.dragScroll(event.localDelta.x);
       return;
     }
     if (_label.parent != null) _label.removeFromParent();
