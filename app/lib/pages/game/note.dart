@@ -64,8 +64,8 @@ class _GameNoteDialogState extends State<GameNoteDialog> {
         IconButton(
           icon: const Icon(PhosphorIconsLight.pencil),
           tooltip: _editing
-              ? AppLocalizations.of(context).exitEditMode
-              : AppLocalizations.of(context).enterEditMode,
+              ? AppLocalizations.of(context).enterEditMode
+              : AppLocalizations.of(context).exitEditMode,
           isSelected: _editing,
           selectedIcon: const Icon(PhosphorIconsLight.monitor),
           onPressed: () {

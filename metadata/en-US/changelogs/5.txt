@@ -9,6 +9,7 @@
 * Add scroll sensitivity setting
 * Add remaining empty indicator to editor tabs
 * Fix renaming teams not working ([#48](https://github.com/LinwoodDev/Setonix/issues/48))
+* Fix edit mode tooltip
 * Migrate away from flutter_markdown
 * Upgrade to flutter 3.32
 * Update to agb 8.9
