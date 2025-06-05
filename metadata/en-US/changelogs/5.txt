@@ -3,6 +3,7 @@
 * Add option for server to send link information
 * Add import and export settings
 * Add density settings
+* Add arrow key hand keyboard navigation
 * Improve multiplayer ui
 * Improve card rendering layout
 * Add swamp multiplayer support

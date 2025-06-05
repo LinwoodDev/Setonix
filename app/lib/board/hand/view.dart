@@ -75,7 +75,10 @@ class GameHand extends CustomPainterComponent
   void onInitialState(ClientWorldState state) => _isDirty = true;
 
   @override
-  void onNewState(ClientWorldState state) => _isDirty = true;
+  void onNewState(ClientWorldState state) {
+    _currentScroll = 0;
+    _isDirty = true;
+  }
 
   @override
   void onParentResize(Vector2 maxSize) {
@@ -107,7 +110,7 @@ class GameHand extends CustomPainterComponent
     final double active = _currentScroll.clamp(0, childrenLength - 1);
 
     children.toList().whereType<HandItem>().forEachIndexed((index, element) {
-      final double activeRelative = active - index;
+      final double activeRelative = index - active;
       // Figure out how "active" this item is (0 = fully active, 1 = inactive)
       final progress = 1 - activeRelative.abs().clamp(0, 1);
       var x = center.x + 128 * activeRelative;
@@ -264,11 +267,14 @@ class GameHand extends CustomPainterComponent
     super.onDragEnd(event);
   }
 
-  void dragScroll(double delta) => scroll(delta * 0.1);
+  void dragScroll(double delta) => scroll(delta * -0.025);
 
   void scroll(double delta) {
     if (!isShowing) return;
-    _currentScroll += delta;
+    _currentScroll = (_currentScroll + delta).clamp(0, children.length - 1);
     _needsLayout = true;
   }
+
+  void moveLeft() => scroll(-1);
+  void moveRight() => scroll(1);
 }
