@@ -544,6 +544,9 @@ jobs:
       - name: Install yq
         if: ${{ matrix.os.name == 'windows-2025' }}
         run: choco install yq
+      - name: Install tree
+        if: ${{ matrix.os.name == 'macos-latest' }}
+        run: brew install tree
       - uses: subosito/flutter-action@v2.19.0
         with:
           flutter-version-file: app/pubspec.yaml
