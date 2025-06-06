@@ -23,7 +23,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
 
   ServerAssetManager get assetManager => server.assetManager;
 
-  bool get autosave => server.autosave;
+  bool get autosave => server.configManager.autosave;
 
   EventSystem get eventSystem => _serverPlugin.eventSystem;
 

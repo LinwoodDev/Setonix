@@ -7,6 +7,7 @@ import 'package:networker_socket/server.dart';
 import 'package:setonix_api/setonix_api.dart';
 import 'package:setonix_server/src/asset.dart';
 import 'package:setonix_server/src/bloc.dart';
+import 'package:setonix_server/src/config.dart';
 import 'package:setonix_server/src/programs/packs.dart';
 import 'package:setonix_server/src/programs/players.dart';
 import 'package:setonix_server/src/programs/reset.dart';
@@ -25,13 +26,12 @@ String limitOutput(Object? value, [int limit = 500]) {
 
 final class SetonixServer {
   final Consoler consoler;
+  final ConfigManager configManager = ConfigManager();
   final ServerAssetManager assetManager;
   final String? worldFile;
   final Map<String, WorldBloc> _worlds = {};
   final Map<Channel, String> _userWorlds = {};
   late final PluginSystem pluginSystem;
-  bool autosave = false, _multiWorld = false;
-  bool get multiWorld => _multiWorld;
 
   NetworkerSocketServer? _server;
   NetworkerPipe<dynamic, WorldEvent>? _pipe;
@@ -94,24 +94,21 @@ final class SetonixServer {
 
   static final String defaultWorldFile = 'world.stnx';
 
-  int _maxPlayers = 10;
-
   Map<int, ConnectionInfo> get players =>
       Map.fromEntries((_server?.clientConnections ?? {})
           .map((e) => MapEntry(e, _server!.getConnectionInfo(e)!)));
 
   Future<void> init({
-    int port = kDefaultPort,
-    int maxPlayers = 10,
+    SetonixConfig argsConfig = const SetonixConfig(),
     bool verbose = false,
-    bool autosave = false,
-    bool multiWorld = false,
-    String description = '',
   }) async {
     if (verbose) {
       consoler.minLogLevel = LogLevel.verbose;
     }
-    log("Starting server on port $port", level: LogLevel.info);
+    configManager.setArgsConfig(argsConfig);
+    await configManager.loadConfig();
+    log("Starting server on ${configManager.host}:${configManager.port}",
+        level: LogLevel.info);
     log('Verbose logging activated', level: LogLevel.verbose);
     try {
       await initPluginSystem();
@@ -120,9 +117,6 @@ final class SetonixServer {
       log('Error initializing plugin system: $e, continuing without',
           level: LogLevel.warning);
     }
-    this.autosave = autosave;
-    _multiWorld = multiWorld;
-    _maxPlayers = maxPlayers;
     SecurityContext? securityContext;
     try {
       final privateKey = await File('certs/server.key').readAsBytes();
@@ -136,17 +130,20 @@ final class SetonixServer {
           level: LogLevel.warning);
     }
     final server = _server = NetworkerSocketServer(
-        InternetAddress.anyIPv4, port,
+        InternetAddress.anyIPv4, configManager.port,
         securityContext: securityContext,
         filterConnections: buildFilterConnections(
             loadProperty: (request) =>
-                getWorld(request.uri.path)?.eventSystem.runPing(
-                    request,
-                    GameProperty.defaultProperty.copyWith(
-                      description: description,
-                      maxPlayers: maxPlayers,
-                      currentPlayers: _server?.clientConnections.length,
-                    ))));
+                (getWorld(request.uri.path) ?? defaultWorld)
+                    .eventSystem
+                    .runPing(
+                        request,
+                        GameProperty.defaultProperty.copyWith(
+                          description: configManager.description,
+                          maxPlayers: configManager.maxPlayers,
+                          currentPlayers: _server?.clientConnections.length,
+                          packsSignature: assetManager.createSignature(),
+                        ))));
 
     final transformer = _pipe = NetworkerPipeTransformer<String, WorldEvent>(
         WorldEventMapper.fromJson, (e) => e.toJson());
@@ -198,7 +195,8 @@ final class SetonixServer {
 
   void _onJoin((Channel, ConnectionInfo) event) {
     final (user, info) = event;
-    if (players.length > _maxPlayers) {
+    final maxPlayers = configManager.maxPlayers;
+    if (maxPlayers >= 0 && players.length > maxPlayers) {
       log('Server is full, rejecting connection from ${info.address}',
           level: LogLevel.warning);
       info.close();

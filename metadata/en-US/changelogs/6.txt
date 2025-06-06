@@ -1,0 +1,4 @@
+* Add config system for server
+* Add support for defining host for server
+
+Read more here: https://linwood.dev/setonix/0.4.1

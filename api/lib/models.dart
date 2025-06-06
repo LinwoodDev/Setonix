@@ -1,5 +1,6 @@
 export 'src/models/background.dart';
 export 'src/models/chat.dart';
+export 'src/models/config.dart';
 export 'src/models/data.dart';
 export 'src/models/deck.dart';
 export 'src/models/definition.dart';

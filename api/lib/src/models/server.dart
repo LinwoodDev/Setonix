@@ -62,7 +62,7 @@ class GameProperty with GamePropertyMappable {
   final String description;
   final int? maxPlayers;
   final int currentPlayers;
-  final Map<String, FileMetadata> packsSignature;
+  final Map<String, SignatureMetadata> packsSignature;
 
   const GameProperty({
     this.description = '',
