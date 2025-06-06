@@ -20,6 +20,12 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
   @override
   final String id = 'SetonixConfig';
 
+  static String? _$host(SetonixConfig v) => v.host;
+  static const Field<SetonixConfig, String> _f$host =
+      Field('host', _$host, opt: true);
+  static int? _$port(SetonixConfig v) => v.port;
+  static const Field<SetonixConfig, int> _f$port =
+      Field('port', _$port, opt: true);
   static String? _$worldFile(SetonixConfig v) => v.worldFile;
   static const Field<SetonixConfig, String> _f$worldFile =
       Field('worldFile', _$worldFile, opt: true);
@@ -38,6 +44,8 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
 
   @override
   final MappableFields<SetonixConfig> fields = const {
+    #host: _f$host,
+    #port: _f$port,
     #worldFile: _f$worldFile,
     #autosave: _f$autosave,
     #multiWorld: _f$multiWorld,
@@ -47,6 +55,8 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
 
   static SetonixConfig _instantiate(DecodingData data) {
     return SetonixConfig(
+        host: data.dec(_f$host),
+        port: data.dec(_f$port),
         worldFile: data.dec(_f$worldFile),
         autosave: data.dec(_f$autosave),
         multiWorld: data.dec(_f$multiWorld),
@@ -108,7 +118,9 @@ extension SetonixConfigValueCopy<$R, $Out>
 abstract class SetonixConfigCopyWith<$R, $In extends SetonixConfig, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call(
-      {String? worldFile,
+      {String? host,
+      int? port,
+      String? worldFile,
       bool? autosave,
       bool? multiWorld,
       int? maxPlayers,
@@ -126,12 +138,16 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
       SetonixConfigMapper.ensureInitialized();
   @override
   $R call(
-          {Object? worldFile = $none,
+          {Object? host = $none,
+          Object? port = $none,
+          Object? worldFile = $none,
           Object? autosave = $none,
           Object? multiWorld = $none,
           Object? maxPlayers = $none,
           Object? description = $none}) =>
       $apply(FieldCopyWithData({
+        if (host != $none) #host: host,
+        if (port != $none) #port: port,
         if (worldFile != $none) #worldFile: worldFile,
         if (autosave != $none) #autosave: autosave,
         if (multiWorld != $none) #multiWorld: multiWorld,
@@ -140,6 +156,8 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
       }));
   @override
   SetonixConfig $make(CopyWithData data) => SetonixConfig(
+      host: data.get(#host, or: $value.host),
+      port: data.get(#port, or: $value.port),
       worldFile: data.get(#worldFile, or: $value.worldFile),
       autosave: data.get(#autosave, or: $value.autosave),
       multiWorld: data.get(#multiWorld, or: $value.multiWorld),
