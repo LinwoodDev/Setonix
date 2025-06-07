@@ -4,6 +4,7 @@
   * Fix items overflowing with size
 * Add config system for server
 * Add error handling for invalid packs
+* Fix dragging cards on mobile
 * Fix world not loading in multiplayer
 * Fix team creation not working
 * Fix team changes not being synced correctly in multiplayer

@@ -225,7 +225,6 @@ abstract class HandItem<T> extends PositionComponent
 
   @override
   void onDragEnd(DragEndEvent event) {
-    super.onDragEnd(event);
     _dragSprite?.removeFromParent();
     _dragSprite = null;
     if (isMouseOrLongPressing ?? true) {
@@ -236,6 +235,7 @@ abstract class HandItem<T> extends PositionComponent
       if (zone != null) moveItem(zone);
     }
     _resetPosition();
+    super.onDragEnd(event);
   }
 
   @override
