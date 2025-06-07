@@ -130,6 +130,7 @@ final class TeamChanged extends HybridWorldEvent with TeamChangedMappable {
   final String? newName;
 
   TeamChanged(this.name, this.team) : newName = null;
+  @MappableConstructor()
   TeamChanged.rename(this.name, this.newName, this.team);
 }
 

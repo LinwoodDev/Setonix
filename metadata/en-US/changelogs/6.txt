@@ -1,6 +1,8 @@
 * Improve parsing of server url
 * Add config system for server
 * Fix world not loading in multiplayer
+* Fix team creation not working
+* Fix team changes not being synced correctly in multiplayer
 * Add support for defining host for server
 * Fix core pack not included in build
 
