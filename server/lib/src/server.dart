@@ -28,7 +28,6 @@ final class SetonixServer {
   final Consoler consoler;
   final ConfigManager configManager = ConfigManager();
   final ServerAssetManager assetManager;
-  final String? worldFile;
   final Map<String, WorldBloc> _worlds = {};
   final Map<Channel, String> _userWorlds = {};
   late final PluginSystem pluginSystem;
@@ -41,10 +40,17 @@ final class SetonixServer {
   WorldBloc get defaultWorld =>
       _worlds[defaultWorldName] ??
       (_worlds[defaultWorldName] = WorldBloc(
-        SetonixData.empty(),
+        _buildDefaultWorld(),
         this,
         defaultWorldName,
       ));
+
+  SetonixData _buildDefaultWorld() {
+    final data = SetonixData.empty().setInfo(GameInfo(
+      packs: assetManager.getPackIds().toList(),
+    ));
+    return data;
+  }
 
   EventSystem get defaultEventSystem => defaultWorld.eventSystem;
 
@@ -61,12 +67,10 @@ final class SetonixServer {
   WorldState? getUserWorldState(Channel channel) =>
       getUserWorld(channel)?.state;
 
-  SetonixServer._(
-      this.worldFile, this.consoler, SetonixData data, this.assetManager);
+  SetonixServer._(this.consoler, this.assetManager);
 
   static Future<SetonixServer> load({
     String? worldFile,
-    bool disableLoading = false,
   }) async {
     final assetManager = ServerAssetManager();
     final consoler = Consoler(
@@ -76,17 +80,7 @@ final class SetonixServer {
     );
     await _runStaticLogZone(
         consoler, () => assetManager.init(console: consoler));
-    worldFile ??= defaultWorldFile;
-    final file = File(worldFile);
-    SetonixData? data;
-    if (!disableLoading && await file.exists()) {
-      final bytes = await file.readAsBytes();
-      data = SetonixData.fromData(bytes);
-    }
-    data ??= SetonixData.empty().setInfo(GameInfo(
-      packs: assetManager.getPackIds().toList(),
-    ));
-    return SetonixServer._(worldFile, consoler, data, assetManager);
+    return SetonixServer._(consoler, assetManager);
   }
 
   void log(Object? message, {LogLevel? level}) =>

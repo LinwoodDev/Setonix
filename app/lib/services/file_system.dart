@@ -118,7 +118,7 @@ class SetonixFileSystem {
           onEncode: (data) => data.exportAsBytes(),
         );
 
-  Future<SetonixFile?> fetchCorePack() async =>
+  Future<SetonixFile> fetchCorePack() async =>
       _corePack ?? (_corePack = await getCorePack());
 
   Future<Iterable<SetonixFile>> getPacks({

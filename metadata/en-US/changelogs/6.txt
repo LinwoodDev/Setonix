@@ -1,5 +1,6 @@
 * Improve parsing of server url
 * Add config system for server
+* Fix world not loading in multiplayer
 * Add support for defining host for server
 * Fix core pack not included in build
 
