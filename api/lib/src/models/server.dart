@@ -49,7 +49,9 @@ final class ListGameServer extends GameServer with ListGameServerMappable {
 Uri buildServerAddress(Uri uri, bool secure, {bool webSockets = true}) {
   // handle plain host without scheme: treat single-segment path as host
   if (uri.host.isEmpty && uri.pathSegments.length == 1) {
-    uri = uri.replace(host: uri.pathSegments.first, path: '');
+    uri = uri.replace(
+        host: uri.pathSegments.first,
+        pathSegments: uri.pathSegments.skip(1).toList());
   }
   if (uri.scheme.isEmpty) {
     uri =

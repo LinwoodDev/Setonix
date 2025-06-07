@@ -162,10 +162,27 @@ abstract class HandItem<T> extends PositionComponent
   @override
   void onParentResize(Vector2 maxSize) {
     height = maxSize.y;
-    final size = height - labelHeight;
-    _sprite.size = Vector2.all(size);
-    _sprite.x = (100 - size) / 2;
-    _sprite.y = labelHeight;
+    _updateSpriteSize();
+  }
+
+  void updateWidth(double width) {
+    this.width = width;
+    _label.x = width / 2;
+    _updateSpriteSize();
+  }
+
+  void _updateSpriteSize() {
+    final spriteSize = _sprite.sprite?.srcSize ?? Vector2.zero();
+    var spriteHeight = height - labelHeight;
+    var spriteWidth = spriteSize.x * (spriteHeight / spriteSize.y);
+    var yOffset = 0.0;
+    if (spriteWidth > width) {
+      spriteWidth = width;
+      spriteHeight = spriteSize.y * (spriteWidth / spriteSize.x);
+      yOffset = (height - spriteHeight - labelHeight) / 2;
+    }
+    _sprite.size = Vector2(spriteWidth, spriteHeight);
+    _sprite.y = labelHeight + yOffset;
   }
 
   HandItemDragCursorHitbox? _cursorHitbox;

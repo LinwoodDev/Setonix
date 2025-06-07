@@ -83,7 +83,7 @@ class GameHand extends CustomPainterComponent
   @override
   void onParentResize(Vector2 maxSize) {
     width = maxSize.x;
-    height = min(maxSize.y / 3, 256);
+    height = min(maxSize.y / 3, 192);
     position = Vector2(0, maxSize.y - height);
   }
 
@@ -100,7 +100,8 @@ class GameHand extends CustomPainterComponent
       previousState.showDuplicates != newState.showDuplicates ||
       previousState.searchTerm != newState.searchTerm;
   static const itemAngle = 0.01;
-  static const activeItemWidth = 130;
+  static const activeItemWidth = 100;
+  static const simpleItemWidth = 180;
   static const itemWidth = 80;
   static const itemYOffset = 3;
   void _layoutChildren() {
@@ -114,14 +115,16 @@ class GameHand extends CustomPainterComponent
     children.toList().whereType<HandItem>().forEachIndexed((index, element) {
       final double activeRelative = active - index;
       // Figure out how "active" this item is (0 = fully active, 1 = inactive)
-      var x = center.x + 128 * activeRelative;
+      var x = center.x + simpleItemWidth * activeRelative;
       var y = center.y;
+      var width = simpleItemWidth.toDouble();
       if (game.settingsCubit.state.stackedCards) {
         final offset = activeRelative <= -1 ? -activeItemWidth / 2 : 0;
         y = center.y + itemYOffset * activeRelative.abs();
         x = center.x + offset + activeRelative * itemWidth;
         element.angle = activeRelative * itemAngle;
       }
+      element.updateWidth(width);
 
       element.changeLabelVisibility(activeRelative.abs() >= 1);
 
