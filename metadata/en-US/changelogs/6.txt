@@ -10,5 +10,6 @@
 * Fix team changes not being synced correctly in multiplayer
 * Add support for defining host for server
 * Fix core pack not included in build
+* Fix server crash when invalid request is made
 
 Read more here: https://linwood.dev/setonix/0.4.1

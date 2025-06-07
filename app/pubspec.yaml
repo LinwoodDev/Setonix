@@ -55,17 +55,17 @@ dependencies:
   networker:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 2e0ab5b548cb8e2d64ca24e0d7b4a6cfcc6d57fe
+      ref: 4f221c5943ceb786eb7bd427eb71a8cc1346b9b8
       path: packages/networker/networker
   networker_socket:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 426b6af52aa7028264d0d725a89d7cd8102e5dda
+      ref: ec6f31ba3eb0da17bdef6a8d66ef6caafcabd908
       path: packages/networker/networker_socket
   swamp_api:
     git:
       url: https://github.com/LinwoodDev/Swamp.git
-      ref: 9e0075b2a2005a4378ec48d44b6fad9cae79d83c
+      ref: 1c15259fc8c5e043997ffcaafbf45348a77e3003
       path: api
   # System Information
   dynamic_color: ^1.7.0
