@@ -2,6 +2,24 @@
 
 <!--ENTER CHANGELOG HERE-->
 
+## 0.4.1 (2025-06-09)
+
+* Improve parsing of server url
+* Improve rendering of cards
+  * Make bottom panel smaller
+  * Fix items overflowing with size
+* Add config system for server
+* Add error handling for invalid packs
+* Fix dragging cards on mobile
+* Fix world not loading in multiplayer
+* Fix team creation not working
+* Fix team changes not being synced correctly in multiplayer
+* Add support for defining host for server
+* Fix core pack not included in build
+* Fix server crash when invalid request is made
+
+Read more here: https://linwood.dev/setonix/0.4.1
+
 ## 0.4.0 (2025-06-05)
 
 * Add importing system for editor
