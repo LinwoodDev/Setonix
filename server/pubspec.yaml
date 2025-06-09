@@ -1,6 +1,6 @@
 name: setonix_server
 description: The Linwood Setonix game server
-version: 0.4.1
+version: 0.5.0
 publish_to: none
 
 environment:
