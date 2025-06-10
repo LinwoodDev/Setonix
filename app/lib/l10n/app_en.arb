@@ -252,5 +252,9 @@
   "comfortable": "Comfortable",
   "stackedCards": "Stacked cards",
   "accounts": "Accounts",
-  "create": "Create"
+  "create": "Create",
+  "backupKey": "Backup key",
+  "importAccounts": "Import accounts",
+  "importAccountsDescription": "Are you sure you want to import the accounts?",
+  "backupAllKeys": "Backup all keys"
 }
