@@ -200,10 +200,10 @@ jobs:
       - uses: subosito/flutter-action@v2.19.0
         with:
           flutter-version-file: app/pubspec.yaml
-          channel: 'master'
+          channel: "master"
           cache: true
-          cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
-          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+          cache-key: "flutter-:os:-:channel:-:version:-:arch:-:hash:"
+          cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:"
       - name: ✅ Enable platforms
         run: |
           rm -f "$(dirname "$(dirname "$(command -v flutter)")")/engine/src/.gn"
@@ -336,10 +336,10 @@ jobs:
       - uses: subosito/flutter-action@v2.19.0
         with:
           flutter-version-file: app/pubspec.yaml
-          channel: 'master'
+          channel: "master"
           cache: true
-          cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
-          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+          cache-key: "flutter-:os:-:channel:-:version:-:arch:-:hash:"
+          cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:"
       - name: ✅ Enable platforms
         run: |
           rm -f "$(dirname "$(dirname "$(command -v flutter)")")/engine/src/.gn"
@@ -544,6 +544,9 @@ jobs:
       - name: Install yq
         if: ${{ matrix.os.name == 'windows-2025' }}
         run: choco install yq
+      - name: Install tree
+        if: ${{ matrix.os.name == 'macos-latest' }}
+        run: brew install tree
       - uses: subosito/flutter-action@v2.19.0
         with:
           flutter-version-file: app/pubspec.yaml
@@ -579,7 +582,8 @@ jobs:
           dart pub get
           cd ..
           dart run tools/generate.dart
-          cp app/assets/pack.stnx server/server-build/packs/.stnx
+          cp app/assets/pack.stnx server/server-build/packs/core.stnx
+          tree -a -L 2 server/server-build
       - name: Archive
         uses: actions/upload-artifact@v4
         with:
@@ -877,7 +881,7 @@ jobs:
       - name: Setup Fastlane
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.4.2"
+          ruby-version: "3.4.4"
           bundler-cache: true
           working-directory: app/android
       - name: 🚀 Deploy to Play Store

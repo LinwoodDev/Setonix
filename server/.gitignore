@@ -6,5 +6,6 @@ doc/
 # Runtime files
 world.stnx
 packs/
+config.json
 
 *.so

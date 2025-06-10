@@ -320,7 +320,7 @@ class GamePropertyMapper extends ClassMapperBase<GameProperty> {
       MapperContainer.globals.use(_instance = GamePropertyMapper._());
       LanPropertyMapper.ensureInitialized();
       ListPropertyMapper.ensureInitialized();
-      FileMetadataMapper.ensureInitialized();
+      SignatureMetadataMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -337,9 +337,9 @@ class GamePropertyMapper extends ClassMapperBase<GameProperty> {
   static int _$currentPlayers(GameProperty v) => v.currentPlayers;
   static const Field<GameProperty, int> _f$currentPlayers =
       Field('currentPlayers', _$currentPlayers, opt: true, def: 0);
-  static Map<String, FileMetadata> _$packsSignature(GameProperty v) =>
+  static Map<String, SignatureMetadata> _$packsSignature(GameProperty v) =>
       v.packsSignature;
-  static const Field<GameProperty, Map<String, FileMetadata>>
+  static const Field<GameProperty, Map<String, SignatureMetadata>>
       _f$packsSignature =
       Field('packsSignature', _$packsSignature, opt: true, def: const {});
 
@@ -412,13 +412,14 @@ extension GamePropertyValueCopy<$R, $Out>
 
 abstract class GamePropertyCopyWith<$R, $In extends GameProperty, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  MapCopyWith<$R, String, FileMetadata,
-      FileMetadataCopyWith<$R, FileMetadata, FileMetadata>> get packsSignature;
+  MapCopyWith<$R, String, SignatureMetadata,
+          SignatureMetadataCopyWith<$R, SignatureMetadata, SignatureMetadata>>
+      get packsSignature;
   $R call(
       {String? description,
       int? maxPlayers,
       int? currentPlayers,
-      Map<String, FileMetadata>? packsSignature});
+      Map<String, SignatureMetadata>? packsSignature});
   GamePropertyCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -431,8 +432,8 @@ class _GamePropertyCopyWithImpl<$R, $Out>
   late final ClassMapperBase<GameProperty> $mapper =
       GamePropertyMapper.ensureInitialized();
   @override
-  MapCopyWith<$R, String, FileMetadata,
-          FileMetadataCopyWith<$R, FileMetadata, FileMetadata>>
+  MapCopyWith<$R, String, SignatureMetadata,
+          SignatureMetadataCopyWith<$R, SignatureMetadata, SignatureMetadata>>
       get packsSignature => MapCopyWith($value.packsSignature,
           (v, t) => v.copyWith.$chain(t), (v) => call(packsSignature: v));
   @override
@@ -440,7 +441,7 @@ class _GamePropertyCopyWithImpl<$R, $Out>
           {String? description,
           Object? maxPlayers = $none,
           int? currentPlayers,
-          Map<String, FileMetadata>? packsSignature}) =>
+          Map<String, SignatureMetadata>? packsSignature}) =>
       $apply(FieldCopyWithData({
         if (description != null) #description: description,
         if (maxPlayers != $none) #maxPlayers: maxPlayers,
@@ -468,7 +469,7 @@ class LanPropertyMapper extends ClassMapperBase<LanProperty> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = LanPropertyMapper._());
       GamePropertyMapper.ensureInitialized();
-      FileMetadataMapper.ensureInitialized();
+      SignatureMetadataMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -488,9 +489,10 @@ class LanPropertyMapper extends ClassMapperBase<LanProperty> {
   static String _$description(LanProperty v) => v.description;
   static const Field<LanProperty, String> _f$description =
       Field('description', _$description, opt: true, def: '');
-  static Map<String, FileMetadata> _$packsSignature(LanProperty v) =>
+  static Map<String, SignatureMetadata> _$packsSignature(LanProperty v) =>
       v.packsSignature;
-  static const Field<LanProperty, Map<String, FileMetadata>> _f$packsSignature =
+  static const Field<LanProperty, Map<String, SignatureMetadata>>
+      _f$packsSignature =
       Field('packsSignature', _$packsSignature, opt: true, def: const {});
 
   @override
@@ -564,15 +566,16 @@ extension LanPropertyValueCopy<$R, $Out>
 abstract class LanPropertyCopyWith<$R, $In extends LanProperty, $Out>
     implements GamePropertyCopyWith<$R, $In, $Out> {
   @override
-  MapCopyWith<$R, String, FileMetadata,
-      FileMetadataCopyWith<$R, FileMetadata, FileMetadata>> get packsSignature;
+  MapCopyWith<$R, String, SignatureMetadata,
+          SignatureMetadataCopyWith<$R, SignatureMetadata, SignatureMetadata>>
+      get packsSignature;
   @override
   $R call(
       {int? port,
       int? currentPlayers,
       int? maxPlayers,
       String? description,
-      Map<String, FileMetadata>? packsSignature});
+      Map<String, SignatureMetadata>? packsSignature});
   LanPropertyCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -585,8 +588,8 @@ class _LanPropertyCopyWithImpl<$R, $Out>
   late final ClassMapperBase<LanProperty> $mapper =
       LanPropertyMapper.ensureInitialized();
   @override
-  MapCopyWith<$R, String, FileMetadata,
-          FileMetadataCopyWith<$R, FileMetadata, FileMetadata>>
+  MapCopyWith<$R, String, SignatureMetadata,
+          SignatureMetadataCopyWith<$R, SignatureMetadata, SignatureMetadata>>
       get packsSignature => MapCopyWith($value.packsSignature,
           (v, t) => v.copyWith.$chain(t), (v) => call(packsSignature: v));
   @override
@@ -595,7 +598,7 @@ class _LanPropertyCopyWithImpl<$R, $Out>
           int? currentPlayers,
           Object? maxPlayers = $none,
           String? description,
-          Map<String, FileMetadata>? packsSignature}) =>
+          Map<String, SignatureMetadata>? packsSignature}) =>
       $apply(FieldCopyWithData({
         if (port != null) #port: port,
         if (currentPlayers != null) #currentPlayers: currentPlayers,
@@ -625,7 +628,7 @@ class ListPropertyMapper extends ClassMapperBase<ListProperty> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ListPropertyMapper._());
       GamePropertyMapper.ensureInitialized();
-      FileMetadataMapper.ensureInitialized();
+      SignatureMetadataMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -644,9 +647,9 @@ class ListPropertyMapper extends ClassMapperBase<ListProperty> {
   static String _$description(ListProperty v) => v.description;
   static const Field<ListProperty, String> _f$description =
       Field('description', _$description, opt: true, def: '');
-  static Map<String, FileMetadata> _$packsSignature(ListProperty v) =>
+  static Map<String, SignatureMetadata> _$packsSignature(ListProperty v) =>
       v.packsSignature;
-  static const Field<ListProperty, Map<String, FileMetadata>>
+  static const Field<ListProperty, Map<String, SignatureMetadata>>
       _f$packsSignature =
       Field('packsSignature', _$packsSignature, opt: true, def: const {});
 
@@ -722,15 +725,16 @@ extension ListPropertyValueCopy<$R, $Out>
 abstract class ListPropertyCopyWith<$R, $In extends ListProperty, $Out>
     implements GamePropertyCopyWith<$R, $In, $Out> {
   @override
-  MapCopyWith<$R, String, FileMetadata,
-      FileMetadataCopyWith<$R, FileMetadata, FileMetadata>> get packsSignature;
+  MapCopyWith<$R, String, SignatureMetadata,
+          SignatureMetadataCopyWith<$R, SignatureMetadata, SignatureMetadata>>
+      get packsSignature;
   @override
   $R call(
       {int? index,
       int? currentPlayers,
       int? maxPlayers,
       String? description,
-      Map<String, FileMetadata>? packsSignature});
+      Map<String, SignatureMetadata>? packsSignature});
   ListPropertyCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -743,8 +747,8 @@ class _ListPropertyCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ListProperty> $mapper =
       ListPropertyMapper.ensureInitialized();
   @override
-  MapCopyWith<$R, String, FileMetadata,
-          FileMetadataCopyWith<$R, FileMetadata, FileMetadata>>
+  MapCopyWith<$R, String, SignatureMetadata,
+          SignatureMetadataCopyWith<$R, SignatureMetadata, SignatureMetadata>>
       get packsSignature => MapCopyWith($value.packsSignature,
           (v, t) => v.copyWith.$chain(t), (v) => call(packsSignature: v));
   @override
@@ -753,7 +757,7 @@ class _ListPropertyCopyWithImpl<$R, $Out>
           int? currentPlayers,
           Object? maxPlayers = $none,
           String? description,
-          Map<String, FileMetadata>? packsSignature}) =>
+          Map<String, SignatureMetadata>? packsSignature}) =>
       $apply(FieldCopyWithData({
         if (index != null) #index: index,
         if (currentPlayers != null) #currentPlayers: currentPlayers,

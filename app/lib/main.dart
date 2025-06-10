@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:setonix/pages/settings/input.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:material_leap/material_leap.dart';
@@ -154,12 +155,25 @@ class SetonixApp extends StatelessWidget {
           GoRoute(
             path: 'settings',
             builder: (context, state) => const SettingsPage(),
-            routes: SettingsView.values
-                .map((e) => GoRoute(
-                      path: e.name,
-                      builder: (context, state) => e.buildContent(),
-                    ))
-                .toList(),
+            routes: [
+              GoRoute(
+                path: 'general',
+                builder: (context, state) => const GeneralSettingsPage(),
+              ),
+              GoRoute(
+                path: 'data',
+                builder: (context, state) => const DataSettingsPage(),
+              ),
+              GoRoute(
+                path: 'personalization',
+                builder: (context, state) =>
+                    const PersonalizationSettingsPage(),
+              ),
+              GoRoute(
+                path: 'inputs',
+                builder: (context, state) => const InputsSettingsPage(),
+              ),
+            ],
           ),
         ],
       ),
@@ -172,4 +186,4 @@ const isNightly =
     flavor == 'nightly' || flavor == 'dev' || flavor == 'development';
 const shortApplicationName = isNightly ? 'Setonix Nightly' : 'Setonix';
 const applicationName = 'Linwood $shortApplicationName';
-const applicationMinorVersion = '0.3';
+const applicationMinorVersion = '0.4.1';

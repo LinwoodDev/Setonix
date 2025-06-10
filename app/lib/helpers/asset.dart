@@ -101,9 +101,10 @@ class GameAssetManager extends AssetManager {
 
   Future<void> loadPacks() async {
     final files = await fileSystem.getPacks();
+    final corePack = await fileSystem.fetchCorePack();
     unloadPacks(
         _loadedPacks.keys.where((e) => !files.any((f) => f.identifier == e)));
-    for (final file in files) {
+    for (final file in <SetonixFile>[...files, corePack]) {
       try {
         final pack = file.load();
         _loadedPacks[file.identifier] = pack;

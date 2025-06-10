@@ -1,6 +1,6 @@
 name: setonix_api
 description: The Linwood Setonix API
-version: 0.3.1
+version: 0.5.0
 publish_to: none
 # repository: https://github.com/my_org/my_repo
 
@@ -19,7 +19,7 @@ dependencies:
   networker:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 2e0ab5b548cb8e2d64ca24e0d7b4a6cfcc6d57fe
+      ref: 4f221c5943ceb786eb7bd427eb71a8cc1346b9b8
       path: packages/networker/networker
   dart_leap:
     git:

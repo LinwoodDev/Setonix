@@ -147,7 +147,7 @@ class SetonixFileSystem {
           ),
         );
 
-  Future<SetonixFile?> fetchCorePack() async =>
+  Future<SetonixFile> fetchCorePack() async =>
       _corePack ?? (_corePack = await getCorePack());
 
   Future<Iterable<SetonixFile>> getPacks({

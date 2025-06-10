@@ -84,7 +84,7 @@ Future<void> importFile(
   if (context.mounted) return importFileData(context, fileSystem, data);
 }
 
-Future<SetonixFile?> getCorePack() async => SetonixFile(
+Future<SetonixFile> getCorePack() async => SetonixFile(
     (await rootBundle.load('assets/pack.stnx')).buffer.asUint8List(),
     kCorePackId);
 

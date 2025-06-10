@@ -122,12 +122,12 @@ abstract class HandItem<T> extends PositionComponent
   @override
   Future<void> onLoad() async {
     super.onLoad();
+    _sprite.size = Vector2.all(height - labelHeight);
     _sprite.sprite = game.blankSprite;
     add(_sprite);
   }
 
   void _resetPosition() {
-    _sprite.position = Vector2(0, labelHeight);
     priority = priorityNormal;
     if (!_label.isMounted) add(_label);
     final cursor = _cursorHitbox;
@@ -150,7 +150,7 @@ abstract class HandItem<T> extends PositionComponent
     _sprite.sprite = await loadIcon(state) ?? game.blankSprite;
   }
 
-  _buildPaint(ClientWorldState state) => TextPaint(
+  TextPaint _buildPaint(ClientWorldState state) => TextPaint(
         style: TextStyle(fontSize: 14, color: state.colorScheme.onSurface),
       );
 
@@ -162,10 +162,27 @@ abstract class HandItem<T> extends PositionComponent
   @override
   void onParentResize(Vector2 maxSize) {
     height = maxSize.y;
-    final size = height - labelHeight;
-    _sprite.size = Vector2.all(size);
-    _sprite.x = (100 - size) / 2;
-    _sprite.y = labelHeight;
+    _updateSpriteSize();
+  }
+
+  void updateWidth(double width) {
+    this.width = width;
+    _label.x = width / 2;
+    _updateSpriteSize();
+  }
+
+  void _updateSpriteSize() {
+    final spriteSize = _sprite.sprite?.srcSize ?? Vector2.zero();
+    var spriteHeight = height - labelHeight;
+    var spriteWidth = spriteSize.x * (spriteHeight / spriteSize.y);
+    var yOffset = 0.0;
+    if (spriteWidth > width) {
+      spriteWidth = width;
+      spriteHeight = spriteSize.y * (spriteWidth / spriteSize.x);
+      yOffset = (height - spriteHeight - labelHeight) / 2;
+    }
+    _sprite.size = Vector2(spriteWidth, spriteHeight);
+    _sprite.y = labelHeight + yOffset;
   }
 
   HandItemDragCursorHitbox? _cursorHitbox;
@@ -184,7 +201,7 @@ abstract class HandItem<T> extends PositionComponent
   void onDragUpdate(DragUpdateEvent event) {
     super.onDragUpdate(event);
     if (!(isMouseOrLongPressing ?? false)) {
-      hand.scroll(event.localDelta.x);
+      hand.dragScroll(event.localDelta.x);
       return;
     }
     if (_label.parent != null) _label.removeFromParent();
@@ -208,7 +225,6 @@ abstract class HandItem<T> extends PositionComponent
 
   @override
   void onDragEnd(DragEndEvent event) {
-    super.onDragEnd(event);
     _dragSprite?.removeFromParent();
     _dragSprite = null;
     if (isMouseOrLongPressing ?? true) {
@@ -219,6 +235,7 @@ abstract class HandItem<T> extends PositionComponent
       if (zone != null) moveItem(zone);
     }
     _resetPosition();
+    super.onDragEnd(event);
   }
 
   @override

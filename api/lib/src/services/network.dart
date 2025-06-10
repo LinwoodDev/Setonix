@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:setonix_api/event.dart';
 
 Future<bool> Function(HttpRequest request) buildFilterConnections({
-  FutureOr<GameProperty?> Function(HttpRequest request)? loadProperty,
+  FutureOr<GameProperty> Function(HttpRequest request)? loadProperty,
 }) =>
     (request) async {
       final response = request.response;

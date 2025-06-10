@@ -101,10 +101,14 @@ class SetonixData extends ArchiveData<SetonixData> {
   Iterable<String> getDecks() => getAssets(kPackDecksPath, true);
 
   DeckDefinition? getDeck(String id) {
-    final data = getAsset('$kPackDecksPath/$id.json');
-    if (data == null) return null;
-    final content = utf8.decode(data);
-    return DeckDefinitionMapper.fromJson(content);
+    try {
+      final data = getAsset('$kPackDecksPath/$id.json');
+      if (data == null) return null;
+      final content = utf8.decode(data);
+      return DeckDefinitionMapper.fromJson(content);
+    } catch (_) {
+      return null;
+    }
   }
 
   PackItem<DeckDefinition>? getDeckItem(String id, [String namespace = '']) =>
@@ -121,10 +125,14 @@ class SetonixData extends ArchiveData<SetonixData> {
   Iterable<String> getFigures() => getAssets('$kPackFiguresPath/', true);
 
   FigureDefinition? getFigure(String id) {
-    final data = getAsset('$kPackFiguresPath/$id.json');
-    if (data == null) return null;
-    final content = utf8.decode(data);
-    return FigureDefinitionMapper.fromJson(content);
+    try {
+      final data = getAsset('$kPackFiguresPath/$id.json');
+      if (data == null) return null;
+      final content = utf8.decode(data);
+      return FigureDefinitionMapper.fromJson(content);
+    } catch (_) {
+      return null;
+    }
   }
 
   PackItem<FigureDefinition>? getFigureItem(String id,
@@ -176,10 +184,14 @@ class SetonixData extends ArchiveData<SetonixData> {
       getAssets('$kPackBackgroundsPath/', true);
 
   BackgroundDefinition? getBackground(String id) {
-    final data = getAsset('$kPackBackgroundsPath/$id.json');
-    if (data == null) return null;
-    final content = utf8.decode(data);
-    return BackgroundDefinitionMapper.fromJson(content);
+    try {
+      final data = getAsset('$kPackBackgroundsPath/$id.json');
+      if (data == null) return null;
+      final content = utf8.decode(data);
+      return BackgroundDefinitionMapper.fromJson(content);
+    } catch (_) {
+      return null;
+    }
   }
 
   PackItem<BackgroundDefinition>? getBackgroundItem(String id,
@@ -205,10 +217,14 @@ class SetonixData extends ArchiveData<SetonixData> {
       }).nonNulls;
 
   PackTranslation? getTranslation([String id = kFallbackLocale]) {
-    final data = getAsset('$kPackTranslationsPath/$id.json');
-    if (data == null) return null;
-    final content = utf8.decode(data);
-    return PackTranslationMapper.fromJson(content);
+    try {
+      final data = getAsset('$kPackTranslationsPath/$id.json');
+      if (data == null) return null;
+      final content = utf8.decode(data);
+      return PackTranslationMapper.fromJson(content);
+    } catch (_) {
+      return null;
+    }
   }
 
   PackTranslation getTranslationOrDefault([String id = kFallbackLocale]) =>
@@ -281,10 +297,14 @@ class SetonixData extends ArchiveData<SetonixData> {
   Iterable<String> getModes() => getAssets(kPackModesPath, true);
 
   GameMode? getMode(String id) {
-    final data = getAsset('$kPackModesPath/$id.json');
-    if (data == null) return null;
-    final content = utf8.decode(data);
-    return GameModeMapper.fromJson(content);
+    try {
+      final data = getAsset('$kPackModesPath/$id.json');
+      if (data == null) return null;
+      final content = utf8.decode(data);
+      return GameModeMapper.fromJson(content);
+    } catch (_) {
+      return null;
+    }
   }
 
   Map<String, GameMode> getModesData() => Map.fromEntries(getModes().map((e) {

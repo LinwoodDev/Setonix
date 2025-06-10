@@ -4155,12 +4155,16 @@ class TeamChangedMapper extends SubClassMapperBase<TeamChanged> {
 
   static String _$name(TeamChanged v) => v.name;
   static const Field<TeamChanged, String> _f$name = Field('name', _$name);
+  static String? _$newName(TeamChanged v) => v.newName;
+  static const Field<TeamChanged, String> _f$newName =
+      Field('newName', _$newName);
   static GameTeam _$team(TeamChanged v) => v.team;
   static const Field<TeamChanged, GameTeam> _f$team = Field('team', _$team);
 
   @override
   final MappableFields<TeamChanged> fields = const {
     #name: _f$name,
+    #newName: _f$newName,
     #team: _f$team,
   };
 
@@ -4173,7 +4177,8 @@ class TeamChangedMapper extends SubClassMapperBase<TeamChanged> {
       HybridWorldEventMapper.ensureInitialized();
 
   static TeamChanged _instantiate(DecodingData data) {
-    return TeamChanged(data.dec(_f$name), data.dec(_f$team));
+    return TeamChanged.rename(
+        data.dec(_f$name), data.dec(_f$newName), data.dec(_f$team));
   }
 
   @override
@@ -4230,7 +4235,7 @@ abstract class TeamChangedCopyWith<$R, $In extends TeamChanged, $Out>
     implements HybridWorldEventCopyWith<$R, $In, $Out> {
   GameTeamCopyWith<$R, GameTeam, GameTeam> get team;
   @override
-  $R call({String? name, GameTeam? team});
+  $R call({String? name, String? newName, GameTeam? team});
   TeamChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -4246,11 +4251,17 @@ class _TeamChangedCopyWithImpl<$R, $Out>
   GameTeamCopyWith<$R, GameTeam, GameTeam> get team =>
       $value.team.copyWith.$chain((v) => call(team: v));
   @override
-  $R call({String? name, GameTeam? team}) => $apply(FieldCopyWithData(
-      {if (name != null) #name: name, if (team != null) #team: team}));
+  $R call({String? name, Object? newName = $none, GameTeam? team}) =>
+      $apply(FieldCopyWithData({
+        if (name != null) #name: name,
+        if (newName != $none) #newName: newName,
+        if (team != null) #team: team
+      }));
   @override
-  TeamChanged $make(CopyWithData data) => TeamChanged(
-      data.get(#name, or: $value.name), data.get(#team, or: $value.team));
+  TeamChanged $make(CopyWithData data) => TeamChanged.rename(
+      data.get(#name, or: $value.name),
+      data.get(#newName, or: $value.newName),
+      data.get(#team, or: $value.team));
 
   @override
   TeamChangedCopyWith<$R2, TeamChanged, $Out2> $chain<$R2, $Out2>(

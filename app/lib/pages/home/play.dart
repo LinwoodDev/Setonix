@@ -49,7 +49,7 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
     });
   }
 
-  _buildDetailsChildren(FileMetadata metadata) => [
+  List<Card> _buildDetailsChildren(FileMetadata metadata) => [
         if (metadata.description.isNotEmpty)
           Card.filled(
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

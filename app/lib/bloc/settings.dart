@@ -54,6 +54,7 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
   final String? lastVersion;
   @override
   final bool nativeTitleBar;
+  final bool stackedCards;
   final bool showConnectYour, showConnectNetwork;
   final GameProperty gameProperty;
   final List<ListGameServer> servers;
@@ -74,6 +75,7 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
     this.lastVersion,
     this.gameProperty = const GameProperty(),
     this.servers = const [],
+    this.stackedCards = true,
     this.highContrast = false,
     this.zoom = 1,
     this.swamps = const [],
@@ -112,6 +114,7 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
         zoom: prefs.getDouble('zoom') ?? 1,
         swamps: prefs.getStringList('swamps') ?? [],
         scrollSensitivity: prefs.getDouble('scrollSensitivity') ?? 1,
+        stackedCards: prefs.getBool('stackedCards') ?? true,
         density: ThemeDensity.values.byName(
           prefs.getString('density') ?? ThemeDensity.system.name,
         ),
@@ -133,6 +136,7 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
     } else {
       await prefs.setString('last_version', lastVersion!);
     }
+    await prefs.setBool('stackedCards', stackedCards);
     await prefs.setString('gameProperty', gameProperty.toJson());
     await prefs.setStringList(
         'servers', servers.map((e) => e.toJson()).toList());
@@ -257,6 +261,11 @@ class SettingsCubit extends Cubit<SetonixSettings>
 
   Future<void> changeDensity(ThemeDensity value) {
     emit(state.copyWith(density: value));
+    return save();
+  }
+
+  Future<void> changeStackedCards(bool value) {
+    emit(state.copyWith(stackedCards: value));
     return save();
   }
 
