@@ -65,6 +65,7 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
       ChatMessageMapper.ensureInitialized();
       GameDialogMapper.ensureInitialized();
       ServerStateMapper.ensureInitialized();
+      AuthenticatedRequestedMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -105,6 +106,9 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
   static ServerState _$serverState(WorldState v) => v.serverState;
   static const Field<WorldState, ServerState> _f$serverState =
       Field('serverState', _$serverState, opt: true, def: const ServerState());
+  static AuthenticatedRequested? _$authRequest(WorldState v) => v.authRequest;
+  static const Field<WorldState, AuthenticatedRequested> _f$authRequest =
+      Field('authRequest', _$authRequest, opt: true);
   static SetonixData _$data(WorldState v) => v.data;
   static const Field<WorldState, SetonixData> _f$data = Field('data', _$data);
 
@@ -121,6 +125,7 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
     #dialogs: _f$dialogs,
     #images: _f$images,
     #serverState: _f$serverState,
+    #authRequest: _f$authRequest,
     #data: _f$data,
   };
 
@@ -137,6 +142,7 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
         dialogs: data.dec(_f$dialogs),
         images: data.dec(_f$images),
         serverState: data.dec(_f$serverState),
+        authRequest: data.dec(_f$authRequest),
         data: data.dec(_f$data));
   }
 
@@ -204,6 +210,8 @@ abstract class WorldStateCopyWith<$R, $In extends WorldState, $Out>
   MapCopyWith<$R, String, Uint8List, ObjectCopyWith<$R, Uint8List, Uint8List>>
       get images;
   ServerStateCopyWith<$R, ServerState, ServerState> get serverState;
+  AuthenticatedRequestedCopyWith<$R, AuthenticatedRequested,
+      AuthenticatedRequested>? get authRequest;
   $R call(
       {String? name,
       GameTable? table,
@@ -216,6 +224,7 @@ abstract class WorldStateCopyWith<$R, $In extends WorldState, $Out>
       List<GameDialog>? dialogs,
       Map<String, Uint8List>? images,
       ServerState? serverState,
+      AuthenticatedRequested? authRequest,
       SetonixData? data});
   WorldStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -260,6 +269,11 @@ class _WorldStateCopyWithImpl<$R, $Out>
   ServerStateCopyWith<$R, ServerState, ServerState> get serverState =>
       $value.serverState.copyWith.$chain((v) => call(serverState: v));
   @override
+  AuthenticatedRequestedCopyWith<$R, AuthenticatedRequested,
+          AuthenticatedRequested>?
+      get authRequest =>
+          $value.authRequest?.copyWith.$chain((v) => call(authRequest: v));
+  @override
   $R call(
           {Object? name = $none,
           GameTable? table,
@@ -272,6 +286,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
           List<GameDialog>? dialogs,
           Map<String, Uint8List>? images,
           ServerState? serverState,
+          Object? authRequest = $none,
           SetonixData? data}) =>
       $apply(FieldCopyWithData({
         if (name != $none) #name: name,
@@ -285,6 +300,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
         if (dialogs != null) #dialogs: dialogs,
         if (images != null) #images: images,
         if (serverState != null) #serverState: serverState,
+        if (authRequest != $none) #authRequest: authRequest,
         if (data != null) #data: data
       }));
   @override
@@ -300,6 +316,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
       dialogs: data.get(#dialogs, or: $value.dialogs),
       images: data.get(#images, or: $value.images),
       serverState: data.get(#serverState, or: $value.serverState),
+      authRequest: data.get(#authRequest, or: $value.authRequest),
       data: data.get(#data, or: $value.data));
 
   @override

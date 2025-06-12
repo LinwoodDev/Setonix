@@ -20,7 +20,7 @@ class AccountsSettingsPage extends StatefulWidget {
 
 class _AccountsSettingsPageState extends State<AccountsSettingsPage> {
   late final KeyFileSystem _privateKeyFileSystem, _publicKeyFileSystem;
-  Future<List<String>>? _keysFuture;
+  Future<List<(String, String)>>? _keysFuture;
   late final SetonixFileSystem _fileSystem;
 
   @override
@@ -33,7 +33,12 @@ class _AccountsSettingsPageState extends State<AccountsSettingsPage> {
   }
 
   void _buildKeysFuture() {
-    _keysFuture = _privateKeyFileSystem.getKeys();
+    _keysFuture = _privateKeyFileSystem
+        .getKeys()
+        .then((e) => Future.wait(e.map((key) async {
+              final fingerprint = await _fileSystem.getFingerprint(key, true);
+              return (key, fingerprint);
+            })));
   }
 
   @override
@@ -69,14 +74,14 @@ class _AccountsSettingsPageState extends State<AccountsSettingsPage> {
           ),
         ],
       ),
-      body: FutureBuilder<List<String>>(
+      body: FutureBuilder<List<(String, String)>>(
         future: _keysFuture,
         builder: (context, state) {
-          final keys = state.data ?? <String>[];
+          final keys = state.data ?? <(String, String)>[];
           return ListView.builder(
             itemCount: keys.length,
             itemBuilder: (context, index) {
-              final key = keys[index];
+              final (key, fingerprint) = keys[index];
               void deleteKey() {
                 _privateKeyFileSystem.deleteFile(key);
                 _publicKeyFileSystem.deleteFile(key);
@@ -90,6 +95,7 @@ class _AccountsSettingsPageState extends State<AccountsSettingsPage> {
                 child: ContextRegion(
                   builder: (context, button, controller) => ListTile(
                     title: Text(key.substring(1)),
+                    subtitle: Text(fingerprint),
                     trailing: button,
                   ),
                   menuChildren: [

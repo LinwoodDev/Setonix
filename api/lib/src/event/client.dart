@@ -157,3 +157,12 @@ final class ModeChangeRequest extends ClientWorldEvent
   ModeChangeRequest(this.location);
   ModeChangeRequest.plain() : location = null;
 }
+
+@MappableClass()
+final class AuthenticateRequest extends ClientWorldEvent
+    with AuthenticateRequestMappable {
+  final Uint8List signature;
+  final Uint8List publicKey;
+
+  AuthenticateRequest(this.signature, this.publicKey);
+}

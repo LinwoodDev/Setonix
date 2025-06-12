@@ -349,5 +349,9 @@ ServerProcessed processServerEvent(
       return ServerProcessed(state.copyWith(
         serverState: event.state,
       ));
+    case AuthenticatedRequested():
+      return ServerProcessed(state.copyWith(
+        authRequest: event,
+      ));
   }
 }

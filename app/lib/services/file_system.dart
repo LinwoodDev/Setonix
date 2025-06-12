@@ -9,6 +9,7 @@ import 'package:idb_shim/idb.dart';
 import 'package:lw_file_system/lw_file_system.dart';
 import 'package:setonix/api/open.dart';
 import 'package:setonix/api/storage.dart';
+import 'package:setonix/helpers/crypto.dart';
 import 'package:setonix_api/setonix_api.dart';
 
 const imageTypeGroup = fs.XTypeGroup(
@@ -296,5 +297,13 @@ class SetonixFileSystem {
       );
     }
     return data;
+  }
+
+  Future<String> getFingerprint(String key, [bool short = false]) async {
+    final publicKey = await publicKeySystem.getFile(key);
+    if (publicKey == null) {
+      return '';
+    }
+    return generateFingerprint(publicKey, short);
   }
 }
