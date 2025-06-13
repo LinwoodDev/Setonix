@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lw_file_system/lw_file_system.dart';
+import 'package:setonix/api/open.dart';
+import 'package:setonix/api/save.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -18,7 +20,7 @@ class AccountsSettingsPage extends StatefulWidget {
 
 class _AccountsSettingsPageState extends State<AccountsSettingsPage> {
   late final KeyFileSystem _privateKeyFileSystem, _publicKeyFileSystem;
-  Future<List<String>>? _keysFuture;
+  Future<List<(String, String)>>? _keysFuture;
   late final SetonixFileSystem _fileSystem;
 
   @override
@@ -31,7 +33,12 @@ class _AccountsSettingsPageState extends State<AccountsSettingsPage> {
   }
 
   void _buildKeysFuture() {
-    _keysFuture = _privateKeyFileSystem.getKeys();
+    _keysFuture = _privateKeyFileSystem
+        .getKeys()
+        .then((e) => Future.wait(e.map((key) async {
+              final fingerprint = await _fileSystem.getFingerprint(key, true);
+              return (key, fingerprint);
+            })));
   }
 
   @override
@@ -42,27 +49,74 @@ class _AccountsSettingsPageState extends State<AccountsSettingsPage> {
         inView: widget.inView,
         backgroundColor: widget.inView ? Colors.transparent : null,
         title: Text(AppLocalizations.of(context).accounts),
+        actions: [
+          IconButton(
+            icon: const PhosphorIcon(PhosphorIconsLight.arrowSquareIn),
+            tooltip: AppLocalizations.of(context).import,
+            onPressed: () async {
+              await importFile(
+                context,
+                _fileSystem,
+              );
+              setState(() {
+                _buildKeysFuture();
+              });
+            },
+          ),
+          IconButton(
+            icon: const PhosphorIcon(PhosphorIconsLight.export),
+            tooltip: AppLocalizations.of(context).backupAllKeys,
+            onPressed: () async {
+              final data = await _fileSystem.exportAccounts();
+              if (!context.mounted) return;
+              exportData(context, data, 'accounts');
+            },
+          ),
+        ],
       ),
-      body: FutureBuilder<List<String>>(
+      body: FutureBuilder<List<(String, String)>>(
         future: _keysFuture,
         builder: (context, state) {
-          final keys = state.data ?? <String>[];
+          final keys = state.data ?? <(String, String)>[];
           return ListView.builder(
             itemCount: keys.length,
             itemBuilder: (context, index) {
-              final key = keys[index];
+              final (key, fingerprint) = keys[index];
+              void deleteKey() {
+                _privateKeyFileSystem.deleteFile(key);
+                _publicKeyFileSystem.deleteFile(key);
+                setState(() {
+                  keys.removeAt(index);
+                });
+              }
+
               return Dismissible(
                 key: Key(key),
-                child: ListTile(
-                  title: Text(key.substring(1)),
+                child: ContextRegion(
+                  builder: (context, button, controller) => ListTile(
+                    title: Text(key.substring(1)),
+                    subtitle: Text(fingerprint),
+                    trailing: button,
+                  ),
+                  menuChildren: [
+                    MenuItemButton(
+                      leadingIcon:
+                          const PhosphorIcon(PhosphorIconsLight.export),
+                      onPressed: () async {
+                        final data = await _fileSystem.exportAccounts([key]);
+                        if (!context.mounted) return;
+                        exportData(context, data, key);
+                      },
+                      child: Text(AppLocalizations.of(context).backupKey),
+                    ),
+                    MenuItemButton(
+                      leadingIcon: const PhosphorIcon(PhosphorIconsLight.trash),
+                      onPressed: deleteKey,
+                      child: Text(AppLocalizations.of(context).delete),
+                    ),
+                  ],
                 ),
-                onDismissed: (direction) {
-                  _privateKeyFileSystem.deleteFile(key);
-                  _publicKeyFileSystem.deleteFile(key);
-                  setState(() {
-                    keys.removeAt(index);
-                  });
-                },
+                onDismissed: (direction) => deleteKey(),
               );
             },
           );

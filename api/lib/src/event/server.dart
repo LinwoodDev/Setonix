@@ -224,3 +224,12 @@ final class ServerStateUpdated extends ServerWorldEvent
 
   const ServerStateUpdated(this.state);
 }
+
+@MappableClass()
+final class AuthenticatedRequested extends ServerWorldEvent
+    with AuthenticatedRequestedMappable {
+  final Uint8List challenge;
+  final bool isRequired;
+
+  const AuthenticatedRequested(this.challenge, {this.isRequired = true});
+}

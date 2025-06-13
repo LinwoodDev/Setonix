@@ -57,7 +57,7 @@ class GameHand extends CustomPainterComponent
   GameHand() : super(anchor: Anchor.topLeft, painter: GameHandCustomPainter());
 
   @override
-  void update(double dt) {
+  Future<void> update(double dt) async {
     if (_needsLayout) {
       _layoutChildren();
       _needsLayout = false;
@@ -65,7 +65,7 @@ class GameHand extends CustomPainterComponent
     if (_isDirty) {
       _isDirty = false;
       if (isMounted) {
-        _buildHand(bloc.state);
+        await _buildHand(bloc.state);
       }
       _needsLayout = true;
     }
@@ -75,12 +75,15 @@ class GameHand extends CustomPainterComponent
   void onInitialState(ClientWorldState state) => _isDirty = true;
 
   @override
-  void onNewState(ClientWorldState state) => _isDirty = true;
+  void onNewState(ClientWorldState state) {
+    _isDirty = true;
+    _currentScroll = 0;
+  }
 
   @override
   void onParentResize(Vector2 maxSize) {
     width = maxSize.x;
-    height = min(maxSize.y / 3, 256);
+    height = min(maxSize.y / 3, 192);
     position = Vector2(0, maxSize.y - height);
   }
 
@@ -97,26 +100,31 @@ class GameHand extends CustomPainterComponent
       previousState.showDuplicates != newState.showDuplicates ||
       previousState.searchTerm != newState.searchTerm;
   static const itemAngle = 0.01;
-  static const activeItemWidth = 95;
-  static const itemWidth = 60;
+  static const activeItemWidth = 100;
+  static const simpleItemWidth = 180;
+  static const itemWidth = 80;
   static const itemYOffset = 3;
   void _layoutChildren() {
     final childrenLength = children.length;
     if (childrenLength == 0) return;
     final center = Vector2(width / 2, height);
-    final double active = _currentScroll.clamp(0, childrenLength - 1);
+    final double active = (_currentScroll - childrenLength + 1)
+        .abs()
+        .clamp(0, childrenLength - 1);
 
     children.toList().whereType<HandItem>().forEachIndexed((index, element) {
       final double activeRelative = active - index;
-      final angle = activeRelative * itemAngle;
-      element.angle = angle;
       // Figure out how "active" this item is (0 = fully active, 1 = inactive)
-      final progress = 1 - activeRelative.abs().clamp(0, 1);
-      final currentWidth = itemWidth + (activeItemWidth - itemWidth) * progress;
-
-      final offset = activeRelative <= -1 ? -activeItemWidth / 2 : 0;
-      final y = center.y + itemYOffset * activeRelative.abs();
-      final x = center.x + offset + activeRelative * currentWidth;
+      var x = center.x + simpleItemWidth * activeRelative;
+      var y = center.y;
+      var width = simpleItemWidth.toDouble();
+      if (game.settingsCubit.state.stackedCards) {
+        final offset = activeRelative <= -1 ? -activeItemWidth / 2 : 0;
+        y = center.y + itemYOffset * activeRelative.abs();
+        x = center.x + offset + activeRelative * itemWidth;
+        element.angle = activeRelative * itemAngle;
+      }
+      element.updateWidth(width);
 
       element.changeLabelVisibility(activeRelative.abs() >= 1);
 
@@ -124,13 +132,18 @@ class GameHand extends CustomPainterComponent
     });
   }
 
-  void _buildHand(ClientWorldState state) {
+  Future<void> _addChildren(Iterable<Component> items) {
+    final reversed = items.toList().reversed;
+    return addAll(reversed);
+  }
+
+  Future<void> _buildHand(ClientWorldState state) {
     for (final child in children) {
       child.removeFromParent();
     }
     painter = GameHandCustomPainter(
         showHand: state.showHand, color: state.colorScheme.surface);
-    if (!state.showHand) return;
+    if (!state.showHand) return Future.value();
     final selected = state.selectedCell;
     final cell = state.table.cells[selected];
     if (selected == null) {
@@ -138,33 +151,31 @@ class GameHand extends CustomPainterComponent
       final packItem =
           deck != null ? state.assetManager.getDeckItem(deck) : null;
       if (packItem != null) {
-        _buildDeckHand(state, packItem, state.showDuplicates);
+        return _buildDeckHand(state, packItem, state.showDuplicates);
       } else {
-        _buildFreeHand(state);
+        return _buildFreeHand(state);
       }
     } else {
-      _buildCellHand(selected, cell);
+      return _buildCellHand(selected, cell);
     }
   }
 
-  void _buildFreeHand(ClientWorldState state) {
+  Future<void> _buildFreeHand(ClientWorldState state) {
     final decks = state.packs.expand((e) => e.value.getDeckItems(e.key));
-    for (final deck in decks) {
-      final item = DeckDefinitionHandItem(item: deck);
-      if (item.matches(state, state.searchTerm)) add(item);
-    }
+    return _addChildren(decks.map((e) => DeckDefinitionHandItem(item: e)).where(
+          (e) => e.matches(state, state.searchTerm),
+        ));
   }
 
-  void _addFigures(ClientWorldState state,
+  Future<void> _addFigures(ClientWorldState state,
       Iterable<(PackItem<FigureDefinition>, String?)> figures) {
-    for (final figure in figures) {
-      final item = FigureDefinitionHandItem(item: figure);
-      if (item.matches(state, state.searchTerm)) add(item);
-    }
+    return _addChildren(figures
+        .map((e) => FigureDefinitionHandItem(item: e))
+        .where((e) => e.matches(state, state.searchTerm)));
   }
 
-  void _buildDeckHand(ClientWorldState state, PackItem<DeckDefinition> deck,
-      bool showDuplicates) {
+  Future<void> _buildDeckHand(ClientWorldState state,
+      PackItem<DeckDefinition> deck, bool showDuplicates) {
     Iterable<FigureDeckDefinition> deckFigures = deck.item.figures;
     Iterable<BoardDeckDefinition> boards = deck.item.boards;
     if (!showDuplicates) {
@@ -188,27 +199,37 @@ class GameHand extends CustomPainterComponent
         },
       );
     }
-    for (final board in deck.item.boards) {
-      final definition = deck.pack.getBoardItem(board.name, deck.namespace);
-      if (definition == null) continue;
-      add(BoardDefinitionHandItem(item: definition));
-    }
-    final figures = deckFigures.map((e) {
-      final figure = deck.pack.getFigureItem(e.name, deck.namespace);
-      if (figure == null) return null;
-      return (figure, e.variation);
-    }).nonNulls;
-    _addFigures(state, figures);
+    return Future.wait([
+      _addFigures(
+          state,
+          deckFigures.map((e) {
+            final figure = deck.pack.getFigureItem(e.name, deck.namespace);
+            if (figure == null) return null;
+            return (figure, e.variation);
+          }).nonNulls),
+      _addChildren(
+        boards
+            .map((e) => deck.pack.getBoardItem(e.name, deck.namespace))
+            .nonNulls
+            .map((e) => BoardDefinitionHandItem(item: e))
+            .where((e) => e.matches(state, state.searchTerm)),
+      ),
+    ]);
   }
 
-  void _buildCellHand(VectorDefinition location, TableCell? cell) {
-    for (final tile in cell?.tiles.asMap().entries ?? const Iterable.empty()) {
-      add(BoardTileHandItem(item: (location, tile.key, tile.value)));
-    }
-    for (final object
-        in cell?.objects.asMap().entries ?? const Iterable.empty()) {
-      add(GameObjectHandItem(item: (location, object.key, object.value)));
-    }
+  Future<void> _buildCellHand(VectorDefinition location, TableCell? cell) {
+    return Future.wait([
+      _addChildren(
+        cell?.objects.asMap().entries.map(
+                (e) => GameObjectHandItem(item: (location, e.key, e.value))) ??
+            const Iterable.empty(),
+      ),
+      _addChildren(
+        cell?.tiles.asMap().entries.map(
+                (e) => BoardTileHandItem(item: (location, e.key, e.value))) ??
+            const Iterable.empty(),
+      ),
+    ]);
   }
 
   bool get isShowing => bloc.state.showHand;
@@ -232,7 +253,7 @@ class GameHand extends CustomPainterComponent
         ..continuePropagation = true;
       return;
     }
-    scroll(event.localDelta.x);
+    dragScroll(event.localDelta.x);
   }
 
   @override
@@ -245,7 +266,7 @@ class GameHand extends CustomPainterComponent
       delta = info.scrollDelta.global.y;
     }
     delta /= 4;
-    scroll(-delta / game.settingsCubit.state.scrollSensitivity);
+    scroll(delta > 0 ? -1 : 1);
     return true;
   }
 
@@ -260,9 +281,14 @@ class GameHand extends CustomPainterComponent
     super.onDragEnd(event);
   }
 
+  void dragScroll(double delta) => scroll(delta * 0.025);
+
   void scroll(double delta) {
     if (!isShowing) return;
-    _currentScroll += delta < 0 ? -1 : 1;
+    _currentScroll = (_currentScroll - delta).clamp(0, children.length - 1);
     _needsLayout = true;
   }
+
+  void moveLeft() => scroll(1);
+  void moveRight() => scroll(-1);
 }

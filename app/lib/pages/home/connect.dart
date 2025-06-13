@@ -137,10 +137,10 @@ class _ServersDialogState extends State<ServersDialog> {
         .autoConnect();
   }
 
-  _buildDetails(BuildContext context, GameProperty property) =>
+  Text _buildDetails(BuildContext context, GameProperty property) =>
       Text('${property.currentPlayers}/${property.maxPlayers ?? '?'}');
 
-  _buildDetailsChildren(GameProperty server) => [
+  List<ListTile> _buildDetailsChildren(GameProperty server) => [
         ListTile(
           title: Text(AppLocalizations.of(context).description),
           subtitle: Text(server.description),

@@ -11,6 +11,7 @@ import '../models/meta.dart';
 import '../models/server.dart';
 import '../models/table.dart';
 import '../models/vector.dart';
+import 'event.dart';
 
 part 'state.mapper.dart';
 
@@ -41,6 +42,7 @@ final class WorldState with WorldStateMappable {
   final Map<String, Uint8List> images;
   final ServerState serverState;
   final GameState gameState;
+  final AuthenticatedRequested? authRequest;
 
   const WorldState({
     this.name,
@@ -55,6 +57,7 @@ final class WorldState with WorldStateMappable {
     this.dialogs = const [],
     this.images = const {},
     this.serverState = const ServerState(),
+    this.authRequest,
     required this.data,
   });
 

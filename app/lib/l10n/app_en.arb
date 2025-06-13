@@ -255,5 +255,9 @@
   "stackedCards": "Stacked cards",
   "configuringGame": "Configuring game...",
   "authenticate": "Authenticate",
-  "authenticateDescription": "The server requested authentication. Select the account you want to use to authenticate."
+  "authenticateDescription": "The server requested authentication. Select the account you want to use to authenticate.",
+  "backupKey": "Backup key",
+  "importAccounts": "Import accounts",
+  "importAccountsDescription": "Are you sure you want to import the accounts?",
+  "backupAllKeys": "Backup all keys"
 }

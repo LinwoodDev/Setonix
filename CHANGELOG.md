@@ -2,6 +2,45 @@
 
 <!--ENTER CHANGELOG HERE-->
 
+## 0.4.1 (2025-06-09)
+
+* Improve parsing of server url
+* Improve rendering of cards
+  * Make bottom panel smaller
+  * Fix items overflowing with size
+* Add config system for server
+* Add error handling for invalid packs
+* Fix dragging cards on mobile
+* Fix world not loading in multiplayer
+* Fix team creation not working
+* Fix team changes not being synced correctly in multiplayer
+* Add support for defining host for server
+* Fix core pack not included in build
+* Fix server crash when invalid request is made
+
+Read more here: https://linwood.dev/setonix/0.4.1
+
+## 0.4.0 (2025-06-05)
+
+* Add importing system for editor
+* Add launch app link for android ([#37](https://github.com/LinwoodDev/Setonix/issues/37))
+* Add option for server to send link information
+* Add import and export settings
+* Add density settings
+* Add arrow key hand keyboard navigation
+* Improve multiplayer ui
+* Improve card rendering layout
+* Add swamp multiplayer support
+* Add scroll sensitivity setting
+* Add remaining empty indicator to editor tabs
+* Fix renaming teams not working ([#48](https://github.com/LinwoodDev/Setonix/issues/48))
+* Fix edit mode tooltip
+* Migrate away from flutter_markdown
+* Upgrade to flutter 3.32
+* Update to agb 8.9
+
+Read more here: https://linwood.dev/setonix/0.4.0
+
 ## 0.3.0 (2025-01-27)
 
 * Add editor

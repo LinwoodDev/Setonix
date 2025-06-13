@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:dart_mappable/dart_mappable.dart';
 
 part 'meta.mapper.dart';
@@ -9,6 +11,7 @@ enum FileType {
   pack,
   game,
   template,
+  accounts,
 }
 
 @MappableClass()
@@ -64,4 +67,16 @@ final class DataMetadata with DataMetadataMappable {
   DateTime lastUsed() {
     return serversLastUsed.values.fold(addedAt, (a, b) => a.isAfter(b) ? a : b);
   }
+}
+
+final class SetonixAccount {
+  final Uint8List privateKey;
+  final Uint8List publicKey;
+  final String name;
+
+  SetonixAccount({
+    required this.privateKey,
+    required this.publicKey,
+    required this.name,
+  });
 }

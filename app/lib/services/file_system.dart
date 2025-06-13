@@ -9,6 +9,7 @@ import 'package:idb_shim/idb.dart';
 import 'package:lw_file_system/lw_file_system.dart';
 import 'package:setonix/api/open.dart';
 import 'package:setonix/api/storage.dart';
+import 'package:setonix/helpers/crypto.dart';
 import 'package:setonix_api/setonix_api.dart';
 
 const imageTypeGroup = fs.XTypeGroup(
@@ -43,7 +44,7 @@ class SetonixFileSystem {
       event.database.createObjectStore('packs-data');
     }
     if (event.oldVersion < 3) {
-      event.database.createObjectStore('keys');
+      event.database.createObjectStore('accounts');
     }
   }
 
@@ -125,9 +126,9 @@ class SetonixFileSystem {
         privateKeySystem = KeyFileSystem.fromPlatform(
           FileSystemConfig(
             passwordStorage: SecureStoragePasswordStorage(),
-            storeName: 'keys',
+            storeName: 'accounts',
             getDirectory: (storage) async =>
-                '${await getSetonixDirectory()}/Keys',
+                '${await getSetonixDirectory()}/Accounts',
             database: 'setonix.db',
             databaseVersion: kDatabaseVersion,
             keySuffix: '.key',
@@ -137,9 +138,9 @@ class SetonixFileSystem {
         publicKeySystem = KeyFileSystem.fromPlatform(
           FileSystemConfig(
             passwordStorage: SecureStoragePasswordStorage(),
-            storeName: 'keys',
+            storeName: 'accounts',
             getDirectory: (storage) async =>
-                '${await getSetonixDirectory()}/Keys',
+                '${await getSetonixDirectory()}/Accounts',
             database: 'setonix.db',
             databaseVersion: kDatabaseVersion,
             keySuffix: '.pub',
@@ -147,7 +148,7 @@ class SetonixFileSystem {
           ),
         );
 
-  Future<SetonixFile?> fetchCorePack() async =>
+  Future<SetonixFile> fetchCorePack() async =>
       _corePack ?? (_corePack = await getCorePack());
 
   Future<Iterable<SetonixFile>> getPacks({
@@ -236,5 +237,73 @@ class SetonixFileSystem {
         name: name);
     await publicKeySystem
         .createFileWithName(Uint8List.fromList(publicKey.bytes), name: name);
+  }
+
+  Future<SetonixAccount?> getAccount(String name) async {
+    final privateKey = await privateKeySystem.getFile(name);
+    if (privateKey == null) return null;
+    final publicKey = await publicKeySystem.getFile(name);
+    if (publicKey == null) return null;
+    return SetonixAccount(
+      privateKey: privateKey,
+      publicKey: publicKey,
+      name: name,
+    );
+  }
+
+  Future<void> deleteAccount(String name) async {
+    await privateKeySystem.deleteFile(name);
+    await publicKeySystem.deleteFile(name);
+  }
+
+  Future<void> importAccountsFromData(SetonixData data) =>
+      importAccounts(data.getAccounts().toList());
+
+  Future<void> importAccounts(List<SetonixAccount> accounts) async {
+    for (final account in accounts) {
+      final name = await privateKeySystem.createFileWithName(
+        account.privateKey,
+        name: account.name,
+      );
+      await publicKeySystem.updateFile(
+        name,
+        account.publicKey,
+      );
+    }
+  }
+
+  Future<SetonixData> exportAccounts(
+      [List<String>? names, List<SetonixAccount>? accounts]) async {
+    var data = SetonixData.empty().setMetadata(FileMetadata(
+      type: FileType.accounts,
+    ));
+    names ??= await privateKeySystem.getKeys();
+    final allAccounts = accounts ??
+        (await Future.wait(
+          names.map((name) => getAccount(name)),
+        ))
+            .whereType<SetonixAccount>()
+            .toList();
+    for (final account in allAccounts) {
+      final privateKey = account.privateKey;
+      final publicKey = account.publicKey;
+      if (privateKey.isEmpty || publicKey.isEmpty) continue;
+      data = data.addAccount(
+        SetonixAccount(
+          privateKey: privateKey,
+          publicKey: publicKey,
+          name: account.name,
+        ),
+      );
+    }
+    return data;
+  }
+
+  Future<String> getFingerprint(String key, [bool short = false]) async {
+    final publicKey = await publicKeySystem.getFile(key);
+    if (publicKey == null) {
+      return '';
+    }
+    return generateFingerprint(publicKey, short);
   }
 }

@@ -84,7 +84,7 @@ Future<void> importFile(
   if (context.mounted) return importFileData(context, fileSystem, data);
 }
 
-Future<SetonixFile?> getCorePack() async => SetonixFile(
+Future<SetonixFile> getCorePack() async => SetonixFile(
     (await rootBundle.load('assets/pack.stnx')).buffer.asUint8List(),
     kCorePackId);
 
@@ -93,29 +93,31 @@ Future<void> importFileData(BuildContext context, SetonixFileSystem fileSystem,
   final data = file.load();
   final metadata = data.getMetadataOrDefault();
   final type = metadata.type;
+  final loc = AppLocalizations.of(context);
   final result = await showDialog<bool>(
     context: context,
     builder: (context) => AlertDialog(
       title: Text(switch (type) {
-        FileType.pack => AppLocalizations.of(context).importPack,
-        FileType.game => AppLocalizations.of(context).importGame,
-        FileType.template => AppLocalizations.of(context).importTemplate,
+        FileType.pack => loc.importPack,
+        FileType.game => loc.importGame,
+        FileType.template => loc.importTemplate,
+        FileType.accounts => loc.importAccounts,
       }),
       content: Text(switch (type) {
-        FileType.pack => AppLocalizations.of(context).importPackDescription,
-        FileType.game => AppLocalizations.of(context).importGameDescription,
-        FileType.template =>
-          AppLocalizations.of(context).importTemplateDescription,
+        FileType.pack => loc.importPackDescription,
+        FileType.game => loc.importGameDescription,
+        FileType.template => loc.importTemplateDescription,
+        FileType.accounts => loc.importAccountsDescription,
       }),
       actions: [
         TextButton.icon(
           onPressed: () => Navigator.of(context).pop(false),
-          label: Text(AppLocalizations.of(context).cancel),
+          label: Text(loc.cancel),
           icon: Icon(PhosphorIconsLight.prohibit),
         ),
         ElevatedButton.icon(
           onPressed: () => Navigator.of(context).pop(true),
-          label: Text(AppLocalizations.of(context).import),
+          label: Text(loc.import),
           icon: Icon(PhosphorIconsLight.boxArrowDown),
         ),
       ],
@@ -130,5 +132,7 @@ Future<void> importFileData(BuildContext context, SetonixFileSystem fileSystem,
       await fileSystem.templateSystem.createFile(metadata.name, data);
     case FileType.game:
       await fileSystem.worldSystem.createFile(metadata.name, data);
+    case FileType.accounts:
+      await fileSystem.importAccountsFromData(data);
   }
 }

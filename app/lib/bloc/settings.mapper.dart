@@ -117,6 +117,9 @@ class SetonixSettingsMapper extends ClassMapperBase<SetonixSettings> {
   static List<ListGameServer> _$servers(SetonixSettings v) => v.servers;
   static const Field<SetonixSettings, List<ListGameServer>> _f$servers =
       Field('servers', _$servers, opt: true, def: const []);
+  static bool _$stackedCards(SetonixSettings v) => v.stackedCards;
+  static const Field<SetonixSettings, bool> _f$stackedCards =
+      Field('stackedCards', _$stackedCards, opt: true, def: true);
   static bool _$highContrast(SetonixSettings v) => v.highContrast;
   static const Field<SetonixSettings, bool> _f$highContrast =
       Field('highContrast', _$highContrast, opt: true, def: false);
@@ -145,6 +148,7 @@ class SetonixSettingsMapper extends ClassMapperBase<SetonixSettings> {
     #lastVersion: _f$lastVersion,
     #gameProperty: _f$gameProperty,
     #servers: _f$servers,
+    #stackedCards: _f$stackedCards,
     #highContrast: _f$highContrast,
     #zoom: _f$zoom,
     #swamps: _f$swamps,
@@ -164,6 +168,7 @@ class SetonixSettingsMapper extends ClassMapperBase<SetonixSettings> {
         lastVersion: data.dec(_f$lastVersion),
         gameProperty: data.dec(_f$gameProperty),
         servers: data.dec(_f$servers),
+        stackedCards: data.dec(_f$stackedCards),
         highContrast: data.dec(_f$highContrast),
         zoom: data.dec(_f$zoom),
         swamps: data.dec(_f$swamps),
@@ -240,6 +245,7 @@ abstract class SetonixSettingsCopyWith<$R, $In extends SetonixSettings, $Out>
       String? lastVersion,
       GameProperty? gameProperty,
       List<ListGameServer>? servers,
+      bool? stackedCards,
       bool? highContrast,
       double? zoom,
       List<String>? swamps,
@@ -281,6 +287,7 @@ class _SetonixSettingsCopyWithImpl<$R, $Out>
           Object? lastVersion = $none,
           GameProperty? gameProperty,
           List<ListGameServer>? servers,
+          bool? stackedCards,
           bool? highContrast,
           double? zoom,
           List<String>? swamps,
@@ -297,6 +304,7 @@ class _SetonixSettingsCopyWithImpl<$R, $Out>
         if (lastVersion != $none) #lastVersion: lastVersion,
         if (gameProperty != null) #gameProperty: gameProperty,
         if (servers != null) #servers: servers,
+        if (stackedCards != null) #stackedCards: stackedCards,
         if (highContrast != null) #highContrast: highContrast,
         if (zoom != null) #zoom: zoom,
         if (swamps != null) #swamps: swamps,
@@ -316,6 +324,7 @@ class _SetonixSettingsCopyWithImpl<$R, $Out>
       lastVersion: data.get(#lastVersion, or: $value.lastVersion),
       gameProperty: data.get(#gameProperty, or: $value.gameProperty),
       servers: data.get(#servers, or: $value.servers),
+      stackedCards: data.get(#stackedCards, or: $value.stackedCards),
       highContrast: data.get(#highContrast, or: $value.highContrast),
       zoom: data.get(#zoom, or: $value.zoom),
       swamps: data.get(#swamps, or: $value.swamps),

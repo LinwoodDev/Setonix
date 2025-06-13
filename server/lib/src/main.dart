@@ -27,6 +27,12 @@ ArgParser buildParser() {
       help: 'Print the tool version.',
     )
     ..addOption(
+      'host',
+      abbr: 'H',
+      help:
+          'The host to run the server on. Defaults to ${SetonixConfig.defaultHost}.',
+    )
+    ..addOption(
       'port',
       abbr: 'p',
       help: 'The port to run the server on. Defaults to $kDefaultPort.',
@@ -89,18 +95,25 @@ Future<void> runServer(List<String> arguments, [ServerLoader? onLoad]) async {
     if (results.wasParsed('max-players')) {
       maxPlayers = int.tryParse(results['max-players'] ?? '') ?? maxPlayers;
     }
-    String description = '';
+    String? description;
     if (results.wasParsed('description')) {
       description = results['description'];
     }
+    String? host;
+    if (results.wasParsed('host')) {
+      host = results['host'];
+    }
     final server = await SetonixServer.load();
     await server.init(
-      port: int.tryParse(results['port'] ?? '') ?? kDefaultPort,
       verbose: verbose,
-      autosave: autosave,
-      description: description,
-      maxPlayers: maxPlayers,
-      multiWorld: multiWorld,
+      argsConfig: SetonixConfig(
+        host: host,
+        port: int.tryParse(results['port'] ?? ''),
+        autosave: autosave,
+        description: description,
+        maxPlayers: maxPlayers,
+        multiWorld: multiWorld,
+      ),
     );
     await onLoad?.call(server);
     await server.run();

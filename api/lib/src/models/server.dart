@@ -47,6 +47,12 @@ final class ListGameServer extends GameServer with ListGameServerMappable {
 }
 
 Uri buildServerAddress(Uri uri, bool secure, {bool webSockets = true}) {
+  // handle plain host without scheme: treat single-segment path as host
+  if (uri.host.isEmpty && uri.pathSegments.length == 1) {
+    uri = uri.replace(
+        host: uri.pathSegments.first,
+        pathSegments: uri.pathSegments.skip(1).toList());
+  }
   if (uri.scheme.isEmpty) {
     uri =
         uri.replace(scheme: (webSockets ? 'ws' : 'http') + (secure ? 's' : ''));
@@ -62,7 +68,7 @@ class GameProperty with GamePropertyMappable {
   final String description;
   final int? maxPlayers;
   final int currentPlayers;
-  final Map<String, FileMetadata> packsSignature;
+  final Map<String, SignatureMetadata> packsSignature;
 
   const GameProperty({
     this.description = '',

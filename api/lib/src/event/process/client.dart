@@ -279,5 +279,7 @@ ServerResponse? processClientEvent(
           : assetManager.getPack(location.namespace)?.getMode(location.id);
       return ServerResponse.builder(
           WorldInitialized.fromMode(mode, state), channel);
+    case AuthenticateRequest():
+      return null;
   }
 }

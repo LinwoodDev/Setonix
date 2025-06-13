@@ -103,7 +103,13 @@ class BoardGame extends FlameGame
     var handled = false;
     switch (event.logicalKey) {
       case LogicalKeyboardKey.escape:
-        if (event is KeyDownEvent) onEscape();
+        if (event is KeyDownEvent) {
+          if (bloc.state.showHand) {
+            bloc.add(HandChanged(show: false));
+          } else {
+            onEscape();
+          }
+        }
         handled = true;
       case LogicalKeyboardKey.tab:
         if (event is KeyDownEvent) bloc.add(HandChanged.toggle());
@@ -117,6 +123,16 @@ class BoardGame extends FlameGame
       case LogicalKeyboardKey.keyA:
       case LogicalKeyboardKey.keyD:
         handled = true;
+      case LogicalKeyboardKey.arrowLeft:
+        if (bloc.state.showHand) {
+          if (event is KeyDownEvent) _hand.moveLeft();
+          handled = true;
+        }
+      case LogicalKeyboardKey.arrowRight:
+        if (bloc.state.showHand) {
+          if (event is KeyDownEvent) _hand.moveRight();
+          handled = true;
+        }
     }
     Vector2 nextCameraVelocity = Vector2.zero();
     if (keysPressed.contains(LogicalKeyboardKey.keyW)) {

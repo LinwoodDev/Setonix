@@ -22,6 +22,7 @@ const kPackTranslationsPath = 'translations';
 const kPackBackgroundsPath = 'backgrounds';
 const kPackScriptsPath = 'scripts';
 const kPackModesPath = 'modes';
+const kPackAccountsPath = 'accounts';
 
 const kGameTablePath = 'tables';
 const kGameTeamPath = 'teams.json';
@@ -101,10 +102,14 @@ class SetonixData extends ArchiveData<SetonixData> {
   Iterable<String> getDecks() => getAssets(kPackDecksPath, true);
 
   DeckDefinition? getDeck(String id) {
-    final data = getAsset('$kPackDecksPath/$id.json');
-    if (data == null) return null;
-    final content = utf8.decode(data);
-    return DeckDefinitionMapper.fromJson(content);
+    try {
+      final data = getAsset('$kPackDecksPath/$id.json');
+      if (data == null) return null;
+      final content = utf8.decode(data);
+      return DeckDefinitionMapper.fromJson(content);
+    } catch (_) {
+      return null;
+    }
   }
 
   PackItem<DeckDefinition>? getDeckItem(String id, [String namespace = '']) =>
@@ -121,10 +126,14 @@ class SetonixData extends ArchiveData<SetonixData> {
   Iterable<String> getFigures() => getAssets('$kPackFiguresPath/', true);
 
   FigureDefinition? getFigure(String id) {
-    final data = getAsset('$kPackFiguresPath/$id.json');
-    if (data == null) return null;
-    final content = utf8.decode(data);
-    return FigureDefinitionMapper.fromJson(content);
+    try {
+      final data = getAsset('$kPackFiguresPath/$id.json');
+      if (data == null) return null;
+      final content = utf8.decode(data);
+      return FigureDefinitionMapper.fromJson(content);
+    } catch (_) {
+      return null;
+    }
   }
 
   PackItem<FigureDefinition>? getFigureItem(String id,
@@ -176,10 +185,14 @@ class SetonixData extends ArchiveData<SetonixData> {
       getAssets('$kPackBackgroundsPath/', true);
 
   BackgroundDefinition? getBackground(String id) {
-    final data = getAsset('$kPackBackgroundsPath/$id.json');
-    if (data == null) return null;
-    final content = utf8.decode(data);
-    return BackgroundDefinitionMapper.fromJson(content);
+    try {
+      final data = getAsset('$kPackBackgroundsPath/$id.json');
+      if (data == null) return null;
+      final content = utf8.decode(data);
+      return BackgroundDefinitionMapper.fromJson(content);
+    } catch (_) {
+      return null;
+    }
   }
 
   PackItem<BackgroundDefinition>? getBackgroundItem(String id,
@@ -205,10 +218,14 @@ class SetonixData extends ArchiveData<SetonixData> {
       }).nonNulls;
 
   PackTranslation? getTranslation([String id = kFallbackLocale]) {
-    final data = getAsset('$kPackTranslationsPath/$id.json');
-    if (data == null) return null;
-    final content = utf8.decode(data);
-    return PackTranslationMapper.fromJson(content);
+    try {
+      final data = getAsset('$kPackTranslationsPath/$id.json');
+      if (data == null) return null;
+      final content = utf8.decode(data);
+      return PackTranslationMapper.fromJson(content);
+    } catch (_) {
+      return null;
+    }
   }
 
   PackTranslation getTranslationOrDefault([String id = kFallbackLocale]) =>
@@ -281,10 +298,14 @@ class SetonixData extends ArchiveData<SetonixData> {
   Iterable<String> getModes() => getAssets(kPackModesPath, true);
 
   GameMode? getMode(String id) {
-    final data = getAsset('$kPackModesPath/$id.json');
-    if (data == null) return null;
-    final content = utf8.decode(data);
-    return GameModeMapper.fromJson(content);
+    try {
+      final data = getAsset('$kPackModesPath/$id.json');
+      if (data == null) return null;
+      final content = utf8.decode(data);
+      return GameModeMapper.fromJson(content);
+    } catch (_) {
+      return null;
+    }
   }
 
   Map<String, GameMode> getModesData() => Map.fromEntries(getModes().map((e) {
@@ -292,6 +313,32 @@ class SetonixData extends ArchiveData<SetonixData> {
         if (mode == null) return null;
         return MapEntry(e, mode);
       }).nonNulls);
+
+  SetonixData addAccount(SetonixAccount setonixAccount) {
+    final accountId = setonixAccount.name;
+    return setAsset(
+            '$kPackAccountsPath/$accountId.key', setonixAccount.privateKey)
+        .setAsset(
+            '$kPackAccountsPath/$accountId.pub', setonixAccount.publicKey);
+  }
+
+  Iterable<SetonixAccount> getAccounts() sync* {
+    const kKeySuffix = '.key';
+    final privateKeys = getAssets('$kPackAccountsPath/', true)
+        .where((e) => e.endsWith(kKeySuffix));
+    for (final path in privateKeys) {
+      final name = path.substring(0, path.length - kKeySuffix.length);
+      final privateKey = getAsset(path);
+      if (privateKey == null) continue;
+      final publicKey = getAsset('$kPackAccountsPath/$name.pub');
+      if (publicKey == null) continue;
+      yield SetonixAccount(
+        privateKey: privateKey,
+        publicKey: publicKey,
+        name: name,
+      );
+    }
+  }
 }
 
 class SetonixFile {

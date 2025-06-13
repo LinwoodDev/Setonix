@@ -18,10 +18,10 @@ class TeamDialog extends StatefulWidget {
   });
 
   @override
-  State<TeamDialog> createState() => TeamDialogState();
+  State<TeamDialog> createState() => _TeamDialogState();
 }
 
-class TeamDialogState extends State<TeamDialog> {
+class _TeamDialogState extends State<TeamDialog> {
   late final WorldBloc _bloc = context.read<WorldBloc>();
   final TextEditingController _nameController = TextEditingController(),
       _descriptionController = TextEditingController();
@@ -112,8 +112,12 @@ class TeamDialogState extends State<TeamDialog> {
                           description: _descriptionController.text,
                           color: _color,
                         );
-                        _bloc.add(TeamChanged(
-                            widget.team ?? _nameController.text, team));
+                        _bloc.process(_isCreate()
+                            ? TeamChanged(_nameController.text, team)
+                            : TeamChanged.rename(
+                                widget.team ?? _nameController.text,
+                                _nameController.text,
+                                team));
                         Navigator.of(context).pop();
                       },
                 child: Text(_isCreate()
