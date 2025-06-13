@@ -50,6 +50,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
     String? name,
     SetonixData? data,
     GameTable? table,
+    GameState gameState = GameState.play,
   }) : super(ClientWorldState(
           assetManager: GameAssetManager(
             fileSystem: fileSystem,
@@ -62,6 +63,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
             table: table ?? data?.getTable() ?? const GameTable(),
             metadata: data?.getMetadata() ?? const FileMetadata(),
             info: data?.getInfo() ?? const GameInfo(),
+            gameState: gameState,
           ),
         )) {
     pluginSystem = PluginSystem(server: _WorldServerInterfaceImpl(this));

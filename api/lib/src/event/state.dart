@@ -20,6 +20,12 @@ enum WorldOperationMode {
   boards,
 }
 
+@MappableEnum()
+enum GameState {
+  configuration,
+  play,
+}
+
 @MappableClass()
 final class WorldState with WorldStateMappable {
   final GameTable table;
@@ -34,9 +40,11 @@ final class WorldState with WorldStateMappable {
   final List<GameDialog> dialogs;
   final Map<String, Uint8List> images;
   final ServerState serverState;
+  final GameState gameState;
 
   const WorldState({
     this.name,
+    this.gameState = GameState.play,
     this.table = const GameTable(),
     this.tableName = '',
     this.info = const GameInfo(),

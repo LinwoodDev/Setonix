@@ -52,6 +52,52 @@ extension WorldOperationModeMapperExtension on WorldOperationMode {
   }
 }
 
+class GameStateMapper extends EnumMapper<GameState> {
+  GameStateMapper._();
+
+  static GameStateMapper? _instance;
+  static GameStateMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = GameStateMapper._());
+    }
+    return _instance!;
+  }
+
+  static GameState fromValue(dynamic value) {
+    ensureInitialized();
+    return MapperContainer.globals.fromValue(value);
+  }
+
+  @override
+  GameState decode(dynamic value) {
+    switch (value) {
+      case r'configuration':
+        return GameState.configuration;
+      case r'play':
+        return GameState.play;
+      default:
+        throw MapperException.unknownEnumValue(value);
+    }
+  }
+
+  @override
+  dynamic encode(GameState self) {
+    switch (self) {
+      case GameState.configuration:
+        return r'configuration';
+      case GameState.play:
+        return r'play';
+    }
+  }
+}
+
+extension GameStateMapperExtension on GameState {
+  String toValue() {
+    GameStateMapper.ensureInitialized();
+    return MapperContainer.globals.toValue<GameState>(this) as String;
+  }
+}
+
 class WorldStateMapper extends ClassMapperBase<WorldState> {
   WorldStateMapper._();
 
@@ -59,6 +105,7 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
   static WorldStateMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = WorldStateMapper._());
+      GameStateMapper.ensureInitialized();
       GameTableMapper.ensureInitialized();
       GameInfoMapper.ensureInitialized();
       FileMetadataMapper.ensureInitialized();
@@ -75,6 +122,9 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
   static String? _$name(WorldState v) => v.name;
   static const Field<WorldState, String> _f$name =
       Field('name', _$name, opt: true);
+  static GameState _$gameState(WorldState v) => v.gameState;
+  static const Field<WorldState, GameState> _f$gameState =
+      Field('gameState', _$gameState, opt: true, def: GameState.play);
   static GameTable _$table(WorldState v) => v.table;
   static const Field<WorldState, GameTable> _f$table =
       Field('table', _$table, opt: true, def: const GameTable());
@@ -111,6 +161,7 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
   @override
   final MappableFields<WorldState> fields = const {
     #name: _f$name,
+    #gameState: _f$gameState,
     #table: _f$table,
     #tableName: _f$tableName,
     #info: _f$info,
@@ -127,6 +178,7 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
   static WorldState _instantiate(DecodingData data) {
     return WorldState(
         name: data.dec(_f$name),
+        gameState: data.dec(_f$gameState),
         table: data.dec(_f$table),
         tableName: data.dec(_f$tableName),
         info: data.dec(_f$info),
@@ -206,6 +258,7 @@ abstract class WorldStateCopyWith<$R, $In extends WorldState, $Out>
   ServerStateCopyWith<$R, ServerState, ServerState> get serverState;
   $R call(
       {String? name,
+      GameState? gameState,
       GameTable? table,
       String? tableName,
       GameInfo? info,
@@ -262,6 +315,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
   @override
   $R call(
           {Object? name = $none,
+          GameState? gameState,
           GameTable? table,
           String? tableName,
           GameInfo? info,
@@ -275,6 +329,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
           SetonixData? data}) =>
       $apply(FieldCopyWithData({
         if (name != $none) #name: name,
+        if (gameState != null) #gameState: gameState,
         if (table != null) #table: table,
         if (tableName != null) #tableName: tableName,
         if (info != null) #info: info,
@@ -290,6 +345,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
   @override
   WorldState $make(CopyWithData data) => WorldState(
       name: data.get(#name, or: $value.name),
+      gameState: data.get(#gameState, or: $value.gameState),
       table: data.get(#table, or: $value.table),
       tableName: data.get(#tableName, or: $value.tableName),
       info: data.get(#info, or: $value.info),

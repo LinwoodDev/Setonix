@@ -251,5 +251,9 @@
   "standard": "Standard",
   "comfortable": "Comfortable",
   "accounts": "Accounts",
-  "create": "Create"
+  "create": "Create",
+  "stackedCards": "Stacked cards",
+  "configuringGame": "Configuring game...",
+  "authenticate": "Authenticate",
+  "authenticateDescription": "The server requested authentication. Select the account you want to use to authenticate."
 }

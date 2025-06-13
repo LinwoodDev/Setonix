@@ -4,18 +4,26 @@ import 'package:flutter/material.dart';
 
 import '../pages/settings/home.dart';
 
-Future<void> openSettings(BuildContext context) => showGeneralDialog<void>(
+Future<void> openSettings(
+  BuildContext context, {
+  SettingsView view = SettingsView.general,
+}) =>
+    showGeneralDialog<void>(
       context: context,
       pageBuilder: (context, animation, secondaryAnimation) =>
           ScaffoldMessenger(
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
           child: Dialog(
-              clipBehavior: Clip.antiAlias,
-              child: ConstrainedBox(
-                  constraints:
-                      const BoxConstraints(maxHeight: 800, maxWidth: 1000),
-                  child: const SettingsPage(isDialog: true))),
+            clipBehavior: Clip.antiAlias,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxHeight: 800, maxWidth: 1000),
+              child: SettingsPage(
+                isDialog: true,
+                view: view,
+              ),
+            ),
+          ),
         ),
       ),
       barrierDismissible: true,
