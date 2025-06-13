@@ -259,5 +259,7 @@
   "backupKey": "Backup key",
   "importAccounts": "Import accounts",
   "importAccountsDescription": "Are you sure you want to import the accounts?",
-  "backupAllKeys": "Backup all keys"
+  "backupAllKeys": "Backup all keys",
+  "noAccount": "There are no accounts available",
+  "authenticateRequired": "Authentication is required to connect to the server"
 }

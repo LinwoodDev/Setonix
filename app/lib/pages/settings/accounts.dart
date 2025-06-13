@@ -7,6 +7,7 @@ import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:setonix/services/file_system.dart';
+import 'package:setonix_api/setonix_api.dart';
 
 import '../../bloc/settings.dart';
 
@@ -20,7 +21,7 @@ class AccountsSettingsPage extends StatefulWidget {
 
 class _AccountsSettingsPageState extends State<AccountsSettingsPage> {
   late final KeyFileSystem _privateKeyFileSystem, _publicKeyFileSystem;
-  Future<List<(String, String)>>? _keysFuture;
+  Future<List<SetonixAccount>>? _keysFuture;
   late final SetonixFileSystem _fileSystem;
 
   @override
@@ -33,12 +34,7 @@ class _AccountsSettingsPageState extends State<AccountsSettingsPage> {
   }
 
   void _buildKeysFuture() {
-    _keysFuture = _privateKeyFileSystem
-        .getKeys()
-        .then((e) => Future.wait(e.map((key) async {
-              final fingerprint = await _fileSystem.getFingerprint(key, true);
-              return (key, fingerprint);
-            })));
+    _keysFuture = _fileSystem.getAccounts();
   }
 
   @override
@@ -74,19 +70,21 @@ class _AccountsSettingsPageState extends State<AccountsSettingsPage> {
           ),
         ],
       ),
-      body: FutureBuilder<List<(String, String)>>(
+      body: FutureBuilder<List<SetonixAccount>>(
         future: _keysFuture,
         builder: (context, state) {
-          final keys = state.data ?? <(String, String)>[];
+          final accounts = state.data ?? <SetonixAccount>[];
           return ListView.builder(
-            itemCount: keys.length,
+            itemCount: accounts.length,
             itemBuilder: (context, index) {
-              final (key, fingerprint) = keys[index];
+              final account = accounts[index];
+              final key = account.name;
+              final fingerprint = account.getFingerprint(true);
               void deleteKey() {
                 _privateKeyFileSystem.deleteFile(key);
                 _publicKeyFileSystem.deleteFile(key);
                 setState(() {
-                  keys.removeAt(index);
+                  accounts.removeAt(index);
                 });
               }
 

@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:setonix_api/src/helpers/crypto.dart';
 
 part 'meta.mapper.dart';
 
@@ -79,4 +80,7 @@ final class SetonixAccount {
     required this.publicKey,
     required this.name,
   });
+
+  String getFingerprint([bool short = false]) =>
+      generateFingerprint(publicKey, short);
 }

@@ -9,7 +9,6 @@ import 'package:idb_shim/idb.dart';
 import 'package:lw_file_system/lw_file_system.dart';
 import 'package:setonix/api/open.dart';
 import 'package:setonix/api/storage.dart';
-import 'package:setonix/helpers/crypto.dart';
 import 'package:setonix_api/setonix_api.dart';
 
 const imageTypeGroup = fs.XTypeGroup(
@@ -272,18 +271,19 @@ class SetonixFileSystem {
     }
   }
 
+  Future<List<SetonixAccount>> getAccounts([List<String>? names]) async {
+    names ??= await privateKeySystem.getKeys();
+    return Future.wait(
+      names.map((name) => getAccount(name)),
+    ).then((accounts) => accounts.nonNulls.toList());
+  }
+
   Future<SetonixData> exportAccounts(
       [List<String>? names, List<SetonixAccount>? accounts]) async {
     var data = SetonixData.empty().setMetadata(FileMetadata(
       type: FileType.accounts,
     ));
-    names ??= await privateKeySystem.getKeys();
-    final allAccounts = accounts ??
-        (await Future.wait(
-          names.map((name) => getAccount(name)),
-        ))
-            .whereType<SetonixAccount>()
-            .toList();
+    final allAccounts = accounts ?? await getAccounts(names);
     for (final account in allAccounts) {
       final privateKey = account.privateKey;
       final publicKey = account.publicKey;

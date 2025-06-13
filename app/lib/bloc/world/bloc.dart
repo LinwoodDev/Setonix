@@ -1,4 +1,5 @@
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:cryptography_plus/cryptography_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' show ColorScheme;
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -200,5 +201,24 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
       pluginSystem.loadLuaPlugin(state.assetManager, script);
       // ignore: empty_catches
     } catch (e) {}
+  }
+
+  Future<void> authenticate(SetonixAccount account) async {
+    final challenge = state.world.authRequest?.challenge;
+    if (challenge == null) {
+      return;
+    }
+    final generator = Ed25519();
+    final keyPair = SimpleKeyPairData(
+      account.privateKey,
+      publicKey: SimplePublicKey(account.publicKey, type: KeyPairType.ed25519),
+      type: KeyPairType.ed25519,
+    );
+    final signature = await generator.sign(challenge, keyPair: keyPair);
+    final request = AuthenticateRequest(
+      Uint8List.fromList(signature.bytes),
+      account.publicKey,
+    );
+    process(request);
   }
 }

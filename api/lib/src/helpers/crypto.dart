@@ -1,11 +1,10 @@
 import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
-import 'package:cryptography_plus/cryptography_plus.dart';
+import 'package:crypto/crypto.dart';
 
-Future<String> generateFingerprint(Uint8List publicKeyBytes,
-    [bool short = false]) async {
-  final digest = await Sha256().hash(publicKeyBytes);
+String generateFingerprint(Uint8List publicKeyBytes, [bool short = false]) {
+  final digest = sha256.convert(publicKeyBytes);
   var hexString = hex.encode(digest.bytes);
   if (short) {
     hexString = hexString.substring(0, 32);
