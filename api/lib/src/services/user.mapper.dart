@@ -13,6 +13,7 @@ class SetonixUserMapper extends ClassMapperBase<SetonixUser> {
   static SetonixUserMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = SetonixUserMapper._());
+      MapperContainer.globals.useAll([Base64Uint8ListHook()]);
     }
     return _instance!;
   }

@@ -229,11 +229,12 @@ class _GamePageState extends State<GamePage> {
                         buildWhen: (previous, current) =>
                             previous.world.gameState != current.world.gameState,
                         builder: (context, state) {
-                          return Stack(children: [
+                          return Stack(alignment: Alignment.center, children: [
                             if (state.world.gameState ==
                                 GameState.configuration)
-                              Center(
-                                  child: Column(
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   CircularProgressIndicator(),
                                   const SizedBox(height: 16),
@@ -244,7 +245,7 @@ class _GamePageState extends State<GamePage> {
                                         Theme.of(context).textTheme.bodyMedium,
                                   ),
                                 ],
-                              ))
+                              )
                             else
                               GameWidget(
                                 game: BoardGame(

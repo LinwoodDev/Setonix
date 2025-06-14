@@ -104,6 +104,7 @@ ServerProcessed processServerEvent(
         dialogs: event.clearUserInterface ? [] : state.dialogs,
         images: event.clearUserInterface ? {} : state.images,
         gameState: GameState.play,
+        authRequest: null,
       ));
     case TeamJoined():
       return ServerProcessed(state.copyWith(

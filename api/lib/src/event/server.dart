@@ -187,6 +187,23 @@ final class DialogsClosed extends ServerWorldEvent with DialogsClosedMappable {
   DialogsClosed.all() : ids = null;
 }
 
+class Base64Uint8ListHook extends SimpleMapper<Uint8List> {
+  const Base64Uint8ListHook();
+
+  @override
+  Uint8List decode(Object value) {
+    if (value is String) {
+      return base64Decode(value);
+    }
+    return value as Uint8List;
+  }
+
+  @override
+  Object? encode(Uint8List self) {
+    return base64Encode(self);
+  }
+}
+
 class Base64IdMapHook extends SimpleMapper<Map<String, Uint8List>> {
   const Base64IdMapHook();
 
@@ -225,7 +242,7 @@ final class ServerStateUpdated extends ServerWorldEvent
   const ServerStateUpdated(this.state);
 }
 
-@MappableClass()
+@MappableClass(includeCustomMappers: [Base64Uint8ListHook()])
 final class AuthenticatedRequested extends ServerWorldEvent
     with AuthenticatedRequestedMappable {
   final Uint8List challenge;

@@ -158,7 +158,7 @@ final class ModeChangeRequest extends ClientWorldEvent
   ModeChangeRequest.plain() : location = null;
 }
 
-@MappableClass()
+@MappableClass(includeCustomMappers: [Base64Uint8ListHook()])
 final class AuthenticateRequest extends ClientWorldEvent
     with AuthenticateRequestMappable {
   final Uint8List signature;

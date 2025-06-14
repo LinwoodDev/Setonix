@@ -2,12 +2,11 @@ import 'dart:typed_data';
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:networker/networker.dart';
-
-import '../models/config.dart';
+import 'package:setonix_api/event.dart';
 
 part 'user.mapper.dart';
 
-@MappableClass()
+@MappableClass(includeCustomMappers: [Base64Uint8ListHook()])
 final class SetonixUser with SetonixUserMappable {
   final Uint8List? publicKey;
   final String name;

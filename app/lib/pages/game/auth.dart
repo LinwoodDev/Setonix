@@ -55,7 +55,7 @@ class _AuthGameViewState extends State<AuthGameView> {
               ResponsiveAlertDialog(
                 title: Text(AppLocalizations.of(context).authenticate),
                 constraints: BoxConstraints(
-                  maxWidth: LeapBreakpoints.medium,
+                  maxWidth: LeapBreakpoints.compact,
                 ),
                 headerActions: [
                   IconButton(
@@ -107,7 +107,7 @@ class _AuthGameViewState extends State<AuthGameView> {
                               itemBuilder: (context, index) {
                                 final account = accounts[index];
                                 return ListTile(
-                                  title: Text(account.name),
+                                  title: Text(account.name.substring(1)),
                                   subtitle: Text(account.getFingerprint(true)),
                                   onTap: () async {
                                     final bloc = context.read<WorldBloc>();

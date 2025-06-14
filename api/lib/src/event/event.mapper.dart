@@ -1784,6 +1784,7 @@ class AuthenticatedRequestedMapper
     if (_instance == null) {
       MapperContainer.globals.use(_instance = AuthenticatedRequestedMapper._());
       ServerWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      MapperContainer.globals.useAll([Base64Uint8ListHook()]);
     }
     return _instance!;
   }
@@ -3511,6 +3512,7 @@ class AuthenticateRequestMapper
     if (_instance == null) {
       MapperContainer.globals.use(_instance = AuthenticateRequestMapper._());
       ClientWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      MapperContainer.globals.useAll([Base64Uint8ListHook()]);
     }
     return _instance!;
   }

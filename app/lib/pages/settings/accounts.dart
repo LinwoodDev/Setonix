@@ -73,6 +73,17 @@ class _AccountsSettingsPageState extends State<AccountsSettingsPage> {
       body: FutureBuilder<List<SetonixAccount>>(
         future: _keysFuture,
         builder: (context, state) {
+          if (state.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (state.hasError) {
+            return Center(
+              child: Text(
+                AppLocalizations.of(context).error,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+            );
+          }
           final accounts = state.data ?? <SetonixAccount>[];
           return ListView.builder(
             itemCount: accounts.length,
