@@ -9,6 +9,7 @@ bool isValidClientEvent(
   Channel channel,
   WorldState state, {
   required AssetManager assetManager,
+  ChallengeManager? challengeManager,
 }) =>
     switch (event) {
       TeamJoinRequest() => state.info.teams.containsKey(event.team),
@@ -117,22 +118,38 @@ Set<Channel> _hybridNeedsUpdate(HybridWorldEvent event, WorldState state) =>
       _ => {},
     };
 
-ServerResponse? processClientEvent(
-    WorldEvent? event, Channel channel, WorldState state,
-    {required AssetManager assetManager, bool allowServerEvents = false}) {
+Future<ServerResponse?> processClientEvent(
+  WorldEvent? event,
+  Channel channel,
+  WorldState state, {
+  required AssetManager assetManager,
+  bool allowServerEvents = false,
+  ChallengeManager? challengeManager,
+  UserManager? userManager,
+}) async {
+  buildInitialize() => WorldInitialized(
+        table: state.protectTable(channel),
+        info: state.info,
+        id: channel,
+        packsSignature: assetManager
+            .createSignature(state.info.packs.toSet())
+            .values
+            .toList(),
+        teamMembers: state.teamMembers,
+      );
+
   if (event == null) {
-    return ServerResponse.builder(
-        WorldInitialized(
-          table: state.protectTable(channel),
-          info: state.info,
-          id: channel,
-          packsSignature: assetManager
-              .createSignature(state.info.packs.toSet())
-              .values
-              .toList(),
-          teamMembers: state.teamMembers,
-        ),
-        channel);
+    if (challengeManager != null) {
+      final challenge = challengeManager.getChallenge(channel);
+      return ServerResponse.builder(
+          AuthenticatedRequested(
+            challenge,
+            isRequired: true,
+          ),
+          channel);
+    }
+    userManager?.addUser(channel);
+    return ServerResponse.builder(buildInitialize(), channel);
   }
   if (!isValidClientEvent(event, channel, state, assetManager: assetManager)) {
     return null;
@@ -280,6 +297,14 @@ ServerResponse? processClientEvent(
       return ServerResponse.builder(
           WorldInitialized.fromMode(mode, state), channel);
     case AuthenticateRequest():
-      return null;
+      final challenge = challengeManager?.getChallenge(channel);
+      if (challenge == null) return null;
+      final verified = await event.verify(challenge);
+      if (!verified) {
+        return ServerResponse.builder(
+            AuthenticatedRequested(challenge, isRequired: true), channel);
+      }
+      userManager?.addUser(channel, event.publicKey);
+      return ServerResponse.builder(buildInitialize(), channel);
   }
 }

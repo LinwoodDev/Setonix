@@ -1,5 +1,4 @@
 import 'package:bloc_concurrency/bloc_concurrency.dart';
-import 'package:cryptography_plus/cryptography_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' show ColorScheme;
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -154,9 +153,14 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
     return state.fileSystem.worldSystem.updateFile(name, data);
   }
 
-  void _processEvent(NetworkerPacket<WorldEvent?> data) {
-    final value = processClientEvent(data.data, data.channel, state.world,
-        assetManager: state.assetManager);
+  Future<void> _processEvent(NetworkerPacket<WorldEvent?> data) async {
+    final value = await processClientEvent(
+      data.data,
+      data.channel,
+      state.world,
+      assetManager: state.assetManager,
+      userManager: state.multiplayer.state.userManager,
+    );
     if (value == null) return;
     state.multiplayer.sendServerPackets(
         value.buildPackets(state.world, state.multiplayer.clients));
@@ -170,7 +174,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
     }
   }
 
-  void process(WorldEvent event) {
+  Future<void> process(WorldEvent event) async {
     switch (event) {
       case LocalWorldEvent e:
         add(e);
@@ -179,7 +183,8 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
         if (multiplayer.isConnected) {
           multiplayer.send(e);
         } else {
-          final event = processClientEvent(e, kAuthorityChannel, state.world,
+          final event = await processClientEvent(
+              e, kAuthorityChannel, state.world,
               assetManager: state.assetManager, allowServerEvents: true);
           if (event != null) {
             add(event.main.data);
@@ -201,24 +206,5 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
       pluginSystem.loadLuaPlugin(state.assetManager, script);
       // ignore: empty_catches
     } catch (e) {}
-  }
-
-  Future<void> authenticate(SetonixAccount account) async {
-    final challenge = state.world.authRequest?.challenge;
-    if (challenge == null) {
-      return;
-    }
-    final generator = Ed25519();
-    final keyPair = SimpleKeyPairData(
-      account.privateKey,
-      publicKey: SimplePublicKey(account.publicKey, type: KeyPairType.ed25519),
-      type: KeyPairType.ed25519,
-    );
-    final signature = await generator.sign(challenge, keyPair: keyPair);
-    final request = AuthenticateRequest(
-      Uint8List.fromList(signature.bytes),
-      account.publicKey,
-    );
-    process(request);
   }
 }

@@ -26,11 +26,12 @@ String limitOutput(Object? value, [int limit = 500]) {
 
 final class SetonixServer {
   final Consoler consoler;
-  final ConfigManager configManager = ConfigManager();
+  final ConfigManager configManager;
   final ServerAssetManager assetManager;
+  final UserManager userManager;
+  final ChallengeManager? challengeManager;
   final Map<String, WorldBloc> _worlds = {};
   final Map<Channel, String> _userWorlds = {};
-  late final PluginSystem pluginSystem;
 
   NetworkerSocketServer? _server;
   NetworkerPipe<dynamic, WorldEvent>? _pipe;
@@ -67,7 +68,13 @@ final class SetonixServer {
   WorldState? getUserWorldState(Channel channel) =>
       getUserWorld(channel)?.state;
 
-  SetonixServer._(this.consoler, this.assetManager);
+  SetonixServer._(
+    this.consoler,
+    this.assetManager,
+    this.configManager,
+    this.userManager,
+    this.challengeManager,
+  );
 
   static Future<SetonixServer> load({
     String? worldFile,
@@ -80,7 +87,11 @@ final class SetonixServer {
     );
     await _runStaticLogZone(
         consoler, () => assetManager.init(console: consoler));
-    return SetonixServer._(consoler, assetManager);
+    final configManager = ConfigManager();
+    final userManager = UserManager(configManager.guestPrefix);
+    final challengeManager = ChallengeManager();
+    return SetonixServer._(
+        consoler, assetManager, configManager, userManager, challengeManager);
   }
 
   void log(Object? message, {LogLevel? level}) =>
@@ -205,6 +216,10 @@ final class SetonixServer {
     final (user, info) = event;
     log('${info.address} ($user) left the game', level: LogLevel.info);
     getUserWorld(user)?.eventSystem.runLeaveCallback(event.$1, event.$2);
+
+    _userWorlds.remove(user);
+    userManager.removeUser(user);
+    challengeManager?.removeChallenge(user);
   }
 
   Future<void> saveAll({bool force = false}) async {

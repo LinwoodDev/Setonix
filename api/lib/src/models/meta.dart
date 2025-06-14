@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:cryptography_plus/cryptography_plus.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:setonix_api/src/helpers/crypto.dart';
 
@@ -80,6 +81,12 @@ final class SetonixAccount {
     required this.publicKey,
     required this.name,
   });
+
+  KeyPair get keyPair => SimpleKeyPairData(
+        privateKey,
+        publicKey: SimplePublicKey(publicKey, type: KeyPairType.ed25519),
+        type: KeyPairType.ed25519,
+      );
 
   String getFingerprint([bool short = false]) =>
       generateFingerprint(publicKey, short);

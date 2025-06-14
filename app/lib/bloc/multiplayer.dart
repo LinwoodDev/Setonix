@@ -33,6 +33,8 @@ sealed class MultiplayerState with MultiplayerStateMappable {
   bool get isConnected => this is MultiplayerConnectedState;
   bool get isClient => false;
   bool get isServer => false;
+
+  UserManager? get userManager => null;
 }
 
 @MappableClass()
@@ -62,6 +64,8 @@ final class MultiplayerConnectedState extends MultiplayerState
     with MultiplayerConnectedStateMappable {
   final NetworkerBase networker;
   final SimpleNetworkerPipe<WorldEvent> pipe;
+  @override
+  final UserManager userManager = UserManager();
 
   MultiplayerConnectedState(this.networker, this.pipe);
 
@@ -136,7 +140,8 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
     if (base is NetworkerClient) {
       transformer.connect(pipe);
     } else if (base is NetworkerServer) {
-      base.clientConnect.listen(_initController.add);
+      base.clientConnect.listen(_onJoin);
+      base.clientDisconnect.listen(_onLeft);
       transformer.connect(SimpleNetworkerPipe()
         ..read.listen(_onClientEvent)
         ..write.listen((e) => _onClientEvent(e, true))
@@ -308,5 +313,16 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
   Future<void> raiseError(FatalServerEventError e) async {
     _fatalError = e;
     disconnect();
+  }
+
+  void _onLeft((Channel, ConnectionInfo) event) {
+    state.userManager?.removeUser(event.$1);
+  }
+
+  void _onJoin((Channel, ConnectionInfo) event) {
+    _initController.add(event);
+    state.userManager?.addUser(
+      event.$1,
+    );
   }
 }

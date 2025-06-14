@@ -53,4 +53,7 @@ class ConfigManager {
 
   String get worldFile =>
       _mergedConfig.worldFile ?? SetonixConfig.defaultWorldName;
+
+  String get guestPrefix =>
+      _mergedConfig.guestPrefix ?? SetonixConfig.defaultGuestPrefix;
 }

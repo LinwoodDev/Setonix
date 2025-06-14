@@ -58,8 +58,8 @@ mixin ServerDataMetadataMappable {
 
   ServerDataMetadataCopyWith<ServerDataMetadata, ServerDataMetadata,
           ServerDataMetadata>
-      get copyWith => _ServerDataMetadataCopyWithImpl(
-          this as ServerDataMetadata, $identity, $identity);
+      get copyWith => _ServerDataMetadataCopyWithImpl<ServerDataMetadata,
+          ServerDataMetadata>(this as ServerDataMetadata, $identity, $identity);
   @override
   String toString() {
     return ServerDataMetadataMapper.ensureInitialized()
@@ -82,8 +82,8 @@ mixin ServerDataMetadataMappable {
 extension ServerDataMetadataValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ServerDataMetadata, $Out> {
   ServerDataMetadataCopyWith<$R, ServerDataMetadata, $Out>
-      get $asServerDataMetadata =>
-          $base.as((v, t, t2) => _ServerDataMetadataCopyWithImpl(v, t, t2));
+      get $asServerDataMetadata => $base.as(
+          (v, t, t2) => _ServerDataMetadataCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class ServerDataMetadataCopyWith<$R, $In extends ServerDataMetadata,
@@ -118,5 +118,5 @@ class _ServerDataMetadataCopyWithImpl<$R, $Out>
   @override
   ServerDataMetadataCopyWith<$R2, ServerDataMetadata, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _ServerDataMetadataCopyWithImpl($value, $cast, t);
+      _ServerDataMetadataCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
