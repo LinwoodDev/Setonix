@@ -229,42 +229,49 @@ class _GamePageState extends State<GamePage> {
                         buildWhen: (previous, current) =>
                             previous.world.gameState != current.world.gameState,
                         builder: (context, state) {
-                          return Stack(alignment: Alignment.center, children: [
-                            if (state.world.gameState ==
-                                GameState.configuration)
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  CircularProgressIndicator(),
-                                  const SizedBox(height: 16),
-                                  Text(
-                                    AppLocalizations.of(context)
-                                        .configuringGame,
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
+                          return Center(
+                            child:
+                                Stack(alignment: Alignment.center, children: [
+                              if (state.world.gameState ==
+                                  GameState.configuration)
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    CircularProgressIndicator(),
+                                    const SizedBox(height: 16),
+                                    Text(
+                                      AppLocalizations.of(context)
+                                          .configuringGame,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                    ),
+                                  ],
+                                )
+                              else
+                                GameWidget(
+                                  game: BoardGame(
+                                    bloc: context.read<WorldBloc>(),
+                                    settingsCubit:
+                                        context.read<SettingsCubit>(),
+                                    contextMenuController:
+                                        _contextMenuController,
+                                    onEscape: () =>
+                                        Scaffold.of(context).openDrawer(),
                                   ),
-                                ],
-                              )
-                            else
-                              GameWidget(
-                                game: BoardGame(
-                                  bloc: context.read<WorldBloc>(),
-                                  settingsCubit: context.read<SettingsCubit>(),
-                                  contextMenuController: _contextMenuController,
-                                  onEscape: () =>
-                                      Scaffold.of(context).openDrawer(),
+                                  focusNode: _focusNode,
+                                  initialActiveOverlays: ['dialogs', 'filter'],
+                                  overlayBuilderMap: {
+                                    'dialogs': (context, game) =>
+                                        GameDialogOverlay(),
+                                    'filter': (context, game) =>
+                                        GameFilterView(),
+                                  },
                                 ),
-                                focusNode: _focusNode,
-                                initialActiveOverlays: ['dialogs', 'filter'],
-                                overlayBuilderMap: {
-                                  'dialogs': (context, game) =>
-                                      GameDialogOverlay(),
-                                  'filter': (context, game) => GameFilterView(),
-                                },
-                              ),
-                            AuthGameView(),
-                          ]);
+                              AuthGameView(),
+                            ]),
+                          );
                         },
                       ),
                     );

@@ -272,6 +272,7 @@ class SetonixFileSystem {
   }
 
   Future<List<SetonixAccount>> getAccounts([List<String>? names]) async {
+    await privateKeySystem.initialize();
     names ??= await privateKeySystem.getKeys();
     return Future.wait(
       names.map((name) => getAccount(name)),

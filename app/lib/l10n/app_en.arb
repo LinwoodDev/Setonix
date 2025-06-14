@@ -250,9 +250,9 @@
   "compact": "Compact",
   "standard": "Standard",
   "comfortable": "Comfortable",
+  "stackedCards": "Stacked cards",
   "accounts": "Accounts",
   "create": "Create",
-  "stackedCards": "Stacked cards",
   "configuringGame": "Configuring game...",
   "authenticate": "Authenticate",
   "authenticateDescription": "The server requested authentication. Select the account you want to use to authenticate.",
@@ -261,5 +261,6 @@
   "importAccountsDescription": "Are you sure you want to import the accounts?",
   "backupAllKeys": "Backup all keys",
   "noAccount": "There are no accounts available",
-  "authenticateRequired": "Authentication is required to connect to the server"
+  "authenticateRequired": "Authentication is required to connect to the server",
+  "authenticateLoading": "Authenticating..."
 }

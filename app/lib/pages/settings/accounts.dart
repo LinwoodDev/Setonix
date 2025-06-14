@@ -85,6 +85,14 @@ class _AccountsSettingsPageState extends State<AccountsSettingsPage> {
             );
           }
           final accounts = state.data ?? <SetonixAccount>[];
+          if (accounts.isEmpty) {
+            return Center(
+              child: Text(
+                AppLocalizations.of(context).noAccount,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+            );
+          }
           return ListView.builder(
             itemCount: accounts.length,
             itemBuilder: (context, index) {
