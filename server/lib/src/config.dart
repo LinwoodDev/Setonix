@@ -31,8 +31,8 @@ class ConfigManager {
       _mergedConfig = _mergeConfig();
     } else {
       _config = SetonixConfig.defaultConfig;
-      await file.writeAsString(
-          JsonEncoder.withIndent('  ').convert(_config.toJson()));
+      await file
+          .writeAsString(JsonEncoder.withIndent('  ').convert(_config.toMap()));
     }
   }
 

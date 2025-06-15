@@ -1,0 +1,23 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { loadServersFromConfig } from '../scripts/servers/list';
+import { fetchAllServerStatus} from '../scripts/servers/info';
+import ServerEntry from '../components/ServerEntry.astro';
+
+const servers = await loadServersFromConfig();
+---
+
+<Layout>
+	<h1>Server List</h1>
+	<ul>
+
+		{servers.map((e) => <ServerEntry server={e} server:defer>
+			<li slot="fallback"
+				style={{
+					textDecoration: e.highlighted ? "underline" : "none",
+				}}>
+				{e.address} {e.secure ? "🔒" : "🔓"} (Loading...)
+			</li>
+			</ServerEntry>)}
+	</ul>
+</Layout>

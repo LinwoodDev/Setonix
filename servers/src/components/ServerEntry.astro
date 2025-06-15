@@ -1,0 +1,21 @@
+---
+import { fetchServerStatus } from "../scripts/servers/info";
+import { Server } from "../scripts/servers/utils";
+
+interface Props {
+  server: Server;
+}
+
+const { server } = Astro.props;
+const status = await fetchServerStatus(server);
+---
+
+<li
+  style={{
+    textDecoration: server.highlighted ? "underline" : "none",
+  }}
+>
+  {server.address}
+  {server.secure ? "🔒" : "🔓"}
+  {JSON.stringify(status)}
+</li>
