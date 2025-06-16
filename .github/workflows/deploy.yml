@@ -114,14 +114,17 @@ jobs:
           echo "$SFTP_KNOWN_HOSTS" > known_hosts
           chmod 600 known_hosts
           rsync -avz --delete -e "ssh -i sftp_key -o UserKnownHostsFile=known_hosts" build/web/ $SFTP_USERNAME@$SFTP_HOST:/var/www/$WEB_DIR.setonix
-  build-server:
+  build-servers:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: servers
     steps:
-      - name: ⬆️ Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          package_json_file: docs/package.json
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
@@ -130,7 +133,7 @@ jobs:
           cache-dependency-path: docs/pnpm-lock.yaml
       - name: Install dependencies
         run: pnpm install
-      - name: Build Astro SSR
+      - name: Build
         run: pnpm build
       - name: Setup SSH Agent
         if: github.ref == 'refs/heads/develop'
@@ -153,5 +156,5 @@ jobs:
         run: |
           ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
             pm2 stop astro-servers || true
-            pm2 start dist/server/entry.mjs --name astro-servers
+            PORT=${{ secrets.SERVERS_PORT }} pm2 start dist/server/entry.mjs --name astro-servers --update-env
           EOF
