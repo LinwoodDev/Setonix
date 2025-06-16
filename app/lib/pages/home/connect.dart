@@ -149,7 +149,7 @@ class _ServersDialogState extends State<ServersDialog> {
     _servers = ValueConnectableStream(context
             .read<NetworkService>()
             .fetchServersWithProperties(
-                browsable: settings.showConnectNetwork,
+                browsable: settings.showConnectBrowse,
                 local: settings.showConnectYour))
         .autoConnect();
   }
@@ -204,10 +204,10 @@ class _ServersDialogState extends State<ServersDialog> {
       listenWhen: (previous, current) =>
           previous.serverList != current.serverList ||
           previous.showConnectYour != current.showConnectYour ||
-          previous.showConnectNetwork != current.showConnectNetwork,
+          previous.showConnectBrowse != current.showConnectBrowse,
       buildWhen: (previous, current) =>
           previous.showConnectYour != current.showConnectYour ||
-          previous.showConnectNetwork != current.showConnectNetwork,
+          previous.showConnectBrowse != current.showConnectBrowse,
       listener: (context, state) => _refreshServers(state),
       builder: (context, settings) => ResponsiveAlertDialog(
         title: Text(AppLocalizations.of(context).servers),
@@ -447,11 +447,11 @@ class _ServersDialogState extends State<ServersDialog> {
                           label: Text(AppLocalizations.of(context).browse),
                           avatar: const Icon(PhosphorIconsLight.globe),
                           showCheckmark: false,
-                          selected: settings.showConnectNetwork,
+                          selected: settings.showConnectBrowse,
                           onPressed: () => context
                               .read<SettingsCubit>()
-                              .changeShowConnectNetwork(
-                                  !settings.showConnectNetwork),
+                              .changeShowConnectBrowse(
+                                  !settings.showConnectBrowse),
                         ),
                       ]),
                   const SizedBox(height: 8),

@@ -104,9 +104,9 @@ class SetonixSettingsMapper extends ClassMapperBase<SetonixSettings> {
   static bool _$showConnectYour(SetonixSettings v) => v.showConnectYour;
   static const Field<SetonixSettings, bool> _f$showConnectYour =
       Field('showConnectYour', _$showConnectYour, opt: true, def: true);
-  static bool _$showConnectNetwork(SetonixSettings v) => v.showConnectNetwork;
-  static const Field<SetonixSettings, bool> _f$showConnectNetwork =
-      Field('showConnectNetwork', _$showConnectNetwork, opt: true, def: true);
+  static bool _$showConnectBrowse(SetonixSettings v) => v.showConnectBrowse;
+  static const Field<SetonixSettings, bool> _f$showConnectBrowse =
+      Field('showConnectBrowse', _$showConnectBrowse, opt: true, def: false);
   static String? _$lastVersion(SetonixSettings v) => v.lastVersion;
   static const Field<SetonixSettings, String> _f$lastVersion =
       Field('lastVersion', _$lastVersion, opt: true);
@@ -150,7 +150,7 @@ class SetonixSettingsMapper extends ClassMapperBase<SetonixSettings> {
     #dataDirectory: _f$dataDirectory,
     #nativeTitleBar: _f$nativeTitleBar,
     #showConnectYour: _f$showConnectYour,
-    #showConnectNetwork: _f$showConnectNetwork,
+    #showConnectBrowse: _f$showConnectBrowse,
     #lastVersion: _f$lastVersion,
     #gameProperty: _f$gameProperty,
     #servers: _f$servers,
@@ -172,7 +172,7 @@ class SetonixSettingsMapper extends ClassMapperBase<SetonixSettings> {
         dataDirectory: data.dec(_f$dataDirectory),
         nativeTitleBar: data.dec(_f$nativeTitleBar),
         showConnectYour: data.dec(_f$showConnectYour),
-        showConnectNetwork: data.dec(_f$showConnectNetwork),
+        showConnectBrowse: data.dec(_f$showConnectBrowse),
         lastVersion: data.dec(_f$lastVersion),
         gameProperty: data.dec(_f$gameProperty),
         servers: data.dec(_f$servers),
@@ -252,7 +252,7 @@ abstract class SetonixSettingsCopyWith<$R, $In extends SetonixSettings, $Out>
       String? dataDirectory,
       bool? nativeTitleBar,
       bool? showConnectYour,
-      bool? showConnectNetwork,
+      bool? showConnectBrowse,
       String? lastVersion,
       GameProperty? gameProperty,
       List<ListGameServer>? servers,
@@ -300,7 +300,7 @@ class _SetonixSettingsCopyWithImpl<$R, $Out>
           String? dataDirectory,
           bool? nativeTitleBar,
           bool? showConnectYour,
-          bool? showConnectNetwork,
+          bool? showConnectBrowse,
           Object? lastVersion = $none,
           GameProperty? gameProperty,
           List<ListGameServer>? servers,
@@ -319,7 +319,7 @@ class _SetonixSettingsCopyWithImpl<$R, $Out>
         if (dataDirectory != null) #dataDirectory: dataDirectory,
         if (nativeTitleBar != null) #nativeTitleBar: nativeTitleBar,
         if (showConnectYour != null) #showConnectYour: showConnectYour,
-        if (showConnectNetwork != null) #showConnectNetwork: showConnectNetwork,
+        if (showConnectBrowse != null) #showConnectBrowse: showConnectBrowse,
         if (lastVersion != $none) #lastVersion: lastVersion,
         if (gameProperty != null) #gameProperty: gameProperty,
         if (servers != null) #servers: servers,
@@ -340,8 +340,8 @@ class _SetonixSettingsCopyWithImpl<$R, $Out>
       dataDirectory: data.get(#dataDirectory, or: $value.dataDirectory),
       nativeTitleBar: data.get(#nativeTitleBar, or: $value.nativeTitleBar),
       showConnectYour: data.get(#showConnectYour, or: $value.showConnectYour),
-      showConnectNetwork:
-          data.get(#showConnectNetwork, or: $value.showConnectNetwork),
+      showConnectBrowse:
+          data.get(#showConnectBrowse, or: $value.showConnectBrowse),
       lastVersion: data.get(#lastVersion, or: $value.lastVersion),
       gameProperty: data.get(#gameProperty, or: $value.gameProperty),
       servers: data.get(#servers, or: $value.servers),

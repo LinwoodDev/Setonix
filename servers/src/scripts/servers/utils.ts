@@ -4,6 +4,7 @@ export const ServerObject = z.object({
   address: z.string().url(),
   secure: z.boolean().optional(),
   highlighted: z.boolean().optional(),
+  remote: z.boolean().optional(),
 });
 
 export type Server = z.infer<typeof ServerObject>;

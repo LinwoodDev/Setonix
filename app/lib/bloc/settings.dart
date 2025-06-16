@@ -63,7 +63,7 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
   @override
   final bool nativeTitleBar;
   final bool stackedCards;
-  final bool showConnectYour, showConnectNetwork;
+  final bool showConnectYour, showConnectBrowse;
   final GameProperty gameProperty;
   final List<ListGameServer> servers;
   final double zoom;
@@ -81,7 +81,7 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
     this.dataDirectory = '',
     this.nativeTitleBar = false,
     this.showConnectYour = true,
-    this.showConnectNetwork = true,
+    this.showConnectBrowse = false,
     this.lastVersion,
     this.gameProperty = const GameProperty(),
     this.servers = const [],
@@ -112,7 +112,7 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
         nativeTitleBar: prefs.getBool('nativeTitleBar') ?? false,
         localeTag: prefs.getString('locale') ?? '',
         showConnectYour: prefs.getBool('showConnectYour') ?? true,
-        showConnectNetwork: prefs.getBool('showConnectNetwork') ?? true,
+        showConnectBrowse: prefs.getBool('showConnectBrowse') ?? false,
         lastVersion: prefs.getString('lastVersion'),
         gameProperty: prefs.containsKey('gameProperty')
             ? GamePropertyMapper.fromJson(prefs.getString('gameProperty')!)
@@ -142,7 +142,7 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
     await prefs.setBool('nativeTitleBar', nativeTitleBar);
     await prefs.setString('locale', localeTag);
     await prefs.setBool('showConnectYour', showConnectYour);
-    await prefs.setBool('showConnectNetwork', showConnectNetwork);
+    await prefs.setBool('showConnectBrowse', showConnectBrowse);
     if (lastVersion == null) {
       if (prefs.containsKey('last_version')) {
         await prefs.remove('last_version');
@@ -199,8 +199,8 @@ class SettingsCubit extends Cubit<SetonixSettings>
     return save();
   }
 
-  Future<void> changeShowConnectNetwork(bool value) {
-    emit(state.copyWith(showConnectNetwork: value));
+  Future<void> changeShowConnectBrowse(bool value) {
+    emit(state.copyWith(showConnectBrowse: value));
     return save();
   }
 

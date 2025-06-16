@@ -11,6 +11,11 @@ export default defineConfig({
         access: "secret",
         optional: true,
       }),
+      USE_REMOTE_URLS_STATUS: envField.boolean({
+        context: "server",
+        access: "secret",
+        default: true,
+      }),
     },
   },
 });

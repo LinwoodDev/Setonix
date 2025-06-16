@@ -1,27 +1,32 @@
-import {NodeCache} from '@cacheable/node-cache';
-import { promises as fs } from 'fs';
-import type { Server } from './utils';
-import { REMOTE_URLS } from "astro:env/server";
+import { NodeCache } from "@cacheable/node-cache";
+import { promises as fs } from "fs";
+import type { Server } from "./utils";
+import { REMOTE_URLS, USE_REMOTE_URLS_STATUS } from "astro:env/server";
+import type { ServerStatus } from "./info";
 
 // Cache with 5 minutes TTL
 const cache = new NodeCache({ stdTTL: 60 * 10 });
 // Cache for local servers list
 let localCache: Server[] | null = null;
 
+export async function getRemoteServerStatus(server: Server) {
+  return ((server as any)["status"] as ServerStatus) || null;
+}
+
 /**
  * Loads the local servers.json and merges it with all remote lists.
  */
- export async function loadServers(
-   localPath: string,
-   remoteUrls: string[] = []
- ): Promise<Server[]> {
+export async function loadServers(
+  localPath: string,
+  remoteUrls: string[] = []
+): Promise<Server[]> {
   if (!localCache) {
-    const localData = await fs.readFile(localPath, 'utf-8');
+    const localData = await fs.readFile(localPath, "utf-8");
     localCache = JSON.parse(localData);
   }
   const local = localCache!;
 
-   async function fetchRemote(url: string): Promise<Server[]> {
+  async function fetchRemote(url: string): Promise<Server[]> {
     const cacheKey = `servers:${url}`;
     const cached = cache.get<Server[]>(cacheKey);
     if (cached) return cached;
@@ -34,11 +39,14 @@ let localCache: Server[] | null = null;
     }
 
     const data = await res.json();
-    if (!('servers' in data)) {
+    if (!("servers" in data)) {
       console.warn(`Invalid data format from ${url}:`, data);
       return [];
     }
-    const servers = data['servers'] as Server[];
+    const servers = data["servers"].map((e: any) => ({
+      remote: true,
+      ...e,
+    })) as Server[];
     cache.set(cacheKey, servers);
     return servers;
   }
@@ -49,10 +57,10 @@ let localCache: Server[] | null = null;
 }
 
 export async function loadServersFromConfig() {
-  const localPath = 'src/data/servers.json';
-  const remotes = REMOTE_URLS?.split(',');
+  const localPath = "src/data/servers.json";
+  const remotes = REMOTE_URLS?.split(",");
   return await loadServers(
     localPath,
-    remotes?.filter(url => url.trim() !== '') || []
+    remotes?.filter((url) => url.trim() !== "") || []
   );
 }
