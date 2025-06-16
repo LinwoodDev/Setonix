@@ -1,0 +1,54 @@
+on:
+  push:
+    branches:
+      - develop
+    paths:
+      - 'servers/**'
+
+jobs:
+  build-servers:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: servers
+    steps:
+      - uses: actions/checkout@v4
+      - name: Skip job if no changes
+        run: echo "No changes detected in servers directory. Skipping build."
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          package_json_file: docs/package.json
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "pnpm"
+          cache-dependency-path: docs/pnpm-lock.yaml
+      - name: Install dependencies
+        run: pnpm install
+      - name: Build
+        run: pnpm build
+      - name: Setup SSH Agent
+        if: github.ref == 'refs/heads/develop'
+        uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.SFTP_KEY }}
+      - name: Add SSH Known Hosts
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SFTP_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+
+      - name: Deploy SSR build via rsync
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          rsync -avz --delete ./dist/ ${{ secrets.SFTP_USERNAME }}@${{ secrets.SFTP_HOST }}:/var/www/servers.setonix
+
+      - name: Restart SSR application
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          ssh ${{ secrets.SFTP_USERNAME }}@${{ secrets.SFTP_HOST }} << 'EOF'
+            pm2 stop astro-servers || true
+            PORT=${{ secrets.SERVERS_PORT }} pm2 start server/entry.mjs --name astro-servers --update-env
+          EOF
