@@ -23,9 +23,37 @@ class ServersSettingsPage extends StatelessWidget {
             icon: const PhosphorIcon(PhosphorIconsLight.clockCounterClockwise),
             tooltip: AppLocalizations.of(context).loadDefaultServerList,
             onPressed: () async {
-              context
-                  .read<SettingsCubit>()
-                  .addServersToList(kDefaultServerList);
+              final settingsCubit = context.read<SettingsCubit>();
+              showDialog<bool>(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title:
+                      Text(AppLocalizations.of(context).loadDefaultServerList),
+                  content: Text(AppLocalizations.of(context)
+                      .loadDefaultServerListDescription),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(false),
+                      child: Text(AppLocalizations.of(context).cancel),
+                    ),
+                    OutlinedButton(
+                      onPressed: () {
+                        settingsCubit.addServersToList(
+                            getDefaultServerList(), true);
+                        Navigator.of(context).pop(true);
+                      },
+                      child: Text(AppLocalizations.of(context).reset),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        settingsCubit.addServersToList(getDefaultServerList());
+                        Navigator.of(context).pop(true);
+                      },
+                      child: Text(AppLocalizations.of(context).confirm),
+                    ),
+                  ],
+                ),
+              );
             },
           ),
         ],

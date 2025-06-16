@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:setonix/pages/settings/intro.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -12,10 +14,33 @@ import 'package:setonix/pages/home/play.dart';
 
 import '../../api/settings.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final ScrollController _scrollController = ScrollController();
 
-  HomePage({super.key});
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _showIntro());
+  }
+
+  void _showIntro() {
+    if (context.read<SettingsCubit>().state.showIntro) {
+      showDialog(context: context, builder: (context) => IntroDialog());
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   List<(String, IconData, VoidCallback, Widget?, bool)> _getItems(
           BuildContext context) =>

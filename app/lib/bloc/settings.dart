@@ -31,7 +31,13 @@ enum ThemeDensity {
       };
 }
 
-const kDefaultServerList = ['https://servers.setonix.linwood.dev/data.json'];
+List<String> getDefaultServerList() {
+  final env = String.fromEnvironment('server_list', defaultValue: '');
+  if (env.isNotEmpty) {
+    return env.split(',').map((e) => e.trim()).toList();
+  }
+  return ['https://servers.setonix.linwood.dev/data.json'];
+}
 
 final class ThemeModeMapper extends SimpleMapper<ThemeMode> {
   const ThemeModeMapper();
@@ -279,8 +285,8 @@ class SettingsCubit extends Cubit<SetonixSettings>
     return save();
   }
 
-  Future<void> addServersToList(List<String> server) {
-    final newList = {...state.serverList, ...server}.toList();
+  Future<void> addServersToList(List<String> server, [bool reset = false]) {
+    final newList = {if (!reset) ...state.serverList, ...server}.toList();
     emit(state.copyWith(serverList: newList));
     return save();
   }
@@ -290,6 +296,11 @@ class SettingsCubit extends Cubit<SetonixSettings>
   Future<void> removeServerFromList(String server) {
     final newList = state.serverList.where((s) => s != server).toList();
     emit(state.copyWith(serverList: newList));
+    return save();
+  }
+
+  Future<void> changeShowIntro(bool value) {
+    emit(state.copyWith(showIntro: value));
     return save();
   }
 
