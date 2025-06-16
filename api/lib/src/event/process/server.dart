@@ -103,6 +103,8 @@ ServerProcessed processServerEvent(
         info: event.info ?? state.info,
         dialogs: event.clearUserInterface ? [] : state.dialogs,
         images: event.clearUserInterface ? {} : state.images,
+        gameState: GameState.play,
+        authRequest: null,
       ));
     case TeamJoined():
       return ServerProcessed(state.copyWith(
@@ -348,6 +350,10 @@ ServerProcessed processServerEvent(
     case ServerStateUpdated():
       return ServerProcessed(state.copyWith(
         serverState: event.state,
+      ));
+    case AuthenticatedRequested():
+      return ServerProcessed(state.copyWith(
+        authRequest: event,
       ));
   }
 }

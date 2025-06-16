@@ -11,6 +11,7 @@ import '../models/meta.dart';
 import '../models/server.dart';
 import '../models/table.dart';
 import '../models/vector.dart';
+import 'event.dart';
 
 part 'state.mapper.dart';
 
@@ -18,6 +19,12 @@ part 'state.mapper.dart';
 enum WorldOperationMode {
   figures,
   boards,
+}
+
+@MappableEnum()
+enum GameState {
+  configuration,
+  play,
 }
 
 @MappableClass()
@@ -34,9 +41,12 @@ final class WorldState with WorldStateMappable {
   final List<GameDialog> dialogs;
   final Map<String, Uint8List> images;
   final ServerState serverState;
+  final GameState gameState;
+  final AuthenticatedRequested? authRequest;
 
   const WorldState({
     this.name,
+    this.gameState = GameState.play,
     this.table = const GameTable(),
     this.tableName = '',
     this.info = const GameInfo(),
@@ -47,6 +57,7 @@ final class WorldState with WorldStateMappable {
     this.dialogs = const [],
     this.images = const {},
     this.serverState = const ServerState(),
+    this.authRequest,
     required this.data,
   });
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:setonix/bloc/world/bloc.dart';
@@ -90,9 +91,10 @@ class _TeamDialogState extends State<TeamDialog> {
         ),
       ),
       actions: [
-        TextButton(
+        TextButton.icon(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text(AppLocalizations.of(context).cancel),
+          icon: const Icon(PhosphorIconsLight.prohibit),
+          label: Text(AppLocalizations.of(context).cancel),
         ),
         BlocBuilder<WorldBloc, ClientWorldState>(
           bloc: _bloc,
@@ -102,7 +104,7 @@ class _TeamDialogState extends State<TeamDialog> {
             listenable: _nameController,
             builder: (context, child) {
               final text = _nameController.text;
-              return ElevatedButton(
+              return ElevatedButton.icon(
                 onPressed: text.isEmpty ||
                         (state.info.teams.containsKey(text) &&
                             text != widget.team)
@@ -120,7 +122,8 @@ class _TeamDialogState extends State<TeamDialog> {
                                 team));
                         Navigator.of(context).pop();
                       },
-                child: Text(_isCreate()
+                icon: const Icon(PhosphorIconsLight.check),
+                label: Text(_isCreate()
                     ? LeapLocalizations.of(context).create
                     : AppLocalizations.of(context).edit),
               );

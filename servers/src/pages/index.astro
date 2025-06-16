@@ -1,0 +1,35 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { loadServersFromConfig } from "../scripts/servers/list";
+import ServerEntry from "../components/ServerEntry.astro";
+import LoadingServerEntry from "../components/LoadingServerEntry.astro";
+
+const servers = await loadServersFromConfig();
+---
+
+<Layout>
+  <header class="navbar-lg sticky">
+    <span class="navbar-title">Setonix Servers</span>
+    <nav class="navbar-items">
+      <a class="btn secondary" href="https://setonix.linwood.dev">Docs</a>
+      <div class="h-divider"></div>
+      <a class="btn secondary" href="https://github.com/LinwoodDev/Setonix"
+        >GitHub</a
+      >
+    </nav>
+  </header>
+  <div class="container-lg">
+    <div class="big-section">
+      <h2>Server List</h2>
+    </div>
+    <div class="big-section">
+      <ul class="col justify-center wrap gap-sm">
+        {
+          servers.map((e) => (
+            <LoadingServerEntry server={e} />
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</Layout>

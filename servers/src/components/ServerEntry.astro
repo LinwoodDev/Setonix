@@ -1,0 +1,63 @@
+---
+import { fetchServerStatus, type ServerStatus } from "../scripts/servers/info";
+import type { Server } from "../scripts/servers/utils";
+
+interface Props {
+  server: Server;
+  serverStatus?: boolean;
+}
+
+const { server } = Astro.props;
+let serverStatus: ServerStatus | undefined | null = undefined;
+if (Astro.props.serverStatus) {
+  serverStatus = await fetchServerStatus(server);
+}
+
+function buildJoinURL(): string {
+  return `https://launch.setonix.linwood.dev/connect?address=${encodeURIComponent(server.address)}&secure=${encodeURIComponent(server.secure ?? 'true')}`;
+}
+
+const secureLabel = server.secure ? "Secure server" : "Unsecure server";
+const playerText = serverStatus == null
+  ? "Offline"
+  : serverStatus.currentPlayers +
+    (serverStatus.maxPlayers == null ? "" : `/${serverStatus.maxPlayers}`);
+---
+
+<li role="listitem">
+  <a
+    class:list={[
+      "card",
+      server.highlighted ? "primary" : "secondary",
+      "gap-xs",
+    ]}
+    href={buildJoinURL()}
+    target="_blank"
+    rel="noopener"
+    aria-label={`Connect to ${server.address} (${secureLabel})`}
+  >
+    <div class="row gap-xs justify-between align-start">
+      <p class="h3">{server.address}</p>
+      <div class="row gap-xs align-center" aria-live="polite">
+        {serverStatus !== undefined && (
+          <p class="bold m-none">
+            {playerText}
+          </p>
+        )}
+        <span
+          role="img"
+          aria-label={secureLabel}
+          title={secureLabel}
+        >
+          {server.secure ? "🔒" : "🔓"}
+        </span>
+      </div>
+    </div>
+
+    <p class="text">
+      {serverStatus === undefined
+        ? "Loading…"
+        : serverStatus?.description || "No description available."}
+    </p>
+  </a>
+</li>

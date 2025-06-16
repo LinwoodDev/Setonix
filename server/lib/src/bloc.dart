@@ -6,10 +6,16 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:consoler/consoler.dart';
 import 'package:setonix_server/setonix_server.dart';
 
-Future<ServerProcessed> _computeEvent(ServerWorldEvent event, WorldState state,
-    List<SignatureMetadata> signature) {
-  return Isolate.run(
-      () => processServerEvent(event, state, signature: signature));
+Future<ServerProcessed> _computeEvent(
+  ServerWorldEvent event,
+  WorldState state, {
+  required List<SignatureMetadata> signature,
+}) {
+  return Isolate.run(() => processServerEvent(
+        event,
+        state,
+        signature: signature,
+      ));
 }
 
 class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
@@ -40,8 +46,11 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
     _serverPlugin = _pluginSystem.registerPlugin('', SetonixPlugin.new);
     on<ServerWorldEvent>((event, emit) async {
       final signature = assetManager.createSignature();
-      final processed =
-          await _computeEvent(event, state, signature.values.toList());
+      final processed = await _computeEvent(
+        event,
+        state,
+        signature: signature.values.toList(),
+      );
       final newState = processed.state;
       processed.responses.forEach(process);
       if (event is WorldInitialized) {
@@ -62,7 +71,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
   Future<void> _loadScript(String? script) async {
     try {
       if (script == null) return;
-      server.pluginSystem.loadLuaPlugin(assetManager, script);
+      pluginSystem.loadLuaPlugin(assetManager, script);
     } catch (e) {
       server.log('Error loading script: $e', level: LogLevel.error);
     }
@@ -89,17 +98,19 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
     await file.writeAsBytes(bytes);
   }
 
-  void onClientEvent(NetworkerPacket<WorldEvent> packet,
+  Future<void> onClientEvent(NetworkerPacket<WorldEvent> packet,
       {bool force = false}) async {
     final data = packet.data;
     ServerResponse? process;
     try {
-      process = processClientEvent(
+      process = await processClientEvent(
         data is UserJoined ? null : data,
         packet.channel,
         state,
         assetManager: assetManager,
         allowServerEvents: packet.isServer,
+        challengeManager: server.challengeManager,
+        userManager: server.userManager,
       );
     } catch (e) {
       server.log('Error processing event: $e', level: LogLevel.error);

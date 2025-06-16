@@ -52,6 +52,52 @@ extension WorldOperationModeMapperExtension on WorldOperationMode {
   }
 }
 
+class GameStateMapper extends EnumMapper<GameState> {
+  GameStateMapper._();
+
+  static GameStateMapper? _instance;
+  static GameStateMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = GameStateMapper._());
+    }
+    return _instance!;
+  }
+
+  static GameState fromValue(dynamic value) {
+    ensureInitialized();
+    return MapperContainer.globals.fromValue(value);
+  }
+
+  @override
+  GameState decode(dynamic value) {
+    switch (value) {
+      case r'configuration':
+        return GameState.configuration;
+      case r'play':
+        return GameState.play;
+      default:
+        throw MapperException.unknownEnumValue(value);
+    }
+  }
+
+  @override
+  dynamic encode(GameState self) {
+    switch (self) {
+      case GameState.configuration:
+        return r'configuration';
+      case GameState.play:
+        return r'play';
+    }
+  }
+}
+
+extension GameStateMapperExtension on GameState {
+  String toValue() {
+    GameStateMapper.ensureInitialized();
+    return MapperContainer.globals.toValue<GameState>(this) as String;
+  }
+}
+
 class WorldStateMapper extends ClassMapperBase<WorldState> {
   WorldStateMapper._();
 
@@ -59,12 +105,14 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
   static WorldStateMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = WorldStateMapper._());
+      GameStateMapper.ensureInitialized();
       GameTableMapper.ensureInitialized();
       GameInfoMapper.ensureInitialized();
       FileMetadataMapper.ensureInitialized();
       ChatMessageMapper.ensureInitialized();
       GameDialogMapper.ensureInitialized();
       ServerStateMapper.ensureInitialized();
+      AuthenticatedRequestedMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -75,6 +123,9 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
   static String? _$name(WorldState v) => v.name;
   static const Field<WorldState, String> _f$name =
       Field('name', _$name, opt: true);
+  static GameState _$gameState(WorldState v) => v.gameState;
+  static const Field<WorldState, GameState> _f$gameState =
+      Field('gameState', _$gameState, opt: true, def: GameState.play);
   static GameTable _$table(WorldState v) => v.table;
   static const Field<WorldState, GameTable> _f$table =
       Field('table', _$table, opt: true, def: const GameTable());
@@ -105,12 +156,16 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
   static ServerState _$serverState(WorldState v) => v.serverState;
   static const Field<WorldState, ServerState> _f$serverState =
       Field('serverState', _$serverState, opt: true, def: const ServerState());
+  static AuthenticatedRequested? _$authRequest(WorldState v) => v.authRequest;
+  static const Field<WorldState, AuthenticatedRequested> _f$authRequest =
+      Field('authRequest', _$authRequest, opt: true);
   static SetonixData _$data(WorldState v) => v.data;
   static const Field<WorldState, SetonixData> _f$data = Field('data', _$data);
 
   @override
   final MappableFields<WorldState> fields = const {
     #name: _f$name,
+    #gameState: _f$gameState,
     #table: _f$table,
     #tableName: _f$tableName,
     #info: _f$info,
@@ -121,12 +176,14 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
     #dialogs: _f$dialogs,
     #images: _f$images,
     #serverState: _f$serverState,
+    #authRequest: _f$authRequest,
     #data: _f$data,
   };
 
   static WorldState _instantiate(DecodingData data) {
     return WorldState(
         name: data.dec(_f$name),
+        gameState: data.dec(_f$gameState),
         table: data.dec(_f$table),
         tableName: data.dec(_f$tableName),
         info: data.dec(_f$info),
@@ -137,6 +194,7 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
         dialogs: data.dec(_f$dialogs),
         images: data.dec(_f$images),
         serverState: data.dec(_f$serverState),
+        authRequest: data.dec(_f$authRequest),
         data: data.dec(_f$data));
   }
 
@@ -204,8 +262,11 @@ abstract class WorldStateCopyWith<$R, $In extends WorldState, $Out>
   MapCopyWith<$R, String, Uint8List, ObjectCopyWith<$R, Uint8List, Uint8List>>
       get images;
   ServerStateCopyWith<$R, ServerState, ServerState> get serverState;
+  AuthenticatedRequestedCopyWith<$R, AuthenticatedRequested,
+      AuthenticatedRequested>? get authRequest;
   $R call(
       {String? name,
+      GameState? gameState,
       GameTable? table,
       String? tableName,
       GameInfo? info,
@@ -216,6 +277,7 @@ abstract class WorldStateCopyWith<$R, $In extends WorldState, $Out>
       List<GameDialog>? dialogs,
       Map<String, Uint8List>? images,
       ServerState? serverState,
+      AuthenticatedRequested? authRequest,
       SetonixData? data});
   WorldStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -260,8 +322,14 @@ class _WorldStateCopyWithImpl<$R, $Out>
   ServerStateCopyWith<$R, ServerState, ServerState> get serverState =>
       $value.serverState.copyWith.$chain((v) => call(serverState: v));
   @override
+  AuthenticatedRequestedCopyWith<$R, AuthenticatedRequested,
+          AuthenticatedRequested>?
+      get authRequest =>
+          $value.authRequest?.copyWith.$chain((v) => call(authRequest: v));
+  @override
   $R call(
           {Object? name = $none,
+          GameState? gameState,
           GameTable? table,
           String? tableName,
           GameInfo? info,
@@ -272,9 +340,11 @@ class _WorldStateCopyWithImpl<$R, $Out>
           List<GameDialog>? dialogs,
           Map<String, Uint8List>? images,
           ServerState? serverState,
+          Object? authRequest = $none,
           SetonixData? data}) =>
       $apply(FieldCopyWithData({
         if (name != $none) #name: name,
+        if (gameState != null) #gameState: gameState,
         if (table != null) #table: table,
         if (tableName != null) #tableName: tableName,
         if (info != null) #info: info,
@@ -285,11 +355,13 @@ class _WorldStateCopyWithImpl<$R, $Out>
         if (dialogs != null) #dialogs: dialogs,
         if (images != null) #images: images,
         if (serverState != null) #serverState: serverState,
+        if (authRequest != $none) #authRequest: authRequest,
         if (data != null) #data: data
       }));
   @override
   WorldState $make(CopyWithData data) => WorldState(
       name: data.get(#name, or: $value.name),
+      gameState: data.get(#gameState, or: $value.gameState),
       table: data.get(#table, or: $value.table),
       tableName: data.get(#tableName, or: $value.tableName),
       info: data.get(#info, or: $value.info),
@@ -300,6 +372,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
       dialogs: data.get(#dialogs, or: $value.dialogs),
       images: data.get(#images, or: $value.images),
       serverState: data.get(#serverState, or: $value.serverState),
+      authRequest: data.get(#authRequest, or: $value.authRequest),
       data: data.get(#data, or: $value.data));
 
   @override

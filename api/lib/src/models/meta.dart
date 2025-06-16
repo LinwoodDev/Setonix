@@ -1,4 +1,8 @@
+import 'dart:typed_data';
+
+import 'package:cryptography_plus/cryptography_plus.dart';
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:setonix_api/src/helpers/crypto.dart';
 
 part 'meta.mapper.dart';
 
@@ -9,6 +13,7 @@ enum FileType {
   pack,
   game,
   template,
+  accounts,
 }
 
 @MappableClass()
@@ -64,4 +69,25 @@ final class DataMetadata with DataMetadataMappable {
   DateTime lastUsed() {
     return serversLastUsed.values.fold(addedAt, (a, b) => a.isAfter(b) ? a : b);
   }
+}
+
+final class SetonixAccount {
+  final Uint8List privateKey;
+  final Uint8List publicKey;
+  final String name;
+
+  SetonixAccount({
+    required this.privateKey,
+    required this.publicKey,
+    required this.name,
+  });
+
+  KeyPair get keyPair => SimpleKeyPairData(
+        privateKey,
+        publicKey: SimplePublicKey(publicKey, type: KeyPairType.ed25519),
+        type: KeyPairType.ed25519,
+      );
+
+  String getFingerprint([bool short = false]) =>
+      generateFingerprint(publicKey, short);
 }

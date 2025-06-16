@@ -50,6 +50,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
     String? name,
     SetonixData? data,
     GameTable? table,
+    GameState gameState = GameState.play,
   }) : super(ClientWorldState(
           assetManager: GameAssetManager(
             fileSystem: fileSystem,
@@ -62,6 +63,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
             table: table ?? data?.getTable() ?? const GameTable(),
             metadata: data?.getMetadata() ?? const FileMetadata(),
             info: data?.getInfo() ?? const GameInfo(),
+            gameState: gameState,
           ),
         )) {
     pluginSystem = PluginSystem(server: _WorldServerInterfaceImpl(this));
@@ -151,9 +153,14 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
     return state.fileSystem.worldSystem.updateFile(name, data);
   }
 
-  void _processEvent(NetworkerPacket<WorldEvent?> data) {
-    final value = processClientEvent(data.data, data.channel, state.world,
-        assetManager: state.assetManager);
+  Future<void> _processEvent(NetworkerPacket<WorldEvent?> data) async {
+    final value = await processClientEvent(
+      data.data,
+      data.channel,
+      state.world,
+      assetManager: state.assetManager,
+      userManager: state.multiplayer.state.userManager,
+    );
     if (value == null) return;
     state.multiplayer.sendServerPackets(
         value.buildPackets(state.world, state.multiplayer.clients));
@@ -167,7 +174,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
     }
   }
 
-  void process(WorldEvent event) {
+  Future<void> process(WorldEvent event) async {
     switch (event) {
       case LocalWorldEvent e:
         add(e);
@@ -176,7 +183,8 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
         if (multiplayer.isConnected) {
           multiplayer.send(e);
         } else {
-          final event = processClientEvent(e, kAuthorityChannel, state.world,
+          final event = await processClientEvent(
+              e, kAuthorityChannel, state.world,
               assetManager: state.assetManager, allowServerEvents: true);
           if (event != null) {
             add(event.main.data);

@@ -41,6 +41,9 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
   static String? _$description(SetonixConfig v) => v.description;
   static const Field<SetonixConfig, String> _f$description =
       Field('description', _$description, opt: true);
+  static String? _$guestPrefix(SetonixConfig v) => v.guestPrefix;
+  static const Field<SetonixConfig, String> _f$guestPrefix =
+      Field('guestPrefix', _$guestPrefix, opt: true);
 
   @override
   final MappableFields<SetonixConfig> fields = const {
@@ -51,6 +54,7 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
     #multiWorld: _f$multiWorld,
     #maxPlayers: _f$maxPlayers,
     #description: _f$description,
+    #guestPrefix: _f$guestPrefix,
   };
 
   static SetonixConfig _instantiate(DecodingData data) {
@@ -61,7 +65,8 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
         autosave: data.dec(_f$autosave),
         multiWorld: data.dec(_f$multiWorld),
         maxPlayers: data.dec(_f$maxPlayers),
-        description: data.dec(_f$description));
+        description: data.dec(_f$description),
+        guestPrefix: data.dec(_f$guestPrefix));
   }
 
   @override
@@ -124,7 +129,8 @@ abstract class SetonixConfigCopyWith<$R, $In extends SetonixConfig, $Out>
       bool? autosave,
       bool? multiWorld,
       int? maxPlayers,
-      String? description});
+      String? description,
+      String? guestPrefix});
   SetonixConfigCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -144,7 +150,8 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
           Object? autosave = $none,
           Object? multiWorld = $none,
           Object? maxPlayers = $none,
-          Object? description = $none}) =>
+          Object? description = $none,
+          Object? guestPrefix = $none}) =>
       $apply(FieldCopyWithData({
         if (host != $none) #host: host,
         if (port != $none) #port: port,
@@ -152,7 +159,8 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
         if (autosave != $none) #autosave: autosave,
         if (multiWorld != $none) #multiWorld: multiWorld,
         if (maxPlayers != $none) #maxPlayers: maxPlayers,
-        if (description != $none) #description: description
+        if (description != $none) #description: description,
+        if (guestPrefix != $none) #guestPrefix: guestPrefix
       }));
   @override
   SetonixConfig $make(CopyWithData data) => SetonixConfig(
@@ -162,7 +170,8 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
       autosave: data.get(#autosave, or: $value.autosave),
       multiWorld: data.get(#multiWorld, or: $value.multiWorld),
       maxPlayers: data.get(#maxPlayers, or: $value.maxPlayers),
-      description: data.get(#description, or: $value.description));
+      description: data.get(#description, or: $value.description),
+      guestPrefix: data.get(#guestPrefix, or: $value.guestPrefix));
 
   @override
   SetonixConfigCopyWith<$R2, SetonixConfig, $Out2> $chain<$R2, $Out2>(

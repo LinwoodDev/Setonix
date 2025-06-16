@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cryptography_plus/cryptography_plus.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:networker/networker.dart';
 import 'package:setonix_api/event.dart';

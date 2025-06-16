@@ -135,6 +135,7 @@ class ServerWorldEventMapper extends SubClassMapperBase<ServerWorldEvent> {
       DialogsClosedMapper.ensureInitialized();
       ImagesUpdatedMapper.ensureInitialized();
       ServerStateUpdatedMapper.ensureInitialized();
+      AuthenticatedRequestedMapper.ensureInitialized();
       HybridWorldEventMapper.ensureInitialized();
     }
     return _instance!;
@@ -1774,6 +1775,139 @@ class _ServerStateUpdatedCopyWithImpl<$R, $Out>
       _ServerStateUpdatedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+class AuthenticatedRequestedMapper
+    extends SubClassMapperBase<AuthenticatedRequested> {
+  AuthenticatedRequestedMapper._();
+
+  static AuthenticatedRequestedMapper? _instance;
+  static AuthenticatedRequestedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = AuthenticatedRequestedMapper._());
+      ServerWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      MapperContainer.globals.useAll([Base64Uint8ListHook()]);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'AuthenticatedRequested';
+
+  static Uint8List _$challenge(AuthenticatedRequested v) => v.challenge;
+  static const Field<AuthenticatedRequested, Uint8List> _f$challenge =
+      Field('challenge', _$challenge);
+  static bool _$isRequired(AuthenticatedRequested v) => v.isRequired;
+  static const Field<AuthenticatedRequested, bool> _f$isRequired =
+      Field('isRequired', _$isRequired, opt: true, def: true);
+
+  @override
+  final MappableFields<AuthenticatedRequested> fields = const {
+    #challenge: _f$challenge,
+    #isRequired: _f$isRequired,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'AuthenticatedRequested';
+  @override
+  late final ClassMapperBase superMapper =
+      ServerWorldEventMapper.ensureInitialized();
+
+  static AuthenticatedRequested _instantiate(DecodingData data) {
+    return AuthenticatedRequested(data.dec(_f$challenge),
+        isRequired: data.dec(_f$isRequired));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static AuthenticatedRequested fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<AuthenticatedRequested>(map);
+  }
+
+  static AuthenticatedRequested fromJson(String json) {
+    return ensureInitialized().decodeJson<AuthenticatedRequested>(json);
+  }
+}
+
+mixin AuthenticatedRequestedMappable {
+  String toJson() {
+    return AuthenticatedRequestedMapper.ensureInitialized()
+        .encodeJson<AuthenticatedRequested>(this as AuthenticatedRequested);
+  }
+
+  Map<String, dynamic> toMap() {
+    return AuthenticatedRequestedMapper.ensureInitialized()
+        .encodeMap<AuthenticatedRequested>(this as AuthenticatedRequested);
+  }
+
+  AuthenticatedRequestedCopyWith<AuthenticatedRequested, AuthenticatedRequested,
+          AuthenticatedRequested>
+      get copyWith => _AuthenticatedRequestedCopyWithImpl<
+              AuthenticatedRequested, AuthenticatedRequested>(
+          this as AuthenticatedRequested, $identity, $identity);
+  @override
+  String toString() {
+    return AuthenticatedRequestedMapper.ensureInitialized()
+        .stringifyValue(this as AuthenticatedRequested);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return AuthenticatedRequestedMapper.ensureInitialized()
+        .equalsValue(this as AuthenticatedRequested, other);
+  }
+
+  @override
+  int get hashCode {
+    return AuthenticatedRequestedMapper.ensureInitialized()
+        .hashValue(this as AuthenticatedRequested);
+  }
+}
+
+extension AuthenticatedRequestedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, AuthenticatedRequested, $Out> {
+  AuthenticatedRequestedCopyWith<$R, AuthenticatedRequested, $Out>
+      get $asAuthenticatedRequested => $base.as((v, t, t2) =>
+          _AuthenticatedRequestedCopyWithImpl<$R, $Out>(v, t, t2));
+}
+
+abstract class AuthenticatedRequestedCopyWith<
+    $R,
+    $In extends AuthenticatedRequested,
+    $Out> implements ServerWorldEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({Uint8List? challenge, bool? isRequired});
+  AuthenticatedRequestedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class _AuthenticatedRequestedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, AuthenticatedRequested, $Out>
+    implements
+        AuthenticatedRequestedCopyWith<$R, AuthenticatedRequested, $Out> {
+  _AuthenticatedRequestedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<AuthenticatedRequested> $mapper =
+      AuthenticatedRequestedMapper.ensureInitialized();
+  @override
+  $R call({Uint8List? challenge, bool? isRequired}) =>
+      $apply(FieldCopyWithData({
+        if (challenge != null) #challenge: challenge,
+        if (isRequired != null) #isRequired: isRequired
+      }));
+  @override
+  AuthenticatedRequested $make(CopyWithData data) =>
+      AuthenticatedRequested(data.get(#challenge, or: $value.challenge),
+          isRequired: data.get(#isRequired, or: $value.isRequired));
+
+  @override
+  AuthenticatedRequestedCopyWith<$R2, AuthenticatedRequested, $Out2>
+      $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+          _AuthenticatedRequestedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
 class ClientWorldEventMapper extends SubClassMapperBase<ClientWorldEvent> {
   ClientWorldEventMapper._();
 
@@ -1794,6 +1928,7 @@ class ClientWorldEventMapper extends SubClassMapperBase<ClientWorldEvent> {
       DialogCloseRequestMapper.ensureInitialized();
       ImagesRequestMapper.ensureInitialized();
       ModeChangeRequestMapper.ensureInitialized();
+      AuthenticateRequestMapper.ensureInitialized();
       HybridWorldEventMapper.ensureInitialized();
     }
     return _instance!;
@@ -3366,6 +3501,134 @@ class _ModeChangeRequestCopyWithImpl<$R, $Out>
   ModeChangeRequestCopyWith<$R2, ModeChangeRequest, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
       _ModeChangeRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+class AuthenticateRequestMapper
+    extends SubClassMapperBase<AuthenticateRequest> {
+  AuthenticateRequestMapper._();
+
+  static AuthenticateRequestMapper? _instance;
+  static AuthenticateRequestMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = AuthenticateRequestMapper._());
+      ClientWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      MapperContainer.globals.useAll([Base64Uint8ListHook()]);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'AuthenticateRequest';
+
+  static Uint8List _$signature(AuthenticateRequest v) => v.signature;
+  static const Field<AuthenticateRequest, Uint8List> _f$signature =
+      Field('signature', _$signature);
+  static Uint8List _$publicKey(AuthenticateRequest v) => v.publicKey;
+  static const Field<AuthenticateRequest, Uint8List> _f$publicKey =
+      Field('publicKey', _$publicKey);
+
+  @override
+  final MappableFields<AuthenticateRequest> fields = const {
+    #signature: _f$signature,
+    #publicKey: _f$publicKey,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'AuthenticateRequest';
+  @override
+  late final ClassMapperBase superMapper =
+      ClientWorldEventMapper.ensureInitialized();
+
+  static AuthenticateRequest _instantiate(DecodingData data) {
+    return AuthenticateRequest(data.dec(_f$signature), data.dec(_f$publicKey));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static AuthenticateRequest fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<AuthenticateRequest>(map);
+  }
+
+  static AuthenticateRequest fromJson(String json) {
+    return ensureInitialized().decodeJson<AuthenticateRequest>(json);
+  }
+}
+
+mixin AuthenticateRequestMappable {
+  String toJson() {
+    return AuthenticateRequestMapper.ensureInitialized()
+        .encodeJson<AuthenticateRequest>(this as AuthenticateRequest);
+  }
+
+  Map<String, dynamic> toMap() {
+    return AuthenticateRequestMapper.ensureInitialized()
+        .encodeMap<AuthenticateRequest>(this as AuthenticateRequest);
+  }
+
+  AuthenticateRequestCopyWith<AuthenticateRequest, AuthenticateRequest,
+      AuthenticateRequest> get copyWith => _AuthenticateRequestCopyWithImpl<
+          AuthenticateRequest, AuthenticateRequest>(
+      this as AuthenticateRequest, $identity, $identity);
+  @override
+  String toString() {
+    return AuthenticateRequestMapper.ensureInitialized()
+        .stringifyValue(this as AuthenticateRequest);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return AuthenticateRequestMapper.ensureInitialized()
+        .equalsValue(this as AuthenticateRequest, other);
+  }
+
+  @override
+  int get hashCode {
+    return AuthenticateRequestMapper.ensureInitialized()
+        .hashValue(this as AuthenticateRequest);
+  }
+}
+
+extension AuthenticateRequestValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, AuthenticateRequest, $Out> {
+  AuthenticateRequestCopyWith<$R, AuthenticateRequest, $Out>
+      get $asAuthenticateRequest => $base.as(
+          (v, t, t2) => _AuthenticateRequestCopyWithImpl<$R, $Out>(v, t, t2));
+}
+
+abstract class AuthenticateRequestCopyWith<$R, $In extends AuthenticateRequest,
+    $Out> implements ClientWorldEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({Uint8List? signature, Uint8List? publicKey});
+  AuthenticateRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class _AuthenticateRequestCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, AuthenticateRequest, $Out>
+    implements AuthenticateRequestCopyWith<$R, AuthenticateRequest, $Out> {
+  _AuthenticateRequestCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<AuthenticateRequest> $mapper =
+      AuthenticateRequestMapper.ensureInitialized();
+  @override
+  $R call({Uint8List? signature, Uint8List? publicKey}) =>
+      $apply(FieldCopyWithData({
+        if (signature != null) #signature: signature,
+        if (publicKey != null) #publicKey: publicKey
+      }));
+  @override
+  AuthenticateRequest $make(CopyWithData data) => AuthenticateRequest(
+      data.get(#signature, or: $value.signature),
+      data.get(#publicKey, or: $value.publicKey));
+
+  @override
+  AuthenticateRequestCopyWith<$R2, AuthenticateRequest, $Out2>
+      $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+          _AuthenticateRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class HybridWorldEventMapper extends SubClassMapperBase<HybridWorldEvent> {

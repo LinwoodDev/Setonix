@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-docs:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -35,14 +35,14 @@ jobs:
           SFTP_HOST: ${{ secrets.SFTP_HOST }}
           SFTP_USERNAME: ${{ secrets.SFTP_USERNAME }}
           SFTP_KEY: ${{ secrets.SFTP_KEY }}
-          SFTP_KNOWN_HOSTS: ${{secrets.SFTP_KNOWN_HOSTS}}
+          SFTP_KNOWN_HOSTS: ${{ secrets.SFTP_KNOWN_HOSTS }}
         run: |
           echo "$SFTP_KEY" > sftp_key
           chmod 600 sftp_key
           echo "$SFTP_KNOWN_HOSTS" > known_hosts
           chmod 600 known_hosts
           rsync -avz --delete -e "ssh -i sftp_key -o UserKnownHostsFile=known_hosts" dist/ $SFTP_USERNAME@$SFTP_HOST:/var/www/www.setonix
-  doc:
+  build-doc-api:
     runs-on: ubuntu-24.04
     defaults:
       run:
@@ -54,12 +54,10 @@ jobs:
         with:
           flutter-version-file: app/pubspec.yaml
       - name: Install dependencies
-        run: |
-          flutter pub get
+        run: flutter pub get
       - name: Generate documentation
-        run: |
-          dart doc
-      - name: Deploy to SFTP
+        run: dart doc
+      - name: Deploy API docs via SFTP
         if: github.ref == 'refs/heads/develop'
         env:
           SFTP_HOST: ${{ secrets.SFTP_HOST }}
@@ -72,7 +70,7 @@ jobs:
           echo "$SFTP_KNOWN_HOSTS" > known_hosts
           chmod 600 known_hosts
           rsync -avz --delete -e "ssh -i sftp_key -o UserKnownHostsFile=known_hosts" doc/api/ $SFTP_USERNAME@$SFTP_HOST:/var/www/api.setonix
-  web:
+  build-web:
     runs-on: ubuntu-24.04
     defaults:
       run:
@@ -84,9 +82,8 @@ jobs:
         with:
           flutter-version-file: app/pubspec.yaml
       - name: Install dependencies
-        run: |
-          flutter pub get
-      - name: Generate
+        run: flutter pub get
+      - name: Generate code
         run: |
           cd ../tools
           dart pub get
@@ -104,16 +101,60 @@ jobs:
           echo "WEB_DIR=web" >> $GITHUB_ENV
       - name: Build
         run: flutter build web --wasm --release --no-web-resources-cdn --dart-define=flavor=$SETONIX_FLAVOR
-      - name: Deploy to SFTP
+      - name: Deploy Flutter web via SFTP
         if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main'
         env:
           SFTP_HOST: ${{ secrets.SFTP_HOST }}
           SFTP_USERNAME: ${{ secrets.SFTP_USERNAME }}
           SFTP_KEY: ${{ secrets.SFTP_KEY }}
-          SFTP_KNOWN_HOSTS: ${{secrets.SFTP_KNOWN_HOSTS}}
+          SFTP_KNOWN_HOSTS: ${{ secrets.SFTP_KNOWN_HOSTS }}
         run: |
           echo "$SFTP_KEY" > sftp_key
           chmod 600 sftp_key
           echo "$SFTP_KNOWN_HOSTS" > known_hosts
           chmod 600 known_hosts
           rsync -avz --delete -e "ssh -i sftp_key -o UserKnownHostsFile=known_hosts" build/web/ $SFTP_USERNAME@$SFTP_HOST:/var/www/$WEB_DIR.setonix
+  build-servers:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: servers
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          package_json_file: docs/package.json
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "pnpm"
+          cache-dependency-path: docs/pnpm-lock.yaml
+      - name: Install dependencies
+        run: pnpm install
+      - name: Build
+        run: pnpm build
+      - name: Setup SSH Agent
+        if: github.ref == 'refs/heads/develop'
+        uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Add SSH Known Hosts
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+
+      - name: Deploy SSR build via rsync
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          rsync -avz --delete ./dist/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/servers.setonix
+
+      - name: Restart SSR application
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
+            pm2 stop astro-servers || true
+            PORT=${{ secrets.SERVERS_PORT }} pm2 start dist/server/entry.mjs --name astro-servers --update-env
+          EOF

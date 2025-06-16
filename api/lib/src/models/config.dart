@@ -26,6 +26,9 @@ final class SetonixConfig with SetonixConfigMappable {
   final String? description;
   static const String defaultDescription = 'A server for Setonix.';
   static const String envDescription = 'SETONIX_DESCRIPTION';
+  final String? guestPrefix;
+  static const String defaultGuestPrefix = 'Guest ';
+  static const String envGuestPrefix = 'SETONIX_GUEST_PREFIX';
 
   const SetonixConfig({
     this.host,
@@ -35,6 +38,7 @@ final class SetonixConfig with SetonixConfigMappable {
     this.multiWorld,
     this.maxPlayers,
     this.description,
+    this.guestPrefix,
   });
 
   static const defaultConfig = SetonixConfig(
@@ -45,6 +49,7 @@ final class SetonixConfig with SetonixConfigMappable {
     multiWorld: defaultMultiWorld,
     maxPlayers: defaultMaxPlayers,
     description: defaultDescription,
+    guestPrefix: defaultGuestPrefix,
   );
 
   static SetonixConfig fromEnvironment() {
@@ -71,6 +76,10 @@ final class SetonixConfig with SetonixConfigMappable {
           ? String.fromEnvironment(envDescription,
               defaultValue: defaultDescription)
           : null,
+      guestPrefix: bool.hasEnvironment(envGuestPrefix)
+          ? String.fromEnvironment(envGuestPrefix,
+              defaultValue: defaultGuestPrefix)
+          : null,
     );
   }
 
@@ -82,5 +91,6 @@ final class SetonixConfig with SetonixConfigMappable {
         multiWorld: other.multiWorld ?? multiWorld,
         maxPlayers: other.maxPlayers ?? maxPlayers,
         description: other.description ?? description,
+        guestPrefix: other.guestPrefix ?? guestPrefix,
       );
 }

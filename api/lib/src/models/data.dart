@@ -22,6 +22,7 @@ const kPackTranslationsPath = 'translations';
 const kPackBackgroundsPath = 'backgrounds';
 const kPackScriptsPath = 'scripts';
 const kPackModesPath = 'modes';
+const kPackAccountsPath = 'accounts';
 
 const kGameTablePath = 'tables';
 const kGameTeamPath = 'teams.json';
@@ -312,6 +313,32 @@ class SetonixData extends ArchiveData<SetonixData> {
         if (mode == null) return null;
         return MapEntry(e, mode);
       }).nonNulls);
+
+  SetonixData addAccount(SetonixAccount setonixAccount) {
+    final accountId = setonixAccount.name;
+    return setAsset(
+            '$kPackAccountsPath/$accountId.key', setonixAccount.privateKey)
+        .setAsset(
+            '$kPackAccountsPath/$accountId.pub', setonixAccount.publicKey);
+  }
+
+  Iterable<SetonixAccount> getAccounts() sync* {
+    const kKeySuffix = '.key';
+    final privateKeys = getAssets('$kPackAccountsPath/', true)
+        .where((e) => e.endsWith(kKeySuffix));
+    for (final path in privateKeys) {
+      final name = path.substring(0, path.length - kKeySuffix.length);
+      final privateKey = getAsset(path);
+      if (privateKey == null) continue;
+      final publicKey = getAsset('$kPackAccountsPath/$name.pub');
+      if (publicKey == null) continue;
+      yield SetonixAccount(
+        privateKey: privateKey,
+        publicKey: publicKey,
+        name: name,
+      );
+    }
+  }
 }
 
 class SetonixFile {

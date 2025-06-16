@@ -34,6 +34,7 @@ class ConnectEditDialog extends StatelessWidget {
     String address = initialValue?.address ?? '';
     String name = initialValue?.name ?? '';
     bool secure = initialValue?.secure ?? true;
+    bool highlighted = initialValue?.highlighted ?? true;
 
     final secureSwitchEnabled = !kIsWeb || Uri.base.isScheme('HTTP');
 
@@ -74,6 +75,13 @@ class ConnectEditDialog extends StatelessWidget {
             onFieldSubmitted: index == null ? (_) => connect() : null,
           ),
           const SizedBox(height: 8),
+          StatefulBuilder(
+            builder: (context, setState) => SwitchListTile(
+              title: Text(AppLocalizations.of(context).highlighted),
+              value: highlighted,
+              onChanged: (value) => setState(() => highlighted = value),
+            ),
+          ),
           if (secureSwitchEnabled)
             StatefulBuilder(
               builder: (context, setState) => SwitchListTile(
@@ -93,6 +101,7 @@ class ConnectEditDialog extends StatelessWidget {
               address: address,
               secure: secure,
               name: name,
+              highlighted: highlighted,
             );
             if (index != null) {
               cubit.updateServer(index!, updated);
@@ -123,7 +132,7 @@ class ServersDialog extends StatefulWidget {
 }
 
 class _ServersDialogState extends State<ServersDialog> {
-  late final Stream<Map<GameServer, GameProperty?>> _servers;
+  Stream<Map<GameServer, GameProperty?>>? _servers;
 
   bool _isMobileOpen = false;
   (GameServer, int)? _selected;
@@ -132,13 +141,56 @@ class _ServersDialogState extends State<ServersDialog> {
   @override
   void initState() {
     super.initState();
-    _servers = ValueConnectableStream(
-            context.read<NetworkService>().fetchServersWithProperties())
+    _buildServersStream();
+  }
+
+  void _buildServersStream([SetonixSettings? settings]) {
+    settings ??= context.read<SettingsCubit>().state;
+    _servers = ValueConnectableStream(context
+            .read<NetworkService>()
+            .fetchServersWithProperties(
+                browsable: settings.showConnectBrowse,
+                local: settings.showConnectYour))
         .autoConnect();
   }
 
-  Text _buildDetails(BuildContext context, GameProperty property) =>
-      Text('${property.currentPlayers}/${property.maxPlayers ?? '?'}');
+  void _refreshServers(SetonixSettings settings) {
+    setState(() {
+      _buildServersStream(settings);
+    });
+  }
+
+  Widget _buildTitle(BuildContext context, GameServer server) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          server.display,
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+        if (server is ListGameServer && server.name.isNotEmpty)
+          Text(
+            server.address,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+      ],
+    );
+  }
+
+  Widget _buildDetails(
+      BuildContext context, bool secure, GameProperty property) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(secure
+            ? PhosphorIconsLight.shieldCheck
+            : PhosphorIconsLight.shieldSlash),
+        const SizedBox(width: 8),
+        Text('${property.currentPlayers}/${property.maxPlayers ?? '?'}'),
+      ],
+    );
+  }
 
   List<ListTile> _buildDetailsChildren(GameProperty server) => [
         ListTile(
@@ -148,12 +200,17 @@ class _ServersDialogState extends State<ServersDialog> {
       ];
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingsCubit, SetonixSettings>(
+    return BlocConsumer<SettingsCubit, SetonixSettings>(
+      listenWhen: (previous, current) =>
+          previous.serverList != current.serverList ||
+          previous.showConnectYour != current.showConnectYour ||
+          previous.showConnectBrowse != current.showConnectBrowse,
       buildWhen: (previous, current) =>
           previous.showConnectYour != current.showConnectYour ||
-          previous.showConnectNetwork != current.showConnectNetwork,
+          previous.showConnectBrowse != current.showConnectBrowse,
+      listener: (context, state) => _refreshServers(state),
       builder: (context, settings) => ResponsiveAlertDialog(
-        title: Text(AppLocalizations.of(context).connect),
+        title: Text(AppLocalizations.of(context).servers),
         leading: IconButton.outlined(
           icon: const Icon(PhosphorIconsLight.x),
           onPressed: () => Navigator.of(context).pop(),
@@ -275,12 +332,41 @@ class _ServersDialogState extends State<ServersDialog> {
                             itemBuilder: (context, index) {
                               final entry = servers[index];
                               final current = entry.key;
+                              final primaryColor =
+                                  ColorScheme.of(context).primary;
+                              final defaultColor = IconTheme.of(context).color;
+                              final highlighted = current is ListGameServer &&
+                                  current.highlighted;
                               return ListTile(
-                                title: Text(current.display),
-                                leading: switch (current) {
+                                title: Text(current.display,
+                                    style: TextStyle(
+                                      fontWeight: highlighted
+                                          ? FontWeight.w800
+                                          : FontWeight.normal,
+                                    )),
+                                trailing: switch (current) {
                                   LanGameServer() =>
-                                    const Icon(PhosphorIconsLight.globe),
-                                  _ => null,
+                                    const Icon(PhosphorIconsLight.mapPin),
+                                  BrowsedGameServer() => Icon(
+                                      PhosphorIcons.globe(
+                                        highlighted
+                                            ? PhosphorIconsStyle.fill
+                                            : PhosphorIconsStyle.light,
+                                      ),
+                                      color: highlighted
+                                          ? primaryColor
+                                          : defaultColor,
+                                    ),
+                                  ListGameServer() => Icon(
+                                      PhosphorIcons.puzzlePiece(
+                                        highlighted
+                                            ? PhosphorIconsStyle.fill
+                                            : PhosphorIconsStyle.light,
+                                      ),
+                                      color: highlighted
+                                          ? primaryColor
+                                          : defaultColor,
+                                    ),
                                 },
                                 onTap: () {
                                   setState(() {
@@ -291,7 +377,7 @@ class _ServersDialogState extends State<ServersDialog> {
                                     showLeapBottomSheet(
                                       context: context,
                                       titleBuilder: (context) =>
-                                          Text(server.display),
+                                          _buildTitle(context, current),
                                       actionsBuilder: (context) => [
                                         if (property != null) ...[
                                           DefaultTextStyle(
@@ -299,8 +385,8 @@ class _ServersDialogState extends State<ServersDialog> {
                                                     .textTheme
                                                     .headlineSmall ??
                                                 const TextStyle(fontSize: 20),
-                                            child: _buildDetails(
-                                                context, property),
+                                            child: _buildDetails(context,
+                                                current.secure, property),
                                           ),
                                           const SizedBox(width: 8),
                                         ],
@@ -347,26 +433,26 @@ class _ServersDialogState extends State<ServersDialog> {
                       onSearchChanged: (value) => setState(() {
                             _search = value;
                           }),
-                      children: const [
-                        /*  InputChip(
-                        label: Text(AppLocalizations.of(context).yourServers),
-                        avatar: const Icon(PhosphorIconsLight.puzzlePiece),
-                        showCheckmark: false,
-                        selected: settings.showConnectYour,
-                        onPressed: () => context
-                            .read<SettingsCubit>()
-                            .changeShowConnectYour(!settings.showConnectYour),
-                      ),
-                      InputChip(
-                        label: Text(AppLocalizations.of(context).inNetwork),
-                        avatar: const Icon(PhosphorIconsLight.globe),
-                        showCheckmark: false,
-                        selected: settings.showConnectNetwork,
-                        onPressed: () => context
-                            .read<SettingsCubit>()
-                            .changeShowConnectNetwork(
-                                !settings.showConnectNetwork),
-                      ), */
+                      children: [
+                        InputChip(
+                          label: Text(AppLocalizations.of(context).yourServers),
+                          avatar: const Icon(PhosphorIconsLight.puzzlePiece),
+                          showCheckmark: false,
+                          selected: settings.showConnectYour,
+                          onPressed: () => context
+                              .read<SettingsCubit>()
+                              .changeShowConnectYour(!settings.showConnectYour),
+                        ),
+                        InputChip(
+                          label: Text(AppLocalizations.of(context).browse),
+                          avatar: const Icon(PhosphorIconsLight.globe),
+                          showCheckmark: false,
+                          selected: settings.showConnectBrowse,
+                          onPressed: () => context
+                              .read<SettingsCubit>()
+                              .changeShowConnectBrowse(
+                                  !settings.showConnectBrowse),
+                        ),
                       ]),
                   const SizedBox(height: 8),
                   Expanded(
@@ -393,18 +479,16 @@ class _ServersDialogState extends State<ServersDialog> {
                                                     .titleLarge ??
                                                 const TextStyle(),
                                             child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 Expanded(
-                                                  child: Text(
-                                                    server.display,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .titleLarge,
-                                                  ),
+                                                  child: _buildTitle(
+                                                      context, server),
                                                 ),
                                                 const SizedBox(width: 8),
-                                                _buildDetails(
-                                                    context, property),
+                                                _buildDetails(context,
+                                                    server.secure, property),
                                               ],
                                             ),
                                           ),

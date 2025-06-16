@@ -2,6 +2,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:setonix/api/open.dart';
+import 'package:setonix/pages/game/auth.dart';
 import 'package:setonix/pages/game/dialog.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
@@ -65,6 +66,7 @@ class _GamePageState extends State<GamePage> {
       name: widget.name,
       data: data,
       colorScheme: Theme.of(context).colorScheme,
+      gameState: address == null ? GameState.play : GameState.configuration,
     );
     await world.state.assetManager.loadPacks();
     if (address != null) {
@@ -183,7 +185,7 @@ class _GamePageState extends State<GamePage> {
                           DrawerView.notes => const GameNotesDrawer(),
                         },
                       ),
-                      body: BlocListener<WorldBloc, ClientWorldState>(
+                      body: BlocConsumer<WorldBloc, ClientWorldState>(
                         listenWhen: (previous, current) =>
                             previous.messages.length != current.messages.length,
                         listener: (context, state) {
@@ -224,20 +226,53 @@ class _GamePageState extends State<GamePage> {
                             ),
                           );
                         },
-                        child: GameWidget(
-                          game: BoardGame(
-                            bloc: context.read<WorldBloc>(),
-                            settingsCubit: context.read<SettingsCubit>(),
-                            contextMenuController: _contextMenuController,
-                            onEscape: () => Scaffold.of(context).openDrawer(),
-                          ),
-                          focusNode: _focusNode,
-                          initialActiveOverlays: ['dialogs', 'filter'],
-                          overlayBuilderMap: {
-                            'dialogs': (context, game) => GameDialogOverlay(),
-                            'filter': (context, game) => GameFilterView(),
-                          },
-                        ),
+                        buildWhen: (previous, current) =>
+                            previous.world.gameState != current.world.gameState,
+                        builder: (context, state) {
+                          return Center(
+                            child:
+                                Stack(alignment: Alignment.center, children: [
+                              if (state.world.gameState ==
+                                  GameState.configuration)
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    CircularProgressIndicator(),
+                                    const SizedBox(height: 16),
+                                    Text(
+                                      AppLocalizations.of(context)
+                                          .configuringGame,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                    ),
+                                  ],
+                                )
+                              else
+                                GameWidget(
+                                  game: BoardGame(
+                                    bloc: context.read<WorldBloc>(),
+                                    settingsCubit:
+                                        context.read<SettingsCubit>(),
+                                    contextMenuController:
+                                        _contextMenuController,
+                                    onEscape: () =>
+                                        Scaffold.of(context).openDrawer(),
+                                  ),
+                                  focusNode: _focusNode,
+                                  initialActiveOverlays: ['dialogs', 'filter'],
+                                  overlayBuilderMap: {
+                                    'dialogs': (context, game) =>
+                                        GameDialogOverlay(),
+                                    'filter': (context, game) =>
+                                        GameFilterView(),
+                                  },
+                                ),
+                              AuthGameView(),
+                            ]),
+                          );
+                        },
                       ),
                     );
                   },

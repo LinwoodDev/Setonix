@@ -445,11 +445,16 @@ class MultiplayerConnectedStateMapper
       v.pipe;
   static const Field<MultiplayerConnectedState, SimpleNetworkerPipe<WorldEvent>>
       _f$pipe = Field('pipe', _$pipe);
+  static UserManager _$userManager(MultiplayerConnectedState v) =>
+      v.userManager;
+  static const Field<MultiplayerConnectedState, UserManager> _f$userManager =
+      Field('userManager', _$userManager, mode: FieldMode.member);
 
   @override
   final MappableFields<MultiplayerConnectedState> fields = const {
     #networker: _f$networker,
     #pipe: _f$pipe,
+    #userManager: _f$userManager,
   };
 
   static MultiplayerConnectedState _instantiate(DecodingData data) {

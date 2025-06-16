@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:setonix/pages/settings/accounts.dart';
 import 'package:setonix/pages/settings/input.dart';
+import 'package:setonix/pages/settings/servers.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_leap/material_leap.dart';
@@ -13,7 +15,9 @@ enum SettingsView {
   general,
   data,
   personalization,
-  inputs;
+  accounts,
+  inputs,
+  servers;
 
   bool get isEnabled => true;
 
@@ -22,16 +26,30 @@ enum SettingsView {
         SettingsView.data => AppLocalizations.of(context).data,
         SettingsView.personalization =>
           AppLocalizations.of(context).personalization,
+        SettingsView.accounts => AppLocalizations.of(context).accounts,
         SettingsView.inputs => AppLocalizations.of(context).inputs,
+        SettingsView.servers => AppLocalizations.of(context).serverLists,
       };
 
   IconGetter get icon => switch (this) {
         SettingsView.general => PhosphorIcons.gear,
         SettingsView.data => PhosphorIcons.database,
         SettingsView.personalization => PhosphorIcons.monitor,
+        SettingsView.accounts => PhosphorIcons.user,
         SettingsView.inputs => PhosphorIcons.keyboard,
+        SettingsView.servers => PhosphorIcons.list,
       };
   String get path => '/settings/$name';
+
+  Widget buildContent({bool inView = false}) => switch (this) {
+        SettingsView.general => GeneralSettingsPage(inView: inView),
+        SettingsView.data => DataSettingsPage(inView: inView),
+        SettingsView.personalization =>
+          PersonalizationSettingsPage(inView: inView),
+        SettingsView.accounts => AccountsSettingsPage(inView: inView),
+        SettingsView.inputs => InputsSettingsPage(inView: inView),
+        SettingsView.servers => ServersSettingsPage(inView: inView),
+      };
 }
 
 class SettingsPage extends StatefulWidget {
@@ -118,13 +136,7 @@ class _SettingsPageState extends State<SettingsPage> {
           if (isMobile) {
             return navigation;
           }
-          final content = switch (_view) {
-            SettingsView.general => const GeneralSettingsPage(inView: true),
-            SettingsView.data => const DataSettingsPage(inView: true),
-            SettingsView.personalization =>
-              const PersonalizationSettingsPage(inView: true),
-            SettingsView.inputs => const InputsSettingsPage(inView: true),
-          };
+          final content = _view.buildContent(inView: true);
           return Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             SizedBox(width: 300, child: navigation),
             Expanded(child: content),

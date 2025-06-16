@@ -31,6 +31,14 @@ enum ThemeDensity {
       };
 }
 
+List<String> getDefaultServerList() {
+  final env = String.fromEnvironment('server_list', defaultValue: '');
+  if (env.isNotEmpty) {
+    return env.split(',').map((e) => e.trim()).toList();
+  }
+  return ['https://servers.setonix.linwood.dev/data.json'];
+}
+
 final class ThemeModeMapper extends SimpleMapper<ThemeMode> {
   const ThemeModeMapper();
 
@@ -55,7 +63,7 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
   @override
   final bool nativeTitleBar;
   final bool stackedCards;
-  final bool showConnectYour, showConnectNetwork;
+  final bool showConnectYour, showConnectBrowse;
   final GameProperty gameProperty;
   final List<ListGameServer> servers;
   final double zoom;
@@ -63,6 +71,8 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
   final List<String> swamps;
   final double scrollSensitivity;
   final ThemeDensity density;
+  final List<String> serverList;
+  final bool showIntro;
 
   const SetonixSettings({
     this.localeTag = '',
@@ -71,7 +81,7 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
     this.dataDirectory = '',
     this.nativeTitleBar = false,
     this.showConnectYour = true,
-    this.showConnectNetwork = true,
+    this.showConnectBrowse = false,
     this.lastVersion,
     this.gameProperty = const GameProperty(),
     this.servers = const [],
@@ -81,6 +91,8 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
     this.swamps = const [],
     this.density = ThemeDensity.system,
     this.scrollSensitivity = 1,
+    this.serverList = const [],
+    this.showIntro = true,
   });
 
   Locale? get locale {
@@ -100,7 +112,7 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
         nativeTitleBar: prefs.getBool('nativeTitleBar') ?? false,
         localeTag: prefs.getString('locale') ?? '',
         showConnectYour: prefs.getBool('showConnectYour') ?? true,
-        showConnectNetwork: prefs.getBool('showConnectNetwork') ?? true,
+        showConnectBrowse: prefs.getBool('showConnectBrowse') ?? false,
         lastVersion: prefs.getString('lastVersion'),
         gameProperty: prefs.containsKey('gameProperty')
             ? GamePropertyMapper.fromJson(prefs.getString('gameProperty')!)
@@ -118,6 +130,8 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
         density: ThemeDensity.values.byName(
           prefs.getString('density') ?? ThemeDensity.system.name,
         ),
+        serverList: prefs.getStringList('serverList') ?? [],
+        showIntro: prefs.getBool('showIntro') ?? true,
       );
 
   Future<void> save() async {
@@ -128,7 +142,7 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
     await prefs.setBool('nativeTitleBar', nativeTitleBar);
     await prefs.setString('locale', localeTag);
     await prefs.setBool('showConnectYour', showConnectYour);
-    await prefs.setBool('showConnectNetwork', showConnectNetwork);
+    await prefs.setBool('showConnectBrowse', showConnectBrowse);
     if (lastVersion == null) {
       if (prefs.containsKey('last_version')) {
         await prefs.remove('last_version');
@@ -145,6 +159,8 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
     await prefs.setStringList('swamps', swamps);
     await prefs.setDouble('scrollSensitivity', scrollSensitivity);
     await prefs.setString('density', density.name);
+    await prefs.setStringList('serverList', serverList);
+    await prefs.setBool('showIntro', showIntro);
   }
 }
 
@@ -183,8 +199,8 @@ class SettingsCubit extends Cubit<SetonixSettings>
     return save();
   }
 
-  Future<void> changeShowConnectNetwork(bool value) {
-    emit(state.copyWith(showConnectNetwork: value));
+  Future<void> changeShowConnectBrowse(bool value) {
+    emit(state.copyWith(showConnectBrowse: value));
     return save();
   }
 
@@ -266,6 +282,25 @@ class SettingsCubit extends Cubit<SetonixSettings>
 
   Future<void> changeStackedCards(bool value) {
     emit(state.copyWith(stackedCards: value));
+    return save();
+  }
+
+  Future<void> addServersToList(List<String> server, [bool reset = false]) {
+    final newList = {if (!reset) ...state.serverList, ...server}.toList();
+    emit(state.copyWith(serverList: newList));
+    return save();
+  }
+
+  Future<void> addServerToList(String server) => addServersToList([server]);
+
+  Future<void> removeServerFromList(String server) {
+    final newList = state.serverList.where((s) => s != server).toList();
+    emit(state.copyWith(serverList: newList));
+    return save();
+  }
+
+  Future<void> changeShowIntro(bool value) {
+    emit(state.copyWith(showIntro: value));
     return save();
   }
 

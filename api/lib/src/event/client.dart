@@ -157,3 +157,31 @@ final class ModeChangeRequest extends ClientWorldEvent
   ModeChangeRequest(this.location);
   ModeChangeRequest.plain() : location = null;
 }
+
+@MappableClass(includeCustomMappers: [Base64Uint8ListHook()])
+final class AuthenticateRequest extends ClientWorldEvent
+    with AuthenticateRequestMappable {
+  final Uint8List signature;
+  final Uint8List publicKey;
+
+  static final _generator = Ed25519();
+
+  AuthenticateRequest(this.signature, this.publicKey);
+
+  static Future<AuthenticateRequest> build(
+      AuthenticatedRequested request, SetonixAccount account) async {
+    final challenge = request.challenge;
+    final keyPair = account.keyPair;
+    final signature = await _generator.sign(challenge, keyPair: keyPair);
+    return AuthenticateRequest(
+      Uint8List.fromList(signature.bytes),
+      account.publicKey,
+    );
+  }
+
+  Future<bool> verify(Uint8List challenge) => _generator.verify(
+        challenge,
+        signature: Signature(signature,
+            publicKey: SimplePublicKey(publicKey, type: KeyPairType.ed25519)),
+      );
+}

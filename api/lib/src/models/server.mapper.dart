@@ -186,6 +186,7 @@ class ListGameServerMapper extends ClassMapperBase<ListGameServer> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ListGameServerMapper._());
       GameServerMapper.ensureInitialized();
+      BrowsedGameServerMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -309,6 +310,141 @@ class _ListGameServerCopyWithImpl<$R, $Out>
   ListGameServerCopyWith<$R2, ListGameServer, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
       _ListGameServerCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+class BrowsedGameServerMapper extends ClassMapperBase<BrowsedGameServer> {
+  BrowsedGameServerMapper._();
+
+  static BrowsedGameServerMapper? _instance;
+  static BrowsedGameServerMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = BrowsedGameServerMapper._());
+      ListGameServerMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'BrowsedGameServer';
+
+  static String _$name(BrowsedGameServer v) => v.name;
+  static const Field<BrowsedGameServer, String> _f$name =
+      Field('name', _$name, opt: true, def: '');
+  static String _$address(BrowsedGameServer v) => v.address;
+  static const Field<BrowsedGameServer, String> _f$address =
+      Field('address', _$address);
+  static bool _$secure(BrowsedGameServer v) => v.secure;
+  static const Field<BrowsedGameServer, bool> _f$secure =
+      Field('secure', _$secure, opt: true, def: true);
+  static bool _$highlighted(BrowsedGameServer v) => v.highlighted;
+  static const Field<BrowsedGameServer, bool> _f$highlighted =
+      Field('highlighted', _$highlighted, opt: true, def: false);
+
+  @override
+  final MappableFields<BrowsedGameServer> fields = const {
+    #name: _f$name,
+    #address: _f$address,
+    #secure: _f$secure,
+    #highlighted: _f$highlighted,
+  };
+
+  static BrowsedGameServer _instantiate(DecodingData data) {
+    return BrowsedGameServer(
+        name: data.dec(_f$name),
+        address: data.dec(_f$address),
+        secure: data.dec(_f$secure),
+        highlighted: data.dec(_f$highlighted));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static BrowsedGameServer fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<BrowsedGameServer>(map);
+  }
+
+  static BrowsedGameServer fromJson(String json) {
+    return ensureInitialized().decodeJson<BrowsedGameServer>(json);
+  }
+}
+
+mixin BrowsedGameServerMappable {
+  String toJson() {
+    return BrowsedGameServerMapper.ensureInitialized()
+        .encodeJson<BrowsedGameServer>(this as BrowsedGameServer);
+  }
+
+  Map<String, dynamic> toMap() {
+    return BrowsedGameServerMapper.ensureInitialized()
+        .encodeMap<BrowsedGameServer>(this as BrowsedGameServer);
+  }
+
+  BrowsedGameServerCopyWith<BrowsedGameServer, BrowsedGameServer,
+          BrowsedGameServer>
+      get copyWith =>
+          _BrowsedGameServerCopyWithImpl<BrowsedGameServer, BrowsedGameServer>(
+              this as BrowsedGameServer, $identity, $identity);
+  @override
+  String toString() {
+    return BrowsedGameServerMapper.ensureInitialized()
+        .stringifyValue(this as BrowsedGameServer);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return BrowsedGameServerMapper.ensureInitialized()
+        .equalsValue(this as BrowsedGameServer, other);
+  }
+
+  @override
+  int get hashCode {
+    return BrowsedGameServerMapper.ensureInitialized()
+        .hashValue(this as BrowsedGameServer);
+  }
+}
+
+extension BrowsedGameServerValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, BrowsedGameServer, $Out> {
+  BrowsedGameServerCopyWith<$R, BrowsedGameServer, $Out>
+      get $asBrowsedGameServer => $base
+          .as((v, t, t2) => _BrowsedGameServerCopyWithImpl<$R, $Out>(v, t, t2));
+}
+
+abstract class BrowsedGameServerCopyWith<$R, $In extends BrowsedGameServer,
+    $Out> implements ListGameServerCopyWith<$R, $In, $Out> {
+  @override
+  $R call({String? name, String? address, bool? secure, bool? highlighted});
+  BrowsedGameServerCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class _BrowsedGameServerCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, BrowsedGameServer, $Out>
+    implements BrowsedGameServerCopyWith<$R, BrowsedGameServer, $Out> {
+  _BrowsedGameServerCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<BrowsedGameServer> $mapper =
+      BrowsedGameServerMapper.ensureInitialized();
+  @override
+  $R call({String? name, String? address, bool? secure, bool? highlighted}) =>
+      $apply(FieldCopyWithData({
+        if (name != null) #name: name,
+        if (address != null) #address: address,
+        if (secure != null) #secure: secure,
+        if (highlighted != null) #highlighted: highlighted
+      }));
+  @override
+  BrowsedGameServer $make(CopyWithData data) => BrowsedGameServer(
+      name: data.get(#name, or: $value.name),
+      address: data.get(#address, or: $value.address),
+      secure: data.get(#secure, or: $value.secure),
+      highlighted: data.get(#highlighted, or: $value.highlighted));
+
+  @override
+  BrowsedGameServerCopyWith<$R2, BrowsedGameServer, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _BrowsedGameServerCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class GamePropertyMapper extends ClassMapperBase<GameProperty> {

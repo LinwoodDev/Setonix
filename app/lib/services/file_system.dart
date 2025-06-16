@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:cryptography_plus/cryptography_plus.dart';
 import 'package:file_selector/file_selector.dart' as fs;
 import 'package:http/http.dart' as http;
 import 'package:idb_shim/idb.dart';
@@ -34,11 +35,15 @@ class SetonixFileSystem {
       worldSystem,
       editorSystem;
   final TypedKeyFileSystem<DataMetadata> dataInfoSystem;
+  final KeyFileSystem privateKeySystem, publicKeySystem;
 
   static Future<void> _onDatabaseUpgrade(VersionChangeEvent event) async {
     await initStores(event, ['packs', 'templates', 'worlds']);
     if (event.oldVersion < 2) {
       event.database.createObjectStore('packs-data');
+    }
+    if (event.oldVersion < 3) {
+      event.database.createObjectStore('accounts');
     }
   }
 
@@ -116,6 +121,30 @@ class SetonixFileSystem {
           ),
           onDecode: SetonixData.fromData,
           onEncode: (data) => data.exportAsBytes(),
+        ),
+        privateKeySystem = KeyFileSystem.fromPlatform(
+          FileSystemConfig(
+            passwordStorage: SecureStoragePasswordStorage(),
+            storeName: 'accounts',
+            getDirectory: (storage) async =>
+                '${await getSetonixDirectory()}/Accounts',
+            database: 'setonix.db',
+            databaseVersion: kDatabaseVersion,
+            keySuffix: '.key',
+            onDatabaseUpgrade: _onDatabaseUpgrade,
+          ),
+        ),
+        publicKeySystem = KeyFileSystem.fromPlatform(
+          FileSystemConfig(
+            passwordStorage: SecureStoragePasswordStorage(),
+            storeName: 'accounts',
+            getDirectory: (storage) async =>
+                '${await getSetonixDirectory()}/Accounts',
+            database: 'setonix.db',
+            databaseVersion: kDatabaseVersion,
+            keySuffix: '.pub',
+            onDatabaseUpgrade: _onDatabaseUpgrade,
+          ),
         );
 
   Future<SetonixFile> fetchCorePack() async =>
@@ -196,5 +225,86 @@ class SetonixFileSystem {
     for (final pack in packIds) {
       await updateServerLastUsed(pack, serverAddress);
     }
+  }
+
+  Future<void> generateKey(String name) async {
+    final generator = Ed25519();
+    final keyPair = await generator.newKeyPair();
+    final privateKey = await keyPair.extractPrivateKeyBytes();
+    final publicKey = await keyPair.extractPublicKey();
+    await privateKeySystem.createFileWithName(Uint8List.fromList(privateKey),
+        name: name);
+    await publicKeySystem
+        .createFileWithName(Uint8List.fromList(publicKey.bytes), name: name);
+  }
+
+  Future<SetonixAccount?> getAccount(String name) async {
+    final privateKey = await privateKeySystem.getFile(name);
+    if (privateKey == null) return null;
+    final publicKey = await publicKeySystem.getFile(name);
+    if (publicKey == null) return null;
+    return SetonixAccount(
+      privateKey: privateKey,
+      publicKey: publicKey,
+      name: name,
+    );
+  }
+
+  Future<void> deleteAccount(String name) async {
+    await privateKeySystem.deleteFile(name);
+    await publicKeySystem.deleteFile(name);
+  }
+
+  Future<void> importAccountsFromData(SetonixData data) =>
+      importAccounts(data.getAccounts().toList());
+
+  Future<void> importAccounts(List<SetonixAccount> accounts) async {
+    for (final account in accounts) {
+      final name = await privateKeySystem.createFileWithName(
+        account.privateKey,
+        name: account.name,
+      );
+      await publicKeySystem.updateFile(
+        name,
+        account.publicKey,
+      );
+    }
+  }
+
+  Future<List<SetonixAccount>> getAccounts([List<String>? names]) async {
+    await privateKeySystem.initialize();
+    names ??= await privateKeySystem.getKeys();
+    return Future.wait(
+      names.map((name) => getAccount(name)),
+    ).then((accounts) => accounts.nonNulls.toList());
+  }
+
+  Future<SetonixData> exportAccounts(
+      [List<String>? names, List<SetonixAccount>? accounts]) async {
+    var data = SetonixData.empty().setMetadata(FileMetadata(
+      type: FileType.accounts,
+    ));
+    final allAccounts = accounts ?? await getAccounts(names);
+    for (final account in allAccounts) {
+      final privateKey = account.privateKey;
+      final publicKey = account.publicKey;
+      if (privateKey.isEmpty || publicKey.isEmpty) continue;
+      data = data.addAccount(
+        SetonixAccount(
+          privateKey: privateKey,
+          publicKey: publicKey,
+          name: account.name,
+        ),
+      );
+    }
+    return data;
+  }
+
+  Future<String> getFingerprint(String key, [bool short = false]) async {
+    final publicKey = await publicKeySystem.getFile(key);
+    if (publicKey == null) {
+      return '';
+    }
+    return generateFingerprint(publicKey, short);
   }
 }

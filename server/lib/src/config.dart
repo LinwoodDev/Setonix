@@ -31,8 +31,8 @@ class ConfigManager {
       _mergedConfig = _mergeConfig();
     } else {
       _config = SetonixConfig.defaultConfig;
-      await file.writeAsString(
-          JsonEncoder.withIndent('  ').convert(_config.toJson()));
+      await file
+          .writeAsString(JsonEncoder.withIndent('  ').convert(_config.toMap()));
     }
   }
 
@@ -53,4 +53,7 @@ class ConfigManager {
 
   String get worldFile =>
       _mergedConfig.worldFile ?? SetonixConfig.defaultWorldName;
+
+  String get guestPrefix =>
+      _mergedConfig.guestPrefix ?? SetonixConfig.defaultGuestPrefix;
 }

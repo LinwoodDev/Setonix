@@ -31,6 +31,8 @@ class FileTypeMapper extends EnumMapper<FileType> {
         return FileType.game;
       case r'template':
         return FileType.template;
+      case r'accounts':
+        return FileType.accounts;
       default:
         throw MapperException.unknownEnumValue(value);
     }
@@ -45,6 +47,8 @@ class FileTypeMapper extends EnumMapper<FileType> {
         return r'game';
       case FileType.template:
         return r'template';
+      case FileType.accounts:
+        return r'accounts';
     }
   }
 }

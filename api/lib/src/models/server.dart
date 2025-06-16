@@ -46,6 +46,17 @@ final class ListGameServer extends GameServer with ListGameServerMappable {
       buildServerAddress(Uri.parse(address), secure, webSockets: webSockets);
 }
 
+@MappableClass()
+final class BrowsedGameServer extends ListGameServer
+    with BrowsedGameServerMappable {
+  BrowsedGameServer({
+    super.name = '',
+    required super.address,
+    super.secure = true,
+    super.highlighted = false,
+  });
+}
+
 Uri buildServerAddress(Uri uri, bool secure, {bool webSockets = true}) {
   // handle plain host without scheme: treat single-segment path as host
   if (uri.host.isEmpty && uri.pathSegments.length == 1) {
@@ -53,10 +64,7 @@ Uri buildServerAddress(Uri uri, bool secure, {bool webSockets = true}) {
         host: uri.pathSegments.first,
         pathSegments: uri.pathSegments.skip(1).toList());
   }
-  if (uri.scheme.isEmpty) {
-    uri =
-        uri.replace(scheme: (webSockets ? 'ws' : 'http') + (secure ? 's' : ''));
-  }
+  uri = uri.replace(scheme: (webSockets ? 'ws' : 'http') + (secure ? 's' : ''));
   if (!uri.hasPort) {
     uri = uri.replace(port: kDefaultPort);
   }

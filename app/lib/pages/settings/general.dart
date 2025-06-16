@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:setonix/pages/settings/intro.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:setonix/bloc/settings.dart';
 import 'package:setonix/theme.dart';
@@ -184,6 +185,14 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      ListTile(
+                        leading: const PhosphorIcon(PhosphorIconsLight.info),
+                        title: Text(AppLocalizations.of(context).showIntro),
+                        onTap: () => showDialog(
+                          context: context,
+                          builder: (context) => IntroDialog(),
+                        ),
+                      ),
                       ListTile(
                           leading:
                               const PhosphorIcon(PhosphorIconsLight.article),
