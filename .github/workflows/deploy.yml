@@ -121,40 +121,51 @@ jobs:
         working-directory: servers
     steps:
       - uses: actions/checkout@v4
+      - name: Check for changes in servers directory
+        id: changes-check
+        run: |
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q '^servers/' || echo "no-changes" > no_changes.txt
+      - name: Skip job if no changes
+        if: steps.changes-check.outputs.no_changes == 'no-changes'
+        run: echo "No changes detected in servers directory. Skipping build."
       - name: Install pnpm
+        if: steps.changes-check.outputs.no_changes != 'no-changes'
         uses: pnpm/action-setup@v4
         with:
           package_json_file: docs/package.json
       - name: Use Node.js
+        if: steps.changes-check.outputs.no_changes != 'no-changes'
         uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: "pnpm"
           cache-dependency-path: docs/pnpm-lock.yaml
       - name: Install dependencies
+        if: steps.changes-check.outputs.no_changes != 'no-changes'
         run: pnpm install
       - name: Build
+        if: steps.changes-check.outputs.no_changes != 'no-changes'
         run: pnpm build
       - name: Setup SSH Agent
-        if: github.ref == 'refs/heads/develop'
+        if: github.ref == 'refs/heads/develop' && steps.changes-check.outputs.no_changes != 'no-changes'
         uses: webfactory/ssh-agent@v0.9.1
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh-private-key: ${{ secrets.SFTP_KEY }}
       - name: Add SSH Known Hosts
-        if: github.ref == 'refs/heads/develop'
+        if: github.ref == 'refs/heads/develop' && steps.changes-check.outputs.no_changes != 'no-changes'
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          echo "${{ secrets.SFTP_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
 
       - name: Deploy SSR build via rsync
-        if: github.ref == 'refs/heads/develop'
+        if: github.ref == 'refs/heads/develop' && steps.changes-check.outputs.no_changes != 'no-changes'
         run: |
-          rsync -avz --delete ./dist/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/servers.setonix
+          rsync -avz --delete ./dist/ ${{ secrets.SFTP_USERNAME }}@${{ secrets.SFTP_HOST }}:/var/www/servers.setonix
 
       - name: Restart SSR application
-        if: github.ref == 'refs/heads/develop'
+        if: github.ref == 'refs/heads/develop' && steps.changes-check.outputs.no_changes != 'no-changes'
         run: |
-          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
+          ssh ${{ secrets.SFTP_USERNAME }}@${{ secrets.SFTP_HOST }} << 'EOF'
             pm2 stop astro-servers || true
             PORT=${{ secrets.SERVERS_PORT }} pm2 start dist/server/entry.mjs --name astro-servers --update-env
           EOF
