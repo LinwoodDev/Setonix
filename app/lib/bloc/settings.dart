@@ -32,7 +32,7 @@ enum ThemeDensity {
 }
 
 List<String> getDefaultServerList() {
-  final env = String.fromEnvironment('server_list', defaultValue: '');
+  const env = String.fromEnvironment('server_list', defaultValue: '');
   if (env.isNotEmpty) {
     return env.split(',').map((e) => e.trim()).toList();
   }
