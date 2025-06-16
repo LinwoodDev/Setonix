@@ -53,10 +53,7 @@ Uri buildServerAddress(Uri uri, bool secure, {bool webSockets = true}) {
         host: uri.pathSegments.first,
         pathSegments: uri.pathSegments.skip(1).toList());
   }
-  if (uri.scheme.isEmpty) {
-    uri =
-        uri.replace(scheme: (webSockets ? 'ws' : 'http') + (secure ? 's' : ''));
-  }
+  uri = uri.replace(scheme: (webSockets ? 'ws' : 'http') + (secure ? 's' : ''));
   if (!uri.hasPort) {
     uri = uri.replace(port: kDefaultPort);
   }

@@ -262,5 +262,7 @@
   "backupAllKeys": "Backup all keys",
   "noAccount": "There are no accounts available",
   "authenticateRequired": "Authentication is required to connect to the server",
-  "authenticateLoading": "Authenticating..."
+  "authenticateLoading": "Authenticating...",
+  "loadDefaultServerList": "Load default server list",
+  "serverLists": "Server lists"
 }

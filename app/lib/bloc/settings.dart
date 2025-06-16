@@ -31,6 +31,8 @@ enum ThemeDensity {
       };
 }
 
+const kDefaultServerList = ['https://servers.setonix.linwood.dev/data.json'];
+
 final class ThemeModeMapper extends SimpleMapper<ThemeMode> {
   const ThemeModeMapper();
 
@@ -63,6 +65,8 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
   final List<String> swamps;
   final double scrollSensitivity;
   final ThemeDensity density;
+  final List<String> serverList;
+  final bool showIntro;
 
   const SetonixSettings({
     this.localeTag = '',
@@ -81,6 +85,8 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
     this.swamps = const [],
     this.density = ThemeDensity.system,
     this.scrollSensitivity = 1,
+    this.serverList = const [],
+    this.showIntro = true,
   });
 
   Locale? get locale {
@@ -118,6 +124,8 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
         density: ThemeDensity.values.byName(
           prefs.getString('density') ?? ThemeDensity.system.name,
         ),
+        serverList: prefs.getStringList('serverList') ?? [],
+        showIntro: prefs.getBool('showIntro') ?? true,
       );
 
   Future<void> save() async {
@@ -145,6 +153,8 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
     await prefs.setStringList('swamps', swamps);
     await prefs.setDouble('scrollSensitivity', scrollSensitivity);
     await prefs.setString('density', density.name);
+    await prefs.setStringList('serverList', serverList);
+    await prefs.setBool('showIntro', showIntro);
   }
 }
 
@@ -266,6 +276,20 @@ class SettingsCubit extends Cubit<SetonixSettings>
 
   Future<void> changeStackedCards(bool value) {
     emit(state.copyWith(stackedCards: value));
+    return save();
+  }
+
+  Future<void> addServersToList(List<String> server) {
+    final newList = {...state.serverList, ...server}.toList();
+    emit(state.copyWith(serverList: newList));
+    return save();
+  }
+
+  Future<void> addServerToList(String server) => addServersToList([server]);
+
+  Future<void> removeServerFromList(String server) {
+    final newList = state.serverList.where((s) => s != server).toList();
+    emit(state.copyWith(serverList: newList));
     return save();
   }
 

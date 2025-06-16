@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:setonix/pages/settings/accounts.dart';
 import 'package:setonix/pages/settings/input.dart';
+import 'package:setonix/pages/settings/servers.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_leap/material_leap.dart';
@@ -15,7 +16,8 @@ enum SettingsView {
   data,
   personalization,
   accounts,
-  inputs;
+  inputs,
+  servers;
 
   bool get isEnabled => true;
 
@@ -26,6 +28,7 @@ enum SettingsView {
           AppLocalizations.of(context).personalization,
         SettingsView.accounts => AppLocalizations.of(context).accounts,
         SettingsView.inputs => AppLocalizations.of(context).inputs,
+        SettingsView.servers => AppLocalizations.of(context).serverLists,
       };
 
   IconGetter get icon => switch (this) {
@@ -34,6 +37,7 @@ enum SettingsView {
         SettingsView.personalization => PhosphorIcons.monitor,
         SettingsView.accounts => PhosphorIcons.user,
         SettingsView.inputs => PhosphorIcons.keyboard,
+        SettingsView.servers => PhosphorIcons.list,
       };
   String get path => '/settings/$name';
 
@@ -44,6 +48,7 @@ enum SettingsView {
           PersonalizationSettingsPage(inView: inView),
         SettingsView.accounts => AccountsSettingsPage(inView: inView),
         SettingsView.inputs => InputsSettingsPage(inView: inView),
+        SettingsView.servers => ServersSettingsPage(inView: inView),
       };
 }
 

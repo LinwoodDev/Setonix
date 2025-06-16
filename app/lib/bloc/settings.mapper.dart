@@ -135,6 +135,12 @@ class SetonixSettingsMapper extends ClassMapperBase<SetonixSettings> {
   static double _$scrollSensitivity(SetonixSettings v) => v.scrollSensitivity;
   static const Field<SetonixSettings, double> _f$scrollSensitivity =
       Field('scrollSensitivity', _$scrollSensitivity, opt: true, def: 1);
+  static List<String> _$serverList(SetonixSettings v) => v.serverList;
+  static const Field<SetonixSettings, List<String>> _f$serverList =
+      Field('serverList', _$serverList, opt: true, def: const []);
+  static bool _$showIntro(SetonixSettings v) => v.showIntro;
+  static const Field<SetonixSettings, bool> _f$showIntro =
+      Field('showIntro', _$showIntro, opt: true, def: true);
 
   @override
   final MappableFields<SetonixSettings> fields = const {
@@ -154,6 +160,8 @@ class SetonixSettingsMapper extends ClassMapperBase<SetonixSettings> {
     #swamps: _f$swamps,
     #density: _f$density,
     #scrollSensitivity: _f$scrollSensitivity,
+    #serverList: _f$serverList,
+    #showIntro: _f$showIntro,
   };
 
   static SetonixSettings _instantiate(DecodingData data) {
@@ -173,7 +181,9 @@ class SetonixSettingsMapper extends ClassMapperBase<SetonixSettings> {
         zoom: data.dec(_f$zoom),
         swamps: data.dec(_f$swamps),
         density: data.dec(_f$density),
-        scrollSensitivity: data.dec(_f$scrollSensitivity));
+        scrollSensitivity: data.dec(_f$scrollSensitivity),
+        serverList: data.dec(_f$serverList),
+        showIntro: data.dec(_f$showIntro));
   }
 
   @override
@@ -234,6 +244,7 @@ abstract class SetonixSettingsCopyWith<$R, $In extends SetonixSettings, $Out>
   ListCopyWith<$R, ListGameServer,
       ListGameServerCopyWith<$R, ListGameServer, ListGameServer>> get servers;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get swamps;
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get serverList;
   $R call(
       {String? localeTag,
       ThemeMode? theme,
@@ -250,7 +261,9 @@ abstract class SetonixSettingsCopyWith<$R, $In extends SetonixSettings, $Out>
       double? zoom,
       List<String>? swamps,
       ThemeDensity? density,
-      double? scrollSensitivity});
+      double? scrollSensitivity,
+      List<String>? serverList,
+      bool? showIntro});
   SetonixSettingsCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -276,6 +289,10 @@ class _SetonixSettingsCopyWithImpl<$R, $Out>
       ListCopyWith($value.swamps, (v, t) => ObjectCopyWith(v, $identity, t),
           (v) => call(swamps: v));
   @override
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get serverList =>
+      ListCopyWith($value.serverList, (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(serverList: v));
+  @override
   $R call(
           {String? localeTag,
           ThemeMode? theme,
@@ -292,7 +309,9 @@ class _SetonixSettingsCopyWithImpl<$R, $Out>
           double? zoom,
           List<String>? swamps,
           ThemeDensity? density,
-          double? scrollSensitivity}) =>
+          double? scrollSensitivity,
+          List<String>? serverList,
+          bool? showIntro}) =>
       $apply(FieldCopyWithData({
         if (localeTag != null) #localeTag: localeTag,
         if (theme != null) #theme: theme,
@@ -309,7 +328,9 @@ class _SetonixSettingsCopyWithImpl<$R, $Out>
         if (zoom != null) #zoom: zoom,
         if (swamps != null) #swamps: swamps,
         if (density != null) #density: density,
-        if (scrollSensitivity != null) #scrollSensitivity: scrollSensitivity
+        if (scrollSensitivity != null) #scrollSensitivity: scrollSensitivity,
+        if (serverList != null) #serverList: serverList,
+        if (showIntro != null) #showIntro: showIntro
       }));
   @override
   SetonixSettings $make(CopyWithData data) => SetonixSettings(
@@ -330,7 +351,9 @@ class _SetonixSettingsCopyWithImpl<$R, $Out>
       swamps: data.get(#swamps, or: $value.swamps),
       density: data.get(#density, or: $value.density),
       scrollSensitivity:
-          data.get(#scrollSensitivity, or: $value.scrollSensitivity));
+          data.get(#scrollSensitivity, or: $value.scrollSensitivity),
+      serverList: data.get(#serverList, or: $value.serverList),
+      showIntro: data.get(#showIntro, or: $value.showIntro));
 
   @override
   SetonixSettingsCopyWith<$R2, SetonixSettings, $Out2> $chain<$R2, $Out2>(
