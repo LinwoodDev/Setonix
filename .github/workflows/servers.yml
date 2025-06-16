@@ -5,7 +5,7 @@ on:
       - develop
     paths:
       - 'servers/**'
-
+name: Deploy Server List
 jobs:
   build-servers:
     runs-on: ubuntu-latest
