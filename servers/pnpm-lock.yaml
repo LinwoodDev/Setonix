@@ -11,6 +11,9 @@ importers:
       '@cacheable/node-cache':
         specifier: ^1.5.6
         version: 1.5.6
+      '@linwooddev/style':
+        specifier: ^0.4.2
+        version: 0.4.2
       astro:
         specifier: ^5.9.3
         version: 5.9.3(@types/node@24.0.1)(rollup@4.43.0)(typescript@5.8.3)
@@ -320,6 +323,9 @@ packages:
 
   '@keyv/serialize@1.0.3':
     resolution: {integrity: sha512-qnEovoOp5Np2JDGonIDL6Ayihw0RhnRh6vxPuHo4RDn1UOzwEo4AeIfpL6UGIrsceWrCMiVPgwRjbHu4vYFc3g==}
+
+  '@linwooddev/style@0.4.2':
+    resolution: {integrity: sha512-ZYDdLnl7D8ttJ9lA3BdZtBw7pCkfwF3EEJ3bCmTibP/10ESQl+RPEUbmKbihudYA+6bX65bZIr4Yaimyh7i15w==}
 
   '@oslojs/encoding@1.1.0':
     resolution: {integrity: sha512-70wQhgYmndg4GCPxPPxPGevRKqTIJ2Nh4OkiMWmDAVYsTQ+Ta7Sq+rPevXyXGdzr30/qZBnyOalCszoMxlyldQ==}
@@ -1707,6 +1713,8 @@ snapshots:
   '@keyv/serialize@1.0.3':
     dependencies:
       buffer: 6.0.3
+
+  '@linwooddev/style@0.4.2': {}
 
   '@oslojs/encoding@1.1.0': {}
 

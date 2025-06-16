@@ -1,7 +1,8 @@
 import NodeCache from "@cacheable/node-cache";
-import { buildServerHttpUrl, type Server } from "./utils";
+import { buildServerURL, type Server } from "./utils";
 
-const cache = new NodeCache({ stdTTL: 300 });
+const cache = new NodeCache({ stdTTL: 60 * 10 });
+const failedTTL = 60 * 5; // 5 minutes for failed requests
 
 export type ServerStatus = {
   description: string;
@@ -16,7 +17,7 @@ export async function fetchServerStatus(server: Server) : Promise<ServerStatus |
   if (cached) {
     return Promise.resolve(cached as ServerStatus);
   }
-  const url = buildServerHttpUrl(server);
+  const url = buildServerURL(server);
   const response = await fetch(url, {
     method: "GET",
     headers: {
@@ -34,10 +35,10 @@ export async function fetchServerStatus(server: Server) : Promise<ServerStatus |
       console.error(`Error fetching status for server ${server.address}:`, error);
       return null;
     }) as ServerStatus | null;
+  cache.set(cacheKey, response, response ? undefined : failedTTL);
   if (!response) {
     console.warn(`Invalid response from server ${server.address}:`, response);
     return null;
   }
-  cache.set(cacheKey, response);
   return response;
 }

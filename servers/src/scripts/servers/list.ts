@@ -4,7 +4,7 @@ import type { Server } from './utils';
 import { REMOTE_URLS } from "astro:env/server";
 
 // Cache with 5 minutes TTL
-const cache = new NodeCache({ stdTTL: 300 });
+const cache = new NodeCache({ stdTTL: 60 * 10 });
 // Cache for local servers list
 let localCache: Server[] | null = null;
 
