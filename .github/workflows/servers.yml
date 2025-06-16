@@ -1,4 +1,5 @@
 on:
+  workflow_dispatch:
   push:
     branches:
       - develop
@@ -43,12 +44,13 @@ jobs:
       - name: Deploy SSR build via rsync
         if: github.ref == 'refs/heads/develop'
         run: |
-          rsync -avz --delete ./dist/ ${{ secrets.SFTP_USERNAME }}@${{ secrets.SFTP_HOST }}:/var/www/servers.setonix
+          rsync -avz --delete ./ ${{ secrets.SFTP_USERNAME }}@${{ secrets.SFTP_HOST }}:/var/www/servers.setonix
 
       - name: Restart SSR application
         if: github.ref == 'refs/heads/develop'
         run: |
           ssh ${{ secrets.SFTP_USERNAME }}@${{ secrets.SFTP_HOST }} << 'EOF'
-            pm2 stop astro-servers || true
-            PORT=${{ secrets.SERVERS_PORT }} pm2 start server/entry.mjs --name astro-servers --update-env
+            pm2 stop setonix-servers || true
+            cd /var/www/servers.setonix
+            PORT=${{ secrets.SERVERS_PORT }} pm2 start dist/server/entry.mjs --name setonix-servers --update-env
           EOF
