@@ -160,8 +160,37 @@ class _ServersDialogState extends State<ServersDialog> {
     });
   }
 
-  Text _buildDetails(BuildContext context, GameProperty property) =>
-      Text('${property.currentPlayers}/${property.maxPlayers ?? '?'}');
+  Widget _buildTitle(BuildContext context, GameServer server) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          server.display,
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+        if (server is ListGameServer && server.name.isNotEmpty)
+          Text(
+            server.address,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+      ],
+    );
+  }
+
+  Widget _buildDetails(
+      BuildContext context, bool secure, GameProperty property) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(secure
+            ? PhosphorIconsLight.shieldCheck
+            : PhosphorIconsLight.shieldSlash),
+        const SizedBox(width: 8),
+        Text('${property.currentPlayers}/${property.maxPlayers ?? '?'}'),
+      ],
+    );
+  }
 
   List<ListTile> _buildDetailsChildren(GameProperty server) => [
         ListTile(
@@ -306,28 +335,35 @@ class _ServersDialogState extends State<ServersDialog> {
                               final primaryColor =
                                   ColorScheme.of(context).primary;
                               final defaultColor = IconTheme.of(context).color;
+                              final highlighted = current is ListGameServer &&
+                                  current.highlighted;
                               return ListTile(
-                                title: Text(current.display),
+                                title: Text(current.display,
+                                    style: TextStyle(
+                                      fontWeight: highlighted
+                                          ? FontWeight.w800
+                                          : FontWeight.normal,
+                                    )),
                                 trailing: switch (current) {
                                   LanGameServer() =>
                                     const Icon(PhosphorIconsLight.mapPin),
                                   BrowsedGameServer() => Icon(
                                       PhosphorIcons.globe(
-                                        current.highlighted
+                                        highlighted
                                             ? PhosphorIconsStyle.fill
                                             : PhosphorIconsStyle.light,
                                       ),
-                                      color: current.highlighted
+                                      color: highlighted
                                           ? primaryColor
                                           : defaultColor,
                                     ),
                                   ListGameServer() => Icon(
                                       PhosphorIcons.puzzlePiece(
-                                        current.highlighted
+                                        highlighted
                                             ? PhosphorIconsStyle.fill
                                             : PhosphorIconsStyle.light,
                                       ),
-                                      color: current.highlighted
+                                      color: highlighted
                                           ? primaryColor
                                           : defaultColor,
                                     ),
@@ -341,7 +377,7 @@ class _ServersDialogState extends State<ServersDialog> {
                                     showLeapBottomSheet(
                                       context: context,
                                       titleBuilder: (context) =>
-                                          Text(server.display),
+                                          _buildTitle(context, current),
                                       actionsBuilder: (context) => [
                                         if (property != null) ...[
                                           DefaultTextStyle(
@@ -349,8 +385,8 @@ class _ServersDialogState extends State<ServersDialog> {
                                                     .textTheme
                                                     .headlineSmall ??
                                                 const TextStyle(fontSize: 20),
-                                            child: _buildDetails(
-                                                context, property),
+                                            child: _buildDetails(context,
+                                                current.secure, property),
                                           ),
                                           const SizedBox(width: 8),
                                         ],
@@ -443,18 +479,16 @@ class _ServersDialogState extends State<ServersDialog> {
                                                     .titleLarge ??
                                                 const TextStyle(),
                                             child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 Expanded(
-                                                  child: Text(
-                                                    server.display,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .titleLarge,
-                                                  ),
+                                                  child: _buildTitle(
+                                                      context, server),
                                                 ),
                                                 const SizedBox(width: 8),
-                                                _buildDetails(
-                                                    context, property),
+                                                _buildDetails(context,
+                                                    server.secure, property),
                                               ],
                                             ),
                                           ),
