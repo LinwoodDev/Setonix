@@ -268,5 +268,6 @@
   "serverLists": "Server lists",
   "reset": "Reset",
   "confirm": "Confirm",
-  "showIntro": "Show intro"
+  "showIntro": "Show intro",
+  "highlighted": "Highlighted"
 }

@@ -34,6 +34,7 @@ class ConnectEditDialog extends StatelessWidget {
     String address = initialValue?.address ?? '';
     String name = initialValue?.name ?? '';
     bool secure = initialValue?.secure ?? true;
+    bool highlighted = initialValue?.highlighted ?? true;
 
     final secureSwitchEnabled = !kIsWeb || Uri.base.isScheme('HTTP');
 
@@ -74,6 +75,13 @@ class ConnectEditDialog extends StatelessWidget {
             onFieldSubmitted: index == null ? (_) => connect() : null,
           ),
           const SizedBox(height: 8),
+          StatefulBuilder(
+            builder: (context, setState) => SwitchListTile(
+              title: Text(AppLocalizations.of(context).highlighted),
+              value: highlighted,
+              onChanged: (value) => setState(() => highlighted = value),
+            ),
+          ),
           if (secureSwitchEnabled)
             StatefulBuilder(
               builder: (context, setState) => SwitchListTile(
@@ -93,6 +101,7 @@ class ConnectEditDialog extends StatelessWidget {
               address: address,
               secure: secure,
               name: name,
+              highlighted: highlighted,
             );
             if (index != null) {
               cubit.updateServer(index!, updated);
@@ -123,7 +132,7 @@ class ServersDialog extends StatefulWidget {
 }
 
 class _ServersDialogState extends State<ServersDialog> {
-  late final Stream<Map<GameServer, GameProperty?>> _servers;
+  Stream<Map<GameServer, GameProperty?>>? _servers;
 
   bool _isMobileOpen = false;
   (GameServer, int)? _selected;
@@ -132,9 +141,23 @@ class _ServersDialogState extends State<ServersDialog> {
   @override
   void initState() {
     super.initState();
-    _servers = ValueConnectableStream(
-            context.read<NetworkService>().fetchServersWithProperties())
+    _buildServersStream();
+  }
+
+  void _buildServersStream([SetonixSettings? settings]) {
+    settings ??= context.read<SettingsCubit>().state;
+    _servers = ValueConnectableStream(context
+            .read<NetworkService>()
+            .fetchServersWithProperties(
+                browsable: settings.showConnectNetwork,
+                local: settings.showConnectYour))
         .autoConnect();
+  }
+
+  void _refreshServers(SetonixSettings settings) {
+    setState(() {
+      _buildServersStream(settings);
+    });
   }
 
   Text _buildDetails(BuildContext context, GameProperty property) =>
@@ -148,12 +171,17 @@ class _ServersDialogState extends State<ServersDialog> {
       ];
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingsCubit, SetonixSettings>(
+    return BlocConsumer<SettingsCubit, SetonixSettings>(
+      listenWhen: (previous, current) =>
+          previous.serverList != current.serverList ||
+          previous.showConnectYour != current.showConnectYour ||
+          previous.showConnectNetwork != current.showConnectNetwork,
       buildWhen: (previous, current) =>
           previous.showConnectYour != current.showConnectYour ||
           previous.showConnectNetwork != current.showConnectNetwork,
+      listener: (context, state) => _refreshServers(state),
       builder: (context, settings) => ResponsiveAlertDialog(
-        title: Text(AppLocalizations.of(context).connect),
+        title: Text(AppLocalizations.of(context).servers),
         leading: IconButton.outlined(
           icon: const Icon(PhosphorIconsLight.x),
           onPressed: () => Navigator.of(context).pop(),
@@ -275,12 +303,34 @@ class _ServersDialogState extends State<ServersDialog> {
                             itemBuilder: (context, index) {
                               final entry = servers[index];
                               final current = entry.key;
+                              final primaryColor =
+                                  ColorScheme.of(context).primary;
+                              final defaultColor = IconTheme.of(context).color;
                               return ListTile(
                                 title: Text(current.display),
-                                leading: switch (current) {
+                                trailing: switch (current) {
                                   LanGameServer() =>
-                                    const Icon(PhosphorIconsLight.globe),
-                                  _ => null,
+                                    const Icon(PhosphorIconsLight.mapPin),
+                                  BrowsedGameServer() => Icon(
+                                      PhosphorIcons.globe(
+                                        current.highlighted
+                                            ? PhosphorIconsStyle.fill
+                                            : PhosphorIconsStyle.light,
+                                      ),
+                                      color: current.highlighted
+                                          ? primaryColor
+                                          : defaultColor,
+                                    ),
+                                  ListGameServer() => Icon(
+                                      PhosphorIcons.puzzlePiece(
+                                        current.highlighted
+                                            ? PhosphorIconsStyle.fill
+                                            : PhosphorIconsStyle.light,
+                                      ),
+                                      color: current.highlighted
+                                          ? primaryColor
+                                          : defaultColor,
+                                    ),
                                 },
                                 onTap: () {
                                   setState(() {
@@ -347,26 +397,26 @@ class _ServersDialogState extends State<ServersDialog> {
                       onSearchChanged: (value) => setState(() {
                             _search = value;
                           }),
-                      children: const [
-                        /*  InputChip(
-                        label: Text(AppLocalizations.of(context).yourServers),
-                        avatar: const Icon(PhosphorIconsLight.puzzlePiece),
-                        showCheckmark: false,
-                        selected: settings.showConnectYour,
-                        onPressed: () => context
-                            .read<SettingsCubit>()
-                            .changeShowConnectYour(!settings.showConnectYour),
-                      ),
-                      InputChip(
-                        label: Text(AppLocalizations.of(context).inNetwork),
-                        avatar: const Icon(PhosphorIconsLight.globe),
-                        showCheckmark: false,
-                        selected: settings.showConnectNetwork,
-                        onPressed: () => context
-                            .read<SettingsCubit>()
-                            .changeShowConnectNetwork(
-                                !settings.showConnectNetwork),
-                      ), */
+                      children: [
+                        InputChip(
+                          label: Text(AppLocalizations.of(context).yourServers),
+                          avatar: const Icon(PhosphorIconsLight.puzzlePiece),
+                          showCheckmark: false,
+                          selected: settings.showConnectYour,
+                          onPressed: () => context
+                              .read<SettingsCubit>()
+                              .changeShowConnectYour(!settings.showConnectYour),
+                        ),
+                        InputChip(
+                          label: Text(AppLocalizations.of(context).browse),
+                          avatar: const Icon(PhosphorIconsLight.globe),
+                          showCheckmark: false,
+                          selected: settings.showConnectNetwork,
+                          onPressed: () => context
+                              .read<SettingsCubit>()
+                              .changeShowConnectNetwork(
+                                  !settings.showConnectNetwork),
+                        ),
                       ]),
                   const SizedBox(height: 8),
                   Expanded(

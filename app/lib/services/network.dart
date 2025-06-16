@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -129,45 +130,109 @@ class NetworkService {
     }
   }
 
-  Stream<Map<GameServer, GameProperty?>> fetchServersWithProperties({
-    bool list = true,
-  }) async* {
-    Map<GameServer, Future<GameProperty?>> cached = {};
-    Future<GameProperty?> fetch(
-        GameServer server, LanProperty? property) async {
-      property ??= const LanProperty();
-      return cached[server] ??
-          switch (server) {
-            LanGameServer() =>
-              Future.value(GameProperty(description: property.description)),
-            ListGameServer() => cached[server] =
-                fetchInfo(server.buildAddress(webSockets: false))
-                    .onError((_, __) => null),
-          };
+  Future<GameProperty?> _fetchServer(
+    GameServer server,
+    LanProperty? property, {
+    Map<GameServer, Future<GameProperty?>> cached = const {},
+  }) async {
+    property ??= const LanProperty();
+    return cached[server] ??
+        switch (server) {
+          LanGameServer() =>
+            Future.value(GameProperty(description: property.description)),
+          ListGameServer() => cached[server] =
+              fetchInfo(server.buildAddress(webSockets: false))
+                  .onError((_, __) => null),
+        };
+  }
+
+  Stream<Map<GameServer, GameProperty?>> _fetchBrowsableServersWithProperties({
+    Map<GameServer, Future<GameProperty?>>? cached,
+    required Map<GameServer, GameProperty?> returned,
+  }) {
+    final lists = settingsCubit.state.serverList;
+    Future<List<GameServer>> fetchList(String address) async {
+      try {
+        final response = await http.get(Uri.parse(address),
+            headers: {HttpHeaders.contentTypeHeader: 'application/json'});
+        if (response.statusCode != HttpStatus.ok) return [];
+        final result = jsonDecode(response.body) as Map;
+        return result['servers']
+            .map<GameServer>((e) => BrowsedGameServerMapper.fromMap(e))
+            .toList();
+      } catch (_) {
+        return [];
+      }
     }
 
-    final returned = <GameServer, GameProperty?>{};
-    yield returned;
-
-    await for (final event in _servers) {
-      returned.removeWhere((key, value) => !event.any((e) => e.$1 == key));
-      for (final (server, _) in event) {
-        returned[server] = const GameProperty();
+    final currentCached = cached ?? <GameServer, Future<GameProperty?>>{};
+    Stream<Map<GameServer, GameProperty?>> fetchServers(String address) async* {
+      final servers = await fetchList(address);
+      for (final server in servers) {
+        returned.putIfAbsent(
+          server,
+          () => const GameProperty(),
+        );
       }
       yield returned;
-
-      if (event.isEmpty) {
-        continue;
-      }
-
-      for (final e in event) {
+      for (final server in servers) {
         try {
-          returned[e.$1] = await fetch(e.$1, e.$2);
+          returned[server] =
+              await _fetchServer(server, null, cached: currentCached);
         } catch (_) {
-          returned[e.$1] = null;
+          returned[server] = null;
         }
         yield returned;
       }
+    }
+
+    final streams = lists.map((e) => fetchServers(e));
+    return Rx.merge(streams);
+  }
+
+  Stream<Map<GameServer, GameProperty?>> fetchServersWithProperties({
+    bool browsable = true,
+    bool local = true,
+  }) async* {
+    Map<GameServer, Future<GameProperty?>> cached = {};
+    final returned = <GameServer, GameProperty?>{};
+    yield returned;
+    fetchLocal() async* {
+      await for (final event in _servers) {
+        returned.removeWhere((key, value) => !event.any((e) => e.$1 == key));
+        for (final (server, _) in event) {
+          returned[server] = const GameProperty();
+        }
+        yield returned;
+
+        if (event.isEmpty) {
+          continue;
+        }
+
+        for (final e in event) {
+          try {
+            returned[e.$1] = await _fetchServer(e.$1, e.$2, cached: cached);
+          } catch (_) {
+            returned[e.$1] = null;
+          }
+          yield returned;
+        }
+      }
+    }
+
+    if (browsable) {
+      if (!local) {
+        yield* _fetchBrowsableServersWithProperties(
+            cached: cached, returned: returned);
+      } else {
+        yield* Rx.merge([
+          fetchLocal(),
+          _fetchBrowsableServersWithProperties(
+              cached: cached, returned: returned),
+        ]);
+      }
+    } else if (local) {
+      yield* fetchLocal();
     }
   }
 }
