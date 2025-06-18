@@ -50,6 +50,7 @@ jobs:
         if: github.ref == 'refs/heads/develop'
         run: |
           ssh ${{ secrets.SFTP_USERNAME }}@${{ secrets.SFTP_HOST }} << 'EOF'
+            export REMOTE_URLS=${{ secrets.REMOTE_URLS }}
             pm2 stop setonix-servers || true
             cd /var/www/servers.setonix
             PORT=${{ secrets.SERVERS_PORT }} pm2 start dist/server/entry.mjs --name setonix-servers --update-env
