@@ -10,6 +10,7 @@ import 'package:setonix/bloc/world/bloc.dart';
 import 'package:setonix/pages/home/background.dart';
 import 'package:setonix/services/file_system.dart';
 import 'package:setonix_api/setonix_api.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class GameErrorView extends StatelessWidget {
   final MultiplayerDisconnectedState state;
@@ -26,15 +27,40 @@ class GameErrorView extends StatelessWidget {
     final theme = Theme.of(context);
     final error = state.error;
     var message = AppLocalizations.of(context).disconnectedMessage;
-    Widget? content;
+    List<Widget>? content;
     if (error is FatalServerEventError) {
       message = switch (error) {
         InvalidPacksError() => AppLocalizations.of(context).invalidPacks,
       };
       content = switch (error) {
-        InvalidPacksError() =>
-          _PacksGameErrorView(error: error, onReconnect: onReconnect),
+        InvalidPacksError() => [
+            _PacksGameErrorView(error: error, onReconnect: onReconnect)
+          ],
       };
+    } else if (error is KickMessage) {
+      final link = error.link;
+      content = [
+        Text(error.message),
+        const SizedBox(height: 4),
+        if (link != null)
+          Row(
+            children: [
+              Expanded(
+                  child: TextFormField(
+                initialValue: link,
+                readOnly: true,
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context).link,
+                  suffixIcon: IconButton(
+                    icon: const Icon(PhosphorIconsLight.paperPlaneRight),
+                    onPressed: () => launchUrlString(link,
+                        mode: LaunchMode.externalApplication),
+                  ),
+                ),
+              ))
+            ],
+          )
+      ];
     }
     return Scaffold(
       body: Stack(
@@ -63,7 +89,7 @@ class GameErrorView extends StatelessWidget {
                     ),
                     if (content != null) ...[
                       const SizedBox(height: 16),
-                      content,
+                      ...content,
                     ],
                     const SizedBox(height: 16),
                     Row(

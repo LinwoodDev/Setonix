@@ -44,6 +44,12 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
   static String? _$guestPrefix(SetonixConfig v) => v.guestPrefix;
   static const Field<SetonixConfig, String> _f$guestPrefix =
       Field('guestPrefix', _$guestPrefix, opt: true);
+  static String? _$authEndpoint(SetonixConfig v) => v.authEndpoint;
+  static const Field<SetonixConfig, String> _f$authEndpoint =
+      Field('authEndpoint', _$authEndpoint, opt: true);
+  static String? _$endpointSecret(SetonixConfig v) => v.endpointSecret;
+  static const Field<SetonixConfig, String> _f$endpointSecret =
+      Field('endpointSecret', _$endpointSecret, opt: true);
 
   @override
   final MappableFields<SetonixConfig> fields = const {
@@ -55,6 +61,8 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
     #maxPlayers: _f$maxPlayers,
     #description: _f$description,
     #guestPrefix: _f$guestPrefix,
+    #authEndpoint: _f$authEndpoint,
+    #endpointSecret: _f$endpointSecret,
   };
 
   static SetonixConfig _instantiate(DecodingData data) {
@@ -66,7 +74,9 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
         multiWorld: data.dec(_f$multiWorld),
         maxPlayers: data.dec(_f$maxPlayers),
         description: data.dec(_f$description),
-        guestPrefix: data.dec(_f$guestPrefix));
+        guestPrefix: data.dec(_f$guestPrefix),
+        authEndpoint: data.dec(_f$authEndpoint),
+        endpointSecret: data.dec(_f$endpointSecret));
   }
 
   @override
@@ -130,7 +140,9 @@ abstract class SetonixConfigCopyWith<$R, $In extends SetonixConfig, $Out>
       bool? multiWorld,
       int? maxPlayers,
       String? description,
-      String? guestPrefix});
+      String? guestPrefix,
+      String? authEndpoint,
+      String? endpointSecret});
   SetonixConfigCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -151,7 +163,9 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
           Object? multiWorld = $none,
           Object? maxPlayers = $none,
           Object? description = $none,
-          Object? guestPrefix = $none}) =>
+          Object? guestPrefix = $none,
+          Object? authEndpoint = $none,
+          Object? endpointSecret = $none}) =>
       $apply(FieldCopyWithData({
         if (host != $none) #host: host,
         if (port != $none) #port: port,
@@ -160,7 +174,9 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
         if (multiWorld != $none) #multiWorld: multiWorld,
         if (maxPlayers != $none) #maxPlayers: maxPlayers,
         if (description != $none) #description: description,
-        if (guestPrefix != $none) #guestPrefix: guestPrefix
+        if (guestPrefix != $none) #guestPrefix: guestPrefix,
+        if (authEndpoint != $none) #authEndpoint: authEndpoint,
+        if (endpointSecret != $none) #endpointSecret: endpointSecret
       }));
   @override
   SetonixConfig $make(CopyWithData data) => SetonixConfig(
@@ -171,7 +187,9 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
       multiWorld: data.get(#multiWorld, or: $value.multiWorld),
       maxPlayers: data.get(#maxPlayers, or: $value.maxPlayers),
       description: data.get(#description, or: $value.description),
-      guestPrefix: data.get(#guestPrefix, or: $value.guestPrefix));
+      guestPrefix: data.get(#guestPrefix, or: $value.guestPrefix),
+      authEndpoint: data.get(#authEndpoint, or: $value.authEndpoint),
+      endpointSecret: data.get(#endpointSecret, or: $value.endpointSecret));
 
   @override
   SetonixConfigCopyWith<$R2, SetonixConfig, $Out2> $chain<$R2, $Out2>(

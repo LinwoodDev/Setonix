@@ -6,6 +6,7 @@ export 'src/models/deck.dart';
 export 'src/models/definition.dart';
 export 'src/models/dialog.dart';
 export 'src/models/info.dart';
+export 'src/models/kick.dart';
 export 'src/models/meta.dart';
 export 'src/models/mode.dart';
 export 'src/models/server.dart';

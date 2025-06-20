@@ -225,7 +225,14 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
       final state = await _addNetworker(client);
       client.onClosed.listen((_) {
         if (isClosed) return;
-        emit(MultiplayerDisconnectedState(oldState: state, error: _fatalError));
+        final closeReason = client.closeReason;
+        emit(MultiplayerDisconnectedState(
+          oldState: state,
+          error: _fatalError ??
+              (closeReason == null
+                  ? null
+                  : KickMessage.fromString(closeReason)),
+        ));
         _fatalError = null;
       }, onError: (e) => emit(MultiplayerDisconnectedState(error: e)));
       await client.init();

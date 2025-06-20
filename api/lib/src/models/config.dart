@@ -29,6 +29,12 @@ final class SetonixConfig with SetonixConfigMappable {
   final String? guestPrefix;
   static const String defaultGuestPrefix = 'Guest ';
   static const String envGuestPrefix = 'SETONIX_GUEST_PREFIX';
+  final String? authEndpoint;
+  static const String defaultAuthEndpoint = '';
+  static const String envAuthEndpoint = 'SETONIX_AUTH_ENDPOINT';
+  final String? endpointSecret;
+  static const String defaultEndpointSecret = '';
+  static const String envEndpointSecret = 'SETONIX_ENDPOINT_SECRET';
 
   const SetonixConfig({
     this.host,
@@ -39,6 +45,8 @@ final class SetonixConfig with SetonixConfigMappable {
     this.maxPlayers,
     this.description,
     this.guestPrefix,
+    this.authEndpoint,
+    this.endpointSecret,
   });
 
   static const defaultConfig = SetonixConfig(
@@ -50,6 +58,8 @@ final class SetonixConfig with SetonixConfigMappable {
     maxPlayers: defaultMaxPlayers,
     description: defaultDescription,
     guestPrefix: defaultGuestPrefix,
+    authEndpoint: defaultAuthEndpoint,
+    endpointSecret: defaultEndpointSecret,
   );
 
   static SetonixConfig fromEnvironment() {
@@ -79,6 +89,14 @@ final class SetonixConfig with SetonixConfigMappable {
       guestPrefix: bool.hasEnvironment(envGuestPrefix)
           ? String.fromEnvironment(envGuestPrefix,
               defaultValue: defaultGuestPrefix)
+          : null,
+      authEndpoint: bool.hasEnvironment(envAuthEndpoint)
+          ? String.fromEnvironment(envAuthEndpoint,
+              defaultValue: defaultAuthEndpoint)
+          : null,
+      endpointSecret: bool.hasEnvironment(envEndpointSecret)
+          ? String.fromEnvironment(envEndpointSecret,
+              defaultValue: defaultEndpointSecret)
           : null,
     );
   }

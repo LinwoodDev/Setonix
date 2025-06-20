@@ -269,5 +269,6 @@
   "reset": "Reset",
   "confirm": "Confirm",
   "showIntro": "Show intro",
-  "highlighted": "Highlighted"
+  "highlighted": "Highlighted",
+  "link": "Link"
 }
