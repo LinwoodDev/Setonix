@@ -300,11 +300,12 @@ class SetonixFileSystem {
     return data;
   }
 
-  Future<String> getFingerprint(String key, [bool short = false]) async {
+  Future<String> getFingerprint(String key,
+      {bool short = false, bool pretty = false}) async {
     final publicKey = await publicKeySystem.getFile(key);
     if (publicKey == null) {
       return '';
     }
-    return generateFingerprint(publicKey, short);
+    return generateFingerprint(publicKey, short: short, pretty: pretty);
   }
 }

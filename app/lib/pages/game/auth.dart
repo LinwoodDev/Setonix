@@ -135,8 +135,10 @@ class _AuthGameViewState extends State<AuthGameView> {
                                               return ListTile(
                                                 title: Text(
                                                     account.name.substring(1)),
-                                                subtitle: Text(account
-                                                    .getFingerprint(true)),
+                                                subtitle: Text(
+                                                    account.getFingerprint(
+                                                        pretty: true,
+                                                        short: true)),
                                                 onTap: () async {
                                                   final bloc =
                                                       context.read<WorldBloc>();

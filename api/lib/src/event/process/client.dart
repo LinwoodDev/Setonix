@@ -304,7 +304,7 @@ Future<ServerResponse?> processClientEvent(
         return ServerResponse.builder(
             AuthenticatedRequested(challenge, isRequired: true), channel);
       }
-      userManager?.addUser(channel, event.publicKey);
+      userManager?.addUser(channel, generateFingerprint(event.publicKey));
       return ServerResponse.builder(buildInitialize(), channel);
   }
 }

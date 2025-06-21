@@ -88,6 +88,6 @@ final class SetonixAccount {
         type: KeyPairType.ed25519,
       );
 
-  String getFingerprint([bool short = false]) =>
-      generateFingerprint(publicKey, short);
+  String getFingerprint({bool short = false, bool pretty = false}) =>
+      generateFingerprint(publicKey, short: short, pretty: pretty);
 }

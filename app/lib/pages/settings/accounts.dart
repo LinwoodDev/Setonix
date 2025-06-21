@@ -98,7 +98,8 @@ class _AccountsSettingsPageState extends State<AccountsSettingsPage> {
             itemBuilder: (context, index) {
               final account = accounts[index];
               final key = account.name;
-              final fingerprint = account.getFingerprint(true);
+              final fingerprint =
+                  account.getFingerprint(pretty: true, short: true);
               void deleteKey() {
                 _privateKeyFileSystem.deleteFile(key);
                 _publicKeyFileSystem.deleteFile(key);

@@ -90,7 +90,7 @@ final class SetonixServer {
     await _runStaticLogZone(
         consoler, () => assetManager.init(console: consoler));
     final configManager = ConfigManager();
-    final userManager = UserManager(configManager.guestPrefix);
+    final userManager = UserManager(guestPrefix: configManager.guestPrefix);
     final challengeManager = ChallengeManager();
     return SetonixServer._(
         consoler, assetManager, configManager, userManager, challengeManager);

@@ -21,21 +21,21 @@ class SetonixUserMapper extends ClassMapperBase<SetonixUser> {
   @override
   final String id = 'SetonixUser';
 
-  static Uint8List? _$publicKey(SetonixUser v) => v.publicKey;
-  static const Field<SetonixUser, Uint8List> _f$publicKey =
-      Field('publicKey', _$publicKey, opt: true);
+  static String? _$fingerprint(SetonixUser v) => v.fingerprint;
+  static const Field<SetonixUser, Uint8List> _f$fingerprint =
+      Field('fingerprint', _$fingerprint, opt: true);
   static String _$name(SetonixUser v) => v.name;
   static const Field<SetonixUser, String> _f$name = Field('name', _$name);
 
   @override
   final MappableFields<SetonixUser> fields = const {
-    #publicKey: _f$publicKey,
+    #fingerprint: _f$fingerprint,
     #name: _f$name,
   };
 
   static SetonixUser _instantiate(DecodingData data) {
     return SetonixUser(
-        publicKey: data.dec(_f$publicKey), name: data.dec(_f$name));
+        fingerprint: data.dec(_f$fingerprint), name: data.dec(_f$name));
   }
 
   @override
@@ -90,7 +90,7 @@ extension SetonixUserValueCopy<$R, $Out>
 
 abstract class SetonixUserCopyWith<$R, $In extends SetonixUser, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call({Uint8List? publicKey, String? name});
+  $R call({Uint8List? fingerprint, String? name});
   SetonixUserCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -103,14 +103,14 @@ class _SetonixUserCopyWithImpl<$R, $Out>
   late final ClassMapperBase<SetonixUser> $mapper =
       SetonixUserMapper.ensureInitialized();
   @override
-  $R call({Object? publicKey = $none, String? name}) =>
+  $R call({Object? fingerprint = $none, String? name}) =>
       $apply(FieldCopyWithData({
-        if (publicKey != $none) #publicKey: publicKey,
+        if (fingerprint != $none) #fingerprint: fingerprint,
         if (name != null) #name: name
       }));
   @override
   SetonixUser $make(CopyWithData data) => SetonixUser(
-      publicKey: data.get(#publicKey, or: $value.publicKey),
+      fingerprint: data.get(#fingerprint, or: $value.fingerprint),
       name: data.get(#name, or: $value.name));
 
   @override
