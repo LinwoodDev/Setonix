@@ -1,0 +1,11 @@
+* Add account system
+* Add auth system
+* Add loading screen
+* Add server list
+* Add kick message
+* Add user system on server
+  * Local database
+  * Remote endpoint
+* Add whitelist system on server
+
+Read more here: https://linwood.dev/setonix/0.5.0

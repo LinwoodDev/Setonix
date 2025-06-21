@@ -63,6 +63,9 @@ class ConfigManager {
   bool get accountRequired =>
       _mergedConfig.accountRequired ?? SetonixConfig.defaultAccountRequired;
 
+  String get apiEndpoint =>
+      _mergedConfig.apiEndpoint ?? SetonixConfig.defaultApiEndpoint;
+
   String get endpointSecret =>
       _mergedConfig.endpointSecret ?? SetonixConfig.defaultEndpointSecret;
 }

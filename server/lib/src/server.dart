@@ -18,6 +18,7 @@ import 'package:setonix_server/src/programs/stop.dart';
 import 'package:setonix_plugin/setonix_plugin.dart';
 import 'package:setonix_server/src/programs/whitelist.dart';
 import 'package:setonix_server/src/services/user/file.dart';
+import 'package:setonix_server/src/services/user/remote.dart';
 
 String limitOutput(Object? value, [int limit = 500]) {
   final string = value.toString();
@@ -93,8 +94,15 @@ final class SetonixServer {
         consoler, () => assetManager.init(console: consoler));
     final configManager = ConfigManager(argsConfig: argsConfig);
     await configManager.loadConfig();
-    final userService = FileUserService();
-    await userService.setup();
+    final apiEndpoint = configManager.apiEndpoint;
+    UserService userService;
+    if (apiEndpoint.isNotEmpty) {
+      userService = RemoteUserService(apiEndpoint: apiEndpoint);
+    } else {
+      final fileService = FileUserService();
+      await fileService.setup();
+      userService = fileService;
+    }
     final userManager = UserManager(
         guestPrefix: configManager.guestPrefix,
         service: userService,

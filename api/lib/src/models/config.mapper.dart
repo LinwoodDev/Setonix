@@ -50,6 +50,9 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
   static bool? _$accountRequired(SetonixConfig v) => v.accountRequired;
   static const Field<SetonixConfig, bool> _f$accountRequired =
       Field('accountRequired', _$accountRequired, opt: true);
+  static String? _$apiEndpoint(SetonixConfig v) => v.apiEndpoint;
+  static const Field<SetonixConfig, String> _f$apiEndpoint =
+      Field('apiEndpoint', _$apiEndpoint, opt: true);
   static String? _$endpointSecret(SetonixConfig v) => v.endpointSecret;
   static const Field<SetonixConfig, String> _f$endpointSecret =
       Field('endpointSecret', _$endpointSecret, opt: true);
@@ -66,6 +69,7 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
     #guestPrefix: _f$guestPrefix,
     #whitelistEnabled: _f$whitelistEnabled,
     #accountRequired: _f$accountRequired,
+    #apiEndpoint: _f$apiEndpoint,
     #endpointSecret: _f$endpointSecret,
   };
 
@@ -81,6 +85,7 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
         guestPrefix: data.dec(_f$guestPrefix),
         whitelistEnabled: data.dec(_f$whitelistEnabled),
         accountRequired: data.dec(_f$accountRequired),
+        apiEndpoint: data.dec(_f$apiEndpoint),
         endpointSecret: data.dec(_f$endpointSecret));
   }
 
@@ -148,6 +153,7 @@ abstract class SetonixConfigCopyWith<$R, $In extends SetonixConfig, $Out>
       String? guestPrefix,
       bool? whitelistEnabled,
       bool? accountRequired,
+      String? apiEndpoint,
       String? endpointSecret});
   SetonixConfigCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -172,6 +178,7 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
           Object? guestPrefix = $none,
           Object? whitelistEnabled = $none,
           Object? accountRequired = $none,
+          Object? apiEndpoint = $none,
           Object? endpointSecret = $none}) =>
       $apply(FieldCopyWithData({
         if (host != $none) #host: host,
@@ -184,6 +191,7 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
         if (guestPrefix != $none) #guestPrefix: guestPrefix,
         if (whitelistEnabled != $none) #whitelistEnabled: whitelistEnabled,
         if (accountRequired != $none) #accountRequired: accountRequired,
+        if (apiEndpoint != $none) #apiEndpoint: apiEndpoint,
         if (endpointSecret != $none) #endpointSecret: endpointSecret
       }));
   @override
@@ -199,6 +207,7 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
       whitelistEnabled:
           data.get(#whitelistEnabled, or: $value.whitelistEnabled),
       accountRequired: data.get(#accountRequired, or: $value.accountRequired),
+      apiEndpoint: data.get(#apiEndpoint, or: $value.apiEndpoint),
       endpointSecret: data.get(#endpointSecret, or: $value.endpointSecret));
 
   @override

@@ -35,6 +35,9 @@ final class SetonixConfig with SetonixConfigMappable {
   final bool? accountRequired;
   static const bool defaultAccountRequired = true;
   static const String envAccountRequired = 'SETONIX_ACCOUNT_REQUIRED';
+  final String? apiEndpoint;
+  static const String defaultApiEndpoint = "";
+  static const String envApiEndpoint = 'SETONIX_API_ENDPOINT';
   final String? endpointSecret;
   static const String defaultEndpointSecret = '';
   static const String envEndpointSecret = 'SETONIX_ENDPOINT_SECRET';
@@ -50,6 +53,7 @@ final class SetonixConfig with SetonixConfigMappable {
     this.guestPrefix,
     this.whitelistEnabled,
     this.accountRequired,
+    this.apiEndpoint,
     this.endpointSecret,
   });
 
@@ -64,6 +68,7 @@ final class SetonixConfig with SetonixConfigMappable {
     guestPrefix: defaultGuestPrefix,
     whitelistEnabled: defaultWhitelistEnabled,
     accountRequired: defaultAccountRequired,
+    apiEndpoint: defaultApiEndpoint,
     endpointSecret: defaultEndpointSecret,
   );
 
@@ -103,6 +108,10 @@ final class SetonixConfig with SetonixConfigMappable {
           ? bool.fromEnvironment(envAccountRequired,
               defaultValue: defaultAccountRequired)
           : null,
+      apiEndpoint: bool.hasEnvironment(envApiEndpoint)
+          ? String.fromEnvironment(envApiEndpoint,
+              defaultValue: defaultApiEndpoint)
+          : null,
       endpointSecret: bool.hasEnvironment(envEndpointSecret)
           ? String.fromEnvironment(envEndpointSecret,
               defaultValue: defaultEndpointSecret)
@@ -119,8 +128,9 @@ final class SetonixConfig with SetonixConfigMappable {
         maxPlayers: other.maxPlayers ?? maxPlayers,
         description: other.description ?? description,
         guestPrefix: other.guestPrefix ?? guestPrefix,
-        endpointSecret: other.endpointSecret ?? endpointSecret,
         accountRequired: other.accountRequired ?? accountRequired,
         whitelistEnabled: other.whitelistEnabled ?? whitelistEnabled,
+        apiEndpoint: other.apiEndpoint ?? apiEndpoint,
+        endpointSecret: other.endpointSecret ?? endpointSecret,
       );
 }
