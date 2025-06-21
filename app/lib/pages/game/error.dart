@@ -41,24 +41,24 @@ class GameErrorView extends StatelessWidget {
       final link = error.link;
       content = [
         Text(error.message),
-        const SizedBox(height: 4),
+        const SizedBox(height: 8),
         if (link != null)
-          Row(
-            children: [
-              Expanded(
-                  child: TextFormField(
-                initialValue: link,
-                readOnly: true,
-                decoration: InputDecoration(
-                  labelText: AppLocalizations.of(context).link,
-                  suffixIcon: IconButton(
-                    icon: const Icon(PhosphorIconsLight.paperPlaneRight),
-                    onPressed: () => launchUrlString(link,
-                        mode: LaunchMode.externalApplication),
-                  ),
+          ConstrainedBox(
+            constraints:
+                const BoxConstraints(maxWidth: LeapBreakpoints.compact),
+            child: TextFormField(
+              initialValue: link,
+              readOnly: true,
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context).link,
+                filled: true,
+                suffixIcon: IconButton(
+                  icon: const Icon(PhosphorIconsLight.paperPlaneRight),
+                  onPressed: () => launchUrlString(link,
+                      mode: LaunchMode.externalApplication),
                 ),
-              ))
-            ],
+              ),
+            ),
           )
       ];
     }
@@ -67,12 +67,12 @@ class GameErrorView extends StatelessWidget {
         alignment: Alignment.center,
         children: [
           const DotsBackground(),
-          Card.filled(
+          Card(
             child: Container(
               constraints: const BoxConstraints(
-                maxWidth: LeapBreakpoints.large,
+                maxWidth: LeapBreakpoints.expanded,
               ),
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -106,7 +106,7 @@ class GameErrorView extends StatelessWidget {
                         ),
                       ],
                     ),
-                    if (state.error != null) ...[
+                    if (state.error != null && state.error is! KickMessage) ...[
                       const SizedBox(height: 16),
                       Text(state.error.toString()),
                     ],

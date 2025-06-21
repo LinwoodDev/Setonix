@@ -16,6 +16,8 @@ import 'package:setonix_server/src/programs/say.dart';
 import 'package:setonix_server/src/programs/stop.dart';
 import 'package:setonix_plugin/setonix_plugin.dart';
 
+import 'programs/kick.dart';
+
 String limitOutput(Object? value, [int limit = 500]) {
   final string = value.toString();
   if (string.length > limit) {
@@ -166,6 +168,7 @@ final class SetonixServer {
       'players': PlayersProgram(this),
       'say': SayProgram(this),
       'reset': ResetProgram(this),
+      'kick': KickProgram(this),
       null: UnknownProgram(),
     });
   }
@@ -239,10 +242,11 @@ final class SetonixServer {
     _onClientEvent(NetworkerPacket(event, kAuthorityChannel), force: force);
   }
 
-  bool kick(int id) {
+  bool kick(int id, [KickMessage? reason]) {
     final info = _server?.getConnectionInfo(id);
     if (info == null) return false;
-    info.close();
+    info.close(WebSocketStatus.goingAway,
+        reason?.toJson() ?? 'You have been kicked from the server.');
     return true;
   }
 

@@ -11,7 +11,7 @@ class ResetProgram extends ConsoleProgram {
       "Reset the world. Specify a game mode to allow playing games.";
 
   @override
-  String getUsage() => 'reset [<World>]';
+  String getUsage() => '[<World>]';
 
   @override
   Future<void> run(String label, List<String> args) async {
