@@ -56,4 +56,13 @@ class ConfigManager {
 
   String get guestPrefix =>
       _mergedConfig.guestPrefix ?? SetonixConfig.defaultGuestPrefix;
+
+  bool get whitelistEnabled =>
+      _mergedConfig.whitelistEnabled ?? SetonixConfig.defaultWhitelistEnabled;
+
+  bool get accountRequired =>
+      _mergedConfig.accountRequired ?? SetonixConfig.defaultAccountRequired;
+
+  String get endpointSecret =>
+      _mergedConfig.endpointSecret ?? SetonixConfig.defaultEndpointSecret;
 }

@@ -6,8 +6,14 @@ import 'package:networker/networker.dart';
 class ChallengeManager {
   final Map<Channel, Uint8List> _challenges = {};
 
-  Uint8List getChallenge(Channel channel) {
-    return _challenges[channel] ??= generateChallenge();
+  Uint8List? getChallenge(Channel channel) {
+    return _challenges[channel];
+  }
+
+  Uint8List generateNewChallenge(Channel channel) {
+    final challenge = generateChallenge();
+    _challenges[channel] = challenge;
+    return challenge;
   }
 
   void removeChallenge(Channel channel) {

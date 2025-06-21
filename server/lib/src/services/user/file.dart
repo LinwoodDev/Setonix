@@ -30,13 +30,13 @@ final class FileUserService extends UserService {
       name: row['name'] as String,
       onWhitelist: row['on_whitelist'] == 1,
       createdAt: row['created_at'] != null
-          ? DateTime.parse(row['created_at'] as String)
+          ? DateTime.fromMillisecondsSinceEpoch(row['created_at'] as int)
           : null,
       updatedAt: row['updated_at'] != null
-          ? DateTime.parse(row['updated_at'] as String)
+          ? DateTime.fromMillisecondsSinceEpoch(row['updated_at'] as int)
           : null,
       lastLogin: row['last_login'] != null
-          ? DateTime.parse(row['last_login'] as String)
+          ? DateTime.fromMillisecondsSinceEpoch(row['last_login'] as int)
           : null,
     );
   }
@@ -80,10 +80,22 @@ final class FileUserService extends UserService {
 
     if (updates.isEmpty) return false;
 
-    values.add(fingerprint);
+    // prepare bind values: first for INSERT (fingerprint + update values), then repeat update values for the UPDATE clause
+    final insertValues = [...values, fingerprint];
+    final bindValues = [fingerprint, ...insertValues, ...values];
     _database?.execute(
-      'UPDATE users SET ${updates.join(', ')} WHERE fingerprint = ?',
-      values,
+      '''
+      INSERT INTO users (
+        fingerprint${[
+        ...updates,
+        'name = ?',
+      ].map((u) => ', ${u.split(' = ').first}').join()}
+      ) VALUES (
+        ${List.filled(insertValues.length + 1, '?').join(', ')}
+      ) ON CONFLICT(fingerprint) DO UPDATE SET
+        ${updates.join(', ')};
+      ''',
+      bindValues,
     );
     return _database?.updatedRows == 1;
   }

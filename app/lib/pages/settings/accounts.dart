@@ -115,6 +115,8 @@ class _AccountsSettingsPageState extends State<AccountsSettingsPage> {
                     title: Text(key.substring(1)),
                     subtitle: Text(fingerprint),
                     trailing: button,
+                    onTap: () =>
+                        saveToClipboard(context, account.getFingerprint()),
                   ),
                   menuChildren: [
                     MenuItemButton(

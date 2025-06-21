@@ -6,6 +6,7 @@ class SayProgram extends ConsoleProgram {
   final SetonixServer server;
 
   SayProgram(this.server);
+
   @override
   String getDescription() => "Send a message in the message";
 

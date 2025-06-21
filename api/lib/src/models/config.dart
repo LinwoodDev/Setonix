@@ -29,9 +29,12 @@ final class SetonixConfig with SetonixConfigMappable {
   final String? guestPrefix;
   static const String defaultGuestPrefix = 'Guest ';
   static const String envGuestPrefix = 'SETONIX_GUEST_PREFIX';
-  final String? authEndpoint;
-  static const String defaultAuthEndpoint = '';
-  static const String envAuthEndpoint = 'SETONIX_AUTH_ENDPOINT';
+  final bool? whitelistEnabled;
+  static const bool defaultWhitelistEnabled = false;
+  static const String envWhitelistEnabled = 'SETONIX_WHITELIST_ENABLED';
+  final bool? accountRequired;
+  static const bool defaultAccountRequired = true;
+  static const String envAccountRequired = 'SETONIX_ACCOUNT_REQUIRED';
   final String? endpointSecret;
   static const String defaultEndpointSecret = '';
   static const String envEndpointSecret = 'SETONIX_ENDPOINT_SECRET';
@@ -45,7 +48,8 @@ final class SetonixConfig with SetonixConfigMappable {
     this.maxPlayers,
     this.description,
     this.guestPrefix,
-    this.authEndpoint,
+    this.whitelistEnabled,
+    this.accountRequired,
     this.endpointSecret,
   });
 
@@ -58,7 +62,8 @@ final class SetonixConfig with SetonixConfigMappable {
     maxPlayers: defaultMaxPlayers,
     description: defaultDescription,
     guestPrefix: defaultGuestPrefix,
-    authEndpoint: defaultAuthEndpoint,
+    whitelistEnabled: defaultWhitelistEnabled,
+    accountRequired: defaultAccountRequired,
     endpointSecret: defaultEndpointSecret,
   );
 
@@ -90,9 +95,13 @@ final class SetonixConfig with SetonixConfigMappable {
           ? String.fromEnvironment(envGuestPrefix,
               defaultValue: defaultGuestPrefix)
           : null,
-      authEndpoint: bool.hasEnvironment(envAuthEndpoint)
-          ? String.fromEnvironment(envAuthEndpoint,
-              defaultValue: defaultAuthEndpoint)
+      whitelistEnabled: bool.hasEnvironment(envWhitelistEnabled)
+          ? bool.fromEnvironment(envWhitelistEnabled,
+              defaultValue: defaultWhitelistEnabled)
+          : null,
+      accountRequired: bool.hasEnvironment(envAccountRequired)
+          ? bool.fromEnvironment(envAccountRequired,
+              defaultValue: defaultAccountRequired)
           : null,
       endpointSecret: bool.hasEnvironment(envEndpointSecret)
           ? String.fromEnvironment(envEndpointSecret,
@@ -110,5 +119,8 @@ final class SetonixConfig with SetonixConfigMappable {
         maxPlayers: other.maxPlayers ?? maxPlayers,
         description: other.description ?? description,
         guestPrefix: other.guestPrefix ?? guestPrefix,
+        endpointSecret: other.endpointSecret ?? endpointSecret,
+        accountRequired: other.accountRequired ?? accountRequired,
+        whitelistEnabled: other.whitelistEnabled ?? whitelistEnabled,
       );
 }

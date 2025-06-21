@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:networker/networker.dart';
@@ -39,10 +38,12 @@ final class UserManager {
   final Map<Channel, SetonixUser> _users = {};
   final String guestPrefix;
   final UserService? service;
+  final bool whitelistEnabled;
   int _nextGuestId = 1;
 
   UserManager({
     this.service,
+    this.whitelistEnabled = SetonixConfig.defaultWhitelistEnabled,
     this.guestPrefix = SetonixConfig.defaultGuestPrefix,
   });
 
@@ -78,7 +79,13 @@ final class UserManager {
   Future<bool> addUser(Channel channel,
       [String? fingerprint, String? name]) async {
     SetonixUser? user;
-    if (fingerprint != null) user = await service?.getUser(fingerprint);
+    if (fingerprint != null) {
+      user = await service?.getUser(fingerprint);
+      if (user != null) name = user.name;
+      if (whitelistEnabled && user?.onWhitelist != true) {
+        return false; // User is not on the whitelist
+      }
+    }
     name ??= _generateGuestName();
     if (containsUserName(name)) {
       return false;

@@ -44,9 +44,12 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
   static String? _$guestPrefix(SetonixConfig v) => v.guestPrefix;
   static const Field<SetonixConfig, String> _f$guestPrefix =
       Field('guestPrefix', _$guestPrefix, opt: true);
-  static String? _$authEndpoint(SetonixConfig v) => v.authEndpoint;
-  static const Field<SetonixConfig, String> _f$authEndpoint =
-      Field('authEndpoint', _$authEndpoint, opt: true);
+  static bool? _$whitelistEnabled(SetonixConfig v) => v.whitelistEnabled;
+  static const Field<SetonixConfig, bool> _f$whitelistEnabled =
+      Field('whitelistEnabled', _$whitelistEnabled, opt: true);
+  static bool? _$accountRequired(SetonixConfig v) => v.accountRequired;
+  static const Field<SetonixConfig, bool> _f$accountRequired =
+      Field('accountRequired', _$accountRequired, opt: true);
   static String? _$endpointSecret(SetonixConfig v) => v.endpointSecret;
   static const Field<SetonixConfig, String> _f$endpointSecret =
       Field('endpointSecret', _$endpointSecret, opt: true);
@@ -61,7 +64,8 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
     #maxPlayers: _f$maxPlayers,
     #description: _f$description,
     #guestPrefix: _f$guestPrefix,
-    #authEndpoint: _f$authEndpoint,
+    #whitelistEnabled: _f$whitelistEnabled,
+    #accountRequired: _f$accountRequired,
     #endpointSecret: _f$endpointSecret,
   };
 
@@ -75,7 +79,8 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
         maxPlayers: data.dec(_f$maxPlayers),
         description: data.dec(_f$description),
         guestPrefix: data.dec(_f$guestPrefix),
-        authEndpoint: data.dec(_f$authEndpoint),
+        whitelistEnabled: data.dec(_f$whitelistEnabled),
+        accountRequired: data.dec(_f$accountRequired),
         endpointSecret: data.dec(_f$endpointSecret));
   }
 
@@ -141,7 +146,8 @@ abstract class SetonixConfigCopyWith<$R, $In extends SetonixConfig, $Out>
       int? maxPlayers,
       String? description,
       String? guestPrefix,
-      String? authEndpoint,
+      bool? whitelistEnabled,
+      bool? accountRequired,
       String? endpointSecret});
   SetonixConfigCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -164,7 +170,8 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
           Object? maxPlayers = $none,
           Object? description = $none,
           Object? guestPrefix = $none,
-          Object? authEndpoint = $none,
+          Object? whitelistEnabled = $none,
+          Object? accountRequired = $none,
           Object? endpointSecret = $none}) =>
       $apply(FieldCopyWithData({
         if (host != $none) #host: host,
@@ -175,7 +182,8 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
         if (maxPlayers != $none) #maxPlayers: maxPlayers,
         if (description != $none) #description: description,
         if (guestPrefix != $none) #guestPrefix: guestPrefix,
-        if (authEndpoint != $none) #authEndpoint: authEndpoint,
+        if (whitelistEnabled != $none) #whitelistEnabled: whitelistEnabled,
+        if (accountRequired != $none) #accountRequired: accountRequired,
         if (endpointSecret != $none) #endpointSecret: endpointSecret
       }));
   @override
@@ -188,7 +196,9 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
       maxPlayers: data.get(#maxPlayers, or: $value.maxPlayers),
       description: data.get(#description, or: $value.description),
       guestPrefix: data.get(#guestPrefix, or: $value.guestPrefix),
-      authEndpoint: data.get(#authEndpoint, or: $value.authEndpoint),
+      whitelistEnabled:
+          data.get(#whitelistEnabled, or: $value.whitelistEnabled),
+      accountRequired: data.get(#accountRequired, or: $value.accountRequired),
       endpointSecret: data.get(#endpointSecret, or: $value.endpointSecret));
 
   @override

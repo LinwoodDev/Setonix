@@ -103,9 +103,7 @@ Future<void> runServer(List<String> arguments, [ServerLoader? onLoad]) async {
     if (results.wasParsed('host')) {
       host = results['host'];
     }
-    final server = await SetonixServer.load();
-    await server.init(
-      verbose: verbose,
+    final server = await SetonixServer.load(
       argsConfig: SetonixConfig(
         host: host,
         port: int.tryParse(results['port'] ?? ''),
@@ -114,6 +112,9 @@ Future<void> runServer(List<String> arguments, [ServerLoader? onLoad]) async {
         maxPlayers: maxPlayers,
         multiWorld: multiWorld,
       ),
+    );
+    await server.init(
+      verbose: verbose,
     );
     await onLoad?.call(server);
     await server.run();

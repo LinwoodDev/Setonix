@@ -8,6 +8,7 @@ import 'package:setonix_api/setonix_api.dart';
 import 'package:setonix_server/src/asset.dart';
 import 'package:setonix_server/src/bloc.dart';
 import 'package:setonix_server/src/config.dart';
+import 'package:setonix_server/src/programs/kick.dart';
 import 'package:setonix_server/src/programs/packs.dart';
 import 'package:setonix_server/src/programs/players.dart';
 import 'package:setonix_server/src/programs/reset.dart';
@@ -15,8 +16,8 @@ import 'package:setonix_server/src/programs/save.dart';
 import 'package:setonix_server/src/programs/say.dart';
 import 'package:setonix_server/src/programs/stop.dart';
 import 'package:setonix_plugin/setonix_plugin.dart';
-
-import 'programs/kick.dart';
+import 'package:setonix_server/src/programs/whitelist.dart';
+import 'package:setonix_server/src/services/user/file.dart';
 
 String limitOutput(Object? value, [int limit = 500]) {
   final string = value.toString();
@@ -80,6 +81,7 @@ final class SetonixServer {
 
   static Future<SetonixServer> load({
     String? worldFile,
+    SetonixConfig argsConfig = const SetonixConfig(),
   }) async {
     final assetManager = ServerAssetManager();
     final consoler = Consoler(
@@ -89,9 +91,16 @@ final class SetonixServer {
     );
     await _runStaticLogZone(
         consoler, () => assetManager.init(console: consoler));
-    final configManager = ConfigManager();
-    final userManager = UserManager(guestPrefix: configManager.guestPrefix);
-    final challengeManager = ChallengeManager();
+    final configManager = ConfigManager(argsConfig: argsConfig);
+    await configManager.loadConfig();
+    final userService = FileUserService();
+    await userService.setup();
+    final userManager = UserManager(
+        guestPrefix: configManager.guestPrefix,
+        service: userService,
+        whitelistEnabled: configManager.whitelistEnabled);
+    final challengeManager =
+        configManager.accountRequired ? ChallengeManager() : null;
     return SetonixServer._(
         consoler, assetManager, configManager, userManager, challengeManager);
   }
@@ -106,14 +115,11 @@ final class SetonixServer {
           .map((e) => MapEntry(e, _server!.getConnectionInfo(e)!)));
 
   Future<void> init({
-    SetonixConfig argsConfig = const SetonixConfig(),
     bool verbose = false,
   }) async {
     if (verbose) {
       consoler.minLogLevel = LogLevel.verbose;
     }
-    configManager.setArgsConfig(argsConfig);
-    await configManager.loadConfig();
     log("Starting server on ${configManager.host}:${configManager.port}",
         level: LogLevel.info);
     log('Verbose logging activated', level: LogLevel.verbose);
@@ -134,6 +140,10 @@ final class SetonixServer {
       log('Certificates found, using secure connection', level: LogLevel.info);
     } on PathNotFoundException catch (_) {
       log('No certificates found, using insecure connection',
+          level: LogLevel.warning);
+    }
+    if (configManager.whitelistEnabled && !configManager.accountRequired) {
+      log('Whitelist is enabled, but account requirement is disabled. This allows users to join without an account.',
           level: LogLevel.warning);
     }
     final server = _server = NetworkerSocketServer(
@@ -169,6 +179,7 @@ final class SetonixServer {
       'say': SayProgram(this),
       'reset': ResetProgram(this),
       'kick': KickProgram(this),
+      'whitelist': WhitelistProgram(this),
       null: UnknownProgram(),
     });
   }

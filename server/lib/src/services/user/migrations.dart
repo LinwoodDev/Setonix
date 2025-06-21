@@ -7,7 +7,6 @@ CREATE TABLE users (
   fingerprint   TEXT          NOT NULL UNIQUE,
   updated_at    INTEGER       NOT NULL DEFAULT (strftime('%s','now')),
   last_login    INTEGER,
-  fingerprint   BLOB,
   name          TEXT          NOT NULL UNIQUE,
   on_whitelist  INTEGER       NOT NULL DEFAULT 0
 );

@@ -140,7 +140,7 @@ Future<ServerResponse?> processClientEvent(
 
   if (event == null) {
     if (challengeManager != null) {
-      final challenge = challengeManager.getChallenge(channel);
+      final challenge = challengeManager.generateNewChallenge(channel);
       return ServerResponse.builder(
           AuthenticatedRequested(
             challenge,
@@ -148,7 +148,7 @@ Future<ServerResponse?> processClientEvent(
           ),
           channel);
     }
-    userManager?.addUser(channel);
+    await userManager?.addUser(channel);
     return ServerResponse.builder(buildInitialize(), channel);
   }
   if (!isValidClientEvent(event, channel, state, assetManager: assetManager)) {
@@ -299,12 +299,20 @@ Future<ServerResponse?> processClientEvent(
     case AuthenticateRequest():
       final challenge = challengeManager?.getChallenge(channel);
       if (challenge == null) return null;
+      if (challengeManager == null) return null;
       final verified = await event.verify(challenge);
       if (!verified) {
+        final newChallenge = challengeManager.generateNewChallenge(channel);
         return ServerResponse.builder(
-            AuthenticatedRequested(challenge, isRequired: true), channel);
+            AuthenticatedRequested(newChallenge, isRequired: true), channel);
       }
-      userManager?.addUser(channel, generateFingerprint(event.publicKey));
+      final result = await userManager?.addUser(
+          channel, generateFingerprint(event.publicKey));
+      if (result == false) {
+        final newChallenge = challengeManager.generateNewChallenge(channel);
+        return ServerResponse.builder(
+            AuthenticatedRequested(newChallenge, isRequired: true), channel);
+      }
       return ServerResponse.builder(buildInitialize(), channel);
   }
 }
