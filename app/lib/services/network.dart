@@ -155,7 +155,7 @@ class NetworkService {
           ),
           ListGameServer() => cached[server] = fetchInfo(
             server.buildAddress(webSockets: false),
-          ).onError((_, __) => null),
+          ).onError((_, _) => null),
         };
   }
 

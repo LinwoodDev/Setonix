@@ -19,10 +19,12 @@ Future<void> main() async {
       print("SANDBOX: ${p0}");
     },
   );
-  callback.changeStateFieldAccess(stateFieldAccess: (p0) {
-    print("FIELD: ${p0}");
-    return '{"key": "value"}';
-  });
+  callback.changeStateFieldAccess(
+    stateFieldAccess: (p0) {
+      print("FIELD: ${p0}");
+      return '{"key": "value"}';
+    },
+  );
   final plugin = LuauPlugin(code: LUA_SCRIPT, callback: callback);
   try {
     await plugin.run();
