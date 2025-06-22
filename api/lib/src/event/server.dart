@@ -27,11 +27,11 @@ final class WorldInitialized extends ServerWorldEvent
     this.clearUserInterface = false,
   });
 
-  factory WorldInitialized.fromMode(GameMode? mode, WorldState state) =>
+  factory WorldInitialized.fromMode(
+          ItemLocation? location, GameMode? mode, WorldState state) =>
       WorldInitialized(
         clearUserInterface: true,
-        info:
-            state.info.copyWith(teams: mode?.teams ?? {}, script: mode?.script),
+        info: state.info.copyWith(teams: mode?.teams ?? {}, script: location),
         table: mode?.tables[state.tableName] ?? GameTable(),
         teamMembers: const {},
       );

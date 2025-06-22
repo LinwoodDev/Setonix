@@ -56,6 +56,9 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
   static String? _$endpointSecret(SetonixConfig v) => v.endpointSecret;
   static const Field<SetonixConfig, String> _f$endpointSecret =
       Field('endpointSecret', _$endpointSecret, opt: true);
+  static String? _$gameMode(SetonixConfig v) => v.gameMode;
+  static const Field<SetonixConfig, String> _f$gameMode =
+      Field('gameMode', _$gameMode, opt: true);
 
   @override
   final MappableFields<SetonixConfig> fields = const {
@@ -71,6 +74,7 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
     #accountRequired: _f$accountRequired,
     #apiEndpoint: _f$apiEndpoint,
     #endpointSecret: _f$endpointSecret,
+    #gameMode: _f$gameMode,
   };
 
   static SetonixConfig _instantiate(DecodingData data) {
@@ -86,7 +90,8 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
         whitelistEnabled: data.dec(_f$whitelistEnabled),
         accountRequired: data.dec(_f$accountRequired),
         apiEndpoint: data.dec(_f$apiEndpoint),
-        endpointSecret: data.dec(_f$endpointSecret));
+        endpointSecret: data.dec(_f$endpointSecret),
+        gameMode: data.dec(_f$gameMode));
   }
 
   @override
@@ -154,7 +159,8 @@ abstract class SetonixConfigCopyWith<$R, $In extends SetonixConfig, $Out>
       bool? whitelistEnabled,
       bool? accountRequired,
       String? apiEndpoint,
-      String? endpointSecret});
+      String? endpointSecret,
+      String? gameMode});
   SetonixConfigCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -179,7 +185,8 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
           Object? whitelistEnabled = $none,
           Object? accountRequired = $none,
           Object? apiEndpoint = $none,
-          Object? endpointSecret = $none}) =>
+          Object? endpointSecret = $none,
+          Object? gameMode = $none}) =>
       $apply(FieldCopyWithData({
         if (host != $none) #host: host,
         if (port != $none) #port: port,
@@ -192,7 +199,8 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
         if (whitelistEnabled != $none) #whitelistEnabled: whitelistEnabled,
         if (accountRequired != $none) #accountRequired: accountRequired,
         if (apiEndpoint != $none) #apiEndpoint: apiEndpoint,
-        if (endpointSecret != $none) #endpointSecret: endpointSecret
+        if (endpointSecret != $none) #endpointSecret: endpointSecret,
+        if (gameMode != $none) #gameMode: gameMode
       }));
   @override
   SetonixConfig $make(CopyWithData data) => SetonixConfig(
@@ -208,7 +216,8 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
           data.get(#whitelistEnabled, or: $value.whitelistEnabled),
       accountRequired: data.get(#accountRequired, or: $value.accountRequired),
       apiEndpoint: data.get(#apiEndpoint, or: $value.apiEndpoint),
-      endpointSecret: data.get(#endpointSecret, or: $value.endpointSecret));
+      endpointSecret: data.get(#endpointSecret, or: $value.endpointSecret),
+      gameMode: data.get(#gameMode, or: $value.gameMode));
 
   @override
   SetonixConfigCopyWith<$R2, SetonixConfig, $Out2> $chain<$R2, $Out2>(

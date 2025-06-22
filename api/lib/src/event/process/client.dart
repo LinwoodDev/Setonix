@@ -295,7 +295,7 @@ Future<ServerResponse?> processClientEvent(
           ? null
           : assetManager.getPack(location.namespace)?.getMode(location.id);
       return ServerResponse.builder(
-          WorldInitialized.fromMode(mode, state), channel);
+          WorldInitialized.fromMode(location, mode, state), channel);
     case AuthenticateRequest():
       final challenge = challengeManager?.getChallenge(channel);
       if (challenge == null) return null;

@@ -200,10 +200,10 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
     }
   }
 
-  Future<void> _loadScript(String? script) async {
+  Future<void> _loadScript(ItemLocation? location) async {
     try {
-      if (script == null) return;
-      pluginSystem.loadLuaPlugin(state.assetManager, script);
+      if (location == null) return;
+      pluginSystem.loadLuaPluginFromLocation(state.assetManager, location);
       // ignore: empty_catches
     } catch (e) {}
   }

@@ -32,13 +32,27 @@ class SetonixData extends ArchiveData<SetonixData> {
   final String identifier;
 
   SetonixData(super.archive, {super.state, this.identifier = ''});
-  SetonixData.empty()
-      : identifier = '',
-        super.empty();
+  SetonixData.empty() : identifier = '', super.empty();
 
   SetonixData.fromData(super.data, [String? identifier])
-      : identifier = identifier ?? createPackIdentifier(data),
-        super.fromBytes();
+    : identifier = identifier ?? createPackIdentifier(data),
+      super.fromBytes();
+
+  factory SetonixData.fromMode(ItemLocation? location, GameMode? mode) {
+    var data = SetonixData.empty().setInfo(
+      GameInfo(
+        packs: [?location?.namespace],
+        script: location,
+        teams: mode?.teams ?? const {},
+      ),
+    );
+    for (final entry
+        in mode?.tables.entries ??
+            Iterable<MapEntry<String, GameTable>>.empty()) {
+      data = data.setTable(entry.value, entry.key);
+    }
+    return data;
+  }
 
   GameTable? getTable([String name = '']) {
     final data = getAsset('$kGameTablePath/$name.json');
@@ -50,10 +64,8 @@ class SetonixData extends ArchiveData<SetonixData> {
   GameTable getTableOrDefault([String name = '']) =>
       getTable(name) ?? GameTable();
 
-  SetonixData setTable(GameTable table, [String name = '']) => setAsset(
-        '$kGameTablePath/$name.json',
-        utf8.encode(table.toJson()),
-      );
+  SetonixData setTable(GameTable table, [String name = '']) =>
+      setAsset('$kGameTablePath/$name.json', utf8.encode(table.toJson()));
 
   SetonixData removeTable(String name) =>
       removeAsset('$kGameTablePath/$name.json');
@@ -66,10 +78,8 @@ class SetonixData extends ArchiveData<SetonixData> {
     return utf8.decode(data);
   }
 
-  SetonixData setNote(String name, String content) => setAsset(
-        '$kGameNotesPath/$name.md',
-        utf8.encode(content),
-      );
+  SetonixData setNote(String name, String content) =>
+      setAsset('$kGameNotesPath/$name.md', utf8.encode(content));
 
   SetonixData removeNote(String name) =>
       removeAsset('$kGameNotesPath/$name.md');
@@ -136,18 +146,19 @@ class SetonixData extends ArchiveData<SetonixData> {
     }
   }
 
-  PackItem<FigureDefinition>? getFigureItem(String id,
-          [String namespace = '']) =>
-      PackItem.wrap(
-        pack: this,
-        namespace: namespace,
-        id: id,
-        item: getFigure(id),
-      );
+  PackItem<FigureDefinition>? getFigureItem(
+    String id, [
+    String namespace = '',
+  ]) => PackItem.wrap(
+    pack: this,
+    namespace: namespace,
+    id: id,
+    item: getFigure(id),
+  );
 
-  Iterable<PackItem<FigureDefinition>> getFigureItems(
-          [String namespace = '']) =>
-      getFigures().map((e) => getFigureItem(e, namespace)).nonNulls;
+  Iterable<PackItem<FigureDefinition>> getFigureItems([
+    String namespace = '',
+  ]) => getFigures().map((e) => getFigureItem(e, namespace)).nonNulls;
 
   Iterable<String> getBoards() => getAssets(kPackBoardsPath, true);
 
@@ -176,10 +187,8 @@ class SetonixData extends ArchiveData<SetonixData> {
   SetonixData removeBoard(String id) =>
       removeAsset('$kPackBoardsPath/$id.json');
 
-  SetonixData setBoard(String id, BoardDefinition definition) => setAsset(
-        '$kPackBoardsPath/$id.json',
-        utf8.encode(definition.toJson()),
-      );
+  SetonixData setBoard(String id, BoardDefinition definition) =>
+      setAsset('$kPackBoardsPath/$id.json', utf8.encode(definition.toJson()));
 
   Iterable<String> getBackgrounds() =>
       getAssets('$kPackBackgroundsPath/', true);
@@ -195,18 +204,19 @@ class SetonixData extends ArchiveData<SetonixData> {
     }
   }
 
-  PackItem<BackgroundDefinition>? getBackgroundItem(String id,
-          [String namespace = '']) =>
-      PackItem.wrap(
-        pack: this,
-        namespace: namespace,
-        id: id,
-        item: getBackground(id),
-      );
+  PackItem<BackgroundDefinition>? getBackgroundItem(
+    String id, [
+    String namespace = '',
+  ]) => PackItem.wrap(
+    pack: this,
+    namespace: namespace,
+    id: id,
+    item: getBackground(id),
+  );
 
-  Iterable<PackItem<BackgroundDefinition>> getBackgroundItems(
-          [String namespace = '']) =>
-      getBackgrounds().map((e) => getBackgroundItem(e, namespace)).nonNulls;
+  Iterable<PackItem<BackgroundDefinition>> getBackgroundItems([
+    String namespace = '',
+  ]) => getBackgrounds().map((e) => getBackgroundItem(e, namespace)).nonNulls;
 
   Uint8List? getTexture(String path) => getAsset('$kPackTexturesPath/$path');
 
@@ -231,27 +241,27 @@ class SetonixData extends ArchiveData<SetonixData> {
   PackTranslation getTranslationOrDefault([String id = kFallbackLocale]) =>
       getTranslation(id) ?? PackTranslation();
 
-  SetonixData setMetadata(FileMetadata metadata) => setAsset(
-        kPackMetadataPath,
-        utf8.encode(metadata.toJson()),
-      );
+  SetonixData setMetadata(FileMetadata metadata) =>
+      setAsset(kPackMetadataPath, utf8.encode(metadata.toJson()));
 
   @override
   SetonixData updateState(ArchiveState state) =>
       SetonixData(archive, state: state);
 
-  TranslationsStore getTranslationsStore(
-          {String? Function() getLocale = getDefaultLocale}) =>
-      TranslationsStore(
-        translations: getAllTranslations(),
-        getLocale: getLocale,
-      );
+  TranslationsStore getTranslationsStore({
+    String? Function() getLocale = getDefaultLocale,
+  }) => TranslationsStore(
+    translations: getAllTranslations(),
+    getLocale: getLocale,
+  );
 
   SetonixData removeFigure(String figure) =>
       removeAsset('$kPackFiguresPath/$figure.json');
 
   SetonixData setFigure(String figure, FigureDefinition definition) => setAsset(
-      '$kPackFiguresPath/$figure.json', utf8.encode(definition.toJson()));
+    '$kPackFiguresPath/$figure.json',
+    utf8.encode(definition.toJson()),
+  );
 
   SetonixData removeDeck(String id) => removeAsset('$kPackDecksPath/$id.json');
 
@@ -262,29 +272,32 @@ class SetonixData extends ArchiveData<SetonixData> {
       removeAsset('$kPackBackgroundsPath/$background.json');
 
   SetonixData setBackground(
-          String background, BackgroundDefinition definition) =>
-      setAsset('$kPackBackgroundsPath/$background.json',
-          utf8.encode(definition.toJson()));
+    String background,
+    BackgroundDefinition definition,
+  ) => setAsset(
+    '$kPackBackgroundsPath/$background.json',
+    utf8.encode(definition.toJson()),
+  );
 
-  SetonixData setTranslation(PackTranslation translation,
-          [String locale = kFallbackLocale]) =>
-      setAsset(
-        '$kPackTranslationsPath/$locale.json',
-        utf8.encode(translation.toJson()),
-      );
+  SetonixData setTranslation(
+    PackTranslation translation, [
+    String locale = kFallbackLocale,
+  ]) => setAsset(
+    '$kPackTranslationsPath/$locale.json',
+    utf8.encode(translation.toJson()),
+  );
 
   Iterable<String> getTextures() => getAssets(kPackTexturesPath);
-  Map<String, Uint8List> getTexturesData() =>
-      Map.fromEntries(getTextures().map((e) {
-        final data = getTexture(e);
-        if (data == null) return null;
-        return MapEntry(e, data);
-      }).nonNulls);
+  Map<String, Uint8List> getTexturesData() => Map.fromEntries(
+    getTextures().map((e) {
+      final data = getTexture(e);
+      if (data == null) return null;
+      return MapEntry(e, data);
+    }).nonNulls,
+  );
 
-  SetonixData setTexture(String texture, Uint8List data) => setAsset(
-        '$kPackTexturesPath/$texture',
-        data,
-      );
+  SetonixData setTexture(String texture, Uint8List data) =>
+      setAsset('$kPackTexturesPath/$texture', data);
 
   SetonixData removeTexture(String texture) =>
       removeAsset('$kPackTexturesPath/$texture');
@@ -308,24 +321,28 @@ class SetonixData extends ArchiveData<SetonixData> {
     }
   }
 
-  Map<String, GameMode> getModesData() => Map.fromEntries(getModes().map((e) {
-        final mode = getMode(e);
-        if (mode == null) return null;
-        return MapEntry(e, mode);
-      }).nonNulls);
+  Map<String, GameMode> getModesData() => Map.fromEntries(
+    getModes().map((e) {
+      final mode = getMode(e);
+      if (mode == null) return null;
+      return MapEntry(e, mode);
+    }).nonNulls,
+  );
 
   SetonixData addAccount(SetonixAccount setonixAccount) {
     final accountId = setonixAccount.name;
     return setAsset(
-            '$kPackAccountsPath/$accountId.key', setonixAccount.privateKey)
-        .setAsset(
-            '$kPackAccountsPath/$accountId.pub', setonixAccount.publicKey);
+      '$kPackAccountsPath/$accountId.key',
+      setonixAccount.privateKey,
+    ).setAsset('$kPackAccountsPath/$accountId.pub', setonixAccount.publicKey);
   }
 
   Iterable<SetonixAccount> getAccounts() sync* {
     const kKeySuffix = '.key';
-    final privateKeys = getAssets('$kPackAccountsPath/', true)
-        .where((e) => e.endsWith(kKeySuffix));
+    final privateKeys = getAssets(
+      '$kPackAccountsPath/',
+      true,
+    ).where((e) => e.endsWith(kKeySuffix));
     for (final path in privateKeys) {
       final name = path.substring(0, path.length - kKeySuffix.length);
       final privateKey = getAsset(path);
@@ -346,7 +363,7 @@ class SetonixFile {
   final Uint8List data;
 
   SetonixFile(this.data, [String? identifier])
-      : identifier = identifier ?? createPackIdentifier(data);
+    : identifier = identifier ?? createPackIdentifier(data);
 
   SetonixData load() => SetonixData.fromData(data, identifier);
 }
@@ -361,28 +378,22 @@ final class PackItem<T> {
   final ItemLocation location;
   final T item;
 
-  PackItem({
-    required this.pack,
-    required this.location,
-    required this.item,
-  });
+  PackItem({required this.pack, required this.location, required this.item});
 
-  factory PackItem.fromRaw(
-          {required SetonixData pack,
-          required String namespace,
-          required String path,
-          required T item}) =>
-      PackItem(
-        item: item,
-        pack: pack,
-        location: ItemLocation(namespace, path),
-      );
+  factory PackItem.fromRaw({
+    required SetonixData pack,
+    required String namespace,
+    required String path,
+    required T item,
+  }) =>
+      PackItem(item: item, pack: pack, location: ItemLocation(namespace, path));
 
-  static PackItem<T>? wrap<T>(
-      {required SetonixData pack,
-      required String namespace,
-      T? item,
-      String? id}) {
+  static PackItem<T>? wrap<T>({
+    required SetonixData pack,
+    required String namespace,
+    T? item,
+    String? id,
+  }) {
     if (item == null || id == null) return null;
     return PackItem(
       pack: pack,
@@ -394,9 +405,6 @@ final class PackItem<T> {
   String get namespace => location.namespace;
   String get id => location.id;
 
-  PackItem<E> withItem<E>(E backgroundTranslation) => PackItem(
-        pack: pack,
-        location: location,
-        item: backgroundTranslation,
-      );
+  PackItem<E> withItem<E>(E backgroundTranslation) =>
+      PackItem(pack: pack, location: location, item: backgroundTranslation);
 }

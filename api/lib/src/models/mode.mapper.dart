@@ -27,9 +27,6 @@ class GameModeMapper extends ClassMapperBase<GameMode> {
   static Map<String, GameTable> _$tables(GameMode v) => v.tables;
   static const Field<GameMode, Map<String, GameTable>> _f$tables =
       Field('tables', _$tables, opt: true, def: const {});
-  static String _$tableName(GameMode v) => v.tableName;
-  static const Field<GameMode, String> _f$tableName =
-      Field('tableName', _$tableName, opt: true, def: '');
   static Map<String, GameTeam> _$teams(GameMode v) => v.teams;
   static const Field<GameMode, Map<String, GameTeam>> _f$teams =
       Field('teams', _$teams, opt: true, def: const {});
@@ -38,7 +35,6 @@ class GameModeMapper extends ClassMapperBase<GameMode> {
   final MappableFields<GameMode> fields = const {
     #script: _f$script,
     #tables: _f$tables,
-    #tableName: _f$tableName,
     #teams: _f$teams,
   };
 
@@ -46,7 +42,6 @@ class GameModeMapper extends ClassMapperBase<GameMode> {
     return GameMode(
         script: data.dec(_f$script),
         tables: data.dec(_f$tables),
-        tableName: data.dec(_f$tableName),
         teams: data.dec(_f$teams));
   }
 
@@ -107,7 +102,6 @@ abstract class GameModeCopyWith<$R, $In extends GameMode, $Out>
   $R call(
       {String? script,
       Map<String, GameTable>? tables,
-      String? tableName,
       Map<String, GameTeam>? teams});
   GameModeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -133,19 +127,16 @@ class _GameModeCopyWithImpl<$R, $Out>
   $R call(
           {Object? script = $none,
           Map<String, GameTable>? tables,
-          String? tableName,
           Map<String, GameTeam>? teams}) =>
       $apply(FieldCopyWithData({
         if (script != $none) #script: script,
         if (tables != null) #tables: tables,
-        if (tableName != null) #tableName: tableName,
         if (teams != null) #teams: teams
       }));
   @override
   GameMode $make(CopyWithData data) => GameMode(
       script: data.get(#script, or: $value.script),
       tables: data.get(#tables, or: $value.tables),
-      tableName: data.get(#tableName, or: $value.tableName),
       teams: data.get(#teams, or: $value.teams));
 
   @override

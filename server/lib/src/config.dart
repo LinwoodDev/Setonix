@@ -68,4 +68,10 @@ class ConfigManager {
 
   String get endpointSecret =>
       _mergedConfig.endpointSecret ?? SetonixConfig.defaultEndpointSecret;
+
+  ItemLocation? get gameMode {
+    final data = _mergedConfig.gameMode ?? SetonixConfig.defaultGameMode;
+    if (data.isEmpty) return null;
+    return ItemLocation.fromString(data);
+  }
 }

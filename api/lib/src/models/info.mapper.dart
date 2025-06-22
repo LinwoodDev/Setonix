@@ -96,6 +96,7 @@ class GameInfoMapper extends ClassMapperBase<GameInfo> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = GameInfoMapper._());
       GameTeamMapper.ensureInitialized();
+      ItemLocationMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -109,8 +110,8 @@ class GameInfoMapper extends ClassMapperBase<GameInfo> {
   static List<String> _$packs(GameInfo v) => v.packs;
   static const Field<GameInfo, List<String>> _f$packs =
       Field('packs', _$packs, opt: true, def: const []);
-  static String? _$script(GameInfo v) => v.script;
-  static const Field<GameInfo, String> _f$script =
+  static ItemLocation? _$script(GameInfo v) => v.script;
+  static const Field<GameInfo, ItemLocation> _f$script =
       Field('script', _$script, opt: true);
 
   @override
@@ -180,7 +181,11 @@ abstract class GameInfoCopyWith<$R, $In extends GameInfo, $Out>
   MapCopyWith<$R, String, GameTeam, GameTeamCopyWith<$R, GameTeam, GameTeam>>
       get teams;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get packs;
-  $R call({Map<String, GameTeam>? teams, List<String>? packs, String? script});
+  ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get script;
+  $R call(
+      {Map<String, GameTeam>? teams,
+      List<String>? packs,
+      ItemLocation? script});
   GameInfoCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -200,6 +205,9 @@ class _GameInfoCopyWithImpl<$R, $Out>
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get packs =>
       ListCopyWith($value.packs, (v, t) => ObjectCopyWith(v, $identity, t),
           (v) => call(packs: v));
+  @override
+  ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get script =>
+      $value.script?.copyWith.$chain((v) => call(script: v));
   @override
   $R call(
           {Map<String, GameTeam>? teams,

@@ -518,6 +518,8 @@ class ItemLocationMapper extends ClassMapperBase<ItemLocation> {
     #id: _f$id,
   };
 
+  @override
+  final MappingHook hook = const ItemLocationHook();
   static ItemLocation _instantiate(DecodingData data) {
     return ItemLocation(data.dec(_f$namespace), data.dec(_f$id));
   }

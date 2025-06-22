@@ -51,7 +51,12 @@ final class SetonixServer {
       ));
 
   SetonixData _buildDefaultWorld() {
-    final data = SetonixData.empty().setInfo(GameInfo(
+    final location = configManager.gameMode;
+    GameMode? gameMode;
+    if (location != null) {
+      gameMode = assetManager.getPack(location.namespace)?.getMode(location.id);
+    }
+    final data = SetonixData.fromMode(location, gameMode).setInfo(GameInfo(
       packs: assetManager.getPackIds().toList(),
     ));
     return data;

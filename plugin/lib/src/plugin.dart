@@ -48,6 +48,15 @@ final class PluginSystem {
     _plugins.remove(name);
   }
 
+  void loadLuaPluginFromLocation(
+      AssetManager assetManager, ItemLocation location,
+      [String name = 'game']) {
+    final data =
+        assetManager.getPack(location.namespace)?.getScript(location.id);
+    if (data == null) return;
+    loadLuaPlugin(assetManager, data, name);
+  }
+
   void loadLuaPlugin(AssetManager assetManager, String script,
       [String name = 'game']) {
     unregisterPlugin(name);
