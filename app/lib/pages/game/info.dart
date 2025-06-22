@@ -18,7 +18,9 @@ class EditInfoDialog extends StatelessWidget {
         children: [
           TextFormField(
             decoration: InputDecoration(
-                filled: true, labelText: AppLocalizations.of(context).name),
+              filled: true,
+              labelText: AppLocalizations.of(context).name,
+            ),
             onChanged: (value) => info = info.copyWith(name: value),
             initialValue: info.name,
           ),
@@ -31,7 +33,7 @@ class EditInfoDialog extends StatelessWidget {
             maxLines: 3,
             onChanged: (value) => info = info.copyWith(description: value),
             initialValue: info.description,
-          )
+          ),
         ],
       ),
       title: Text(AppLocalizations.of(context).editInfo),

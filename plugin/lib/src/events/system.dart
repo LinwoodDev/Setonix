@@ -6,8 +6,9 @@ import 'package:setonix_api/setonix_api.dart';
 import 'package:setonix_plugin/src/events/model.dart';
 
 final class EventSystem {
-  final StreamController<Event> _controller =
-      StreamController.broadcast(sync: true);
+  final StreamController<Event> _controller = StreamController.broadcast(
+    sync: true,
+  );
   final StreamController<ServerPing> _pingController =
       StreamController.broadcast(sync: true);
   final StreamController<UserLeaveCallback> _leaveController =

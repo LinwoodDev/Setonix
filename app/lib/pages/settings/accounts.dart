@@ -50,10 +50,7 @@ class _AccountsSettingsPageState extends State<AccountsSettingsPage> {
             icon: const PhosphorIcon(PhosphorIconsLight.arrowSquareIn),
             tooltip: AppLocalizations.of(context).import,
             onPressed: () async {
-              await importFile(
-                context,
-                _fileSystem,
-              );
+              await importFile(context, _fileSystem);
               setState(() {
                 _buildKeysFuture();
               });
@@ -98,8 +95,10 @@ class _AccountsSettingsPageState extends State<AccountsSettingsPage> {
             itemBuilder: (context, index) {
               final account = accounts[index];
               final key = account.name;
-              final fingerprint =
-                  account.getFingerprint(pretty: true, short: true);
+              final fingerprint = account.getFingerprint(
+                pretty: true,
+                short: true,
+              );
               void deleteKey() {
                 _privateKeyFileSystem.deleteFile(key);
                 _publicKeyFileSystem.deleteFile(key);
@@ -120,8 +119,9 @@ class _AccountsSettingsPageState extends State<AccountsSettingsPage> {
                   ),
                   menuChildren: [
                     MenuItemButton(
-                      leadingIcon:
-                          const PhosphorIcon(PhosphorIconsLight.export),
+                      leadingIcon: const PhosphorIcon(
+                        PhosphorIconsLight.export,
+                      ),
                       onPressed: () async {
                         final data = await _fileSystem.exportAccounts([key]);
                         if (!context.mounted) return;
@@ -145,7 +145,9 @@ class _AccountsSettingsPageState extends State<AccountsSettingsPage> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
           final name = await showDialog(
-              context: context, builder: (context) => NameDialog());
+            context: context,
+            builder: (context) => NameDialog(),
+          );
           if (name == null) return;
           await _fileSystem.generateKey(name);
           setState(() {

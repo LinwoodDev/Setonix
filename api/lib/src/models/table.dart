@@ -5,10 +5,12 @@ import 'vector.dart';
 part 'table.mapper.dart';
 
 @MappableClass(
-    includeCustomMappers: [IgnoreForEquality()],
-    generateMethods: GenerateMethods.all &
-        ~GenerateMethods.equals &
-        ~GenerateMethods.stringify)
+  includeCustomMappers: [IgnoreForEquality()],
+  generateMethods:
+      GenerateMethods.all &
+      ~GenerateMethods.equals &
+      ~GenerateMethods.stringify,
+)
 class IgnoreEqualityBox<T> with IgnoreEqualityBoxMappable<T> {
   final T content;
 
@@ -36,7 +38,8 @@ class IgnoreForEquality extends SimpleMapper1<IgnoreEqualityBox> {
   // function used internally to construct generic instances of your type.
   // Specify any type arguments in alignment to the decode/encode functions.
   @override
-  Function get typeFactory => <T>(f) => f<IgnoreEqualityBox<T>>();
+  Function get typeFactory =>
+      <T>(f) => f<IgnoreEqualityBox<T>>();
 
   @override
   bool equals(value, other, MappingContext context) => value == other;
@@ -70,11 +73,8 @@ class GlobalVectorDefinition with GlobalVectorDefinitionMappable {
   final String table;
   final VectorDefinition position;
 
-  GlobalVectorDefinition(
-    this.table,
-    int x,
-    int y,
-  ) : position = VectorDefinition(x, y);
+  GlobalVectorDefinition(this.table, int x, int y)
+    : position = VectorDefinition(x, y);
 
   GlobalVectorDefinition.fromLocal(this.table, this.position);
 
@@ -86,9 +86,7 @@ class GlobalVectorDefinition with GlobalVectorDefinitionMappable {
 class GameSeat with GameSeatMappable {
   final int? color;
 
-  GameSeat({
-    this.color,
-  });
+  GameSeat({this.color});
 }
 
 @MappableClass()
@@ -96,10 +94,7 @@ class TableCell with TableCellMappable {
   final List<GameObject> objects;
   final List<BoardTile> tiles;
 
-  TableCell({
-    this.objects = const [],
-    this.tiles = const [],
-  });
+  TableCell({this.objects = const [], this.tiles = const []});
 
   bool get isEmpty => objects.isEmpty && tiles.isEmpty;
 }
@@ -110,11 +105,7 @@ class GameObject with GameObjectMappable {
   final String? variation;
   final bool hidden;
 
-  GameObject(
-    this.asset, {
-    this.variation,
-    this.hidden = false,
-  });
+  GameObject(this.asset, {this.variation, this.hidden = false});
 }
 
 @MappableClass()

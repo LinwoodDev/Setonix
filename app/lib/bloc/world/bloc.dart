@@ -12,8 +12,8 @@ import 'package:setonix_api/setonix_api.dart';
 import 'package:setonix_plugin/setonix_plugin.dart';
 
 ServerProcessed _compute(
-        (ServerWorldEvent, WorldState, List<SignatureMetadata>) m) =>
-    processServerEvent(m.$1, m.$2, signature: m.$3);
+  (ServerWorldEvent, WorldState, List<SignatureMetadata>) m,
+) => processServerEvent(m.$1, m.$2, signature: m.$3);
 
 SetonixData _saveState(WorldState state) => state.save();
 
@@ -28,8 +28,11 @@ class _WorldServerInterfaceImpl implements ServerInterface {
   }
 
   @override
-  void sendEvent(PlayableWorldEvent event,
-      {Channel target = kAnyChannel, required String plugin}) {
+  void sendEvent(
+    PlayableWorldEvent event, {
+    Channel target = kAnyChannel,
+    required String plugin,
+  }) {
     bloc._processEvent(NetworkerPacket(event, target));
   }
 
@@ -51,21 +54,21 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
     SetonixData? data,
     GameTable? table,
     GameState gameState = GameState.play,
-  }) : super(ClientWorldState(
-          assetManager: GameAssetManager(
-            fileSystem: fileSystem,
-          ),
-          multiplayer: multiplayer,
-          colorScheme: colorScheme,
-          world: WorldState(
-            name: name,
-            data: data ?? SetonixData.empty(),
-            table: table ?? data?.getTable() ?? const GameTable(),
-            metadata: data?.getMetadata() ?? const FileMetadata(),
-            info: data?.getInfo() ?? const GameInfo(),
-            gameState: gameState,
-          ),
-        )) {
+  }) : super(
+         ClientWorldState(
+           assetManager: GameAssetManager(fileSystem: fileSystem),
+           multiplayer: multiplayer,
+           colorScheme: colorScheme,
+           world: WorldState(
+             name: name,
+             data: data ?? SetonixData.empty(),
+             table: table ?? data?.getTable() ?? const GameTable(),
+             metadata: data?.getMetadata() ?? const FileMetadata(),
+             info: data?.getInfo() ?? const GameInfo(),
+             gameState: gameState,
+           ),
+         ),
+       ) {
     pluginSystem = PluginSystem(server: _WorldServerInterfaceImpl(this));
     state.multiplayer
       ..events.listen((event) {
@@ -83,10 +86,11 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
       try {
         final signature = state.assetManager.createSignature();
         final world = state.world;
-        final processed = await compute<
-                (ServerWorldEvent, WorldState, List<SignatureMetadata>),
-                ServerProcessed>(
-            _compute, (event, world, signature.values.toList()));
+        final processed =
+            await compute<
+              (ServerWorldEvent, WorldState, List<SignatureMetadata>),
+              ServerProcessed
+            >(_compute, (event, world, signature.values.toList()));
         final newWorld = processed.state;
         processed.responses.forEach(process);
         if (newWorld == null) return;
@@ -100,36 +104,43 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
       emit(state.copyWith(colorScheme: event.colorScheme));
     });
     on<HandChanged>((event, emit) {
-      emit(state.copyWith(
-        showHand: event.show ??
-            (!state.showHand ||
-                state.selectedDeck != event.deck ||
-                state.selectedCell != null),
-        selectedDeck: event.deck,
-        selectedCell: null,
-      ));
+      emit(
+        state.copyWith(
+          showHand:
+              event.show ??
+              (!state.showHand ||
+                  state.selectedDeck != event.deck ||
+                  state.selectedCell != null),
+          selectedDeck: event.deck,
+          selectedCell: null,
+        ),
+      );
     });
     on<CellSwitched>((event, emit) {
-      emit(state.copyWith(
-        selectedCell: event.toggle && state.selectedCell == event.cell
-            ? null
-            : event.cell,
-        selectedDeck: null,
-        showHand: true,
-      ));
+      emit(
+        state.copyWith(
+          selectedCell: event.toggle && state.selectedCell == event.cell
+              ? null
+              : event.cell,
+          selectedDeck: null,
+          showHand: true,
+        ),
+      );
     });
     on<SwitchCellOnMoveChanged>((event, emit) {
-      emit(state.copyWith(
-        switchCellOnMove: event.value,
-      ));
+      emit(state.copyWith(switchCellOnMove: event.value));
     });
     on<TableSwitched>((event, emit) {
-      emit(state.copyWith.world(
-        table: state.world.getTableOrDefault(event.name),
-        tableName: event.name,
-        data:
-            state.world.data.setTable(state.world.table, state.world.tableName),
-      ));
+      emit(
+        state.copyWith.world(
+          table: state.world.getTableOrDefault(event.name),
+          tableName: event.name,
+          data: state.world.data.setTable(
+            state.world.table,
+            state.world.tableName,
+          ),
+        ),
+      );
     });
     on<DrawerViewChanged>((event, emit) {
       emit(state.copyWith(drawerView: event.view));
@@ -139,7 +150,8 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
     });
     on<ShowDuplicatesChanged>((event, emit) {
       emit(
-          state.copyWith(showDuplicates: event.value ?? !state.showDuplicates));
+        state.copyWith(showDuplicates: event.value ?? !state.showDuplicates),
+      );
     });
     if (!state.multiplayer.isClient) {
       _loadScript(state.world.info.script);
@@ -163,7 +175,8 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
     );
     if (value == null) return;
     state.multiplayer.sendServerPackets(
-        value.buildPackets(state.world, state.multiplayer.clients));
+      value.buildPackets(state.world, state.multiplayer.clients),
+    );
   }
 
   @override
@@ -184,12 +197,17 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
           multiplayer.send(e);
         } else {
           final event = await processClientEvent(
-              e, kAuthorityChannel, state.world,
-              assetManager: state.assetManager, allowServerEvents: true);
+            e,
+            kAuthorityChannel,
+            state.world,
+            assetManager: state.assetManager,
+            allowServerEvents: true,
+          );
           if (event != null) {
             add(event.main.data);
-            final updatePacket = event.buildUpdatePackets(
-                state.world, {kAuthorityChannel}).firstOrNull;
+            final updatePacket = event.buildUpdatePackets(state.world, {
+              kAuthorityChannel,
+            }).firstOrNull;
             if (updatePacket != null) {
               add(updatePacket.data);
             }

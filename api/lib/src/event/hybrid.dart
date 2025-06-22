@@ -21,41 +21,57 @@ final class ObjectsSpawned extends HybridWorldEvent
 
   ObjectsSpawned(this.table, [this.objects = const {}]);
   ObjectsSpawned.single(GlobalVectorDefinition cell, List<GameObject> objects)
-      : objects = {cell.position: objects},
-        table = cell.table;
+    : objects = {cell.position: objects},
+      table = cell.table;
 
   ObjectsSpawned.singleObject(GlobalVectorDefinition cell, GameObject object)
-      : objects = {
-          cell.position: [object]
-        },
-        table = cell.table;
+    : objects = {
+        cell.position: [object],
+      },
+      table = cell.table;
 
   ObjectsSpawned addObjects(int x, int y, List<GameObject> objects) =>
       addObjectsWithLocation(VectorDefinition(x, y), objects);
   ObjectsSpawned addObjectsWithLocation(
-          VectorDefinition location, List<GameObject> objects) =>
-      copyWith(objects: {
-        ...this.objects,
-        location: [...?this.objects[location], ...objects]
-      });
+    VectorDefinition location,
+    List<GameObject> objects,
+  ) => copyWith(
+    objects: {
+      ...this.objects,
+      location: [...?this.objects[location], ...objects],
+    },
+  );
 
   ObjectsSpawned addObject(int x, int y, GameObject object) =>
       addObjects(x, y, [object]);
 
   ObjectsSpawned addObjectWithLocation(
-          VectorDefinition location, GameObject object) =>
-      addObjectsWithLocation(location, [object]);
+    VectorDefinition location,
+    GameObject object,
+  ) => addObjectsWithLocation(location, [object]);
 
-  ObjectsSpawned object(int x, int y, ItemLocation asset,
-          {String? variation, bool hidden = false}) =>
-      objectWithLocation(VectorDefinition(x, y), asset,
-          variation: variation, hidden: hidden);
+  ObjectsSpawned object(
+    int x,
+    int y,
+    ItemLocation asset, {
+    String? variation,
+    bool hidden = false,
+  }) => objectWithLocation(
+    VectorDefinition(x, y),
+    asset,
+    variation: variation,
+    hidden: hidden,
+  );
 
   ObjectsSpawned objectWithLocation(
-          VectorDefinition location, ItemLocation asset,
-          {String? variation, bool hidden = false}) =>
-      addObjectWithLocation(
-          location, GameObject(asset, variation: variation, hidden: hidden));
+    VectorDefinition location,
+    ItemLocation asset, {
+    String? variation,
+    bool hidden = false,
+  }) => addObjectWithLocation(
+    location,
+    GameObject(asset, variation: variation, hidden: hidden),
+  );
 
   bool inBounds(VectorDefinition start, VectorDefinition end) {
     for (final entry in objects.entries) {
@@ -76,11 +92,13 @@ final class ObjectsMoved extends HybridWorldEvent with ObjectsMovedMappable {
   Map<int, GameObject> getObjects(WorldState state) {
     final table = state.getTableOrDefault(this.table);
     final cell = table.getCell(from);
-    return Map.fromEntries(objects.map((e) {
-      final object = cell.objects.elementAtOrNull(e);
-      if (object == null) return null;
-      return MapEntry(e, object);
-    }).nonNulls);
+    return Map.fromEntries(
+      objects.map((e) {
+        final object = cell.objects.elementAtOrNull(e);
+        if (object == null) return null;
+        return MapEntry(e, object);
+      }).nonNulls,
+    );
   }
 }
 
@@ -98,10 +116,10 @@ final class CellHideChanged extends HybridWorldEvent
   GameObject? getObject(WorldState state) => object == null
       ? null
       : state
-          .getTable(cell.table)
-          ?.getCell(cell.position)
-          .objects
-          .elementAtOrNull(object!);
+            .getTable(cell.table)
+            ?.getCell(cell.position)
+            .objects
+            .elementAtOrNull(object!);
 }
 
 @MappableClass()
@@ -113,8 +131,11 @@ final class ObjectIndexChanged extends HybridWorldEvent
 
   ObjectIndexChanged(this.cell, this.object, this.index);
   ObjectIndexChanged.fromLocal(
-      String table, VectorDefinition position, this.object, this.index)
-      : cell = GlobalVectorDefinition.fromLocal(table, position);
+    String table,
+    VectorDefinition position,
+    this.object,
+    this.index,
+  ) : cell = GlobalVectorDefinition.fromLocal(table, position);
 
   GameObject? getObject(WorldState state) => state
       .getTable(cell.table)
@@ -157,19 +178,22 @@ final class ObjectsRemoved extends HybridWorldEvent
 
   ObjectsRemoved(this.cell, {this.objects});
   ObjectsRemoved.single(this.cell, {int? object})
-      : objects = object == null ? null : [object];
+    : objects = object == null ? null : [object];
 
   ObjectsRemoved object(int object) => copyWith(objects: [...?objects, object]);
 
   Map<int, GameObject>? getObjects(WorldState state) {
     if (objects == null) return null;
-    final cellObject =
-        state.getTableOrDefault(cell.table).getCell(cell.position);
-    return Map.fromEntries(objects!.map((e) {
-      final object = cellObject.objects.elementAtOrNull(e);
-      if (object == null) return null;
-      return MapEntry(e, object);
-    }).nonNulls);
+    final cellObject = state
+        .getTableOrDefault(cell.table)
+        .getCell(cell.position);
+    return Map.fromEntries(
+      objects!.map((e) {
+        final object = cellObject.objects.elementAtOrNull(e);
+        if (object == null) return null;
+        return MapEntry(e, object);
+      }).nonNulls,
+    );
   }
 }
 

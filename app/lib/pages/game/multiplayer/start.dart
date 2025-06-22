@@ -13,8 +13,9 @@ class _StartMultiplayerDialogState extends State<StartMultiplayerDialog>
   late final SettingsCubit _settingsCubit;
   late String _defaultSwamp;
   late final TabController _tabController;
-  final TextEditingController _webSocketPortController =
-      TextEditingController(text: kDefaultPort.toString());
+  final TextEditingController _webSocketPortController = TextEditingController(
+    text: kDefaultPort.toString(),
+  );
   late final TextEditingController _swampAddressController;
 
   @override
@@ -109,13 +110,15 @@ class _StartMultiplayerDialogState extends State<StartMultiplayerDialog>
                                 keyboardType: TextInputType.number,
                                 validator: (value) {
                                   if (value?.isEmpty ?? true) {
-                                    return LeapLocalizations.of(context)
-                                        .shouldNotEmpty;
+                                    return LeapLocalizations.of(
+                                      context,
+                                    ).shouldNotEmpty;
                                   }
                                   final number = int.tryParse(value!);
                                   if (number == null) {
-                                    return AppLocalizations.of(context)
-                                        .shouldANumber;
+                                    return AppLocalizations.of(
+                                      context,
+                                    ).shouldANumber;
                                   }
                                   return null;
                                 },

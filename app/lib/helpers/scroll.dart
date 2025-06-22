@@ -68,10 +68,13 @@ class ScrollViewComponent extends PositionComponent
   }
 
   void scroll(double delta) {
-    final current =
-        direction == Axis.horizontal ? _view.position.x : _view.position.y;
-    final double next =
-        (delta + current).clamp(min(_view.width - _nextItemPos, 0), 0);
+    final current = direction == Axis.horizontal
+        ? _view.position.x
+        : _view.position.y;
+    final double next = (delta + current).clamp(
+      min(_view.width - _nextItemPos, 0),
+      0,
+    );
     if (direction == Axis.horizontal) {
       _view.x = next;
     } else {

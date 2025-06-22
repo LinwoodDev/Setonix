@@ -4,8 +4,11 @@ import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:setonix/widgets/two_child_row_layout.dart';
 
-const searchConstraints =
-    BoxConstraints(minWidth: 200.0, maxWidth: 260.0, minHeight: 56.0);
+const searchConstraints = BoxConstraints(
+  minWidth: 200.0,
+  maxWidth: 260.0,
+  minHeight: 56.0,
+);
 
 class TabSearchView extends StatelessWidget {
   final TabController? tabController;
@@ -37,7 +40,10 @@ class TabSearchView extends StatelessWidget {
     );
     final searchBar = SearchBar(
       constraints: const BoxConstraints(
-          minWidth: 200.0, maxWidth: 260.0, minHeight: 56.0),
+        minWidth: 200.0,
+        maxWidth: 260.0,
+        minHeight: 56.0,
+      ),
       leading: const PhosphorIcon(PhosphorIconsLight.magnifyingGlass),
       hintText: AppLocalizations.of(context).search,
       onChanged: onSearchChanged,
@@ -98,7 +104,10 @@ class _RowSearchViewState extends State<RowSearchView> {
           );
     final searchBar = SearchBar(
       constraints: const BoxConstraints(
-          minWidth: 200.0, maxWidth: 260.0, minHeight: 56.0),
+        minWidth: 200.0,
+        maxWidth: 260.0,
+        minHeight: 56.0,
+      ),
       leading: const PhosphorIcon(PhosphorIconsLight.magnifyingGlass),
       hintText: AppLocalizations.of(context).search,
       onChanged: widget.onSearchChanged,

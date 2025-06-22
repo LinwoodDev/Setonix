@@ -30,8 +30,10 @@ final class WorldInitialized extends ServerWorldEvent
   factory WorldInitialized.fromMode(GameMode? mode, WorldState state) =>
       WorldInitialized(
         clearUserInterface: true,
-        info:
-            state.info.copyWith(teams: mode?.teams ?? {}, script: mode?.script),
+        info: state.info.copyWith(
+          teams: mode?.teams ?? {},
+          script: mode?.script,
+        ),
         table: mode?.tables[state.tableName] ?? GameTable(),
         teamMembers: const {},
       );
@@ -66,9 +68,11 @@ final class ObjectsChanged extends ServerWorldEvent
 
   ObjectsChanged addObject(GameObject object) => addObjects([object]);
 
-  ObjectsChanged object(ItemLocation asset,
-          {String? variation, bool hidden = false}) =>
-      addObject(GameObject(asset, variation: variation, hidden: hidden));
+  ObjectsChanged object(
+    ItemLocation asset, {
+    String? variation,
+    bool hidden = false,
+  }) => addObject(GameObject(asset, variation: variation, hidden: hidden));
 }
 
 @MappableClass()
@@ -84,13 +88,16 @@ final class CellShuffled extends ServerWorldEvent with CellShuffledMappable {
   CellShuffled addPosition(int position) => addPositions([position]);
 
   Map<int, GameObject> getObjects(WorldState state) {
-    final cellObject =
-        state.getTableOrDefault(cell.table).getCell(cell.position);
-    return Map.fromEntries(positions.map((e) {
-      final object = cellObject.objects.elementAtOrNull(e);
-      if (object == null) return null;
-      return MapEntry(e, object);
-    }).nonNulls);
+    final cellObject = state
+        .getTableOrDefault(cell.table)
+        .getCell(cell.position);
+    return Map.fromEntries(
+      positions.map((e) {
+        final object = cellObject.objects.elementAtOrNull(e);
+        if (object == null) return null;
+        return MapEntry(e, object);
+      }).nonNulls,
+    );
   }
 }
 
@@ -110,30 +117,36 @@ final class BoardTilesSpawned extends ServerWorldEvent
 
   BoardTilesSpawned(this.table, [this.tiles = const {}]);
   BoardTilesSpawned.single(
-      GlobalVectorDefinition position, List<BoardTile> tiles)
-      : table = position.table,
-        tiles = {position.position: tiles};
+    GlobalVectorDefinition position,
+    List<BoardTile> tiles,
+  ) : table = position.table,
+      tiles = {position.position: tiles};
   BoardTilesSpawned.singleTile(GlobalVectorDefinition position, BoardTile tile)
-      : table = position.table,
-        tiles = {
-          position.position: [tile]
-        };
+    : table = position.table,
+      tiles = {
+        position.position: [tile],
+      };
 
-  BoardTilesSpawned addTiles(int x, int y, List<BoardTile> tiles) =>
-      copyWith(tiles: {
-        ...this.tiles,
-        VectorDefinition(x, y): [
-          ...?this.tiles[VectorDefinition(x, y)],
-          ...tiles
-        ]
-      });
+  BoardTilesSpawned addTiles(int x, int y, List<BoardTile> tiles) => copyWith(
+    tiles: {
+      ...this.tiles,
+      VectorDefinition(x, y): [
+        ...?this.tiles[VectorDefinition(x, y)],
+        ...tiles,
+      ],
+    },
+  );
 
   BoardTilesSpawned addTile(int x, int y, BoardTile tile) =>
       addTiles(x, y, [tile]);
 
   BoardTilesSpawned tile(
-          int x, int y, ItemLocation asset, int tileX, int tileY) =>
-      addTile(x, y, BoardTile(asset, VectorDefinition(tileX, tileY)));
+    int x,
+    int y,
+    ItemLocation asset,
+    int tileX,
+    int tileY,
+  ) => addTile(x, y, BoardTile(asset, VectorDefinition(tileX, tileY)));
 }
 
 @MappableClass()
@@ -144,30 +157,36 @@ final class BoardTilesChanged extends ServerWorldEvent
 
   BoardTilesChanged(this.table, [this.tiles = const {}]);
   BoardTilesChanged.single(
-      GlobalVectorDefinition position, List<BoardTile> tiles)
-      : table = position.table,
-        tiles = {position.position: tiles};
+    GlobalVectorDefinition position,
+    List<BoardTile> tiles,
+  ) : table = position.table,
+      tiles = {position.position: tiles};
   BoardTilesChanged.singleTile(GlobalVectorDefinition position, BoardTile tile)
-      : table = position.table,
-        tiles = {
-          position.position: [tile]
-        };
+    : table = position.table,
+      tiles = {
+        position.position: [tile],
+      };
 
-  BoardTilesChanged addTiles(int x, int y, List<BoardTile> tiles) =>
-      copyWith(tiles: {
-        ...this.tiles,
-        VectorDefinition(x, y): [
-          ...?this.tiles[VectorDefinition(x, y)],
-          ...tiles
-        ]
-      });
+  BoardTilesChanged addTiles(int x, int y, List<BoardTile> tiles) => copyWith(
+    tiles: {
+      ...this.tiles,
+      VectorDefinition(x, y): [
+        ...?this.tiles[VectorDefinition(x, y)],
+        ...tiles,
+      ],
+    },
+  );
 
   BoardTilesChanged addTile(int x, int y, BoardTile tile) =>
       addTiles(x, y, [tile]);
 
   BoardTilesChanged tile(
-          int x, int y, ItemLocation asset, int tileX, int tileY) =>
-      addTile(x, y, BoardTile(asset, VectorDefinition(tileX, tileY)));
+    int x,
+    int y,
+    ItemLocation asset,
+    int tileX,
+    int tileY,
+  ) => addTile(x, y, BoardTile(asset, VectorDefinition(tileX, tileY)));
 }
 
 @MappableClass()

@@ -83,9 +83,11 @@ class _GameChatDrawerState extends State<GameChatDrawer> {
                                   style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                                 Text(
-                                  DateFormat.Hms(Localizations.localeOf(context)
-                                          .languageCode)
-                                      .format(message.timestamp),
+                                  DateFormat.Hms(
+                                    Localizations.localeOf(
+                                      context,
+                                    ).languageCode,
+                                  ).format(message.timestamp),
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                               ],
@@ -111,16 +113,16 @@ class _GameChatDrawerState extends State<GameChatDrawer> {
                     hintText: AppLocalizations.of(context).message,
                     filled: true,
                     suffixIcon: ListenableBuilder(
-                        listenable: _messageController,
-                        builder: (context, _) {
-                          return IconButton(
-                            icon:
-                                const Icon(PhosphorIconsLight.paperPlaneRight),
-                            onPressed: _messageController.text.isEmpty
-                                ? null
-                                : _onSubmit,
-                          );
-                        }),
+                      listenable: _messageController,
+                      builder: (context, _) {
+                        return IconButton(
+                          icon: const Icon(PhosphorIconsLight.paperPlaneRight),
+                          onPressed: _messageController.text.isEmpty
+                              ? null
+                              : _onSubmit,
+                        );
+                      },
+                    ),
                   ),
                   focusNode: _messageFocus,
                   autofocus: true,

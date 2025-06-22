@@ -11,20 +11,14 @@ sealed class GameServer with GameServerMappable {
   final String address;
   final bool secure;
 
-  GameServer({
-    required this.address,
-    this.secure = true,
-  });
+  GameServer({required this.address, this.secure = true});
 
   String get display => address;
 }
 
 @MappableClass()
 final class LanGameServer extends GameServer with LanGameServerMappable {
-  LanGameServer({
-    required super.address,
-    super.secure,
-  });
+  LanGameServer({required super.address, super.secure});
 }
 
 @MappableClass()
@@ -61,8 +55,9 @@ Uri buildServerAddress(Uri uri, bool secure, {bool webSockets = true}) {
   // handle plain host without scheme: treat single-segment path as host
   if (uri.host.isEmpty && uri.pathSegments.length == 1) {
     uri = uri.replace(
-        host: uri.pathSegments.first,
-        pathSegments: uri.pathSegments.skip(1).toList());
+      host: uri.pathSegments.first,
+      pathSegments: uri.pathSegments.skip(1).toList(),
+    );
   }
   uri = uri.replace(scheme: (webSockets ? 'ws' : 'http') + (secure ? 's' : ''));
   if (!uri.hasPort) {
@@ -121,10 +116,7 @@ final class PlayerInfo with PlayerInfoMappable {
   final Channel id;
   final String? name;
 
-  const PlayerInfo({
-    required this.id,
-    this.name,
-  });
+  const PlayerInfo({required this.id, this.name});
 }
 
 @MappableClass()

@@ -10,31 +10,28 @@ import 'package:url_launcher/url_launcher.dart';
 
 const kLaunchHost = 'launch.setonix.linwood.dev';
 
-Uri getLaunchUri(
-        {String? path,
-        List<String>? pathSegments,
-        String? fragment,
-        String? query,
-        Map<String, dynamic>? queryParameters,
-        String? userInfo}) =>
-    Uri(
-      scheme: 'https',
-      host: kLaunchHost,
-      path: path,
-      pathSegments: pathSegments,
-      fragment: fragment,
-      query: query,
-      queryParameters: queryParameters,
-      userInfo: userInfo,
-    );
+Uri getLaunchUri({
+  String? path,
+  List<String>? pathSegments,
+  String? fragment,
+  String? query,
+  Map<String, dynamic>? queryParameters,
+  String? userInfo,
+}) => Uri(
+  scheme: 'https',
+  host: kLaunchHost,
+  path: path,
+  pathSegments: pathSegments,
+  fragment: fragment,
+  query: query,
+  queryParameters: queryParameters,
+  userInfo: userInfo,
+);
 
 Uri getConnectUri(String url, [String? type]) => getLaunchUri(
-      pathSegments: ['connect'],
-      queryParameters: {
-        'url': url,
-        if (type != null) 'type': type,
-      },
-    );
+  pathSegments: ['connect'],
+  queryParameters: {'url': url, if (type != null) 'type': type},
+);
 
 Uri parseConnectUri(Uri uri) {
   if (uri.host != kLaunchHost) {
@@ -49,25 +46,30 @@ Uri parseConnectUri(Uri uri) {
 
 Future<bool> openReleaseNotes() {
   return launchUrl(
-      Uri(
-          scheme: 'https',
-          host: 'go.linwood.dev',
-          pathSegments: ['setonix', applicationMinorVersion]),
-      mode: LaunchMode.externalApplication);
+    Uri(
+      scheme: 'https',
+      host: 'go.linwood.dev',
+      pathSegments: ['setonix', applicationMinorVersion],
+    ),
+    mode: LaunchMode.externalApplication,
+  );
 }
 
 Future<bool> openHelp(List<String> pageLocation, [String? fragment]) {
   return launchUrl(
     Uri(
-        scheme: 'https',
-        host: 'setonix.linwood.dev',
-        fragment: fragment,
-        pathSegments: ['docs', 'v1', ...pageLocation]),
+      scheme: 'https',
+      host: 'setonix.linwood.dev',
+      fragment: fragment,
+      pathSegments: ['docs', 'v1', ...pageLocation],
+    ),
   );
 }
 
 Future<void> importFile(
-    BuildContext context, SetonixFileSystem fileSystem) async {
+  BuildContext context,
+  SetonixFileSystem fileSystem,
+) async {
   final result = await fs.openFile(
     acceptedTypeGroups: [
       fs.XTypeGroup(
@@ -75,7 +77,7 @@ Future<void> importFile(
         extensions: const ['stnx'],
         uniformTypeIdentifiers: const ['dev.linwood.setonix.pack'],
         mimeTypes: const ['application/octet-stream', 'application/zip'],
-      )
+      ),
     ],
   );
   if (result == null) return;
@@ -85,11 +87,15 @@ Future<void> importFile(
 }
 
 Future<SetonixFile> getCorePack() async => SetonixFile(
-    (await rootBundle.load('assets/pack.stnx')).buffer.asUint8List(),
-    kCorePackId);
+  (await rootBundle.load('assets/pack.stnx')).buffer.asUint8List(),
+  kCorePackId,
+);
 
-Future<void> importFileData(BuildContext context, SetonixFileSystem fileSystem,
-    SetonixFile file) async {
+Future<void> importFileData(
+  BuildContext context,
+  SetonixFileSystem fileSystem,
+  SetonixFile file,
+) async {
   final data = file.load();
   final metadata = data.getMetadataOrDefault();
   final type = metadata.type;

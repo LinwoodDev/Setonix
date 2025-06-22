@@ -76,8 +76,11 @@ final class UserManager {
     return name;
   }
 
-  Future<bool> addUser(Channel channel,
-      [String? fingerprint, String? name]) async {
+  Future<bool> addUser(
+    Channel channel, [
+    String? fingerprint,
+    String? name,
+  ]) async {
     SetonixUser? user;
     if (fingerprint != null) {
       user = await service?.getUser(fingerprint);
@@ -91,10 +94,7 @@ final class UserManager {
       return false;
     }
     if (user == null) {
-      user = SetonixUser(
-        fingerprint: fingerprint,
-        name: name,
-      );
+      user = SetonixUser(fingerprint: fingerprint, name: name);
       if (fingerprint != null) {
         await service?.updateUser(fingerprint, name: name, onWhitelist: false);
       }

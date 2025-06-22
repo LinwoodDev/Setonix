@@ -17,13 +17,13 @@ class PersonalizationSettingsPage extends StatelessWidget {
   const PersonalizationSettingsPage({super.key, this.inView = false});
 
   String _getThemeName(BuildContext context, ThemeMode mode) => switch (mode) {
-        ThemeMode.system => AppLocalizations.of(context).systemTheme,
-        ThemeMode.light => AppLocalizations.of(context).lightTheme,
-        ThemeMode.dark => AppLocalizations.of(context).darkTheme,
-      };
+    ThemeMode.system => AppLocalizations.of(context).systemTheme,
+    ThemeMode.light => AppLocalizations.of(context).lightTheme,
+    ThemeMode.dark => AppLocalizations.of(context).darkTheme,
+  };
 
-  String _getLocaleName(BuildContext context, String locale) => locale
-          .isNotEmpty
+  String _getLocaleName(BuildContext context, String locale) =>
+      locale.isNotEmpty
       ? LocaleNames.of(context)?.nameOf(locale.replaceAll('-', '_')) ?? locale
       : AppLocalizations.of(context).systemLocale;
 
@@ -40,80 +40,88 @@ class PersonalizationSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: inView ? Colors.transparent : null,
+      appBar: WindowTitleBar<SettingsCubit, SetonixSettings>(
+        inView: inView,
         backgroundColor: inView ? Colors.transparent : null,
-        appBar: WindowTitleBar<SettingsCubit, SetonixSettings>(
-          inView: inView,
-          backgroundColor: inView ? Colors.transparent : null,
-          title: Text(AppLocalizations.of(context).personalization),
-        ),
-        body: BlocBuilder<SettingsCubit, SetonixSettings>(
-          builder: (context, state) {
-            final design = state.design;
-            return ListView(children: [
+        title: Text(AppLocalizations.of(context).personalization),
+      ),
+      body: BlocBuilder<SettingsCubit, SetonixSettings>(
+        builder: (context, state) {
+          final design = state.design;
+          return ListView(
+            children: [
               Card(
                 margin: settingsCardMargin,
                 child: Padding(
                   padding: settingsCardPadding,
                   child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        ListTile(
-                            leading: const PhosphorIcon(PhosphorIconsLight.eye),
-                            title: Text(AppLocalizations.of(context).theme),
-                            subtitle: Text(_getThemeName(context, state.theme)),
-                            onTap: () => _openThemeModal(context)),
-                        ListTile(
-                          leading:
-                              const PhosphorIcon(PhosphorIconsLight.palette),
-                          title: Text(AppLocalizations.of(context).design),
-                          subtitle: Text(
-                            design.isEmpty
-                                ? AppLocalizations.of(context).systemTheme
-                                : design.toDisplayString(),
-                          ),
-                          trailing: ThemeBox(
-                            theme: getThemeData(state.design, false),
-                          ),
-                          onTap: () => _openDesignModal(context),
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      ListTile(
+                        leading: const PhosphorIcon(PhosphorIconsLight.eye),
+                        title: Text(AppLocalizations.of(context).theme),
+                        subtitle: Text(_getThemeName(context, state.theme)),
+                        onTap: () => _openThemeModal(context),
+                      ),
+                      ListTile(
+                        leading: const PhosphorIcon(PhosphorIconsLight.palette),
+                        title: Text(AppLocalizations.of(context).design),
+                        subtitle: Text(
+                          design.isEmpty
+                              ? AppLocalizations.of(context).systemTheme
+                              : design.toDisplayString(),
                         ),
-                        ListTile(
-                          leading:
-                              const PhosphorIcon(PhosphorIconsLight.translate),
-                          title: Text(AppLocalizations.of(context).locale),
-                          subtitle: Text(AppLocalizations.of(context)
-                              .comingSoon /*_getLocaleName(context, state.localeTag)*/),
-                          onTap: null /*() => _openLocaleModal(context)*/,
+                        trailing: ThemeBox(
+                          theme: getThemeData(state.design, false),
                         ),
-                        ListTile(
-                          leading:
-                              const PhosphorIcon(PhosphorIconsLight.gridNine),
-                          title: Text(AppLocalizations.of(context).density),
-                          subtitle:
-                              Text(_getDensityName(context, state.density)),
-                          onTap: () => _openDensityModal(context),
+                        onTap: () => _openDesignModal(context),
+                      ),
+                      ListTile(
+                        leading: const PhosphorIcon(
+                          PhosphorIconsLight.translate,
                         ),
+                        title: Text(AppLocalizations.of(context).locale),
+                        subtitle: Text(
+                          AppLocalizations.of(
+                            context,
+                          ).comingSoon /*_getLocaleName(context, state.localeTag)*/,
+                        ),
+                        onTap: null /*() => _openLocaleModal(context)*/,
+                      ),
+                      ListTile(
+                        leading: const PhosphorIcon(
+                          PhosphorIconsLight.gridNine,
+                        ),
+                        title: Text(AppLocalizations.of(context).density),
+                        subtitle: Text(_getDensityName(context, state.density)),
+                        onTap: () => _openDensityModal(context),
+                      ),
+                      SwitchListTile(
+                        title: Text(AppLocalizations.of(context).highContrast),
+                        secondary: const PhosphorIcon(
+                          PhosphorIconsLight.circleHalf,
+                        ),
+                        value: state.highContrast,
+                        onChanged: (value) => context
+                            .read<SettingsCubit>()
+                            .changeHighContrast(value),
+                      ),
+                      if (!kIsWeb && (Platform.isWindows || Platform.isLinux))
                         SwitchListTile(
-                          title:
-                              Text(AppLocalizations.of(context).highContrast),
-                          secondary:
-                              const PhosphorIcon(PhosphorIconsLight.circleHalf),
-                          value: state.highContrast,
+                          value: state.nativeTitleBar,
+                          title: Text(
+                            AppLocalizations.of(context).nativeTitleBar,
+                          ),
+                          secondary: const PhosphorIcon(
+                            PhosphorIconsLight.appWindow,
+                          ),
                           onChanged: (value) => context
                               .read<SettingsCubit>()
-                              .changeHighContrast(value),
+                              .changeNativeTitleBar(value),
                         ),
-                        if (!kIsWeb && (Platform.isWindows || Platform.isLinux))
-                          SwitchListTile(
-                            value: state.nativeTitleBar,
-                            title: Text(
-                                AppLocalizations.of(context).nativeTitleBar),
-                            secondary: const PhosphorIcon(
-                                PhosphorIconsLight.appWindow),
-                            onChanged: (value) => context
-                                .read<SettingsCubit>()
-                                .changeNativeTitleBar(value),
-                          ),
-                      ]),
+                    ],
+                  ),
                 ),
               ),
               Card(
@@ -121,24 +129,25 @@ class PersonalizationSettingsPage extends StatelessWidget {
                 child: Padding(
                   padding: settingsCardPadding,
                   child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        SwitchListTile(
-                          title:
-                              Text(AppLocalizations.of(context).stackedCards),
-                          secondary:
-                              const PhosphorIcon(PhosphorIconsLight.stack),
-                          value: state.stackedCards,
-                          onChanged: (value) => context
-                              .read<SettingsCubit>()
-                              .changeStackedCards(value),
-                        ),
-                      ]),
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SwitchListTile(
+                        title: Text(AppLocalizations.of(context).stackedCards),
+                        secondary: const PhosphorIcon(PhosphorIconsLight.stack),
+                        value: state.stackedCards,
+                        onChanged: (value) => context
+                            .read<SettingsCubit>()
+                            .changeStackedCards(value),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ]);
-          },
-        ));
+            ],
+          );
+        },
+      ),
+    );
   }
 
   void _openDensityModal(BuildContext context) {
@@ -146,22 +155,25 @@ class PersonalizationSettingsPage extends StatelessWidget {
     final density = cubit.state.density;
 
     showLeapBottomSheet(
-        context: context,
-        titleBuilder: (ctx) => Text(AppLocalizations.of(context).density),
-        childrenBuilder: (context) {
-          void changeDensity(ThemeDensity density) {
-            cubit.changeDensity(density);
-            Navigator.of(context).pop();
-          }
+      context: context,
+      titleBuilder: (ctx) => Text(AppLocalizations.of(context).density),
+      childrenBuilder: (context) {
+        void changeDensity(ThemeDensity density) {
+          cubit.changeDensity(density);
+          Navigator.of(context).pop();
+        }
 
-          return ThemeDensity.values
-              .map((e) => ListTile(
-                    title: Text(_getDensityName(context, e)),
-                    selected: e == density,
-                    onTap: () => changeDensity(e),
-                  ))
-              .toList();
-        });
+        return ThemeDensity.values
+            .map(
+              (e) => ListTile(
+                title: Text(_getDensityName(context, e)),
+                selected: e == density,
+                onTap: () => changeDensity(e),
+              ),
+            )
+            .toList();
+      },
+    );
   }
 
   void _openDesignModal(BuildContext context) {
@@ -181,22 +193,17 @@ class PersonalizationSettingsPage extends StatelessWidget {
           title: Text(AppLocalizations.of(context).systemTheme),
           selected: design.isEmpty,
           onTap: () => changeDesign(''),
-          leading: ThemeBox(
-            theme: getThemeData('', false),
-          ),
+          leading: ThemeBox(theme: getThemeData('', false)),
         ),
-        ...getThemes().map(
-          (e) {
-            final theme = getThemeData(e, false);
-            return ListTile(
-                title: Text(e.toDisplayString()),
-                selected: e == design,
-                onTap: () => changeDesign(e),
-                leading: ThemeBox(
-                  theme: theme,
-                ));
-          },
-        ),
+        ...getThemes().map((e) {
+          final theme = getThemeData(e, false);
+          return ListTile(
+            title: Text(e.toDisplayString()),
+            selected: e == design,
+            onTap: () => changeDesign(e),
+            leading: ThemeBox(theme: theme),
+          );
+        }),
       ],
     );
   }
@@ -210,25 +217,29 @@ class PersonalizationSettingsPage extends StatelessWidget {
     }
 
     showLeapBottomSheet(
-        context: context,
-        titleBuilder: (context) => Text(AppLocalizations.of(context).theme),
-        childrenBuilder: (context) => [
-              ListTile(
-                  title: Text(AppLocalizations.of(context).systemTheme),
-                  selected: currentTheme == ThemeMode.system,
-                  leading: const PhosphorIcon(PhosphorIconsLight.power),
-                  onTap: () => changeTheme(ThemeMode.system)),
-              ListTile(
-                  title: Text(AppLocalizations.of(context).lightTheme),
-                  selected: currentTheme == ThemeMode.light,
-                  leading: const PhosphorIcon(PhosphorIconsLight.sun),
-                  onTap: () => changeTheme(ThemeMode.light)),
-              ListTile(
-                  title: Text(AppLocalizations.of(context).darkTheme),
-                  selected: currentTheme == ThemeMode.dark,
-                  leading: const PhosphorIcon(PhosphorIconsLight.moon),
-                  onTap: () => changeTheme(ThemeMode.dark)),
-            ]);
+      context: context,
+      titleBuilder: (context) => Text(AppLocalizations.of(context).theme),
+      childrenBuilder: (context) => [
+        ListTile(
+          title: Text(AppLocalizations.of(context).systemTheme),
+          selected: currentTheme == ThemeMode.system,
+          leading: const PhosphorIcon(PhosphorIconsLight.power),
+          onTap: () => changeTheme(ThemeMode.system),
+        ),
+        ListTile(
+          title: Text(AppLocalizations.of(context).lightTheme),
+          selected: currentTheme == ThemeMode.light,
+          leading: const PhosphorIcon(PhosphorIconsLight.sun),
+          onTap: () => changeTheme(ThemeMode.light),
+        ),
+        ListTile(
+          title: Text(AppLocalizations.of(context).darkTheme),
+          selected: currentTheme == ThemeMode.dark,
+          leading: const PhosphorIcon(PhosphorIconsLight.moon),
+          onTap: () => changeTheme(ThemeMode.dark),
+        ),
+      ],
+    );
   }
 
   // ignore: unused_element
@@ -242,16 +253,21 @@ class PersonalizationSettingsPage extends StatelessWidget {
     }
 
     showLeapBottomSheet(
-        context: context,
-        childrenBuilder: (context) => [
-              ListTile(
-                  title: Text(AppLocalizations.of(context).defaultLocale),
-                  selected: currentLocale.isEmpty,
-                  onTap: () => changeLocale(null)),
-              ...locales.map((e) => ListTile(
-                  title: Text(_getLocaleName(context, e.toLanguageTag())),
-                  selected: currentLocale == e.toLanguageTag(),
-                  onTap: () => changeLocale(e))),
-            ]);
+      context: context,
+      childrenBuilder: (context) => [
+        ListTile(
+          title: Text(AppLocalizations.of(context).defaultLocale),
+          selected: currentLocale.isEmpty,
+          onTap: () => changeLocale(null),
+        ),
+        ...locales.map(
+          (e) => ListTile(
+            title: Text(_getLocaleName(context, e.toLanguageTag())),
+            selected: currentLocale == e.toLanguageTag(),
+            onTap: () => changeLocale(e),
+          ),
+        ),
+      ],
+    );
   }
 }

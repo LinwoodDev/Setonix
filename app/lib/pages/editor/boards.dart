@@ -68,11 +68,14 @@ class BoardsEditorPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
           final name = await showDialog<String>(
-              context: context,
-              builder: (context) => NameDialog(
-                    validator: defaultNameValidator(
-                        context, cubit.state.getBoards().toList()),
-                  ));
+            context: context,
+            builder: (context) => NameDialog(
+              validator: defaultNameValidator(
+                context,
+                cubit.state.getBoards().toList(),
+              ),
+            ),
+          );
           if (name == null) return;
           cubit.setBoard(name, BoardDefinition(texture: ''));
         },
@@ -110,9 +113,7 @@ class _BoardEditorDialogState extends State<BoardEditorDialog> {
     if (value == null) return const SizedBox();
     return ResponsiveAlertDialog(
       title: Text(widget.name),
-      constraints: const BoxConstraints(
-        maxWidth: LeapBreakpoints.compact,
-      ),
+      constraints: const BoxConstraints(maxWidth: LeapBreakpoints.compact),
       content: ListView(
         shrinkWrap: true,
         children: [
@@ -125,8 +126,10 @@ class _BoardEditorDialogState extends State<BoardEditorDialog> {
             initialValue: _translation.boards[widget.name]?.name,
             onChanged: (value) {
               final translation = BoardTranslation(name: value);
-              _translation =
-                  _translation.copyWith.boards.put(widget.name, translation);
+              _translation = _translation.copyWith.boards.put(
+                widget.name,
+                translation,
+              );
             },
           ),
           const SizedBox(height: 8),
@@ -161,9 +164,9 @@ class _BoardEditorDialogState extends State<BoardEditorDialog> {
           onPressed: () {
             context.read<EditorCubit>().setBoard(widget.name, value);
             context.read<EditorCubit>().setTranslation(
-                  _translation,
-                  widget.name,
-                );
+              _translation,
+              widget.name,
+            );
             Navigator.of(context).pop();
           },
           child: Text(AppLocalizations.of(context).save),

@@ -50,15 +50,15 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
   }
 
   List<Card> _buildDetailsChildren(FileMetadata metadata) => [
-        if (metadata.description.isNotEmpty)
-          Card.filled(
-            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(metadata.description),
-            ),
-          )
-      ];
+    if (metadata.description.isNotEmpty)
+      Card.filled(
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(metadata.description),
+        ),
+      ),
+  ];
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.sizeOf(context).width < LeapBreakpoints.medium;
@@ -85,11 +85,8 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
             children: [
               IconButton.outlined(
                 icon: const Icon(PhosphorIconsLight.export),
-                onPressed: () => exportData(
-                  context,
-                  _selected!.data!,
-                  _selected!.fileName,
-                ),
+                onPressed: () =>
+                    exportData(context, _selected!.data!, _selected!.fileName),
               ),
               const SizedBox(width: 8),
               IconButton.outlined(
@@ -99,8 +96,9 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
                   context: context,
                   builder: (context) => AlertDialog(
                     title: Text(AppLocalizations.of(context).deleteGame),
-                    content:
-                        Text(AppLocalizations.of(context).deleteGameMessage),
+                    content: Text(
+                      AppLocalizations.of(context).deleteGameMessage,
+                    ),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(),
@@ -136,11 +134,7 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
             style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
-        Expanded(
-          child: ListView(
-            children: _buildDetailsChildren(metadata),
-          ),
-        ),
+        Expanded(child: ListView(children: _buildDetailsChildren(metadata))),
         const SizedBox(height: 16),
         playButton,
       ],
@@ -150,67 +144,69 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
       children: [
         Flexible(
           child: StreamBuilder(
-              stream: _gamesStream,
-              builder: (context, snapshot) {
-                final games = snapshot.data
-                    ?.where((e) => e.pathWithoutLeadingSlash
-                        .toLowerCase()
-                        .contains(_search.toLowerCase()))
-                    .toList();
-                if (games == null) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                if (games.isEmpty) {
-                  return Center(
-                    child: Text(AppLocalizations.of(context).noGames),
-                  );
-                }
-                return ListView.builder(
-                  itemCount: games.length,
-                  itemBuilder: (context, index) {
-                    final entry = games[index];
-                    final name = entry.pathWithoutLeadingSlash;
-                    return ListTile(
-                      title: Text(name),
-                      onTap: () {
-                        setState(() {
-                          _selected = entry;
-                          _isMobileOpen = isMobile;
-                        });
-                        if (isMobile) {
-                          final metadata =
-                              entry.data?.getMetadata() ?? const FileMetadata();
-                          showLeapBottomSheet(
-                            context: context,
-                            titleBuilder: (context) => Text(metadata.name),
-                            childrenBuilder: (context) => [
-                              ..._buildDetailsChildren(metadata),
-                              const SizedBox(height: 16),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: playButton,
-                              ),
-                            ],
-                          ).then((_) {
-                            if (mounted) setState(() => _isMobileOpen = false);
-                          });
-                        }
-                      },
-                      selected: name == _selected?.pathWithoutLeadingSlash &&
-                          (!isMobile || _isMobileOpen),
-                    );
-                  },
+            stream: _gamesStream,
+            builder: (context, snapshot) {
+              final games = snapshot.data
+                  ?.where(
+                    (e) => e.pathWithoutLeadingSlash.toLowerCase().contains(
+                      _search.toLowerCase(),
+                    ),
+                  )
+                  .toList();
+              if (games == null) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (games.isEmpty) {
+                return Center(
+                  child: Text(AppLocalizations.of(context).noGames),
                 );
-              }),
+              }
+              return ListView.builder(
+                itemCount: games.length,
+                itemBuilder: (context, index) {
+                  final entry = games[index];
+                  final name = entry.pathWithoutLeadingSlash;
+                  return ListTile(
+                    title: Text(name),
+                    onTap: () {
+                      setState(() {
+                        _selected = entry;
+                        _isMobileOpen = isMobile;
+                      });
+                      if (isMobile) {
+                        final metadata =
+                            entry.data?.getMetadata() ?? const FileMetadata();
+                        showLeapBottomSheet(
+                          context: context,
+                          titleBuilder: (context) => Text(metadata.name),
+                          childrenBuilder: (context) => [
+                            ..._buildDetailsChildren(metadata),
+                            const SizedBox(height: 16),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: playButton,
+                            ),
+                          ],
+                        ).then((_) {
+                          if (mounted) setState(() => _isMobileOpen = false);
+                        });
+                      }
+                    },
+                    selected:
+                        name == _selected?.pathWithoutLeadingSlash &&
+                        (!isMobile || _isMobileOpen),
+                  );
+                },
+              );
+            },
+          ),
         ),
         const SizedBox(height: 16),
         Row(
           children: [
             IconButton.outlined(
-              onPressed: () => importFile(
-                context,
-                _fileSystem,
-              ).then((_) => _reloadGames()),
+              onPressed: () =>
+                  importFile(context, _fileSystem).then((_) => _reloadGames()),
               tooltip: AppLocalizations.of(context).import,
               icon: const Icon(PhosphorIconsLight.arrowSquareIn),
             ),
@@ -221,13 +217,14 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
                 child: ElevatedButton.icon(
                   icon: const Icon(PhosphorIconsLight.plus),
                   label: Text(LeapLocalizations.of(context).create),
-                  onPressed: () => showDialog<bool>(
-                    context: context,
-                    builder: (context) => const CreateDialog(),
-                  ).then((result) {
-                    if (!(result ?? false)) return;
-                    _reloadGames();
-                  }),
+                  onPressed: () =>
+                      showDialog<bool>(
+                        context: context,
+                        builder: (context) => const CreateDialog(),
+                      ).then((result) {
+                        if (!(result ?? false)) return;
+                        _reloadGames();
+                      }),
                 ),
               ),
             ),
@@ -236,40 +233,43 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
       ],
     );
     return ResponsiveAlertDialog(
-        title: Text(AppLocalizations.of(context).play),
-        leading: IconButton.outlined(
-          icon: const Icon(PhosphorIconsLight.x),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        constraints: const BoxConstraints(
-          maxWidth: LeapBreakpoints.expanded,
-          maxHeight: 700,
-        ),
-        content: Column(
-          children: [
-            RowSearchView(
-              onSearchChanged: (value) => setState(() {
-                _search = value;
-              }),
-            ),
-            Expanded(
-              child: Row(
-                children: [
-                  Expanded(child: listView),
-                  if (!isMobile) ...[
-                    const VerticalDivider(),
-                    Expanded(
-                        child: _selected == null
-                            ? Center(
-                                child: Text(
-                                    AppLocalizations.of(context).selectGame),
-                              )
-                            : details),
-                  ],
+      title: Text(AppLocalizations.of(context).play),
+      leading: IconButton.outlined(
+        icon: const Icon(PhosphorIconsLight.x),
+        onPressed: () => Navigator.of(context).pop(),
+      ),
+      constraints: const BoxConstraints(
+        maxWidth: LeapBreakpoints.expanded,
+        maxHeight: 700,
+      ),
+      content: Column(
+        children: [
+          RowSearchView(
+            onSearchChanged: (value) => setState(() {
+              _search = value;
+            }),
+          ),
+          Expanded(
+            child: Row(
+              children: [
+                Expanded(child: listView),
+                if (!isMobile) ...[
+                  const VerticalDivider(),
+                  Expanded(
+                    child: _selected == null
+                        ? Center(
+                            child: Text(
+                              AppLocalizations.of(context).selectGame,
+                            ),
+                          )
+                        : details,
+                  ),
                 ],
-              ),
+              ],
             ),
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -12,11 +12,7 @@ class TeamDialog extends StatefulWidget {
   final String? team;
   final GameTeam? data;
 
-  const TeamDialog({
-    super.key,
-    this.team,
-    this.data,
-  });
+  const TeamDialog({super.key, this.team, this.data});
 
   @override
   State<TeamDialog> createState() => _TeamDialogState();
@@ -78,13 +74,15 @@ class _TeamDialogState extends State<TeamDialog> {
             const SizedBox(height: 16),
             Wrap(
               children: TeamColor.values
-                  .map((e) => ColorButton(
-                        color: e.color,
-                        size: 32,
-                        selected: _color == e,
-                        onTap: () =>
-                            setState(() => _color = _color == e ? null : e),
-                      ))
+                  .map(
+                    (e) => ColorButton(
+                      color: e.color,
+                      size: 32,
+                      selected: _color == e,
+                      onTap: () =>
+                          setState(() => _color = _color == e ? null : e),
+                    ),
+                  )
                   .toList(),
             ),
           ],
@@ -105,7 +103,8 @@ class _TeamDialogState extends State<TeamDialog> {
             builder: (context, child) {
               final text = _nameController.text;
               return ElevatedButton.icon(
-                onPressed: text.isEmpty ||
+                onPressed:
+                    text.isEmpty ||
                         (state.info.teams.containsKey(text) &&
                             text != widget.team)
                     ? null
@@ -114,18 +113,23 @@ class _TeamDialogState extends State<TeamDialog> {
                           description: _descriptionController.text,
                           color: _color,
                         );
-                        _bloc.process(_isCreate()
-                            ? TeamChanged(_nameController.text, team)
-                            : TeamChanged.rename(
-                                widget.team ?? _nameController.text,
-                                _nameController.text,
-                                team));
+                        _bloc.process(
+                          _isCreate()
+                              ? TeamChanged(_nameController.text, team)
+                              : TeamChanged.rename(
+                                  widget.team ?? _nameController.text,
+                                  _nameController.text,
+                                  team,
+                                ),
+                        );
                         Navigator.of(context).pop();
                       },
                 icon: const Icon(PhosphorIconsLight.check),
-                label: Text(_isCreate()
-                    ? LeapLocalizations.of(context).create
-                    : AppLocalizations.of(context).edit),
+                label: Text(
+                  _isCreate()
+                      ? LeapLocalizations.of(context).create
+                      : AppLocalizations.of(context).edit,
+                ),
               );
             },
           ),

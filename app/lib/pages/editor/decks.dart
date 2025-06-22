@@ -67,11 +67,14 @@ class DecksEditorPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
           final name = await showDialog<String>(
-              context: context,
-              builder: (context) => NameDialog(
-                    validator: defaultNameValidator(
-                        context, cubit.state.getDecks().toList()),
-                  ));
+            context: context,
+            builder: (context) => NameDialog(
+              validator: defaultNameValidator(
+                context,
+                cubit.state.getDecks().toList(),
+              ),
+            ),
+          );
           if (name == null) return;
           cubit.setDeck(name, DeckDefinition());
         },
@@ -149,8 +152,10 @@ class _DeckEditorDialogState extends State<DeckEditorDialog> {
                         initialValue: _translation.figures[widget.name]?.name,
                         onChanged: (value) {
                           final translation = FigureTranslation(name: value);
-                          _translation = _translation.copyWith.figures
-                              .put(widget.name, translation);
+                          _translation = _translation.copyWith.figures.put(
+                            widget.name,
+                            translation,
+                          );
                         },
                       ),
                     ],
@@ -167,14 +172,14 @@ class _DeckEditorDialogState extends State<DeckEditorDialog> {
                               final bloc = context.read<EditorCubit>();
                               final result =
                                   await showDialog<FigureDeckDefinition>(
-                                context: context,
-                                builder: (context) => BlocProvider.value(
-                                  value: bloc,
-                                  child: _DeckFigureEditorDialog(
-                                    value: figure,
-                                  ),
-                                ),
-                              );
+                                    context: context,
+                                    builder: (context) => BlocProvider.value(
+                                      value: bloc,
+                                      child: _DeckFigureEditorDialog(
+                                        value: figure,
+                                      ),
+                                    ),
+                                  );
                               if (result == null) return;
                               setState(() {
                                 value.figures[index] = result;
@@ -198,12 +203,12 @@ class _DeckEditorDialogState extends State<DeckEditorDialog> {
                             final bloc = context.read<EditorCubit>();
                             final result =
                                 await showDialog<FigureDeckDefinition>(
-                              context: context,
-                              builder: (context) => BlocProvider.value(
-                                value: bloc,
-                                child: _DeckFigureEditorDialog(),
-                              ),
-                            );
+                                  context: context,
+                                  builder: (context) => BlocProvider.value(
+                                    value: bloc,
+                                    child: _DeckFigureEditorDialog(),
+                                  ),
+                                );
                             if (result == null) return;
                             setState(() {
                               value.figures.add(result);
@@ -227,14 +232,14 @@ class _DeckEditorDialogState extends State<DeckEditorDialog> {
                               final bloc = context.read<EditorCubit>();
                               final result =
                                   await showDialog<BoardDeckDefinition>(
-                                context: context,
-                                builder: (context) => BlocProvider.value(
-                                  value: bloc,
-                                  child: _DeckBoardEditorDialog(
-                                    value: board,
-                                  ),
-                                ),
-                              );
+                                    context: context,
+                                    builder: (context) => BlocProvider.value(
+                                      value: bloc,
+                                      child: _DeckBoardEditorDialog(
+                                        value: board,
+                                      ),
+                                    ),
+                                  );
                               if (result == null) return;
                               setState(() {
                                 value.boards[index] = result;
@@ -258,12 +263,12 @@ class _DeckEditorDialogState extends State<DeckEditorDialog> {
                             final bloc = context.read<EditorCubit>();
                             final result =
                                 await showDialog<BoardDeckDefinition>(
-                              context: context,
-                              builder: (context) => BlocProvider.value(
-                                value: bloc,
-                                child: _DeckBoardEditorDialog(),
-                              ),
-                            );
+                                  context: context,
+                                  builder: (context) => BlocProvider.value(
+                                    value: bloc,
+                                    child: _DeckBoardEditorDialog(),
+                                  ),
+                                );
                             if (result == null) return;
                             setState(() {
                               value.boards.add(result);
@@ -303,9 +308,7 @@ class _DeckEditorDialogState extends State<DeckEditorDialog> {
 class _DeckFigureEditorDialog extends StatefulWidget {
   final FigureDeckDefinition? value;
 
-  const _DeckFigureEditorDialog({
-    this.value,
-  });
+  const _DeckFigureEditorDialog({this.value});
 
   @override
   State<_DeckFigureEditorDialog> createState() =>
@@ -334,10 +337,7 @@ class __DeckFigureEditorDialogState extends State<_DeckFigureEditorDialog> {
             children: [
               DropdownMenu<String>(
                 dropdownMenuEntries: state.getFigures().map((e) {
-                  return DropdownMenuEntry(
-                    value: e,
-                    label: e,
-                  );
+                  return DropdownMenuEntry(value: e, label: e);
                 }).toList(),
                 label: Text(AppLocalizations.of(context).name),
                 initialSelection: _value?.name,
@@ -358,8 +358,9 @@ class __DeckFigureEditorDialogState extends State<_DeckFigureEditorDialog> {
                   dropdownMenuEntries: ['', ...figure.variations.keys].map((e) {
                     return DropdownMenuEntry(
                       value: e,
-                      label:
-                          e.isEmpty ? AppLocalizations.of(context).notSet : e,
+                      label: e.isEmpty
+                          ? AppLocalizations.of(context).notSet
+                          : e,
                     );
                   }).toList(),
                   onSelected: (value) {
@@ -412,9 +413,7 @@ class __DeckFigureEditorDialogState extends State<_DeckFigureEditorDialog> {
 class _DeckBoardEditorDialog extends StatefulWidget {
   final BoardDeckDefinition? value;
 
-  const _DeckBoardEditorDialog({
-    this.value,
-  });
+  const _DeckBoardEditorDialog({this.value});
 
   @override
   State<_DeckBoardEditorDialog> createState() => __DeckBoardEditorDialogState();
@@ -442,10 +441,7 @@ class __DeckBoardEditorDialogState extends State<_DeckBoardEditorDialog> {
             children: [
               DropdownMenu<String>(
                 dropdownMenuEntries: state.getBoards().map((e) {
-                  return DropdownMenuEntry(
-                    value: e,
-                    label: e,
-                  );
+                  return DropdownMenuEntry(value: e, label: e);
                 }).toList(),
                 label: Text(AppLocalizations.of(context).name),
                 initialSelection: _value?.name,

@@ -30,7 +30,8 @@ class ServerAssetManager extends AssetManager {
     if (!await directory.exists()) {
       await directory.create();
       print(
-          'WARNING: No packs directory found. Please add packs to the server.');
+        'WARNING: No packs directory found. Please add packs to the server.',
+      );
     }
     await for (final file in directory.list()) {
       if (file is File) {
@@ -38,32 +39,39 @@ class ServerAssetManager extends AssetManager {
         final extension = fileName.split('.').last;
         if (extension != _stnxExtension && extension != _metadataExtension) {
           console.print(
-              'WARNING: Invalid pack file extension: $fileName. Skipping.',
-              level: LogLevel.warning);
+            'WARNING: Invalid pack file extension: $fileName. Skipping.',
+            level: LogLevel.warning,
+          );
           continue;
         }
-        var name =
-            fileName.substring(0, fileName.length - _stnxExtension.length - 1);
+        var name = fileName.substring(
+          0,
+          fileName.length - _stnxExtension.length - 1,
+        );
         if (name.isEmpty) name = kCorePackId;
         if (extension == _stnxExtension) {
           final data = SetonixData.fromData(await file.readAsBytes());
           _packs[name] = data;
         } else {
-          final metadata =
-              ServerDataMetadataMapper.fromJson(await file.readAsString());
+          final metadata = ServerDataMetadataMapper.fromJson(
+            await file.readAsString(),
+          );
           _metadata[name] = metadata;
         }
       }
     }
     final coreIncluded = _packs.containsKey(kCorePackId);
     console.print(
-        'Loaded ${_packs.length} pack(s). ${coreIncluded ? '(with core pack)' : '(without core pack)'}',
-        level: LogLevel.info);
+      'Loaded ${_packs.length} pack(s). ${coreIncluded ? '(with core pack)' : '(without core pack)'}',
+      level: LogLevel.info,
+    );
     if (_packs.isEmpty) {
       console.print('No packs loaded.', level: LogLevel.warning);
     } else {
-      console.print('Loaded pack(s): ${_packs.keys.join(', ')}',
-          level: LogLevel.verbose);
+      console.print(
+        'Loaded pack(s): ${_packs.keys.join(', ')}',
+        level: LogLevel.verbose,
+      );
     }
   }
 
@@ -76,8 +84,9 @@ class ServerAssetManager extends AssetManager {
   @override
   List<String>? getDownloadUrls(String id) => _metadata[id]?.downloadUrls;
 
-  Iterable<String> getPackIds() => _packs.entries
-      .map((e) => e.key == kCorePackId ? kCorePackId : e.value.identifier);
+  Iterable<String> getPackIds() => _packs.entries.map(
+    (e) => e.key == kCorePackId ? kCorePackId : e.value.identifier,
+  );
 
   String? getPackId(String name) {
     if (name == kCorePackId) return kCorePackId;

@@ -93,44 +93,56 @@ final class SetonixConfig with SetonixConfigMappable {
           ? int.fromEnvironment(envMaxPlayers, defaultValue: defaultMaxPlayers)
           : null,
       description: bool.hasEnvironment(envDescription)
-          ? String.fromEnvironment(envDescription,
-              defaultValue: defaultDescription)
+          ? String.fromEnvironment(
+              envDescription,
+              defaultValue: defaultDescription,
+            )
           : null,
       guestPrefix: bool.hasEnvironment(envGuestPrefix)
-          ? String.fromEnvironment(envGuestPrefix,
-              defaultValue: defaultGuestPrefix)
+          ? String.fromEnvironment(
+              envGuestPrefix,
+              defaultValue: defaultGuestPrefix,
+            )
           : null,
       whitelistEnabled: bool.hasEnvironment(envWhitelistEnabled)
-          ? bool.fromEnvironment(envWhitelistEnabled,
-              defaultValue: defaultWhitelistEnabled)
+          ? bool.fromEnvironment(
+              envWhitelistEnabled,
+              defaultValue: defaultWhitelistEnabled,
+            )
           : null,
       accountRequired: bool.hasEnvironment(envAccountRequired)
-          ? bool.fromEnvironment(envAccountRequired,
-              defaultValue: defaultAccountRequired)
+          ? bool.fromEnvironment(
+              envAccountRequired,
+              defaultValue: defaultAccountRequired,
+            )
           : null,
       apiEndpoint: bool.hasEnvironment(envApiEndpoint)
-          ? String.fromEnvironment(envApiEndpoint,
-              defaultValue: defaultApiEndpoint)
+          ? String.fromEnvironment(
+              envApiEndpoint,
+              defaultValue: defaultApiEndpoint,
+            )
           : null,
       endpointSecret: bool.hasEnvironment(envEndpointSecret)
-          ? String.fromEnvironment(envEndpointSecret,
-              defaultValue: defaultEndpointSecret)
+          ? String.fromEnvironment(
+              envEndpointSecret,
+              defaultValue: defaultEndpointSecret,
+            )
           : null,
     );
   }
 
   SetonixConfig merge(SetonixConfig other) => SetonixConfig(
-        host: other.host ?? host,
-        port: other.port ?? port,
-        worldFile: other.worldFile ?? worldFile,
-        autosave: other.autosave ?? autosave,
-        multiWorld: other.multiWorld ?? multiWorld,
-        maxPlayers: other.maxPlayers ?? maxPlayers,
-        description: other.description ?? description,
-        guestPrefix: other.guestPrefix ?? guestPrefix,
-        accountRequired: other.accountRequired ?? accountRequired,
-        whitelistEnabled: other.whitelistEnabled ?? whitelistEnabled,
-        apiEndpoint: other.apiEndpoint ?? apiEndpoint,
-        endpointSecret: other.endpointSecret ?? endpointSecret,
-      );
+    host: other.host ?? host,
+    port: other.port ?? port,
+    worldFile: other.worldFile ?? worldFile,
+    autosave: other.autosave ?? autosave,
+    multiWorld: other.multiWorld ?? multiWorld,
+    maxPlayers: other.maxPlayers ?? maxPlayers,
+    description: other.description ?? description,
+    guestPrefix: other.guestPrefix ?? guestPrefix,
+    accountRequired: other.accountRequired ?? accountRequired,
+    whitelistEnabled: other.whitelistEnabled ?? whitelistEnabled,
+    apiEndpoint: other.apiEndpoint ?? apiEndpoint,
+    endpointSecret: other.endpointSecret ?? endpointSecret,
+  );
 }

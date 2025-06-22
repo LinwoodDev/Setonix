@@ -10,13 +10,8 @@ final class HandChanged extends LocalWorldEvent with HandChangedMappable {
   final ItemLocation? deck;
   final bool? show;
 
-  HandChanged({
-    this.deck,
-    bool this.show = true,
-  });
-  HandChanged.hide()
-      : deck = null,
-        show = false;
+  HandChanged({this.deck, bool this.show = true});
+  HandChanged.hide() : deck = null, show = false;
   HandChanged.toggle({this.deck}) : show = null;
 }
 

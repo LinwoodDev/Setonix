@@ -4,10 +4,7 @@ class _WorldPacksView extends StatelessWidget {
   final WorldBloc bloc;
   final String query;
 
-  const _WorldPacksView({
-    required this.bloc,
-    required this.query,
-  });
+  const _WorldPacksView({required this.bloc, required this.query});
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +16,10 @@ class _WorldPacksView extends StatelessWidget {
         final loadedPacks = state.assetManager.packs.toList();
         final worldPacks = loadedPacks
             .where((entry) => state.info.packs.contains(entry.key))
-            .where((entry) =>
-                entry.value.getMetadataOrDefault().name.contains(query))
+            .where(
+              (entry) =>
+                  entry.value.getMetadataOrDefault().name.contains(query),
+            )
             .toList();
         return ReorderableListView.builder(
           itemCount: worldPacks.length,
@@ -31,17 +30,16 @@ class _WorldPacksView extends StatelessWidget {
             final metadata = data.getMetadata();
             return ListTile(
               key: ValueKey(id),
-              title:
-                  Text(metadata?.name ?? AppLocalizations.of(context).unnamed),
+              title: Text(
+                metadata?.name ?? AppLocalizations.of(context).unnamed,
+              ),
               subtitle: Text(id),
               leading: IconButton.outlined(
                 icon: const Icon(PhosphorIconsLight.minus),
                 tooltip: AppLocalizations.of(context).removePack,
                 onPressed: () {
                   final packs = List<String>.from(state.info.packs)..remove(id);
-                  bloc.process(
-                    PacksChangeRequest(packs),
-                  );
+                  bloc.process(PacksChangeRequest(packs));
                 },
               ),
             );
@@ -53,9 +51,7 @@ class _WorldPacksView extends StatelessWidget {
             final packs = List<String>.from(state.info.packs);
             final pack = packs.removeAt(oldIndex);
             packs.insert(newIndex, pack);
-            bloc.process(
-              PacksChangeRequest(packs),
-            );
+            bloc.process(PacksChangeRequest(packs));
           },
         );
       },

@@ -29,9 +29,10 @@ class _HeaderHomeViewState extends State<HeaderHomeView> {
     return Center(
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: LeapBreakpoints.expanded),
-        child: LayoutBuilder(builder: (context, constraints) {
-          final isDesktop = constraints.maxWidth >= LeapBreakpoints.medium;
-          return FutureBuilder(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final isDesktop = constraints.maxWidth >= LeapBreakpoints.medium;
+            return FutureBuilder(
               future: _hasNewerVersionFuture,
               builder: (context, snapshot) {
                 final hasNewerVersion = snapshot.data ?? true;
@@ -90,10 +91,7 @@ class _HeaderHomeViewState extends State<HeaderHomeView> {
                 final logo = Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Image.asset(
-                      'images/logo.png',
-                      width: 64,
-                    ),
+                    Image.asset('images/logo.png', width: 64),
                     const SizedBox(width: 16),
                     Flexible(
                       child: Column(
@@ -102,40 +100,35 @@ class _HeaderHomeViewState extends State<HeaderHomeView> {
                         children: [
                           Text(
                             AppLocalizations.of(context).welcome,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleLarge
-                                ?.copyWith(
-                                  color: colorScheme.onInverseSurface,
-                                ),
+                            style: Theme.of(context).textTheme.titleLarge
+                                ?.copyWith(color: colorScheme.onInverseSurface),
                             overflow: TextOverflow.clip,
                           ),
                           Text(
                             AppLocalizations.of(context).welcomeContent,
-                            style:
-                                Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      color: colorScheme.onInverseSurface,
-                                    ),
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(color: colorScheme.onInverseSurface),
                           ),
                         ],
                       ),
                     ),
                   ],
                 );
-                final innerCard =
-                    LayoutBuilder(builder: (context, constraints) {
-                  final isMobile =
-                      constraints.maxWidth < LeapBreakpoints.compact;
-                  if (isMobile) {
-                    return Column(
-                      children: [logo, const SizedBox(height: 16), whatsNew],
+                final innerCard = LayoutBuilder(
+                  builder: (context, constraints) {
+                    final isMobile =
+                        constraints.maxWidth < LeapBreakpoints.compact;
+                    if (isMobile) {
+                      return Column(
+                        children: [logo, const SizedBox(height: 16), whatsNew],
+                      );
+                    }
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [logo, whatsNew],
                     );
-                  }
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [logo, whatsNew],
-                  );
-                });
+                  },
+                );
                 final card = Material(
                   elevation: 10,
                   borderRadius: BorderRadius.circular(24),
@@ -146,10 +139,7 @@ class _HeaderHomeViewState extends State<HeaderHomeView> {
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
-                        colors: [
-                          colorScheme.secondary,
-                          colorScheme.primary,
-                        ],
+                        colors: [colorScheme.secondary, colorScheme.primary],
                         stops: const [0.2, 0.8],
                       ),
                     ),
@@ -167,11 +157,7 @@ class _HeaderHomeViewState extends State<HeaderHomeView> {
                       )
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          card,
-                          const SizedBox(height: 32),
-                          actions,
-                        ],
+                        children: [card, const SizedBox(height: 32), actions],
                       );
                 return Column(
                   children: [
@@ -180,8 +166,10 @@ class _HeaderHomeViewState extends State<HeaderHomeView> {
                     const SizedBox(height: 48),
                   ],
                 );
-              });
-        }),
+              },
+            );
+          },
+        ),
       ),
     );
   }

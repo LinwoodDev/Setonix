@@ -5,8 +5,9 @@ import 'dart:io';
 Future<void> main() {
   final destination = InternetAddress('255.255.255.255');
   print('Sending to $destination');
-  return RawDatagramSocket.bind(InternetAddress.anyIPv4, 28007)
-      .then((RawDatagramSocket udpSocket) {
+  return RawDatagramSocket.bind(InternetAddress.anyIPv4, 28007).then((
+    RawDatagramSocket udpSocket,
+  ) {
     udpSocket.broadcastEnabled = true;
     //List<String> words = ['apple', 'banana', 'cherry', 'date', 'elderberry'];
     Timer.periodic(Duration(seconds: 1), (Timer t) {

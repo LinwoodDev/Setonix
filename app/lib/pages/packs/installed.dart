@@ -24,7 +24,10 @@ class _InstalledPacksViewState extends State<_InstalledPacksView> {
   late final SetonixFileSystem _fileSystem = context.read<SetonixFileSystem>();
 
   List<Widget> _buildDetailsChildren(
-      SetonixFile pack, FileMetadata metadata, DataMetadata data) {
+    SetonixFile pack,
+    FileMetadata metadata,
+    DataMetadata data,
+  ) {
     final locale = Localizations.localeOf(context).languageCode;
     final lastUsed = data.lastUsed();
     return [
@@ -33,14 +36,18 @@ class _InstalledPacksViewState extends State<_InstalledPacksView> {
         child: Row(
           children: [
             const SizedBox(width: 8),
-            Icon(data.manuallyAdded
-                ? PhosphorIconsLight.plusSquare
-                : PhosphorIconsLight.robot),
+            Icon(
+              data.manuallyAdded
+                  ? PhosphorIconsLight.plusSquare
+                  : PhosphorIconsLight.robot,
+            ),
             const SizedBox(width: 8),
             Expanded(
-              child: Text(data.manuallyAdded
-                  ? AppLocalizations.of(context).manuallyAdded
-                  : AppLocalizations.of(context).autoAdded),
+              child: Text(
+                data.manuallyAdded
+                    ? AppLocalizations.of(context).manuallyAdded
+                    : AppLocalizations.of(context).autoAdded,
+              ),
             ),
             if (!data.manuallyAdded) ...[
               const SizedBox(width: 8),
@@ -49,8 +56,10 @@ class _InstalledPacksViewState extends State<_InstalledPacksView> {
                 tooltip: AppLocalizations.of(context).addManually,
                 onPressed: () {
                   final newData = data.copyWith(manuallyAdded: true);
-                  _fileSystem.dataInfoSystem
-                      .updateFile(pack.identifier, newData);
+                  _fileSystem.dataInfoSystem.updateFile(
+                    pack.identifier,
+                    newData,
+                  );
                   widget.onUnselect();
                   widget.onReload();
                 },
@@ -81,13 +90,15 @@ class _InstalledPacksViewState extends State<_InstalledPacksView> {
       ListTile(
         title: Text(AppLocalizations.of(context).installed),
         subtitle: Text(
-            '${DateFormat.yMd(locale).format(data.addedAt)} ${DateFormat.Hm(locale).format(data.addedAt)}'),
+          '${DateFormat.yMd(locale).format(data.addedAt)} ${DateFormat.Hm(locale).format(data.addedAt)}',
+        ),
       ),
       if (!data.manuallyAdded)
         ListTile(
           title: Text(AppLocalizations.of(context).lastUsed),
           subtitle: Text(
-              '${DateFormat.yMd(locale).format(lastUsed)} ${DateFormat.Hm(locale).format(lastUsed)}'),
+            '${DateFormat.yMd(locale).format(lastUsed)} ${DateFormat.Hm(locale).format(lastUsed)}',
+          ),
         ),
     ];
   }
@@ -95,19 +106,18 @@ class _InstalledPacksViewState extends State<_InstalledPacksView> {
   List<Widget> _buildActionsChildren(
     SetonixData pack, {
     VoidCallback? onRemove,
-  }) =>
-      [
-        if (onRemove != null) ...[
-          SizedBox(
-            height: 42,
-            child: FilledButton.tonalIcon(
-              onPressed: onRemove,
-              label: Text(AppLocalizations.of(context).remove),
-              icon: const Icon(PhosphorIconsLight.trash),
-            ),
-          ),
-        ],
-      ];
+  }) => [
+    if (onRemove != null) ...[
+      SizedBox(
+        height: 42,
+        child: FilledButton.tonalIcon(
+          onPressed: onRemove,
+          label: Text(AppLocalizations.of(context).remove),
+          icon: const Icon(PhosphorIconsLight.trash),
+        ),
+      ),
+    ],
+  ];
 
   Future<void> _removePack() async {
     widget.onUnselect();
@@ -128,11 +138,7 @@ class _InstalledPacksViewState extends State<_InstalledPacksView> {
   ) {
     widget.onSelected(
       Text(key),
-      _buildDetailsChildren(
-        file,
-        metadata,
-        data,
-      ),
+      _buildDetailsChildren(file, metadata, data),
       _buildActionsChildren(
         file.load(),
         onRemove: _allowRemoving(key, true) ? _removePack : null,
@@ -171,12 +177,11 @@ class _InstalledPacksViewState extends State<_InstalledPacksView> {
                                 ...widget.bloc!.state.info.packs,
                                 key,
                               ];
-                              widget.bloc!.process(
-                                PacksChangeRequest(packs),
-                              );
+                              widget.bloc!.process(PacksChangeRequest(packs));
                             },
                     );
-                  })
+                  },
+                )
               : null,
         );
       },

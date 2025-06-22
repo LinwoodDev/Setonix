@@ -23,17 +23,30 @@ class BackgroundDefinitionMapper extends ClassMapperBase<BackgroundDefinition> {
   final String id = 'BackgroundDefinition';
 
   static VectorDefinition _$offset(BackgroundDefinition v) => v.offset;
-  static const Field<BackgroundDefinition, VectorDefinition> _f$offset =
-      Field('offset', _$offset, opt: true, def: VectorDefinition.zero);
+  static const Field<BackgroundDefinition, VectorDefinition> _f$offset = Field(
+    'offset',
+    _$offset,
+    opt: true,
+    def: VectorDefinition.zero,
+  );
   static VectorDefinition? _$size(BackgroundDefinition v) => v.size;
-  static const Field<BackgroundDefinition, VectorDefinition> _f$size =
-      Field('size', _$size, opt: true);
+  static const Field<BackgroundDefinition, VectorDefinition> _f$size = Field(
+    'size',
+    _$size,
+    opt: true,
+  );
   static String _$texture(BackgroundDefinition v) => v.texture;
-  static const Field<BackgroundDefinition, String> _f$texture =
-      Field('texture', _$texture);
+  static const Field<BackgroundDefinition, String> _f$texture = Field(
+    'texture',
+    _$texture,
+  );
   static int _$priority(BackgroundDefinition v) => v.priority;
-  static const Field<BackgroundDefinition, int> _f$priority =
-      Field('priority', _$priority, opt: true, def: 0);
+  static const Field<BackgroundDefinition, int> _f$priority = Field(
+    'priority',
+    _$priority,
+    opt: true,
+    def: 0,
+  );
 
   @override
   final MappableFields<BackgroundDefinition> fields = const {
@@ -45,10 +58,11 @@ class BackgroundDefinitionMapper extends ClassMapperBase<BackgroundDefinition> {
 
   static BackgroundDefinition _instantiate(DecodingData data) {
     return BackgroundDefinition(
-        offset: data.dec(_f$offset),
-        size: data.dec(_f$size),
-        texture: data.dec(_f$texture),
-        priority: data.dec(_f$priority));
+      offset: data.dec(_f$offset),
+      size: data.dec(_f$size),
+      texture: data.dec(_f$texture),
+      priority: data.dec(_f$priority),
+    );
   }
 
   @override
@@ -74,52 +88,67 @@ mixin BackgroundDefinitionMappable {
         .encodeMap<BackgroundDefinition>(this as BackgroundDefinition);
   }
 
-  BackgroundDefinitionCopyWith<BackgroundDefinition, BackgroundDefinition,
-      BackgroundDefinition> get copyWith => _BackgroundDefinitionCopyWithImpl<
-          BackgroundDefinition, BackgroundDefinition>(
-      this as BackgroundDefinition, $identity, $identity);
+  BackgroundDefinitionCopyWith<
+    BackgroundDefinition,
+    BackgroundDefinition,
+    BackgroundDefinition
+  >
+  get copyWith =>
+      _BackgroundDefinitionCopyWithImpl<
+        BackgroundDefinition,
+        BackgroundDefinition
+      >(this as BackgroundDefinition, $identity, $identity);
   @override
   String toString() {
-    return BackgroundDefinitionMapper.ensureInitialized()
-        .stringifyValue(this as BackgroundDefinition);
+    return BackgroundDefinitionMapper.ensureInitialized().stringifyValue(
+      this as BackgroundDefinition,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return BackgroundDefinitionMapper.ensureInitialized()
-        .equalsValue(this as BackgroundDefinition, other);
+    return BackgroundDefinitionMapper.ensureInitialized().equalsValue(
+      this as BackgroundDefinition,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return BackgroundDefinitionMapper.ensureInitialized()
-        .hashValue(this as BackgroundDefinition);
+    return BackgroundDefinitionMapper.ensureInitialized().hashValue(
+      this as BackgroundDefinition,
+    );
   }
 }
 
 extension BackgroundDefinitionValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BackgroundDefinition, $Out> {
   BackgroundDefinitionCopyWith<$R, BackgroundDefinition, $Out>
-      get $asBackgroundDefinition => $base.as(
-          (v, t, t2) => _BackgroundDefinitionCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asBackgroundDefinition => $base.as(
+    (v, t, t2) => _BackgroundDefinitionCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
 abstract class BackgroundDefinitionCopyWith<
-    $R,
-    $In extends BackgroundDefinition,
-    $Out> implements VisualDefinitionCopyWith<$R, $In, $Out> {
+  $R,
+  $In extends BackgroundDefinition,
+  $Out
+>
+    implements VisualDefinitionCopyWith<$R, $In, $Out> {
   @override
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get offset;
   @override
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>? get size;
   @override
-  $R call(
-      {VectorDefinition? offset,
-      VectorDefinition? size,
-      String? texture,
-      int? priority});
+  $R call({
+    VectorDefinition? offset,
+    VectorDefinition? size,
+    String? texture,
+    int? priority,
+  });
   BackgroundDefinitionCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _BackgroundDefinitionCopyWithImpl<$R, $Out>
@@ -137,26 +166,29 @@ class _BackgroundDefinitionCopyWithImpl<$R, $Out>
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>? get size =>
       $value.size?.copyWith.$chain((v) => call(size: v));
   @override
-  $R call(
-          {VectorDefinition? offset,
-          Object? size = $none,
-          String? texture,
-          int? priority}) =>
-      $apply(FieldCopyWithData({
-        if (offset != null) #offset: offset,
-        if (size != $none) #size: size,
-        if (texture != null) #texture: texture,
-        if (priority != null) #priority: priority
-      }));
+  $R call({
+    VectorDefinition? offset,
+    Object? size = $none,
+    String? texture,
+    int? priority,
+  }) => $apply(
+    FieldCopyWithData({
+      if (offset != null) #offset: offset,
+      if (size != $none) #size: size,
+      if (texture != null) #texture: texture,
+      if (priority != null) #priority: priority,
+    }),
+  );
   @override
   BackgroundDefinition $make(CopyWithData data) => BackgroundDefinition(
-      offset: data.get(#offset, or: $value.offset),
-      size: data.get(#size, or: $value.size),
-      texture: data.get(#texture, or: $value.texture),
-      priority: data.get(#priority, or: $value.priority));
+    offset: data.get(#offset, or: $value.offset),
+    size: data.get(#size, or: $value.size),
+    texture: data.get(#texture, or: $value.texture),
+    priority: data.get(#priority, or: $value.priority),
+  );
 
   @override
   BackgroundDefinitionCopyWith<$R2, BackgroundDefinition, $Out2>
-      $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _BackgroundDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _BackgroundDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

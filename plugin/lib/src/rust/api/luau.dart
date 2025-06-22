@@ -11,17 +11,21 @@ import 'plugin.dart';
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LuauPlugin>>
 abstract class LuauPlugin implements RustOpaqueInterface, RustPlugin {
-  factory LuauPlugin(
-          {required String code, required PluginCallback callback}) =>
-      RustLib.instance.api
-          .crateApiLuauLuauPluginNew(code: code, callback: callback);
+  factory LuauPlugin({
+    required String code,
+    required PluginCallback callback,
+  }) => RustLib.instance.api.crateApiLuauLuauPluginNew(
+    code: code,
+    callback: callback,
+  );
 
   Future<void> run();
 
-  Future<EventResult> runEvent(
-      {required String eventType,
-      required String event,
-      required String serverEvent,
-      required int source,
-      required int target});
+  Future<EventResult> runEvent({
+    required String eventType,
+    required String event,
+    required String serverEvent,
+    required int source,
+    required int target,
+  });
 }

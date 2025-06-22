@@ -31,15 +31,14 @@ class HandItemDragCursorHitbox extends PositionComponent
 
   @override
   void onLoad() {
-    add(CircleHitbox(
-      collisionType: CollisionType.active,
-      radius: 0,
-    ));
+    add(CircleHitbox(collisionType: CollisionType.active, radius: 0));
   }
 
   @override
   void onCollisionStart(
-      Set<Vector2> intersectionPoints, PositionComponent other) {
+    Set<Vector2> intersectionPoints,
+    PositionComponent other,
+  ) {
     super.onCollisionStart(intersectionPoints, other);
     if (other is! HandItemDropZone) return;
     _lastZone = other;
@@ -57,7 +56,10 @@ class HandItemDragCursorHitbox extends PositionComponent
 //  Disable it for now, see https://github.com/flame-engine/flame/issues/3270
 mixin HandItemDropZone on PositionComponent, CollisionCallbacks {
   Component get hitbox => RectangleHitbox(
-      collisionType: CollisionType.passive, isSolid: true, size: size);
+    collisionType: CollisionType.passive,
+    isSolid: true,
+    size: size,
+  );
 
   @override
   @mustCallSuper
@@ -68,7 +70,9 @@ mixin HandItemDropZone on PositionComponent, CollisionCallbacks {
   @override
   @mustCallSuper
   void onCollisionStart(
-      Set<Vector2> intersectionPoints, PositionComponent other) {
+    Set<Vector2> intersectionPoints,
+    PositionComponent other,
+  ) {
     super.onCollisionStart(intersectionPoints, other);
     if (other is! HandItemDragCursorHitbox) return;
 
@@ -106,7 +110,7 @@ abstract class HandItem<T> extends PositionComponent
   late final TextComponent<TextPaint> _label;
 
   HandItem({required this.item})
-      : super(size: Vector2(100, 0), anchor: Anchor.bottomCenter);
+    : super(size: Vector2(100, 0), anchor: Anchor.bottomCenter);
 
   GameHand get hand => findParent<GameHand>()!;
 
@@ -141,18 +145,21 @@ abstract class HandItem<T> extends PositionComponent
 
   @override
   void onInitialState(ClientWorldState state) async {
-    add(_label = TextComponent(
+    add(
+      _label = TextComponent(
         text: getLabel(state),
         size: Vector2(0, labelHeight),
         position: Vector2(50, 0),
         anchor: Anchor.topCenter,
-        textRenderer: _buildPaint(state)));
+        textRenderer: _buildPaint(state),
+      ),
+    );
     _sprite.sprite = await loadIcon(state) ?? game.blankSprite;
   }
 
   TextPaint _buildPaint(ClientWorldState state) => TextPaint(
-        style: TextStyle(fontSize: 14, color: state.colorScheme.onSurface),
-      );
+    style: TextStyle(fontSize: 14, color: state.colorScheme.onSurface),
+  );
 
   @override
   void onNewState(ClientWorldState state) {
@@ -192,8 +199,12 @@ abstract class HandItem<T> extends PositionComponent
   @override
   void onDragStart(DragStartEvent event) {
     super.onDragStart(event);
-    game.world.add(_cursorHitbox =
-        HandItemDragCursorHitbox(item: this, position: event.localPosition));
+    game.world.add(
+      _cursorHitbox = HandItemDragCursorHitbox(
+        item: this,
+        position: event.localPosition,
+      ),
+    );
     _last = event.canvasPosition;
   }
 
@@ -207,20 +218,31 @@ abstract class HandItem<T> extends PositionComponent
     if (_label.parent != null) _label.removeFromParent();
     priority = priorityDragging;
     final effectController = EffectController(duration: 0.5);
-    final sprite = _dragSprite ??= SpriteComponent(
-      sprite: _sprite.sprite,
-      size: _sprite.size,
-      anchor: Anchor.center,
-    )
-      ..add(ScaleEffect.by(
-          Vector2.all(game.settingsCubit.state.zoom), effectController))
-      ..add(ColorEffect(bloc.state.colorScheme.primary, effectController,
-          opacityTo: 0.5));
+    final sprite = _dragSprite ??=
+        SpriteComponent(
+            sprite: _sprite.sprite,
+            size: _sprite.size,
+            anchor: Anchor.center,
+          )
+          ..add(
+            ScaleEffect.by(
+              Vector2.all(game.settingsCubit.state.zoom),
+              effectController,
+            ),
+          )
+          ..add(
+            ColorEffect(
+              bloc.state.colorScheme.primary,
+              effectController,
+              opacityTo: 0.5,
+            ),
+          );
     add(sprite);
     sprite.position = event.localEndPosition;
     _last = event.canvasEndPosition;
-    _cursorHitbox?.position =
-        game.camera.globalToLocal(event.canvasEndPosition);
+    _cursorHitbox?.position = game.camera.globalToLocal(
+      event.canvasEndPosition,
+    );
   }
 
   @override
@@ -251,15 +273,16 @@ abstract class HandItem<T> extends PositionComponent
     game.showContextMenu(
       contextMenuBuilder: (context, onClose) =>
           AdaptiveTextSelectionToolbar.buttonItems(
-        anchors:
-            TextSelectionToolbarAnchors(primaryAnchor: position.toOffset()),
-        buttonItems: items(context, onClose),
-      ),
+            anchors: TextSelectionToolbarAnchors(
+              primaryAnchor: position.toOffset(),
+            ),
+            buttonItems: items(context, onClose),
+          ),
     );
   }
 
   List<ContextMenuButtonItem> Function(BuildContext, VoidCallback onClose)?
-      contextItemsBuilder;
+  contextItemsBuilder;
 
   void moveItem(HandItemDropZone zone) {}
 

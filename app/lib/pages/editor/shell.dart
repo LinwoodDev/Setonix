@@ -35,8 +35,8 @@ enum EditorPage {
   String? get route => location == null
       ? null
       : this == EditorPage.general
-          ? 'editor'
-          : 'editor-$name';
+      ? 'editor'
+      : 'editor-$name';
 
   String getLocalizedName(BuildContext context) {
     final loc = AppLocalizations.of(context);
@@ -103,12 +103,14 @@ class EditorNavigatorView extends StatelessWidget {
           ),
           const Divider(),
         ],
-        ...EditorPage.values.map((e) => NavigationDrawerDestination(
-              icon: Icon(e.icon(PhosphorIconsStyle.light)),
-              label: Text(e.getLocalizedName(context)),
-              selectedIcon: Icon(e.icon(PhosphorIconsStyle.fill)),
-              enabled: e.location != null,
-            )),
+        ...EditorPage.values.map(
+          (e) => NavigationDrawerDestination(
+            icon: Icon(e.icon(PhosphorIconsStyle.light)),
+            label: Text(e.getLocalizedName(context)),
+            selectedIcon: Icon(e.icon(PhosphorIconsStyle.fill)),
+            enabled: e.location != null,
+          ),
+        ),
       ],
     );
   }
@@ -140,8 +142,10 @@ class _EditorShellState extends State<EditorShell> {
     _loadData();
   }
 
-  void _loadData() => _data =
-      context.read<SetonixFileSystem>().editorSystem.getFile(widget.name);
+  void _loadData() => _data = context
+      .read<SetonixFileSystem>()
+      .editorSystem
+      .getFile(widget.name);
 
   @override
   Widget build(BuildContext context) {
@@ -161,11 +165,7 @@ class _EditorShellState extends State<EditorShell> {
             appBar: WindowTitleBar<SettingsCubit, SetonixSettings>(
               title: Text(AppLocalizations.of(context).error),
             ),
-            body: Center(
-              child: Text(
-                snapshot.error.toString(),
-              ),
-            ),
+            body: Center(child: Text(snapshot.error.toString())),
           );
         }
         final data = snapshot.data;
@@ -174,9 +174,7 @@ class _EditorShellState extends State<EditorShell> {
             appBar: WindowTitleBar<SettingsCubit, SetonixSettings>(
               title: Text(AppLocalizations.of(context).error),
             ),
-            body: Center(
-              child: Text(AppLocalizations.of(context).noData),
-            ),
+            body: Center(child: Text(AppLocalizations.of(context).noData)),
           );
         }
         return _buildContent(context, data);
@@ -198,23 +196,19 @@ class _EditorShellState extends State<EditorShell> {
       child: Scaffold(
         appBar: WindowTitleBar<SettingsCubit, SetonixSettings>(
           title: Text(
-              isMobile ? currentPage.getLocalizedName(context) : widget.name),
+            isMobile ? currentPage.getLocalizedName(context) : widget.name,
+          ),
         ),
         drawer: isMobile
-            ? EditorNavigatorView(
-                currentPage: currentPage,
-                isMobile: true,
-              )
+            ? EditorNavigatorView(currentPage: currentPage, isMobile: true)
             : null,
         body: Row(
           children: [
             if (!isMobile) ...[
               EditorNavigatorView(currentPage: currentPage),
-              const SizedBox(width: 2)
+              const SizedBox(width: 2),
             ],
-            Expanded(
-              child: widget.child,
-            ),
+            Expanded(child: widget.child),
           ],
         ),
       ),

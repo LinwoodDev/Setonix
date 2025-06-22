@@ -34,8 +34,8 @@ class GameErrorView extends StatelessWidget {
       };
       content = switch (error) {
         InvalidPacksError() => [
-            _PacksGameErrorView(error: error, onReconnect: onReconnect)
-          ],
+          _PacksGameErrorView(error: error, onReconnect: onReconnect),
+        ],
       };
     } else if (error is KickMessage) {
       final link = error.link;
@@ -44,8 +44,9 @@ class GameErrorView extends StatelessWidget {
         const SizedBox(height: 8),
         if (link != null)
           ConstrainedBox(
-            constraints:
-                const BoxConstraints(maxWidth: LeapBreakpoints.compact),
+            constraints: const BoxConstraints(
+              maxWidth: LeapBreakpoints.compact,
+            ),
             child: TextFormField(
               initialValue: link,
               readOnly: true,
@@ -54,12 +55,14 @@ class GameErrorView extends StatelessWidget {
                 filled: true,
                 suffixIcon: IconButton(
                   icon: const Icon(PhosphorIconsLight.paperPlaneRight),
-                  onPressed: () => launchUrlString(link,
-                      mode: LaunchMode.externalApplication),
+                  onPressed: () => launchUrlString(
+                    link,
+                    mode: LaunchMode.externalApplication,
+                  ),
                 ),
               ),
             ),
-          )
+          ),
       ];
     }
     return Scaffold(
@@ -147,70 +150,74 @@ class _PacksGameErrorViewState extends State<_PacksGameErrorView> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: _packs.length,
-        itemBuilder: (context, index) {
-          final pack = _packs[index];
-          final currentDownloadUrl = pack.downloadUrls
-              .elementAtOrNull(_selectedUrls.elementAtOrNull(index) ?? 0);
-          return CheckboxListTile(
-            value: !_excludedPacks.contains(index),
-            onChanged: (value) {
-              setState(() {
-                if (value == true) {
-                  _excludedPacks.remove(index);
-                } else {
-                  _excludedPacks.add(index);
-                }
-              });
-            },
-            title: Text(pack.metadata.name),
-            subtitle: currentDownloadUrl != null
-                ? Text(currentDownloadUrl)
-                : Text(
-                    AppLocalizations.of(context).noDownloadAvailable,
-                    style:
-                        TextStyle(color: Theme.of(context).colorScheme.error),
-                  ),
-            secondary: IconButton(
-              onPressed: () => showLeapBottomSheet(
-                context: context,
-                titleBuilder: (context) => Text(pack.metadata.name),
-                childrenBuilder: (context) => [
-                  for (var i = 0; i < pack.downloadUrls.length; i++)
-                    ListTile(
-                      title: Text(pack.downloadUrls[i]),
-                      onTap: () {
-                        setState(() {
-                          _selectedUrls[index] = i;
-                        });
-                        Navigator.of(context).pop();
-                      },
+    return Column(
+      children: [
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: _packs.length,
+          itemBuilder: (context, index) {
+            final pack = _packs[index];
+            final currentDownloadUrl = pack.downloadUrls.elementAtOrNull(
+              _selectedUrls.elementAtOrNull(index) ?? 0,
+            );
+            return CheckboxListTile(
+              value: !_excludedPacks.contains(index),
+              onChanged: (value) {
+                setState(() {
+                  if (value == true) {
+                    _excludedPacks.remove(index);
+                  } else {
+                    _excludedPacks.add(index);
+                  }
+                });
+              },
+              title: Text(pack.metadata.name),
+              subtitle: currentDownloadUrl != null
+                  ? Text(currentDownloadUrl)
+                  : Text(
+                      AppLocalizations.of(context).noDownloadAvailable,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.error,
+                      ),
                     ),
-                ],
+              secondary: IconButton(
+                onPressed: () => showLeapBottomSheet(
+                  context: context,
+                  titleBuilder: (context) => Text(pack.metadata.name),
+                  childrenBuilder: (context) => [
+                    for (var i = 0; i < pack.downloadUrls.length; i++)
+                      ListTile(
+                        title: Text(pack.downloadUrls[i]),
+                        onTap: () {
+                          setState(() {
+                            _selectedUrls[index] = i;
+                          });
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                  ],
+                ),
+                icon: Icon(PhosphorIconsLight.fadersHorizontal),
               ),
-              icon: Icon(PhosphorIconsLight.fadersHorizontal),
-            ),
-          );
-        },
-      ),
-      Wrap(
-        children: [
-          if (_packs.any((e) => e.downloadUrls.isNotEmpty))
-            FilledButton(
-              onPressed: _currentlyDownloading ? null : _download,
-              child: Text(
-                _excludedPacks.isEmpty
-                    ? AppLocalizations.of(context).downloadAll
-                    : AppLocalizations.of(context).downloadSelected,
+            );
+          },
+        ),
+        Wrap(
+          children: [
+            if (_packs.any((e) => e.downloadUrls.isNotEmpty))
+              FilledButton(
+                onPressed: _currentlyDownloading ? null : _download,
+                child: Text(
+                  _excludedPacks.isEmpty
+                      ? AppLocalizations.of(context).downloadAll
+                      : AppLocalizations.of(context).downloadSelected,
+                ),
               ),
-            ),
-        ],
-      ),
-    ]);
+          ],
+        ),
+      ],
+    );
   }
 
   void _download() async {
@@ -222,13 +229,19 @@ class _PacksGameErrorViewState extends State<_PacksGameErrorView> {
     final fetched = _packs
         .asMap()
         .entries
-        .where((e) =>
-            !_excludedPacks.contains(e.key) && e.value.downloadUrls.isNotEmpty)
+        .where(
+          (e) =>
+              !_excludedPacks.contains(e.key) &&
+              e.value.downloadUrls.isNotEmpty,
+        )
         .toList();
     final results = await Future.wait(
-      fetched.map((e) => fileSystem.downloadPack(
+      fetched.map(
+        (e) => fileSystem.downloadPack(
           e.value.downloadUrls[_selectedUrls.elementAtOrNull(e.key) ?? 0],
-          e.value.id)),
+          e.value.id,
+        ),
+      ),
     );
     final success = results.every((e) => e.isSuccess);
     if (!context.mounted) return;
@@ -242,9 +255,7 @@ class _PacksGameErrorViewState extends State<_PacksGameErrorView> {
         context: context,
         builder: (context) => AlertDialog(
           title: Text(AppLocalizations.of(context).downloadSuccess),
-          content: Text(
-            AppLocalizations.of(context).downloadSuccessMessage,
-          ),
+          content: Text(AppLocalizations.of(context).downloadSuccessMessage),
           actions: [
             ElevatedButton(
               onPressed: () async {
@@ -266,11 +277,13 @@ class _PacksGameErrorViewState extends State<_PacksGameErrorView> {
     } else {
       // Combine packs with result
       final failed = fetched
-          .mapIndexed((i, e) => (
-                metadata: e.value.metadata,
-                id: e.value.id,
-                result: results[i],
-              ))
+          .mapIndexed(
+            (i, e) => (
+              metadata: e.value.metadata,
+              id: e.value.id,
+              result: results[i],
+            ),
+          )
           .where((e) => e.result != PackDownloadResult.success)
           .toList();
       showDialog(
@@ -281,25 +294,24 @@ class _PacksGameErrorViewState extends State<_PacksGameErrorView> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                AppLocalizations.of(context).downloadFailedMessage,
-              ),
+              Text(AppLocalizations.of(context).downloadFailedMessage),
               const SizedBox(height: 8),
               for (final details in failed)
                 ListTile(
                   title: Text('${details.metadata.name} (${details.id})'),
-                  subtitle: Text(
-                    switch (details.result) {
-                      PackDownloadResult.invalidUri =>
-                        AppLocalizations.of(context).invalidUri,
-                      PackDownloadResult.downloadFailed =>
-                        AppLocalizations.of(context).downloadFailed,
-                      PackDownloadResult.invalidIdentifier =>
-                        AppLocalizations.of(context).invalidIdentifier,
-                      _ => '',
-                    },
-                  ),
-                )
+                  subtitle: Text(switch (details.result) {
+                    PackDownloadResult.invalidUri => AppLocalizations.of(
+                      context,
+                    ).invalidUri,
+                    PackDownloadResult.downloadFailed => AppLocalizations.of(
+                      context,
+                    ).downloadFailed,
+                    PackDownloadResult.invalidIdentifier => AppLocalizations.of(
+                      context,
+                    ).invalidIdentifier,
+                    _ => '',
+                  }),
+                ),
             ],
           ),
           actions: [

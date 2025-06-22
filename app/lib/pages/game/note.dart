@@ -11,10 +11,7 @@ import 'package:setonix_api/setonix_api.dart';
 class GameNoteDialog extends StatefulWidget {
   final String? note;
 
-  const GameNoteDialog({
-    super.key,
-    this.note,
-  });
+  const GameNoteDialog({super.key, this.note});
 
   @override
   State<GameNoteDialog> createState() => _GameNoteDialogState();
@@ -96,7 +93,8 @@ class _GameNoteDialogState extends State<GameNoteDialog> {
           label: Text(AppLocalizations.of(context).save),
           onPressed: () {
             _bloc.process(
-                NoteChanged(_nameController.text, _contentController.text));
+              NoteChanged(_nameController.text, _contentController.text),
+            );
             Navigator.of(context).pop();
           },
         ),
@@ -119,22 +117,22 @@ class _GameNoteDialogState extends State<GameNoteDialog> {
           : ListenableBuilder(
               listenable: _contentController,
               builder: (context, _) => ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: _expanded ? 400 : 200,
+                constraints: BoxConstraints(minHeight: _expanded ? 400 : 200),
+                child: MarkdownWidget(
+                  markdownGenerator: MarkdownGenerator(
+                    extensionSet: md.ExtensionSet(
+                      md.ExtensionSet.gitHubWeb.blockSyntaxes,
+                      <md.InlineSyntax>[
+                        md.EmojiSyntax(),
+                        ...md.ExtensionSet.gitHubWeb.inlineSyntaxes,
+                      ],
                     ),
-                    child: MarkdownWidget(
-                        markdownGenerator: MarkdownGenerator(
-                          extensionSet: md.ExtensionSet(
-                            md.ExtensionSet.gitHubWeb.blockSyntaxes,
-                            <md.InlineSyntax>[
-                              md.EmojiSyntax(),
-                              ...md.ExtensionSet.gitHubWeb.inlineSyntaxes
-                            ],
-                          ),
-                        ),
-                        shrinkWrap: true,
-                        data: _contentController.text),
-                  )),
+                  ),
+                  shrinkWrap: true,
+                  data: _contentController.text,
+                ),
+              ),
+            ),
     );
   }
 }

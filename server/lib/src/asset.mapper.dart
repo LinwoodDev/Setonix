@@ -21,8 +21,10 @@ class ServerDataMetadataMapper extends ClassMapperBase<ServerDataMetadata> {
   final String id = 'ServerDataMetadata';
 
   static List<String> _$downloadUrls(ServerDataMetadata v) => v.downloadUrls;
-  static const Field<ServerDataMetadata, List<String>> _f$downloadUrls =
-      Field('downloadUrls', _$downloadUrls);
+  static const Field<ServerDataMetadata, List<String>> _f$downloadUrls = Field(
+    'downloadUrls',
+    _$downloadUrls,
+  );
 
   @override
   final MappableFields<ServerDataMetadata> fields = const {
@@ -56,42 +58,59 @@ mixin ServerDataMetadataMappable {
         .encodeMap<ServerDataMetadata>(this as ServerDataMetadata);
   }
 
-  ServerDataMetadataCopyWith<ServerDataMetadata, ServerDataMetadata,
-          ServerDataMetadata>
-      get copyWith => _ServerDataMetadataCopyWithImpl<ServerDataMetadata,
-          ServerDataMetadata>(this as ServerDataMetadata, $identity, $identity);
+  ServerDataMetadataCopyWith<
+    ServerDataMetadata,
+    ServerDataMetadata,
+    ServerDataMetadata
+  >
+  get copyWith =>
+      _ServerDataMetadataCopyWithImpl<ServerDataMetadata, ServerDataMetadata>(
+        this as ServerDataMetadata,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return ServerDataMetadataMapper.ensureInitialized()
-        .stringifyValue(this as ServerDataMetadata);
+    return ServerDataMetadataMapper.ensureInitialized().stringifyValue(
+      this as ServerDataMetadata,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return ServerDataMetadataMapper.ensureInitialized()
-        .equalsValue(this as ServerDataMetadata, other);
+    return ServerDataMetadataMapper.ensureInitialized().equalsValue(
+      this as ServerDataMetadata,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return ServerDataMetadataMapper.ensureInitialized()
-        .hashValue(this as ServerDataMetadata);
+    return ServerDataMetadataMapper.ensureInitialized().hashValue(
+      this as ServerDataMetadata,
+    );
   }
 }
 
 extension ServerDataMetadataValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ServerDataMetadata, $Out> {
   ServerDataMetadataCopyWith<$R, ServerDataMetadata, $Out>
-      get $asServerDataMetadata => $base.as(
-          (v, t, t2) => _ServerDataMetadataCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asServerDataMetadata => $base.as(
+    (v, t, t2) => _ServerDataMetadataCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
-abstract class ServerDataMetadataCopyWith<$R, $In extends ServerDataMetadata,
-    $Out> implements ClassCopyWith<$R, $In, $Out> {
+abstract class ServerDataMetadataCopyWith<
+  $R,
+  $In extends ServerDataMetadata,
+  $Out
+>
+    implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get downloadUrls;
   $R call({List<String>? downloadUrls});
   ServerDataMetadataCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _ServerDataMetadataCopyWithImpl<$R, $Out>
@@ -104,19 +123,22 @@ class _ServerDataMetadataCopyWithImpl<$R, $Out>
       ServerDataMetadataMapper.ensureInitialized();
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-      get downloadUrls => ListCopyWith(
-          $value.downloadUrls,
-          (v, t) => ObjectCopyWith(v, $identity, t),
-          (v) => call(downloadUrls: v));
+  get downloadUrls => ListCopyWith(
+    $value.downloadUrls,
+    (v, t) => ObjectCopyWith(v, $identity, t),
+    (v) => call(downloadUrls: v),
+  );
   @override
-  $R call({List<String>? downloadUrls}) => $apply(FieldCopyWithData(
-      {if (downloadUrls != null) #downloadUrls: downloadUrls}));
+  $R call({List<String>? downloadUrls}) => $apply(
+    FieldCopyWithData({if (downloadUrls != null) #downloadUrls: downloadUrls}),
+  );
   @override
   ServerDataMetadata $make(CopyWithData data) => ServerDataMetadata(
-      downloadUrls: data.get(#downloadUrls, or: $value.downloadUrls));
+    downloadUrls: data.get(#downloadUrls, or: $value.downloadUrls),
+  );
 
   @override
   ServerDataMetadataCopyWith<$R2, ServerDataMetadata, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _ServerDataMetadataCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _ServerDataMetadataCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

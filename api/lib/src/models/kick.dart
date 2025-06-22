@@ -7,10 +7,7 @@ final class KickMessage with KickMessageMappable {
   final String message;
   final String? link;
 
-  const KickMessage({
-    required this.message,
-    this.link,
-  });
+  const KickMessage({required this.message, this.link});
 
   factory KickMessage.fromString(String message) {
     try {

@@ -20,16 +20,14 @@ class TranslationsStore {
       translations[getLocale()] ??
       PackTranslation();
 
-  T findTranslation<T>(T? Function(PackTranslation) finder, T fallback,
-          [String? locale]) =>
-      finder(getTranslation(locale)) ?? finder(getTranslation()) ?? fallback;
+  T findTranslation<T>(
+    T? Function(PackTranslation) finder,
+    T fallback, [
+    String? locale,
+  ]) => finder(getTranslation(locale)) ?? finder(getTranslation()) ?? fallback;
 
   DeckTranslation getDeckTranslation(String key, [String? locale]) =>
-      findTranslation(
-        (t) => t.decks[key],
-        DeckTranslation(name: key),
-        locale,
-      );
+      findTranslation((t) => t.decks[key], DeckTranslation(name: key), locale);
 
   FigureTranslation getFigureTranslation(String key, [String? locale]) =>
       findTranslation(
@@ -39,21 +37,23 @@ class TranslationsStore {
       );
 
   FigureVariationTranslation getFigureVariationTranslation(
-          String figureKey, String key,
-          [String? locale]) =>
-      findTranslation(
-        (t) => t.figures[figureKey]?.variations[key],
-        FigureVariationTranslation(name: key),
-        locale,
-      );
+    String figureKey,
+    String key, [
+    String? locale,
+  ]) => findTranslation(
+    (t) => t.figures[figureKey]?.variations[key],
+    FigureVariationTranslation(name: key),
+    locale,
+  );
 
-  BackgroundTranslation getBackgroundTranslation(String key,
-          [String? locale]) =>
-      findTranslation(
-        (t) => t.backgrounds[key],
-        BackgroundTranslation(name: key),
-        locale,
-      );
+  BackgroundTranslation getBackgroundTranslation(
+    String key, [
+    String? locale,
+  ]) => findTranslation(
+    (t) => t.backgrounds[key],
+    BackgroundTranslation(name: key),
+    locale,
+  );
 
   BoardTranslation getBoardTranslation(String key, [String? locale]) =>
       findTranslation(
@@ -83,37 +83,25 @@ sealed class DescriptiveTranslation with DescriptiveTranslationMappable {
   final String name;
   final String? description;
 
-  DescriptiveTranslation({
-    required this.name,
-    this.description,
-  });
+  DescriptiveTranslation({required this.name, this.description});
 }
 
 @MappableClass()
 class DeckTranslation extends DescriptiveTranslation
     with DeckTranslationMappable {
-  DeckTranslation({
-    required super.name,
-    super.description,
-  });
+  DeckTranslation({required super.name, super.description});
 }
 
 @MappableClass()
 class BackgroundTranslation extends DescriptiveTranslation
     with BackgroundTranslationMappable {
-  BackgroundTranslation({
-    required super.name,
-    super.description,
-  });
+  BackgroundTranslation({required super.name, super.description});
 }
 
 @MappableClass()
 class FigureVariationTranslation extends DescriptiveTranslation
     with FigureVariationTranslationMappable {
-  FigureVariationTranslation({
-    required super.name,
-    super.description,
-  });
+  FigureVariationTranslation({required super.name, super.description});
 }
 
 @MappableClass()
@@ -131,8 +119,5 @@ class FigureTranslation extends DescriptiveTranslation
 @MappableClass()
 class BoardTranslation extends DescriptiveTranslation
     with BoardTranslationMappable {
-  BoardTranslation({
-    required super.name,
-    super.description,
-  });
+  BoardTranslation({required super.name, super.description});
 }

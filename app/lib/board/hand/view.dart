@@ -108,9 +108,10 @@ class GameHand extends CustomPainterComponent
     final childrenLength = children.length;
     if (childrenLength == 0) return;
     final center = Vector2(width / 2, height);
-    final double active = (_currentScroll - childrenLength + 1)
-        .abs()
-        .clamp(0, childrenLength - 1);
+    final double active = (_currentScroll - childrenLength + 1).abs().clamp(
+      0,
+      childrenLength - 1,
+    );
 
     children.toList().whereType<HandItem>().forEachIndexed((index, element) {
       final double activeRelative = active - index;
@@ -142,14 +143,17 @@ class GameHand extends CustomPainterComponent
       child.removeFromParent();
     }
     painter = GameHandCustomPainter(
-        showHand: state.showHand, color: state.colorScheme.surface);
+      showHand: state.showHand,
+      color: state.colorScheme.surface,
+    );
     if (!state.showHand) return Future.value();
     final selected = state.selectedCell;
     final cell = state.table.cells[selected];
     if (selected == null) {
       final deck = state.selectedDeck;
-      final packItem =
-          deck != null ? state.assetManager.getDeckItem(deck) : null;
+      final packItem = deck != null
+          ? state.assetManager.getDeckItem(deck)
+          : null;
       if (packItem != null) {
         return _buildDeckHand(state, packItem, state.showDuplicates);
       } else {
@@ -162,37 +166,47 @@ class GameHand extends CustomPainterComponent
 
   Future<void> _buildFreeHand(ClientWorldState state) {
     final decks = state.packs.expand((e) => e.value.getDeckItems(e.key));
-    return _addChildren(decks.map((e) => DeckDefinitionHandItem(item: e)).where(
-          (e) => e.matches(state, state.searchTerm),
-        ));
+    return _addChildren(
+      decks
+          .map((e) => DeckDefinitionHandItem(item: e))
+          .where((e) => e.matches(state, state.searchTerm)),
+    );
   }
 
-  Future<void> _addFigures(ClientWorldState state,
-      Iterable<(PackItem<FigureDefinition>, String?)> figures) {
-    return _addChildren(figures
-        .map((e) => FigureDefinitionHandItem(item: e))
-        .where((e) => e.matches(state, state.searchTerm)));
+  Future<void> _addFigures(
+    ClientWorldState state,
+    Iterable<(PackItem<FigureDefinition>, String?)> figures,
+  ) {
+    return _addChildren(
+      figures
+          .map((e) => FigureDefinitionHandItem(item: e))
+          .where((e) => e.matches(state, state.searchTerm)),
+    );
   }
 
-  Future<void> _buildDeckHand(ClientWorldState state,
-      PackItem<DeckDefinition> deck, bool showDuplicates) {
+  Future<void> _buildDeckHand(
+    ClientWorldState state,
+    PackItem<DeckDefinition> deck,
+    bool showDuplicates,
+  ) {
     Iterable<FigureDeckDefinition> deckFigures = deck.item.figures;
     Iterable<BoardDeckDefinition> boards = deck.item.boards;
     if (!showDuplicates) {
-      boards = boards.fold<Set<BoardDeckDefinition>>(
-        <BoardDeckDefinition>{},
-        (previousValue, element) {
-          if (!previousValue.any((e) => element.name == e.name)) {
-            previousValue.add(element);
-          }
-          return previousValue;
-        },
-      );
+      boards = boards.fold<Set<BoardDeckDefinition>>(<BoardDeckDefinition>{}, (
+        previousValue,
+        element,
+      ) {
+        if (!previousValue.any((e) => element.name == e.name)) {
+          previousValue.add(element);
+        }
+        return previousValue;
+      });
       deckFigures = deckFigures.fold<Set<FigureDeckDefinition>>(
         <FigureDeckDefinition>{},
         (previousValue, element) {
-          if (!previousValue.any((e) =>
-              element.name == e.name && element.variation == e.variation)) {
+          if (!previousValue.any(
+            (e) => element.name == e.name && element.variation == e.variation,
+          )) {
             previousValue.add(element);
           }
           return previousValue;
@@ -201,12 +215,13 @@ class GameHand extends CustomPainterComponent
     }
     return Future.wait([
       _addFigures(
-          state,
-          deckFigures.map((e) {
-            final figure = deck.pack.getFigureItem(e.name, deck.namespace);
-            if (figure == null) return null;
-            return (figure, e.variation);
-          }).nonNulls),
+        state,
+        deckFigures.map((e) {
+          final figure = deck.pack.getFigureItem(e.name, deck.namespace);
+          if (figure == null) return null;
+          return (figure, e.variation);
+        }).nonNulls,
+      ),
       _addChildren(
         boards
             .map((e) => deck.pack.getBoardItem(e.name, deck.namespace))
@@ -221,12 +236,14 @@ class GameHand extends CustomPainterComponent
     return Future.wait([
       _addChildren(
         cell?.objects.asMap().entries.map(
-                (e) => GameObjectHandItem(item: (location, e.key, e.value))) ??
+              (e) => GameObjectHandItem(item: (location, e.key, e.value)),
+            ) ??
             const Iterable.empty(),
       ),
       _addChildren(
         cell?.tiles.asMap().entries.map(
-                (e) => BoardTileHandItem(item: (location, e.key, e.value))) ??
+              (e) => BoardTileHandItem(item: (location, e.key, e.value)),
+            ) ??
             const Iterable.empty(),
       ),
     ]);

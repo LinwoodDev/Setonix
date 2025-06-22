@@ -20,9 +20,8 @@ final class GameDialog with GameDialogMappable {
 
   GameDialog withImage(String image) => copyWith(image: image);
 
-  GameDialog markdown(String content) => copyWith.components.add(
-        GameDialogMarkdownComponent(content),
-      );
+  GameDialog markdown(String content) =>
+      copyWith.components.add(GameDialogMarkdownComponent(content));
 
   GameDialog textField(
     String label, {
@@ -30,20 +29,18 @@ final class GameDialog with GameDialogMappable {
     String? placeholder,
     bool multiline = false,
     bool password = false,
-  }) =>
-      copyWith.components.add(
-        GameDialogTextFieldComponent(
-          label,
-          id: id,
-          placeholder: placeholder,
-          multiline: multiline,
-          password: password,
-        ),
-      );
+  }) => copyWith.components.add(
+    GameDialogTextFieldComponent(
+      label,
+      id: id,
+      placeholder: placeholder,
+      multiline: multiline,
+      password: password,
+    ),
+  );
 
-  GameDialog action(GameDialogButton action) => copyWith(
-        actions: [...(actions ?? []), action],
-      );
+  GameDialog action(GameDialogButton action) =>
+      copyWith(actions: [...(actions ?? []), action]);
 
   bool isValid() =>
       (actions?.length ?? 1) <= 10 &&
@@ -58,8 +55,9 @@ final class GameDialog with GameDialogMappable {
                 (e.placeholder?.length ?? 0) <= 50;
         }
       }) &&
-      (actions ?? [])
-          .every((e) => e.label.length <= 50 && (e.id?.length ?? 0) <= 100);
+      (actions ?? []).every(
+        (e) => e.label.length <= 50 && (e.id?.length ?? 0) <= 100,
+      );
 }
 
 @MappableClass()
@@ -108,17 +106,11 @@ base class GameDialogValue with GameDialogValueMappable {
   final String buttonPressed;
   final Map<String, GameDialogComponentValue> values;
 
-  GameDialogValue([
-    this.values = const {},
-    this.buttonPressed = '',
-  ]);
+  GameDialogValue([this.values = const {}, this.buttonPressed = '']);
 
   bool hasValue(String key) => values.containsKey(key);
   GameDialogComponentValue getValue(String key) =>
-      values[key] ??
-      GameDialogComponentValue(
-        component: -1,
-      );
+      values[key] ?? GameDialogComponentValue(component: -1);
 }
 
 @MappableClass()
@@ -136,10 +128,7 @@ final class GameDialogTextFieldValue extends GameDialogComponentValue
     with GameDialogTextFieldValueMappable {
   final String value;
 
-  GameDialogTextFieldValue({
-    required this.value,
-    required super.component,
-  });
+  GameDialogTextFieldValue({required this.value, required super.component});
 
   @override
   String getAsString() => value;

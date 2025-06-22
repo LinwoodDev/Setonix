@@ -23,11 +23,15 @@ class ChatMessageMapper extends ClassMapperBase<ChatMessage> {
   static int _$author(ChatMessage v) => v.author;
   static const Field<ChatMessage, int> _f$author = Field('author', _$author);
   static String _$content(ChatMessage v) => v.content;
-  static const Field<ChatMessage, String> _f$content =
-      Field('content', _$content);
+  static const Field<ChatMessage, String> _f$content = Field(
+    'content',
+    _$content,
+  );
   static DateTime _$timestamp(ChatMessage v) => v.timestamp;
-  static const Field<ChatMessage, DateTime> _f$timestamp =
-      Field('timestamp', _$timestamp);
+  static const Field<ChatMessage, DateTime> _f$timestamp = Field(
+    'timestamp',
+    _$timestamp,
+  );
 
   @override
   final MappableFields<ChatMessage> fields = const {
@@ -38,9 +42,10 @@ class ChatMessageMapper extends ClassMapperBase<ChatMessage> {
 
   static ChatMessage _instantiate(DecodingData data) {
     return ChatMessage(
-        author: data.dec(_f$author),
-        content: data.dec(_f$content),
-        timestamp: data.dec(_f$timestamp));
+      author: data.dec(_f$author),
+      content: data.dec(_f$content),
+      timestamp: data.dec(_f$timestamp),
+    );
   }
 
   @override
@@ -57,28 +62,36 @@ class ChatMessageMapper extends ClassMapperBase<ChatMessage> {
 
 mixin ChatMessageMappable {
   String toJson() {
-    return ChatMessageMapper.ensureInitialized()
-        .encodeJson<ChatMessage>(this as ChatMessage);
+    return ChatMessageMapper.ensureInitialized().encodeJson<ChatMessage>(
+      this as ChatMessage,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return ChatMessageMapper.ensureInitialized()
-        .encodeMap<ChatMessage>(this as ChatMessage);
+    return ChatMessageMapper.ensureInitialized().encodeMap<ChatMessage>(
+      this as ChatMessage,
+    );
   }
 
   ChatMessageCopyWith<ChatMessage, ChatMessage, ChatMessage> get copyWith =>
       _ChatMessageCopyWithImpl<ChatMessage, ChatMessage>(
-          this as ChatMessage, $identity, $identity);
+        this as ChatMessage,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return ChatMessageMapper.ensureInitialized()
-        .stringifyValue(this as ChatMessage);
+    return ChatMessageMapper.ensureInitialized().stringifyValue(
+      this as ChatMessage,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return ChatMessageMapper.ensureInitialized()
-        .equalsValue(this as ChatMessage, other);
+    return ChatMessageMapper.ensureInitialized().equalsValue(
+      this as ChatMessage,
+      other,
+    );
   }
 
   @override
@@ -108,20 +121,22 @@ class _ChatMessageCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ChatMessage> $mapper =
       ChatMessageMapper.ensureInitialized();
   @override
-  $R call({int? author, String? content, DateTime? timestamp}) =>
-      $apply(FieldCopyWithData({
-        if (author != null) #author: author,
-        if (content != null) #content: content,
-        if (timestamp != null) #timestamp: timestamp
-      }));
+  $R call({int? author, String? content, DateTime? timestamp}) => $apply(
+    FieldCopyWithData({
+      if (author != null) #author: author,
+      if (content != null) #content: content,
+      if (timestamp != null) #timestamp: timestamp,
+    }),
+  );
   @override
   ChatMessage $make(CopyWithData data) => ChatMessage(
-      author: data.get(#author, or: $value.author),
-      content: data.get(#content, or: $value.content),
-      timestamp: data.get(#timestamp, or: $value.timestamp));
+    author: data.get(#author, or: $value.author),
+    content: data.get(#content, or: $value.content),
+    timestamp: data.get(#timestamp, or: $value.timestamp),
+  );
 
   @override
   ChatMessageCopyWith<$R2, ChatMessage, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _ChatMessageCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _ChatMessageCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

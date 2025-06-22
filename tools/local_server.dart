@@ -7,21 +7,29 @@ import 'package:shelf_web_socket/shelf_web_socket.dart';
 
 void main(List<String> args) {
   final port = args.isEmpty ? 80 : int.parse(args.first);
-  final staticHandler =
-      createStaticHandler('app/build/web', defaultDocument: 'index.html');
+  final staticHandler = createStaticHandler(
+    'app/build/web',
+    defaultDocument: 'index.html',
+  );
 
   final socketHandler = webSocketHandler((webSocket, _) async {
     final proxied = await WebSocket.connect('ws://localhost:10357');
-    webSocket.stream.listen((message) {
-      proxied.add(message);
-    }, onDone: () {
-      proxied.close();
-    });
-    proxied.listen((message) {
-      webSocket.sink.add(message);
-    }, onDone: () {
-      webSocket.sink.close();
-    });
+    webSocket.stream.listen(
+      (message) {
+        proxied.add(message);
+      },
+      onDone: () {
+        proxied.close();
+      },
+    );
+    proxied.listen(
+      (message) {
+        webSocket.sink.add(message);
+      },
+      onDone: () {
+        webSocket.sink.close();
+      },
+    );
   });
 
   // Serve /connect requests with the web socket handler.

@@ -45,8 +45,12 @@ class BoardGame extends FlameGame
     FlameBlocProvider provider =
         FlameBlocProvider<WorldBloc, ClientWorldState>.value(value: bloc);
     provider = provider;
-    await add(FlameBlocProvider<SettingsCubit, SetonixSettings>.value(
-        value: settingsCubit, children: [provider]));
+    await add(
+      FlameBlocProvider<SettingsCubit, SetonixSettings>.value(
+        value: settingsCubit,
+        children: [provider],
+      ),
+    );
     provider.addAll([camera, world]);
     selectionSprite = await Sprite.load('selection.png');
     blankSprite = await Sprite.load('blank.png');
@@ -66,17 +70,18 @@ class BoardGame extends FlameGame
   void _updateLocale() {
     final context = buildContext;
     if (context == null) return;
-    bloc.state.assetManager.currentLocale =
-        Localizations.localeOf(context).languageCode;
+    bloc.state.assetManager.currentLocale = Localizations.localeOf(
+      context,
+    ).languageCode;
   }
 
   static const zoomPerScrollUnit = 0.02;
 
   @override
   void onScroll(PointerScrollInfo info) {
-    componentsAtPoint(info.eventPosition.widget)
-        .whereType<ScrollCallbacks>()
-        .any((element) => element.onScroll(info));
+    componentsAtPoint(
+      info.eventPosition.widget,
+    ).whereType<ScrollCallbacks>().any((element) => element.onScroll(info));
   }
 
   @override
@@ -99,7 +104,9 @@ class BoardGame extends FlameGame
 
   @override
   KeyEventResult onKeyEvent(
-      KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
+    KeyEvent event,
+    Set<LogicalKeyboardKey> keysPressed,
+  ) {
     var handled = false;
     switch (event.logicalKey) {
       case LogicalKeyboardKey.escape:
@@ -153,9 +160,10 @@ class BoardGame extends FlameGame
     return handled ? KeyEventResult.handled : KeyEventResult.ignored;
   }
 
-  void showContextMenu(
-      {required Widget Function(BuildContext, VoidCallback onClose)
-          contextMenuBuilder}) {
+  void showContextMenu({
+    required Widget Function(BuildContext, VoidCallback onClose)
+    contextMenuBuilder,
+  }) {
     final context = buildContext;
     if (context == null) return;
     contextMenuController.show(

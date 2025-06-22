@@ -51,10 +51,7 @@ final class MultiplayerDisconnectedState extends MultiplayerState
   final MultiplayerConnectedState? oldState;
   final Object? error;
 
-  MultiplayerDisconnectedState({
-    this.error,
-    this.oldState,
-  });
+  MultiplayerDisconnectedState({this.error, this.oldState});
 
   bool get canReconnect => oldState != null;
 }
@@ -102,7 +99,7 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
   Stream<PlayableWorldEvent> get events => _eventController.stream;
 
   final StreamController<NetworkerPacket<ClientWorldEvent>>
-      _serverEventController = StreamController.broadcast();
+  _serverEventController = StreamController.broadcast();
 
   Stream<NetworkerPacket<ClientWorldEvent>> get serverEvents =>
       _serverEventController.stream;
@@ -142,10 +139,12 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
     } else if (base is NetworkerServer) {
       base.clientConnect.listen(_onJoin);
       base.clientDisconnect.listen(_onLeft);
-      transformer.connect(SimpleNetworkerPipe()
-        ..read.listen(_onClientEvent)
-        ..write.listen((e) => _onClientEvent(e, true))
-        ..connect(pipe));
+      transformer.connect(
+        SimpleNetworkerPipe()
+          ..read.listen(_onClientEvent)
+          ..write.listen((e) => _onClientEvent(e, true))
+          ..connect(pipe),
+      );
     }
     return MultiplayerConnectedState(base, pipe);
   }
@@ -158,7 +157,8 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
       }
     } else if (data is ClientWorldEvent) {
       _serverEventController.add(
-          NetworkerPacket(data, local ? kAuthorityChannel : event.channel));
+        NetworkerPacket(data, local ? kAuthorityChannel : event.channel),
+      );
     }
   }
 
@@ -198,7 +198,7 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
   Future<void> connect(Uri uri, [ConnectionTechnology? technology]) =>
       switch (technology ?? ConnectionTechnology.fromScheme(uri.scheme)) {
         ConnectionTechnology.webSocket => connectSocket(uri),
-        ConnectionTechnology.swamp => connectSwamp(uri)
+        ConnectionTechnology.swamp => connectSwamp(uri),
       };
 
   Future<void> connectSwamp(Uri address) async {
@@ -226,13 +226,16 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
       client.onClosed.listen((_) {
         if (isClosed) return;
         final closeReason = client.closeReason;
-        emit(MultiplayerDisconnectedState(
-          oldState: state,
-          error: _fatalError ??
-              (closeReason == null
-                  ? null
-                  : KickMessage.fromString(closeReason)),
-        ));
+        emit(
+          MultiplayerDisconnectedState(
+            oldState: state,
+            error:
+                _fatalError ??
+                (closeReason == null
+                    ? null
+                    : KickMessage.fromString(closeReason)),
+          ),
+        );
         _fatalError = null;
       }, onError: (e) => emit(MultiplayerDisconnectedState(error: e)));
       await client.init();
@@ -260,21 +263,23 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
       final server = NetworkerSocketServer(
         InternetAddress.loopbackIPv4,
         port,
-        filterConnections: buildFilterConnections(loadProperty: (_) {
-          final state = this.state;
-          if (state is! MultiplayerConnectedState) return prop;
-          final networker = state.networker;
-          if (networker is! NetworkerServer) return prop;
-          return prop.copyWith(
-              currentPlayers: networker.clientConnections.length);
-        }),
+        filterConnections: buildFilterConnections(
+          loadProperty: (_) {
+            final state = this.state;
+            if (state is! MultiplayerConnectedState) return prop;
+            final networker = state.networker;
+            if (networker is! NetworkerServer) return prop;
+            return prop.copyWith(
+              currentPlayers: networker.clientConnections.length,
+            );
+          },
+        ),
       );
       final state = await _addNetworker(server);
       await server.init();
-      networkService.sendServerInfo(LanProperty(
-        description: prop.description,
-        port: port,
-      ));
+      networkService.sendServerInfo(
+        LanProperty(description: prop.description, port: port),
+      );
       emit(state);
     } catch (e) {
       emit(MultiplayerDisconnectedState(error: e));
@@ -328,8 +333,6 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
 
   void _onJoin((Channel, ConnectionInfo) event) {
     _initController.add(event);
-    state.userManager?.addUser(
-      event.$1,
-    );
+    state.userManager?.addUser(event.$1);
   }
 }

@@ -11,8 +11,9 @@ abstract class AssetManager {
   Map<String, SignatureMetadata> createSignature([Set<String>? packs]) {
     final signature = <String, SignatureMetadata>{};
     for (final entry in this.packs) {
-      final name =
-          entry.key == kCorePackId ? kCorePackId : entry.value.identifier;
+      final name = entry.key == kCorePackId
+          ? kCorePackId
+          : entry.value.identifier;
       if (!(packs?.contains(name) ?? true)) continue;
       signature[entry.key] = SignatureMetadata(
         metadata: entry.value.getMetadataOrDefault(),
@@ -28,23 +29,24 @@ abstract class AssetManager {
   BoardDefinition? getBoard(ItemLocation location) =>
       getPack(location.namespace)?.getBoard(location.id);
 
-  PackItem<BoardDefinition>? getBoardItem(ItemLocation location) =>
-      getPack(location.namespace)
-          ?.getBoardItem(location.id, location.namespace);
+  PackItem<BoardDefinition>? getBoardItem(ItemLocation location) => getPack(
+    location.namespace,
+  )?.getBoardItem(location.id, location.namespace);
 
   FigureDefinition? getFigure(ItemLocation location) =>
       getPack(location.namespace)?.getFigure(location.id);
 
-  PackItem<FigureDefinition>? getFigureItem(ItemLocation location) =>
-      getPack(location.namespace)
-          ?.getFigureItem(location.id, location.namespace);
+  PackItem<FigureDefinition>? getFigureItem(ItemLocation location) => getPack(
+    location.namespace,
+  )?.getFigureItem(location.id, location.namespace);
 
   BackgroundDefinition? getBackground(ItemLocation location) =>
       getPack(location.namespace)?.getBackground(location.id);
 
   PackItem<BackgroundDefinition>? getBackgroundItem(ItemLocation location) =>
-      getPack(location.namespace)
-          ?.getBackgroundItem(location.id, location.namespace);
+      getPack(
+        location.namespace,
+      )?.getBackgroundItem(location.id, location.namespace);
 
   DeckDefinition? getDeck(ItemLocation location) =>
       getPack(location.namespace)?.getDeck(location.id);

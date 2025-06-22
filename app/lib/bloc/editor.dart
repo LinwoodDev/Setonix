@@ -51,9 +51,10 @@ class EditorCubit extends Cubit<SetonixData> {
   void setBackground(String background, BackgroundDefinition definition) =>
       emit(state.setBackground(background, definition));
 
-  void setTranslation(PackTranslation translation,
-          [String locale = kFallbackLocale]) =>
-      emit(state.setTranslation(translation, locale));
+  void setTranslation(
+    PackTranslation translation, [
+    String locale = kFallbackLocale,
+  ]) => emit(state.setTranslation(translation, locale));
 
   void removeTexture(String texture) => emit(state.removeTexture(texture));
 

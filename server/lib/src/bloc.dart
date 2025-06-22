@@ -11,11 +11,9 @@ Future<ServerProcessed> _computeEvent(
   WorldState state, {
   required List<SignatureMetadata> signature,
 }) {
-  return Isolate.run(() => processServerEvent(
-        event,
-        state,
-        signature: signature,
-      ));
+  return Isolate.run(
+    () => processServerEvent(event, state, signature: signature),
+  );
 }
 
 class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
@@ -34,15 +32,15 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
   EventSystem get eventSystem => _serverPlugin.eventSystem;
 
   WorldBloc(SetonixData data, this.server, this.worldName)
-      : super(WorldState(
+    : super(
+        WorldState(
           data: data,
           table: data.getTableOrDefault(),
           metadata: data.getMetadataOrDefault(),
           info: data.getInfoOrDefault(),
-        )) {
-    _pluginSystem = PluginSystem(
-      server: this,
-    );
+        ),
+      ) {
+    _pluginSystem = PluginSystem(server: this);
     _serverPlugin = _pluginSystem.registerPlugin('', SetonixPlugin.new);
     on<ServerWorldEvent>((event, emit) async {
       final signature = assetManager.createSignature();
@@ -55,8 +53,9 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
       processed.responses.forEach(process);
       if (event is WorldInitialized) {
         server.log(
-            "World initialized${(event.info?.script != null) ? " with script ${event.info?.script}" : ""}",
-            level: LogLevel.info);
+          "World initialized${(event.info?.script != null) ? " with script ${event.info?.script}" : ""}",
+          level: LogLevel.info,
+        );
         await _loadScript((newState ?? state).info.script);
       }
       if (newState == null) return;
@@ -87,9 +86,9 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
   }
 
   Future<void> save({bool force = false}) async {
-    var file = File(worldName == defaultWorldName
-        ? 'world.stnx'
-        : 'worlds/$worldName.stnx');
+    var file = File(
+      worldName == defaultWorldName ? 'world.stnx' : 'worlds/$worldName.stnx',
+    );
     if (!await file.exists()) {
       await file.create(recursive: true);
     }
@@ -98,8 +97,10 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
     await file.writeAsBytes(bytes);
   }
 
-  Future<void> onClientEvent(NetworkerPacket<WorldEvent> packet,
-      {bool force = false}) async {
+  Future<void> onClientEvent(
+    NetworkerPacket<WorldEvent> packet, {
+    bool force = false,
+  }) async {
     final data = packet.data;
     ServerResponse? process;
     try {
@@ -128,19 +129,28 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
       server.defaultEventSystem.fire(event);
       if (event.cancelled) return;
       server.log(
-          'Processing event by ${event.source}: ${limitOutput(event.clientEvent)}, answered with ${limitOutput(event.serverEvent)}',
-          level: LogLevel.verbose);
+        'Processing event by ${event.source}: ${limitOutput(event.clientEvent)}, answered with ${limitOutput(event.serverEvent)}',
+        level: LogLevel.verbose,
+      );
     }
     switch (packet.data) {
       case MessageRequest data:
-        server.log("Message by ${packet.channel}: ${data.message}",
-            level: LogLevel.info);
+        server.log(
+          "Message by ${packet.channel}: ${data.message}",
+          level: LogLevel.info,
+        );
       default:
     }
-    server.sendEvent(event.serverEvent,
-        target: event.target, worldName: worldName);
+    server.sendEvent(
+      event.serverEvent,
+      target: event.target,
+      worldName: worldName,
+    );
     final updatePackets = process.buildUpdatePacketsFor(
-        state, server.channels, event.needsUpdate);
+      state,
+      server.channels,
+      event.needsUpdate,
+    );
     for (final packet in updatePackets) {
       sendEvent(packet.data, target: packet.channel);
     }
@@ -152,8 +162,11 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
   }
 
   @override
-  void sendEvent(PlayableWorldEvent event,
-      {Channel target = kAnyChannel, String? plugin}) {
+  void sendEvent(
+    PlayableWorldEvent event, {
+    Channel target = kAnyChannel,
+    String? plugin,
+  }) {
     server.sendEvent(event, target: target, worldName: worldName);
   }
 

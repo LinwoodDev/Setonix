@@ -23,11 +23,17 @@ class GameServerMapper extends ClassMapperBase<GameServer> {
   final String id = 'GameServer';
 
   static String _$address(GameServer v) => v.address;
-  static const Field<GameServer, String> _f$address =
-      Field('address', _$address);
+  static const Field<GameServer, String> _f$address = Field(
+    'address',
+    _$address,
+  );
   static bool _$secure(GameServer v) => v.secure;
-  static const Field<GameServer, bool> _f$secure =
-      Field('secure', _$secure, opt: true, def: true);
+  static const Field<GameServer, bool> _f$secure = Field(
+    'secure',
+    _$secure,
+    opt: true,
+    def: true,
+  );
 
   @override
   final MappableFields<GameServer> fields = const {
@@ -79,11 +85,17 @@ class LanGameServerMapper extends ClassMapperBase<LanGameServer> {
   final String id = 'LanGameServer';
 
   static String _$address(LanGameServer v) => v.address;
-  static const Field<LanGameServer, String> _f$address =
-      Field('address', _$address);
+  static const Field<LanGameServer, String> _f$address = Field(
+    'address',
+    _$address,
+  );
   static bool _$secure(LanGameServer v) => v.secure;
-  static const Field<LanGameServer, bool> _f$secure =
-      Field('secure', _$secure, opt: true, def: true);
+  static const Field<LanGameServer, bool> _f$secure = Field(
+    'secure',
+    _$secure,
+    opt: true,
+    def: true,
+  );
 
   @override
   final MappableFields<LanGameServer> fields = const {
@@ -93,7 +105,9 @@ class LanGameServerMapper extends ClassMapperBase<LanGameServer> {
 
   static LanGameServer _instantiate(DecodingData data) {
     return LanGameServer(
-        address: data.dec(_f$address), secure: data.dec(_f$secure));
+      address: data.dec(_f$address),
+      secure: data.dec(_f$secure),
+    );
   }
 
   @override
@@ -110,34 +124,43 @@ class LanGameServerMapper extends ClassMapperBase<LanGameServer> {
 
 mixin LanGameServerMappable {
   String toJson() {
-    return LanGameServerMapper.ensureInitialized()
-        .encodeJson<LanGameServer>(this as LanGameServer);
+    return LanGameServerMapper.ensureInitialized().encodeJson<LanGameServer>(
+      this as LanGameServer,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return LanGameServerMapper.ensureInitialized()
-        .encodeMap<LanGameServer>(this as LanGameServer);
+    return LanGameServerMapper.ensureInitialized().encodeMap<LanGameServer>(
+      this as LanGameServer,
+    );
   }
 
   LanGameServerCopyWith<LanGameServer, LanGameServer, LanGameServer>
-      get copyWith => _LanGameServerCopyWithImpl<LanGameServer, LanGameServer>(
-          this as LanGameServer, $identity, $identity);
+  get copyWith => _LanGameServerCopyWithImpl<LanGameServer, LanGameServer>(
+    this as LanGameServer,
+    $identity,
+    $identity,
+  );
   @override
   String toString() {
-    return LanGameServerMapper.ensureInitialized()
-        .stringifyValue(this as LanGameServer);
+    return LanGameServerMapper.ensureInitialized().stringifyValue(
+      this as LanGameServer,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return LanGameServerMapper.ensureInitialized()
-        .equalsValue(this as LanGameServer, other);
+    return LanGameServerMapper.ensureInitialized().equalsValue(
+      this as LanGameServer,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return LanGameServerMapper.ensureInitialized()
-        .hashValue(this as LanGameServer);
+    return LanGameServerMapper.ensureInitialized().hashValue(
+      this as LanGameServer,
+    );
   }
 }
 
@@ -163,19 +186,22 @@ class _LanGameServerCopyWithImpl<$R, $Out>
   late final ClassMapperBase<LanGameServer> $mapper =
       LanGameServerMapper.ensureInitialized();
   @override
-  $R call({String? address, bool? secure}) => $apply(FieldCopyWithData({
-        if (address != null) #address: address,
-        if (secure != null) #secure: secure
-      }));
+  $R call({String? address, bool? secure}) => $apply(
+    FieldCopyWithData({
+      if (address != null) #address: address,
+      if (secure != null) #secure: secure,
+    }),
+  );
   @override
   LanGameServer $make(CopyWithData data) => LanGameServer(
-      address: data.get(#address, or: $value.address),
-      secure: data.get(#secure, or: $value.secure));
+    address: data.get(#address, or: $value.address),
+    secure: data.get(#secure, or: $value.secure),
+  );
 
   @override
   LanGameServerCopyWith<$R2, LanGameServer, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _LanGameServerCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _LanGameServerCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ListGameServerMapper extends ClassMapperBase<ListGameServer> {
@@ -195,17 +221,31 @@ class ListGameServerMapper extends ClassMapperBase<ListGameServer> {
   final String id = 'ListGameServer';
 
   static String _$name(ListGameServer v) => v.name;
-  static const Field<ListGameServer, String> _f$name =
-      Field('name', _$name, opt: true, def: '');
+  static const Field<ListGameServer, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+    def: '',
+  );
   static String _$address(ListGameServer v) => v.address;
-  static const Field<ListGameServer, String> _f$address =
-      Field('address', _$address);
+  static const Field<ListGameServer, String> _f$address = Field(
+    'address',
+    _$address,
+  );
   static bool _$secure(ListGameServer v) => v.secure;
-  static const Field<ListGameServer, bool> _f$secure =
-      Field('secure', _$secure, opt: true, def: true);
+  static const Field<ListGameServer, bool> _f$secure = Field(
+    'secure',
+    _$secure,
+    opt: true,
+    def: true,
+  );
   static bool _$highlighted(ListGameServer v) => v.highlighted;
-  static const Field<ListGameServer, bool> _f$highlighted =
-      Field('highlighted', _$highlighted, opt: true, def: false);
+  static const Field<ListGameServer, bool> _f$highlighted = Field(
+    'highlighted',
+    _$highlighted,
+    opt: true,
+    def: false,
+  );
 
   @override
   final MappableFields<ListGameServer> fields = const {
@@ -217,10 +257,11 @@ class ListGameServerMapper extends ClassMapperBase<ListGameServer> {
 
   static ListGameServer _instantiate(DecodingData data) {
     return ListGameServer(
-        name: data.dec(_f$name),
-        address: data.dec(_f$address),
-        secure: data.dec(_f$secure),
-        highlighted: data.dec(_f$highlighted));
+      name: data.dec(_f$name),
+      address: data.dec(_f$address),
+      secure: data.dec(_f$secure),
+      highlighted: data.dec(_f$highlighted),
+    );
   }
 
   @override
@@ -237,35 +278,43 @@ class ListGameServerMapper extends ClassMapperBase<ListGameServer> {
 
 mixin ListGameServerMappable {
   String toJson() {
-    return ListGameServerMapper.ensureInitialized()
-        .encodeJson<ListGameServer>(this as ListGameServer);
+    return ListGameServerMapper.ensureInitialized().encodeJson<ListGameServer>(
+      this as ListGameServer,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return ListGameServerMapper.ensureInitialized()
-        .encodeMap<ListGameServer>(this as ListGameServer);
+    return ListGameServerMapper.ensureInitialized().encodeMap<ListGameServer>(
+      this as ListGameServer,
+    );
   }
 
   ListGameServerCopyWith<ListGameServer, ListGameServer, ListGameServer>
-      get copyWith =>
-          _ListGameServerCopyWithImpl<ListGameServer, ListGameServer>(
-              this as ListGameServer, $identity, $identity);
+  get copyWith => _ListGameServerCopyWithImpl<ListGameServer, ListGameServer>(
+    this as ListGameServer,
+    $identity,
+    $identity,
+  );
   @override
   String toString() {
-    return ListGameServerMapper.ensureInitialized()
-        .stringifyValue(this as ListGameServer);
+    return ListGameServerMapper.ensureInitialized().stringifyValue(
+      this as ListGameServer,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return ListGameServerMapper.ensureInitialized()
-        .equalsValue(this as ListGameServer, other);
+    return ListGameServerMapper.ensureInitialized().equalsValue(
+      this as ListGameServer,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return ListGameServerMapper.ensureInitialized()
-        .hashValue(this as ListGameServer);
+    return ListGameServerMapper.ensureInitialized().hashValue(
+      this as ListGameServer,
+    );
   }
 }
 
@@ -280,7 +329,8 @@ abstract class ListGameServerCopyWith<$R, $In extends ListGameServer, $Out>
   @override
   $R call({String? name, String? address, bool? secure, bool? highlighted});
   ListGameServerCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _ListGameServerCopyWithImpl<$R, $Out>
@@ -293,23 +343,26 @@ class _ListGameServerCopyWithImpl<$R, $Out>
       ListGameServerMapper.ensureInitialized();
   @override
   $R call({String? name, String? address, bool? secure, bool? highlighted}) =>
-      $apply(FieldCopyWithData({
-        if (name != null) #name: name,
-        if (address != null) #address: address,
-        if (secure != null) #secure: secure,
-        if (highlighted != null) #highlighted: highlighted
-      }));
+      $apply(
+        FieldCopyWithData({
+          if (name != null) #name: name,
+          if (address != null) #address: address,
+          if (secure != null) #secure: secure,
+          if (highlighted != null) #highlighted: highlighted,
+        }),
+      );
   @override
   ListGameServer $make(CopyWithData data) => ListGameServer(
-      name: data.get(#name, or: $value.name),
-      address: data.get(#address, or: $value.address),
-      secure: data.get(#secure, or: $value.secure),
-      highlighted: data.get(#highlighted, or: $value.highlighted));
+    name: data.get(#name, or: $value.name),
+    address: data.get(#address, or: $value.address),
+    secure: data.get(#secure, or: $value.secure),
+    highlighted: data.get(#highlighted, or: $value.highlighted),
+  );
 
   @override
   ListGameServerCopyWith<$R2, ListGameServer, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _ListGameServerCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _ListGameServerCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class BrowsedGameServerMapper extends ClassMapperBase<BrowsedGameServer> {
@@ -328,17 +381,31 @@ class BrowsedGameServerMapper extends ClassMapperBase<BrowsedGameServer> {
   final String id = 'BrowsedGameServer';
 
   static String _$name(BrowsedGameServer v) => v.name;
-  static const Field<BrowsedGameServer, String> _f$name =
-      Field('name', _$name, opt: true, def: '');
+  static const Field<BrowsedGameServer, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+    def: '',
+  );
   static String _$address(BrowsedGameServer v) => v.address;
-  static const Field<BrowsedGameServer, String> _f$address =
-      Field('address', _$address);
+  static const Field<BrowsedGameServer, String> _f$address = Field(
+    'address',
+    _$address,
+  );
   static bool _$secure(BrowsedGameServer v) => v.secure;
-  static const Field<BrowsedGameServer, bool> _f$secure =
-      Field('secure', _$secure, opt: true, def: true);
+  static const Field<BrowsedGameServer, bool> _f$secure = Field(
+    'secure',
+    _$secure,
+    opt: true,
+    def: true,
+  );
   static bool _$highlighted(BrowsedGameServer v) => v.highlighted;
-  static const Field<BrowsedGameServer, bool> _f$highlighted =
-      Field('highlighted', _$highlighted, opt: true, def: false);
+  static const Field<BrowsedGameServer, bool> _f$highlighted = Field(
+    'highlighted',
+    _$highlighted,
+    opt: true,
+    def: false,
+  );
 
   @override
   final MappableFields<BrowsedGameServer> fields = const {
@@ -350,10 +417,11 @@ class BrowsedGameServerMapper extends ClassMapperBase<BrowsedGameServer> {
 
   static BrowsedGameServer _instantiate(DecodingData data) {
     return BrowsedGameServer(
-        name: data.dec(_f$name),
-        address: data.dec(_f$address),
-        secure: data.dec(_f$secure),
-        highlighted: data.dec(_f$highlighted));
+      name: data.dec(_f$name),
+      address: data.dec(_f$address),
+      secure: data.dec(_f$secure),
+      highlighted: data.dec(_f$highlighted),
+    );
   }
 
   @override
@@ -379,43 +447,59 @@ mixin BrowsedGameServerMappable {
         .encodeMap<BrowsedGameServer>(this as BrowsedGameServer);
   }
 
-  BrowsedGameServerCopyWith<BrowsedGameServer, BrowsedGameServer,
-          BrowsedGameServer>
-      get copyWith =>
-          _BrowsedGameServerCopyWithImpl<BrowsedGameServer, BrowsedGameServer>(
-              this as BrowsedGameServer, $identity, $identity);
+  BrowsedGameServerCopyWith<
+    BrowsedGameServer,
+    BrowsedGameServer,
+    BrowsedGameServer
+  >
+  get copyWith =>
+      _BrowsedGameServerCopyWithImpl<BrowsedGameServer, BrowsedGameServer>(
+        this as BrowsedGameServer,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return BrowsedGameServerMapper.ensureInitialized()
-        .stringifyValue(this as BrowsedGameServer);
+    return BrowsedGameServerMapper.ensureInitialized().stringifyValue(
+      this as BrowsedGameServer,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return BrowsedGameServerMapper.ensureInitialized()
-        .equalsValue(this as BrowsedGameServer, other);
+    return BrowsedGameServerMapper.ensureInitialized().equalsValue(
+      this as BrowsedGameServer,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return BrowsedGameServerMapper.ensureInitialized()
-        .hashValue(this as BrowsedGameServer);
+    return BrowsedGameServerMapper.ensureInitialized().hashValue(
+      this as BrowsedGameServer,
+    );
   }
 }
 
 extension BrowsedGameServerValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BrowsedGameServer, $Out> {
   BrowsedGameServerCopyWith<$R, BrowsedGameServer, $Out>
-      get $asBrowsedGameServer => $base
-          .as((v, t, t2) => _BrowsedGameServerCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asBrowsedGameServer => $base.as(
+    (v, t, t2) => _BrowsedGameServerCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
-abstract class BrowsedGameServerCopyWith<$R, $In extends BrowsedGameServer,
-    $Out> implements ListGameServerCopyWith<$R, $In, $Out> {
+abstract class BrowsedGameServerCopyWith<
+  $R,
+  $In extends BrowsedGameServer,
+  $Out
+>
+    implements ListGameServerCopyWith<$R, $In, $Out> {
   @override
   $R call({String? name, String? address, bool? secure, bool? highlighted});
   BrowsedGameServerCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _BrowsedGameServerCopyWithImpl<$R, $Out>
@@ -428,23 +512,26 @@ class _BrowsedGameServerCopyWithImpl<$R, $Out>
       BrowsedGameServerMapper.ensureInitialized();
   @override
   $R call({String? name, String? address, bool? secure, bool? highlighted}) =>
-      $apply(FieldCopyWithData({
-        if (name != null) #name: name,
-        if (address != null) #address: address,
-        if (secure != null) #secure: secure,
-        if (highlighted != null) #highlighted: highlighted
-      }));
+      $apply(
+        FieldCopyWithData({
+          if (name != null) #name: name,
+          if (address != null) #address: address,
+          if (secure != null) #secure: secure,
+          if (highlighted != null) #highlighted: highlighted,
+        }),
+      );
   @override
   BrowsedGameServer $make(CopyWithData data) => BrowsedGameServer(
-      name: data.get(#name, or: $value.name),
-      address: data.get(#address, or: $value.address),
-      secure: data.get(#secure, or: $value.secure),
-      highlighted: data.get(#highlighted, or: $value.highlighted));
+    name: data.get(#name, or: $value.name),
+    address: data.get(#address, or: $value.address),
+    secure: data.get(#secure, or: $value.secure),
+    highlighted: data.get(#highlighted, or: $value.highlighted),
+  );
 
   @override
   BrowsedGameServerCopyWith<$R2, BrowsedGameServer, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _BrowsedGameServerCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _BrowsedGameServerCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class GamePropertyMapper extends ClassMapperBase<GameProperty> {
@@ -465,19 +552,34 @@ class GamePropertyMapper extends ClassMapperBase<GameProperty> {
   final String id = 'GameProperty';
 
   static String _$description(GameProperty v) => v.description;
-  static const Field<GameProperty, String> _f$description =
-      Field('description', _$description, opt: true, def: '');
+  static const Field<GameProperty, String> _f$description = Field(
+    'description',
+    _$description,
+    opt: true,
+    def: '',
+  );
   static int? _$maxPlayers(GameProperty v) => v.maxPlayers;
-  static const Field<GameProperty, int> _f$maxPlayers =
-      Field('maxPlayers', _$maxPlayers, opt: true);
+  static const Field<GameProperty, int> _f$maxPlayers = Field(
+    'maxPlayers',
+    _$maxPlayers,
+    opt: true,
+  );
   static int _$currentPlayers(GameProperty v) => v.currentPlayers;
-  static const Field<GameProperty, int> _f$currentPlayers =
-      Field('currentPlayers', _$currentPlayers, opt: true, def: 0);
+  static const Field<GameProperty, int> _f$currentPlayers = Field(
+    'currentPlayers',
+    _$currentPlayers,
+    opt: true,
+    def: 0,
+  );
   static Map<String, SignatureMetadata> _$packsSignature(GameProperty v) =>
       v.packsSignature;
   static const Field<GameProperty, Map<String, SignatureMetadata>>
-      _f$packsSignature =
-      Field('packsSignature', _$packsSignature, opt: true, def: const {});
+  _f$packsSignature = Field(
+    'packsSignature',
+    _$packsSignature,
+    opt: true,
+    def: const {},
+  );
 
   @override
   final MappableFields<GameProperty> fields = const {
@@ -489,10 +591,11 @@ class GamePropertyMapper extends ClassMapperBase<GameProperty> {
 
   static GameProperty _instantiate(DecodingData data) {
     return GameProperty(
-        description: data.dec(_f$description),
-        maxPlayers: data.dec(_f$maxPlayers),
-        currentPlayers: data.dec(_f$currentPlayers),
-        packsSignature: data.dec(_f$packsSignature));
+      description: data.dec(_f$description),
+      maxPlayers: data.dec(_f$maxPlayers),
+      currentPlayers: data.dec(_f$currentPlayers),
+      packsSignature: data.dec(_f$packsSignature),
+    );
   }
 
   @override
@@ -509,34 +612,43 @@ class GamePropertyMapper extends ClassMapperBase<GameProperty> {
 
 mixin GamePropertyMappable {
   String toJson() {
-    return GamePropertyMapper.ensureInitialized()
-        .encodeJson<GameProperty>(this as GameProperty);
+    return GamePropertyMapper.ensureInitialized().encodeJson<GameProperty>(
+      this as GameProperty,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return GamePropertyMapper.ensureInitialized()
-        .encodeMap<GameProperty>(this as GameProperty);
+    return GamePropertyMapper.ensureInitialized().encodeMap<GameProperty>(
+      this as GameProperty,
+    );
   }
 
   GamePropertyCopyWith<GameProperty, GameProperty, GameProperty> get copyWith =>
       _GamePropertyCopyWithImpl<GameProperty, GameProperty>(
-          this as GameProperty, $identity, $identity);
+        this as GameProperty,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return GamePropertyMapper.ensureInitialized()
-        .stringifyValue(this as GameProperty);
+    return GamePropertyMapper.ensureInitialized().stringifyValue(
+      this as GameProperty,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return GamePropertyMapper.ensureInitialized()
-        .equalsValue(this as GameProperty, other);
+    return GamePropertyMapper.ensureInitialized().equalsValue(
+      this as GameProperty,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return GamePropertyMapper.ensureInitialized()
-        .hashValue(this as GameProperty);
+    return GamePropertyMapper.ensureInitialized().hashValue(
+      this as GameProperty,
+    );
   }
 }
 
@@ -548,14 +660,19 @@ extension GamePropertyValueCopy<$R, $Out>
 
 abstract class GamePropertyCopyWith<$R, $In extends GameProperty, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  MapCopyWith<$R, String, SignatureMetadata,
-          SignatureMetadataCopyWith<$R, SignatureMetadata, SignatureMetadata>>
-      get packsSignature;
-  $R call(
-      {String? description,
-      int? maxPlayers,
-      int? currentPlayers,
-      Map<String, SignatureMetadata>? packsSignature});
+  MapCopyWith<
+    $R,
+    String,
+    SignatureMetadata,
+    SignatureMetadataCopyWith<$R, SignatureMetadata, SignatureMetadata>
+  >
+  get packsSignature;
+  $R call({
+    String? description,
+    int? maxPlayers,
+    int? currentPlayers,
+    Map<String, SignatureMetadata>? packsSignature,
+  });
   GamePropertyCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -568,33 +685,43 @@ class _GamePropertyCopyWithImpl<$R, $Out>
   late final ClassMapperBase<GameProperty> $mapper =
       GamePropertyMapper.ensureInitialized();
   @override
-  MapCopyWith<$R, String, SignatureMetadata,
-          SignatureMetadataCopyWith<$R, SignatureMetadata, SignatureMetadata>>
-      get packsSignature => MapCopyWith($value.packsSignature,
-          (v, t) => v.copyWith.$chain(t), (v) => call(packsSignature: v));
+  MapCopyWith<
+    $R,
+    String,
+    SignatureMetadata,
+    SignatureMetadataCopyWith<$R, SignatureMetadata, SignatureMetadata>
+  >
+  get packsSignature => MapCopyWith(
+    $value.packsSignature,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(packsSignature: v),
+  );
   @override
-  $R call(
-          {String? description,
-          Object? maxPlayers = $none,
-          int? currentPlayers,
-          Map<String, SignatureMetadata>? packsSignature}) =>
-      $apply(FieldCopyWithData({
-        if (description != null) #description: description,
-        if (maxPlayers != $none) #maxPlayers: maxPlayers,
-        if (currentPlayers != null) #currentPlayers: currentPlayers,
-        if (packsSignature != null) #packsSignature: packsSignature
-      }));
+  $R call({
+    String? description,
+    Object? maxPlayers = $none,
+    int? currentPlayers,
+    Map<String, SignatureMetadata>? packsSignature,
+  }) => $apply(
+    FieldCopyWithData({
+      if (description != null) #description: description,
+      if (maxPlayers != $none) #maxPlayers: maxPlayers,
+      if (currentPlayers != null) #currentPlayers: currentPlayers,
+      if (packsSignature != null) #packsSignature: packsSignature,
+    }),
+  );
   @override
   GameProperty $make(CopyWithData data) => GameProperty(
-      description: data.get(#description, or: $value.description),
-      maxPlayers: data.get(#maxPlayers, or: $value.maxPlayers),
-      currentPlayers: data.get(#currentPlayers, or: $value.currentPlayers),
-      packsSignature: data.get(#packsSignature, or: $value.packsSignature));
+    description: data.get(#description, or: $value.description),
+    maxPlayers: data.get(#maxPlayers, or: $value.maxPlayers),
+    currentPlayers: data.get(#currentPlayers, or: $value.currentPlayers),
+    packsSignature: data.get(#packsSignature, or: $value.packsSignature),
+  );
 
   @override
   GamePropertyCopyWith<$R2, GameProperty, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _GamePropertyCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _GamePropertyCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class LanPropertyMapper extends ClassMapperBase<LanProperty> {
@@ -614,22 +741,41 @@ class LanPropertyMapper extends ClassMapperBase<LanProperty> {
   final String id = 'LanProperty';
 
   static int _$port(LanProperty v) => v.port;
-  static const Field<LanProperty, int> _f$port =
-      Field('port', _$port, opt: true, def: kDefaultPort);
+  static const Field<LanProperty, int> _f$port = Field(
+    'port',
+    _$port,
+    opt: true,
+    def: kDefaultPort,
+  );
   static int _$currentPlayers(LanProperty v) => v.currentPlayers;
-  static const Field<LanProperty, int> _f$currentPlayers =
-      Field('currentPlayers', _$currentPlayers, opt: true, def: 0);
+  static const Field<LanProperty, int> _f$currentPlayers = Field(
+    'currentPlayers',
+    _$currentPlayers,
+    opt: true,
+    def: 0,
+  );
   static int? _$maxPlayers(LanProperty v) => v.maxPlayers;
-  static const Field<LanProperty, int> _f$maxPlayers =
-      Field('maxPlayers', _$maxPlayers, opt: true);
+  static const Field<LanProperty, int> _f$maxPlayers = Field(
+    'maxPlayers',
+    _$maxPlayers,
+    opt: true,
+  );
   static String _$description(LanProperty v) => v.description;
-  static const Field<LanProperty, String> _f$description =
-      Field('description', _$description, opt: true, def: '');
+  static const Field<LanProperty, String> _f$description = Field(
+    'description',
+    _$description,
+    opt: true,
+    def: '',
+  );
   static Map<String, SignatureMetadata> _$packsSignature(LanProperty v) =>
       v.packsSignature;
   static const Field<LanProperty, Map<String, SignatureMetadata>>
-      _f$packsSignature =
-      Field('packsSignature', _$packsSignature, opt: true, def: const {});
+  _f$packsSignature = Field(
+    'packsSignature',
+    _$packsSignature,
+    opt: true,
+    def: const {},
+  );
 
   @override
   final MappableFields<LanProperty> fields = const {
@@ -642,11 +788,12 @@ class LanPropertyMapper extends ClassMapperBase<LanProperty> {
 
   static LanProperty _instantiate(DecodingData data) {
     return LanProperty(
-        port: data.dec(_f$port),
-        currentPlayers: data.dec(_f$currentPlayers),
-        maxPlayers: data.dec(_f$maxPlayers),
-        description: data.dec(_f$description),
-        packsSignature: data.dec(_f$packsSignature));
+      port: data.dec(_f$port),
+      currentPlayers: data.dec(_f$currentPlayers),
+      maxPlayers: data.dec(_f$maxPlayers),
+      description: data.dec(_f$description),
+      packsSignature: data.dec(_f$packsSignature),
+    );
   }
 
   @override
@@ -663,28 +810,36 @@ class LanPropertyMapper extends ClassMapperBase<LanProperty> {
 
 mixin LanPropertyMappable {
   String toJson() {
-    return LanPropertyMapper.ensureInitialized()
-        .encodeJson<LanProperty>(this as LanProperty);
+    return LanPropertyMapper.ensureInitialized().encodeJson<LanProperty>(
+      this as LanProperty,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return LanPropertyMapper.ensureInitialized()
-        .encodeMap<LanProperty>(this as LanProperty);
+    return LanPropertyMapper.ensureInitialized().encodeMap<LanProperty>(
+      this as LanProperty,
+    );
   }
 
   LanPropertyCopyWith<LanProperty, LanProperty, LanProperty> get copyWith =>
       _LanPropertyCopyWithImpl<LanProperty, LanProperty>(
-          this as LanProperty, $identity, $identity);
+        this as LanProperty,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return LanPropertyMapper.ensureInitialized()
-        .stringifyValue(this as LanProperty);
+    return LanPropertyMapper.ensureInitialized().stringifyValue(
+      this as LanProperty,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return LanPropertyMapper.ensureInitialized()
-        .equalsValue(this as LanProperty, other);
+    return LanPropertyMapper.ensureInitialized().equalsValue(
+      this as LanProperty,
+      other,
+    );
   }
 
   @override
@@ -702,16 +857,21 @@ extension LanPropertyValueCopy<$R, $Out>
 abstract class LanPropertyCopyWith<$R, $In extends LanProperty, $Out>
     implements GamePropertyCopyWith<$R, $In, $Out> {
   @override
-  MapCopyWith<$R, String, SignatureMetadata,
-          SignatureMetadataCopyWith<$R, SignatureMetadata, SignatureMetadata>>
-      get packsSignature;
+  MapCopyWith<
+    $R,
+    String,
+    SignatureMetadata,
+    SignatureMetadataCopyWith<$R, SignatureMetadata, SignatureMetadata>
+  >
+  get packsSignature;
   @override
-  $R call(
-      {int? port,
-      int? currentPlayers,
-      int? maxPlayers,
-      String? description,
-      Map<String, SignatureMetadata>? packsSignature});
+  $R call({
+    int? port,
+    int? currentPlayers,
+    int? maxPlayers,
+    String? description,
+    Map<String, SignatureMetadata>? packsSignature,
+  });
   LanPropertyCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -724,36 +884,46 @@ class _LanPropertyCopyWithImpl<$R, $Out>
   late final ClassMapperBase<LanProperty> $mapper =
       LanPropertyMapper.ensureInitialized();
   @override
-  MapCopyWith<$R, String, SignatureMetadata,
-          SignatureMetadataCopyWith<$R, SignatureMetadata, SignatureMetadata>>
-      get packsSignature => MapCopyWith($value.packsSignature,
-          (v, t) => v.copyWith.$chain(t), (v) => call(packsSignature: v));
+  MapCopyWith<
+    $R,
+    String,
+    SignatureMetadata,
+    SignatureMetadataCopyWith<$R, SignatureMetadata, SignatureMetadata>
+  >
+  get packsSignature => MapCopyWith(
+    $value.packsSignature,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(packsSignature: v),
+  );
   @override
-  $R call(
-          {int? port,
-          int? currentPlayers,
-          Object? maxPlayers = $none,
-          String? description,
-          Map<String, SignatureMetadata>? packsSignature}) =>
-      $apply(FieldCopyWithData({
-        if (port != null) #port: port,
-        if (currentPlayers != null) #currentPlayers: currentPlayers,
-        if (maxPlayers != $none) #maxPlayers: maxPlayers,
-        if (description != null) #description: description,
-        if (packsSignature != null) #packsSignature: packsSignature
-      }));
+  $R call({
+    int? port,
+    int? currentPlayers,
+    Object? maxPlayers = $none,
+    String? description,
+    Map<String, SignatureMetadata>? packsSignature,
+  }) => $apply(
+    FieldCopyWithData({
+      if (port != null) #port: port,
+      if (currentPlayers != null) #currentPlayers: currentPlayers,
+      if (maxPlayers != $none) #maxPlayers: maxPlayers,
+      if (description != null) #description: description,
+      if (packsSignature != null) #packsSignature: packsSignature,
+    }),
+  );
   @override
   LanProperty $make(CopyWithData data) => LanProperty(
-      port: data.get(#port, or: $value.port),
-      currentPlayers: data.get(#currentPlayers, or: $value.currentPlayers),
-      maxPlayers: data.get(#maxPlayers, or: $value.maxPlayers),
-      description: data.get(#description, or: $value.description),
-      packsSignature: data.get(#packsSignature, or: $value.packsSignature));
+    port: data.get(#port, or: $value.port),
+    currentPlayers: data.get(#currentPlayers, or: $value.currentPlayers),
+    maxPlayers: data.get(#maxPlayers, or: $value.maxPlayers),
+    description: data.get(#description, or: $value.description),
+    packsSignature: data.get(#packsSignature, or: $value.packsSignature),
+  );
 
   @override
   LanPropertyCopyWith<$R2, LanProperty, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _LanPropertyCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _LanPropertyCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ListPropertyMapper extends ClassMapperBase<ListProperty> {
@@ -775,19 +945,34 @@ class ListPropertyMapper extends ClassMapperBase<ListProperty> {
   static int _$index(ListProperty v) => v.index;
   static const Field<ListProperty, int> _f$index = Field('index', _$index);
   static int _$currentPlayers(ListProperty v) => v.currentPlayers;
-  static const Field<ListProperty, int> _f$currentPlayers =
-      Field('currentPlayers', _$currentPlayers, opt: true, def: 0);
+  static const Field<ListProperty, int> _f$currentPlayers = Field(
+    'currentPlayers',
+    _$currentPlayers,
+    opt: true,
+    def: 0,
+  );
   static int? _$maxPlayers(ListProperty v) => v.maxPlayers;
-  static const Field<ListProperty, int> _f$maxPlayers =
-      Field('maxPlayers', _$maxPlayers, opt: true);
+  static const Field<ListProperty, int> _f$maxPlayers = Field(
+    'maxPlayers',
+    _$maxPlayers,
+    opt: true,
+  );
   static String _$description(ListProperty v) => v.description;
-  static const Field<ListProperty, String> _f$description =
-      Field('description', _$description, opt: true, def: '');
+  static const Field<ListProperty, String> _f$description = Field(
+    'description',
+    _$description,
+    opt: true,
+    def: '',
+  );
   static Map<String, SignatureMetadata> _$packsSignature(ListProperty v) =>
       v.packsSignature;
   static const Field<ListProperty, Map<String, SignatureMetadata>>
-      _f$packsSignature =
-      Field('packsSignature', _$packsSignature, opt: true, def: const {});
+  _f$packsSignature = Field(
+    'packsSignature',
+    _$packsSignature,
+    opt: true,
+    def: const {},
+  );
 
   @override
   final MappableFields<ListProperty> fields = const {
@@ -800,11 +985,12 @@ class ListPropertyMapper extends ClassMapperBase<ListProperty> {
 
   static ListProperty _instantiate(DecodingData data) {
     return ListProperty(
-        index: data.dec(_f$index),
-        currentPlayers: data.dec(_f$currentPlayers),
-        maxPlayers: data.dec(_f$maxPlayers),
-        description: data.dec(_f$description),
-        packsSignature: data.dec(_f$packsSignature));
+      index: data.dec(_f$index),
+      currentPlayers: data.dec(_f$currentPlayers),
+      maxPlayers: data.dec(_f$maxPlayers),
+      description: data.dec(_f$description),
+      packsSignature: data.dec(_f$packsSignature),
+    );
   }
 
   @override
@@ -821,34 +1007,43 @@ class ListPropertyMapper extends ClassMapperBase<ListProperty> {
 
 mixin ListPropertyMappable {
   String toJson() {
-    return ListPropertyMapper.ensureInitialized()
-        .encodeJson<ListProperty>(this as ListProperty);
+    return ListPropertyMapper.ensureInitialized().encodeJson<ListProperty>(
+      this as ListProperty,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return ListPropertyMapper.ensureInitialized()
-        .encodeMap<ListProperty>(this as ListProperty);
+    return ListPropertyMapper.ensureInitialized().encodeMap<ListProperty>(
+      this as ListProperty,
+    );
   }
 
   ListPropertyCopyWith<ListProperty, ListProperty, ListProperty> get copyWith =>
       _ListPropertyCopyWithImpl<ListProperty, ListProperty>(
-          this as ListProperty, $identity, $identity);
+        this as ListProperty,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return ListPropertyMapper.ensureInitialized()
-        .stringifyValue(this as ListProperty);
+    return ListPropertyMapper.ensureInitialized().stringifyValue(
+      this as ListProperty,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return ListPropertyMapper.ensureInitialized()
-        .equalsValue(this as ListProperty, other);
+    return ListPropertyMapper.ensureInitialized().equalsValue(
+      this as ListProperty,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return ListPropertyMapper.ensureInitialized()
-        .hashValue(this as ListProperty);
+    return ListPropertyMapper.ensureInitialized().hashValue(
+      this as ListProperty,
+    );
   }
 }
 
@@ -861,16 +1056,21 @@ extension ListPropertyValueCopy<$R, $Out>
 abstract class ListPropertyCopyWith<$R, $In extends ListProperty, $Out>
     implements GamePropertyCopyWith<$R, $In, $Out> {
   @override
-  MapCopyWith<$R, String, SignatureMetadata,
-          SignatureMetadataCopyWith<$R, SignatureMetadata, SignatureMetadata>>
-      get packsSignature;
+  MapCopyWith<
+    $R,
+    String,
+    SignatureMetadata,
+    SignatureMetadataCopyWith<$R, SignatureMetadata, SignatureMetadata>
+  >
+  get packsSignature;
   @override
-  $R call(
-      {int? index,
-      int? currentPlayers,
-      int? maxPlayers,
-      String? description,
-      Map<String, SignatureMetadata>? packsSignature});
+  $R call({
+    int? index,
+    int? currentPlayers,
+    int? maxPlayers,
+    String? description,
+    Map<String, SignatureMetadata>? packsSignature,
+  });
   ListPropertyCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -883,36 +1083,46 @@ class _ListPropertyCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ListProperty> $mapper =
       ListPropertyMapper.ensureInitialized();
   @override
-  MapCopyWith<$R, String, SignatureMetadata,
-          SignatureMetadataCopyWith<$R, SignatureMetadata, SignatureMetadata>>
-      get packsSignature => MapCopyWith($value.packsSignature,
-          (v, t) => v.copyWith.$chain(t), (v) => call(packsSignature: v));
+  MapCopyWith<
+    $R,
+    String,
+    SignatureMetadata,
+    SignatureMetadataCopyWith<$R, SignatureMetadata, SignatureMetadata>
+  >
+  get packsSignature => MapCopyWith(
+    $value.packsSignature,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(packsSignature: v),
+  );
   @override
-  $R call(
-          {int? index,
-          int? currentPlayers,
-          Object? maxPlayers = $none,
-          String? description,
-          Map<String, SignatureMetadata>? packsSignature}) =>
-      $apply(FieldCopyWithData({
-        if (index != null) #index: index,
-        if (currentPlayers != null) #currentPlayers: currentPlayers,
-        if (maxPlayers != $none) #maxPlayers: maxPlayers,
-        if (description != null) #description: description,
-        if (packsSignature != null) #packsSignature: packsSignature
-      }));
+  $R call({
+    int? index,
+    int? currentPlayers,
+    Object? maxPlayers = $none,
+    String? description,
+    Map<String, SignatureMetadata>? packsSignature,
+  }) => $apply(
+    FieldCopyWithData({
+      if (index != null) #index: index,
+      if (currentPlayers != null) #currentPlayers: currentPlayers,
+      if (maxPlayers != $none) #maxPlayers: maxPlayers,
+      if (description != null) #description: description,
+      if (packsSignature != null) #packsSignature: packsSignature,
+    }),
+  );
   @override
   ListProperty $make(CopyWithData data) => ListProperty(
-      index: data.get(#index, or: $value.index),
-      currentPlayers: data.get(#currentPlayers, or: $value.currentPlayers),
-      maxPlayers: data.get(#maxPlayers, or: $value.maxPlayers),
-      description: data.get(#description, or: $value.description),
-      packsSignature: data.get(#packsSignature, or: $value.packsSignature));
+    index: data.get(#index, or: $value.index),
+    currentPlayers: data.get(#currentPlayers, or: $value.currentPlayers),
+    maxPlayers: data.get(#maxPlayers, or: $value.maxPlayers),
+    description: data.get(#description, or: $value.description),
+    packsSignature: data.get(#packsSignature, or: $value.packsSignature),
+  );
 
   @override
   ListPropertyCopyWith<$R2, ListProperty, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _ListPropertyCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _ListPropertyCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class PlayerInfoMapper extends ClassMapperBase<PlayerInfo> {
@@ -932,14 +1142,14 @@ class PlayerInfoMapper extends ClassMapperBase<PlayerInfo> {
   static int _$id(PlayerInfo v) => v.id;
   static const Field<PlayerInfo, int> _f$id = Field('id', _$id);
   static String? _$name(PlayerInfo v) => v.name;
-  static const Field<PlayerInfo, String> _f$name =
-      Field('name', _$name, opt: true);
+  static const Field<PlayerInfo, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
 
   @override
-  final MappableFields<PlayerInfo> fields = const {
-    #id: _f$id,
-    #name: _f$name,
-  };
+  final MappableFields<PlayerInfo> fields = const {#id: _f$id, #name: _f$name};
 
   static PlayerInfo _instantiate(DecodingData data) {
     return PlayerInfo(id: data.dec(_f$id), name: data.dec(_f$name));
@@ -959,28 +1169,36 @@ class PlayerInfoMapper extends ClassMapperBase<PlayerInfo> {
 
 mixin PlayerInfoMappable {
   String toJson() {
-    return PlayerInfoMapper.ensureInitialized()
-        .encodeJson<PlayerInfo>(this as PlayerInfo);
+    return PlayerInfoMapper.ensureInitialized().encodeJson<PlayerInfo>(
+      this as PlayerInfo,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return PlayerInfoMapper.ensureInitialized()
-        .encodeMap<PlayerInfo>(this as PlayerInfo);
+    return PlayerInfoMapper.ensureInitialized().encodeMap<PlayerInfo>(
+      this as PlayerInfo,
+    );
   }
 
   PlayerInfoCopyWith<PlayerInfo, PlayerInfo, PlayerInfo> get copyWith =>
       _PlayerInfoCopyWithImpl<PlayerInfo, PlayerInfo>(
-          this as PlayerInfo, $identity, $identity);
+        this as PlayerInfo,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return PlayerInfoMapper.ensureInitialized()
-        .stringifyValue(this as PlayerInfo);
+    return PlayerInfoMapper.ensureInitialized().stringifyValue(
+      this as PlayerInfo,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return PlayerInfoMapper.ensureInitialized()
-        .equalsValue(this as PlayerInfo, other);
+    return PlayerInfoMapper.ensureInitialized().equalsValue(
+      this as PlayerInfo,
+      other,
+    );
   }
 
   @override
@@ -1010,16 +1228,22 @@ class _PlayerInfoCopyWithImpl<$R, $Out>
   late final ClassMapperBase<PlayerInfo> $mapper =
       PlayerInfoMapper.ensureInitialized();
   @override
-  $R call({int? id, Object? name = $none}) => $apply(FieldCopyWithData(
-      {if (id != null) #id: id, if (name != $none) #name: name}));
+  $R call({int? id, Object? name = $none}) => $apply(
+    FieldCopyWithData({
+      if (id != null) #id: id,
+      if (name != $none) #name: name,
+    }),
+  );
   @override
   PlayerInfo $make(CopyWithData data) => PlayerInfo(
-      id: data.get(#id, or: $value.id), name: data.get(#name, or: $value.name));
+    id: data.get(#id, or: $value.id),
+    name: data.get(#name, or: $value.name),
+  );
 
   @override
   PlayerInfoCopyWith<$R2, PlayerInfo, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _PlayerInfoCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _PlayerInfoCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ServerStateMapper extends ClassMapperBase<ServerState> {
@@ -1038,11 +1262,18 @@ class ServerStateMapper extends ClassMapperBase<ServerState> {
   final String id = 'ServerState';
 
   static String? _$link(ServerState v) => v.link;
-  static const Field<ServerState, String> _f$link =
-      Field('link', _$link, opt: true);
+  static const Field<ServerState, String> _f$link = Field(
+    'link',
+    _$link,
+    opt: true,
+  );
   static List<PlayerInfo> _$players(ServerState v) => v.players;
-  static const Field<ServerState, List<PlayerInfo>> _f$players =
-      Field('players', _$players, opt: true, def: const []);
+  static const Field<ServerState, List<PlayerInfo>> _f$players = Field(
+    'players',
+    _$players,
+    opt: true,
+    def: const [],
+  );
 
   @override
   final MappableFields<ServerState> fields = const {
@@ -1068,28 +1299,36 @@ class ServerStateMapper extends ClassMapperBase<ServerState> {
 
 mixin ServerStateMappable {
   String toJson() {
-    return ServerStateMapper.ensureInitialized()
-        .encodeJson<ServerState>(this as ServerState);
+    return ServerStateMapper.ensureInitialized().encodeJson<ServerState>(
+      this as ServerState,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return ServerStateMapper.ensureInitialized()
-        .encodeMap<ServerState>(this as ServerState);
+    return ServerStateMapper.ensureInitialized().encodeMap<ServerState>(
+      this as ServerState,
+    );
   }
 
   ServerStateCopyWith<ServerState, ServerState, ServerState> get copyWith =>
       _ServerStateCopyWithImpl<ServerState, ServerState>(
-          this as ServerState, $identity, $identity);
+        this as ServerState,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return ServerStateMapper.ensureInitialized()
-        .stringifyValue(this as ServerState);
+    return ServerStateMapper.ensureInitialized().stringifyValue(
+      this as ServerState,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return ServerStateMapper.ensureInitialized()
-        .equalsValue(this as ServerState, other);
+    return ServerStateMapper.ensureInitialized().equalsValue(
+      this as ServerState,
+      other,
+    );
   }
 
   @override
@@ -1107,7 +1346,7 @@ extension ServerStateValueCopy<$R, $Out>
 abstract class ServerStateCopyWith<$R, $In extends ServerState, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, PlayerInfo, PlayerInfoCopyWith<$R, PlayerInfo, PlayerInfo>>
-      get players;
+  get players;
   $R call({String? link, List<PlayerInfo>? players});
   ServerStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -1122,23 +1361,28 @@ class _ServerStateCopyWithImpl<$R, $Out>
       ServerStateMapper.ensureInitialized();
   @override
   ListCopyWith<$R, PlayerInfo, PlayerInfoCopyWith<$R, PlayerInfo, PlayerInfo>>
-      get players => ListCopyWith($value.players,
-          (v, t) => v.copyWith.$chain(t), (v) => call(players: v));
+  get players => ListCopyWith(
+    $value.players,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(players: v),
+  );
   @override
-  $R call({Object? link = $none, List<PlayerInfo>? players}) =>
-      $apply(FieldCopyWithData({
-        if (link != $none) #link: link,
-        if (players != null) #players: players
-      }));
+  $R call({Object? link = $none, List<PlayerInfo>? players}) => $apply(
+    FieldCopyWithData({
+      if (link != $none) #link: link,
+      if (players != null) #players: players,
+    }),
+  );
   @override
   ServerState $make(CopyWithData data) => ServerState(
-      link: data.get(#link, or: $value.link),
-      players: data.get(#players, or: $value.players));
+    link: data.get(#link, or: $value.link),
+    players: data.get(#players, or: $value.players),
+  );
 
   @override
   ServerStateCopyWith<$R2, ServerState, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _ServerStateCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _ServerStateCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ServerListMapper extends ClassMapperBase<ServerList> {
@@ -1157,13 +1401,15 @@ class ServerListMapper extends ClassMapperBase<ServerList> {
   final String id = 'ServerList';
 
   static List<ListGameServer> _$servers(ServerList v) => v.servers;
-  static const Field<ServerList, List<ListGameServer>> _f$servers =
-      Field('servers', _$servers, opt: true, def: const []);
+  static const Field<ServerList, List<ListGameServer>> _f$servers = Field(
+    'servers',
+    _$servers,
+    opt: true,
+    def: const [],
+  );
 
   @override
-  final MappableFields<ServerList> fields = const {
-    #servers: _f$servers,
-  };
+  final MappableFields<ServerList> fields = const {#servers: _f$servers};
 
   static ServerList _instantiate(DecodingData data) {
     return ServerList(servers: data.dec(_f$servers));
@@ -1183,28 +1429,36 @@ class ServerListMapper extends ClassMapperBase<ServerList> {
 
 mixin ServerListMappable {
   String toJson() {
-    return ServerListMapper.ensureInitialized()
-        .encodeJson<ServerList>(this as ServerList);
+    return ServerListMapper.ensureInitialized().encodeJson<ServerList>(
+      this as ServerList,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return ServerListMapper.ensureInitialized()
-        .encodeMap<ServerList>(this as ServerList);
+    return ServerListMapper.ensureInitialized().encodeMap<ServerList>(
+      this as ServerList,
+    );
   }
 
   ServerListCopyWith<ServerList, ServerList, ServerList> get copyWith =>
       _ServerListCopyWithImpl<ServerList, ServerList>(
-          this as ServerList, $identity, $identity);
+        this as ServerList,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return ServerListMapper.ensureInitialized()
-        .stringifyValue(this as ServerList);
+    return ServerListMapper.ensureInitialized().stringifyValue(
+      this as ServerList,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return ServerListMapper.ensureInitialized()
-        .equalsValue(this as ServerList, other);
+    return ServerListMapper.ensureInitialized().equalsValue(
+      this as ServerList,
+      other,
+    );
   }
 
   @override
@@ -1221,8 +1475,12 @@ extension ServerListValueCopy<$R, $Out>
 
 abstract class ServerListCopyWith<$R, $In extends ServerList, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  ListCopyWith<$R, ListGameServer,
-      ListGameServerCopyWith<$R, ListGameServer, ListGameServer>> get servers;
+  ListCopyWith<
+    $R,
+    ListGameServer,
+    ListGameServerCopyWith<$R, ListGameServer, ListGameServer>
+  >
+  get servers;
   $R call({List<ListGameServer>? servers});
   ServerListCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -1236,10 +1494,16 @@ class _ServerListCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ServerList> $mapper =
       ServerListMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, ListGameServer,
-          ListGameServerCopyWith<$R, ListGameServer, ListGameServer>>
-      get servers => ListCopyWith($value.servers,
-          (v, t) => v.copyWith.$chain(t), (v) => call(servers: v));
+  ListCopyWith<
+    $R,
+    ListGameServer,
+    ListGameServerCopyWith<$R, ListGameServer, ListGameServer>
+  >
+  get servers => ListCopyWith(
+    $value.servers,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(servers: v),
+  );
   @override
   $R call({List<ListGameServer>? servers}) =>
       $apply(FieldCopyWithData({if (servers != null) #servers: servers}));
@@ -1249,6 +1513,6 @@ class _ServerListCopyWithImpl<$R, $Out>
 
   @override
   ServerListCopyWith<$R2, ServerList, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _ServerListCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _ServerListCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

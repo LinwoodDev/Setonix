@@ -51,9 +51,9 @@ final class SetonixServer {
       ));
 
   SetonixData _buildDefaultWorld() {
-    final data = SetonixData.empty().setInfo(GameInfo(
-      packs: assetManager.getPackIds().toList(),
-    ));
+    final data = SetonixData.empty().setInfo(
+      GameInfo(packs: assetManager.getPackIds().toList()),
+    );
     return data;
   }
 
@@ -91,7 +91,9 @@ final class SetonixServer {
       ),
     );
     await _runStaticLogZone(
-        consoler, () => assetManager.init(console: consoler));
+      consoler,
+      () => assetManager.init(console: consoler),
+    );
     final configManager = ConfigManager(argsConfig: argsConfig);
     await configManager.loadConfig();
     final apiEndpoint = configManager.apiEndpoint;
@@ -104,13 +106,20 @@ final class SetonixServer {
       userService = fileService;
     }
     final userManager = UserManager(
-        guestPrefix: configManager.guestPrefix,
-        service: userService,
-        whitelistEnabled: configManager.whitelistEnabled);
-    final challengeManager =
-        configManager.accountRequired ? ChallengeManager() : null;
+      guestPrefix: configManager.guestPrefix,
+      service: userService,
+      whitelistEnabled: configManager.whitelistEnabled,
+    );
+    final challengeManager = configManager.accountRequired
+        ? ChallengeManager()
+        : null;
     return SetonixServer._(
-        consoler, assetManager, configManager, userManager, challengeManager);
+      consoler,
+      assetManager,
+      configManager,
+      userManager,
+      challengeManager,
+    );
   }
 
   void log(Object? message, {LogLevel? level}) =>
@@ -118,25 +127,29 @@ final class SetonixServer {
 
   static final String defaultWorldFile = 'world.stnx';
 
-  Map<int, ConnectionInfo> get players =>
-      Map.fromEntries((_server?.clientConnections ?? {})
-          .map((e) => MapEntry(e, _server!.getConnectionInfo(e)!)));
+  Map<int, ConnectionInfo> get players => Map.fromEntries(
+    (_server?.clientConnections ?? {}).map(
+      (e) => MapEntry(e, _server!.getConnectionInfo(e)!),
+    ),
+  );
 
-  Future<void> init({
-    bool verbose = false,
-  }) async {
+  Future<void> init({bool verbose = false}) async {
     if (verbose) {
       consoler.minLogLevel = LogLevel.verbose;
     }
-    log("Starting server on ${configManager.host}:${configManager.port}",
-        level: LogLevel.info);
+    log(
+      "Starting server on ${configManager.host}:${configManager.port}",
+      level: LogLevel.info,
+    );
     log('Verbose logging activated', level: LogLevel.verbose);
     try {
       await initPluginSystem();
       log('Plugin system initialized', level: LogLevel.info);
     } catch (e) {
-      log('Error initializing plugin system: $e, continuing without',
-          level: LogLevel.warning);
+      log(
+        'Error initializing plugin system: $e, continuing without',
+        level: LogLevel.warning,
+      );
     }
     SecurityContext? securityContext;
     try {
@@ -147,31 +160,39 @@ final class SetonixServer {
         ..useCertificateChainBytes(certificate);
       log('Certificates found, using secure connection', level: LogLevel.info);
     } on PathNotFoundException catch (_) {
-      log('No certificates found, using insecure connection',
-          level: LogLevel.warning);
+      log(
+        'No certificates found, using insecure connection',
+        level: LogLevel.warning,
+      );
     }
     if (configManager.whitelistEnabled && !configManager.accountRequired) {
-      log('Whitelist is enabled, but account requirement is disabled. This allows users to join without an account.',
-          level: LogLevel.warning);
+      log(
+        'Whitelist is enabled, but account requirement is disabled. This allows users to join without an account.',
+        level: LogLevel.warning,
+      );
     }
     final server = _server = NetworkerSocketServer(
-        InternetAddress.anyIPv4, configManager.port,
-        securityContext: securityContext,
-        filterConnections: buildFilterConnections(
-            loadProperty: (request) =>
-                (getWorld(request.uri.path) ?? defaultWorld)
-                    .eventSystem
-                    .runPing(
-                        request,
-                        GameProperty.defaultProperty.copyWith(
-                          description: configManager.description,
-                          maxPlayers: configManager.maxPlayers,
-                          currentPlayers: _server?.clientConnections.length,
-                          packsSignature: assetManager.createSignature(),
-                        ))));
+      InternetAddress.anyIPv4,
+      configManager.port,
+      securityContext: securityContext,
+      filterConnections: buildFilterConnections(
+        loadProperty: (request) =>
+            (getWorld(request.uri.path) ?? defaultWorld).eventSystem.runPing(
+              request,
+              GameProperty.defaultProperty.copyWith(
+                description: configManager.description,
+                maxPlayers: configManager.maxPlayers,
+                currentPlayers: _server?.clientConnections.length,
+                packsSignature: assetManager.createSignature(),
+              ),
+            ),
+      ),
+    );
 
     final transformer = _pipe = NetworkerPipeTransformer<String, WorldEvent>(
-        WorldEventMapper.fromJson, (e) => e.toJson());
+      WorldEventMapper.fromJson,
+      (e) => e.toJson(),
+    );
     transformer.read.listen(_onClientEvent);
     server
       ..clientConnect.listen(_onJoin)
@@ -192,19 +213,23 @@ final class SetonixServer {
     });
   }
 
-  void _onClientEvent(NetworkerPacket<WorldEvent> packet,
-          {bool force = false, String? worldName}) =>
-      getWorld(worldName ?? defaultWorldName)?.onClientEvent(
-        packet,
-        force: force,
-      );
+  void _onClientEvent(
+    NetworkerPacket<WorldEvent> packet, {
+    bool force = false,
+    String? worldName,
+  }) => getWorld(
+    worldName ?? defaultWorldName,
+  )?.onClientEvent(packet, force: force);
 
   static R _runStaticLogZone<R>(Consoler consoler, R Function() body) =>
-      runZoned(body, zoneSpecification: ZoneSpecification(
-        print: (self, parent, zone, message) {
-          consoler.print(message);
-        },
-      ));
+      runZoned(
+        body,
+        zoneSpecification: ZoneSpecification(
+          print: (self, parent, zone, message) {
+            consoler.print(message);
+          },
+        ),
+      );
 
   Future<void> run() async {
     consoler.run();
@@ -212,8 +237,11 @@ final class SetonixServer {
     await _server?.onClosed.first;
   }
 
-  void sendEvent(PlayableWorldEvent event,
-      {Channel target = kAnyChannel, String? worldName}) {
+  void sendEvent(
+    PlayableWorldEvent event, {
+    Channel target = kAnyChannel,
+    String? worldName,
+  }) {
     _pipe?.sendMessage(event, target);
     if (target == kAnyChannel || target == kAuthorityChannel) {
       getWorld(worldName ?? defaultWorldName)?.add(event);
@@ -224,14 +252,17 @@ final class SetonixServer {
     final (user, info) = event;
     final maxPlayers = configManager.maxPlayers;
     if (maxPlayers >= 0 && players.length > maxPlayers) {
-      log('Server is full, rejecting connection from ${info.address}',
-          level: LogLevel.warning);
+      log(
+        'Server is full, rejecting connection from ${info.address}',
+        level: LogLevel.warning,
+      );
       info.close();
       return;
     }
     log('${info.address} ($user) joined the game', level: LogLevel.info);
-    _onClientEvent(NetworkerPacket(
-        UserJoined(channel: event.$1, info: event.$2), event.$1));
+    _onClientEvent(
+      NetworkerPacket(UserJoined(channel: event.$1, info: event.$2), event.$1),
+    );
   }
 
   void _onLeave((Channel, ConnectionInfo) event) {
@@ -264,8 +295,10 @@ final class SetonixServer {
   bool kick(int id, [KickMessage? reason]) {
     final info = _server?.getConnectionInfo(id);
     if (info == null) return false;
-    info.close(WebSocketStatus.goingAway,
-        reason?.toJson() ?? 'You have been kicked from the server.');
+    info.close(
+      WebSocketStatus.goingAway,
+      reason?.toJson() ?? 'You have been kicked from the server.',
+    );
     return true;
   }
 
@@ -273,14 +306,19 @@ final class SetonixServer {
     process(MessageSent(kAuthorityChannel, message));
   }
 
-  bool spawnDeck(ItemLocation location, GlobalVectorDefinition cell,
-      [bool force = true]) {
+  bool spawnDeck(
+    ItemLocation location,
+    GlobalVectorDefinition cell, [
+    bool force = true,
+  ]) {
     final definition = assetManager.getDeck(location);
     if (definition == null) return false;
     final boardSpawn = BoardsSpawnRequest(cell.table);
     for (final board in definition.boards) {
-      boardSpawn.board(cell.position + board.position,
-          ItemLocation.fromString(board.name, location.namespace));
+      boardSpawn.board(
+        cell.position + board.position,
+        ItemLocation.fromString(board.name, location.namespace),
+      );
     }
     final objectSpawn = ObjectsSpawned(cell.table);
     for (final object in definition.figures) {

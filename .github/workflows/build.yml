@@ -25,7 +25,7 @@ jobs:
         with:
           java-version: "17"
           distribution: "temurin"
-      - uses: subosito/flutter-action@v2.19.0
+      - uses: subosito/flutter-action@v2.20.0
         with:
           flutter-version-file: app/pubspec.yaml
       - name: 📦 Get dependencies
@@ -106,7 +106,7 @@ jobs:
         run: |
           choco install yq
           choco install innosetup
-      - uses: subosito/flutter-action@v2.19.0
+      - uses: subosito/flutter-action@v2.20.0
         with:
           flutter-version-file: app/pubspec.yaml
       - name: ✅ Enable platforms
@@ -197,7 +197,7 @@ jobs:
             libsecret-1-dev \
             libjsoncpp-dev \
             rpm
-      - uses: subosito/flutter-action@v2.19.0
+      - uses: subosito/flutter-action@v2.20.0
         with:
           flutter-version-file: app/pubspec.yaml
           channel: "master"
@@ -333,7 +333,7 @@ jobs:
             alien \
             libsecret-1-dev \
             libjsoncpp-dev
-      - uses: subosito/flutter-action@v2.19.0
+      - uses: subosito/flutter-action@v2.20.0
         with:
           flutter-version-file: app/pubspec.yaml
           channel: "master"
@@ -405,7 +405,7 @@ jobs:
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2.19.0
+      - uses: subosito/flutter-action@v2.20.0
         with:
           flutter-version-file: app/pubspec.yaml
       - uses: actions/setup-python@v5
@@ -464,7 +464,7 @@ jobs:
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2.19.0
+      - uses: subosito/flutter-action@v2.20.0
         with:
           flutter-version-file: app/pubspec.yaml
       - name: 📦 Get dependencies
@@ -547,7 +547,7 @@ jobs:
       - name: Install tree
         if: ${{ matrix.os.name == 'macos-latest' }}
         run: brew install tree
-      - uses: subosito/flutter-action@v2.19.0
+      - uses: subosito/flutter-action@v2.20.0
         with:
           flutter-version-file: app/pubspec.yaml
           channel: 'master'
@@ -865,7 +865,7 @@ jobs:
         with:
           java-version: "17"
           distribution: "temurin"
-      - uses: subosito/flutter-action@v2.19.0
+      - uses: subosito/flutter-action@v2.20.0
         with:
           flutter-version-file: app/pubspec.yaml
       - name: Build nessesary files

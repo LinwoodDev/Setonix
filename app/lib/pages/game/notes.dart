@@ -67,30 +67,34 @@ class _GameNotesDrawerState extends State<GameNotesDrawer> {
                           final result = await showDialog<bool>(
                             context: context,
                             builder: (context) => AlertDialog(
-                              title:
-                                  Text(AppLocalizations.of(context).deleteNote),
-                              content: Text(AppLocalizations.of(context)
-                                  .deleteNoteMessage(note)),
+                              title: Text(
+                                AppLocalizations.of(context).deleteNote,
+                              ),
+                              content: Text(
+                                AppLocalizations.of(
+                                  context,
+                                ).deleteNoteMessage(note),
+                              ),
                               actions: [
                                 TextButton(
                                   onPressed: () =>
                                       Navigator.of(context).pop(false),
-                                  child:
-                                      Text(AppLocalizations.of(context).cancel),
+                                  child: Text(
+                                    AppLocalizations.of(context).cancel,
+                                  ),
                                 ),
                                 TextButton(
                                   onPressed: () =>
                                       Navigator.of(context).pop(true),
-                                  child:
-                                      Text(AppLocalizations.of(context).delete),
+                                  child: Text(
+                                    AppLocalizations.of(context).delete,
+                                  ),
                                 ),
                               ],
                             ),
                           );
                           if (!(result ?? false)) return;
-                          bloc.process(
-                            NoteRemoved(note),
-                          );
+                          bloc.process(NoteRemoved(note));
                         },
                       ),
                     );
@@ -110,7 +114,9 @@ class _GameNotesDrawerState extends State<GameNotesDrawer> {
                 showDialog(
                   context: context,
                   builder: (context) => BlocProvider.value(
-                      value: bloc, child: const GameNoteDialog()),
+                    value: bloc,
+                    child: const GameNoteDialog(),
+                  ),
                 );
               },
             ),

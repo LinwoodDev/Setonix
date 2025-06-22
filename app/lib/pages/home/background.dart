@@ -77,9 +77,11 @@ class DotsPainter extends CustomPainter {
     final realOffset = offset % spacing;
 
     for (var x = (size.width % spacing) / 2; x < size.width; x += spacing) {
-      for (var y = (size.height % spacing) / 2;
-          y < (size.height + realOffset);
-          y += spacing) {
+      for (
+        var y = (size.height % spacing) / 2;
+        y < (size.height + realOffset);
+        y += spacing
+      ) {
         canvas.drawCircle(Offset(x, y - realOffset), this.size, paint);
       }
     }

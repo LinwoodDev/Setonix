@@ -26,10 +26,7 @@ class VectorDefinitionMapper extends ClassMapperBase<VectorDefinition> {
   static const Field<VectorDefinition, int> _f$y = Field('y', _$y);
 
   @override
-  final MappableFields<VectorDefinition> fields = const {
-    #x: _f$x,
-    #y: _f$y,
-  };
+  final MappableFields<VectorDefinition> fields = const {#x: _f$x, #y: _f$y};
 
   @override
   final MappingHook hook = const VectorDefinitionHook();
@@ -61,40 +58,48 @@ mixin VectorDefinitionMappable {
   }
 
   VectorDefinitionCopyWith<VectorDefinition, VectorDefinition, VectorDefinition>
-      get copyWith =>
-          _VectorDefinitionCopyWithImpl<VectorDefinition, VectorDefinition>(
-              this as VectorDefinition, $identity, $identity);
+  get copyWith =>
+      _VectorDefinitionCopyWithImpl<VectorDefinition, VectorDefinition>(
+        this as VectorDefinition,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return VectorDefinitionMapper.ensureInitialized()
-        .stringifyValue(this as VectorDefinition);
+    return VectorDefinitionMapper.ensureInitialized().stringifyValue(
+      this as VectorDefinition,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return VectorDefinitionMapper.ensureInitialized()
-        .equalsValue(this as VectorDefinition, other);
+    return VectorDefinitionMapper.ensureInitialized().equalsValue(
+      this as VectorDefinition,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return VectorDefinitionMapper.ensureInitialized()
-        .hashValue(this as VectorDefinition);
+    return VectorDefinitionMapper.ensureInitialized().hashValue(
+      this as VectorDefinition,
+    );
   }
 }
 
 extension VectorDefinitionValueCopy<$R, $Out>
     on ObjectCopyWith<$R, VectorDefinition, $Out> {
   VectorDefinitionCopyWith<$R, VectorDefinition, $Out>
-      get $asVectorDefinition => $base
-          .as((v, t, t2) => _VectorDefinitionCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asVectorDefinition =>
+      $base.as((v, t, t2) => _VectorDefinitionCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class VectorDefinitionCopyWith<$R, $In extends VectorDefinition, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call({int? x, int? y});
   VectorDefinitionCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _VectorDefinitionCopyWithImpl<$R, $Out>
@@ -114,6 +119,6 @@ class _VectorDefinitionCopyWithImpl<$R, $Out>
 
   @override
   VectorDefinitionCopyWith<$R2, VectorDefinition, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _VectorDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _VectorDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

@@ -34,8 +34,8 @@ class GameDialogOverlay extends StatelessWidget {
 
         void submitValue([GameDialogValue? newValue]) {
           context.read<WorldBloc>().process(
-                DialogCloseRequest(dialog.id, newValue),
-              );
+            DialogCloseRequest(dialog.id, newValue),
+          );
         }
 
         final image = state.world.images[dialog.image];
@@ -50,9 +50,7 @@ class GameDialogOverlay extends StatelessWidget {
             GestureDetector(
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                child: Container(
-                  color: Colors.black.withValues(alpha: 0.5),
-                ),
+                child: Container(color: Colors.black.withValues(alpha: 0.5)),
               ),
               onTap: () {
                 submitValue();
@@ -65,100 +63,99 @@ class GameDialogOverlay extends StatelessWidget {
                 onPressed: () => submitValue(),
               ),
               constraints: BoxConstraints(
-                  maxWidth: header == null
-                      ? LeapBreakpoints.medium
-                      : LeapBreakpoints.expanded),
+                maxWidth: header == null
+                    ? LeapBreakpoints.medium
+                    : LeapBreakpoints.expanded,
+              ),
               content: Row(
                 children: [
                   if (!isMobile && header != null) Expanded(child: header),
                   Expanded(
                     child: ListView.separated(
-                        shrinkWrap: true,
-                        itemCount: dialog.components.length + 1,
-                        separatorBuilder: (context, index) =>
-                            const SizedBox(height: 12),
-                        itemBuilder: (context, cIndex) {
-                          if (cIndex == 0) {
-                            return Column(
-                              children: [
-                                if (isMobile && header != null) header,
-                                Card.filled(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(12),
-                                    child: Row(
-                                      children: [
-                                        Icon(PhosphorIconsLight.warning),
-                                        const SizedBox(width: 12),
-                                        Expanded(
-                                          child: Text(
-                                            AppLocalizations.of(context)
-                                                .thirdPartyContent,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium,
-                                          ),
+                      shrinkWrap: true,
+                      itemCount: dialog.components.length + 1,
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 12),
+                      itemBuilder: (context, cIndex) {
+                        if (cIndex == 0) {
+                          return Column(
+                            children: [
+                              if (isMobile && header != null) header,
+                              Card.filled(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12),
+                                  child: Row(
+                                    children: [
+                                      Icon(PhosphorIconsLight.warning),
+                                      const SizedBox(width: 12),
+                                      Expanded(
+                                        child: Text(
+                                          AppLocalizations.of(
+                                            context,
+                                          ).thirdPartyContent,
+                                          style: Theme.of(
+                                            context,
+                                          ).textTheme.bodyMedium,
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            );
-                          }
-                          cIndex--;
-                          final component = dialog.components[cIndex];
-                          switch (component) {
-                            case GameDialogMarkdownComponent():
-                              return MarkdownWidget(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                markdownGenerator: MarkdownGenerator(
-                                  extensionSet: md.ExtensionSet(
-                                    md.ExtensionSet.gitHubWeb.blockSyntaxes,
-                                    <md.InlineSyntax>[
-                                      md.EmojiSyntax(),
-                                      ...md
-                                          .ExtensionSet.gitHubWeb.inlineSyntaxes
+                                      ),
                                     ],
                                   ),
                                 ),
-                                data: component.content,
-                              );
-                            case GameDialogTextFieldComponent():
-                              final multiline =
-                                  component.multiline && !component.password;
-                              final initialValue = value
-                                  .getValue(component.idOrLabel)
-                                  .getAsString();
-                              void updateComponent(
-                                String text,
-                              ) =>
-                                  updateValue(
-                                    value.copyWith.values.put(
-                                      component.idOrLabel,
-                                      GameDialogTextFieldValue(
-                                        value: text,
-                                        component: cIndex,
-                                      ),
-                                    ),
-                                  );
-                              updateComponent(initialValue);
-                              return TextFormField(
-                                decoration: InputDecoration(
-                                  labelText: component.label,
-                                  hintText: component.placeholder,
-                                  filled: !multiline,
-                                  border: multiline
-                                      ? const OutlineInputBorder()
-                                      : null,
+                              ),
+                            ],
+                          );
+                        }
+                        cIndex--;
+                        final component = dialog.components[cIndex];
+                        switch (component) {
+                          case GameDialogMarkdownComponent():
+                            return MarkdownWidget(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              markdownGenerator: MarkdownGenerator(
+                                extensionSet: md.ExtensionSet(
+                                  md.ExtensionSet.gitHubWeb.blockSyntaxes,
+                                  <md.InlineSyntax>[
+                                    md.EmojiSyntax(),
+                                    ...md.ExtensionSet.gitHubWeb.inlineSyntaxes,
+                                  ],
                                 ),
-                                maxLines: multiline ? null : 1,
-                                obscureText: component.password,
-                                initialValue: initialValue,
-                                onChanged: updateComponent,
-                              );
-                          }
-                        }),
+                              ),
+                              data: component.content,
+                            );
+                          case GameDialogTextFieldComponent():
+                            final multiline =
+                                component.multiline && !component.password;
+                            final initialValue = value
+                                .getValue(component.idOrLabel)
+                                .getAsString();
+                            void updateComponent(String text) => updateValue(
+                              value.copyWith.values.put(
+                                component.idOrLabel,
+                                GameDialogTextFieldValue(
+                                  value: text,
+                                  component: cIndex,
+                                ),
+                              ),
+                            );
+                            updateComponent(initialValue);
+                            return TextFormField(
+                              decoration: InputDecoration(
+                                labelText: component.label,
+                                hintText: component.placeholder,
+                                filled: !multiline,
+                                border: multiline
+                                    ? const OutlineInputBorder()
+                                    : null,
+                              ),
+                              maxLines: multiline ? null : 1,
+                              obscureText: component.password,
+                              initialValue: initialValue,
+                              onChanged: updateComponent,
+                            );
+                        }
+                      },
+                    ),
                   ),
                 ],
               ),

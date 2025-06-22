@@ -16,10 +16,7 @@ class GameAssetManager extends AssetManager {
 
   final SetonixFileSystem fileSystem;
 
-  GameAssetManager({
-    required this.fileSystem,
-    this.currentLocale = 'en',
-  });
+  GameAssetManager({required this.fileSystem, this.currentLocale = 'en'});
 
   @override
   Iterable<MapEntry<String, SetonixData>> get packs => _loadedPacks.entries;
@@ -40,12 +37,11 @@ class GameAssetManager extends AssetManager {
     String namespace, {
     Vector2? srcPosition,
     Vector2? srcSize,
-  }) =>
-      loadSpriteFromLocation(
-        ItemLocation.fromString(key, namespace),
-        srcPosition: srcPosition,
-        srcSize: srcSize,
-      );
+  }) => loadSpriteFromLocation(
+    ItemLocation.fromString(key, namespace),
+    srcPosition: srcPosition,
+    srcSize: srcSize,
+  );
 
   Future<Sprite?> loadSpriteFromLocation(
     ItemLocation location, {
@@ -58,15 +54,15 @@ class GameAssetManager extends AssetManager {
       if (texture == null) return Future.value(null);
       image = _cachedImages[location] = decodeImageFromList(texture);
     }
-    return image.then((e) => Sprite(
-          e,
-          srcPosition: srcPosition,
-          srcSize: srcSize,
-        ));
+    return image.then(
+      (e) => Sprite(e, srcPosition: srcPosition, srcSize: srcSize),
+    );
   }
 
-  Future<Sprite?> loadFigureSprite(ItemLocation location,
-      [String? variation]) async {
+  Future<Sprite?> loadFigureSprite(
+    ItemLocation location, [
+    String? variation,
+  ]) async {
     final figure = getFigure(location);
     if (figure == null) return null;
     final definition = figure.variations[variation] ?? figure.back;
@@ -78,8 +74,10 @@ class GameAssetManager extends AssetManager {
     );
   }
 
-  Future<Sprite?> loadBoardSprite(ItemLocation location,
-      [VectorDefinition? tile]) async {
+  Future<Sprite?> loadBoardSprite(
+    ItemLocation location, [
+    VectorDefinition? tile,
+  ]) async {
     final board = getBoard(location);
     if (board == null) return null;
     Vector2 offset = board.offset.toVector();
@@ -103,13 +101,15 @@ class GameAssetManager extends AssetManager {
     final files = await fileSystem.getPacks();
     final corePack = await fileSystem.fetchCorePack();
     unloadPacks(
-        _loadedPacks.keys.where((e) => !files.any((f) => f.identifier == e)));
+      _loadedPacks.keys.where((e) => !files.any((f) => f.identifier == e)),
+    );
     for (final file in <SetonixFile>[...files, corePack]) {
       try {
         final pack = file.load();
         _loadedPacks[file.identifier] = pack;
-        _loadedTranslations[file.identifier] =
-            pack.getTranslationsStore(getLocale: () => currentLocale);
+        _loadedTranslations[file.identifier] = pack.getTranslationsStore(
+          getLocale: () => currentLocale,
+        );
       } catch (_) {}
     }
   }
@@ -125,12 +125,12 @@ class GameAssetManager extends AssetManager {
     }
   }
 
-  void clearImagesFromNamespace(String namespace) => _cachedImages
-    ..removeWhere((k, v) {
-      if (namespace != k?.namespace) return false;
-      v.then((e) => e.dispose());
-      return true;
-    });
+  void clearImagesFromNamespace(String namespace) =>
+      _cachedImages..removeWhere((k, v) {
+        if (namespace != k?.namespace) return false;
+        v.then((e) => e.dispose());
+        return true;
+      });
 
   void clearImages() => _cachedImages
     ..forEach((_, v) => v.then((e) => e.dispose()))

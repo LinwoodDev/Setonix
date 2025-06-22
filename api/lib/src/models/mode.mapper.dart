@@ -25,14 +25,26 @@ class GameModeMapper extends ClassMapperBase<GameMode> {
   static String? _$script(GameMode v) => v.script;
   static const Field<GameMode, String> _f$script = Field('script', _$script);
   static Map<String, GameTable> _$tables(GameMode v) => v.tables;
-  static const Field<GameMode, Map<String, GameTable>> _f$tables =
-      Field('tables', _$tables, opt: true, def: const {});
+  static const Field<GameMode, Map<String, GameTable>> _f$tables = Field(
+    'tables',
+    _$tables,
+    opt: true,
+    def: const {},
+  );
   static String _$tableName(GameMode v) => v.tableName;
-  static const Field<GameMode, String> _f$tableName =
-      Field('tableName', _$tableName, opt: true, def: '');
+  static const Field<GameMode, String> _f$tableName = Field(
+    'tableName',
+    _$tableName,
+    opt: true,
+    def: '',
+  );
   static Map<String, GameTeam> _$teams(GameMode v) => v.teams;
-  static const Field<GameMode, Map<String, GameTeam>> _f$teams =
-      Field('teams', _$teams, opt: true, def: const {});
+  static const Field<GameMode, Map<String, GameTeam>> _f$teams = Field(
+    'teams',
+    _$teams,
+    opt: true,
+    def: const {},
+  );
 
   @override
   final MappableFields<GameMode> fields = const {
@@ -44,10 +56,11 @@ class GameModeMapper extends ClassMapperBase<GameMode> {
 
   static GameMode _instantiate(DecodingData data) {
     return GameMode(
-        script: data.dec(_f$script),
-        tables: data.dec(_f$tables),
-        tableName: data.dec(_f$tableName),
-        teams: data.dec(_f$teams));
+      script: data.dec(_f$script),
+      tables: data.dec(_f$tables),
+      tableName: data.dec(_f$tableName),
+      teams: data.dec(_f$teams),
+    );
   }
 
   @override
@@ -64,18 +77,23 @@ class GameModeMapper extends ClassMapperBase<GameMode> {
 
 mixin GameModeMappable {
   String toJson() {
-    return GameModeMapper.ensureInitialized()
-        .encodeJson<GameMode>(this as GameMode);
+    return GameModeMapper.ensureInitialized().encodeJson<GameMode>(
+      this as GameMode,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return GameModeMapper.ensureInitialized()
-        .encodeMap<GameMode>(this as GameMode);
+    return GameModeMapper.ensureInitialized().encodeMap<GameMode>(
+      this as GameMode,
+    );
   }
 
   GameModeCopyWith<GameMode, GameMode, GameMode> get copyWith =>
       _GameModeCopyWithImpl<GameMode, GameMode>(
-          this as GameMode, $identity, $identity);
+        this as GameMode,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
     return GameModeMapper.ensureInitialized().stringifyValue(this as GameMode);
@@ -83,8 +101,10 @@ mixin GameModeMappable {
 
   @override
   bool operator ==(Object other) {
-    return GameModeMapper.ensureInitialized()
-        .equalsValue(this as GameMode, other);
+    return GameModeMapper.ensureInitialized().equalsValue(
+      this as GameMode,
+      other,
+    );
   }
 
   @override
@@ -100,15 +120,21 @@ extension GameModeValueCopy<$R, $Out> on ObjectCopyWith<$R, GameMode, $Out> {
 
 abstract class GameModeCopyWith<$R, $In extends GameMode, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  MapCopyWith<$R, String, GameTable,
-      GameTableCopyWith<$R, GameTable, GameTable>> get tables;
+  MapCopyWith<
+    $R,
+    String,
+    GameTable,
+    GameTableCopyWith<$R, GameTable, GameTable>
+  >
+  get tables;
   MapCopyWith<$R, String, GameTeam, GameTeamCopyWith<$R, GameTeam, GameTeam>>
-      get teams;
-  $R call(
-      {String? script,
-      Map<String, GameTable>? tables,
-      String? tableName,
-      Map<String, GameTeam>? teams});
+  get teams;
+  $R call({
+    String? script,
+    Map<String, GameTable>? tables,
+    String? tableName,
+    Map<String, GameTeam>? teams,
+  });
   GameModeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -121,35 +147,48 @@ class _GameModeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<GameMode> $mapper =
       GameModeMapper.ensureInitialized();
   @override
-  MapCopyWith<$R, String, GameTable,
-          GameTableCopyWith<$R, GameTable, GameTable>>
-      get tables => MapCopyWith($value.tables, (v, t) => v.copyWith.$chain(t),
-          (v) => call(tables: v));
+  MapCopyWith<
+    $R,
+    String,
+    GameTable,
+    GameTableCopyWith<$R, GameTable, GameTable>
+  >
+  get tables => MapCopyWith(
+    $value.tables,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(tables: v),
+  );
   @override
   MapCopyWith<$R, String, GameTeam, GameTeamCopyWith<$R, GameTeam, GameTeam>>
-      get teams => MapCopyWith(
-          $value.teams, (v, t) => v.copyWith.$chain(t), (v) => call(teams: v));
+  get teams => MapCopyWith(
+    $value.teams,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(teams: v),
+  );
   @override
-  $R call(
-          {Object? script = $none,
-          Map<String, GameTable>? tables,
-          String? tableName,
-          Map<String, GameTeam>? teams}) =>
-      $apply(FieldCopyWithData({
-        if (script != $none) #script: script,
-        if (tables != null) #tables: tables,
-        if (tableName != null) #tableName: tableName,
-        if (teams != null) #teams: teams
-      }));
+  $R call({
+    Object? script = $none,
+    Map<String, GameTable>? tables,
+    String? tableName,
+    Map<String, GameTeam>? teams,
+  }) => $apply(
+    FieldCopyWithData({
+      if (script != $none) #script: script,
+      if (tables != null) #tables: tables,
+      if (tableName != null) #tableName: tableName,
+      if (teams != null) #teams: teams,
+    }),
+  );
   @override
   GameMode $make(CopyWithData data) => GameMode(
-      script: data.get(#script, or: $value.script),
-      tables: data.get(#tables, or: $value.tables),
-      tableName: data.get(#tableName, or: $value.tableName),
-      teams: data.get(#teams, or: $value.teams));
+    script: data.get(#script, or: $value.script),
+    tables: data.get(#tables, or: $value.tables),
+    tableName: data.get(#tableName, or: $value.tableName),
+    teams: data.get(#teams, or: $value.teams),
+  );
 
   @override
   GameModeCopyWith<$R2, GameMode, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _GameModeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _GameModeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

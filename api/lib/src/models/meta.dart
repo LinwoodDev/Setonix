@@ -9,12 +9,7 @@ part 'meta.mapper.dart';
 const kFileVersion = 0;
 
 @MappableEnum()
-enum FileType {
-  pack,
-  game,
-  template,
-  accounts,
-}
+enum FileType { pack, game, template, accounts }
 
 @MappableClass()
 final class FileMetadata with FileMetadataMappable {
@@ -83,10 +78,10 @@ final class SetonixAccount {
   });
 
   KeyPair get keyPair => SimpleKeyPairData(
-        privateKey,
-        publicKey: SimplePublicKey(publicKey, type: KeyPairType.ed25519),
-        type: KeyPairType.ed25519,
-      );
+    privateKey,
+    publicKey: SimplePublicKey(publicKey, type: KeyPairType.ed25519),
+    type: KeyPairType.ed25519,
+  );
 
   String getFingerprint({bool short = false, bool pretty = false}) =>
       generateFingerprint(publicKey, short: short, pretty: pretty);

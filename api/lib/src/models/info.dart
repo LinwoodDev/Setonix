@@ -10,11 +10,7 @@ class GameInfo with GameInfoMappable {
   final List<String> packs;
   final String? script;
 
-  const GameInfo({
-    this.teams = const {},
-    this.packs = const [],
-    this.script,
-  });
+  const GameInfo({this.teams = const {}, this.packs = const [], this.script});
 }
 
 @MappableEnum()
@@ -29,7 +25,7 @@ enum TeamColor {
   purple,
   brown,
   white,
-  black;
+  black,
 }
 
 @MappableClass()
@@ -38,9 +34,5 @@ class GameTeam with GameTeamMappable {
   final TeamColor? color;
   final Set<GlobalVectorDefinition> claimedCells;
 
-  GameTeam({
-    this.description = '',
-    this.color,
-    this.claimedCells = const {},
-  });
+  GameTeam({this.description = '', this.color, this.claimedCells = const {}});
 }
