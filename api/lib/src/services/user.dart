@@ -84,8 +84,9 @@ final class UserManager {
     SetonixUser? user;
     if (fingerprint != null) {
       user = await service?.getUser(fingerprint);
-      if (user != null) name = user.name;
-      if (whitelistEnabled && user?.onWhitelist != true) {
+      if (user == null) throw KickMessage(reason: KickReason.notRegistered);
+      name = user.name;
+      if (whitelistEnabled && !user.onWhitelist) {
         throw KickMessage(reason: KickReason.notWhitelisted);
       }
     }
