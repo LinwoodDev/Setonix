@@ -84,12 +84,23 @@ bool isValidClientEvent(
   _ => true,
 };
 
-class ServerResponse {
+sealed class ServerResponse {
+  const ServerResponse();
+}
+
+class KickServerResponse extends ServerResponse {
+  final KickMessage message;
+  final Set<Channel> kicked;
+
+  const KickServerResponse(this.message, {this.kicked = const {}});
+}
+
+class UpdateServerResponse extends ServerResponse {
   final NetworkerPacket<ServerWorldEvent> main;
   final Set<Channel> needsUpdate;
 
-  ServerResponse(this.main, [this.needsUpdate = const {}]);
-  ServerResponse.builder(
+  UpdateServerResponse(this.main, [this.needsUpdate = const {}]);
+  UpdateServerResponse.builder(
     ServerWorldEvent event, [
     Channel channel = kAnyChannel,
     this.needsUpdate = const {},
@@ -158,20 +169,20 @@ Future<ServerResponse?> processClientEvent(
   if (event == null) {
     if (challengeManager != null) {
       final challenge = challengeManager.generateNewChallenge(channel);
-      return ServerResponse.builder(
+      return UpdateServerResponse.builder(
         AuthenticatedRequested(challenge, isRequired: true),
         channel,
       );
     }
     await userManager?.addUser(channel);
-    return ServerResponse.builder(buildInitialize(), channel);
+    return UpdateServerResponse.builder(buildInitialize(), channel);
   }
   if (!isValidClientEvent(event, channel, state, assetManager: assetManager)) {
     return null;
   }
   switch (event) {
     case HybridWorldEvent():
-      return ServerResponse.builder(
+      return UpdateServerResponse.builder(
         event,
         kAnyChannel,
         _hybridNeedsUpdate(event, state),
@@ -180,16 +191,20 @@ Future<ServerResponse?> processClientEvent(
       return null;
     case ServerWorldEvent():
       return allowServerEvents
-          ? ServerResponse.builder(event, kAnyChannel)
+          ? UpdateServerResponse.builder(event, kAnyChannel)
           : null;
     case TeamJoinRequest(team: final team):
-      return ServerResponse.builder(TeamJoined(channel, team), kAnyChannel, {
-        channel,
-      });
+      return UpdateServerResponse.builder(
+        TeamJoined(channel, team),
+        kAnyChannel,
+        {channel},
+      );
     case TeamLeaveRequest(team: final team):
-      return ServerResponse.builder(TeamLeft(channel, team), kAnyChannel, {
-        channel,
-      });
+      return UpdateServerResponse.builder(
+        TeamLeft(channel, team),
+        kAnyChannel,
+        {channel},
+      );
     case CellRollRequest():
       final table = state.getTableOrDefault(event.cell.table);
       var cell = table.getCell(event.cell.position);
@@ -211,7 +226,7 @@ Future<ServerResponse?> processClientEvent(
       } else {
         objects = cell.objects.map(roll).toList();
       }
-      return ServerResponse.builder(
+      return UpdateServerResponse.builder(
         ObjectsChanged(event.cell, objects),
         kAnyChannel,
       );
@@ -221,12 +236,12 @@ Future<ServerResponse?> processClientEvent(
       if (cell == null) return null;
       final positions = List<int>.generate(cell.objects.length, (i) => i)
         ..shuffle();
-      return ServerResponse.builder(
+      return UpdateServerResponse.builder(
         CellShuffled(event.cell, positions),
         kAnyChannel,
       );
     case PacksChangeRequest():
-      return ServerResponse.builder(
+      return UpdateServerResponse.builder(
         WorldInitialized(
           info: state.info.copyWith(
             packs: event.packs.where((e) => assetManager.hasPack(e)).toList(),
@@ -234,7 +249,7 @@ Future<ServerResponse?> processClientEvent(
         ),
       );
     case MessageRequest():
-      return ServerResponse.builder(
+      return UpdateServerResponse.builder(
         MessageSent(channel, event.message),
         kAnyChannel,
       );
@@ -254,7 +269,7 @@ Future<ServerResponse?> processClientEvent(
           }
         }
       }
-      return ServerResponse.builder(
+      return UpdateServerResponse.builder(
         BoardTilesSpawned(event.table, tiles),
         kAnyChannel,
       );
@@ -285,7 +300,7 @@ Future<ServerResponse?> processClientEvent(
           }
         }
       }
-      return ServerResponse.builder(
+      return UpdateServerResponse.builder(
         BoardTilesChanged(event.position.table, newTiles),
         kAnyChannel,
       );
@@ -323,14 +338,17 @@ Future<ServerResponse?> processClientEvent(
           }
         }
       }
-      return ServerResponse.builder(
+      return UpdateServerResponse.builder(
         BoardTilesChanged(event.table, newTiles),
         kAnyChannel,
       );
     case DialogCloseRequest():
-      return ServerResponse.builder(DialogsClosed.single(event.id), channel);
+      return UpdateServerResponse.builder(
+        DialogsClosed.single(event.id),
+        channel,
+      );
     case ImagesRequest():
-      return ServerResponse.builder(
+      return UpdateServerResponse.builder(
         ImagesUpdated(
           Map.fromEntries(
             event.ids.map((e) {
@@ -347,7 +365,7 @@ Future<ServerResponse?> processClientEvent(
       final mode = location == null
           ? null
           : assetManager.getPack(location.namespace)?.getMode(location.id);
-      return ServerResponse.builder(
+      return UpdateServerResponse.builder(
         WorldInitialized.fromMode(mode, state),
         channel,
       );
@@ -357,23 +375,33 @@ Future<ServerResponse?> processClientEvent(
       if (challengeManager == null) return null;
       final verified = await event.verify(challenge);
       if (!verified) {
+        return UpdateServerResponse.builder(
+          AuthenticatedRequested(challenge, isRequired: true),
+          channel,
+        );
+      }
+      SetonixUser? user;
+      try {
+        user = await userManager?.addUser(
+          channel,
+          generateFingerprint(event.publicKey),
+        );
+      } catch (e) {
+        if (e is KickMessage) {
+          return KickServerResponse(e, kicked: {channel});
+        } else {
+          return KickServerResponse(
+            KickMessage(reason: KickReason.notRegistered),
+          );
+        }
+      }
+      if (user == null) {
         final newChallenge = challengeManager.generateNewChallenge(channel);
-        return ServerResponse.builder(
+        return UpdateServerResponse.builder(
           AuthenticatedRequested(newChallenge, isRequired: true),
           channel,
         );
       }
-      final result = await userManager?.addUser(
-        channel,
-        generateFingerprint(event.publicKey),
-      );
-      if (result == false) {
-        final newChallenge = challengeManager.generateNewChallenge(channel);
-        return ServerResponse.builder(
-          AuthenticatedRequested(newChallenge, isRequired: true),
-          channel,
-        );
-      }
-      return ServerResponse.builder(buildInitialize(), channel);
+      return UpdateServerResponse.builder(buildInitialize(), channel);
   }
 }

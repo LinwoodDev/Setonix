@@ -39,9 +39,24 @@ class GameErrorView extends StatelessWidget {
       };
     } else if (error is KickMessage) {
       final link = error.link;
+      var message = error.message;
+      if (message?.isEmpty ?? true) {
+        message = switch (error.reason) {
+          KickReason.kick => AppLocalizations.of(context).kicked,
+          KickReason.ban => AppLocalizations.of(context).banned,
+          KickReason.notWhitelisted => AppLocalizations.of(
+            context,
+          ).notWhitelisted,
+          KickReason.notRegistered => AppLocalizations.of(
+            context,
+          ).notRegistered,
+          KickReason.challengeFailed => AppLocalizations.of(
+            context,
+          ).challengeFailed,
+          _ => AppLocalizations.of(context).disconnectedMessage,
+        };
+      }
       content = [
-        Text(error.message),
-        const SizedBox(height: 8),
         if (link != null)
           ConstrainedBox(
             constraints: const BoxConstraints(

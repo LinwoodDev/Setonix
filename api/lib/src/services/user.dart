@@ -76,7 +76,7 @@ final class UserManager {
     return name;
   }
 
-  Future<bool> addUser(
+  Future<SetonixUser?> addUser(
     Channel channel, [
     String? fingerprint,
     String? name,
@@ -86,12 +86,12 @@ final class UserManager {
       user = await service?.getUser(fingerprint);
       if (user != null) name = user.name;
       if (whitelistEnabled && user?.onWhitelist != true) {
-        return false; // User is not on the whitelist
+        throw KickMessage(reason: KickReason.notWhitelisted);
       }
     }
     name ??= _generateGuestName();
     if (containsUserName(name)) {
-      return false;
+      return null;
     }
     if (user == null) {
       user = SetonixUser(fingerprint: fingerprint, name: name);
@@ -100,7 +100,7 @@ final class UserManager {
       }
     }
     _users[channel] = user;
-    return true;
+    return user;
   }
 
   Future<bool> changeName(Channel channel, String newName) async {

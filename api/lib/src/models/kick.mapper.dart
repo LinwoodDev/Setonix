@@ -20,10 +20,11 @@ class KickMessageMapper extends ClassMapperBase<KickMessage> {
   @override
   final String id = 'KickMessage';
 
-  static String _$message(KickMessage v) => v.message;
+  static String? _$message(KickMessage v) => v.message;
   static const Field<KickMessage, String> _f$message = Field(
     'message',
     _$message,
+    opt: true,
   );
   static String? _$link(KickMessage v) => v.link;
   static const Field<KickMessage, String> _f$link = Field(
@@ -31,17 +32,28 @@ class KickMessageMapper extends ClassMapperBase<KickMessage> {
     _$link,
     opt: true,
   );
+  static KickReason? _$reason(KickMessage v) => v.reason;
+  static const Field<KickMessage, KickReason> _f$reason = Field(
+    'reason',
+    _$reason,
+    opt: true,
+  );
 
   @override
   final MappableFields<KickMessage> fields = const {
     #message: _f$message,
     #link: _f$link,
+    #reason: _f$reason,
   };
 
   @override
   final MappingHook hook = const KickMessageHook();
   static KickMessage _instantiate(DecodingData data) {
-    return KickMessage(message: data.dec(_f$message), link: data.dec(_f$link));
+    return KickMessage(
+      message: data.dec(_f$message),
+      link: data.dec(_f$link),
+      reason: data.dec(_f$reason),
+    );
   }
 
   @override
@@ -104,7 +116,7 @@ extension KickMessageValueCopy<$R, $Out>
 
 abstract class KickMessageCopyWith<$R, $In extends KickMessage, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call({String? message, String? link});
+  $R call({String? message, String? link, KickReason? reason});
   KickMessageCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -117,16 +129,22 @@ class _KickMessageCopyWithImpl<$R, $Out>
   late final ClassMapperBase<KickMessage> $mapper =
       KickMessageMapper.ensureInitialized();
   @override
-  $R call({String? message, Object? link = $none}) => $apply(
+  $R call({
+    Object? message = $none,
+    Object? link = $none,
+    Object? reason = $none,
+  }) => $apply(
     FieldCopyWithData({
-      if (message != null) #message: message,
+      if (message != $none) #message: message,
       if (link != $none) #link: link,
+      if (reason != $none) #reason: reason,
     }),
   );
   @override
   KickMessage $make(CopyWithData data) => KickMessage(
     message: data.get(#message, or: $value.message),
     link: data.get(#link, or: $value.link),
+    reason: data.get(#reason, or: $value.reason),
   );
 
   @override

@@ -22,7 +22,7 @@ final class RemoteUserService extends UserService {
     if (response.statusCode == 200) {
       return SetonixUserMapper.fromJson(response.body);
     }
-    return null;
+    throw KickMessage.fromString(response.body);
   }
 
   @override
