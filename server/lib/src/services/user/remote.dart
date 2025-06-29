@@ -19,10 +19,11 @@ final class RemoteUserService extends UserService {
       Uri.parse('$apiEndpoint/user/${Uri.encodeComponent(fingerprint)}'),
       headers: headers,
     );
-    if (response.statusCode == 200) {
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      if (response.body.isEmpty) return null; // No user found
       return SetonixUserMapper.fromJson(response.body);
     }
-    return null;
+    throw KickMessage.fromString(response.body);
   }
 
   @override

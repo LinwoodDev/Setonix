@@ -117,42 +117,47 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
       server.log('Error processing event: $e', level: LogLevel.error);
     }
     if (process == null) return;
-    final event = Event(
-      serverEvent: process.main.data,
-      target: process.main.channel,
-      clientEvent: data,
-      source: packet.channel,
-      needsUpdate: process.needsUpdate,
-      worldName: worldName,
-    );
-    if (!force) {
-      server.defaultEventSystem.fire(event);
-      if (event.cancelled) return;
-      server.log(
-        'Processing event by ${event.source}: ${limitOutput(event.clientEvent)}, answered with ${limitOutput(event.serverEvent)}',
-        level: LogLevel.verbose,
-      );
-    }
-    switch (packet.data) {
-      case MessageRequest data:
-        server.log(
-          "Message by ${packet.channel}: ${data.message}",
-          level: LogLevel.info,
+    switch (process) {
+      case UpdateServerResponse():
+        final event = Event(
+          serverEvent: process.main.data,
+          target: process.main.channel,
+          clientEvent: data,
+          source: packet.channel,
+          needsUpdate: process.needsUpdate,
+          worldName: worldName,
         );
-      default:
-    }
-    server.sendEvent(
-      event.serverEvent,
-      target: event.target,
-      worldName: worldName,
-    );
-    final updatePackets = process.buildUpdatePacketsFor(
-      state,
-      server.channels,
-      event.needsUpdate,
-    );
-    for (final packet in updatePackets) {
-      sendEvent(packet.data, target: packet.channel);
+        if (!force) {
+          server.defaultEventSystem.fire(event);
+          if (event.cancelled) return;
+          server.log(
+            'Processing event by ${event.source}: ${limitOutput(event.clientEvent)}, answered with ${limitOutput(event.serverEvent)}',
+            level: LogLevel.verbose,
+          );
+        }
+        switch (packet.data) {
+          case MessageRequest data:
+            server.log(
+              "Message by ${packet.channel}: ${data.message}",
+              level: LogLevel.info,
+            );
+          default:
+        }
+        server.sendEvent(
+          event.serverEvent,
+          target: event.target,
+          worldName: worldName,
+        );
+        final updatePackets = process.buildUpdatePacketsFor(
+          state,
+          server.channels,
+          event.needsUpdate,
+        );
+        for (final packet in updatePackets) {
+          sendEvent(packet.data, target: packet.channel);
+        }
+      case KickServerResponse():
+        server.kick(packet.channel, process.message);
     }
   }
 

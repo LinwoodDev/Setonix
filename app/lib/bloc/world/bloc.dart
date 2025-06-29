@@ -174,9 +174,14 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
       userManager: state.multiplayer.state.userManager,
     );
     if (value == null) return;
-    state.multiplayer.sendServerPackets(
-      value.buildPackets(state.world, state.multiplayer.clients),
-    );
+    switch (value) {
+      case UpdateServerResponse():
+        state.multiplayer.sendServerPackets(
+          value.buildPackets(state.world, state.multiplayer.clients),
+        );
+      case KickServerResponse():
+      // Handle kick response
+    }
   }
 
   @override
@@ -203,14 +208,13 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
             assetManager: state.assetManager,
             allowServerEvents: true,
           );
-          if (event != null) {
-            add(event.main.data);
-            final updatePacket = event.buildUpdatePackets(state.world, {
-              kAuthorityChannel,
-            }).firstOrNull;
-            if (updatePacket != null) {
-              add(updatePacket.data);
-            }
+          if (event is! UpdateServerResponse) break;
+          add(event.main.data);
+          final updatePacket = event.buildUpdatePackets(state.world, {
+            kAuthorityChannel,
+          }).firstOrNull;
+          if (updatePacket != null) {
+            add(updatePacket.data);
           }
         }
       case ServerWorldEvent e:
