@@ -77,4 +77,3 @@ Read more here: https://linwood.dev/setonix/0.2.0
 ## 0.1.0 (2024-10-21)
 
 First release 🎉
-
