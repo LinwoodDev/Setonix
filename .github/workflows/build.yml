@@ -94,6 +94,11 @@ jobs:
         with:
           name: apk-x86_64-build
           path: app/linwood-setonix-android-x86_64.apk
+      - name: Archive Corepack
+        uses: actions/upload-artifact@v4
+        with:
+          name: corepack
+          path: app/assets/pack.stnx
   build-windows:
     runs-on: windows-2025
     defaults:
@@ -637,6 +642,10 @@ jobs:
           name: apk-x86_64-build
       - uses: actions/download-artifact@v4
         with:
+          name: apk-corepack
+          path: core.stnx
+      - uses: actions/download-artifact@v4
+        with:
           name: windows-build
           path: windows-build/
       - uses: actions/download-artifact@v4
@@ -765,6 +774,7 @@ jobs:
             linwood-setonix-server-linux-arm64.tar.gz
             linwood-setonix-server-windows-x86_64.zip
             linwood-setonix-server-macos.zip
+            core.stnx
             checksums.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -798,6 +808,7 @@ jobs:
             linwood-setonix-server-linux-arm64.tar.gz
             linwood-setonix-server-windows-x86_64.zip
             linwood-setonix-server-macos.zip
+            core.stnx
             checksums.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -829,6 +840,7 @@ jobs:
             linwood-setonix-server-linux-arm64.tar.gz
             linwood-setonix-server-windows-x86_64.zip
             linwood-setonix-server-macos.zip
+            core.stnx
             checksums.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
