@@ -43,11 +43,12 @@ class SetonixFileSystem {
       event.database.createObjectStore('packs-data');
     }
     if (event.oldVersion < 3) {
+      event.database.createObjectStore('editor');
       event.database.createObjectStore('accounts');
     }
   }
 
-  static const kDatabaseVersion = 2;
+  static const kDatabaseVersion = 3;
 
   SetonixFileSystem({SetonixFile? corePack})
     : _corePack = corePack,

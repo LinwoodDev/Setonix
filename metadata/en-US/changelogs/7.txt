@@ -8,5 +8,6 @@
   * Remote endpoint
 * Add whitelist system on server
 * Fix sensitivity setting not visible on web
+* Fix editor not working on web
 
 Read more here: https://linwood.dev/setonix/0.5.0
