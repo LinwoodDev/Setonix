@@ -100,6 +100,12 @@ Future<void> main(List<String> args) async {
   await Process.run(
     'flutter',
     ['pub', 'get'],
+    workingDirectory: 'plugin',
+    runInShell: true,
+  );
+  await Process.run(
+    'flutter',
+    ['pub', 'get'],
     workingDirectory: 'server',
     runInShell: true,
   );
