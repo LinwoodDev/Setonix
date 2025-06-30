@@ -207,7 +207,10 @@ jobs:
       - uses: subosito/flutter-action@v2.21.0
         with:
           flutter-version-file: app/pubspec.yaml
+          channel: "master"
           cache: true
+          cache-key: "flutter-:os:-:channel:-:version:-:arch:-:hash:"
+          cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:"
       - name: ✅ Enable platforms
         run: |
           rm -f "$(dirname "$(dirname "$(command -v flutter)")")/engine/src/.gn"
@@ -340,7 +343,10 @@ jobs:
       - uses: subosito/flutter-action@v2.21.0
         with:
           flutter-version-file: app/pubspec.yaml
+          channel: "master"
           cache: true
+          cache-key: "flutter-:os:-:channel:-:version:-:arch:-:hash:"
+          cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:"
       - name: ✅ Enable platforms
         run: |
           rm -f "$(dirname "$(dirname "$(command -v flutter)")")/engine/src/.gn"
@@ -553,7 +559,10 @@ jobs:
       - uses: subosito/flutter-action@v2.21.0
         with:
           flutter-version-file: app/pubspec.yaml
+          channel: "master"
           cache: true
+          cache-key: "flutter-:os:-:channel:-:version:-:arch:-:hash:"
+          cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:"
       - name: 📦 Get dependencies
         run: |
           flutter clean
