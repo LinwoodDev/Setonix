@@ -321,6 +321,14 @@ class SetonixData extends ArchiveData<SetonixData> {
     }
   }
 
+  PackItem<GameMode>? getModeItem(String id, [String namespace = '']) =>
+      PackItem.wrap(
+        pack: this,
+        namespace: namespace,
+        id: id,
+        item: getMode(id),
+      );
+
   Map<String, GameMode> getModesData() => Map.fromEntries(
     getModes().map((e) {
       final mode = getMode(e);

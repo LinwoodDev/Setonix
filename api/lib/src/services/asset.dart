@@ -53,4 +53,7 @@ abstract class AssetManager {
 
   PackItem<DeckDefinition>? getDeckItem(ItemLocation location) =>
       getPack(location.namespace)?.getDeckItem(location.id, location.namespace);
+
+  PackItem<GameMode>? getModeItem(ItemLocation location) =>
+      getPack(location.namespace)?.getModeItem(location.id, location.namespace);
 }

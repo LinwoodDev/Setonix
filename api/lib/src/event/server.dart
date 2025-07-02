@@ -28,13 +28,15 @@ final class WorldInitialized extends ServerWorldEvent
   });
 
   factory WorldInitialized.fromMode(
-    ItemLocation location,
-    GameMode? mode,
+    PackItem<GameMode>? mode,
     WorldState state,
   ) => WorldInitialized(
     clearUserInterface: true,
-    info: state.info.copyWith(teams: mode?.teams ?? {}, script: location),
-    table: mode?.tables[state.tableName] ?? GameTable(),
+    info: state.info.copyWith(
+      teams: mode?.item.teams ?? {},
+      script: mode?.location,
+    ),
+    table: mode?.item.tables[state.tableName] ?? GameTable(),
     teamMembers: const {},
   );
 }

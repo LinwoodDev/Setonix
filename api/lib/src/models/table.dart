@@ -139,9 +139,7 @@ class ItemLocation with ItemLocationMappable {
 class ItemLocationHook extends MappingHook {
   final bool nullOnEmpty;
 
-  const ItemLocationHook({
-    this.nullOnEmpty = true,
-  });
+  const ItemLocationHook({this.nullOnEmpty = true});
 
   @override
   Object? beforeDecode(Object? value) {

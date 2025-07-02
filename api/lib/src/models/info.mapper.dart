@@ -105,14 +105,25 @@ class GameInfoMapper extends ClassMapperBase<GameInfo> {
   final String id = 'GameInfo';
 
   static Map<String, GameTeam> _$teams(GameInfo v) => v.teams;
-  static const Field<GameInfo, Map<String, GameTeam>> _f$teams =
-      Field('teams', _$teams, opt: true, def: const {});
+  static const Field<GameInfo, Map<String, GameTeam>> _f$teams = Field(
+    'teams',
+    _$teams,
+    opt: true,
+    def: const {},
+  );
   static List<String> _$packs(GameInfo v) => v.packs;
-  static const Field<GameInfo, List<String>> _f$packs =
-      Field('packs', _$packs, opt: true, def: const []);
+  static const Field<GameInfo, List<String>> _f$packs = Field(
+    'packs',
+    _$packs,
+    opt: true,
+    def: const [],
+  );
   static ItemLocation? _$script(GameInfo v) => v.script;
-  static const Field<GameInfo, ItemLocation> _f$script =
-      Field('script', _$script, opt: true);
+  static const Field<GameInfo, ItemLocation> _f$script = Field(
+    'script',
+    _$script,
+    opt: true,
+  );
 
   @override
   final MappableFields<GameInfo> fields = const {
@@ -123,9 +134,10 @@ class GameInfoMapper extends ClassMapperBase<GameInfo> {
 
   static GameInfo _instantiate(DecodingData data) {
     return GameInfo(
-        teams: data.dec(_f$teams),
-        packs: data.dec(_f$packs),
-        script: data.dec(_f$script));
+      teams: data.dec(_f$teams),
+      packs: data.dec(_f$packs),
+      script: data.dec(_f$script),
+    );
   }
 
   @override
@@ -142,18 +154,23 @@ class GameInfoMapper extends ClassMapperBase<GameInfo> {
 
 mixin GameInfoMappable {
   String toJson() {
-    return GameInfoMapper.ensureInitialized()
-        .encodeJson<GameInfo>(this as GameInfo);
+    return GameInfoMapper.ensureInitialized().encodeJson<GameInfo>(
+      this as GameInfo,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return GameInfoMapper.ensureInitialized()
-        .encodeMap<GameInfo>(this as GameInfo);
+    return GameInfoMapper.ensureInitialized().encodeMap<GameInfo>(
+      this as GameInfo,
+    );
   }
 
   GameInfoCopyWith<GameInfo, GameInfo, GameInfo> get copyWith =>
       _GameInfoCopyWithImpl<GameInfo, GameInfo>(
-          this as GameInfo, $identity, $identity);
+        this as GameInfo,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
     return GameInfoMapper.ensureInitialized().stringifyValue(this as GameInfo);
@@ -161,8 +178,10 @@ mixin GameInfoMappable {
 
   @override
   bool operator ==(Object other) {
-    return GameInfoMapper.ensureInitialized()
-        .equalsValue(this as GameInfo, other);
+    return GameInfoMapper.ensureInitialized().equalsValue(
+      this as GameInfo,
+      other,
+    );
   }
 
   @override
@@ -179,13 +198,14 @@ extension GameInfoValueCopy<$R, $Out> on ObjectCopyWith<$R, GameInfo, $Out> {
 abstract class GameInfoCopyWith<$R, $In extends GameInfo, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   MapCopyWith<$R, String, GameTeam, GameTeamCopyWith<$R, GameTeam, GameTeam>>
-      get teams;
+  get teams;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get packs;
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get script;
-  $R call(
-      {Map<String, GameTeam>? teams,
-      List<String>? packs,
-      ItemLocation? script});
+  $R call({
+    Map<String, GameTeam>? teams,
+    List<String>? packs,
+    ItemLocation? script,
+  });
   GameInfoCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -199,35 +219,44 @@ class _GameInfoCopyWithImpl<$R, $Out>
       GameInfoMapper.ensureInitialized();
   @override
   MapCopyWith<$R, String, GameTeam, GameTeamCopyWith<$R, GameTeam, GameTeam>>
-      get teams => MapCopyWith(
-          $value.teams, (v, t) => v.copyWith.$chain(t), (v) => call(teams: v));
+  get teams => MapCopyWith(
+    $value.teams,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(teams: v),
+  );
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get packs =>
-      ListCopyWith($value.packs, (v, t) => ObjectCopyWith(v, $identity, t),
-          (v) => call(packs: v));
+      ListCopyWith(
+        $value.packs,
+        (v, t) => ObjectCopyWith(v, $identity, t),
+        (v) => call(packs: v),
+      );
   @override
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get script =>
       $value.script?.copyWith.$chain((v) => call(script: v));
   @override
-  $R call(
-          {Map<String, GameTeam>? teams,
-          List<String>? packs,
-          Object? script = $none}) =>
-      $apply(FieldCopyWithData({
-        if (teams != null) #teams: teams,
-        if (packs != null) #packs: packs,
-        if (script != $none) #script: script
-      }));
+  $R call({
+    Map<String, GameTeam>? teams,
+    List<String>? packs,
+    Object? script = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (teams != null) #teams: teams,
+      if (packs != null) #packs: packs,
+      if (script != $none) #script: script,
+    }),
+  );
   @override
   GameInfo $make(CopyWithData data) => GameInfo(
-      teams: data.get(#teams, or: $value.teams),
-      packs: data.get(#packs, or: $value.packs),
-      script: data.get(#script, or: $value.script));
+    teams: data.get(#teams, or: $value.teams),
+    packs: data.get(#packs, or: $value.packs),
+    script: data.get(#script, or: $value.script),
+  );
 
   @override
   GameInfoCopyWith<$R2, GameInfo, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _GameInfoCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _GameInfoCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class GameTeamMapper extends ClassMapperBase<GameTeam> {
@@ -247,11 +276,18 @@ class GameTeamMapper extends ClassMapperBase<GameTeam> {
   final String id = 'GameTeam';
 
   static String _$description(GameTeam v) => v.description;
-  static const Field<GameTeam, String> _f$description =
-      Field('description', _$description, opt: true, def: '');
+  static const Field<GameTeam, String> _f$description = Field(
+    'description',
+    _$description,
+    opt: true,
+    def: '',
+  );
   static TeamColor? _$color(GameTeam v) => v.color;
-  static const Field<GameTeam, TeamColor> _f$color =
-      Field('color', _$color, opt: true);
+  static const Field<GameTeam, TeamColor> _f$color = Field(
+    'color',
+    _$color,
+    opt: true,
+  );
   static Set<GlobalVectorDefinition> _$claimedCells(GameTeam v) =>
       v.claimedCells;
   static const Field<GameTeam, Set<GlobalVectorDefinition>> _f$claimedCells =
@@ -266,9 +302,10 @@ class GameTeamMapper extends ClassMapperBase<GameTeam> {
 
   static GameTeam _instantiate(DecodingData data) {
     return GameTeam(
-        description: data.dec(_f$description),
-        color: data.dec(_f$color),
-        claimedCells: data.dec(_f$claimedCells));
+      description: data.dec(_f$description),
+      color: data.dec(_f$color),
+      claimedCells: data.dec(_f$claimedCells),
+    );
   }
 
   @override
@@ -285,18 +322,23 @@ class GameTeamMapper extends ClassMapperBase<GameTeam> {
 
 mixin GameTeamMappable {
   String toJson() {
-    return GameTeamMapper.ensureInitialized()
-        .encodeJson<GameTeam>(this as GameTeam);
+    return GameTeamMapper.ensureInitialized().encodeJson<GameTeam>(
+      this as GameTeam,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return GameTeamMapper.ensureInitialized()
-        .encodeMap<GameTeam>(this as GameTeam);
+    return GameTeamMapper.ensureInitialized().encodeMap<GameTeam>(
+      this as GameTeam,
+    );
   }
 
   GameTeamCopyWith<GameTeam, GameTeam, GameTeam> get copyWith =>
       _GameTeamCopyWithImpl<GameTeam, GameTeam>(
-          this as GameTeam, $identity, $identity);
+        this as GameTeam,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
     return GameTeamMapper.ensureInitialized().stringifyValue(this as GameTeam);
@@ -304,8 +346,10 @@ mixin GameTeamMappable {
 
   @override
   bool operator ==(Object other) {
-    return GameTeamMapper.ensureInitialized()
-        .equalsValue(this as GameTeam, other);
+    return GameTeamMapper.ensureInitialized().equalsValue(
+      this as GameTeam,
+      other,
+    );
   }
 
   @override
@@ -321,10 +365,11 @@ extension GameTeamValueCopy<$R, $Out> on ObjectCopyWith<$R, GameTeam, $Out> {
 
 abstract class GameTeamCopyWith<$R, $In extends GameTeam, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call(
-      {String? description,
-      TeamColor? color,
-      Set<GlobalVectorDefinition>? claimedCells});
+  $R call({
+    String? description,
+    TeamColor? color,
+    Set<GlobalVectorDefinition>? claimedCells,
+  });
   GameTeamCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -337,23 +382,26 @@ class _GameTeamCopyWithImpl<$R, $Out>
   late final ClassMapperBase<GameTeam> $mapper =
       GameTeamMapper.ensureInitialized();
   @override
-  $R call(
-          {String? description,
-          Object? color = $none,
-          Set<GlobalVectorDefinition>? claimedCells}) =>
-      $apply(FieldCopyWithData({
-        if (description != null) #description: description,
-        if (color != $none) #color: color,
-        if (claimedCells != null) #claimedCells: claimedCells
-      }));
+  $R call({
+    String? description,
+    Object? color = $none,
+    Set<GlobalVectorDefinition>? claimedCells,
+  }) => $apply(
+    FieldCopyWithData({
+      if (description != null) #description: description,
+      if (color != $none) #color: color,
+      if (claimedCells != null) #claimedCells: claimedCells,
+    }),
+  );
   @override
   GameTeam $make(CopyWithData data) => GameTeam(
-      description: data.get(#description, or: $value.description),
-      color: data.get(#color, or: $value.color),
-      claimedCells: data.get(#claimedCells, or: $value.claimedCells));
+    description: data.get(#description, or: $value.description),
+    color: data.get(#color, or: $value.color),
+    claimedCells: data.get(#claimedCells, or: $value.claimedCells),
+  );
 
   @override
   GameTeamCopyWith<$R2, GameTeam, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _GameTeamCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _GameTeamCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
