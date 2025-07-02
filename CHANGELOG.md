@@ -2,6 +2,22 @@
 
 <!--ENTER CHANGELOG HERE-->
 
+## 0.5.0 (2025-07-02)
+
+* Add account system
+* Add auth system
+* Add loading screen
+* Add server list
+* Add kick message
+* Add user system on server
+  * Local database
+  * Remote endpoint
+* Add whitelist system on server
+* Fix sensitivity setting not visible on web
+* Fix editor not working on web
+
+Read more here: https://linwood.dev/setonix/0.5.0
+
 ## 0.4.1 (2025-06-09)
 
 * Improve parsing of server url
