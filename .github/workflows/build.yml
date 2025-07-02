@@ -96,6 +96,7 @@ jobs:
           name: apk-x86_64-build
           path: app/linwood-setonix-android-x86_64.apk
       - name: Copy Corepack
+        working-directory: ./
         run: |
           cp app/assets/pack.stnx core.stnx
       - name: Archive Corepack
