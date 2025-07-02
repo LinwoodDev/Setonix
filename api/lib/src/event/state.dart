@@ -16,16 +16,10 @@ import 'event.dart';
 part 'state.mapper.dart';
 
 @MappableEnum()
-enum WorldOperationMode {
-  figures,
-  boards,
-}
+enum WorldOperationMode { figures, boards }
 
 @MappableEnum()
-enum GameState {
-  configuration,
-  play,
-}
+enum GameState { configuration, play }
 
 @MappableClass()
 final class WorldState with WorldStateMappable {
@@ -90,16 +84,19 @@ final class WorldState with WorldStateMappable {
     if (cellObject.isEmpty) return cellObject;
     final cellVisible = isCellVisible(toGlobal(cell), id);
     final objects = cellObject.objects
-        .map((e) => e.copyWith(
-              variation: cellVisible && !e.hidden ? e.variation : null,
-            ))
+        .map(
+          (e) => e.copyWith(
+            variation: cellVisible && !e.hidden ? e.variation : null,
+          ),
+        )
         .toList();
     return cellObject.copyWith(objects: objects);
   }
 
   GameTable protectTable([Channel? id]) {
-    final protectedCells =
-        table.cells.map((key, value) => MapEntry(key, protectCell(key, id)));
+    final protectedCells = table.cells.map(
+      (key, value) => MapEntry(key, protectCell(key, id)),
+    );
     return table.copyWith.cellsBox(content: protectedCells);
   }
 
@@ -113,15 +110,14 @@ final class WorldState with WorldStateMappable {
 
   WorldState updateTable(String name, GameTable table) {
     if (name == tableName) return copyWith(table: table);
-    return copyWith(
-      data: data.setTable(table, name),
-    );
+    return copyWith(data: data.setTable(table, name));
   }
 
   WorldState mapTable(String name, GameTable Function(GameTable?) mapper) =>
       updateTable(name, mapper(getTable(name)));
 
   WorldState mapTableOrDefault(
-          String name, GameTable Function(GameTable) mapper) =>
-      updateTable(name, mapper(getTableOrDefault(name)));
+    String name,
+    GameTable Function(GameTable) mapper,
+  ) => updateTable(name, mapper(getTableOrDefault(name)));
 }

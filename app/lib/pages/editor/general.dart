@@ -24,13 +24,13 @@ class GeneralEditorPage extends StatelessWidget {
                   currentVersion = metadata.version,
                   currentDescription = metadata.description;
               void updateMeta() => context.read<EditorCubit>().updateMeta(
-                    metadata.copyWith(
-                      name: currentName,
-                      author: currentAuthor,
-                      version: currentVersion,
-                      description: currentDescription,
-                    ),
-                  );
+                metadata.copyWith(
+                  name: currentName,
+                  author: currentAuthor,
+                  version: currentVersion,
+                  description: currentDescription,
+                ),
+              );
               return Column(
                 children: [
                   TextFormField(

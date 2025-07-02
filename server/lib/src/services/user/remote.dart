@@ -8,10 +8,7 @@ final class RemoteUserService extends UserService {
   final String apiEndpoint;
   final String? endpointSecret;
 
-  RemoteUserService({
-    required this.apiEndpoint,
-    this.endpointSecret,
-  });
+  RemoteUserService({required this.apiEndpoint, this.endpointSecret});
 
   Map<String, String> get headers =>
       endpointSecret != null ? {'Authorization': 'Bearer $endpointSecret'} : {};
@@ -22,10 +19,11 @@ final class RemoteUserService extends UserService {
       Uri.parse('$apiEndpoint/user/${Uri.encodeComponent(fingerprint)}'),
       headers: headers,
     );
-    if (response.statusCode == 200) {
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      if (response.body.isEmpty) return null; // No user found
       return SetonixUserMapper.fromJson(response.body);
     }
-    return null;
+    throw KickMessage.fromString(response.body);
   }
 
   @override
@@ -41,8 +39,12 @@ final class RemoteUserService extends UserService {
   }
 
   @override
-  FutureOr<bool> updateUser(String fingerprint,
-      {String? name, bool? onWhitelist, DateTime? lastLogin}) {
+  FutureOr<bool> updateUser(
+    String fingerprint, {
+    String? name,
+    bool? onWhitelist,
+    DateTime? lastLogin,
+  }) {
     final body = jsonEncode({
       'name': name,
       'onWhitelist': onWhitelist,
@@ -50,10 +52,7 @@ final class RemoteUserService extends UserService {
     });
     final response = http.patch(
       Uri.parse('$apiEndpoint/user/${Uri.encodeComponent(fingerprint)}'),
-      headers: {
-        ...headers,
-        'Content-Type': 'application/json',
-      },
+      headers: {...headers, 'Content-Type': 'application/json'},
       body: body,
     );
     return response.then((res) {

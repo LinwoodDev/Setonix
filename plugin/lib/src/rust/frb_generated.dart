@@ -35,12 +35,8 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 
   /// Initialize flutter_rust_bridge in mock mode.
   /// No libraries for FFI are loaded.
-  static void initMock({
-    required RustLibApi api,
-  }) {
-    instance.initMockImpl(
-      api: api,
-    );
+  static void initMock({required RustLibApi api}) {
+    instance.initMockImpl(api: api);
   }
 
   /// Dispose flutter_rust_bridge
@@ -72,63 +68,72 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
-    stem: 'setonix_plugin',
-    ioDirectory: 'rust/target/release/',
-    webPrefix: 'pkg/',
-  );
+        stem: 'setonix_plugin',
+        ioDirectory: 'rust/target/release/',
+        webPrefix: 'pkg/',
+      );
 }
 
 abstract class RustLibApi extends BaseApi {
-  LuauPlugin crateApiLuauLuauPluginNew(
-      {required String code, required PluginCallback callback});
+  LuauPlugin crateApiLuauLuauPluginNew({
+    required String code,
+    required PluginCallback callback,
+  });
 
   Future<void> crateApiLuauLuauPluginRun({required LuauPlugin that});
 
-  Future<EventResult> crateApiLuauLuauPluginRunEvent(
-      {required LuauPlugin that,
-      required String eventType,
-      required String event,
-      required String serverEvent,
-      required int source,
-      required int target});
+  Future<EventResult> crateApiLuauLuauPluginRunEvent({
+    required LuauPlugin that,
+    required String eventType,
+    required String event,
+    required String serverEvent,
+    required int source,
+    required int target,
+  });
 
-  void crateApiPluginPluginCallbackChangeOnPrint(
-      {required PluginCallback that,
-      required FutureOr<void> Function(String) onPrint});
+  void crateApiPluginPluginCallbackChangeOnPrint({
+    required PluginCallback that,
+    required FutureOr<void> Function(String) onPrint,
+  });
 
-  void crateApiPluginPluginCallbackChangeProcessEvent(
-      {required PluginCallback that,
-      required FutureOr<void> Function(String, bool?) processEvent});
+  void crateApiPluginPluginCallbackChangeProcessEvent({
+    required PluginCallback that,
+    required FutureOr<void> Function(String, bool?) processEvent,
+  });
 
-  void crateApiPluginPluginCallbackChangeSendEvent(
-      {required PluginCallback that,
-      required FutureOr<void> Function(String, int?) sendEvent});
+  void crateApiPluginPluginCallbackChangeSendEvent({
+    required PluginCallback that,
+    required FutureOr<void> Function(String, int?) sendEvent,
+  });
 
-  void crateApiPluginPluginCallbackChangeStateFieldAccess(
-      {required PluginCallback that,
-      required FutureOr<String> Function(StateFieldAccess) stateFieldAccess});
+  void crateApiPluginPluginCallbackChangeStateFieldAccess({
+    required PluginCallback that,
+    required FutureOr<String> Function(StateFieldAccess) stateFieldAccess,
+  });
 
   PluginCallback crateApiPluginPluginCallbackDefault();
 
-  Future<int> crateApiSimpleSimpleAdderTwinNormal(
-      {required int a, required int b});
+  Future<int> crateApiSimpleSimpleAdderTwinNormal({
+    required int a,
+    required int b,
+  });
 
   RustArcIncrementStrongCountFnType
-      get rust_arc_increment_strong_count_LuauPlugin;
+  get rust_arc_increment_strong_count_LuauPlugin;
 
   RustArcDecrementStrongCountFnType
-      get rust_arc_decrement_strong_count_LuauPlugin;
+  get rust_arc_decrement_strong_count_LuauPlugin;
 
   CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_LuauPluginPtr;
 
   RustArcIncrementStrongCountFnType
-      get rust_arc_increment_strong_count_PluginCallback;
+  get rust_arc_increment_strong_count_PluginCallback;
 
   RustArcDecrementStrongCountFnType
-      get rust_arc_decrement_strong_count_PluginCallback;
+  get rust_arc_decrement_strong_count_PluginCallback;
 
   CrossPlatformFinalizerArg
-      get rust_arc_decrement_strong_count_PluginCallbackPtr;
+  get rust_arc_decrement_strong_count_PluginCallbackPtr;
 }
 
 class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
@@ -140,86 +145,107 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   });
 
   @override
-  LuauPlugin crateApiLuauLuauPluginNew(
-      {required String code, required PluginCallback callback}) {
-    return handler.executeSync(SyncTask(
-      callFfi: () {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_String(code, serializer);
-        sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
-            callback, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 1)!;
-      },
-      codec: SseCodec(
-        decodeSuccessData:
-            sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin,
-        decodeErrorData: null,
+  LuauPlugin crateApiLuauLuauPluginNew({
+    required String code,
+    required PluginCallback callback,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(code, serializer);
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
+            callback,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 1)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiLuauLuauPluginNewConstMeta,
+        argValues: [code, callback],
+        apiImpl: this,
       ),
-      constMeta: kCrateApiLuauLuauPluginNewConstMeta,
-      argValues: [code, callback],
-      apiImpl: this,
-    ));
+    );
   }
 
   TaskConstMeta get kCrateApiLuauLuauPluginNewConstMeta => const TaskConstMeta(
-        debugName: "LuauPlugin_new",
-        argNames: ["code", "callback"],
-      );
+    debugName: "LuauPlugin_new",
+    argNames: ["code", "callback"],
+  );
 
   @override
   Future<void> crateApiLuauLuauPluginRun({required LuauPlugin that}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin(
-            that, serializer);
-        pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 2, port: port_);
-      },
-      codec: SseCodec(
-        decodeSuccessData: sse_decode_unit,
-        decodeErrorData: sse_decode_AnyhowException,
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 2,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: sse_decode_AnyhowException,
+        ),
+        constMeta: kCrateApiLuauLuauPluginRunConstMeta,
+        argValues: [that],
+        apiImpl: this,
       ),
-      constMeta: kCrateApiLuauLuauPluginRunConstMeta,
-      argValues: [that],
-      apiImpl: this,
-    ));
+    );
   }
 
-  TaskConstMeta get kCrateApiLuauLuauPluginRunConstMeta => const TaskConstMeta(
-        debugName: "LuauPlugin_run",
-        argNames: ["that"],
-      );
+  TaskConstMeta get kCrateApiLuauLuauPluginRunConstMeta =>
+      const TaskConstMeta(debugName: "LuauPlugin_run", argNames: ["that"]);
 
   @override
-  Future<EventResult> crateApiLuauLuauPluginRunEvent(
-      {required LuauPlugin that,
-      required String eventType,
-      required String event,
-      required String serverEvent,
-      required int source,
-      required int target}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin(
-            that, serializer);
-        sse_encode_String(eventType, serializer);
-        sse_encode_String(event, serializer);
-        sse_encode_String(serverEvent, serializer);
-        sse_encode_i_16(source, serializer);
-        sse_encode_i_16(target, serializer);
-        pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 3, port: port_);
-      },
-      codec: SseCodec(
-        decodeSuccessData: sse_decode_event_result,
-        decodeErrorData: null,
+  Future<EventResult> crateApiLuauLuauPluginRunEvent({
+    required LuauPlugin that,
+    required String eventType,
+    required String event,
+    required String serverEvent,
+    required int source,
+    required int target,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin(
+            that,
+            serializer,
+          );
+          sse_encode_String(eventType, serializer);
+          sse_encode_String(event, serializer);
+          sse_encode_String(serverEvent, serializer);
+          sse_encode_i_16(source, serializer);
+          sse_encode_i_16(target, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 3,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_event_result,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiLuauLuauPluginRunEventConstMeta,
+        argValues: [that, eventType, event, serverEvent, source, target],
+        apiImpl: this,
       ),
-      constMeta: kCrateApiLuauLuauPluginRunEventConstMeta,
-      argValues: [that, eventType, event, serverEvent, source, target],
-      apiImpl: this,
-    ));
+    );
   }
 
   TaskConstMeta get kCrateApiLuauLuauPluginRunEventConstMeta =>
@@ -231,31 +257,38 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           "event",
           "serverEvent",
           "source",
-          "target"
+          "target",
         ],
       );
 
   @override
-  void crateApiPluginPluginCallbackChangeOnPrint(
-      {required PluginCallback that,
-      required FutureOr<void> Function(String) onPrint}) {
-    return handler.executeSync(SyncTask(
-      callFfi: () {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
-            that, serializer);
-        sse_encode_DartFn_Inputs_String_Output_unit_AnyhowException(
-            onPrint, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 4)!;
-      },
-      codec: SseCodec(
-        decodeSuccessData: sse_decode_unit,
-        decodeErrorData: null,
+  void crateApiPluginPluginCallbackChangeOnPrint({
+    required PluginCallback that,
+    required FutureOr<void> Function(String) onPrint,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
+            that,
+            serializer,
+          );
+          sse_encode_DartFn_Inputs_String_Output_unit_AnyhowException(
+            onPrint,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 4)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiPluginPluginCallbackChangeOnPrintConstMeta,
+        argValues: [that, onPrint],
+        apiImpl: this,
       ),
-      constMeta: kCrateApiPluginPluginCallbackChangeOnPrintConstMeta,
-      argValues: [that, onPrint],
-      apiImpl: this,
-    ));
+    );
   }
 
   TaskConstMeta get kCrateApiPluginPluginCallbackChangeOnPrintConstMeta =>
@@ -265,26 +298,33 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  void crateApiPluginPluginCallbackChangeProcessEvent(
-      {required PluginCallback that,
-      required FutureOr<void> Function(String, bool?) processEvent}) {
-    return handler.executeSync(SyncTask(
-      callFfi: () {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
-            that, serializer);
-        sse_encode_DartFn_Inputs_String_opt_box_autoadd_bool_Output_unit_AnyhowException(
-            processEvent, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 5)!;
-      },
-      codec: SseCodec(
-        decodeSuccessData: sse_decode_unit,
-        decodeErrorData: null,
+  void crateApiPluginPluginCallbackChangeProcessEvent({
+    required PluginCallback that,
+    required FutureOr<void> Function(String, bool?) processEvent,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
+            that,
+            serializer,
+          );
+          sse_encode_DartFn_Inputs_String_opt_box_autoadd_bool_Output_unit_AnyhowException(
+            processEvent,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 5)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiPluginPluginCallbackChangeProcessEventConstMeta,
+        argValues: [that, processEvent],
+        apiImpl: this,
       ),
-      constMeta: kCrateApiPluginPluginCallbackChangeProcessEventConstMeta,
-      argValues: [that, processEvent],
-      apiImpl: this,
-    ));
+    );
   }
 
   TaskConstMeta get kCrateApiPluginPluginCallbackChangeProcessEventConstMeta =>
@@ -294,26 +334,33 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  void crateApiPluginPluginCallbackChangeSendEvent(
-      {required PluginCallback that,
-      required FutureOr<void> Function(String, int?) sendEvent}) {
-    return handler.executeSync(SyncTask(
-      callFfi: () {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
-            that, serializer);
-        sse_encode_DartFn_Inputs_String_opt_box_autoadd_i_16_Output_unit_AnyhowException(
-            sendEvent, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 6)!;
-      },
-      codec: SseCodec(
-        decodeSuccessData: sse_decode_unit,
-        decodeErrorData: null,
+  void crateApiPluginPluginCallbackChangeSendEvent({
+    required PluginCallback that,
+    required FutureOr<void> Function(String, int?) sendEvent,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
+            that,
+            serializer,
+          );
+          sse_encode_DartFn_Inputs_String_opt_box_autoadd_i_16_Output_unit_AnyhowException(
+            sendEvent,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 6)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiPluginPluginCallbackChangeSendEventConstMeta,
+        argValues: [that, sendEvent],
+        apiImpl: this,
       ),
-      constMeta: kCrateApiPluginPluginCallbackChangeSendEventConstMeta,
-      argValues: [that, sendEvent],
-      apiImpl: this,
-    ));
+    );
   }
 
   TaskConstMeta get kCrateApiPluginPluginCallbackChangeSendEventConstMeta =>
@@ -323,78 +370,92 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  void crateApiPluginPluginCallbackChangeStateFieldAccess(
-      {required PluginCallback that,
-      required FutureOr<String> Function(StateFieldAccess) stateFieldAccess}) {
-    return handler.executeSync(SyncTask(
-      callFfi: () {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
-            that, serializer);
-        sse_encode_DartFn_Inputs_state_field_access_Output_String_AnyhowException(
-            stateFieldAccess, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 7)!;
-      },
-      codec: SseCodec(
-        decodeSuccessData: sse_decode_unit,
-        decodeErrorData: null,
+  void crateApiPluginPluginCallbackChangeStateFieldAccess({
+    required PluginCallback that,
+    required FutureOr<String> Function(StateFieldAccess) stateFieldAccess,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
+            that,
+            serializer,
+          );
+          sse_encode_DartFn_Inputs_state_field_access_Output_String_AnyhowException(
+            stateFieldAccess,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 7)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiPluginPluginCallbackChangeStateFieldAccessConstMeta,
+        argValues: [that, stateFieldAccess],
+        apiImpl: this,
       ),
-      constMeta: kCrateApiPluginPluginCallbackChangeStateFieldAccessConstMeta,
-      argValues: [that, stateFieldAccess],
-      apiImpl: this,
-    ));
+    );
   }
 
   TaskConstMeta
-      get kCrateApiPluginPluginCallbackChangeStateFieldAccessConstMeta =>
-          const TaskConstMeta(
-            debugName: "PluginCallback_change_state_field_access",
-            argNames: ["that", "stateFieldAccess"],
-          );
-
-  @override
-  PluginCallback crateApiPluginPluginCallbackDefault() {
-    return handler.executeSync(SyncTask(
-      callFfi: () {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 8)!;
-      },
-      codec: SseCodec(
-        decodeSuccessData:
-            sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback,
-        decodeErrorData: null,
-      ),
-      constMeta: kCrateApiPluginPluginCallbackDefaultConstMeta,
-      argValues: [],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta get kCrateApiPluginPluginCallbackDefaultConstMeta =>
+  get kCrateApiPluginPluginCallbackChangeStateFieldAccessConstMeta =>
       const TaskConstMeta(
-        debugName: "PluginCallback_default",
-        argNames: [],
+        debugName: "PluginCallback_change_state_field_access",
+        argNames: ["that", "stateFieldAccess"],
       );
 
   @override
-  Future<int> crateApiSimpleSimpleAdderTwinNormal(
-      {required int a, required int b}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_i_32(a, serializer);
-        sse_encode_i_32(b, serializer);
-        pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 11, port: port_);
-      },
-      codec: SseCodec(
-        decodeSuccessData: sse_decode_i_32,
-        decodeErrorData: null,
+  PluginCallback crateApiPluginPluginCallbackDefault() {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 8)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiPluginPluginCallbackDefaultConstMeta,
+        argValues: [],
+        apiImpl: this,
       ),
-      constMeta: kCrateApiSimpleSimpleAdderTwinNormalConstMeta,
-      argValues: [a, b],
-      apiImpl: this,
-    ));
+    );
+  }
+
+  TaskConstMeta get kCrateApiPluginPluginCallbackDefaultConstMeta =>
+      const TaskConstMeta(debugName: "PluginCallback_default", argNames: []);
+
+  @override
+  Future<int> crateApiSimpleSimpleAdderTwinNormal({
+    required int a,
+    required int b,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_i_32(a, serializer);
+          sse_encode_i_32(b, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 11,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_i_32,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiSimpleSimpleAdderTwinNormalConstMeta,
+        argValues: [a, b],
+        apiImpl: this,
+      ),
+    );
   }
 
   TaskConstMeta get kCrateApiSimpleSimpleAdderTwinNormalConstMeta =>
@@ -404,8 +465,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   Future<void> Function(int, dynamic)
-      encode_DartFn_Inputs_String_Output_unit_AnyhowException(
-          FutureOr<void> Function(String) raw) {
+  encode_DartFn_Inputs_String_Output_unit_AnyhowException(
+    FutureOr<void> Function(String) raw,
+  ) {
     return (callId, rawArg0) async {
       final arg0 = dco_decode_String(rawArg0);
 
@@ -429,16 +491,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       final output = serializer.intoRaw();
 
       generalizedFrbRustBinding.dartFnDeliverOutput(
-          callId: callId,
-          ptr: output.ptr,
-          rustVecLen: output.rustVecLen,
-          dataLen: output.dataLen);
+        callId: callId,
+        ptr: output.ptr,
+        rustVecLen: output.rustVecLen,
+        dataLen: output.dataLen,
+      );
     };
   }
 
   Future<void> Function(int, dynamic, dynamic)
-      encode_DartFn_Inputs_String_opt_box_autoadd_bool_Output_unit_AnyhowException(
-          FutureOr<void> Function(String, bool?) raw) {
+  encode_DartFn_Inputs_String_opt_box_autoadd_bool_Output_unit_AnyhowException(
+    FutureOr<void> Function(String, bool?) raw,
+  ) {
     return (callId, rawArg0, rawArg1) async {
       final arg0 = dco_decode_String(rawArg0);
       final arg1 = dco_decode_opt_box_autoadd_bool(rawArg1);
@@ -463,16 +527,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       final output = serializer.intoRaw();
 
       generalizedFrbRustBinding.dartFnDeliverOutput(
-          callId: callId,
-          ptr: output.ptr,
-          rustVecLen: output.rustVecLen,
-          dataLen: output.dataLen);
+        callId: callId,
+        ptr: output.ptr,
+        rustVecLen: output.rustVecLen,
+        dataLen: output.dataLen,
+      );
     };
   }
 
   Future<void> Function(int, dynamic, dynamic)
-      encode_DartFn_Inputs_String_opt_box_autoadd_i_16_Output_unit_AnyhowException(
-          FutureOr<void> Function(String, int?) raw) {
+  encode_DartFn_Inputs_String_opt_box_autoadd_i_16_Output_unit_AnyhowException(
+    FutureOr<void> Function(String, int?) raw,
+  ) {
     return (callId, rawArg0, rawArg1) async {
       final arg0 = dco_decode_String(rawArg0);
       final arg1 = dco_decode_opt_box_autoadd_i_16(rawArg1);
@@ -497,16 +563,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       final output = serializer.intoRaw();
 
       generalizedFrbRustBinding.dartFnDeliverOutput(
-          callId: callId,
-          ptr: output.ptr,
-          rustVecLen: output.rustVecLen,
-          dataLen: output.dataLen);
+        callId: callId,
+        ptr: output.ptr,
+        rustVecLen: output.rustVecLen,
+        dataLen: output.dataLen,
+      );
     };
   }
 
   Future<void> Function(int, dynamic)
-      encode_DartFn_Inputs_state_field_access_Output_String_AnyhowException(
-          FutureOr<String> Function(StateFieldAccess) raw) {
+  encode_DartFn_Inputs_state_field_access_Output_String_AnyhowException(
+    FutureOr<String> Function(StateFieldAccess) raw,
+  ) {
     return (callId, rawArg0) async {
       final arg0 = dco_decode_state_field_access(rawArg0);
 
@@ -530,28 +598,29 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       final output = serializer.intoRaw();
 
       generalizedFrbRustBinding.dartFnDeliverOutput(
-          callId: callId,
-          ptr: output.ptr,
-          rustVecLen: output.rustVecLen,
-          dataLen: output.dataLen);
+        callId: callId,
+        ptr: output.ptr,
+        rustVecLen: output.rustVecLen,
+        dataLen: output.dataLen,
+      );
     };
   }
 
   RustArcIncrementStrongCountFnType
-      get rust_arc_increment_strong_count_LuauPlugin => wire
-          .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin;
+  get rust_arc_increment_strong_count_LuauPlugin => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin;
 
   RustArcDecrementStrongCountFnType
-      get rust_arc_decrement_strong_count_LuauPlugin => wire
-          .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin;
+  get rust_arc_decrement_strong_count_LuauPlugin => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin;
 
   RustArcIncrementStrongCountFnType
-      get rust_arc_increment_strong_count_PluginCallback => wire
-          .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback;
+  get rust_arc_increment_strong_count_PluginCallback => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback;
 
   RustArcDecrementStrongCountFnType
-      get rust_arc_decrement_strong_count_PluginCallback => wire
-          .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback;
+  get rust_arc_decrement_strong_count_PluginCallback => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback;
 
   @protected
   AnyhowException dco_decode_AnyhowException(dynamic raw) {
@@ -561,63 +630,70 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   LuauPlugin
-      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin(
-          dynamic raw) {
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin(
+    dynamic raw,
+  ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return LuauPluginImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
   PluginCallback
-      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
-          dynamic raw) {
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
+    dynamic raw,
+  ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return PluginCallbackImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
   PluginCallback
-      dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
-          dynamic raw) {
+  dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
+    dynamic raw,
+  ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return PluginCallbackImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
   LuauPlugin
-      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin(
-          dynamic raw) {
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin(
+    dynamic raw,
+  ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return LuauPluginImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
   FutureOr<void> Function(String)
-      dco_decode_DartFn_Inputs_String_Output_unit_AnyhowException(dynamic raw) {
+  dco_decode_DartFn_Inputs_String_Output_unit_AnyhowException(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     throw UnimplementedError('');
   }
 
   @protected
   FutureOr<void> Function(String, bool?)
-      dco_decode_DartFn_Inputs_String_opt_box_autoadd_bool_Output_unit_AnyhowException(
-          dynamic raw) {
+  dco_decode_DartFn_Inputs_String_opt_box_autoadd_bool_Output_unit_AnyhowException(
+    dynamic raw,
+  ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     throw UnimplementedError('');
   }
 
   @protected
   FutureOr<void> Function(String, int?)
-      dco_decode_DartFn_Inputs_String_opt_box_autoadd_i_16_Output_unit_AnyhowException(
-          dynamic raw) {
+  dco_decode_DartFn_Inputs_String_opt_box_autoadd_i_16_Output_unit_AnyhowException(
+    dynamic raw,
+  ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     throw UnimplementedError('');
   }
 
   @protected
   FutureOr<String> Function(StateFieldAccess)
-      dco_decode_DartFn_Inputs_state_field_access_Output_String_AnyhowException(
-          dynamic raw) {
+  dco_decode_DartFn_Inputs_state_field_access_Output_String_AnyhowException(
+    dynamic raw,
+  ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     throw UnimplementedError('');
   }
@@ -630,16 +706,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   LuauPlugin
-      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin(
-          dynamic raw) {
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin(
+    dynamic raw,
+  ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return LuauPluginImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
   PluginCallback
-      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
-          dynamic raw) {
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
+    dynamic raw,
+  ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return PluginCallbackImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
@@ -780,38 +858,50 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   LuauPlugin
-      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin(
-          SseDeserializer deserializer) {
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin(
+    SseDeserializer deserializer,
+  ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return LuauPluginImpl.frbInternalSseDecode(
-        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
   }
 
   @protected
   PluginCallback
-      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
-          SseDeserializer deserializer) {
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
+    SseDeserializer deserializer,
+  ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return PluginCallbackImpl.frbInternalSseDecode(
-        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
   }
 
   @protected
   PluginCallback
-      sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
-          SseDeserializer deserializer) {
+  sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
+    SseDeserializer deserializer,
+  ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return PluginCallbackImpl.frbInternalSseDecode(
-        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
   }
 
   @protected
   LuauPlugin
-      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin(
-          SseDeserializer deserializer) {
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin(
+    SseDeserializer deserializer,
+  ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return LuauPluginImpl.frbInternalSseDecode(
-        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
   }
 
   @protected
@@ -823,20 +913,26 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   LuauPlugin
-      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin(
-          SseDeserializer deserializer) {
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin(
+    SseDeserializer deserializer,
+  ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return LuauPluginImpl.frbInternalSseDecode(
-        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
   }
 
   @protected
   PluginCallback
-      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
-          SseDeserializer deserializer) {
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
+    SseDeserializer deserializer,
+  ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return PluginCallbackImpl.frbInternalSseDecode(
-        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
   }
 
   @protected
@@ -878,9 +974,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_serverEvent = sse_decode_opt_String(deserializer);
     var var_needsUpdate = sse_decode_opt_Set_i_16_None(deserializer);
     return EventResult(
-        target: var_target,
-        serverEvent: var_serverEvent,
-        needsUpdate: var_needsUpdate);
+      target: var_target,
+      serverEvent: var_serverEvent,
+      needsUpdate: var_needsUpdate,
+    );
   }
 
   @protected
@@ -985,127 +1082,170 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void sse_encode_AnyhowException(
-      AnyhowException self, SseSerializer serializer) {
+    AnyhowException self,
+    SseSerializer serializer,
+  ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.message, serializer);
   }
 
   @protected
   void
-      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin(
-          LuauPlugin self, SseSerializer serializer) {
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin(
+    LuauPlugin self,
+    SseSerializer serializer,
+  ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
-        (self as LuauPluginImpl).frbInternalSseEncode(move: true), serializer);
+      (self as LuauPluginImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
   }
 
   @protected
   void
-      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
-          PluginCallback self, SseSerializer serializer) {
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
+    PluginCallback self,
+    SseSerializer serializer,
+  ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
-        (self as PluginCallbackImpl).frbInternalSseEncode(move: true),
-        serializer);
+      (self as PluginCallbackImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
   }
 
   @protected
   void
-      sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
-          PluginCallback self, SseSerializer serializer) {
+  sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
+    PluginCallback self,
+    SseSerializer serializer,
+  ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
-        (self as PluginCallbackImpl).frbInternalSseEncode(move: false),
-        serializer);
+      (self as PluginCallbackImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
   }
 
   @protected
   void
-      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin(
-          LuauPlugin self, SseSerializer serializer) {
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin(
+    LuauPlugin self,
+    SseSerializer serializer,
+  ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
-        (self as LuauPluginImpl).frbInternalSseEncode(move: false), serializer);
+      (self as LuauPluginImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
   }
 
   @protected
   void sse_encode_DartFn_Inputs_String_Output_unit_AnyhowException(
-      FutureOr<void> Function(String) self, SseSerializer serializer) {
+    FutureOr<void> Function(String) self,
+    SseSerializer serializer,
+  ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_DartOpaque(
-        encode_DartFn_Inputs_String_Output_unit_AnyhowException(self),
-        serializer);
+      encode_DartFn_Inputs_String_Output_unit_AnyhowException(self),
+      serializer,
+    );
   }
 
   @protected
   void
-      sse_encode_DartFn_Inputs_String_opt_box_autoadd_bool_Output_unit_AnyhowException(
-          FutureOr<void> Function(String, bool?) self,
-          SseSerializer serializer) {
+  sse_encode_DartFn_Inputs_String_opt_box_autoadd_bool_Output_unit_AnyhowException(
+    FutureOr<void> Function(String, bool?) self,
+    SseSerializer serializer,
+  ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_DartOpaque(
-        encode_DartFn_Inputs_String_opt_box_autoadd_bool_Output_unit_AnyhowException(
-            self),
-        serializer);
+      encode_DartFn_Inputs_String_opt_box_autoadd_bool_Output_unit_AnyhowException(
+        self,
+      ),
+      serializer,
+    );
   }
 
   @protected
   void
-      sse_encode_DartFn_Inputs_String_opt_box_autoadd_i_16_Output_unit_AnyhowException(
-          FutureOr<void> Function(String, int?) self,
-          SseSerializer serializer) {
+  sse_encode_DartFn_Inputs_String_opt_box_autoadd_i_16_Output_unit_AnyhowException(
+    FutureOr<void> Function(String, int?) self,
+    SseSerializer serializer,
+  ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_DartOpaque(
-        encode_DartFn_Inputs_String_opt_box_autoadd_i_16_Output_unit_AnyhowException(
-            self),
-        serializer);
+      encode_DartFn_Inputs_String_opt_box_autoadd_i_16_Output_unit_AnyhowException(
+        self,
+      ),
+      serializer,
+    );
   }
 
   @protected
   void
-      sse_encode_DartFn_Inputs_state_field_access_Output_String_AnyhowException(
-          FutureOr<String> Function(StateFieldAccess) self,
-          SseSerializer serializer) {
+  sse_encode_DartFn_Inputs_state_field_access_Output_String_AnyhowException(
+    FutureOr<String> Function(StateFieldAccess) self,
+    SseSerializer serializer,
+  ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_DartOpaque(
-        encode_DartFn_Inputs_state_field_access_Output_String_AnyhowException(
-            self),
-        serializer);
+      encode_DartFn_Inputs_state_field_access_Output_String_AnyhowException(
+        self,
+      ),
+      serializer,
+    );
   }
 
   @protected
   void sse_encode_DartOpaque(Object self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_isize(
-        PlatformPointerUtil.ptrToPlatformInt64(encodeDartOpaque(
-            self, portManager.dartHandlerPort, generalizedFrbRustBinding)),
-        serializer);
+      PlatformPointerUtil.ptrToPlatformInt64(
+        encodeDartOpaque(
+          self,
+          portManager.dartHandlerPort,
+          generalizedFrbRustBinding,
+        ),
+      ),
+      serializer,
+    );
   }
 
   @protected
   void
-      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin(
-          LuauPlugin self, SseSerializer serializer) {
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin(
+    LuauPlugin self,
+    SseSerializer serializer,
+  ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
-        (self as LuauPluginImpl).frbInternalSseEncode(move: null), serializer);
+      (self as LuauPluginImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
   }
 
   @protected
   void
-      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
-          PluginCallback self, SseSerializer serializer) {
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
+    PluginCallback self,
+    SseSerializer serializer,
+  ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
-        (self as PluginCallbackImpl).frbInternalSseEncode(move: null),
-        serializer);
+      (self as PluginCallbackImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
   }
 
   @protected
   void sse_encode_Set_i_16_None(Set<int> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_list_prim_i_16_strict(
-        Int16List.fromList(self.toList()), serializer);
+      Int16List.fromList(self.toList()),
+      serializer,
+    );
   }
 
   @protected
@@ -1160,7 +1300,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void sse_encode_list_prim_i_16_strict(
-      Int16List self, SseSerializer serializer) {
+    Int16List self,
+    SseSerializer serializer,
+  ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.length, serializer);
     serializer.buffer.putInt16List(self);
@@ -1168,7 +1310,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void sse_encode_list_prim_u_8_strict(
-      Uint8List self, SseSerializer serializer) {
+    Uint8List self,
+    SseSerializer serializer,
+  ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.length, serializer);
     serializer.buffer.putUint8List(self);
@@ -1216,7 +1360,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void sse_encode_state_field_access(
-      StateFieldAccess self, SseSerializer serializer) {
+    StateFieldAccess self,
+    SseSerializer serializer,
+  ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.index, serializer);
   }
@@ -1243,11 +1389,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 class LuauPluginImpl extends RustOpaque implements LuauPlugin {
   // Not to be used by end users
   LuauPluginImpl.frbInternalDcoDecode(List<dynamic> wire)
-      : super.frbInternalDcoDecode(wire, _kStaticData);
+    : super.frbInternalDcoDecode(wire, _kStaticData);
 
   // Not to be used by end users
   LuauPluginImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
-      : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
 
   static final _kStaticData = RustArcStaticData(
     rustArcIncrementStrongCount:
@@ -1258,34 +1404,34 @@ class LuauPluginImpl extends RustOpaque implements LuauPlugin {
         RustLib.instance.api.rust_arc_decrement_strong_count_LuauPluginPtr,
   );
 
-  Future<void> run() => RustLib.instance.api.crateApiLuauLuauPluginRun(
-        that: this,
-      );
+  Future<void> run() =>
+      RustLib.instance.api.crateApiLuauLuauPluginRun(that: this);
 
-  Future<EventResult> runEvent(
-          {required String eventType,
-          required String event,
-          required String serverEvent,
-          required int source,
-          required int target}) =>
-      RustLib.instance.api.crateApiLuauLuauPluginRunEvent(
-          that: this,
-          eventType: eventType,
-          event: event,
-          serverEvent: serverEvent,
-          source: source,
-          target: target);
+  Future<EventResult> runEvent({
+    required String eventType,
+    required String event,
+    required String serverEvent,
+    required int source,
+    required int target,
+  }) => RustLib.instance.api.crateApiLuauLuauPluginRunEvent(
+    that: this,
+    eventType: eventType,
+    event: event,
+    serverEvent: serverEvent,
+    source: source,
+    target: target,
+  );
 }
 
 @sealed
 class PluginCallbackImpl extends RustOpaque implements PluginCallback {
   // Not to be used by end users
   PluginCallbackImpl.frbInternalDcoDecode(List<dynamic> wire)
-      : super.frbInternalDcoDecode(wire, _kStaticData);
+    : super.frbInternalDcoDecode(wire, _kStaticData);
 
   // Not to be used by end users
   PluginCallbackImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
-      : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
 
   static final _kStaticData = RustArcStaticData(
     rustArcIncrementStrongCount:
@@ -1298,21 +1444,28 @@ class PluginCallbackImpl extends RustOpaque implements PluginCallback {
 
   void changeOnPrint({required FutureOr<void> Function(String) onPrint}) =>
       RustLib.instance.api.crateApiPluginPluginCallbackChangeOnPrint(
-          that: this, onPrint: onPrint);
+        that: this,
+        onPrint: onPrint,
+      );
 
-  void changeProcessEvent(
-          {required FutureOr<void> Function(String, bool?) processEvent}) =>
-      RustLib.instance.api.crateApiPluginPluginCallbackChangeProcessEvent(
-          that: this, processEvent: processEvent);
+  void changeProcessEvent({
+    required FutureOr<void> Function(String, bool?) processEvent,
+  }) => RustLib.instance.api.crateApiPluginPluginCallbackChangeProcessEvent(
+    that: this,
+    processEvent: processEvent,
+  );
 
-  void changeSendEvent(
-          {required FutureOr<void> Function(String, int?) sendEvent}) =>
-      RustLib.instance.api.crateApiPluginPluginCallbackChangeSendEvent(
-          that: this, sendEvent: sendEvent);
+  void changeSendEvent({
+    required FutureOr<void> Function(String, int?) sendEvent,
+  }) => RustLib.instance.api.crateApiPluginPluginCallbackChangeSendEvent(
+    that: this,
+    sendEvent: sendEvent,
+  );
 
-  void changeStateFieldAccess(
-          {required FutureOr<String> Function(StateFieldAccess)
-              stateFieldAccess}) =>
-      RustLib.instance.api.crateApiPluginPluginCallbackChangeStateFieldAccess(
-          that: this, stateFieldAccess: stateFieldAccess);
+  void changeStateFieldAccess({
+    required FutureOr<String> Function(StateFieldAccess) stateFieldAccess,
+  }) => RustLib.instance.api.crateApiPluginPluginCallbackChangeStateFieldAccess(
+    that: this,
+    stateFieldAccess: stateFieldAccess,
+  );
 }

@@ -24,7 +24,11 @@ class BoardDefinitionHandItem extends HandItem<PackItem<BoardDefinition>> {
   @override
   void moveItem(HandItemDropZone zone) {
     if (zone is! GameCell) return;
-    bloc.process(BoardsSpawnRequest.single(
-        zone.toGlobalDefinition(bloc.state), item.location));
+    bloc.process(
+      BoardsSpawnRequest.single(
+        zone.toGlobalDefinition(bloc.state),
+        item.location,
+      ),
+    );
   }
 }

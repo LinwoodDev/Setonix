@@ -43,15 +43,24 @@ ArgParser buildParser() {
       help:
           'A description of the server. Will be displayed in the server list.',
     )
-    ..addOption('autosave',
-        abbr: 'a', help: "Disable saving of the world automatically")
-    ..addOption('max-players',
-        abbr: 'm', help: "Maximum number of players", defaultsTo: '10')
-    ..addFlag('multi-world',
-        abbr: 'w',
-        negatable: false,
-        help: "Enable multi-world support",
-        defaultsTo: false);
+    ..addOption(
+      'autosave',
+      abbr: 'a',
+      help: "Disable saving of the world automatically",
+    )
+    ..addOption(
+      'max-players',
+      abbr: 'm',
+      help: "Maximum number of players",
+      defaultsTo: '10',
+    )
+    ..addFlag(
+      'multi-world',
+      abbr: 'w',
+      negatable: false,
+      help: "Enable multi-world support",
+      defaultsTo: false,
+    );
 }
 
 void printUsage(ArgParser argParser) {
@@ -113,9 +122,7 @@ Future<void> runServer(List<String> arguments, [ServerLoader? onLoad]) async {
         multiWorld: multiWorld,
       ),
     );
-    await server.init(
-      verbose: verbose,
-    );
+    await server.init(verbose: verbose);
     await onLoad?.call(server);
     await server.run();
   } on FormatException catch (e) {

@@ -4,16 +4,26 @@ import 'package:flutter/material.dart';
 const kClassicThemePrimary = Color(0xFFFBAC11);
 const kClassicThemeSecondary = Color(0xFF35EF53);
 const kClassicTheme = FlexSchemeColor(
-    primary: kClassicThemePrimary, secondary: kClassicThemeSecondary);
+  primary: kClassicThemePrimary,
+  secondary: kClassicThemeSecondary,
+);
 const kClassicThemeData = FlexSchemeData(
-    name: '', description: '', light: kClassicTheme, dark: kClassicTheme);
+  name: '',
+  description: '',
+  light: kClassicTheme,
+  dark: kClassicTheme,
+);
 
 const settingsCardMargin = EdgeInsets.all(8);
 const settingsCardPadding = EdgeInsets.all(16);
 const settingsCardTitlePadding = EdgeInsets.only(left: 12, top: 8, right: 12);
 
-ThemeData getThemeData(String name, bool dark,
-    [ColorScheme? overridden, bool highContrast = false]) {
+ThemeData getThemeData(
+  String name,
+  bool dark, [
+  ColorScheme? overridden,
+  bool highContrast = false,
+]) {
   final color = getFlexThemeColor(name, dark);
   final override = overridden != null && name.isEmpty;
   if (dark) {
@@ -42,8 +52,9 @@ ThemeData getThemeData(String name, bool dark,
 
 FlexSchemeColor getFlexThemeColor(String name, bool dark) {
   final color = FlexColor.schemesList.firstWhere(
-      (scheme) => scheme.name == name,
-      orElse: () => kClassicThemeData);
+    (scheme) => scheme.name == name,
+    orElse: () => kClassicThemeData,
+  );
   if (dark) return color.dark;
   return color.light;
 }

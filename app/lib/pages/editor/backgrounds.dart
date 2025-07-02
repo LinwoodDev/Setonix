@@ -67,11 +67,14 @@ class BackgroundsEditorPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
           final name = await showDialog<String>(
-              context: context,
-              builder: (context) => NameDialog(
-                    validator: defaultNameValidator(
-                        context, cubit.state.getBackgrounds().toList()),
-                  ));
+            context: context,
+            builder: (context) => NameDialog(
+              validator: defaultNameValidator(
+                context,
+                cubit.state.getBackgrounds().toList(),
+              ),
+            ),
+          );
           if (name == null) return;
           cubit.setBackground(name, BackgroundDefinition(texture: ''));
         },
@@ -85,10 +88,7 @@ class BackgroundsEditorPage extends StatelessWidget {
 class BackgroundEditorDialog extends StatefulWidget {
   final String name;
 
-  const BackgroundEditorDialog({
-    super.key,
-    required this.name,
-  });
+  const BackgroundEditorDialog({super.key, required this.name});
 
   @override
   State<BackgroundEditorDialog> createState() => _BackgroundEditorDialogState();
@@ -115,7 +115,9 @@ class _BackgroundEditorDialogState extends State<BackgroundEditorDialog> {
     return ResponsiveAlertDialog(
       title: Text(widget.name),
       constraints: const BoxConstraints(
-          maxWidth: LeapBreakpoints.compact, maxHeight: 600),
+        maxWidth: LeapBreakpoints.compact,
+        maxHeight: 600,
+      ),
       content: ListView(
         shrinkWrap: true,
         children: [
@@ -128,18 +130,21 @@ class _BackgroundEditorDialogState extends State<BackgroundEditorDialog> {
             initialValue: _translation.backgrounds[widget.name]?.name,
             onChanged: (value) {
               final translation = BackgroundTranslation(name: value);
-              _translation = _translation.copyWith.backgrounds
-                  .put(widget.name, translation);
+              _translation = _translation.copyWith.backgrounds.put(
+                widget.name,
+                translation,
+              );
             },
           ),
           const SizedBox(height: 8),
           VisualEditingView(
-              value: value,
-              onChanged: (value) {
-                setState(() {
-                  _value = value;
-                });
-              }),
+            value: value,
+            onChanged: (value) {
+              setState(() {
+                _value = value;
+              });
+            },
+          ),
         ],
       ),
       actions: [

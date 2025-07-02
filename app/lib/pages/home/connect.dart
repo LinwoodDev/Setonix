@@ -13,21 +13,17 @@ import 'package:rxdart/rxdart.dart';
 
 void _connect(BuildContext context, String address, bool secure) {
   Navigator.of(context).pop();
-  GoRouter.of(context).goNamed('connect', queryParameters: {
-    'address': address,
-    'secure': secure.toString(),
-  });
+  GoRouter.of(context).goNamed(
+    'connect',
+    queryParameters: {'address': address, 'secure': secure.toString()},
+  );
 }
 
 class ConnectEditDialog extends StatelessWidget {
   final ListGameServer? initialValue;
   final int? index;
 
-  const ConnectEditDialog({
-    super.key,
-    this.initialValue,
-    this.index,
-  });
+  const ConnectEditDialog({super.key, this.initialValue, this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -146,12 +142,12 @@ class _ServersDialogState extends State<ServersDialog> {
 
   void _buildServersStream([SetonixSettings? settings]) {
     settings ??= context.read<SettingsCubit>().state;
-    _servers = ValueConnectableStream(context
-            .read<NetworkService>()
-            .fetchServersWithProperties(
-                browsable: settings.showConnectBrowse,
-                local: settings.showConnectYour))
-        .autoConnect();
+    _servers = ValueConnectableStream(
+      context.read<NetworkService>().fetchServersWithProperties(
+        browsable: settings.showConnectBrowse,
+        local: settings.showConnectYour,
+      ),
+    ).autoConnect();
   }
 
   void _refreshServers(SetonixSettings settings) {
@@ -165,27 +161,26 @@ class _ServersDialogState extends State<ServersDialog> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          server.display,
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
+        Text(server.display, style: Theme.of(context).textTheme.titleLarge),
         if (server is ListGameServer && server.name.isNotEmpty)
-          Text(
-            server.address,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
+          Text(server.address, style: Theme.of(context).textTheme.titleMedium),
       ],
     );
   }
 
   Widget _buildDetails(
-      BuildContext context, bool secure, GameProperty property) {
+    BuildContext context,
+    bool secure,
+    GameProperty property,
+  ) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(secure
-            ? PhosphorIconsLight.shieldCheck
-            : PhosphorIconsLight.shieldSlash),
+        Icon(
+          secure
+              ? PhosphorIconsLight.shieldCheck
+              : PhosphorIconsLight.shieldSlash,
+        ),
         const SizedBox(width: 8),
         Text('${property.currentPlayers}/${property.maxPlayers ?? '?'}'),
       ],
@@ -193,11 +188,11 @@ class _ServersDialogState extends State<ServersDialog> {
   }
 
   List<ListTile> _buildDetailsChildren(GameProperty server) => [
-        ListTile(
-          title: Text(AppLocalizations.of(context).description),
-          subtitle: Text(server.description),
-        ),
-      ];
+    ListTile(
+      title: Text(AppLocalizations.of(context).description),
+      subtitle: Text(server.description),
+    ),
+  ];
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SettingsCubit, SetonixSettings>(
@@ -220,296 +215,326 @@ class _ServersDialogState extends State<ServersDialog> {
           maxHeight: 700,
         ),
         content: StreamBuilder<Map<GameServer, GameProperty?>>(
-            stream: _servers,
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Center(
-                  child: Column(
-                    children: [
-                      Text(AppLocalizations.of(context).error,
-                          style: Theme.of(context).textTheme.headlineMedium),
-                      const SizedBox(height: 8),
-                      Text(snapshot.error.toString()),
-                    ],
-                  ),
-                );
-              }
-              if (!snapshot.hasData) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              final allServers = snapshot.data!;
-              final servers = allServers.entries
-                  .where((server) =>
-                      server.key.display.toLowerCase().contains(_search))
-                  .toList();
-              final isMobile =
-                  MediaQuery.sizeOf(context).width < LeapBreakpoints.medium;
-              final property = allServers.containsKey(_selected?.$1)
-                  ? (allServers[_selected?.$1] ?? const GameProperty())
-                  : null;
-              final server = _selected?.$1 ?? ListGameServer(address: '');
-              final playButton = SizedBox(
-                height: 48,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+          stream: _servers,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Center(
+                child: Column(
                   children: [
-                    Expanded(
-                      child: FilledButton.icon(
-                        icon: const Icon(PhosphorIconsLight.play),
-                        label: Text(AppLocalizations.of(context).play),
-                        onPressed: () =>
-                            _connect(context, server.address, server.secure),
-                      ),
+                    Text(
+                      AppLocalizations.of(context).error,
+                      style: Theme.of(context).textTheme.headlineMedium,
                     ),
-                    const SizedBox(width: 8),
-                    Row(
-                      children: [
-                        IconButton.outlined(
-                          icon: const Icon(PhosphorIconsLight.pencil),
-                          tooltip: AppLocalizations.of(context).edit,
-                          onPressed: () {
-                            if (server is! ListGameServer) return;
-                            showDialog<bool>(
-                              context: context,
-                              builder: (context) => ConnectEditDialog(
-                                initialValue: server,
-                                index: _selected!.$2,
-                              ),
-                            );
-                          },
-                        ),
-                        const SizedBox(width: 8),
-                        IconButton.outlined(
-                          icon: const Icon(PhosphorIconsLight.trash),
-                          tooltip: AppLocalizations.of(context).delete,
-                          onPressed: () => showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: Text(
-                                  AppLocalizations.of(context).deleteServer),
-                              content: Text(AppLocalizations.of(context)
-                                  .deleteServerMessage),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.of(context).pop(),
-                                  child:
-                                      Text(AppLocalizations.of(context).cancel),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    if (_selected != null) {
-                                      context
-                                          .read<SettingsCubit>()
-                                          .removeServer(_selected!.$2);
-                                    }
-                                    Navigator.of(context).pop();
-                                    if (_isMobileOpen) {
-                                      Navigator.of(context).pop();
-                                    }
-                                    _selected = null;
-                                  },
-                                  child:
-                                      Text(AppLocalizations.of(context).delete),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    const SizedBox(height: 8),
+                    Text(snapshot.error.toString()),
                   ],
                 ),
               );
-              final listView = Column(
+            }
+            if (!snapshot.hasData) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            final allServers = snapshot.data!;
+            final servers = allServers.entries
+                .where(
+                  (server) =>
+                      server.key.display.toLowerCase().contains(_search),
+                )
+                .toList();
+            final isMobile =
+                MediaQuery.sizeOf(context).width < LeapBreakpoints.medium;
+            final property = allServers.containsKey(_selected?.$1)
+                ? (allServers[_selected?.$1] ?? const GameProperty())
+                : null;
+            final server = _selected?.$1 ?? ListGameServer(address: '');
+            final playButton = SizedBox(
+              height: 48,
+              child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Flexible(
-                    child: servers.isEmpty
-                        ? Center(
-                            child: Text(AppLocalizations.of(context).noServers))
-                        : ListView.builder(
-                            itemCount: servers.length,
-                            itemBuilder: (context, index) {
-                              final entry = servers[index];
-                              final current = entry.key;
-                              final primaryColor =
-                                  ColorScheme.of(context).primary;
-                              final defaultColor = IconTheme.of(context).color;
-                              final highlighted = current is ListGameServer &&
-                                  current.highlighted;
-                              return ListTile(
-                                title: Text(current.display,
-                                    style: TextStyle(
-                                      fontWeight: highlighted
-                                          ? FontWeight.w800
-                                          : FontWeight.normal,
-                                    )),
-                                trailing: switch (current) {
-                                  LanGameServer() =>
-                                    const Icon(PhosphorIconsLight.mapPin),
-                                  BrowsedGameServer() => Icon(
-                                      PhosphorIcons.globe(
-                                        highlighted
-                                            ? PhosphorIconsStyle.fill
-                                            : PhosphorIconsStyle.light,
-                                      ),
-                                      color: highlighted
-                                          ? primaryColor
-                                          : defaultColor,
-                                    ),
-                                  ListGameServer() => Icon(
-                                      PhosphorIcons.puzzlePiece(
-                                        highlighted
-                                            ? PhosphorIconsStyle.fill
-                                            : PhosphorIconsStyle.light,
-                                      ),
-                                      color: highlighted
-                                          ? primaryColor
-                                          : defaultColor,
-                                    ),
-                                },
-                                onTap: () {
-                                  setState(() {
-                                    _selected = (current, index);
-                                    _isMobileOpen = isMobile;
-                                  });
-                                  if (isMobile) {
-                                    showLeapBottomSheet(
-                                      context: context,
-                                      titleBuilder: (context) =>
-                                          _buildTitle(context, current),
-                                      actionsBuilder: (context) => [
-                                        if (property != null) ...[
-                                          DefaultTextStyle(
-                                            style: Theme.of(context)
-                                                    .textTheme
-                                                    .headlineSmall ??
-                                                const TextStyle(fontSize: 20),
-                                            child: _buildDetails(context,
-                                                current.secure, property),
-                                          ),
-                                          const SizedBox(width: 8),
-                                        ],
-                                      ],
-                                      childrenBuilder: (context) => [
-                                        ..._buildDetailsChildren(entry.value ??
-                                            const GameProperty()),
-                                        const SizedBox(height: 16),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: playButton,
-                                        ),
-                                      ],
-                                    ).then((_) {
-                                      if (mounted) {
-                                        setState(() => _isMobileOpen = false);
-                                      }
-                                    });
-                                  }
-                                },
-                                selected: server == current &&
-                                    (!isMobile || _isMobileOpen),
-                              );
-                            },
-                          ),
-                  ),
-                  const SizedBox(height: 16),
-                  SizedBox(
-                    height: 48,
-                    child: ElevatedButton.icon(
-                      icon: const Icon(PhosphorIconsLight.plus),
-                      label: Text(LeapLocalizations.of(context).create),
-                      onPressed: () => showDialog<bool>(
-                        context: context,
-                        builder: (context) => const ConnectEditDialog(),
-                      ),
-                    ),
-                  ),
-                ],
-              );
-              return Column(
-                children: [
-                  RowSearchView(
-                      onSearchChanged: (value) => setState(() {
-                            _search = value;
-                          }),
-                      children: [
-                        InputChip(
-                          label: Text(AppLocalizations.of(context).yourServers),
-                          avatar: const Icon(PhosphorIconsLight.puzzlePiece),
-                          showCheckmark: false,
-                          selected: settings.showConnectYour,
-                          onPressed: () => context
-                              .read<SettingsCubit>()
-                              .changeShowConnectYour(!settings.showConnectYour),
-                        ),
-                        InputChip(
-                          label: Text(AppLocalizations.of(context).browse),
-                          avatar: const Icon(PhosphorIconsLight.globe),
-                          showCheckmark: false,
-                          selected: settings.showConnectBrowse,
-                          onPressed: () => context
-                              .read<SettingsCubit>()
-                              .changeShowConnectBrowse(
-                                  !settings.showConnectBrowse),
-                        ),
-                      ]),
-                  const SizedBox(height: 8),
                   Expanded(
-                    child: Row(
-                      children: [
-                        Expanded(child: listView),
-                        if (!isMobile) ...[
-                          const VerticalDivider(),
-                          Expanded(
-                              child: property == null
-                                  ? Center(
-                                      child: Text(AppLocalizations.of(context)
-                                          .selectServer),
-                                    )
-                                  : Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.stretch,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: DefaultTextStyle(
-                                            style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleLarge ??
-                                                const TextStyle(),
-                                            child: Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Expanded(
-                                                  child: _buildTitle(
-                                                      context, server),
-                                                ),
-                                                const SizedBox(width: 8),
-                                                _buildDetails(context,
-                                                    server.secure, property),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: ListView(
-                                            children:
-                                                _buildDetailsChildren(property),
-                                          ),
-                                        ),
-                                        const SizedBox(height: 16),
-                                        playButton,
-                                      ],
-                                    )),
-                        ],
-                      ],
+                    child: FilledButton.icon(
+                      icon: const Icon(PhosphorIconsLight.play),
+                      label: Text(AppLocalizations.of(context).play),
+                      onPressed: () =>
+                          _connect(context, server.address, server.secure),
                     ),
                   ),
+                  const SizedBox(width: 8),
+                  Row(
+                    children: [
+                      IconButton.outlined(
+                        icon: const Icon(PhosphorIconsLight.pencil),
+                        tooltip: AppLocalizations.of(context).edit,
+                        onPressed: () {
+                          if (server is! ListGameServer) return;
+                          showDialog<bool>(
+                            context: context,
+                            builder: (context) => ConnectEditDialog(
+                              initialValue: server,
+                              index: _selected!.$2,
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(width: 8),
+                      IconButton.outlined(
+                        icon: const Icon(PhosphorIconsLight.trash),
+                        tooltip: AppLocalizations.of(context).delete,
+                        onPressed: () => showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text(
+                              AppLocalizations.of(context).deleteServer,
+                            ),
+                            content: Text(
+                              AppLocalizations.of(context).deleteServerMessage,
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                child: Text(
+                                  AppLocalizations.of(context).cancel,
+                                ),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  if (_selected != null) {
+                                    context.read<SettingsCubit>().removeServer(
+                                      _selected!.$2,
+                                    );
+                                  }
+                                  Navigator.of(context).pop();
+                                  if (_isMobileOpen) {
+                                    Navigator.of(context).pop();
+                                  }
+                                  _selected = null;
+                                },
+                                child: Text(
+                                  AppLocalizations.of(context).delete,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
-              );
-            }),
+              ),
+            );
+            final listView = Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Flexible(
+                  child: servers.isEmpty
+                      ? Center(
+                          child: Text(AppLocalizations.of(context).noServers),
+                        )
+                      : ListView.builder(
+                          itemCount: servers.length,
+                          itemBuilder: (context, index) {
+                            final entry = servers[index];
+                            final current = entry.key;
+                            final primaryColor = ColorScheme.of(
+                              context,
+                            ).primary;
+                            final defaultColor = IconTheme.of(context).color;
+                            final highlighted =
+                                current is ListGameServer &&
+                                current.highlighted;
+                            return ListTile(
+                              title: Text(
+                                current.display,
+                                style: TextStyle(
+                                  fontWeight: highlighted
+                                      ? FontWeight.w800
+                                      : FontWeight.normal,
+                                ),
+                              ),
+                              trailing: switch (current) {
+                                LanGameServer() => const Icon(
+                                  PhosphorIconsLight.mapPin,
+                                ),
+                                BrowsedGameServer() => Icon(
+                                  PhosphorIcons.globe(
+                                    highlighted
+                                        ? PhosphorIconsStyle.fill
+                                        : PhosphorIconsStyle.light,
+                                  ),
+                                  color: highlighted
+                                      ? primaryColor
+                                      : defaultColor,
+                                ),
+                                ListGameServer() => Icon(
+                                  PhosphorIcons.puzzlePiece(
+                                    highlighted
+                                        ? PhosphorIconsStyle.fill
+                                        : PhosphorIconsStyle.light,
+                                  ),
+                                  color: highlighted
+                                      ? primaryColor
+                                      : defaultColor,
+                                ),
+                              },
+                              onTap: () {
+                                setState(() {
+                                  _selected = (current, index);
+                                  _isMobileOpen = isMobile;
+                                });
+                                if (isMobile) {
+                                  showLeapBottomSheet(
+                                    context: context,
+                                    titleBuilder: (context) =>
+                                        _buildTitle(context, current),
+                                    actionsBuilder: (context) => [
+                                      if (property != null) ...[
+                                        DefaultTextStyle(
+                                          style:
+                                              Theme.of(
+                                                context,
+                                              ).textTheme.headlineSmall ??
+                                              const TextStyle(fontSize: 20),
+                                          child: _buildDetails(
+                                            context,
+                                            current.secure,
+                                            property,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                      ],
+                                    ],
+                                    childrenBuilder: (context) => [
+                                      ..._buildDetailsChildren(
+                                        entry.value ?? const GameProperty(),
+                                      ),
+                                      const SizedBox(height: 16),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: playButton,
+                                      ),
+                                    ],
+                                  ).then((_) {
+                                    if (mounted) {
+                                      setState(() => _isMobileOpen = false);
+                                    }
+                                  });
+                                }
+                              },
+                              selected:
+                                  server == current &&
+                                  (!isMobile || _isMobileOpen),
+                            );
+                          },
+                        ),
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  height: 48,
+                  child: ElevatedButton.icon(
+                    icon: const Icon(PhosphorIconsLight.plus),
+                    label: Text(LeapLocalizations.of(context).create),
+                    onPressed: () => showDialog<bool>(
+                      context: context,
+                      builder: (context) => const ConnectEditDialog(),
+                    ),
+                  ),
+                ),
+              ],
+            );
+            return Column(
+              children: [
+                RowSearchView(
+                  onSearchChanged: (value) => setState(() {
+                    _search = value;
+                  }),
+                  children: [
+                    InputChip(
+                      label: Text(AppLocalizations.of(context).yourServers),
+                      avatar: const Icon(PhosphorIconsLight.puzzlePiece),
+                      showCheckmark: false,
+                      selected: settings.showConnectYour,
+                      onPressed: () => context
+                          .read<SettingsCubit>()
+                          .changeShowConnectYour(!settings.showConnectYour),
+                    ),
+                    InputChip(
+                      label: Text(AppLocalizations.of(context).browse),
+                      avatar: const Icon(PhosphorIconsLight.globe),
+                      showCheckmark: false,
+                      selected: settings.showConnectBrowse,
+                      onPressed: () => context
+                          .read<SettingsCubit>()
+                          .changeShowConnectBrowse(!settings.showConnectBrowse),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(child: listView),
+                      if (!isMobile) ...[
+                        const VerticalDivider(),
+                        Expanded(
+                          child: property == null
+                              ? Center(
+                                  child: Text(
+                                    AppLocalizations.of(context).selectServer,
+                                  ),
+                                )
+                              : Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: DefaultTextStyle(
+                                        style:
+                                            Theme.of(
+                                              context,
+                                            ).textTheme.titleLarge ??
+                                            const TextStyle(),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              child: _buildTitle(
+                                                context,
+                                                server,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 8),
+                                            _buildDetails(
+                                              context,
+                                              server.secure,
+                                              property,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: ListView(
+                                        children: _buildDetailsChildren(
+                                          property,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 16),
+                                    playButton,
+                                  ],
+                                ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

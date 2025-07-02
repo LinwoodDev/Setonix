@@ -10,8 +10,9 @@ abstract class VisualDefinition with VisualDefinitionMappable {
   final VectorDefinition offset;
   final VectorDefinition? size;
 
-  VisualDefinition(
-      {required this.texture,
-      this.offset = VectorDefinition.zero,
-      required this.size});
+  VisualDefinition({
+    required this.texture,
+    this.offset = VectorDefinition.zero,
+    required this.size,
+  });
 }

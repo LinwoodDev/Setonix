@@ -8,18 +8,15 @@ Future<void> onLoad(SetonixServer server) async {
   print("on load was called");
   server.defaultEventSystem
     ..on<UserJoined>((e) {
-      server.sendEvent(DialogOpened(GameDialog(
-        id: "joinDialog",
-        title: "Please login",
-      )
-          .textField("Username", id: "username")
-          .textField(
-            "Password",
-            id: "password",
-            password: true,
-          )
-          .action(GameDialogButton("Login", id: "login"))
-          .action(GameDialogButton("Register", id: "register"))));
+      server.sendEvent(
+        DialogOpened(
+          GameDialog(id: "joinDialog", title: "Please login")
+              .textField("Username", id: "username")
+              .textField("Password", id: "password", password: true)
+              .action(GameDialogButton("Login", id: "login"))
+              .action(GameDialogButton("Register", id: "register")),
+        ),
+      );
     })
     ..on<DialogCloseRequest>((e) {
       final event = e.clientEvent;

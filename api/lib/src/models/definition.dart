@@ -48,9 +48,5 @@ class VariationDefinition extends VisualDefinition
 @MappableClass()
 class FigureBackDefinition extends VisualDefinition
     with FigureBackDefinitionMappable {
-  FigureBackDefinition({
-    required super.texture,
-    super.offset,
-    super.size,
-  });
+  FigureBackDefinition({required super.texture, super.offset, super.size});
 }

@@ -25,9 +25,10 @@ jobs:
         with:
           java-version: "17"
           distribution: "temurin"
-      - uses: subosito/flutter-action@v2.19.0
+      - uses: subosito/flutter-action@v2.21.0
         with:
           flutter-version-file: app/pubspec.yaml
+          cache: true
       - name: 📦 Get dependencies
         run: |
           flutter clean
@@ -94,6 +95,14 @@ jobs:
         with:
           name: apk-x86_64-build
           path: app/linwood-setonix-android-x86_64.apk
+      - name: Copy Corepack
+        run: |
+          cp app/assets/pack.stnx core.stnx
+      - name: Archive Corepack
+        uses: actions/upload-artifact@v4
+        with:
+          name: corepack
+          path: core.stnx
   build-windows:
     runs-on: windows-2025
     defaults:
@@ -106,9 +115,10 @@ jobs:
         run: |
           choco install yq
           choco install innosetup
-      - uses: subosito/flutter-action@v2.19.0
+      - uses: subosito/flutter-action@v2.21.0
         with:
           flutter-version-file: app/pubspec.yaml
+          cache: true
       - name: ✅ Enable platforms
         run: flutter config --enable-windows-desktop
       - name: 📦 Get dependencies
@@ -197,7 +207,7 @@ jobs:
             libsecret-1-dev \
             libjsoncpp-dev \
             rpm
-      - uses: subosito/flutter-action@v2.19.0
+      - uses: subosito/flutter-action@v2.21.0
         with:
           flutter-version-file: app/pubspec.yaml
           channel: "master"
@@ -333,7 +343,7 @@ jobs:
             alien \
             libsecret-1-dev \
             libjsoncpp-dev
-      - uses: subosito/flutter-action@v2.19.0
+      - uses: subosito/flutter-action@v2.21.0
         with:
           flutter-version-file: app/pubspec.yaml
           channel: "master"
@@ -405,9 +415,10 @@ jobs:
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2.19.0
+      - uses: subosito/flutter-action@v2.21.0
         with:
           flutter-version-file: app/pubspec.yaml
+          cache: true
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -464,9 +475,10 @@ jobs:
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2.19.0
+      - uses: subosito/flutter-action@v2.21.0
         with:
           flutter-version-file: app/pubspec.yaml
+          cache: true
       - name: 📦 Get dependencies
         run: |
           flutter clean
@@ -547,13 +559,13 @@ jobs:
       - name: Install tree
         if: ${{ matrix.os.name == 'macos-latest' }}
         run: brew install tree
-      - uses: subosito/flutter-action@v2.19.0
+      - uses: subosito/flutter-action@v2.21.0
         with:
           flutter-version-file: app/pubspec.yaml
-          channel: 'master'
+          channel: "master"
           cache: true
-          cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
-          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+          cache-key: "flutter-:os:-:channel:-:version:-:arch:-:hash:"
+          cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:"
       - name: 📦 Get dependencies
         run: |
           flutter clean
@@ -635,6 +647,9 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: apk-x86_64-build
+      - uses: actions/download-artifact@v4
+        with:
+          name: corepack
       - uses: actions/download-artifact@v4
         with:
           name: windows-build
@@ -765,6 +780,7 @@ jobs:
             linwood-setonix-server-linux-arm64.tar.gz
             linwood-setonix-server-windows-x86_64.zip
             linwood-setonix-server-macos.zip
+            core.stnx
             checksums.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -798,6 +814,7 @@ jobs:
             linwood-setonix-server-linux-arm64.tar.gz
             linwood-setonix-server-windows-x86_64.zip
             linwood-setonix-server-macos.zip
+            core.stnx
             checksums.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -829,6 +846,7 @@ jobs:
             linwood-setonix-server-linux-arm64.tar.gz
             linwood-setonix-server-windows-x86_64.zip
             linwood-setonix-server-macos.zip
+            core.stnx
             checksums.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -865,9 +883,10 @@ jobs:
         with:
           java-version: "17"
           distribution: "temurin"
-      - uses: subosito/flutter-action@v2.19.0
+      - uses: subosito/flutter-action@v2.21.0
         with:
           flutter-version-file: app/pubspec.yaml
+          cache: true
       - name: Build nessesary files
         working-directory: ./
         run: |

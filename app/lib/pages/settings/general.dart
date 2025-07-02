@@ -24,10 +24,10 @@ class Meta {
     required this.mainVersion,
   });
   Meta.fromJson(Map<String, dynamic> json)
-      : stableVersion = json['version']?['stable'] ?? '?',
-        nightlyVersion = json['version']?['nightly'] ?? '?',
-        developVersion = json['version']?['develop'] ?? '?',
-        mainVersion = json['version']?['main'] ?? '?';
+    : stableVersion = json['version']?['stable'] ?? '?',
+      nightlyVersion = json['version']?['nightly'] ?? '?',
+      developVersion = json['version']?['develop'] ?? '?',
+      mainVersion = json['version']?['main'] ?? '?';
 }
 
 class GeneralSettingsPage extends StatefulWidget {
@@ -42,12 +42,13 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
   Future<Meta>? _metaFuture;
 
   void loadMeta() => setState(() {
-        _metaFuture = _fetchMeta();
-      });
+    _metaFuture = _fetchMeta();
+  });
 
   Future<Meta> _fetchMeta() async {
-    final response =
-        await http.get(Uri.parse('https://setonix.linwood.dev/meta.json'));
+    final response = await http.get(
+      Uri.parse('https://setonix.linwood.dev/meta.json'),
+    );
     return Meta.fromJson({...json.decode(response.body)});
   }
 
@@ -64,12 +65,13 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
         future: PackageInfo.fromPlatform(),
         builder: (context, snapshot) {
           final currentVersion = snapshot.data?.version ?? '?';
-          return ListView(children: [
-            Card(
-              margin: settingsCardMargin,
-              child: Padding(
-                padding: settingsCardPadding,
-                child: Column(
+          return ListView(
+            children: [
+              Card(
+                margin: settingsCardMargin,
+                child: Padding(
+                  padding: settingsCardPadding,
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Padding(
@@ -81,61 +83,70 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
                       ),
                       const SizedBox(height: 16),
                       ListTile(
-                        title:
-                            Text(AppLocalizations.of(context).currentVersion),
+                        title: Text(
+                          AppLocalizations.of(context).currentVersion,
+                        ),
                         subtitle: Text(currentVersion),
                         onTap: () => saveToClipboard(context, currentVersion),
                       ),
                       if (!kIsWeb)
                         FutureBuilder<Meta>(
-                            future: _metaFuture,
-                            builder: (context, snapshot) {
-                              if (snapshot.hasError) {
-                                return Text('Error: ${snapshot.error}');
-                              }
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const Center(
-                                    child: CircularProgressIndicator());
-                              }
-                              if (!snapshot.hasData) {
-                                return ListTile(
-                                  title: Text(AppLocalizations.of(context)
-                                      .checkForUpdates),
-                                  subtitle: Text(AppLocalizations.of(context)
-                                      .checkForUpdatesWarning),
-                                  onTap: loadMeta,
-                                );
-                              }
-                              final meta = snapshot.data!;
-                              final stableVersion = meta.stableVersion;
-                              final nightlyVersion = meta.nightlyVersion;
-                              final developVersion = meta.developVersion;
-                              final mainVersion = meta.mainVersion;
-                              final isStable = currentVersion == stableVersion;
-                              final isNightly =
-                                  currentVersion == nightlyVersion;
-                              final isDevelop =
-                                  currentVersion == developVersion;
-                              final isMain = currentVersion == mainVersion;
-                              final isError = meta.nightlyVersion == '?' ||
-                                  meta.stableVersion == '?';
-                              final isUpdateAvailable = !isError &&
-                                  !isStable &&
-                                  !isNightly &&
-                                  !isDevelop &&
-                                  !isMain;
-                              return Column(children: [
+                          future: _metaFuture,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            }
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            if (!snapshot.hasData) {
+                              return ListTile(
+                                title: Text(
+                                  AppLocalizations.of(context).checkForUpdates,
+                                ),
+                                subtitle: Text(
+                                  AppLocalizations.of(
+                                    context,
+                                  ).checkForUpdatesWarning,
+                                ),
+                                onTap: loadMeta,
+                              );
+                            }
+                            final meta = snapshot.data!;
+                            final stableVersion = meta.stableVersion;
+                            final nightlyVersion = meta.nightlyVersion;
+                            final developVersion = meta.developVersion;
+                            final mainVersion = meta.mainVersion;
+                            final isStable = currentVersion == stableVersion;
+                            final isNightly = currentVersion == nightlyVersion;
+                            final isDevelop = currentVersion == developVersion;
+                            final isMain = currentVersion == mainVersion;
+                            final isError =
+                                meta.nightlyVersion == '?' ||
+                                meta.stableVersion == '?';
+                            final isUpdateAvailable =
+                                !isError &&
+                                !isStable &&
+                                !isNightly &&
+                                !isDevelop &&
+                                !isMain;
+                            return Column(
+                              children: [
                                 ListTile(
-                                  title:
-                                      Text(AppLocalizations.of(context).stable),
+                                  title: Text(
+                                    AppLocalizations.of(context).stable,
+                                  ),
                                   subtitle: Text(stableVersion),
                                   onTap: () =>
                                       saveToClipboard(context, stableVersion),
                                 ),
                                 ListTile(
                                   title: Text(
-                                      AppLocalizations.of(context).nightly),
+                                    AppLocalizations.of(context).nightly,
+                                  ),
                                   subtitle: Text(nightlyVersion),
                                   onTap: () =>
                                       saveToClipboard(context, nightlyVersion),
@@ -143,46 +154,63 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
                                 const Divider(),
                                 if (isStable) ...[
                                   ListTile(
-                                    title: Text(AppLocalizations.of(context)
-                                        .usingLatestStable),
+                                    title: Text(
+                                      AppLocalizations.of(
+                                        context,
+                                      ).usingLatestStable,
+                                    ),
                                   ),
                                 ] else if (isNightly ||
                                     isDevelop ||
                                     isMain) ...[
                                   ListTile(
-                                    title: Text(AppLocalizations.of(context)
-                                        .usingLatestNightly),
-                                  )
+                                    title: Text(
+                                      AppLocalizations.of(
+                                        context,
+                                      ).usingLatestNightly,
+                                    ),
+                                  ),
                                 ] else if (isError) ...[
                                   ListTile(
                                     title: Text(
-                                        AppLocalizations.of(context).error),
+                                      AppLocalizations.of(context).error,
+                                    ),
                                   ),
                                 ] else if (isUpdateAvailable)
                                   ListTile(
-                                    title: Text(AppLocalizations.of(context)
-                                        .updateAvailable),
+                                    title: Text(
+                                      AppLocalizations.of(
+                                        context,
+                                      ).updateAvailable,
+                                    ),
                                     subtitle: Text(
-                                        AppLocalizations.of(context).updateNow),
+                                      AppLocalizations.of(context).updateNow,
+                                    ),
                                     leading: const PhosphorIcon(
-                                        PhosphorIconsLight.arrowRight),
+                                      PhosphorIconsLight.arrowRight,
+                                    ),
                                     onTap: () async {
                                       await launchUrl(
-                                          Uri.parse(
-                                              'https://setonix.linwood.dev/downloads'),
-                                          mode: LaunchMode.externalApplication);
+                                        Uri.parse(
+                                          'https://setonix.linwood.dev/downloads',
+                                        ),
+                                        mode: LaunchMode.externalApplication,
+                                      );
                                     },
                                   ),
-                              ]);
-                            }),
-                    ]),
+                              ],
+                            );
+                          },
+                        ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-            Card(
-              margin: settingsCardMargin,
-              child: Padding(
-                padding: settingsCardPadding,
-                child: Column(
+              Card(
+                margin: settingsCardMargin,
+                child: Padding(
+                  padding: settingsCardPadding,
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       ListTile(
@@ -194,91 +222,112 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
                         ),
                       ),
                       ListTile(
-                          leading:
-                              const PhosphorIcon(PhosphorIconsLight.article),
-                          title:
-                              Text(AppLocalizations.of(context).documentation),
-                          onTap: () => launchUrl(
-                              Uri.https('setonix.linwood.dev', ''),
-                              mode: LaunchMode.externalApplication)),
+                        leading: const PhosphorIcon(PhosphorIconsLight.article),
+                        title: Text(AppLocalizations.of(context).documentation),
+                        onTap: () => launchUrl(
+                          Uri.https('setonix.linwood.dev', ''),
+                          mode: LaunchMode.externalApplication,
+                        ),
+                      ),
                       ListTile(
-                          leading: const PhosphorIcon(PhosphorIconsLight.flag),
-                          title:
-                              Text(AppLocalizations.of(context).releaseNotes),
-                          onTap: () => openReleaseNotes()),
+                        leading: const PhosphorIcon(PhosphorIconsLight.flag),
+                        title: Text(AppLocalizations.of(context).releaseNotes),
+                        onTap: () => openReleaseNotes(),
+                      ),
                       ListTile(
-                          leading: const PhosphorIcon(PhosphorIconsLight.users),
-                          title: const Text('Matrix'),
-                          onTap: () => launchUrl(
-                              Uri.https('go.linwood.dev', 'matrix'),
-                              mode: LaunchMode.externalApplication)),
+                        leading: const PhosphorIcon(PhosphorIconsLight.users),
+                        title: const Text('Matrix'),
+                        onTap: () => launchUrl(
+                          Uri.https('go.linwood.dev', 'matrix'),
+                          mode: LaunchMode.externalApplication,
+                        ),
+                      ),
                       ListTile(
-                          leading: const PhosphorIcon(PhosphorIconsLight.users),
-                          title: const Text('Discord'),
-                          onTap: () => launchUrl(
-                              Uri.https('go.linwood.dev', 'discord'),
-                              mode: LaunchMode.externalApplication)),
+                        leading: const PhosphorIcon(PhosphorIconsLight.users),
+                        title: const Text('Discord'),
+                        onTap: () => launchUrl(
+                          Uri.https('go.linwood.dev', 'discord'),
+                          mode: LaunchMode.externalApplication,
+                        ),
+                      ),
                       ListTile(
-                          leading:
-                              const PhosphorIcon(PhosphorIconsLight.translate),
-                          title: const Text('Crowdin'),
-                          onTap: () => launchUrl(
-                              Uri.https('go.linwood.dev', 'setonix/crowdin'),
-                              mode: LaunchMode.externalApplication)),
+                        leading: const PhosphorIcon(
+                          PhosphorIconsLight.translate,
+                        ),
+                        title: const Text('Crowdin'),
+                        onTap: () => launchUrl(
+                          Uri.https('go.linwood.dev', 'setonix/crowdin'),
+                          mode: LaunchMode.externalApplication,
+                        ),
+                      ),
                       ListTile(
-                          leading: const PhosphorIcon(PhosphorIconsLight.code),
-                          title: Text(AppLocalizations.of(context).source),
-                          onTap: () => launchUrl(
-                              Uri.https('go.linwood.dev', 'setonix/source'),
-                              mode: LaunchMode.externalApplication)),
+                        leading: const PhosphorIcon(PhosphorIconsLight.code),
+                        title: Text(AppLocalizations.of(context).source),
+                        onTap: () => launchUrl(
+                          Uri.https('go.linwood.dev', 'setonix/source'),
+                          mode: LaunchMode.externalApplication,
+                        ),
+                      ),
                       ListTile(
-                          leading: const PhosphorIcon(
-                              PhosphorIconsLight.arrowCounterClockwise),
-                          title: Text(AppLocalizations.of(context).changelog),
-                          onTap: () => launchUrl(
-                              Uri.https('setonix.linwood.dev', 'changelog'),
-                              mode: LaunchMode.externalApplication)),
-                    ]),
+                        leading: const PhosphorIcon(
+                          PhosphorIconsLight.arrowCounterClockwise,
+                        ),
+                        title: Text(AppLocalizations.of(context).changelog),
+                        onTap: () => launchUrl(
+                          Uri.https('setonix.linwood.dev', 'changelog'),
+                          mode: LaunchMode.externalApplication,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-            Card(
-              margin: settingsCardMargin,
-              child: Padding(
-                padding: settingsCardPadding,
-                child: Column(
+              Card(
+                margin: settingsCardMargin,
+                child: Padding(
+                  padding: settingsCardPadding,
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       ListTile(
-                          leading: const PhosphorIcon(PhosphorIconsLight.stack),
-                          title: Text(AppLocalizations.of(context).license),
-                          onTap: () => launchUrl(
-                              Uri.https('go.linwood.dev', 'setonix/license'),
-                              mode: LaunchMode.externalApplication)),
+                        leading: const PhosphorIcon(PhosphorIconsLight.stack),
+                        title: Text(AppLocalizations.of(context).license),
+                        onTap: () => launchUrl(
+                          Uri.https('go.linwood.dev', 'setonix/license'),
+                          mode: LaunchMode.externalApplication,
+                        ),
+                      ),
                       ListTile(
-                          leading: const PhosphorIcon(
-                              PhosphorIconsLight.identificationCard),
-                          title: Text(AppLocalizations.of(context).imprint),
-                          onTap: () => launchUrl(
-                              Uri.https('go.linwood.dev', 'imprint'),
-                              mode: LaunchMode.externalApplication)),
+                        leading: const PhosphorIcon(
+                          PhosphorIconsLight.identificationCard,
+                        ),
+                        title: Text(AppLocalizations.of(context).imprint),
+                        onTap: () => launchUrl(
+                          Uri.https('go.linwood.dev', 'imprint'),
+                          mode: LaunchMode.externalApplication,
+                        ),
+                      ),
                       ListTile(
-                          leading:
-                              const PhosphorIcon(PhosphorIconsLight.shield),
-                          title:
-                              Text(AppLocalizations.of(context).privacypolicy),
-                          onTap: () => launchUrl(
-                              Uri.https('setonix.linwood.dev', 'privacypolicy'),
-                              mode: LaunchMode.externalApplication)),
+                        leading: const PhosphorIcon(PhosphorIconsLight.shield),
+                        title: Text(AppLocalizations.of(context).privacypolicy),
+                        onTap: () => launchUrl(
+                          Uri.https('setonix.linwood.dev', 'privacypolicy'),
+                          mode: LaunchMode.externalApplication,
+                        ),
+                      ),
                       ListTile(
                         title: Text(
-                            AppLocalizations.of(context).thirdPartyLicenses),
+                          AppLocalizations.of(context).thirdPartyLicenses,
+                        ),
                         leading: const PhosphorIcon(PhosphorIconsLight.file),
                         onTap: () => showLicensePage(context: context),
-                      )
-                    ]),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ]);
+            ],
+          );
         },
       ),
     );

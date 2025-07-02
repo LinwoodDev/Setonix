@@ -10,7 +10,8 @@ class WhitelistProgram extends ConsoleProgram {
   String getUsage() => '<add/remove> <User>';
 
   @override
-  String getDescription() => "Add or remove a user from the whitelist. "
+  String getDescription() =>
+      "Add or remove a user from the whitelist. "
       "Use 'add <User>' to add a user and 'remove <User>' to remove a user.";
 
   @override
@@ -23,26 +24,36 @@ class WhitelistProgram extends ConsoleProgram {
     final user = args[1];
 
     if (action == 'add') {
-      final result =
-          await server.userManager.service?.updateUser(user, onWhitelist: true);
+      final result = await server.userManager.service?.updateUser(
+        user,
+        onWhitelist: true,
+      );
       if (result != true) {
-        server.log("Failed to add user $user to whitelist",
-            level: LogLevel.error);
+        server.log(
+          "Failed to add user $user to whitelist",
+          level: LogLevel.error,
+        );
         return;
       }
       server.log("User $user added to whitelist", level: LogLevel.info);
     } else if (action == 'remove') {
-      final result = await server.userManager.service
-          ?.updateUser(user, onWhitelist: false);
+      final result = await server.userManager.service?.updateUser(
+        user,
+        onWhitelist: false,
+      );
       if (result != true) {
-        server.log("Failed to remove user $user from whitelist",
-            level: LogLevel.error);
+        server.log(
+          "Failed to remove user $user from whitelist",
+          level: LogLevel.error,
+        );
         return;
       }
       server.log("User $user removed from whitelist", level: LogLevel.info);
     } else {
-      server.log("Unknown action: $action. Use 'add' or 'remove'.",
-          level: LogLevel.error);
+      server.log(
+        "Unknown action: $action. Use 'add' or 'remove'.",
+        level: LogLevel.error,
+      );
     }
   }
 }

@@ -10,10 +10,9 @@ class DeckDefinitionHandItem extends HandItem<PackItem<DeckDefinition>> {
   DeckDefinitionHandItem({required super.item});
 
   @override
-  String getLabel(ClientWorldState state) => getAssetManager(state)
-      .getTranslations(item.namespace)
-      .getDeckTranslation(item.id)
-      .name;
+  String getLabel(ClientWorldState state) => getAssetManager(
+    state,
+  ).getTranslations(item.namespace).getDeckTranslation(item.id).name;
 
   bool matches(ClientWorldState state, String term) =>
       item.location.toString().equalsIgnoreCase(term) ||
@@ -29,7 +28,9 @@ class DeckDefinitionHandItem extends HandItem<PackItem<DeckDefinition>> {
     final front = item.item.figures.firstOrNull;
     if (front == null) return null;
     return getAssetManager(state).loadFigureSprite(
-        ItemLocation.fromString(front.name, item.namespace), front.variation);
+      ItemLocation.fromString(front.name, item.namespace),
+      front.variation,
+    );
   }
 
   @override
@@ -39,10 +40,14 @@ class DeckDefinitionHandItem extends HandItem<PackItem<DeckDefinition>> {
     final objects = <VectorDefinition, List<GameObject>>{};
     for (final e in item.item.figures) {
       final location = global.position + e.position;
-      objects.putIfAbsent(location, () => []).add(GameObject(
-            ItemLocation(item.namespace, e.name),
-            variation: e.variation,
-          ));
+      objects
+          .putIfAbsent(location, () => [])
+          .add(
+            GameObject(
+              ItemLocation(item.namespace, e.name),
+              variation: e.variation,
+            ),
+          );
     }
     bloc.process(ObjectsSpawned(global.table, objects));
     final boards = <VectorDefinition, List<ItemLocation>>{};

@@ -12,12 +12,15 @@ final class FileUserService extends UserService {
     // Basic migration system
 
     final result = database.select('PRAGMA user_version');
-    final currentVersion =
-        result.isNotEmpty ? result.first['user_version'] as int : 0;
+    final currentVersion = result.isNotEmpty
+        ? result.first['user_version'] as int
+        : 0;
 
-    for (var version = currentVersion + 1;
-        version <= migrations.length;
-        version++) {
+    for (
+      var version = currentVersion + 1;
+      version <= migrations.length;
+      version++
+    ) {
       database.execute(migrations[version]!);
       database.execute('PRAGMA user_version = $version;');
     }
@@ -43,25 +46,23 @@ final class FileUserService extends UserService {
 
   @override
   SetonixUser? getUser(String fingerprint) => _database
-      ?.select(
-        'SELECT * FROM users WHERE fingerprint = ?',
-        [fingerprint],
-      )
+      ?.select('SELECT * FROM users WHERE fingerprint = ?', [fingerprint])
       .map(_fromRow)
       .firstOrNull;
 
   @override
   SetonixUser? getUserFromName(String name) => _database
-      ?.select(
-        'SELECT * FROM users WHERE name = ?',
-        [name],
-      )
+      ?.select('SELECT * FROM users WHERE name = ?', [name])
       .map(_fromRow)
       .firstOrNull;
 
   @override
-  bool updateUser(String fingerprint,
-      {String? name, bool? onWhitelist, DateTime? lastLogin}) {
+  bool updateUser(
+    String fingerprint, {
+    String? name,
+    bool? onWhitelist,
+    DateTime? lastLogin,
+  }) {
     final updates = <String>[];
     final values = <dynamic>[];
 
@@ -83,20 +84,14 @@ final class FileUserService extends UserService {
     // prepare bind values: first for INSERT (fingerprint + update values), then repeat update values for the UPDATE clause
     final insertValues = [...values, fingerprint];
     final bindValues = [fingerprint, ...insertValues, ...values];
-    _database?.execute(
-      '''
+    _database?.execute('''
       INSERT INTO users (
-        fingerprint${[
-        ...updates,
-        'name = ?',
-      ].map((u) => ', ${u.split(' = ').first}').join()}
+        fingerprint${[...updates, 'name = ?'].map((u) => ', ${u.split(' = ').first}').join()}
       ) VALUES (
         ${List.filled(insertValues.length + 1, '?').join(', ')}
       ) ON CONFLICT(fingerprint) DO UPDATE SET
         ${updates.join(', ')};
-      ''',
-      bindValues,
-    );
+      ''', bindValues);
     return _database?.updatedRows == 1;
   }
 }

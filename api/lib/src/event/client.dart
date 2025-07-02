@@ -70,15 +70,17 @@ final class BoardsSpawnRequest extends ClientWorldEvent
 
   BoardsSpawnRequest(this.table, [this.assets = const {}]);
   BoardsSpawnRequest.single(GlobalVectorDefinition cell, ItemLocation asset)
-      : table = cell.table,
-        assets = {
-          cell.position: [asset]
-        };
+    : table = cell.table,
+      assets = {
+        cell.position: [asset],
+      };
   BoardsSpawnRequest.fromLocal(
-      this.table, VectorDefinition cell, ItemLocation asset)
-      : assets = {
-          cell: [asset]
-        };
+    this.table,
+    VectorDefinition cell,
+    ItemLocation asset,
+  ) : assets = {
+        cell: [asset],
+      };
 
   BoardsSpawnRequest boards(VectorDefinition cell, List<ItemLocation> assets) =>
       copyWith(
@@ -169,7 +171,9 @@ final class AuthenticateRequest extends ClientWorldEvent
   AuthenticateRequest(this.signature, this.publicKey);
 
   static Future<AuthenticateRequest> build(
-      AuthenticatedRequested request, SetonixAccount account) async {
+    AuthenticatedRequested request,
+    SetonixAccount account,
+  ) async {
     final challenge = request.challenge;
     final keyPair = account.keyPair;
     final signature = await _generator.sign(challenge, keyPair: keyPair);
@@ -180,8 +184,10 @@ final class AuthenticateRequest extends ClientWorldEvent
   }
 
   Future<bool> verify(Uint8List challenge) => _generator.verify(
-        challenge,
-        signature: Signature(signature,
-            publicKey: SimplePublicKey(publicKey, type: KeyPairType.ed25519)),
-      );
+    challenge,
+    signature: Signature(
+      signature,
+      publicKey: SimplePublicKey(publicKey, type: KeyPairType.ed25519),
+    ),
+  );
 }

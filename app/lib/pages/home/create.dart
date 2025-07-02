@@ -48,8 +48,11 @@ class _CreateDialogState extends State<CreateDialog>
     _customTabController = TabController(length: 2, vsync: this);
   }
 
-  void _reloadTemplates() => setState(() => _templatesStream =
-      ValueConnectableStream(_loadTemplates()).autoConnect());
+  void _reloadTemplates() => setState(
+    () => _templatesStream = ValueConnectableStream(
+      _loadTemplates(),
+    ).autoConnect(),
+  );
 
   Stream<List<FileSystemFile<SetonixData>>> _loadTemplates() async* {
     await _templateSystem.initialize();
@@ -89,57 +92,61 @@ class _CreateDialogState extends State<CreateDialog>
           child: TabBarView(
             controller: _tabController,
             children: [
-              Column(children: [
-                TabBar.secondary(
-                  tabs: [
-                    HorizontalTab(
-                      label: Text(AppLocalizations.of(context).packs),
-                      icon: const Icon(PhosphorIconsLight.package),
-                    ),
-                    HorizontalTab(
-                      label: Text(AppLocalizations.of(context).configuration),
-                      icon: const Icon(PhosphorIconsLight.wrench),
-                    ),
-                  ],
-                  tabAlignment: TabAlignment.center,
-                  controller: _customTabController,
-                ),
-                const SizedBox(height: 8),
-                Expanded(
-                  child: Material(
-                    type: MaterialType.transparency,
-                    child: TabBarView(
-                      controller: _customTabController,
-                      children: [
-                        _CustomCreateView(
-                          packsFuture: _packsFuture,
-                          selectedPacksId: _selectedPacks,
-                          onPacksSelected: (value) => setState(() {
-                            _selectedPacks = value;
-                            if (_background != null &&
-                                !_selectedPacks!
-                                    .contains(_background!.namespace)) {
-                              _background = null;
-                            }
-                          }),
-                        ),
-                        ListView(
-                          children: [
-                            ListTile(
-                              title:
-                                  Text(AppLocalizations.of(context).background),
-                              subtitle: _background == null
-                                  ? null
-                                  : Text(_background!.item.name),
-                              onTap: _showBackgroundPicker,
-                            ),
-                          ],
-                        )
-                      ],
+              Column(
+                children: [
+                  TabBar.secondary(
+                    tabs: [
+                      HorizontalTab(
+                        label: Text(AppLocalizations.of(context).packs),
+                        icon: const Icon(PhosphorIconsLight.package),
+                      ),
+                      HorizontalTab(
+                        label: Text(AppLocalizations.of(context).configuration),
+                        icon: const Icon(PhosphorIconsLight.wrench),
+                      ),
+                    ],
+                    tabAlignment: TabAlignment.center,
+                    controller: _customTabController,
+                  ),
+                  const SizedBox(height: 8),
+                  Expanded(
+                    child: Material(
+                      type: MaterialType.transparency,
+                      child: TabBarView(
+                        controller: _customTabController,
+                        children: [
+                          _CustomCreateView(
+                            packsFuture: _packsFuture,
+                            selectedPacksId: _selectedPacks,
+                            onPacksSelected: (value) => setState(() {
+                              _selectedPacks = value;
+                              if (_background != null &&
+                                  !_selectedPacks!.contains(
+                                    _background!.namespace,
+                                  )) {
+                                _background = null;
+                              }
+                            }),
+                          ),
+                          ListView(
+                            children: [
+                              ListTile(
+                                title: Text(
+                                  AppLocalizations.of(context).background,
+                                ),
+                                subtitle: _background == null
+                                    ? null
+                                    : Text(_background!.item.name),
+                                onTap: _showBackgroundPicker,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ]),
+                ],
+              ),
               Material(
                 type: MaterialType.transparency,
                 child: StreamBuilder(
@@ -165,28 +172,36 @@ class _CreateDialogState extends State<CreateDialog>
                             builder: defaultMenuButton(),
                             menuChildren: [
                               MenuItemButton(
-                                leadingIcon:
-                                    const Icon(PhosphorIconsLight.export),
-                                child:
-                                    Text(AppLocalizations.of(context).export),
+                                leadingIcon: const Icon(
+                                  PhosphorIconsLight.export,
+                                ),
+                                child: Text(
+                                  AppLocalizations.of(context).export,
+                                ),
                                 onPressed: () => exportData(
-                                    context, entry.data!, entry.fileName),
+                                  context,
+                                  entry.data!,
+                                  entry.fileName,
+                                ),
                               ),
                               MenuItemButton(
-                                leadingIcon:
-                                    const Icon(PhosphorIconsLight.trash),
-                                child:
-                                    Text(AppLocalizations.of(context).delete),
+                                leadingIcon: const Icon(
+                                  PhosphorIconsLight.trash,
+                                ),
+                                child: Text(
+                                  AppLocalizations.of(context).delete,
+                                ),
                                 onPressed: () async {
                                   await _templateSystem.deleteFile(entry.path);
                                   _reloadTemplates();
                                 },
-                              )
+                              ),
                             ],
                           ),
                           selected: _selectedTemplate == name,
                           onTap: () => setState(
-                              () => _selectedTemplate = entry.fileName),
+                            () => _selectedTemplate = entry.fileName,
+                          ),
                         );
                       },
                     );
@@ -200,8 +215,10 @@ class _CreateDialogState extends State<CreateDialog>
     );
     final details = ListView(
       children: [
-        Text(AppLocalizations.of(context).details,
-            style: Theme.of(context).textTheme.headlineMedium),
+        Text(
+          AppLocalizations.of(context).details,
+          style: Theme.of(context).textTheme.headlineMedium,
+        ),
         const SizedBox(height: 16),
         TextFormField(
           decoration: InputDecoration(
@@ -236,10 +253,7 @@ class _CreateDialogState extends State<CreateDialog>
         children: [
           PageView(
             controller: _pageController,
-            children: [
-              selections,
-              details,
-            ],
+            children: [selections, details],
             onPageChanged: (value) =>
                 setState(() => _infoView = value.toInt() == 1),
           ),
@@ -251,15 +265,13 @@ class _CreateDialogState extends State<CreateDialog>
               const SizedBox(width: 16),
               Expanded(child: details),
             ],
-          )
+          ),
         ],
       ),
       headerActions: [
         IconButton(
-          onPressed: () => importFile(
-            context,
-            _fileSystem,
-          ).then((_) => _reloadTemplates()),
+          onPressed: () =>
+              importFile(context, _fileSystem).then((_) => _reloadTemplates()),
           tooltip: AppLocalizations.of(context).import,
           icon: const Icon(PhosphorIconsLight.arrowSquareIn),
         ),
@@ -295,11 +307,12 @@ class _CreateDialogState extends State<CreateDialog>
               final description = _descriptionController.text;
               var template =
                   _selectedTemplate == null || _tabController.index == 0
-                      ? null
-                      : await _templateSystem.getFile(_selectedTemplate!);
+                  ? null
+                  : await _templateSystem.getFile(_selectedTemplate!);
               template ??= SetonixData.empty().setInfo(
                 GameInfo(
-                  packs: _selectedPacks ??
+                  packs:
+                      _selectedPacks ??
                       (await _packsFuture).map((e) => e.identifier).toList(),
                 ),
               );
@@ -311,9 +324,7 @@ class _CreateDialogState extends State<CreateDialog>
                       type: FileType.game,
                     ),
                   )
-                  .setTable(GameTable(
-                    background: _background?.location,
-                  ));
+                  .setTable(GameTable(background: _background?.location));
               await _worldSystem.createFile(name, template);
 
               if (context.mounted) {
@@ -323,14 +334,15 @@ class _CreateDialogState extends State<CreateDialog>
             label: Text(LeapLocalizations.of(context).create),
             icon: const Icon(PhosphorIconsLight.plus),
           ),
-        ]
+        ],
       ],
     );
   }
 
   Future<void> _showBackgroundPicker() async {
     List<PackItem<BackgroundDefinition>> backgrounds = [];
-    final packs = _selectedPacks ??
+    final packs =
+        _selectedPacks ??
         (await _packsFuture).map((e) => e.identifier).toList();
     for (final name in packs) {
       final pack = await _fileSystem.getPack(name);
@@ -345,23 +357,25 @@ class _CreateDialogState extends State<CreateDialog>
       childrenBuilder: (context) => backgrounds
           .sorted((a, b) => b.item.priority.compareTo(a.item.priority))
           .map((entry) {
-        final translations = entry.pack.getTranslationsStore(
-            getLocale: () => Localizations.localeOf(context).languageCode);
-        final translation = translations.getBackgroundTranslation(entry.id);
-        return ListTile(
-          title: Text(translation.name),
-          subtitle: translation.description == null
-              ? null
-              : Text(translation.description!),
-          onTap: () {
-            setState(() {
-              _background = entry.withItem(translation);
-            });
-            Navigator.of(context).pop();
-          },
-          selected: _background?.location == entry.location,
-        );
-      }).toList(),
+            final translations = entry.pack.getTranslationsStore(
+              getLocale: () => Localizations.localeOf(context).languageCode,
+            );
+            final translation = translations.getBackgroundTranslation(entry.id);
+            return ListTile(
+              title: Text(translation.name),
+              subtitle: translation.description == null
+                  ? null
+                  : Text(translation.description!),
+              onTap: () {
+                setState(() {
+                  _background = entry.withItem(translation);
+                });
+                Navigator.of(context).pop();
+              },
+              selected: _background?.location == entry.location,
+            );
+          })
+          .toList(),
     );
   }
 }
@@ -380,96 +394,104 @@ class _CustomCreateView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Iterable<SetonixFile>>(
-        future: packsFuture,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          final allPacks = snapshot.data!.toList();
-          final addedPacks = selectedPacksId
-                  ?.map((e) => allPacks
-                      .firstWhereOrNull((element) => element.identifier == e))
-                  .nonNulls
-                  .toList() ??
-              allPacks;
-          final notAdded = allPacks
-              .where((e) => !(selectedPacksId?.contains(e.identifier) ?? true))
-              .toList();
+      future: packsFuture,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        final allPacks = snapshot.data!.toList();
+        final addedPacks =
+            selectedPacksId
+                ?.map(
+                  (e) => allPacks.firstWhereOrNull(
+                    (element) => element.identifier == e,
+                  ),
+                )
+                .nonNulls
+                .toList() ??
+            allPacks;
+        final notAdded = allPacks
+            .where((e) => !(selectedPacksId?.contains(e.identifier) ?? true))
+            .toList();
 
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                child: ReorderableListView.builder(
-                  itemCount: addedPacks.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    final item = addedPacks[index];
-                    final id = item.identifier;
-                    final pack = item.load();
-                    return ListTile(
-                      title: Text(pack.getMetadata()?.name ??
-                          AppLocalizations.of(context).unnamed),
-                      subtitle: Text(id),
-                      key: ObjectKey(id),
-                      leading: IconButton.outlined(
-                        icon: const Icon(PhosphorIconsLight.minus),
-                        onPressed: () {
-                          final newSelected = addedPacks
-                              .map((e) => e.identifier)
-                              .where((e) => e != pack.identifier)
-                              .toList();
-                          onPacksSelected(newSelected);
-                        },
-                      ),
-                    );
-                  },
-                  onReorder: (int oldIndex, int newIndex) {
-                    if (oldIndex < newIndex) {
-                      newIndex -= 1;
-                    }
-                    final newSelected =
-                        addedPacks.map((e) => e.identifier).toList();
-                    final item = newSelected.removeAt(oldIndex);
-                    newSelected.insert(newIndex, item);
-                    onPacksSelected(newSelected);
-                  },
-                ),
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: ReorderableListView.builder(
+                itemCount: addedPacks.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  final item = addedPacks[index];
+                  final id = item.identifier;
+                  final pack = item.load();
+                  return ListTile(
+                    title: Text(
+                      pack.getMetadata()?.name ??
+                          AppLocalizations.of(context).unnamed,
+                    ),
+                    subtitle: Text(id),
+                    key: ObjectKey(id),
+                    leading: IconButton.outlined(
+                      icon: const Icon(PhosphorIconsLight.minus),
+                      onPressed: () {
+                        final newSelected = addedPacks
+                            .map((e) => e.identifier)
+                            .where((e) => e != pack.identifier)
+                            .toList();
+                        onPacksSelected(newSelected);
+                      },
+                    ),
+                  );
+                },
+                onReorder: (int oldIndex, int newIndex) {
+                  if (oldIndex < newIndex) {
+                    newIndex -= 1;
+                  }
+                  final newSelected = addedPacks
+                      .map((e) => e.identifier)
+                      .toList();
+                  final item = newSelected.removeAt(oldIndex);
+                  newSelected.insert(newIndex, item);
+                  onPacksSelected(newSelected);
+                },
               ),
-              SizedBox(
-                height: 42,
-                child: ElevatedButton.icon(
-                  icon: const Icon(PhosphorIconsLight.plus),
-                  label: Text(AppLocalizations.of(context).addPack),
-                  onPressed: notAdded.isEmpty
-                      ? null
-                      : () {
-                          showLeapBottomSheet(
-                            context: context,
-                            titleBuilder: (context) =>
-                                Text(AppLocalizations.of(context).addPack),
-                            childrenBuilder: (context) => notAdded.map((e) {
-                              return ListTile(
-                                title: Text(e.load().getMetadata()?.name ??
-                                    AppLocalizations.of(context).unnamed),
-                                subtitle: Text(e.identifier),
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                  onPacksSelected([
-                                    ...?selectedPacksId,
-                                    e.identifier,
-                                  ]);
-                                },
-                              );
-                            }).toList(),
-                          );
-                        },
-                ),
+            ),
+            SizedBox(
+              height: 42,
+              child: ElevatedButton.icon(
+                icon: const Icon(PhosphorIconsLight.plus),
+                label: Text(AppLocalizations.of(context).addPack),
+                onPressed: notAdded.isEmpty
+                    ? null
+                    : () {
+                        showLeapBottomSheet(
+                          context: context,
+                          titleBuilder: (context) =>
+                              Text(AppLocalizations.of(context).addPack),
+                          childrenBuilder: (context) => notAdded.map((e) {
+                            return ListTile(
+                              title: Text(
+                                e.load().getMetadata()?.name ??
+                                    AppLocalizations.of(context).unnamed,
+                              ),
+                              subtitle: Text(e.identifier),
+                              onTap: () {
+                                Navigator.of(context).pop();
+                                onPacksSelected([
+                                  ...?selectedPacksId,
+                                  e.identifier,
+                                ]);
+                              },
+                            );
+                          }).toList(),
+                        );
+                      },
               ),
-            ],
-          );
-        });
+            ),
+          ],
+        );
+      },
+    );
   }
 }

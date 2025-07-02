@@ -4,7 +4,9 @@
 
 | Version | Supported |                                                                                                                  |
 | ------- | --------- | ---------------------------------------------------------------------------------------------------------------- |
-| 0.3.0   | :warning: | [Docs](https://setonix.world/docs/v1/intro) [Release](https://github.com/LinwoodDev/Setonix/releases/tag/v0.3.0) |
+| 0.5.0   | :warning: | [Docs](https://setonix.world/docs/v1/intro) [Release](https://github.com/LinwoodDev/Setonix/releases/tag/v0.5.0) |
+| 0.4.1   | :x:       | [Docs](https://setonix.world/docs/v1/intro) [Release](https://github.com/LinwoodDev/Setonix/releases/tag/v0.4.1) |
+| 0.3.0   | :x:       | [Docs](https://setonix.world/docs/v1/intro) [Release](https://github.com/LinwoodDev/Setonix/releases/tag/v0.3.0) |
 | 0.2.0   | :x:       | [Docs](https://setonix.world/docs/v1/intro) [Release](https://github.com/LinwoodDev/Setonix/releases/tag/v0.2.0) |
 | 0.1.1   | :x:       | [Docs](https://setonix.world/docs/v1/intro) [Release](https://github.com/LinwoodDev/Setonix/releases/tag/v0.1.1) |
 

@@ -270,5 +270,11 @@
   "confirm": "Confirm",
   "showIntro": "Show intro",
   "highlighted": "Highlighted",
-  "link": "Link"
+  "link": "Link",
+  "kicked": "You have been kicked from the server.",
+  "banned": "You have been banned from the server.",
+  "notWhitelisted": "You are not whitelisted on the server.",
+  "notRegistered": "You are not registered on the server.",
+  "challengeFailed": "Account challenge failed. Please try again later.",
+  "pleaseLink": "Please link your account to the server using the provided link."
 }

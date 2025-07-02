@@ -67,14 +67,19 @@ class FiguresEditorPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
           final name = await showDialog<String>(
-              context: context,
-              builder: (context) => NameDialog(
-                    validator: defaultNameValidator(
-                        context, cubit.state.getFigures().toList()),
-                  ));
+            context: context,
+            builder: (context) => NameDialog(
+              validator: defaultNameValidator(
+                context,
+                cubit.state.getFigures().toList(),
+              ),
+            ),
+          );
           if (name == null) return;
           cubit.setFigure(
-              name, FigureDefinition(back: FigureBackDefinition(texture: '')));
+            name,
+            FigureDefinition(back: FigureBackDefinition(texture: '')),
+          );
         },
         label: Text(LeapLocalizations.of(context).create),
         icon: const Icon(PhosphorIconsLight.plus),
@@ -151,8 +156,10 @@ class _FigureEditorDialogState extends State<FigureEditorDialog> {
                         initialValue: _translation.figures[widget.name]?.name,
                         onChanged: (value) {
                           final translation = FigureTranslation(name: value);
-                          _translation = _translation.copyWith.figures
-                              .put(widget.name, translation);
+                          _translation = _translation.copyWith.figures.put(
+                            widget.name,
+                            translation,
+                          );
                         },
                       ),
                       CheckboxListTile(
@@ -170,18 +177,20 @@ class _FigureEditorDialogState extends State<FigureEditorDialog> {
                   ),
                   SingleChildScrollView(
                     child: VisualEditingView(
-                        value: value.back,
-                        onChanged: (v) {
-                          setState(() {
-                            _value = value.copyWith(back: v);
-                          });
-                        }),
+                      value: value.back,
+                      onChanged: (v) {
+                        setState(() {
+                          _value = value.copyWith(back: v);
+                        });
+                      },
+                    ),
                   ),
                   Stack(
                     children: [
                       variations.isEmpty
                           ? Center(
-                              child: Text(AppLocalizations.of(context).noData))
+                              child: Text(AppLocalizations.of(context).noData),
+                            )
                           : ListView.builder(
                               itemCount: variations.length,
                               itemBuilder: (context, index) {
@@ -192,15 +201,17 @@ class _FigureEditorDialogState extends State<FigureEditorDialog> {
                                     final bloc = context.read<EditorCubit>();
                                     final result =
                                         await showDialog<VariationDefinition>(
-                                      context: context,
-                                      builder: (context) => BlocProvider.value(
-                                        value: bloc,
-                                        child: _FigureVariationEditorDialog(
-                                          name: variation.key,
-                                          value: variation.value,
-                                        ),
-                                      ),
-                                    );
+                                          context: context,
+                                          builder: (context) =>
+                                              BlocProvider.value(
+                                                value: bloc,
+                                                child:
+                                                    _FigureVariationEditorDialog(
+                                                      name: variation.key,
+                                                      value: variation.value,
+                                                    ),
+                                              ),
+                                        );
                                     if (result == null) return;
                                     setState(() {
                                       _value = value.copyWith.variations.put(
@@ -264,9 +275,9 @@ class _FigureEditorDialogState extends State<FigureEditorDialog> {
             onPressed: () {
               context.read<EditorCubit>().setFigure(widget.name, value);
               context.read<EditorCubit>().setTranslation(
-                    _translation,
-                    widget.name,
-                  );
+                _translation,
+                widget.name,
+              );
               Navigator.of(context).pop();
             },
             child: Text(AppLocalizations.of(context).save),
@@ -281,10 +292,7 @@ class _FigureVariationEditorDialog extends StatefulWidget {
   final String name;
   final VariationDefinition value;
 
-  const _FigureVariationEditorDialog({
-    required this.name,
-    required this.value,
-  });
+  const _FigureVariationEditorDialog({required this.name, required this.value});
 
   @override
   State<_FigureVariationEditorDialog> createState() =>
@@ -306,7 +314,9 @@ class __FigureVariationEditorDialogState
     return ResponsiveAlertDialog(
       title: Text(widget.name),
       constraints: const BoxConstraints(
-          maxWidth: LeapBreakpoints.compact, maxHeight: 600),
+        maxWidth: LeapBreakpoints.compact,
+        maxHeight: 600,
+      ),
       content: ListView(
         shrinkWrap: true,
         children: [

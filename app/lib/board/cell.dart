@@ -40,10 +40,7 @@ class GameCell extends PositionComponent
   late final BoardGrid grid;
   List<Effect>? _effects;
 
-  GameCell({
-    super.size,
-    super.position,
-  });
+  GameCell({super.size, super.position});
 
   void _updateEffects(List<Effect> effects) {
     _effects = effects;
@@ -89,13 +86,8 @@ class GameCell extends PositionComponent
 
   bool get isSelected => isMounted && bloc.state.selectedCell == toDefinition();
 
-  void _fadeIn() => _updateEffects([
-        OpacityEffect.fadeIn(
-          EffectController(
-            duration: 0.2,
-          ),
-        )
-      ]);
+  void _fadeIn() =>
+      _updateEffects([OpacityEffect.fadeIn(EffectController(duration: 0.2))]);
   @override
   void onHoverEnter() {
     if (!isSelected) {
@@ -106,13 +98,8 @@ class GameCell extends PositionComponent
   @override
   void onDragOver(HandItem handItem) => _fadeIn();
 
-  void _fadeOut() => _updateEffects([
-        OpacityEffect.fadeOut(
-          EffectController(
-            duration: 0.2,
-          ),
-        )
-      ]);
+  void _fadeOut() =>
+      _updateEffects([OpacityEffect.fadeOut(EffectController(duration: 0.2))]);
 
   @override
   void onHoverExit() {
@@ -149,14 +136,18 @@ class GameCell extends PositionComponent
   }
 
   bool isClaimed(ClientWorldState state) => state.info.teams.entries.any(
-      (entry) => entry.value.claimedCells.contains(toGlobalDefinition(state)));
+    (entry) => entry.value.claimedCells.contains(toGlobalDefinition(state)),
+  );
 
   bool isAllowed(ClientWorldState state) => state.teamMembers.entries
       .where((entry) => entry.value.contains(state.id))
-      .any((entry) =>
-          state.info.teams[entry.key]?.claimedCells
-              .contains(toGlobalDefinition(state)) ??
-          false);
+      .any(
+        (entry) =>
+            state.info.teams[entry.key]?.claimedCells.contains(
+              toGlobalDefinition(state),
+            ) ??
+            false,
+      );
 
   GameObject? _currentTop;
   BoardTile? _currentTile;
@@ -167,37 +158,23 @@ class GameCell extends PositionComponent
     final selected = state.selectedCell == toDefinition();
     final color = isClaimed(state)
         ? isAllowed(state)
-            ? state.colorScheme.secondary
-            : state.colorScheme.error
+              ? state.colorScheme.secondary
+              : state.colorScheme.error
         : state.colorScheme.primary;
     if (selected) {
       _updateEffects([
-        OpacityEffect.fadeIn(
-          EffectController(
-            duration: 0.2,
-          ),
-        ),
-        ColorEffect(
-          color,
-          EffectController(
-            duration: 0.2,
-          ),
-        ),
+        OpacityEffect.fadeIn(EffectController(duration: 0.2)),
+        ColorEffect(color, EffectController(duration: 0.2)),
       ]);
     } else {
       _updateEffects([
-        OpacityEffect.fadeOut(
-          EffectController(
-            duration: 0.2,
-          ),
-        ),
+        OpacityEffect.fadeOut(EffectController(duration: 0.2)),
         ColorEffect(
-            color,
-            EffectController(
-              duration: 0.2,
-            ),
-            opacityFrom: 1,
-            opacityTo: 0),
+          color,
+          EffectController(duration: 0.2),
+          opacityFrom: 1,
+          opacityTo: 0,
+        ),
       ]);
     }
   }
@@ -224,7 +201,7 @@ class GameCell extends PositionComponent
       );
       component.sprite =
           await state.assetManager.loadBoardSprite(tile.asset, tile.tile) ??
-              game.blankSprite;
+          game.blankSprite;
       if (!component.isMounted) {
         add(component);
       }
@@ -237,11 +214,13 @@ class GameCell extends PositionComponent
         paint: paint,
         priority: 1,
       );
-      component.sprite = await state.assetManager.loadFigureSprite(
-              top.asset,
-              top.hidden || !state.isCellVisible(toGlobalDefinition(state))
-                  ? null
-                  : top.variation) ??
+      component.sprite =
+          await state.assetManager.loadFigureSprite(
+            top.asset,
+            top.hidden || !state.isCellVisible(toGlobalDefinition(state))
+                ? null
+                : top.variation,
+          ) ??
           game.blankSprite;
       if (!component.isMounted) {
         add(component);
@@ -266,128 +245,136 @@ class GameCell extends PositionComponent
     final local = global.position;
     final cell = state.table.getCell(local);
     if (!state.isCellVisible(global)) return false;
-    return cell.objects.any((object) =>
-        (assetManager.getFigure(object.asset)?.rollable ?? false) &&
-        state.isCellVisible(global));
+    return cell.objects.any(
+      (object) =>
+          (assetManager.getFigure(object.asset)?.rollable ?? false) &&
+          state.isCellVisible(global),
+    );
   }
 
   @override
   void onContextMenu(Vector2 position) {
     game.showContextMenu(
-        contextMenuBuilder: (context, onClose) =>
-            AdaptiveTextSelectionToolbar.buttonItems(
-                buttonItems: [
-                  ContextMenuButtonItem(
-                    label: AppLocalizations.of(context).toggleHide,
-                    onPressed: () {
-                      bloc.process(
-                          CellHideChanged(toGlobalDefinition(bloc.state)));
-                      onClose();
-                    },
-                  ),
-                  ContextMenuButtonItem(
-                    label: AppLocalizations.of(context).shuffle,
-                    onPressed: () {
-                      bloc.process(
-                          ShuffleCellRequest(toGlobalDefinition(bloc.state)));
-                      onClose();
-                    },
-                  ),
-                  if (anyRollable(bloc.state))
-                    ContextMenuButtonItem(
-                      label: AppLocalizations.of(context).roll,
-                      onPressed: () {
-                        bloc.process(
-                            CellRollRequest(toGlobalDefinition(bloc.state)));
-                        onClose();
-                      },
-                    ),
-                  ContextMenuButtonItem(
-                    label: AppLocalizations.of(context).remove,
-                    onPressed: () {
-                      bloc.process(
-                          ObjectsRemoved(toGlobalDefinition(bloc.state)));
-                      onClose();
-                    },
-                  ),
-                  ContextMenuButtonItem(
-                    label: AppLocalizations.of(context).teams,
-                    onPressed: () {
-                      onClose();
-                      showLeapBottomSheet(
-                        context: context,
-                        titleBuilder: (context) => Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(AppLocalizations.of(context).teams),
-                            Text(toDefinition().toDisplayString(),
-                                style: Theme.of(context).textTheme.bodyLarge),
-                          ],
+      contextMenuBuilder: (context, onClose) =>
+          AdaptiveTextSelectionToolbar.buttonItems(
+            buttonItems: [
+              ContextMenuButtonItem(
+                label: AppLocalizations.of(context).toggleHide,
+                onPressed: () {
+                  bloc.process(CellHideChanged(toGlobalDefinition(bloc.state)));
+                  onClose();
+                },
+              ),
+              ContextMenuButtonItem(
+                label: AppLocalizations.of(context).shuffle,
+                onPressed: () {
+                  bloc.process(
+                    ShuffleCellRequest(toGlobalDefinition(bloc.state)),
+                  );
+                  onClose();
+                },
+              ),
+              if (anyRollable(bloc.state))
+                ContextMenuButtonItem(
+                  label: AppLocalizations.of(context).roll,
+                  onPressed: () {
+                    bloc.process(
+                      CellRollRequest(toGlobalDefinition(bloc.state)),
+                    );
+                    onClose();
+                  },
+                ),
+              ContextMenuButtonItem(
+                label: AppLocalizations.of(context).remove,
+                onPressed: () {
+                  bloc.process(ObjectsRemoved(toGlobalDefinition(bloc.state)));
+                  onClose();
+                },
+              ),
+              ContextMenuButtonItem(
+                label: AppLocalizations.of(context).teams,
+                onPressed: () {
+                  onClose();
+                  showLeapBottomSheet(
+                    context: context,
+                    titleBuilder: (context) => Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(AppLocalizations.of(context).teams),
+                        Text(
+                          toDefinition().toDisplayString(),
+                          style: Theme.of(context).textTheme.bodyLarge,
                         ),
-                        childrenBuilder: (context) => [
-                          BlocBuilder<WorldBloc, ClientWorldState>(
-                            bloc: bloc,
-                            buildWhen: (previous, current) =>
-                                previous.info.teams != current.info.teams,
-                            builder: (context, state) {
-                              final teams = state.info.teams.entries.toList();
-                              if (teams.isEmpty) {
-                                return Center(
-                                  child: Text(
-                                    AppLocalizations.of(context).noTeams,
+                      ],
+                    ),
+                    childrenBuilder: (context) => [
+                      BlocBuilder<WorldBloc, ClientWorldState>(
+                        bloc: bloc,
+                        buildWhen: (previous, current) =>
+                            previous.info.teams != current.info.teams,
+                        builder: (context, state) {
+                          final teams = state.info.teams.entries.toList();
+                          if (teams.isEmpty) {
+                            return Center(
+                              child: Text(AppLocalizations.of(context).noTeams),
+                            );
+                          }
+                          final anyClaimed = teams.any(
+                            (entry) => entry.value.claimedCells.contains(
+                              toGlobalDefinition(state),
+                            ),
+                          );
+                          return Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                anyClaimed
+                                    ? AppLocalizations.of(context).claimedCell
+                                    : AppLocalizations.of(context).publicCell,
+                              ),
+                              ...teams.map((entry) {
+                                final selected = entry.value.claimedCells
+                                    .contains(toGlobalDefinition(state));
+                                return ListTile(
+                                  title: Text(entry.key),
+                                  leading: ColorButton(
+                                    color:
+                                        entry.value.color?.color ??
+                                        Colors.transparent,
+                                    size: 24,
+                                  ),
+                                  selected: selected,
+                                  onTap: () => bloc.process(
+                                    TeamChanged(
+                                      entry.key,
+                                      entry.value.copyWith(
+                                        claimedCells: selected
+                                            ? entry.value.claimedCells
+                                                  .difference({
+                                                    toGlobalDefinition(state),
+                                                  })
+                                            : entry.value.claimedCells.union({
+                                                toGlobalDefinition(state),
+                                              }),
+                                      ),
+                                    ),
                                   ),
                                 );
-                              }
-                              final anyClaimed = teams.any((entry) => entry
-                                  .value.claimedCells
-                                  .contains(toGlobalDefinition(state)));
-                              return Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    anyClaimed
-                                        ? AppLocalizations.of(context)
-                                            .claimedCell
-                                        : AppLocalizations.of(context)
-                                            .publicCell,
-                                  ),
-                                  ...teams.map((entry) {
-                                    final selected = entry.value.claimedCells
-                                        .contains(toGlobalDefinition(state));
-                                    return ListTile(
-                                      title: Text(entry.key),
-                                      leading: ColorButton(
-                                        color: entry.value.color?.color ??
-                                            Colors.transparent,
-                                        size: 24,
-                                      ),
-                                      selected: selected,
-                                      onTap: () => bloc.process(TeamChanged(
-                                          entry.key,
-                                          entry.value.copyWith(
-                                            claimedCells: selected
-                                                ? entry.value.claimedCells
-                                                    .difference({
-                                                    toGlobalDefinition(state)
-                                                  })
-                                                : entry.value.claimedCells
-                                                    .union({
-                                                    toGlobalDefinition(state)
-                                                  }),
-                                          ))),
-                                    );
-                                  }),
-                                ],
-                              );
-                            },
-                          )
-                        ],
-                      );
-                    },
-                  ),
-                ],
-                anchors: TextSelectionToolbarAnchors(
-                    primaryAnchor: position.toOffset())));
+                              }),
+                            ],
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ],
+            anchors: TextSelectionToolbarAnchors(
+              primaryAnchor: position.toOffset(),
+            ),
+          ),
+    );
   }
 
   @override

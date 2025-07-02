@@ -54,7 +54,8 @@ Future<void> main(List<String> args) async {
       providers: [
         BlocProvider.value(value: settingsCubit),
         BlocProvider.value(
-            value: WindowCubit(fullScreen: await isFullScreen())),
+          value: WindowCubit(fullScreen: await isFullScreen()),
+        ),
         RepositoryProvider.value(value: networkService),
         RepositoryProvider(create: (context) => SetonixFileSystem()),
       ],
@@ -65,10 +66,9 @@ Future<void> main(List<String> args) async {
 
 const kUnsupportedLanguages = [];
 
-List<Locale> getLocales() =>
-    List<Locale>.from(AppLocalizations.supportedLocales)
-        .where((l) => !kUnsupportedLanguages.contains(l.toString()))
-        .toList();
+List<Locale> getLocales() => List<Locale>.from(
+  AppLocalizations.supportedLocales,
+).where((l) => !kUnsupportedLanguages.contains(l.toString())).toList();
 
 class SetonixApp extends StatelessWidget {
   SetonixApp({super.key});
@@ -85,35 +85,44 @@ class SetonixApp extends StatelessWidget {
   Widget _buildApp(ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
     final virtualWindowFrameBuilder = VirtualWindowFrameInit();
     return BlocBuilder<SettingsCubit, SetonixSettings>(
-        buildWhen: (previous, current) =>
-            previous.design != current.design ||
-            previous.theme != current.theme ||
-            previous.locale != current.locale ||
-            previous.nativeTitleBar != current.nativeTitleBar ||
-            previous.highContrast != current.highContrast,
-        builder: (context, state) => MaterialApp.router(
-              debugShowCheckedModeBanner: false,
-              routerConfig: _router,
-              title: applicationName,
-              theme: getThemeData(
-                  state.design, false, lightDynamic, state.highContrast),
-              darkTheme: getThemeData(
-                  state.design, true, darkDynamic, state.highContrast),
-              themeMode: state.theme,
-              locale: state.localeTag.isEmpty ? null : Locale(state.localeTag),
-              localizationsDelegates: const [
-                ...AppLocalizations.localizationsDelegates,
-                LeapLocalizations.delegate,
-                LocaleNamesLocalizationsDelegate(),
-              ],
-              builder: (context, child) {
-                if (!state.nativeTitleBar) {
-                  child = virtualWindowFrameBuilder(context, child);
-                }
-                return child ?? Container();
-              },
-              supportedLocales: AppLocalizations.supportedLocales,
-            ));
+      buildWhen: (previous, current) =>
+          previous.design != current.design ||
+          previous.theme != current.theme ||
+          previous.locale != current.locale ||
+          previous.nativeTitleBar != current.nativeTitleBar ||
+          previous.highContrast != current.highContrast,
+      builder: (context, state) => MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        routerConfig: _router,
+        title: applicationName,
+        theme: getThemeData(
+          state.design,
+          false,
+          lightDynamic,
+          state.highContrast,
+        ),
+        darkTheme: getThemeData(
+          state.design,
+          true,
+          darkDynamic,
+          state.highContrast,
+        ),
+        themeMode: state.theme,
+        locale: state.localeTag.isEmpty ? null : Locale(state.localeTag),
+        localizationsDelegates: const [
+          ...AppLocalizations.localizationsDelegates,
+          LeapLocalizations.delegate,
+          LocaleNamesLocalizationsDelegate(),
+        ],
+        builder: (context, child) {
+          if (!state.nativeTitleBar) {
+            child = virtualWindowFrameBuilder(context, child);
+          }
+          return child ?? Container();
+        },
+        supportedLocales: AppLocalizations.supportedLocales,
+      ),
+    );
   }
 
   final GoRouter _router = GoRouter(
@@ -125,9 +134,8 @@ class SetonixApp extends StatelessWidget {
           GoRoute(
             name: 'game',
             path: 'game/:name',
-            builder: (context, state) => GamePage(
-              name: state.pathParameters['name'],
-            ),
+            builder: (context, state) =>
+                GamePage(name: state.pathParameters['name']),
           ),
           ShellRoute(
             builder: (context, state, child) => EditorShell(
@@ -153,7 +161,7 @@ class SetonixApp extends StatelessWidget {
               address: state.uri.queryParameters['address'],
               secure:
                   bool.tryParse(state.uri.queryParameters['secure'] ?? '') ??
-                      true,
+                  true,
             ),
           ),
           GoRoute(

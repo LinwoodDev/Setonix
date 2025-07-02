@@ -9,16 +9,10 @@ import 'package:setonix_api/setonix_api.dart';
 part 'state.mapper.dart';
 
 @MappableEnum()
-enum WorldOperationMode {
-  figures,
-  boards,
-}
+enum WorldOperationMode { figures, boards }
 
 @MappableEnum()
-enum DrawerView {
-  chat,
-  notes,
-}
+enum DrawerView { chat, notes }
 
 @MappableClass()
 final class ClientWorldState with ClientWorldStateMappable {

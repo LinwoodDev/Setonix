@@ -20,9 +20,7 @@ import 'package:setonix/pages/packs/dialog.dart';
 import 'package:setonix_api/setonix_api.dart';
 
 class GameDrawer extends StatelessWidget {
-  const GameDrawer({
-    super.key,
-  });
+  const GameDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -54,10 +52,7 @@ class GameDrawer extends StatelessWidget {
                             style: theme.textTheme.headlineSmall,
                           ),
                           if (metadata.description.isNotEmpty)
-                            Text(
-                              metadata.description,
-                              maxLines: 5,
-                            ),
+                            Text(metadata.description, maxLines: 5),
                         ],
                       ),
                     ),
@@ -72,17 +67,18 @@ class GameDrawer extends StatelessWidget {
                             tooltip: AppLocalizations.of(context).editInfo,
                             onPressed: () async {
                               final newInfo = await showDialog<FileMetadata>(
-                                  context: context,
-                                  builder: (context) => BlocProvider.value(
-                                        value: bloc,
-                                        child: EditInfoDialog(
-                                          value: metadata,
-                                        ),
-                                      ));
+                                context: context,
+                                builder: (context) => BlocProvider.value(
+                                  value: bloc,
+                                  child: EditInfoDialog(value: metadata),
+                                ),
+                              );
                               if (newInfo == null) return;
-                              bloc.process(MetadataChanged(newInfo.copyWith(
-                                type: metadata.type,
-                              )));
+                              bloc.process(
+                                MetadataChanged(
+                                  newInfo.copyWith(type: metadata.type),
+                                ),
+                              );
                             },
                           ),
                         ],
@@ -120,45 +116,45 @@ class GameDrawer extends StatelessWidget {
                       return const SizedBox.shrink();
                     }
                     return FutureBuilder<String>(
-                        future: address,
-                        builder: (context, snapshot) {
-                          return Card.filled(
-                            clipBehavior: Clip.antiAlias,
-                            child: InkWell(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: [
-                                    Text(
-                                      AppLocalizations.of(context).address,
-                                      textAlign: TextAlign.center,
-                                      style: theme.textTheme.headlineSmall,
-                                    ),
-                                    if (snapshot.hasData)
-                                      Text(
-                                        snapshot.data!,
-                                        maxLines: 5,
-                                      ),
-                                  ],
-                                ),
+                      future: address,
+                      builder: (context, snapshot) {
+                        return Card.filled(
+                          clipBehavior: Clip.antiAlias,
+                          child: InkWell(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Text(
+                                    AppLocalizations.of(context).address,
+                                    textAlign: TextAlign.center,
+                                    style: theme.textTheme.headlineSmall,
+                                  ),
+                                  if (snapshot.hasData)
+                                    Text(snapshot.data!, maxLines: 5),
+                                ],
                               ),
-                              onTap: () {
-                                if (snapshot.hasData) {
-                                  Clipboard.setData(
-                                      ClipboardData(text: snapshot.data!));
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(SnackBar(
-                                    content: Text(LeapLocalizations.of(context)
-                                        .copyMessage),
-                                  ));
-                                }
-                              },
                             ),
-                          );
-                        });
+                            onTap: () {
+                              if (snapshot.hasData) {
+                                Clipboard.setData(
+                                  ClipboardData(text: snapshot.data!),
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      LeapLocalizations.of(context).copyMessage,
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                          ),
+                        );
+                      },
+                    );
                   },
                 );
               },
@@ -178,9 +174,9 @@ class GameDrawer extends StatelessWidget {
                   title: Text(AppLocalizations.of(context).switchCellOnMove),
                   secondary: const Icon(PhosphorIconsLight.selection),
                   onChanged: (value) {
-                    context
-                        .read<WorldBloc>()
-                        .process(SwitchCellOnMoveChanged(value));
+                    context.read<WorldBloc>().process(
+                      SwitchCellOnMoveChanged(value),
+                    );
                   },
                 );
               },
@@ -189,12 +185,8 @@ class GameDrawer extends StatelessWidget {
               buildWhen: (previous, current) => previous.zoom != current.zoom,
               builder: (context, state) => ListTile(
                 leading: const Icon(PhosphorIconsLight.magnifyingGlass),
-                title: Text(
-                  AppLocalizations.of(context).zoom,
-                ),
-                subtitle: Text(
-                  '${(state.zoom * 100).toStringAsFixed(0)}%',
-                ),
+                title: Text(AppLocalizations.of(context).zoom),
+                subtitle: Text('${(state.zoom * 100).toStringAsFixed(0)}%'),
                 onTap: () {
                   final settingsCubit = context.read<SettingsCubit>();
                   showLeapBottomSheet(
@@ -237,32 +229,34 @@ class GameDrawer extends StatelessWidget {
               ),
             ),
             BlocBuilder<MultiplayerCubit, MultiplayerState>(
-                builder: (context, state) {
-              if (state.isClient) return SizedBox.shrink();
-              return ListTile(
-                leading: const Icon(PhosphorIconsLight.package),
-                title: Text(AppLocalizations.of(context).packs),
-                onTap: () {
-                  final bloc = context.read<WorldBloc>();
-                  showDialog(
-                    builder: (context) => PacksDialog(
-                      bloc: bloc,
-                    ),
-                    context: context,
-                  );
-                },
-              );
-            }),
+              builder: (context, state) {
+                if (state.isClient) return SizedBox.shrink();
+                return ListTile(
+                  leading: const Icon(PhosphorIconsLight.package),
+                  title: Text(AppLocalizations.of(context).packs),
+                  onTap: () {
+                    final bloc = context.read<WorldBloc>();
+                    showDialog(
+                      builder: (context) => PacksDialog(bloc: bloc),
+                      context: context,
+                    );
+                  },
+                );
+              },
+            ),
             BlocBuilder<WorldBloc, ClientWorldState>(
               buildWhen: (previous, current) =>
                   previous.tableName != current.tableName,
               builder: (context, state) => ListTile(
-                  leading: const Icon(PhosphorIconsLight.gridFour),
-                  title: Text(AppLocalizations.of(context).table),
-                  subtitle: Text(state.tableName.isEmpty
+                leading: const Icon(PhosphorIconsLight.gridFour),
+                title: Text(AppLocalizations.of(context).table),
+                subtitle: Text(
+                  state.tableName.isEmpty
                       ? AppLocalizations.of(context).defaultTable
-                      : state.tableName),
-                  onTap: () => _showTableDialog(context, state)),
+                      : state.tableName,
+                ),
+                onTap: () => _showTableDialog(context, state),
+              ),
             ),
             BlocBuilder<WorldBloc, ClientWorldState>(
               buildWhen: (previous, current) =>
@@ -272,40 +266,44 @@ class GameDrawer extends StatelessWidget {
                 final assetManager = state.assetManager;
                 final background = state.table.background;
                 return ListTile(
-                    leading: const Icon(PhosphorIconsLight.image),
-                    title: Text(AppLocalizations.of(context).background),
-                    subtitle: background == null
-                        ? null
-                        : Text(assetManager
-                            .getTranslations(background.namespace)
-                            .getBackgroundTranslation(background.id)
-                            .name),
-                    onTap: () => showLeapBottomSheet(
-                        context: context,
-                        titleBuilder: (context) =>
-                            Text(AppLocalizations.of(context).background),
-                        childrenBuilder: (context) => bloc.state.packs
-                                .expand(
-                                    (e) => e.value.getBackgroundItems(e.key))
-                                .sorted((a, b) =>
-                                    b.item.priority.compareTo(a.item.priority))
-                                .map((entry) {
-                              final translation = assetManager
-                                  .getTranslations(entry.namespace)
-                                  .getBackgroundTranslation(entry.id);
-                              return ListTile(
-                                title: Text(translation.name),
-                                subtitle: translation.description == null
-                                    ? null
-                                    : Text(translation.description!),
-                                onTap: () {
-                                  bloc.process(
-                                      BackgroundChanged(entry.location));
-                                  Navigator.of(context).pop();
-                                },
-                                selected: background == entry.location,
-                              );
-                            }).toList()));
+                  leading: const Icon(PhosphorIconsLight.image),
+                  title: Text(AppLocalizations.of(context).background),
+                  subtitle: background == null
+                      ? null
+                      : Text(
+                          assetManager
+                              .getTranslations(background.namespace)
+                              .getBackgroundTranslation(background.id)
+                              .name,
+                        ),
+                  onTap: () => showLeapBottomSheet(
+                    context: context,
+                    titleBuilder: (context) =>
+                        Text(AppLocalizations.of(context).background),
+                    childrenBuilder: (context) => bloc.state.packs
+                        .expand((e) => e.value.getBackgroundItems(e.key))
+                        .sorted(
+                          (a, b) => b.item.priority.compareTo(a.item.priority),
+                        )
+                        .map((entry) {
+                          final translation = assetManager
+                              .getTranslations(entry.namespace)
+                              .getBackgroundTranslation(entry.id);
+                          return ListTile(
+                            title: Text(translation.name),
+                            subtitle: translation.description == null
+                                ? null
+                                : Text(translation.description!),
+                            onTap: () {
+                              bloc.process(BackgroundChanged(entry.location));
+                              Navigator.of(context).pop();
+                            },
+                            selected: background == entry.location,
+                          );
+                        })
+                        .toList(),
+                  ),
+                );
               },
             ),
             ListTile(
@@ -321,9 +319,12 @@ class GameDrawer extends StatelessWidget {
                     IconButton(
                       icon: const Icon(PhosphorIconsLight.plusCircle),
                       onPressed: () => showDialog(
-                          context: context,
-                          builder: (context) => BlocProvider.value(
-                              value: bloc, child: const TeamDialog())),
+                        context: context,
+                        builder: (context) => BlocProvider.value(
+                          value: bloc,
+                          child: const TeamDialog(),
+                        ),
+                      ),
                     ),
                   ],
                   childrenBuilder: (context) => [
@@ -335,8 +336,8 @@ class GameDrawer extends StatelessWidget {
                       builder: (context, state) {
                         if (state.info.teams.isEmpty) {
                           return Center(
-                              child:
-                                  Text(AppLocalizations.of(context).noTeams));
+                            child: Text(AppLocalizations.of(context).noTeams),
+                          );
                         }
                         return Column(
                           mainAxisSize: MainAxisSize.min,
@@ -346,7 +347,7 @@ class GameDrawer extends StatelessWidget {
                             final color = team.color;
                             final selected =
                                 state.teamMembers[name]?.contains(state.id) ??
-                                    false;
+                                false;
                             return ListTile(
                               title: Text(entry.key),
                               leading: ColorButton(
@@ -358,27 +359,33 @@ class GameDrawer extends StatelessWidget {
                                 builder: defaultMenuButton(),
                                 menuChildren: [
                                   MenuItemButton(
-                                    leadingIcon:
-                                        const Icon(PhosphorIconsLight.pencil),
-                                    child:
-                                        Text(AppLocalizations.of(context).edit),
+                                    leadingIcon: const Icon(
+                                      PhosphorIconsLight.pencil,
+                                    ),
+                                    child: Text(
+                                      AppLocalizations.of(context).edit,
+                                    ),
                                     onPressed: () {
                                       showDialog(
                                         context: context,
                                         builder: (context) =>
                                             BlocProvider.value(
-                                          value: bloc,
-                                          child: TeamDialog(
-                                              team: name, data: team),
-                                        ),
+                                              value: bloc,
+                                              child: TeamDialog(
+                                                team: name,
+                                                data: team,
+                                              ),
+                                            ),
                                       );
                                     },
                                   ),
                                   MenuItemButton(
-                                    leadingIcon:
-                                        const Icon(PhosphorIconsLight.trash),
+                                    leadingIcon: const Icon(
+                                      PhosphorIconsLight.trash,
+                                    ),
                                     child: Text(
-                                        AppLocalizations.of(context).delete),
+                                      AppLocalizations.of(context).delete,
+                                    ),
                                     onPressed: () {
                                       bloc.process(TeamRemoved(name));
                                     },
@@ -411,7 +418,9 @@ class GameDrawer extends StatelessWidget {
                 showDialog(
                   context: context,
                   builder: (context) => BlocProvider.value(
-                      value: multiplayer, child: const MultiplayerDialog()),
+                    value: multiplayer,
+                    child: const MultiplayerDialog(),
+                  ),
                 );
               },
             ),
@@ -419,9 +428,9 @@ class GameDrawer extends StatelessWidget {
               leading: const Icon(PhosphorIconsLight.chat),
               title: Text(AppLocalizations.of(context).chat),
               onTap: () {
-                context
-                    .read<WorldBloc>()
-                    .process(DrawerViewChanged(DrawerView.chat));
+                context.read<WorldBloc>().process(
+                  DrawerViewChanged(DrawerView.chat),
+                );
                 Scaffold.of(context).openEndDrawer();
               },
             ),
@@ -429,52 +438,56 @@ class GameDrawer extends StatelessWidget {
               leading: const Icon(PhosphorIconsLight.file),
               title: Text(AppLocalizations.of(context).notes),
               onTap: () {
-                context
-                    .read<WorldBloc>()
-                    .process(DrawerViewChanged(DrawerView.notes));
+                context.read<WorldBloc>().process(
+                  DrawerViewChanged(DrawerView.notes),
+                );
                 Scaffold.of(context).openEndDrawer();
               },
             ),
             ListTile(
-                leading: const Icon(PhosphorIconsLight.fileArchive),
-                title: Text(AppLocalizations.of(context).saveAsTemplate),
-                onTap: () async {
-                  final bloc = context.read<WorldBloc>();
-                  String name = '';
-                  final result = await showDialog<bool>(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: Text(AppLocalizations.of(context).saveAsTemplate),
-                      content: TextField(
-                        decoration: InputDecoration(
-                          labelText: AppLocalizations.of(context).name,
-                          hintText: AppLocalizations.of(context).enterName,
-                          filled: true,
-                        ),
-                        onChanged: (value) => name = value,
-                        onSubmitted: (value) => Navigator.of(context).pop(true),
-                        autofocus: true,
+              leading: const Icon(PhosphorIconsLight.fileArchive),
+              title: Text(AppLocalizations.of(context).saveAsTemplate),
+              onTap: () async {
+                final bloc = context.read<WorldBloc>();
+                String name = '';
+                final result = await showDialog<bool>(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text(AppLocalizations.of(context).saveAsTemplate),
+                    content: TextField(
+                      decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context).name,
+                        hintText: AppLocalizations.of(context).enterName,
+                        filled: true,
                       ),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: Text(AppLocalizations.of(context).cancel),
-                        ),
-                        ElevatedButton(
-                          onPressed: () => Navigator.of(context).pop(true),
-                          child: Text(AppLocalizations.of(context).save),
-                        ),
-                      ],
+                      onChanged: (value) => name = value,
+                      onSubmitted: (value) => Navigator.of(context).pop(true),
+                      autofocus: true,
                     ),
-                  );
-                  if (!(result ?? false)) return;
-                  final state = bloc.state;
-                  var data = state.world.save();
-                  data = data.setMetadata(data
-                      .getMetadataOrDefault()
-                      .copyWith(name: name, type: FileType.template));
-                  state.fileSystem.templateSystem.createFile(name, data);
-                }),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: Text(AppLocalizations.of(context).cancel),
+                      ),
+                      ElevatedButton(
+                        onPressed: () => Navigator.of(context).pop(true),
+                        child: Text(AppLocalizations.of(context).save),
+                      ),
+                    ],
+                  ),
+                );
+                if (!(result ?? false)) return;
+                final state = bloc.state;
+                var data = state.world.save();
+                data = data.setMetadata(
+                  data.getMetadataOrDefault().copyWith(
+                    name: name,
+                    type: FileType.template,
+                  ),
+                );
+                state.fileSystem.templateSystem.createFile(name, data);
+              },
+            ),
             ListTile(
               leading: const Icon(PhosphorIconsLight.gear),
               title: Text(AppLocalizations.of(context).settings),
@@ -542,9 +555,10 @@ class GameDrawer extends StatelessWidget {
               previous.tableName != current.tableName ||
               previous.data != current.data,
           builder: (context, state) {
-            final other = {...state.data.getTables(), state.tableName}
-                .where((e) => e.isNotEmpty)
-                .toList();
+            final other = {
+              ...state.data.getTables(),
+              state.tableName,
+            }.where((e) => e.isNotEmpty).toList();
             return Column(
               children: [
                 ListTile(
@@ -570,13 +584,16 @@ class GameDrawer extends StatelessWidget {
                               context: context,
                               builder: (context) => AlertDialog(
                                 title: Text(
-                                    AppLocalizations.of(context).background),
+                                  AppLocalizations.of(context).background,
+                                ),
                                 content: TextFormField(
                                   decoration: InputDecoration(
-                                    labelText:
-                                        AppLocalizations.of(context).name,
-                                    hintText:
-                                        AppLocalizations.of(context).enterName,
+                                    labelText: AppLocalizations.of(
+                                      context,
+                                    ).name,
+                                    hintText: AppLocalizations.of(
+                                      context,
+                                    ).enterName,
                                     filled: true,
                                   ),
                                   initialValue: name,
@@ -590,15 +607,18 @@ class GameDrawer extends StatelessWidget {
                                     onPressed: () =>
                                         Navigator.of(context).pop(false),
                                     label: Text(
-                                        AppLocalizations.of(context).cancel),
-                                    icon:
-                                        const Icon(PhosphorIconsLight.prohibit),
+                                      AppLocalizations.of(context).cancel,
+                                    ),
+                                    icon: const Icon(
+                                      PhosphorIconsLight.prohibit,
+                                    ),
                                   ),
                                   ElevatedButton.icon(
                                     onPressed: () =>
                                         Navigator.of(context).pop(true),
                                     label: Text(
-                                        AppLocalizations.of(context).rename),
+                                      AppLocalizations.of(context).rename,
+                                    ),
                                     icon: const Icon(PhosphorIconsLight.check),
                                   ),
                                 ],
@@ -622,7 +642,7 @@ class GameDrawer extends StatelessWidget {
               ],
             );
           },
-        )
+        ),
       ],
     );
   }

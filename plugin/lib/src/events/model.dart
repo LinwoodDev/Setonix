@@ -83,20 +83,14 @@ final class ServerPing {
   final HttpRequest request;
   GameProperty response;
 
-  ServerPing({
-    required this.request,
-    required this.response,
-  });
+  ServerPing({required this.request, required this.response});
 }
 
 final class UserLeaveCallback {
   final Channel channel;
   final ConnectionInfo info;
 
-  UserLeaveCallback({
-    required this.channel,
-    required this.info,
-  });
+  UserLeaveCallback({required this.channel, required this.info});
 }
 
 @MappableClass()

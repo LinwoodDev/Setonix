@@ -3,10 +3,7 @@ part of 'dialog.dart';
 class ViewMultiplayerDialog extends StatelessWidget {
   final MultiplayerConnectedState state;
 
-  const ViewMultiplayerDialog({
-    super.key,
-    required this.state,
-  });
+  const ViewMultiplayerDialog({super.key, required this.state});
 
   @override
   Widget build(BuildContext context) {
@@ -21,36 +18,39 @@ class ViewMultiplayerDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(
-                height: 208,
-                width: 208,
-                child: InkWell(
-                    borderRadius: BorderRadius.circular(8),
-                    radius: 12,
-                    onTap: () {
-                      exportFile(
-                        context: context,
-                        bytes: svg.codeUnits,
-                        fileExtension: 'svg',
-                        mimeType: 'image/svg',
-                        uniformTypeIdentifier: 'public.svg-image',
-                        share: true,
-                        fileName: 'output',
-                        label: AppLocalizations.of(context).export,
-                      );
-                    },
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Stack(
-                          alignment: Alignment.center,
-                          fit: StackFit.expand,
-                          children: [
-                            ColoredBox(color: Colors.white),
-                            Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: SvgPicture.string(svg),
-                            ),
-                          ]),
-                    ))),
+              height: 208,
+              width: 208,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(8),
+                radius: 12,
+                onTap: () {
+                  exportFile(
+                    context: context,
+                    bytes: svg.codeUnits,
+                    fileExtension: 'svg',
+                    mimeType: 'image/svg',
+                    uniformTypeIdentifier: 'public.svg-image',
+                    share: true,
+                    fileName: 'output',
+                    label: AppLocalizations.of(context).export,
+                  );
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    fit: StackFit.expand,
+                    children: [
+                      ColoredBox(color: Colors.white),
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: SvgPicture.string(svg),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
             const SizedBox(height: 8),
             ListTile(
               title: Text(AppLocalizations.of(context).url),
@@ -62,30 +62,30 @@ class ViewMultiplayerDialog extends StatelessWidget {
       },
     );
     final userList = StreamBuilder<Set<Channel>>(
-        stream: state.clientChange,
-        builder: (context, snapshot) {
-          final connections = snapshot.data ?? {};
-          if (connections.isEmpty) {
-            return Text(
-              AppLocalizations.of(context).noConnections,
-              textAlign: TextAlign.center,
-            );
-          }
-          return ListView.builder(
-            itemCount: connections.length,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              final channel = connections.elementAt(index);
-              final defaultName =
-                  AppLocalizations.of(context).defaultUserName(channel);
-
-              return ListTile(
-                title: Text(defaultName),
-              );
-            },
+      stream: state.clientChange,
+      builder: (context, snapshot) {
+        final connections = snapshot.data ?? {};
+        if (connections.isEmpty) {
+          return Text(
+            AppLocalizations.of(context).noConnections,
+            textAlign: TextAlign.center,
           );
-        });
+        }
+        return ListView.builder(
+          itemCount: connections.length,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemBuilder: (context, index) {
+            final channel = connections.elementAt(index);
+            final defaultName = AppLocalizations.of(
+              context,
+            ).defaultUserName(channel);
+
+            return ListTile(title: Text(defaultName));
+          },
+        );
+      },
+    );
     final size = MediaQuery.sizeOf(context);
     final isMobile = size.width < LeapBreakpoints.medium;
     return ResponsiveAlertDialog(
@@ -108,21 +108,18 @@ class ViewMultiplayerDialog extends StatelessWidget {
         onPressed: () => Navigator.of(context).pop(),
         tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
       ),
-      constraints:
-          BoxConstraints(maxWidth: LeapBreakpoints.medium, maxHeight: 500),
+      constraints: BoxConstraints(
+        maxWidth: LeapBreakpoints.medium,
+        maxHeight: 500,
+      ),
       content: isMobile
-          ? ListView(
-              children: [
-                info,
-                const Divider(),
-                userList,
-              ],
-            )
+          ? ListView(children: [info, const Divider(), userList])
           : Row(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Expanded(
-                    child: Center(child: SingleChildScrollView(child: info))),
+                  child: Center(child: SingleChildScrollView(child: info)),
+                ),
                 const VerticalDivider(),
                 Expanded(child: SingleChildScrollView(child: userList)),
               ],

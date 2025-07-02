@@ -43,109 +43,109 @@ class SetonixFileSystem {
       event.database.createObjectStore('packs-data');
     }
     if (event.oldVersion < 3) {
+      event.database.createObjectStore('editor');
       event.database.createObjectStore('accounts');
     }
   }
 
-  static const kDatabaseVersion = 2;
+  static const kDatabaseVersion = 3;
 
-  SetonixFileSystem({
-    SetonixFile? corePack,
-  })  : _corePack = corePack,
-        packSystem = TypedKeyFileSystem.build(
-          FileSystemConfig(
-            passwordStorage: SecureStoragePasswordStorage(),
-            storeName: 'packs',
-            getDirectory: (storage) async =>
-                '${await getSetonixDirectory()}/Packs',
-            database: 'setonix.db',
-            databaseVersion: kDatabaseVersion,
-            keySuffix: '.stnx',
-            onDatabaseUpgrade: _onDatabaseUpgrade,
-          ),
-          onDecode: SetonixFile.new,
-          onEncode: (data) => data.data,
+  SetonixFileSystem({SetonixFile? corePack})
+    : _corePack = corePack,
+      packSystem = TypedKeyFileSystem.build(
+        FileSystemConfig(
+          passwordStorage: SecureStoragePasswordStorage(),
+          storeName: 'packs',
+          getDirectory: (storage) async =>
+              '${await getSetonixDirectory()}/Packs',
+          database: 'setonix.db',
+          databaseVersion: kDatabaseVersion,
+          keySuffix: '.stnx',
+          onDatabaseUpgrade: _onDatabaseUpgrade,
         ),
-        dataInfoSystem = TypedKeyFileSystem.build(
-          FileSystemConfig(
-            passwordStorage: SecureStoragePasswordStorage(),
-            storeName: 'packs',
-            getDirectory: (storage) async =>
-                '${await getSetonixDirectory()}/Packs',
-            database: 'setonix.db',
-            databaseVersion: kDatabaseVersion,
-            keySuffix: '.json',
-            onDatabaseUpgrade: _onDatabaseUpgrade,
-          ),
-          onEncode: (data) => utf8.encode(data.toJson()),
-          onDecode: (data) => DataMetadataMapper.fromJson(utf8.decode(data)),
+        onDecode: SetonixFile.new,
+        onEncode: (data) => data.data,
+      ),
+      dataInfoSystem = TypedKeyFileSystem.build(
+        FileSystemConfig(
+          passwordStorage: SecureStoragePasswordStorage(),
+          storeName: 'packs',
+          getDirectory: (storage) async =>
+              '${await getSetonixDirectory()}/Packs',
+          database: 'setonix.db',
+          databaseVersion: kDatabaseVersion,
+          keySuffix: '.json',
+          onDatabaseUpgrade: _onDatabaseUpgrade,
         ),
-        templateSystem = TypedKeyFileSystem.build(
-          FileSystemConfig(
-            passwordStorage: SecureStoragePasswordStorage(),
-            storeName: 'templates',
-            getDirectory: (storage) async =>
-                '${await getSetonixDirectory()}/Templates',
-            database: 'setonix.db',
-            databaseVersion: kDatabaseVersion,
-            keySuffix: '.stnx',
-            onDatabaseUpgrade: _onDatabaseUpgrade,
-          ),
-          onDecode: SetonixData.fromData,
-          onEncode: (data) => data.exportAsBytes(),
+        onEncode: (data) => utf8.encode(data.toJson()),
+        onDecode: (data) => DataMetadataMapper.fromJson(utf8.decode(data)),
+      ),
+      templateSystem = TypedKeyFileSystem.build(
+        FileSystemConfig(
+          passwordStorage: SecureStoragePasswordStorage(),
+          storeName: 'templates',
+          getDirectory: (storage) async =>
+              '${await getSetonixDirectory()}/Templates',
+          database: 'setonix.db',
+          databaseVersion: kDatabaseVersion,
+          keySuffix: '.stnx',
+          onDatabaseUpgrade: _onDatabaseUpgrade,
         ),
-        worldSystem = TypedKeyFileSystem.build(
-          FileSystemConfig(
-            passwordStorage: SecureStoragePasswordStorage(),
-            storeName: 'worlds',
-            getDirectory: (storage) async =>
-                '${await getSetonixDirectory()}/Worlds',
-            database: 'setonix.db',
-            databaseVersion: kDatabaseVersion,
-            keySuffix: '.stnx',
-            onDatabaseUpgrade: _onDatabaseUpgrade,
-          ),
-          onDecode: SetonixData.fromData,
-          onEncode: (data) => data.exportAsBytes(),
+        onDecode: SetonixData.fromData,
+        onEncode: (data) => data.exportAsBytes(),
+      ),
+      worldSystem = TypedKeyFileSystem.build(
+        FileSystemConfig(
+          passwordStorage: SecureStoragePasswordStorage(),
+          storeName: 'worlds',
+          getDirectory: (storage) async =>
+              '${await getSetonixDirectory()}/Worlds',
+          database: 'setonix.db',
+          databaseVersion: kDatabaseVersion,
+          keySuffix: '.stnx',
+          onDatabaseUpgrade: _onDatabaseUpgrade,
         ),
-        editorSystem = TypedKeyFileSystem.build(
-          FileSystemConfig(
-            passwordStorage: SecureStoragePasswordStorage(),
-            storeName: 'editor',
-            getDirectory: (storage) async =>
-                '${await getSetonixDirectory()}/Editor',
-            database: 'setonix.db',
-            databaseVersion: kDatabaseVersion,
-            keySuffix: '.stnx',
-            onDatabaseUpgrade: _onDatabaseUpgrade,
-          ),
-          onDecode: SetonixData.fromData,
-          onEncode: (data) => data.exportAsBytes(),
+        onDecode: SetonixData.fromData,
+        onEncode: (data) => data.exportAsBytes(),
+      ),
+      editorSystem = TypedKeyFileSystem.build(
+        FileSystemConfig(
+          passwordStorage: SecureStoragePasswordStorage(),
+          storeName: 'editor',
+          getDirectory: (storage) async =>
+              '${await getSetonixDirectory()}/Editor',
+          database: 'setonix.db',
+          databaseVersion: kDatabaseVersion,
+          keySuffix: '.stnx',
+          onDatabaseUpgrade: _onDatabaseUpgrade,
         ),
-        privateKeySystem = KeyFileSystem.fromPlatform(
-          FileSystemConfig(
-            passwordStorage: SecureStoragePasswordStorage(),
-            storeName: 'accounts',
-            getDirectory: (storage) async =>
-                '${await getSetonixDirectory()}/Accounts',
-            database: 'setonix.db',
-            databaseVersion: kDatabaseVersion,
-            keySuffix: '.key',
-            onDatabaseUpgrade: _onDatabaseUpgrade,
-          ),
+        onDecode: SetonixData.fromData,
+        onEncode: (data) => data.exportAsBytes(),
+      ),
+      privateKeySystem = KeyFileSystem.fromPlatform(
+        FileSystemConfig(
+          passwordStorage: SecureStoragePasswordStorage(),
+          storeName: 'accounts',
+          getDirectory: (storage) async =>
+              '${await getSetonixDirectory()}/Accounts',
+          database: 'setonix.db',
+          databaseVersion: kDatabaseVersion,
+          keySuffix: '.key',
+          onDatabaseUpgrade: _onDatabaseUpgrade,
         ),
-        publicKeySystem = KeyFileSystem.fromPlatform(
-          FileSystemConfig(
-            passwordStorage: SecureStoragePasswordStorage(),
-            storeName: 'accounts',
-            getDirectory: (storage) async =>
-                '${await getSetonixDirectory()}/Accounts',
-            database: 'setonix.db',
-            databaseVersion: kDatabaseVersion,
-            keySuffix: '.pub',
-            onDatabaseUpgrade: _onDatabaseUpgrade,
-          ),
-        );
+      ),
+      publicKeySystem = KeyFileSystem.fromPlatform(
+        FileSystemConfig(
+          passwordStorage: SecureStoragePasswordStorage(),
+          storeName: 'accounts',
+          getDirectory: (storage) async =>
+              '${await getSetonixDirectory()}/Accounts',
+          database: 'setonix.db',
+          databaseVersion: kDatabaseVersion,
+          keySuffix: '.pub',
+          onDatabaseUpgrade: _onDatabaseUpgrade,
+        ),
+      );
 
   Future<SetonixFile> fetchCorePack() async =>
       _corePack ?? (_corePack = await getCorePack());
@@ -160,9 +160,9 @@ class SetonixFileSystem {
       equals: (a, b) => a.identifier == b.identifier,
       hashCode: (a) => a.identifier.hashCode,
     )..addAll([
-        ...(await packSystem.getFiles()).map((e) => e.data!),
-        if (corePack != null) corePack,
-      ]);
+      ...(await packSystem.getFiles()).map((e) => e.data!),
+      if (corePack != null) corePack,
+    ]);
   }
 
   Future<SetonixFile?> getPack(String packId) =>
@@ -174,16 +174,17 @@ class SetonixFileSystem {
     if (!force && await packSystem.hasKey(identifier)) return false;
     await packSystem.updateFile(identifier, pack);
     await dataInfoSystem.updateFile(
-        identifier,
-        DataMetadata(
-          addedAt: DateTime.now(),
-          manuallyAdded: true,
-        ));
+      identifier,
+      DataMetadata(addedAt: DateTime.now(), manuallyAdded: true),
+    );
     return true;
   }
 
-  Future<PackDownloadResult> downloadPack(String url, String expectedIdentifier,
-      {bool force = false}) async {
+  Future<PackDownloadResult> downloadPack(
+    String url,
+    String expectedIdentifier, {
+    bool force = false,
+  }) async {
     try {
       final uri = Uri.tryParse(url);
       if (uri == null) return PackDownloadResult.invalidUri;
@@ -200,13 +201,13 @@ class SetonixFileSystem {
         return PackDownloadResult.invalidIdentifier;
       }
       await packSystem.updateFile(
-          expectedIdentifier, SetonixFile(response.bodyBytes));
+        expectedIdentifier,
+        SetonixFile(response.bodyBytes),
+      );
       await dataInfoSystem.updateFile(
-          expectedIdentifier,
-          DataMetadata(
-            addedAt: DateTime.now(),
-            manuallyAdded: false,
-          ));
+        expectedIdentifier,
+        DataMetadata(addedAt: DateTime.now(), manuallyAdded: false),
+      );
       return PackDownloadResult.success;
     } catch (e) {
       return PackDownloadResult.downloadFailed;
@@ -214,14 +215,17 @@ class SetonixFileSystem {
   }
 
   Future<void> updateServerLastUsed(String packId, String serverAddress) async {
-    final data = await dataInfoSystem.getFile(packId) ??
+    final data =
+        await dataInfoSystem.getFile(packId) ??
         DataMetadata(addedAt: DateTime(0));
     data.serversLastUsed[serverAddress] = DateTime.now();
     await dataInfoSystem.updateFile(packId, data);
   }
 
   Future<void> updateMultipleServerLastUsed(
-      Iterable<String> packIds, String serverAddress) async {
+    Iterable<String> packIds,
+    String serverAddress,
+  ) async {
     for (final pack in packIds) {
       await updateServerLastUsed(pack, serverAddress);
     }
@@ -232,10 +236,14 @@ class SetonixFileSystem {
     final keyPair = await generator.newKeyPair();
     final privateKey = await keyPair.extractPrivateKeyBytes();
     final publicKey = await keyPair.extractPublicKey();
-    await privateKeySystem.createFileWithName(Uint8List.fromList(privateKey),
-        name: name);
-    await publicKeySystem
-        .createFileWithName(Uint8List.fromList(publicKey.bytes), name: name);
+    await privateKeySystem.createFileWithName(
+      Uint8List.fromList(privateKey),
+      name: name,
+    );
+    await publicKeySystem.createFileWithName(
+      Uint8List.fromList(publicKey.bytes),
+      name: name,
+    );
   }
 
   Future<SetonixAccount?> getAccount(String name) async {
@@ -264,10 +272,7 @@ class SetonixFileSystem {
         account.privateKey,
         name: account.name,
       );
-      await publicKeySystem.updateFile(
-        name,
-        account.publicKey,
-      );
+      await publicKeySystem.updateFile(name, account.publicKey);
     }
   }
 
@@ -279,11 +284,13 @@ class SetonixFileSystem {
     ).then((accounts) => accounts.nonNulls.toList());
   }
 
-  Future<SetonixData> exportAccounts(
-      [List<String>? names, List<SetonixAccount>? accounts]) async {
-    var data = SetonixData.empty().setMetadata(FileMetadata(
-      type: FileType.accounts,
-    ));
+  Future<SetonixData> exportAccounts([
+    List<String>? names,
+    List<SetonixAccount>? accounts,
+  ]) async {
+    var data = SetonixData.empty().setMetadata(
+      FileMetadata(type: FileType.accounts),
+    );
     final allAccounts = accounts ?? await getAccounts(names);
     for (final account in allAccounts) {
       final privateKey = account.privateKey;
@@ -300,8 +307,11 @@ class SetonixFileSystem {
     return data;
   }
 
-  Future<String> getFingerprint(String key,
-      {bool short = false, bool pretty = false}) async {
+  Future<String> getFingerprint(
+    String key, {
+    bool short = false,
+    bool pretty = false,
+  }) async {
     final publicKey = await publicKeySystem.getFile(key);
     if (publicKey == null) {
       return '';

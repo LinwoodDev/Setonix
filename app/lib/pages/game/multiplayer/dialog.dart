@@ -24,9 +24,7 @@ class MultiplayerDialog extends StatelessWidget {
     return BlocBuilder<MultiplayerCubit, MultiplayerState>(
       builder: (context, state) {
         if (state is MultiplayerConnectedState) {
-          return ViewMultiplayerDialog(
-            state: state,
-          );
+          return ViewMultiplayerDialog(state: state);
         } else {
           return StartMultiplayerDialog();
         }

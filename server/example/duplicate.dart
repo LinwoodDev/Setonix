@@ -22,8 +22,9 @@ Future<void> onLoad(SetonixServer server) async {
         objects.add(object);
       }
       // Send the event to all clients
-      server
-          .sendEvent(ObjectsSpawned(e.clientEvent.table, {event.to: objects}));
+      server.sendEvent(
+        ObjectsSpawned(e.clientEvent.table, {event.to: objects}),
+      );
       // Cancel the event
       e.cancel();
     }

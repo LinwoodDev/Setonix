@@ -22,32 +22,26 @@ part 'editor.dart';
 class PacksDialog extends StatefulWidget {
   final WorldBloc? bloc;
 
-  const PacksDialog({
-    super.key,
-    this.bloc,
-  });
+  const PacksDialog({super.key, this.bloc});
 
   @override
   State<PacksDialog> createState() => _PacksDialogState();
 }
 
-typedef SelectFunction = Future<void> Function(
-  Widget title,
-  List<Widget> details,
-  List<Widget> actions,
-  String id,
-);
+typedef SelectFunction =
+    Future<void> Function(
+      Widget title,
+      List<Widget> details,
+      List<Widget> actions,
+      String id,
+    );
 
 class _PacksDialogState extends State<PacksDialog>
     with TickerProviderStateMixin {
   // It needs to be here to be able to reload it when clicking on import
   Future<Iterable<(SetonixFile, SetonixData, DataMetadata)>>? _packsFuture;
-  ({
-    Widget title,
-    List<Widget> details,
-    List<Widget> actions,
-    String id
-  })? _selected;
+  ({Widget title, List<Widget> details, List<Widget> actions, String id})?
+  _selected;
   late final AnimationController _controller = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 100),
@@ -76,7 +70,7 @@ class _PacksDialogState extends State<PacksDialog>
       final data = pack.load();
       final dataMeta =
           await _fileSystem.dataInfoSystem.getFile(pack.identifier) ??
-              DataMetadata(addedAt: DateTime.now());
+          DataMetadata(addedAt: DateTime.now());
       packs.add((pack, data, dataMeta));
     }
     return packs;
@@ -102,16 +96,16 @@ class _PacksDialogState extends State<PacksDialog>
     _controller.reverse();
   }
 
-  Future<void> _select(bool isMobile, Widget title, List<Widget> details,
-      List<Widget> actions, String id) async {
+  Future<void> _select(
+    bool isMobile,
+    Widget title,
+    List<Widget> details,
+    List<Widget> actions,
+    String id,
+  ) async {
     _controller.forward();
     setState(() {
-      _selected = (
-        title: title,
-        details: details,
-        actions: actions,
-        id: id,
-      );
+      _selected = (title: title, details: details, actions: actions, id: id);
     });
     if (isMobile) {
       await showLeapBottomSheet(
@@ -134,9 +128,12 @@ class _PacksDialogState extends State<PacksDialog>
     final currentSize = MediaQuery.sizeOf(context).width;
     final isMobile = currentSize < LeapBreakpoints.medium;
 
-    Future<void> select(Widget title, List<Widget> details,
-            List<Widget> actions, String id) =>
-        _select(isMobile, title, details, actions, id);
+    Future<void> select(
+      Widget title,
+      List<Widget> details,
+      List<Widget> actions,
+      String id,
+    ) => _select(isMobile, title, details, actions, id);
 
     return ResponsiveAlertDialog(
       title: Text(AppLocalizations.of(context).packs),
@@ -174,127 +171,138 @@ class _PacksDialogState extends State<PacksDialog>
           ),
           const SizedBox(height: 8),
           Expanded(
-            child: FutureBuilder<
-                Iterable<(SetonixFile, SetonixData, DataMetadata)>>(
-              future: _packsFuture,
-              builder: (context, snapshot) {
-                final packs = snapshot.data ?? [];
-                if (snapshot.hasError) {
-                  return Center(
-                    child: Column(
-                      children: [
-                        Text(AppLocalizations.of(context).error,
-                            style: Theme.of(context).textTheme.headlineMedium),
-                        const SizedBox(height: 8),
-                        Text(snapshot.error.toString()),
-                      ],
-                    ),
-                  );
-                }
-                final view = ListenableBuilder(
-                    listenable: _searchController,
-                    builder: (context, _) {
-                      final query = _searchController.text.toLowerCase();
-                      final filtered = packs
-                          .where((entry) =>
-                              entry.$2
-                                  .getMetadata()
-                                  ?.name
-                                  .toLowerCase()
-                                  .contains(query) ??
-                              entry.$1.identifier.toLowerCase().contains(query))
-                          .where(
-                              (e) => widget.bloc == null || e.$3.manuallyAdded)
-                          .toList();
-                      final bloc = widget.bloc;
-                      final selected = _selected?.id;
-                      return TabBarView(
-                        controller: _tabController,
-                        children: [
-                          if (bloc != null)
-                            _WorldPacksView(
-                              bloc: bloc,
-                              query: query,
+            child:
+                FutureBuilder<
+                  Iterable<(SetonixFile, SetonixData, DataMetadata)>
+                >(
+                  future: _packsFuture,
+                  builder: (context, snapshot) {
+                    final packs = snapshot.data ?? [];
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Column(
+                          children: [
+                            Text(
+                              AppLocalizations.of(context).error,
+                              style: Theme.of(context).textTheme.headlineMedium,
                             ),
-                          _InstalledPacksView(
-                            filtered: filtered,
-                            bloc: bloc,
-                            onSelected: select,
-                            onReload: _reloadPacks,
-                            onUnselect: _unselect,
-                            selected: selected,
-                          ),
-                          Center(
-                            child:
-                                Text(AppLocalizations.of(context).comingSoon),
-                          ),
-                          if (bloc == null)
-                            _EditorPacksView(
-                              onReload: _reloadPacks,
-                            ),
-                        ],
+                            const SizedBox(height: 8),
+                            Text(snapshot.error.toString()),
+                          ],
+                        ),
                       );
-                    });
-                if (isMobile) {
-                  return view;
-                }
-                return Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                      child: view,
-                    ),
-                    SizeTransition(
-                      sizeFactor: CurvedAnimation(
-                        parent: _controller,
-                        curve: Curves.fastOutSlowIn,
-                      ),
-                      axis: Axis.horizontal,
-                      child: SizedBox(
-                        width: 300,
-                        child: Card(child: Builder(
-                          builder: (context) {
-                            final selected = _selected;
-                            if (selected == null) {
-                              return const SizedBox();
-                            }
-                            return Padding(
-                              padding: const EdgeInsets.only(
-                                left: 8,
-                                right: 8,
-                                bottom: 8,
+                    }
+                    final view = ListenableBuilder(
+                      listenable: _searchController,
+                      builder: (context, _) {
+                        final query = _searchController.text.toLowerCase();
+                        final filtered = packs
+                            .where(
+                              (entry) =>
+                                  entry.$2
+                                      .getMetadata()
+                                      ?.name
+                                      .toLowerCase()
+                                      .contains(query) ??
+                                  entry.$1.identifier.toLowerCase().contains(
+                                    query,
+                                  ),
+                            )
+                            .where(
+                              (e) => widget.bloc == null || e.$3.manuallyAdded,
+                            )
+                            .toList();
+                        final bloc = widget.bloc;
+                        final selected = _selected?.id;
+                        return TabBarView(
+                          controller: _tabController,
+                          children: [
+                            if (bloc != null)
+                              _WorldPacksView(bloc: bloc, query: query),
+                            _InstalledPacksView(
+                              filtered: filtered,
+                              bloc: bloc,
+                              onSelected: select,
+                              onReload: _reloadPacks,
+                              onUnselect: _unselect,
+                              selected: selected,
+                            ),
+                            Center(
+                              child: Text(
+                                AppLocalizations.of(context).comingSoon,
                               ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  Header(
-                                    title: selected.title,
-                                    actions: [
-                                      IconButton.outlined(
-                                        icon: const Icon(PhosphorIconsLight.x),
-                                        onPressed: _unselect,
-                                      ),
-                                    ],
-                                  ),
-                                  Expanded(
-                                    child: ListView(children: selected.details),
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: selected.actions,
-                                  ),
-                                ],
+                            ),
+                            if (bloc == null)
+                              _EditorPacksView(onReload: _reloadPacks),
+                          ],
+                        );
+                      },
+                    );
+                    if (isMobile) {
+                      return view;
+                    }
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Expanded(child: view),
+                        SizeTransition(
+                          sizeFactor: CurvedAnimation(
+                            parent: _controller,
+                            curve: Curves.fastOutSlowIn,
+                          ),
+                          axis: Axis.horizontal,
+                          child: SizedBox(
+                            width: 300,
+                            child: Card(
+                              child: Builder(
+                                builder: (context) {
+                                  final selected = _selected;
+                                  if (selected == null) {
+                                    return const SizedBox();
+                                  }
+                                  return Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 8,
+                                      right: 8,
+                                      bottom: 8,
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: [
+                                        Header(
+                                          title: selected.title,
+                                          actions: [
+                                            IconButton.outlined(
+                                              icon: const Icon(
+                                                PhosphorIconsLight.x,
+                                              ),
+                                              onPressed: _unselect,
+                                            ),
+                                          ],
+                                        ),
+                                        Expanded(
+                                          child: ListView(
+                                            children: selected.details,
+                                          ),
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
+                                          children: selected.actions,
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
                               ),
-                            );
-                          },
-                        )),
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
           ),
         ],
       ),

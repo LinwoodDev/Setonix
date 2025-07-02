@@ -8,10 +8,7 @@ class DeckDefinition with DeckDefinitionMappable {
   final List<FigureDeckDefinition> figures;
   final List<BoardDeckDefinition> boards;
 
-  DeckDefinition({
-    this.figures = const [],
-    this.boards = const [],
-  });
+  DeckDefinition({this.figures = const [], this.boards = const []});
 }
 
 @MappableClass()

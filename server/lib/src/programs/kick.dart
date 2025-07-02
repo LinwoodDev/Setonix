@@ -27,10 +27,7 @@ class KickProgram extends ConsoleProgram {
     if (args.length > 1) {
       final reasonText = args[1];
       final link = args.length > 2 ? args[2] : null;
-      reason = KickMessage(
-        message: reasonText,
-        link: link,
-      );
+      reason = KickMessage(message: reasonText, link: link);
     }
     final result = server.kick(arg, reason);
     if (result) {

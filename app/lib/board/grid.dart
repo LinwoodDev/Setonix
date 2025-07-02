@@ -11,9 +11,7 @@ class BoardGrid extends PositionComponent
   Rect? _lastViewport;
   double _zoom = 1.0;
 
-  BoardGrid({
-    required this.cellSize,
-  });
+  BoardGrid({required this.cellSize});
 
   Rect get viewport {
     final Rect viewport = game.camera.visibleWorldRect;
@@ -39,41 +37,31 @@ class BoardGrid extends PositionComponent
     final viewport = this.viewport;
     final currentSize = cellSizeWithZoom;
     // Remove components that are out of the viewport
-    removeAll(children.where((element) {
-      if (element is! PositionComponent) return false;
-      final Rect bounds = element.toRect();
-      return !bounds.overlaps(viewport);
-    }));
+    removeAll(
+      children.where((element) {
+        if (element is! PositionComponent) return false;
+        final Rect bounds = element.toRect();
+        return !bounds.overlaps(viewport);
+      }),
+    );
     final last = _lastViewport ?? Rect.zero;
     // Add components that are in the viewport
     // Top and bottom
     for (var x = viewport.left; x < viewport.right; x += currentSize.x) {
       for (var y = viewport.top; y < last.top; y += currentSize.y) {
-        add(_createCell(
-          position: Vector2(x, y),
-          size: currentSize,
-        ));
+        add(_createCell(position: Vector2(x, y), size: currentSize));
       }
       for (var y = last.bottom; y < viewport.bottom; y += currentSize.y) {
-        add(_createCell(
-          position: Vector2(x, y),
-          size: currentSize,
-        ));
+        add(_createCell(position: Vector2(x, y), size: currentSize));
       }
     }
     // Left and right
     for (var y = last.top; y < last.bottom; y += currentSize.y) {
       for (var x = viewport.left; x < last.left; x += currentSize.x) {
-        add(_createCell(
-          position: Vector2(x, y),
-          size: currentSize,
-        ));
+        add(_createCell(position: Vector2(x, y), size: currentSize));
       }
       for (var x = last.right; x < viewport.right; x += currentSize.x) {
-        add(_createCell(
-          position: Vector2(x, y),
-          size: currentSize,
-        ));
+        add(_createCell(position: Vector2(x, y), size: currentSize));
       }
     }
     _lastViewport = viewport;
@@ -94,10 +82,7 @@ class BoardGrid extends PositionComponent
   }
 
   Component _createCell({required Vector2 position, required Vector2 size}) =>
-      GameCell(
-        position: position,
-        size: size,
-      );
+      GameCell(position: position, size: size);
 
   @override
   void onInitialState(SetonixSettings state) {

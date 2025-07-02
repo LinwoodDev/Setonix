@@ -15,14 +15,17 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 abstract class PluginCallback implements RustOpaqueInterface {
   void changeOnPrint({required FutureOr<void> Function(String) onPrint});
 
-  void changeProcessEvent(
-      {required FutureOr<void> Function(String, bool?) processEvent});
+  void changeProcessEvent({
+    required FutureOr<void> Function(String, bool?) processEvent,
+  });
 
-  void changeSendEvent(
-      {required FutureOr<void> Function(String, int?) sendEvent});
+  void changeSendEvent({
+    required FutureOr<void> Function(String, int?) sendEvent,
+  });
 
-  void changeStateFieldAccess(
-      {required FutureOr<String> Function(StateFieldAccess) stateFieldAccess});
+  void changeStateFieldAccess({
+    required FutureOr<String> Function(StateFieldAccess) stateFieldAccess,
+  });
 
   static PluginCallback default_() =>
       RustLib.instance.api.crateApiPluginPluginCallbackDefault();
@@ -31,12 +34,13 @@ abstract class PluginCallback implements RustOpaqueInterface {
 abstract class RustPlugin {
   Future<void> run();
 
-  Future<EventResult> runEvent(
-      {required String eventType,
-      required String event,
-      required String serverEvent,
-      required int source,
-      required int target});
+  Future<EventResult> runEvent({
+    required String eventType,
+    required String event,
+    required String serverEvent,
+    required int source,
+    required int target,
+  });
 }
 
 class EventResult {
@@ -44,11 +48,7 @@ class EventResult {
   final String? serverEvent;
   final Set<int>? needsUpdate;
 
-  const EventResult({
-    required this.target,
-    this.serverEvent,
-    this.needsUpdate,
-  });
+  const EventResult({required this.target, this.serverEvent, this.needsUpdate});
 
   @override
   int get hashCode =>
@@ -64,11 +64,4 @@ class EventResult {
           needsUpdate == other.needsUpdate;
 }
 
-enum StateFieldAccess {
-  table,
-  tableName,
-  info,
-  players,
-  teamMembers,
-  ;
-}
+enum StateFieldAccess { table, tableName, info, players, teamMembers }

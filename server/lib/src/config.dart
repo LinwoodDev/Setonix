@@ -9,10 +9,8 @@ class ConfigManager {
   late SetonixConfig _mergedConfig = _mergeConfig();
   SetonixConfig _argsConfig = SetonixConfig();
 
-  ConfigManager({
-    SetonixConfig? argsConfig,
-    SetonixConfig? envConfig,
-  }) : _envConfig = envConfig ?? SetonixConfig.fromEnvironment();
+  ConfigManager({SetonixConfig? argsConfig, SetonixConfig? envConfig})
+    : _envConfig = envConfig ?? SetonixConfig.fromEnvironment();
 
   SetonixConfig _mergeConfig() {
     return _config.merge(_envConfig).merge(_argsConfig);
@@ -31,8 +29,9 @@ class ConfigManager {
       _mergedConfig = _mergeConfig();
     } else {
       _config = SetonixConfig.defaultConfig;
-      await file
-          .writeAsString(JsonEncoder.withIndent('  ').convert(_config.toMap()));
+      await file.writeAsString(
+        JsonEncoder.withIndent('  ').convert(_config.toMap()),
+      );
     }
   }
 

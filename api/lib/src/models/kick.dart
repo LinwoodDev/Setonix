@@ -2,15 +2,22 @@ import 'package:dart_mappable/dart_mappable.dart';
 
 part 'kick.mapper.dart';
 
+enum KickReason {
+  kick,
+  ban,
+  notWhitelisted,
+  notRegistered,
+  challengeFailed,
+  pleaseLink,
+}
+
 @MappableClass(hook: KickMessageHook())
 final class KickMessage with KickMessageMappable {
-  final String message;
+  final String? message;
   final String? link;
+  final KickReason? reason;
 
-  const KickMessage({
-    required this.message,
-    this.link,
-  });
+  const KickMessage({this.message, this.link, this.reason});
 
   factory KickMessage.fromString(String message) {
     try {

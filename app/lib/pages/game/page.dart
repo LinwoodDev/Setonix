@@ -70,8 +70,9 @@ class _GamePageState extends State<GamePage> {
     );
     await world.state.assetManager.loadPacks();
     if (address != null) {
-      cubit.connect(buildServerAddress(
-          parseConnectUri(Uri.parse(address)), widget.secure));
+      cubit.connect(
+        buildServerAddress(parseConnectUri(Uri.parse(address)), widget.secure),
+      );
     }
     return (cubit, world);
   }
@@ -83,7 +84,8 @@ class _GamePageState extends State<GamePage> {
     }
     final worldSystem = context.read<SetonixFileSystem>().worldSystem;
     final name = widget.name;
-    final data = (widget.data ??
+    final data =
+        (widget.data ??
             (name == null ? null : await worldSystem.getFile(name))) ??
         SetonixData.empty();
     return _initBloc(data);
@@ -113,171 +115,174 @@ class _GamePageState extends State<GamePage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Blocs>(
-        future: _bloc,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          final bloc = snapshot.data!;
-          return Listener(
-            behavior: HitTestBehavior.translucent,
-            onPointerDown: (_) => _contextMenuController.remove(),
-            child: MultiBlocProvider(
-                providers: [
-                  BlocProvider.value(value: bloc.$1),
-                  BlocProvider.value(value: bloc.$2),
-                ],
-                child: BlocBuilder<MultiplayerCubit, MultiplayerState>(
-                  buildWhen: (previous, current) =>
-                      previous is MultiplayerDisconnectedState !=
-                          current is MultiplayerDisconnectedState ||
-                      previous is MultiplayerConnectingState !=
-                          current is MultiplayerConnectingState,
-                  builder: (context, state) {
-                    if (state is MultiplayerConnectingState) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                    if (state is MultiplayerDisconnectedState) {
-                      return GameErrorView(
-                        state: state,
-                        onReconnect: () async => (await _bloc)?.$1.reconnect(),
-                      );
-                    }
-                    return Scaffold(
-                      appBar: WindowTitleBar<SettingsCubit, SetonixSettings>(
-                        title: Text(AppLocalizations.of(context).game),
-                        height: 50,
-                        actions: [
-                          BlocBuilder<WorldBloc, ClientWorldState>(
-                              buildWhen: (previous, current) =>
-                                  previous.showHand != current.showHand ||
-                                  previous.selectedCell != current.selectedCell,
-                              builder: (context, state) {
-                                final selected = state.showHand &&
-                                    state.selectedCell == null;
-                                return IconButton(
-                                  icon: const PhosphorIcon(
-                                      PhosphorIconsLight.plusCircle),
-                                  selectedIcon: const PhosphorIcon(
-                                      PhosphorIconsFill.plusCircle),
-                                  isSelected: selected,
-                                  tooltip: selected
-                                      ? AppLocalizations.of(context)
-                                          .enterEditMode
-                                      : AppLocalizations.of(context)
-                                          .exitEditMode,
-                                  onPressed: () {
-                                    context
-                                        .read<WorldBloc>()
-                                        .process(HandChanged.toggle());
-                                    _focusNode.requestFocus();
-                                  },
-                                );
-                              })
-                        ],
-                      ),
-                      drawer: const GameDrawer(),
-                      endDrawer: BlocBuilder<WorldBloc, ClientWorldState>(
+      future: _bloc,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        final bloc = snapshot.data!;
+        return Listener(
+          behavior: HitTestBehavior.translucent,
+          onPointerDown: (_) => _contextMenuController.remove(),
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: bloc.$1),
+              BlocProvider.value(value: bloc.$2),
+            ],
+            child: BlocBuilder<MultiplayerCubit, MultiplayerState>(
+              buildWhen: (previous, current) =>
+                  previous is MultiplayerDisconnectedState !=
+                      current is MultiplayerDisconnectedState ||
+                  previous is MultiplayerConnectingState !=
+                      current is MultiplayerConnectingState,
+              builder: (context, state) {
+                if (state is MultiplayerConnectingState) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (state is MultiplayerDisconnectedState) {
+                  return GameErrorView(
+                    state: state,
+                    onReconnect: () async => (await _bloc)?.$1.reconnect(),
+                  );
+                }
+                return Scaffold(
+                  appBar: WindowTitleBar<SettingsCubit, SetonixSettings>(
+                    title: Text(AppLocalizations.of(context).game),
+                    height: 50,
+                    actions: [
+                      BlocBuilder<WorldBloc, ClientWorldState>(
                         buildWhen: (previous, current) =>
-                            previous.drawerView != current.drawerView,
-                        builder: (context, state) => switch (state.drawerView) {
-                          DrawerView.chat => const GameChatDrawer(),
-                          DrawerView.notes => const GameNotesDrawer(),
+                            previous.showHand != current.showHand ||
+                            previous.selectedCell != current.selectedCell,
+                        builder: (context, state) {
+                          final selected =
+                              state.showHand && state.selectedCell == null;
+                          return IconButton(
+                            icon: const PhosphorIcon(
+                              PhosphorIconsLight.plusCircle,
+                            ),
+                            selectedIcon: const PhosphorIcon(
+                              PhosphorIconsFill.plusCircle,
+                            ),
+                            isSelected: selected,
+                            tooltip: selected
+                                ? AppLocalizations.of(context).enterEditMode
+                                : AppLocalizations.of(context).exitEditMode,
+                            onPressed: () {
+                              context.read<WorldBloc>().process(
+                                HandChanged.toggle(),
+                              );
+                              _focusNode.requestFocus();
+                            },
+                          );
                         },
                       ),
-                      body: BlocConsumer<WorldBloc, ClientWorldState>(
-                        listenWhen: (previous, current) =>
-                            previous.messages.length != current.messages.length,
-                        listener: (context, state) {
-                          final message = state.messages.lastOrNull;
-                          if (message == null || message.author == state.id) {
-                            return;
-                          }
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              width: 300,
-                              behavior: SnackBarBehavior.floating,
-                              backgroundColor: Theme.of(context)
-                                  .colorScheme
-                                  .surfaceContainer,
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                      AppLocalizations.of(context).newMessage(
-                                          message.author.toString()),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium),
-                                  Text(message.content,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall),
-                                ],
+                    ],
+                  ),
+                  drawer: const GameDrawer(),
+                  endDrawer: BlocBuilder<WorldBloc, ClientWorldState>(
+                    buildWhen: (previous, current) =>
+                        previous.drawerView != current.drawerView,
+                    builder: (context, state) => switch (state.drawerView) {
+                      DrawerView.chat => const GameChatDrawer(),
+                      DrawerView.notes => const GameNotesDrawer(),
+                    },
+                  ),
+                  body: BlocConsumer<WorldBloc, ClientWorldState>(
+                    listenWhen: (previous, current) =>
+                        previous.messages.length != current.messages.length,
+                    listener: (context, state) {
+                      final message = state.messages.lastOrNull;
+                      if (message == null || message.author == state.id) {
+                        return;
+                      }
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          width: 300,
+                          behavior: SnackBarBehavior.floating,
+                          backgroundColor: Theme.of(
+                            context,
+                          ).colorScheme.surfaceContainer,
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                AppLocalizations.of(
+                                  context,
+                                ).newMessage(message.author.toString()),
+                                style: Theme.of(context).textTheme.bodyMedium,
                               ),
-                              action: SnackBarAction(
-                                label: AppLocalizations.of(context).open,
-                                onPressed: () {
-                                  Scaffold.of(context).openEndDrawer();
+                              Text(
+                                message.content,
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                            ],
+                          ),
+                          action: SnackBarAction(
+                            label: AppLocalizations.of(context).open,
+                            onPressed: () {
+                              Scaffold.of(context).openEndDrawer();
+                            },
+                          ),
+                          duration: const Duration(seconds: 2),
+                        ),
+                      );
+                    },
+                    buildWhen: (previous, current) =>
+                        previous.world.gameState != current.world.gameState,
+                    builder: (context, state) {
+                      return Center(
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            if (state.world.gameState ==
+                                GameState.configuration)
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  CircularProgressIndicator(),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    AppLocalizations.of(
+                                      context,
+                                    ).configuringGame,
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.bodyMedium,
+                                  ),
+                                ],
+                              )
+                            else
+                              GameWidget(
+                                game: BoardGame(
+                                  bloc: context.read<WorldBloc>(),
+                                  settingsCubit: context.read<SettingsCubit>(),
+                                  contextMenuController: _contextMenuController,
+                                  onEscape: () =>
+                                      Scaffold.of(context).openDrawer(),
+                                ),
+                                focusNode: _focusNode,
+                                initialActiveOverlays: ['dialogs', 'filter'],
+                                overlayBuilderMap: {
+                                  'dialogs': (context, game) =>
+                                      GameDialogOverlay(),
+                                  'filter': (context, game) => GameFilterView(),
                                 },
                               ),
-                              duration: const Duration(seconds: 2),
-                            ),
-                          );
-                        },
-                        buildWhen: (previous, current) =>
-                            previous.world.gameState != current.world.gameState,
-                        builder: (context, state) {
-                          return Center(
-                            child:
-                                Stack(alignment: Alignment.center, children: [
-                              if (state.world.gameState ==
-                                  GameState.configuration)
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    CircularProgressIndicator(),
-                                    const SizedBox(height: 16),
-                                    Text(
-                                      AppLocalizations.of(context)
-                                          .configuringGame,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium,
-                                    ),
-                                  ],
-                                )
-                              else
-                                GameWidget(
-                                  game: BoardGame(
-                                    bloc: context.read<WorldBloc>(),
-                                    settingsCubit:
-                                        context.read<SettingsCubit>(),
-                                    contextMenuController:
-                                        _contextMenuController,
-                                    onEscape: () =>
-                                        Scaffold.of(context).openDrawer(),
-                                  ),
-                                  focusNode: _focusNode,
-                                  initialActiveOverlays: ['dialogs', 'filter'],
-                                  overlayBuilderMap: {
-                                    'dialogs': (context, game) =>
-                                        GameDialogOverlay(),
-                                    'filter': (context, game) =>
-                                        GameFilterView(),
-                                  },
-                                ),
-                              AuthGameView(),
-                            ]),
-                          );
-                        },
-                      ),
-                    );
-                  },
-                )),
-          );
-        });
+                            AuthGameView(),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
   }
 }

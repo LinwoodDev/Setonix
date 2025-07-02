@@ -3,9 +3,7 @@ part of 'dialog.dart';
 class _EditorPacksView extends StatefulWidget {
   final VoidCallback onReload;
 
-  const _EditorPacksView({
-    required this.onReload,
-  });
+  const _EditorPacksView({required this.onReload});
 
   @override
   State<_EditorPacksView> createState() => _EditorPacksViewState();
@@ -32,99 +30,102 @@ class _EditorPacksViewState extends State<_EditorPacksView> {
     return Stack(
       children: [
         FutureBuilder<List<FileSystemFile<SetonixData>>>(
-            future: _packs,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              if (snapshot.hasError) {
-                return Center(
-                  child: Text(snapshot.error.toString()),
-                );
-              }
-              final files = snapshot.data ?? [];
-              if (files.isEmpty) {
-                return Center(
-                  child: Text(AppLocalizations.of(context).noData),
-                );
-              }
-              return ListView.builder(
-                itemCount: files.length,
-                itemBuilder: (context, index) {
-                  final file = files[index];
-                  final data = file.data!;
-                  final metadata = data.getMetadataOrDefault();
-                  return ContextRegion(
-                    builder: (context, widget, controller) {
-                      return ListTile(
-                        title: Text(metadata.name),
-                        subtitle: Text(file.identifier),
-                        onTap: () => GoRouter.of(context)
-                            .goNamed('editor', pathParameters: {
-                          'name': file.pathWithoutLeadingSlash,
-                        }),
-                        trailing: widget,
-                      );
-                    },
-                    menuChildren: [
-                      MenuItemButton(
-                        leadingIcon: const Icon(PhosphorIconsLight.download),
-                        child: Text(AppLocalizations.of(context).install),
-                        onPressed: () async {
-                          await importFileData(context, _fileSystem,
-                              SetonixFile(data.exportAsBytes()));
-                          widget.onReload();
-                        },
+          future: _packs,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (snapshot.hasError) {
+              return Center(child: Text(snapshot.error.toString()));
+            }
+            final files = snapshot.data ?? [];
+            if (files.isEmpty) {
+              return Center(child: Text(AppLocalizations.of(context).noData));
+            }
+            return ListView.builder(
+              itemCount: files.length,
+              itemBuilder: (context, index) {
+                final file = files[index];
+                final data = file.data!;
+                final metadata = data.getMetadataOrDefault();
+                return ContextRegion(
+                  builder: (context, widget, controller) {
+                    return ListTile(
+                      title: Text(metadata.name),
+                      subtitle: Text(file.identifier),
+                      onTap: () => GoRouter.of(context).goNamed(
+                        'editor',
+                        pathParameters: {'name': file.pathWithoutLeadingSlash},
                       ),
-                      MenuItemButton(
-                        leadingIcon: const Icon(PhosphorIconsLight.export),
-                        child: Text(AppLocalizations.of(context).export),
-                        onPressed: () async {
-                          exportData(
-                            context,
-                            data,
-                            metadata.name,
-                          );
-                        },
-                      ),
-                      MenuItemButton(
-                        leadingIcon: const Icon(PhosphorIconsLight.trash),
-                        child: Text(AppLocalizations.of(context).delete),
-                        onPressed: () async {
-                          final result = await showDialog<bool>(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title:
-                                  Text(AppLocalizations.of(context).removePack),
-                              content: Text(AppLocalizations.of(context)
-                                  .removePackMessage(file.identifier)),
-                              actions: [
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.of(context).pop(false),
-                                  child:
-                                      Text(AppLocalizations.of(context).cancel),
-                                ),
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.of(context).pop(true),
-                                  child:
-                                      Text(AppLocalizations.of(context).remove),
-                                ),
-                              ],
+                      trailing: widget,
+                    );
+                  },
+                  menuChildren: [
+                    MenuItemButton(
+                      leadingIcon: const Icon(PhosphorIconsLight.download),
+                      child: Text(AppLocalizations.of(context).install),
+                      onPressed: () async {
+                        await importFileData(
+                          context,
+                          _fileSystem,
+                          SetonixFile(data.exportAsBytes()),
+                        );
+                        widget.onReload();
+                      },
+                    ),
+                    MenuItemButton(
+                      leadingIcon: const Icon(PhosphorIconsLight.export),
+                      child: Text(AppLocalizations.of(context).export),
+                      onPressed: () async {
+                        exportData(context, data, metadata.name);
+                      },
+                    ),
+                    MenuItemButton(
+                      leadingIcon: const Icon(PhosphorIconsLight.trash),
+                      child: Text(AppLocalizations.of(context).delete),
+                      onPressed: () async {
+                        final result = await showDialog<bool>(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text(
+                              AppLocalizations.of(context).removePack,
                             ),
-                          );
-                          if (!(result ?? false)) return;
-                          await _fileSystem.editorSystem
-                              .deleteFile(file.identifier);
-                          _reloadPacks();
-                        },
-                      ),
-                    ],
-                  );
-                },
-              );
-            }),
+                            content: Text(
+                              AppLocalizations.of(
+                                context,
+                              ).removePackMessage(file.identifier),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.of(context).pop(false),
+                                child: Text(
+                                  AppLocalizations.of(context).cancel,
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.of(context).pop(true),
+                                child: Text(
+                                  AppLocalizations.of(context).remove,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                        if (!(result ?? false)) return;
+                        await _fileSystem.editorSystem.deleteFile(
+                          file.identifier,
+                        );
+                        _reloadPacks();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+        ),
         Align(
           alignment: Alignment.bottomRight,
           child: FloatingActionButton.extended(
@@ -138,14 +139,16 @@ class _EditorPacksViewState extends State<_EditorPacksView> {
                   onTap: () async {
                     Navigator.of(ctx).pop();
                     final name = await showDialog(
-                        context: context, builder: (context) => NameDialog());
+                      context: context,
+                      builder: (context) => NameDialog(),
+                    );
                     if (name == null) return;
                     await _fileSystem.editorSystem.createFile(
-                        name,
-                        SetonixData.empty().setMetadata(FileMetadata(
-                          name: name,
-                          type: FileType.pack,
-                        )));
+                      name,
+                      SetonixData.empty().setMetadata(
+                        FileMetadata(name: name, type: FileType.pack),
+                      ),
+                    );
                     _reloadPacks();
                   },
                 ),
@@ -174,8 +177,10 @@ class _EditorPacksViewState extends State<_EditorPacksView> {
                               subtitle: Text(pack.identifier),
                               onTap: () async {
                                 Navigator.of(context).pop();
-                                await _fileSystem.editorSystem
-                                    .createFile(metadata.name, data);
+                                await _fileSystem.editorSystem.createFile(
+                                  metadata.name,
+                                  data,
+                                );
                                 _reloadPacks();
                               },
                             );
@@ -202,13 +207,13 @@ class _EditorPacksViewState extends State<_EditorPacksView> {
                           label: AppLocalizations.of(context).packs,
                           extensions: const ['stnx'],
                           uniformTypeIdentifiers: const [
-                            'dev.linwood.setonix.pack'
+                            'dev.linwood.setonix.pack',
                           ],
                           mimeTypes: const [
                             'application/octet-stream',
-                            'application/zip'
+                            'application/zip',
                           ],
-                        )
+                        ),
                       ],
                     );
                     if (result == null) return;
@@ -218,8 +223,10 @@ class _EditorPacksViewState extends State<_EditorPacksView> {
                     if (metadata.type != FileType.pack) {
                       return;
                     }
-                    await _fileSystem.editorSystem
-                        .createFile(metadata.name, data);
+                    await _fileSystem.editorSystem.createFile(
+                      metadata.name,
+                      data,
+                    );
                     _reloadPacks();
                   },
                 ),

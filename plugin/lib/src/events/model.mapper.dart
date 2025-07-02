@@ -24,8 +24,10 @@ class UserJoinedMapper extends SubClassMapperBase<UserJoined> {
   static int _$channel(UserJoined v) => v.channel;
   static const Field<UserJoined, int> _f$channel = Field('channel', _$channel);
   static ConnectionInfo _$info(UserJoined v) => v.info;
-  static const Field<UserJoined, ConnectionInfo> _f$info =
-      Field('info', _$info);
+  static const Field<UserJoined, ConnectionInfo> _f$info = Field(
+    'info',
+    _$info,
+  );
 
   @override
   final MappableFields<UserJoined> fields = const {
@@ -59,27 +61,32 @@ class UserJoinedMapper extends SubClassMapperBase<UserJoined> {
 
 mixin UserJoinedMappable {
   String toJson() {
-    return UserJoinedMapper.ensureInitialized()
-        .encodeJson<UserJoined>(this as UserJoined);
+    return UserJoinedMapper.ensureInitialized().encodeJson<UserJoined>(
+      this as UserJoined,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return UserJoinedMapper.ensureInitialized()
-        .encodeMap<UserJoined>(this as UserJoined);
+    return UserJoinedMapper.ensureInitialized().encodeMap<UserJoined>(
+      this as UserJoined,
+    );
   }
 
   UserJoinedCopyWith<UserJoined, UserJoined, UserJoined> get copyWith =>
       _UserJoinedCopyWithImpl(this as UserJoined, $identity, $identity);
   @override
   String toString() {
-    return UserJoinedMapper.ensureInitialized()
-        .stringifyValue(this as UserJoined);
+    return UserJoinedMapper.ensureInitialized().stringifyValue(
+      this as UserJoined,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return UserJoinedMapper.ensureInitialized()
-        .equalsValue(this as UserJoined, other);
+    return UserJoinedMapper.ensureInitialized().equalsValue(
+      this as UserJoined,
+      other,
+    );
   }
 
   @override
@@ -110,15 +117,20 @@ class _UserJoinedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<UserJoined> $mapper =
       UserJoinedMapper.ensureInitialized();
   @override
-  $R call({int? channel, ConnectionInfo? info}) => $apply(FieldCopyWithData(
-      {if (channel != null) #channel: channel, if (info != null) #info: info}));
+  $R call({int? channel, ConnectionInfo? info}) => $apply(
+    FieldCopyWithData({
+      if (channel != null) #channel: channel,
+      if (info != null) #info: info,
+    }),
+  );
   @override
   UserJoined $make(CopyWithData data) => UserJoined(
-      channel: data.get(#channel, or: $value.channel),
-      info: data.get(#info, or: $value.info));
+    channel: data.get(#channel, or: $value.channel),
+    info: data.get(#info, or: $value.info),
+  );
 
   @override
   UserJoinedCopyWith<$R2, UserJoined, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _UserJoinedCopyWithImpl($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _UserJoinedCopyWithImpl($value, $cast, t);
 }

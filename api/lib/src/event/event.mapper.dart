@@ -29,7 +29,10 @@ class WorldEventMapper extends ClassMapperBase<WorldEvent> {
 
   static WorldEvent _instantiate(DecodingData data) {
     throw MapperException.missingSubclass(
-        'WorldEvent', 'type', '${data.value['type']}');
+      'WorldEvent',
+      'type',
+      '${data.value['type']}',
+    );
   }
 
   @override
@@ -85,7 +88,10 @@ class PlayableWorldEventMapper extends SubClassMapperBase<PlayableWorldEvent> {
 
   static PlayableWorldEvent _instantiate(DecodingData data) {
     throw MapperException.missingSubclass(
-        'PlayableWorldEvent', 'type', '${data.value['type']}');
+      'PlayableWorldEvent',
+      'type',
+      '${data.value['type']}',
+    );
   }
 
   @override
@@ -103,16 +109,25 @@ class PlayableWorldEventMapper extends SubClassMapperBase<PlayableWorldEvent> {
 mixin PlayableWorldEventMappable {
   String toJson();
   Map<String, dynamic> toMap();
-  PlayableWorldEventCopyWith<PlayableWorldEvent, PlayableWorldEvent,
-      PlayableWorldEvent> get copyWith;
+  PlayableWorldEventCopyWith<
+    PlayableWorldEvent,
+    PlayableWorldEvent,
+    PlayableWorldEvent
+  >
+  get copyWith;
 }
 
-abstract class PlayableWorldEventCopyWith<$R, $In extends PlayableWorldEvent,
-    $Out> implements WorldEventCopyWith<$R, $In, $Out> {
+abstract class PlayableWorldEventCopyWith<
+  $R,
+  $In extends PlayableWorldEvent,
+  $Out
+>
+    implements WorldEventCopyWith<$R, $In, $Out> {
   @override
   $R call();
   PlayableWorldEventCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class ServerWorldEventMapper extends SubClassMapperBase<ServerWorldEvent> {
@@ -157,7 +172,10 @@ class ServerWorldEventMapper extends SubClassMapperBase<ServerWorldEvent> {
 
   static ServerWorldEvent _instantiate(DecodingData data) {
     throw MapperException.missingSubclass(
-        'ServerWorldEvent', 'type', '${data.value['type']}');
+      'ServerWorldEvent',
+      'type',
+      '${data.value['type']}',
+    );
   }
 
   @override
@@ -176,7 +194,7 @@ mixin ServerWorldEventMappable {
   String toJson();
   Map<String, dynamic> toMap();
   ServerWorldEventCopyWith<ServerWorldEvent, ServerWorldEvent, ServerWorldEvent>
-      get copyWith;
+  get copyWith;
 }
 
 abstract class ServerWorldEventCopyWith<$R, $In extends ServerWorldEvent, $Out>
@@ -184,7 +202,8 @@ abstract class ServerWorldEventCopyWith<$R, $In extends ServerWorldEvent, $Out>
   @override
   $R call();
   ServerWorldEventCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class WorldInitializedMapper extends SubClassMapperBase<WorldInitialized> {
@@ -206,25 +225,38 @@ class WorldInitializedMapper extends SubClassMapperBase<WorldInitialized> {
   final String id = 'WorldInitialized';
 
   static GameTable? _$table(WorldInitialized v) => v.table;
-  static const Field<WorldInitialized, GameTable> _f$table =
-      Field('table', _$table, opt: true);
+  static const Field<WorldInitialized, GameTable> _f$table = Field(
+    'table',
+    _$table,
+    opt: true,
+  );
   static GameInfo? _$info(WorldInitialized v) => v.info;
-  static const Field<WorldInitialized, GameInfo> _f$info =
-      Field('info', _$info, opt: true);
+  static const Field<WorldInitialized, GameInfo> _f$info = Field(
+    'info',
+    _$info,
+    opt: true,
+  );
   static Map<String, Set<int>>? _$teamMembers(WorldInitialized v) =>
       v.teamMembers;
   static const Field<WorldInitialized, Map<String, Set<int>>> _f$teamMembers =
       Field('teamMembers', _$teamMembers, opt: true);
   static int? _$id(WorldInitialized v) => v.id;
-  static const Field<WorldInitialized, int> _f$id =
-      Field('id', _$id, opt: true);
+  static const Field<WorldInitialized, int> _f$id = Field(
+    'id',
+    _$id,
+    opt: true,
+  );
   static List<SignatureMetadata>? _$packsSignature(WorldInitialized v) =>
       v.packsSignature;
   static const Field<WorldInitialized, List<SignatureMetadata>>
-      _f$packsSignature = Field('packsSignature', _$packsSignature, opt: true);
+  _f$packsSignature = Field('packsSignature', _$packsSignature, opt: true);
   static bool _$clearUserInterface(WorldInitialized v) => v.clearUserInterface;
-  static const Field<WorldInitialized, bool> _f$clearUserInterface =
-      Field('clearUserInterface', _$clearUserInterface, opt: true, def: false);
+  static const Field<WorldInitialized, bool> _f$clearUserInterface = Field(
+    'clearUserInterface',
+    _$clearUserInterface,
+    opt: true,
+    def: false,
+  );
 
   @override
   final MappableFields<WorldInitialized> fields = const {
@@ -246,12 +278,13 @@ class WorldInitializedMapper extends SubClassMapperBase<WorldInitialized> {
 
   static WorldInitialized _instantiate(DecodingData data) {
     return WorldInitialized(
-        table: data.dec(_f$table),
-        info: data.dec(_f$info),
-        teamMembers: data.dec(_f$teamMembers),
-        id: data.dec(_f$id),
-        packsSignature: data.dec(_f$packsSignature),
-        clearUserInterface: data.dec(_f$clearUserInterface));
+      table: data.dec(_f$table),
+      info: data.dec(_f$info),
+      teamMembers: data.dec(_f$teamMembers),
+      id: data.dec(_f$id),
+      packsSignature: data.dec(_f$packsSignature),
+      clearUserInterface: data.dec(_f$clearUserInterface),
+    );
   }
 
   @override
@@ -278,33 +311,40 @@ mixin WorldInitializedMappable {
   }
 
   WorldInitializedCopyWith<WorldInitialized, WorldInitialized, WorldInitialized>
-      get copyWith =>
-          _WorldInitializedCopyWithImpl<WorldInitialized, WorldInitialized>(
-              this as WorldInitialized, $identity, $identity);
+  get copyWith =>
+      _WorldInitializedCopyWithImpl<WorldInitialized, WorldInitialized>(
+        this as WorldInitialized,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return WorldInitializedMapper.ensureInitialized()
-        .stringifyValue(this as WorldInitialized);
+    return WorldInitializedMapper.ensureInitialized().stringifyValue(
+      this as WorldInitialized,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return WorldInitializedMapper.ensureInitialized()
-        .equalsValue(this as WorldInitialized, other);
+    return WorldInitializedMapper.ensureInitialized().equalsValue(
+      this as WorldInitialized,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return WorldInitializedMapper.ensureInitialized()
-        .hashValue(this as WorldInitialized);
+    return WorldInitializedMapper.ensureInitialized().hashValue(
+      this as WorldInitialized,
+    );
   }
 }
 
 extension WorldInitializedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, WorldInitialized, $Out> {
   WorldInitializedCopyWith<$R, WorldInitialized, $Out>
-      get $asWorldInitialized => $base
-          .as((v, t, t2) => _WorldInitializedCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asWorldInitialized =>
+      $base.as((v, t, t2) => _WorldInitializedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class WorldInitializedCopyWith<$R, $In extends WorldInitialized, $Out>
@@ -312,20 +352,25 @@ abstract class WorldInitializedCopyWith<$R, $In extends WorldInitialized, $Out>
   GameTableCopyWith<$R, GameTable, GameTable>? get table;
   GameInfoCopyWith<$R, GameInfo, GameInfo>? get info;
   MapCopyWith<$R, String, Set<int>, ObjectCopyWith<$R, Set<int>, Set<int>>>?
-      get teamMembers;
-  ListCopyWith<$R, SignatureMetadata,
-          SignatureMetadataCopyWith<$R, SignatureMetadata, SignatureMetadata>>?
-      get packsSignature;
+  get teamMembers;
+  ListCopyWith<
+    $R,
+    SignatureMetadata,
+    SignatureMetadataCopyWith<$R, SignatureMetadata, SignatureMetadata>
+  >?
+  get packsSignature;
   @override
-  $R call(
-      {GameTable? table,
-      GameInfo? info,
-      Map<String, Set<int>>? teamMembers,
-      int? id,
-      List<SignatureMetadata>? packsSignature,
-      bool? clearUserInterface});
+  $R call({
+    GameTable? table,
+    GameInfo? info,
+    Map<String, Set<int>>? teamMembers,
+    int? id,
+    List<SignatureMetadata>? packsSignature,
+    bool? clearUserInterface,
+  });
   WorldInitializedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _WorldInitializedCopyWithImpl<$R, $Out>
@@ -344,49 +389,61 @@ class _WorldInitializedCopyWithImpl<$R, $Out>
       $value.info?.copyWith.$chain((v) => call(info: v));
   @override
   MapCopyWith<$R, String, Set<int>, ObjectCopyWith<$R, Set<int>, Set<int>>>?
-      get teamMembers => $value.teamMembers != null
-          ? MapCopyWith(
-              $value.teamMembers!,
-              (v, t) => ObjectCopyWith(v, $identity, t),
-              (v) => call(teamMembers: v))
-          : null;
+  get teamMembers => $value.teamMembers != null
+      ? MapCopyWith(
+          $value.teamMembers!,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(teamMembers: v),
+        )
+      : null;
   @override
-  ListCopyWith<$R, SignatureMetadata,
-          SignatureMetadataCopyWith<$R, SignatureMetadata, SignatureMetadata>>?
-      get packsSignature => $value.packsSignature != null
-          ? ListCopyWith($value.packsSignature!, (v, t) => v.copyWith.$chain(t),
-              (v) => call(packsSignature: v))
-          : null;
+  ListCopyWith<
+    $R,
+    SignatureMetadata,
+    SignatureMetadataCopyWith<$R, SignatureMetadata, SignatureMetadata>
+  >?
+  get packsSignature => $value.packsSignature != null
+      ? ListCopyWith(
+          $value.packsSignature!,
+          (v, t) => v.copyWith.$chain(t),
+          (v) => call(packsSignature: v),
+        )
+      : null;
   @override
-  $R call(
-          {Object? table = $none,
-          Object? info = $none,
-          Object? teamMembers = $none,
-          Object? id = $none,
-          Object? packsSignature = $none,
-          bool? clearUserInterface}) =>
-      $apply(FieldCopyWithData({
-        if (table != $none) #table: table,
-        if (info != $none) #info: info,
-        if (teamMembers != $none) #teamMembers: teamMembers,
-        if (id != $none) #id: id,
-        if (packsSignature != $none) #packsSignature: packsSignature,
-        if (clearUserInterface != null) #clearUserInterface: clearUserInterface
-      }));
+  $R call({
+    Object? table = $none,
+    Object? info = $none,
+    Object? teamMembers = $none,
+    Object? id = $none,
+    Object? packsSignature = $none,
+    bool? clearUserInterface,
+  }) => $apply(
+    FieldCopyWithData({
+      if (table != $none) #table: table,
+      if (info != $none) #info: info,
+      if (teamMembers != $none) #teamMembers: teamMembers,
+      if (id != $none) #id: id,
+      if (packsSignature != $none) #packsSignature: packsSignature,
+      if (clearUserInterface != null) #clearUserInterface: clearUserInterface,
+    }),
+  );
   @override
   WorldInitialized $make(CopyWithData data) => WorldInitialized(
-      table: data.get(#table, or: $value.table),
-      info: data.get(#info, or: $value.info),
-      teamMembers: data.get(#teamMembers, or: $value.teamMembers),
-      id: data.get(#id, or: $value.id),
-      packsSignature: data.get(#packsSignature, or: $value.packsSignature),
-      clearUserInterface:
-          data.get(#clearUserInterface, or: $value.clearUserInterface));
+    table: data.get(#table, or: $value.table),
+    info: data.get(#info, or: $value.info),
+    teamMembers: data.get(#teamMembers, or: $value.teamMembers),
+    id: data.get(#id, or: $value.id),
+    packsSignature: data.get(#packsSignature, or: $value.packsSignature),
+    clearUserInterface: data.get(
+      #clearUserInterface,
+      or: $value.clearUserInterface,
+    ),
+  );
 
   @override
   WorldInitializedCopyWith<$R2, WorldInitialized, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _WorldInitializedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _WorldInitializedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class TeamJoinedMapper extends SubClassMapperBase<TeamJoined> {
@@ -441,28 +498,36 @@ class TeamJoinedMapper extends SubClassMapperBase<TeamJoined> {
 
 mixin TeamJoinedMappable {
   String toJson() {
-    return TeamJoinedMapper.ensureInitialized()
-        .encodeJson<TeamJoined>(this as TeamJoined);
+    return TeamJoinedMapper.ensureInitialized().encodeJson<TeamJoined>(
+      this as TeamJoined,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return TeamJoinedMapper.ensureInitialized()
-        .encodeMap<TeamJoined>(this as TeamJoined);
+    return TeamJoinedMapper.ensureInitialized().encodeMap<TeamJoined>(
+      this as TeamJoined,
+    );
   }
 
   TeamJoinedCopyWith<TeamJoined, TeamJoined, TeamJoined> get copyWith =>
       _TeamJoinedCopyWithImpl<TeamJoined, TeamJoined>(
-          this as TeamJoined, $identity, $identity);
+        this as TeamJoined,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return TeamJoinedMapper.ensureInitialized()
-        .stringifyValue(this as TeamJoined);
+    return TeamJoinedMapper.ensureInitialized().stringifyValue(
+      this as TeamJoined,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return TeamJoinedMapper.ensureInitialized()
-        .equalsValue(this as TeamJoined, other);
+    return TeamJoinedMapper.ensureInitialized().equalsValue(
+      this as TeamJoined,
+      other,
+    );
   }
 
   @override
@@ -493,16 +558,22 @@ class _TeamJoinedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<TeamJoined> $mapper =
       TeamJoinedMapper.ensureInitialized();
   @override
-  $R call({int? user, String? team}) => $apply(FieldCopyWithData(
-      {if (user != null) #user: user, if (team != null) #team: team}));
+  $R call({int? user, String? team}) => $apply(
+    FieldCopyWithData({
+      if (user != null) #user: user,
+      if (team != null) #team: team,
+    }),
+  );
   @override
   TeamJoined $make(CopyWithData data) => TeamJoined(
-      data.get(#user, or: $value.user), data.get(#team, or: $value.team));
+    data.get(#user, or: $value.user),
+    data.get(#team, or: $value.team),
+  );
 
   @override
   TeamJoinedCopyWith<$R2, TeamJoined, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _TeamJoinedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _TeamJoinedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class TeamLeftMapper extends SubClassMapperBase<TeamLeft> {
@@ -557,18 +628,23 @@ class TeamLeftMapper extends SubClassMapperBase<TeamLeft> {
 
 mixin TeamLeftMappable {
   String toJson() {
-    return TeamLeftMapper.ensureInitialized()
-        .encodeJson<TeamLeft>(this as TeamLeft);
+    return TeamLeftMapper.ensureInitialized().encodeJson<TeamLeft>(
+      this as TeamLeft,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return TeamLeftMapper.ensureInitialized()
-        .encodeMap<TeamLeft>(this as TeamLeft);
+    return TeamLeftMapper.ensureInitialized().encodeMap<TeamLeft>(
+      this as TeamLeft,
+    );
   }
 
   TeamLeftCopyWith<TeamLeft, TeamLeft, TeamLeft> get copyWith =>
       _TeamLeftCopyWithImpl<TeamLeft, TeamLeft>(
-          this as TeamLeft, $identity, $identity);
+        this as TeamLeft,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
     return TeamLeftMapper.ensureInitialized().stringifyValue(this as TeamLeft);
@@ -576,8 +652,10 @@ mixin TeamLeftMappable {
 
   @override
   bool operator ==(Object other) {
-    return TeamLeftMapper.ensureInitialized()
-        .equalsValue(this as TeamLeft, other);
+    return TeamLeftMapper.ensureInitialized().equalsValue(
+      this as TeamLeft,
+      other,
+    );
   }
 
   @override
@@ -607,16 +685,22 @@ class _TeamLeftCopyWithImpl<$R, $Out>
   late final ClassMapperBase<TeamLeft> $mapper =
       TeamLeftMapper.ensureInitialized();
   @override
-  $R call({int? user, String? team}) => $apply(FieldCopyWithData(
-      {if (user != null) #user: user, if (team != null) #team: team}));
+  $R call({int? user, String? team}) => $apply(
+    FieldCopyWithData({
+      if (user != null) #user: user,
+      if (team != null) #team: team,
+    }),
+  );
   @override
   TeamLeft $make(CopyWithData data) => TeamLeft(
-      data.get(#user, or: $value.user), data.get(#team, or: $value.team));
+    data.get(#user, or: $value.user),
+    data.get(#team, or: $value.team),
+  );
 
   @override
   TeamLeftCopyWith<$R2, TeamLeft, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _TeamLeftCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _TeamLeftCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ObjectsChangedMapper extends SubClassMapperBase<ObjectsChanged> {
@@ -637,11 +721,17 @@ class ObjectsChangedMapper extends SubClassMapperBase<ObjectsChanged> {
   final String id = 'ObjectsChanged';
 
   static GlobalVectorDefinition _$cell(ObjectsChanged v) => v.cell;
-  static const Field<ObjectsChanged, GlobalVectorDefinition> _f$cell =
-      Field('cell', _$cell);
+  static const Field<ObjectsChanged, GlobalVectorDefinition> _f$cell = Field(
+    'cell',
+    _$cell,
+  );
   static List<GameObject> _$objects(ObjectsChanged v) => v.objects;
-  static const Field<ObjectsChanged, List<GameObject>> _f$objects =
-      Field('objects', _$objects, opt: true, def: const []);
+  static const Field<ObjectsChanged, List<GameObject>> _f$objects = Field(
+    'objects',
+    _$objects,
+    opt: true,
+    def: const [],
+  );
 
   @override
   final MappableFields<ObjectsChanged> fields = const {
@@ -675,35 +765,43 @@ class ObjectsChangedMapper extends SubClassMapperBase<ObjectsChanged> {
 
 mixin ObjectsChangedMappable {
   String toJson() {
-    return ObjectsChangedMapper.ensureInitialized()
-        .encodeJson<ObjectsChanged>(this as ObjectsChanged);
+    return ObjectsChangedMapper.ensureInitialized().encodeJson<ObjectsChanged>(
+      this as ObjectsChanged,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return ObjectsChangedMapper.ensureInitialized()
-        .encodeMap<ObjectsChanged>(this as ObjectsChanged);
+    return ObjectsChangedMapper.ensureInitialized().encodeMap<ObjectsChanged>(
+      this as ObjectsChanged,
+    );
   }
 
   ObjectsChangedCopyWith<ObjectsChanged, ObjectsChanged, ObjectsChanged>
-      get copyWith =>
-          _ObjectsChangedCopyWithImpl<ObjectsChanged, ObjectsChanged>(
-              this as ObjectsChanged, $identity, $identity);
+  get copyWith => _ObjectsChangedCopyWithImpl<ObjectsChanged, ObjectsChanged>(
+    this as ObjectsChanged,
+    $identity,
+    $identity,
+  );
   @override
   String toString() {
-    return ObjectsChangedMapper.ensureInitialized()
-        .stringifyValue(this as ObjectsChanged);
+    return ObjectsChangedMapper.ensureInitialized().stringifyValue(
+      this as ObjectsChanged,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return ObjectsChangedMapper.ensureInitialized()
-        .equalsValue(this as ObjectsChanged, other);
+    return ObjectsChangedMapper.ensureInitialized().equalsValue(
+      this as ObjectsChanged,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return ObjectsChangedMapper.ensureInitialized()
-        .hashValue(this as ObjectsChanged);
+    return ObjectsChangedMapper.ensureInitialized().hashValue(
+      this as ObjectsChanged,
+    );
   }
 }
 
@@ -715,14 +813,19 @@ extension ObjectsChangedValueCopy<$R, $Out>
 
 abstract class ObjectsChangedCopyWith<$R, $In extends ObjectsChanged, $Out>
     implements ServerWorldEventCopyWith<$R, $In, $Out> {
-  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
-      GlobalVectorDefinition> get cell;
+  GlobalVectorDefinitionCopyWith<
+    $R,
+    GlobalVectorDefinition,
+    GlobalVectorDefinition
+  >
+  get cell;
   ListCopyWith<$R, GameObject, GameObjectCopyWith<$R, GameObject, GameObject>>
-      get objects;
+  get objects;
   @override
   $R call({GlobalVectorDefinition? cell, List<GameObject>? objects});
   ObjectsChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _ObjectsChangedCopyWithImpl<$R, $Out>
@@ -734,27 +837,36 @@ class _ObjectsChangedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ObjectsChanged> $mapper =
       ObjectsChangedMapper.ensureInitialized();
   @override
-  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
-          GlobalVectorDefinition>
-      get cell => $value.cell.copyWith.$chain((v) => call(cell: v));
+  GlobalVectorDefinitionCopyWith<
+    $R,
+    GlobalVectorDefinition,
+    GlobalVectorDefinition
+  >
+  get cell => $value.cell.copyWith.$chain((v) => call(cell: v));
   @override
   ListCopyWith<$R, GameObject, GameObjectCopyWith<$R, GameObject, GameObject>>
-      get objects => ListCopyWith($value.objects,
-          (v, t) => v.copyWith.$chain(t), (v) => call(objects: v));
+  get objects => ListCopyWith(
+    $value.objects,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(objects: v),
+  );
   @override
-  $R call({GlobalVectorDefinition? cell, List<GameObject>? objects}) =>
-      $apply(FieldCopyWithData({
-        if (cell != null) #cell: cell,
-        if (objects != null) #objects: objects
-      }));
+  $R call({GlobalVectorDefinition? cell, List<GameObject>? objects}) => $apply(
+    FieldCopyWithData({
+      if (cell != null) #cell: cell,
+      if (objects != null) #objects: objects,
+    }),
+  );
   @override
   ObjectsChanged $make(CopyWithData data) => ObjectsChanged(
-      data.get(#cell, or: $value.cell), data.get(#objects, or: $value.objects));
+    data.get(#cell, or: $value.cell),
+    data.get(#objects, or: $value.objects),
+  );
 
   @override
   ObjectsChangedCopyWith<$R2, ObjectsChanged, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _ObjectsChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _ObjectsChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class CellShuffledMapper extends SubClassMapperBase<CellShuffled> {
@@ -774,11 +886,17 @@ class CellShuffledMapper extends SubClassMapperBase<CellShuffled> {
   final String id = 'CellShuffled';
 
   static GlobalVectorDefinition _$cell(CellShuffled v) => v.cell;
-  static const Field<CellShuffled, GlobalVectorDefinition> _f$cell =
-      Field('cell', _$cell);
+  static const Field<CellShuffled, GlobalVectorDefinition> _f$cell = Field(
+    'cell',
+    _$cell,
+  );
   static List<int> _$positions(CellShuffled v) => v.positions;
-  static const Field<CellShuffled, List<int>> _f$positions =
-      Field('positions', _$positions, opt: true, def: const []);
+  static const Field<CellShuffled, List<int>> _f$positions = Field(
+    'positions',
+    _$positions,
+    opt: true,
+    def: const [],
+  );
 
   @override
   final MappableFields<CellShuffled> fields = const {
@@ -812,34 +930,43 @@ class CellShuffledMapper extends SubClassMapperBase<CellShuffled> {
 
 mixin CellShuffledMappable {
   String toJson() {
-    return CellShuffledMapper.ensureInitialized()
-        .encodeJson<CellShuffled>(this as CellShuffled);
+    return CellShuffledMapper.ensureInitialized().encodeJson<CellShuffled>(
+      this as CellShuffled,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return CellShuffledMapper.ensureInitialized()
-        .encodeMap<CellShuffled>(this as CellShuffled);
+    return CellShuffledMapper.ensureInitialized().encodeMap<CellShuffled>(
+      this as CellShuffled,
+    );
   }
 
   CellShuffledCopyWith<CellShuffled, CellShuffled, CellShuffled> get copyWith =>
       _CellShuffledCopyWithImpl<CellShuffled, CellShuffled>(
-          this as CellShuffled, $identity, $identity);
+        this as CellShuffled,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return CellShuffledMapper.ensureInitialized()
-        .stringifyValue(this as CellShuffled);
+    return CellShuffledMapper.ensureInitialized().stringifyValue(
+      this as CellShuffled,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return CellShuffledMapper.ensureInitialized()
-        .equalsValue(this as CellShuffled, other);
+    return CellShuffledMapper.ensureInitialized().equalsValue(
+      this as CellShuffled,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return CellShuffledMapper.ensureInitialized()
-        .hashValue(this as CellShuffled);
+    return CellShuffledMapper.ensureInitialized().hashValue(
+      this as CellShuffled,
+    );
   }
 }
 
@@ -851,8 +978,12 @@ extension CellShuffledValueCopy<$R, $Out>
 
 abstract class CellShuffledCopyWith<$R, $In extends CellShuffled, $Out>
     implements ServerWorldEventCopyWith<$R, $In, $Out> {
-  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
-      GlobalVectorDefinition> get cell;
+  GlobalVectorDefinitionCopyWith<
+    $R,
+    GlobalVectorDefinition,
+    GlobalVectorDefinition
+  >
+  get cell;
   ListCopyWith<$R, int, ObjectCopyWith<$R, int, int>> get positions;
   @override
   $R call({GlobalVectorDefinition? cell, List<int>? positions});
@@ -868,28 +999,36 @@ class _CellShuffledCopyWithImpl<$R, $Out>
   late final ClassMapperBase<CellShuffled> $mapper =
       CellShuffledMapper.ensureInitialized();
   @override
-  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
-          GlobalVectorDefinition>
-      get cell => $value.cell.copyWith.$chain((v) => call(cell: v));
+  GlobalVectorDefinitionCopyWith<
+    $R,
+    GlobalVectorDefinition,
+    GlobalVectorDefinition
+  >
+  get cell => $value.cell.copyWith.$chain((v) => call(cell: v));
   @override
   ListCopyWith<$R, int, ObjectCopyWith<$R, int, int>> get positions =>
-      ListCopyWith($value.positions, (v, t) => ObjectCopyWith(v, $identity, t),
-          (v) => call(positions: v));
+      ListCopyWith(
+        $value.positions,
+        (v, t) => ObjectCopyWith(v, $identity, t),
+        (v) => call(positions: v),
+      );
   @override
-  $R call({GlobalVectorDefinition? cell, List<int>? positions}) =>
-      $apply(FieldCopyWithData({
-        if (cell != null) #cell: cell,
-        if (positions != null) #positions: positions
-      }));
+  $R call({GlobalVectorDefinition? cell, List<int>? positions}) => $apply(
+    FieldCopyWithData({
+      if (cell != null) #cell: cell,
+      if (positions != null) #positions: positions,
+    }),
+  );
   @override
   CellShuffled $make(CopyWithData data) => CellShuffled(
-      data.get(#cell, or: $value.cell),
-      data.get(#positions, or: $value.positions));
+    data.get(#cell, or: $value.cell),
+    data.get(#positions, or: $value.positions),
+  );
 
   @override
   CellShuffledCopyWith<$R2, CellShuffled, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _CellShuffledCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _CellShuffledCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class MessageSentMapper extends SubClassMapperBase<MessageSent> {
@@ -910,8 +1049,10 @@ class MessageSentMapper extends SubClassMapperBase<MessageSent> {
   static int _$user(MessageSent v) => v.user;
   static const Field<MessageSent, int> _f$user = Field('user', _$user);
   static String _$message(MessageSent v) => v.message;
-  static const Field<MessageSent, String> _f$message =
-      Field('message', _$message);
+  static const Field<MessageSent, String> _f$message = Field(
+    'message',
+    _$message,
+  );
 
   @override
   final MappableFields<MessageSent> fields = const {
@@ -945,28 +1086,36 @@ class MessageSentMapper extends SubClassMapperBase<MessageSent> {
 
 mixin MessageSentMappable {
   String toJson() {
-    return MessageSentMapper.ensureInitialized()
-        .encodeJson<MessageSent>(this as MessageSent);
+    return MessageSentMapper.ensureInitialized().encodeJson<MessageSent>(
+      this as MessageSent,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return MessageSentMapper.ensureInitialized()
-        .encodeMap<MessageSent>(this as MessageSent);
+    return MessageSentMapper.ensureInitialized().encodeMap<MessageSent>(
+      this as MessageSent,
+    );
   }
 
   MessageSentCopyWith<MessageSent, MessageSent, MessageSent> get copyWith =>
       _MessageSentCopyWithImpl<MessageSent, MessageSent>(
-          this as MessageSent, $identity, $identity);
+        this as MessageSent,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return MessageSentMapper.ensureInitialized()
-        .stringifyValue(this as MessageSent);
+    return MessageSentMapper.ensureInitialized().stringifyValue(
+      this as MessageSent,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return MessageSentMapper.ensureInitialized()
-        .equalsValue(this as MessageSent, other);
+    return MessageSentMapper.ensureInitialized().equalsValue(
+      this as MessageSent,
+      other,
+    );
   }
 
   @override
@@ -997,16 +1146,22 @@ class _MessageSentCopyWithImpl<$R, $Out>
   late final ClassMapperBase<MessageSent> $mapper =
       MessageSentMapper.ensureInitialized();
   @override
-  $R call({int? user, String? message}) => $apply(FieldCopyWithData(
-      {if (user != null) #user: user, if (message != null) #message: message}));
+  $R call({int? user, String? message}) => $apply(
+    FieldCopyWithData({
+      if (user != null) #user: user,
+      if (message != null) #message: message,
+    }),
+  );
   @override
   MessageSent $make(CopyWithData data) => MessageSent(
-      data.get(#user, or: $value.user), data.get(#message, or: $value.message));
+    data.get(#user, or: $value.user),
+    data.get(#message, or: $value.message),
+  );
 
   @override
   MessageSentCopyWith<$R2, MessageSent, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _MessageSentCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _MessageSentCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class BoardTilesSpawnedMapper extends SubClassMapperBase<BoardTilesSpawned> {
@@ -1027,12 +1182,14 @@ class BoardTilesSpawnedMapper extends SubClassMapperBase<BoardTilesSpawned> {
   final String id = 'BoardTilesSpawned';
 
   static String _$table(BoardTilesSpawned v) => v.table;
-  static const Field<BoardTilesSpawned, String> _f$table =
-      Field('table', _$table);
+  static const Field<BoardTilesSpawned, String> _f$table = Field(
+    'table',
+    _$table,
+  );
   static Map<VectorDefinition, List<BoardTile>> _$tiles(BoardTilesSpawned v) =>
       v.tiles;
   static const Field<BoardTilesSpawned, Map<VectorDefinition, List<BoardTile>>>
-      _f$tiles = Field('tiles', _$tiles, opt: true, def: const {});
+  _f$tiles = Field('tiles', _$tiles, opt: true, def: const {});
 
   @override
   final MappableFields<BoardTilesSpawned> fields = const {
@@ -1075,45 +1232,66 @@ mixin BoardTilesSpawnedMappable {
         .encodeMap<BoardTilesSpawned>(this as BoardTilesSpawned);
   }
 
-  BoardTilesSpawnedCopyWith<BoardTilesSpawned, BoardTilesSpawned,
-          BoardTilesSpawned>
-      get copyWith =>
-          _BoardTilesSpawnedCopyWithImpl<BoardTilesSpawned, BoardTilesSpawned>(
-              this as BoardTilesSpawned, $identity, $identity);
+  BoardTilesSpawnedCopyWith<
+    BoardTilesSpawned,
+    BoardTilesSpawned,
+    BoardTilesSpawned
+  >
+  get copyWith =>
+      _BoardTilesSpawnedCopyWithImpl<BoardTilesSpawned, BoardTilesSpawned>(
+        this as BoardTilesSpawned,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return BoardTilesSpawnedMapper.ensureInitialized()
-        .stringifyValue(this as BoardTilesSpawned);
+    return BoardTilesSpawnedMapper.ensureInitialized().stringifyValue(
+      this as BoardTilesSpawned,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return BoardTilesSpawnedMapper.ensureInitialized()
-        .equalsValue(this as BoardTilesSpawned, other);
+    return BoardTilesSpawnedMapper.ensureInitialized().equalsValue(
+      this as BoardTilesSpawned,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return BoardTilesSpawnedMapper.ensureInitialized()
-        .hashValue(this as BoardTilesSpawned);
+    return BoardTilesSpawnedMapper.ensureInitialized().hashValue(
+      this as BoardTilesSpawned,
+    );
   }
 }
 
 extension BoardTilesSpawnedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BoardTilesSpawned, $Out> {
   BoardTilesSpawnedCopyWith<$R, BoardTilesSpawned, $Out>
-      get $asBoardTilesSpawned => $base
-          .as((v, t, t2) => _BoardTilesSpawnedCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asBoardTilesSpawned => $base.as(
+    (v, t, t2) => _BoardTilesSpawnedCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
-abstract class BoardTilesSpawnedCopyWith<$R, $In extends BoardTilesSpawned,
-    $Out> implements ServerWorldEventCopyWith<$R, $In, $Out> {
-  MapCopyWith<$R, VectorDefinition, List<BoardTile>,
-      ObjectCopyWith<$R, List<BoardTile>, List<BoardTile>>> get tiles;
+abstract class BoardTilesSpawnedCopyWith<
+  $R,
+  $In extends BoardTilesSpawned,
+  $Out
+>
+    implements ServerWorldEventCopyWith<$R, $In, $Out> {
+  MapCopyWith<
+    $R,
+    VectorDefinition,
+    List<BoardTile>,
+    ObjectCopyWith<$R, List<BoardTile>, List<BoardTile>>
+  >
+  get tiles;
   @override
   $R call({String? table, Map<VectorDefinition, List<BoardTile>>? tiles});
   BoardTilesSpawnedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _BoardTilesSpawnedCopyWithImpl<$R, $Out>
@@ -1125,24 +1303,35 @@ class _BoardTilesSpawnedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<BoardTilesSpawned> $mapper =
       BoardTilesSpawnedMapper.ensureInitialized();
   @override
-  MapCopyWith<$R, VectorDefinition, List<BoardTile>,
-          ObjectCopyWith<$R, List<BoardTile>, List<BoardTile>>>
-      get tiles => MapCopyWith($value.tiles,
-          (v, t) => ObjectCopyWith(v, $identity, t), (v) => call(tiles: v));
+  MapCopyWith<
+    $R,
+    VectorDefinition,
+    List<BoardTile>,
+    ObjectCopyWith<$R, List<BoardTile>, List<BoardTile>>
+  >
+  get tiles => MapCopyWith(
+    $value.tiles,
+    (v, t) => ObjectCopyWith(v, $identity, t),
+    (v) => call(tiles: v),
+  );
   @override
   $R call({String? table, Map<VectorDefinition, List<BoardTile>>? tiles}) =>
-      $apply(FieldCopyWithData({
-        if (table != null) #table: table,
-        if (tiles != null) #tiles: tiles
-      }));
+      $apply(
+        FieldCopyWithData({
+          if (table != null) #table: table,
+          if (tiles != null) #tiles: tiles,
+        }),
+      );
   @override
   BoardTilesSpawned $make(CopyWithData data) => BoardTilesSpawned(
-      data.get(#table, or: $value.table), data.get(#tiles, or: $value.tiles));
+    data.get(#table, or: $value.table),
+    data.get(#tiles, or: $value.tiles),
+  );
 
   @override
   BoardTilesSpawnedCopyWith<$R2, BoardTilesSpawned, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _BoardTilesSpawnedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _BoardTilesSpawnedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class BoardTilesChangedMapper extends SubClassMapperBase<BoardTilesChanged> {
@@ -1163,12 +1352,14 @@ class BoardTilesChangedMapper extends SubClassMapperBase<BoardTilesChanged> {
   final String id = 'BoardTilesChanged';
 
   static String _$table(BoardTilesChanged v) => v.table;
-  static const Field<BoardTilesChanged, String> _f$table =
-      Field('table', _$table);
+  static const Field<BoardTilesChanged, String> _f$table = Field(
+    'table',
+    _$table,
+  );
   static Map<VectorDefinition, List<BoardTile>> _$tiles(BoardTilesChanged v) =>
       v.tiles;
   static const Field<BoardTilesChanged, Map<VectorDefinition, List<BoardTile>>>
-      _f$tiles = Field('tiles', _$tiles, opt: true, def: const {});
+  _f$tiles = Field('tiles', _$tiles, opt: true, def: const {});
 
   @override
   final MappableFields<BoardTilesChanged> fields = const {
@@ -1211,45 +1402,66 @@ mixin BoardTilesChangedMappable {
         .encodeMap<BoardTilesChanged>(this as BoardTilesChanged);
   }
 
-  BoardTilesChangedCopyWith<BoardTilesChanged, BoardTilesChanged,
-          BoardTilesChanged>
-      get copyWith =>
-          _BoardTilesChangedCopyWithImpl<BoardTilesChanged, BoardTilesChanged>(
-              this as BoardTilesChanged, $identity, $identity);
+  BoardTilesChangedCopyWith<
+    BoardTilesChanged,
+    BoardTilesChanged,
+    BoardTilesChanged
+  >
+  get copyWith =>
+      _BoardTilesChangedCopyWithImpl<BoardTilesChanged, BoardTilesChanged>(
+        this as BoardTilesChanged,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return BoardTilesChangedMapper.ensureInitialized()
-        .stringifyValue(this as BoardTilesChanged);
+    return BoardTilesChangedMapper.ensureInitialized().stringifyValue(
+      this as BoardTilesChanged,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return BoardTilesChangedMapper.ensureInitialized()
-        .equalsValue(this as BoardTilesChanged, other);
+    return BoardTilesChangedMapper.ensureInitialized().equalsValue(
+      this as BoardTilesChanged,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return BoardTilesChangedMapper.ensureInitialized()
-        .hashValue(this as BoardTilesChanged);
+    return BoardTilesChangedMapper.ensureInitialized().hashValue(
+      this as BoardTilesChanged,
+    );
   }
 }
 
 extension BoardTilesChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BoardTilesChanged, $Out> {
   BoardTilesChangedCopyWith<$R, BoardTilesChanged, $Out>
-      get $asBoardTilesChanged => $base
-          .as((v, t, t2) => _BoardTilesChangedCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asBoardTilesChanged => $base.as(
+    (v, t, t2) => _BoardTilesChangedCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
-abstract class BoardTilesChangedCopyWith<$R, $In extends BoardTilesChanged,
-    $Out> implements ServerWorldEventCopyWith<$R, $In, $Out> {
-  MapCopyWith<$R, VectorDefinition, List<BoardTile>,
-      ObjectCopyWith<$R, List<BoardTile>, List<BoardTile>>> get tiles;
+abstract class BoardTilesChangedCopyWith<
+  $R,
+  $In extends BoardTilesChanged,
+  $Out
+>
+    implements ServerWorldEventCopyWith<$R, $In, $Out> {
+  MapCopyWith<
+    $R,
+    VectorDefinition,
+    List<BoardTile>,
+    ObjectCopyWith<$R, List<BoardTile>, List<BoardTile>>
+  >
+  get tiles;
   @override
   $R call({String? table, Map<VectorDefinition, List<BoardTile>>? tiles});
   BoardTilesChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _BoardTilesChangedCopyWithImpl<$R, $Out>
@@ -1261,24 +1473,35 @@ class _BoardTilesChangedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<BoardTilesChanged> $mapper =
       BoardTilesChangedMapper.ensureInitialized();
   @override
-  MapCopyWith<$R, VectorDefinition, List<BoardTile>,
-          ObjectCopyWith<$R, List<BoardTile>, List<BoardTile>>>
-      get tiles => MapCopyWith($value.tiles,
-          (v, t) => ObjectCopyWith(v, $identity, t), (v) => call(tiles: v));
+  MapCopyWith<
+    $R,
+    VectorDefinition,
+    List<BoardTile>,
+    ObjectCopyWith<$R, List<BoardTile>, List<BoardTile>>
+  >
+  get tiles => MapCopyWith(
+    $value.tiles,
+    (v, t) => ObjectCopyWith(v, $identity, t),
+    (v) => call(tiles: v),
+  );
   @override
   $R call({String? table, Map<VectorDefinition, List<BoardTile>>? tiles}) =>
-      $apply(FieldCopyWithData({
-        if (table != null) #table: table,
-        if (tiles != null) #tiles: tiles
-      }));
+      $apply(
+        FieldCopyWithData({
+          if (table != null) #table: table,
+          if (tiles != null) #tiles: tiles,
+        }),
+      );
   @override
   BoardTilesChanged $make(CopyWithData data) => BoardTilesChanged(
-      data.get(#table, or: $value.table), data.get(#tiles, or: $value.tiles));
+    data.get(#table, or: $value.table),
+    data.get(#tiles, or: $value.tiles),
+  );
 
   @override
   BoardTilesChangedCopyWith<$R2, BoardTilesChanged, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _BoardTilesChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _BoardTilesChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class DialogOpenedMapper extends SubClassMapperBase<DialogOpened> {
@@ -1298,11 +1521,17 @@ class DialogOpenedMapper extends SubClassMapperBase<DialogOpened> {
   final String id = 'DialogOpened';
 
   static GameDialog _$dialog(DialogOpened v) => v.dialog;
-  static const Field<DialogOpened, GameDialog> _f$dialog =
-      Field('dialog', _$dialog);
+  static const Field<DialogOpened, GameDialog> _f$dialog = Field(
+    'dialog',
+    _$dialog,
+  );
   static bool _$closeOthers(DialogOpened v) => v.closeOthers;
-  static const Field<DialogOpened, bool> _f$closeOthers =
-      Field('closeOthers', _$closeOthers, opt: true, def: false);
+  static const Field<DialogOpened, bool> _f$closeOthers = Field(
+    'closeOthers',
+    _$closeOthers,
+    opt: true,
+    def: false,
+  );
 
   @override
   final MappableFields<DialogOpened> fields = const {
@@ -1319,8 +1548,10 @@ class DialogOpenedMapper extends SubClassMapperBase<DialogOpened> {
       ServerWorldEventMapper.ensureInitialized();
 
   static DialogOpened _instantiate(DecodingData data) {
-    return DialogOpened(data.dec(_f$dialog),
-        closeOthers: data.dec(_f$closeOthers));
+    return DialogOpened(
+      data.dec(_f$dialog),
+      closeOthers: data.dec(_f$closeOthers),
+    );
   }
 
   @override
@@ -1337,34 +1568,43 @@ class DialogOpenedMapper extends SubClassMapperBase<DialogOpened> {
 
 mixin DialogOpenedMappable {
   String toJson() {
-    return DialogOpenedMapper.ensureInitialized()
-        .encodeJson<DialogOpened>(this as DialogOpened);
+    return DialogOpenedMapper.ensureInitialized().encodeJson<DialogOpened>(
+      this as DialogOpened,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return DialogOpenedMapper.ensureInitialized()
-        .encodeMap<DialogOpened>(this as DialogOpened);
+    return DialogOpenedMapper.ensureInitialized().encodeMap<DialogOpened>(
+      this as DialogOpened,
+    );
   }
 
   DialogOpenedCopyWith<DialogOpened, DialogOpened, DialogOpened> get copyWith =>
       _DialogOpenedCopyWithImpl<DialogOpened, DialogOpened>(
-          this as DialogOpened, $identity, $identity);
+        this as DialogOpened,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return DialogOpenedMapper.ensureInitialized()
-        .stringifyValue(this as DialogOpened);
+    return DialogOpenedMapper.ensureInitialized().stringifyValue(
+      this as DialogOpened,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return DialogOpenedMapper.ensureInitialized()
-        .equalsValue(this as DialogOpened, other);
+    return DialogOpenedMapper.ensureInitialized().equalsValue(
+      this as DialogOpened,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return DialogOpenedMapper.ensureInitialized()
-        .hashValue(this as DialogOpened);
+    return DialogOpenedMapper.ensureInitialized().hashValue(
+      this as DialogOpened,
+    );
   }
 }
 
@@ -1394,19 +1634,22 @@ class _DialogOpenedCopyWithImpl<$R, $Out>
   GameDialogCopyWith<$R, GameDialog, GameDialog> get dialog =>
       $value.dialog.copyWith.$chain((v) => call(dialog: v));
   @override
-  $R call({GameDialog? dialog, bool? closeOthers}) => $apply(FieldCopyWithData({
-        if (dialog != null) #dialog: dialog,
-        if (closeOthers != null) #closeOthers: closeOthers
-      }));
+  $R call({GameDialog? dialog, bool? closeOthers}) => $apply(
+    FieldCopyWithData({
+      if (dialog != null) #dialog: dialog,
+      if (closeOthers != null) #closeOthers: closeOthers,
+    }),
+  );
   @override
-  DialogOpened $make(CopyWithData data) =>
-      DialogOpened(data.get(#dialog, or: $value.dialog),
-          closeOthers: data.get(#closeOthers, or: $value.closeOthers));
+  DialogOpened $make(CopyWithData data) => DialogOpened(
+    data.get(#dialog, or: $value.dialog),
+    closeOthers: data.get(#closeOthers, or: $value.closeOthers),
+  );
 
   @override
   DialogOpenedCopyWith<$R2, DialogOpened, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _DialogOpenedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _DialogOpenedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class DialogsClosedMapper extends SubClassMapperBase<DialogsClosed> {
@@ -1428,9 +1671,7 @@ class DialogsClosedMapper extends SubClassMapperBase<DialogsClosed> {
   static const Field<DialogsClosed, List<String>> _f$ids = Field('ids', _$ids);
 
   @override
-  final MappableFields<DialogsClosed> fields = const {
-    #ids: _f$ids,
-  };
+  final MappableFields<DialogsClosed> fields = const {#ids: _f$ids};
 
   @override
   final String discriminatorKey = 'type';
@@ -1458,34 +1699,43 @@ class DialogsClosedMapper extends SubClassMapperBase<DialogsClosed> {
 
 mixin DialogsClosedMappable {
   String toJson() {
-    return DialogsClosedMapper.ensureInitialized()
-        .encodeJson<DialogsClosed>(this as DialogsClosed);
+    return DialogsClosedMapper.ensureInitialized().encodeJson<DialogsClosed>(
+      this as DialogsClosed,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return DialogsClosedMapper.ensureInitialized()
-        .encodeMap<DialogsClosed>(this as DialogsClosed);
+    return DialogsClosedMapper.ensureInitialized().encodeMap<DialogsClosed>(
+      this as DialogsClosed,
+    );
   }
 
   DialogsClosedCopyWith<DialogsClosed, DialogsClosed, DialogsClosed>
-      get copyWith => _DialogsClosedCopyWithImpl<DialogsClosed, DialogsClosed>(
-          this as DialogsClosed, $identity, $identity);
+  get copyWith => _DialogsClosedCopyWithImpl<DialogsClosed, DialogsClosed>(
+    this as DialogsClosed,
+    $identity,
+    $identity,
+  );
   @override
   String toString() {
-    return DialogsClosedMapper.ensureInitialized()
-        .stringifyValue(this as DialogsClosed);
+    return DialogsClosedMapper.ensureInitialized().stringifyValue(
+      this as DialogsClosed,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return DialogsClosedMapper.ensureInitialized()
-        .equalsValue(this as DialogsClosed, other);
+    return DialogsClosedMapper.ensureInitialized().equalsValue(
+      this as DialogsClosed,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return DialogsClosedMapper.ensureInitialized()
-        .hashValue(this as DialogsClosed);
+    return DialogsClosedMapper.ensureInitialized().hashValue(
+      this as DialogsClosed,
+    );
   }
 }
 
@@ -1514,9 +1764,12 @@ class _DialogsClosedCopyWithImpl<$R, $Out>
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>? get ids =>
       $value.ids != null
-          ? ListCopyWith($value.ids!, (v, t) => ObjectCopyWith(v, $identity, t),
-              (v) => call(ids: v))
-          : null;
+      ? ListCopyWith(
+          $value.ids!,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(ids: v),
+        )
+      : null;
   @override
   $R call({Object? ids = $none}) =>
       $apply(FieldCopyWithData({if (ids != $none) #ids: ids}));
@@ -1526,8 +1779,8 @@ class _DialogsClosedCopyWithImpl<$R, $Out>
 
   @override
   DialogsClosedCopyWith<$R2, DialogsClosed, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _DialogsClosedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _DialogsClosedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ImagesUpdatedMapper extends SubClassMapperBase<ImagesUpdated> {
@@ -1547,13 +1800,13 @@ class ImagesUpdatedMapper extends SubClassMapperBase<ImagesUpdated> {
   final String id = 'ImagesUpdated';
 
   static Map<String, Uint8List> _$images(ImagesUpdated v) => v.images;
-  static const Field<ImagesUpdated, Map<String, Uint8List>> _f$images =
-      Field('images', _$images);
+  static const Field<ImagesUpdated, Map<String, Uint8List>> _f$images = Field(
+    'images',
+    _$images,
+  );
 
   @override
-  final MappableFields<ImagesUpdated> fields = const {
-    #images: _f$images,
-  };
+  final MappableFields<ImagesUpdated> fields = const {#images: _f$images};
 
   @override
   final String discriminatorKey = 'type';
@@ -1581,34 +1834,43 @@ class ImagesUpdatedMapper extends SubClassMapperBase<ImagesUpdated> {
 
 mixin ImagesUpdatedMappable {
   String toJson() {
-    return ImagesUpdatedMapper.ensureInitialized()
-        .encodeJson<ImagesUpdated>(this as ImagesUpdated);
+    return ImagesUpdatedMapper.ensureInitialized().encodeJson<ImagesUpdated>(
+      this as ImagesUpdated,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return ImagesUpdatedMapper.ensureInitialized()
-        .encodeMap<ImagesUpdated>(this as ImagesUpdated);
+    return ImagesUpdatedMapper.ensureInitialized().encodeMap<ImagesUpdated>(
+      this as ImagesUpdated,
+    );
   }
 
   ImagesUpdatedCopyWith<ImagesUpdated, ImagesUpdated, ImagesUpdated>
-      get copyWith => _ImagesUpdatedCopyWithImpl<ImagesUpdated, ImagesUpdated>(
-          this as ImagesUpdated, $identity, $identity);
+  get copyWith => _ImagesUpdatedCopyWithImpl<ImagesUpdated, ImagesUpdated>(
+    this as ImagesUpdated,
+    $identity,
+    $identity,
+  );
   @override
   String toString() {
-    return ImagesUpdatedMapper.ensureInitialized()
-        .stringifyValue(this as ImagesUpdated);
+    return ImagesUpdatedMapper.ensureInitialized().stringifyValue(
+      this as ImagesUpdated,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return ImagesUpdatedMapper.ensureInitialized()
-        .equalsValue(this as ImagesUpdated, other);
+    return ImagesUpdatedMapper.ensureInitialized().equalsValue(
+      this as ImagesUpdated,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return ImagesUpdatedMapper.ensureInitialized()
-        .hashValue(this as ImagesUpdated);
+    return ImagesUpdatedMapper.ensureInitialized().hashValue(
+      this as ImagesUpdated,
+    );
   }
 }
 
@@ -1621,7 +1883,7 @@ extension ImagesUpdatedValueCopy<$R, $Out>
 abstract class ImagesUpdatedCopyWith<$R, $In extends ImagesUpdated, $Out>
     implements ServerWorldEventCopyWith<$R, $In, $Out> {
   MapCopyWith<$R, String, Uint8List, ObjectCopyWith<$R, Uint8List, Uint8List>>
-      get images;
+  get images;
   @override
   $R call({Map<String, Uint8List>? images});
   ImagesUpdatedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -1637,8 +1899,11 @@ class _ImagesUpdatedCopyWithImpl<$R, $Out>
       ImagesUpdatedMapper.ensureInitialized();
   @override
   MapCopyWith<$R, String, Uint8List, ObjectCopyWith<$R, Uint8List, Uint8List>>
-      get images => MapCopyWith($value.images,
-          (v, t) => ObjectCopyWith(v, $identity, t), (v) => call(images: v));
+  get images => MapCopyWith(
+    $value.images,
+    (v, t) => ObjectCopyWith(v, $identity, t),
+    (v) => call(images: v),
+  );
   @override
   $R call({Map<String, Uint8List>? images}) =>
       $apply(FieldCopyWithData({if (images != null) #images: images}));
@@ -1648,8 +1913,8 @@ class _ImagesUpdatedCopyWithImpl<$R, $Out>
 
   @override
   ImagesUpdatedCopyWith<$R2, ImagesUpdated, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _ImagesUpdatedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _ImagesUpdatedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ServerStateUpdatedMapper extends SubClassMapperBase<ServerStateUpdated> {
@@ -1669,13 +1934,13 @@ class ServerStateUpdatedMapper extends SubClassMapperBase<ServerStateUpdated> {
   final String id = 'ServerStateUpdated';
 
   static ServerState _$state(ServerStateUpdated v) => v.state;
-  static const Field<ServerStateUpdated, ServerState> _f$state =
-      Field('state', _$state);
+  static const Field<ServerStateUpdated, ServerState> _f$state = Field(
+    'state',
+    _$state,
+  );
 
   @override
-  final MappableFields<ServerStateUpdated> fields = const {
-    #state: _f$state,
-  };
+  final MappableFields<ServerStateUpdated> fields = const {#state: _f$state};
 
   @override
   final String discriminatorKey = 'type';
@@ -1712,43 +1977,60 @@ mixin ServerStateUpdatedMappable {
         .encodeMap<ServerStateUpdated>(this as ServerStateUpdated);
   }
 
-  ServerStateUpdatedCopyWith<ServerStateUpdated, ServerStateUpdated,
-          ServerStateUpdated>
-      get copyWith => _ServerStateUpdatedCopyWithImpl<ServerStateUpdated,
-          ServerStateUpdated>(this as ServerStateUpdated, $identity, $identity);
+  ServerStateUpdatedCopyWith<
+    ServerStateUpdated,
+    ServerStateUpdated,
+    ServerStateUpdated
+  >
+  get copyWith =>
+      _ServerStateUpdatedCopyWithImpl<ServerStateUpdated, ServerStateUpdated>(
+        this as ServerStateUpdated,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return ServerStateUpdatedMapper.ensureInitialized()
-        .stringifyValue(this as ServerStateUpdated);
+    return ServerStateUpdatedMapper.ensureInitialized().stringifyValue(
+      this as ServerStateUpdated,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return ServerStateUpdatedMapper.ensureInitialized()
-        .equalsValue(this as ServerStateUpdated, other);
+    return ServerStateUpdatedMapper.ensureInitialized().equalsValue(
+      this as ServerStateUpdated,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return ServerStateUpdatedMapper.ensureInitialized()
-        .hashValue(this as ServerStateUpdated);
+    return ServerStateUpdatedMapper.ensureInitialized().hashValue(
+      this as ServerStateUpdated,
+    );
   }
 }
 
 extension ServerStateUpdatedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ServerStateUpdated, $Out> {
   ServerStateUpdatedCopyWith<$R, ServerStateUpdated, $Out>
-      get $asServerStateUpdated => $base.as(
-          (v, t, t2) => _ServerStateUpdatedCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asServerStateUpdated => $base.as(
+    (v, t, t2) => _ServerStateUpdatedCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
-abstract class ServerStateUpdatedCopyWith<$R, $In extends ServerStateUpdated,
-    $Out> implements ServerWorldEventCopyWith<$R, $In, $Out> {
+abstract class ServerStateUpdatedCopyWith<
+  $R,
+  $In extends ServerStateUpdated,
+  $Out
+>
+    implements ServerWorldEventCopyWith<$R, $In, $Out> {
   ServerStateCopyWith<$R, ServerState, ServerState> get state;
   @override
   $R call({ServerState? state});
   ServerStateUpdatedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _ServerStateUpdatedCopyWithImpl<$R, $Out>
@@ -1771,8 +2053,8 @@ class _ServerStateUpdatedCopyWithImpl<$R, $Out>
 
   @override
   ServerStateUpdatedCopyWith<$R2, ServerStateUpdated, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _ServerStateUpdatedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _ServerStateUpdatedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class AuthenticatedRequestedMapper
@@ -1793,11 +2075,17 @@ class AuthenticatedRequestedMapper
   final String id = 'AuthenticatedRequested';
 
   static Uint8List _$challenge(AuthenticatedRequested v) => v.challenge;
-  static const Field<AuthenticatedRequested, Uint8List> _f$challenge =
-      Field('challenge', _$challenge);
+  static const Field<AuthenticatedRequested, Uint8List> _f$challenge = Field(
+    'challenge',
+    _$challenge,
+  );
   static bool _$isRequired(AuthenticatedRequested v) => v.isRequired;
-  static const Field<AuthenticatedRequested, bool> _f$isRequired =
-      Field('isRequired', _$isRequired, opt: true, def: true);
+  static const Field<AuthenticatedRequested, bool> _f$isRequired = Field(
+    'isRequired',
+    _$isRequired,
+    opt: true,
+    def: true,
+  );
 
   @override
   final MappableFields<AuthenticatedRequested> fields = const {
@@ -1814,8 +2102,10 @@ class AuthenticatedRequestedMapper
       ServerWorldEventMapper.ensureInitialized();
 
   static AuthenticatedRequested _instantiate(DecodingData data) {
-    return AuthenticatedRequested(data.dec(_f$challenge),
-        isRequired: data.dec(_f$isRequired));
+    return AuthenticatedRequested(
+      data.dec(_f$challenge),
+      isRequired: data.dec(_f$isRequired),
+    );
   }
 
   @override
@@ -1841,45 +2131,58 @@ mixin AuthenticatedRequestedMappable {
         .encodeMap<AuthenticatedRequested>(this as AuthenticatedRequested);
   }
 
-  AuthenticatedRequestedCopyWith<AuthenticatedRequested, AuthenticatedRequested,
-          AuthenticatedRequested>
-      get copyWith => _AuthenticatedRequestedCopyWithImpl<
-              AuthenticatedRequested, AuthenticatedRequested>(
-          this as AuthenticatedRequested, $identity, $identity);
+  AuthenticatedRequestedCopyWith<
+    AuthenticatedRequested,
+    AuthenticatedRequested,
+    AuthenticatedRequested
+  >
+  get copyWith =>
+      _AuthenticatedRequestedCopyWithImpl<
+        AuthenticatedRequested,
+        AuthenticatedRequested
+      >(this as AuthenticatedRequested, $identity, $identity);
   @override
   String toString() {
-    return AuthenticatedRequestedMapper.ensureInitialized()
-        .stringifyValue(this as AuthenticatedRequested);
+    return AuthenticatedRequestedMapper.ensureInitialized().stringifyValue(
+      this as AuthenticatedRequested,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return AuthenticatedRequestedMapper.ensureInitialized()
-        .equalsValue(this as AuthenticatedRequested, other);
+    return AuthenticatedRequestedMapper.ensureInitialized().equalsValue(
+      this as AuthenticatedRequested,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return AuthenticatedRequestedMapper.ensureInitialized()
-        .hashValue(this as AuthenticatedRequested);
+    return AuthenticatedRequestedMapper.ensureInitialized().hashValue(
+      this as AuthenticatedRequested,
+    );
   }
 }
 
 extension AuthenticatedRequestedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, AuthenticatedRequested, $Out> {
   AuthenticatedRequestedCopyWith<$R, AuthenticatedRequested, $Out>
-      get $asAuthenticatedRequested => $base.as((v, t, t2) =>
-          _AuthenticatedRequestedCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asAuthenticatedRequested => $base.as(
+    (v, t, t2) => _AuthenticatedRequestedCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
 abstract class AuthenticatedRequestedCopyWith<
-    $R,
-    $In extends AuthenticatedRequested,
-    $Out> implements ServerWorldEventCopyWith<$R, $In, $Out> {
+  $R,
+  $In extends AuthenticatedRequested,
+  $Out
+>
+    implements ServerWorldEventCopyWith<$R, $In, $Out> {
   @override
   $R call({Uint8List? challenge, bool? isRequired});
   AuthenticatedRequestedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _AuthenticatedRequestedCopyWithImpl<$R, $Out>
@@ -1892,20 +2195,22 @@ class _AuthenticatedRequestedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<AuthenticatedRequested> $mapper =
       AuthenticatedRequestedMapper.ensureInitialized();
   @override
-  $R call({Uint8List? challenge, bool? isRequired}) =>
-      $apply(FieldCopyWithData({
-        if (challenge != null) #challenge: challenge,
-        if (isRequired != null) #isRequired: isRequired
-      }));
+  $R call({Uint8List? challenge, bool? isRequired}) => $apply(
+    FieldCopyWithData({
+      if (challenge != null) #challenge: challenge,
+      if (isRequired != null) #isRequired: isRequired,
+    }),
+  );
   @override
-  AuthenticatedRequested $make(CopyWithData data) =>
-      AuthenticatedRequested(data.get(#challenge, or: $value.challenge),
-          isRequired: data.get(#isRequired, or: $value.isRequired));
+  AuthenticatedRequested $make(CopyWithData data) => AuthenticatedRequested(
+    data.get(#challenge, or: $value.challenge),
+    isRequired: data.get(#isRequired, or: $value.isRequired),
+  );
 
   @override
   AuthenticatedRequestedCopyWith<$R2, AuthenticatedRequested, $Out2>
-      $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _AuthenticatedRequestedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _AuthenticatedRequestedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ClientWorldEventMapper extends SubClassMapperBase<ClientWorldEvent> {
@@ -1949,7 +2254,10 @@ class ClientWorldEventMapper extends SubClassMapperBase<ClientWorldEvent> {
 
   static ClientWorldEvent _instantiate(DecodingData data) {
     throw MapperException.missingSubclass(
-        'ClientWorldEvent', 'type', '${data.value['type']}');
+      'ClientWorldEvent',
+      'type',
+      '${data.value['type']}',
+    );
   }
 
   @override
@@ -1968,7 +2276,7 @@ mixin ClientWorldEventMappable {
   String toJson();
   Map<String, dynamic> toMap();
   ClientWorldEventCopyWith<ClientWorldEvent, ClientWorldEvent, ClientWorldEvent>
-      get copyWith;
+  get copyWith;
 }
 
 abstract class ClientWorldEventCopyWith<$R, $In extends ClientWorldEvent, $Out>
@@ -1976,7 +2284,8 @@ abstract class ClientWorldEventCopyWith<$R, $In extends ClientWorldEvent, $Out>
   @override
   $R call();
   ClientWorldEventCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class TeamJoinRequestMapper extends SubClassMapperBase<TeamJoinRequest> {
@@ -1998,9 +2307,7 @@ class TeamJoinRequestMapper extends SubClassMapperBase<TeamJoinRequest> {
   static const Field<TeamJoinRequest, String> _f$team = Field('team', _$team);
 
   @override
-  final MappableFields<TeamJoinRequest> fields = const {
-    #team: _f$team,
-  };
+  final MappableFields<TeamJoinRequest> fields = const {#team: _f$team};
 
   @override
   final String discriminatorKey = 'type';
@@ -2033,30 +2340,38 @@ mixin TeamJoinRequestMappable {
   }
 
   Map<String, dynamic> toMap() {
-    return TeamJoinRequestMapper.ensureInitialized()
-        .encodeMap<TeamJoinRequest>(this as TeamJoinRequest);
+    return TeamJoinRequestMapper.ensureInitialized().encodeMap<TeamJoinRequest>(
+      this as TeamJoinRequest,
+    );
   }
 
   TeamJoinRequestCopyWith<TeamJoinRequest, TeamJoinRequest, TeamJoinRequest>
-      get copyWith =>
-          _TeamJoinRequestCopyWithImpl<TeamJoinRequest, TeamJoinRequest>(
-              this as TeamJoinRequest, $identity, $identity);
+  get copyWith =>
+      _TeamJoinRequestCopyWithImpl<TeamJoinRequest, TeamJoinRequest>(
+        this as TeamJoinRequest,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return TeamJoinRequestMapper.ensureInitialized()
-        .stringifyValue(this as TeamJoinRequest);
+    return TeamJoinRequestMapper.ensureInitialized().stringifyValue(
+      this as TeamJoinRequest,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return TeamJoinRequestMapper.ensureInitialized()
-        .equalsValue(this as TeamJoinRequest, other);
+    return TeamJoinRequestMapper.ensureInitialized().equalsValue(
+      this as TeamJoinRequest,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return TeamJoinRequestMapper.ensureInitialized()
-        .hashValue(this as TeamJoinRequest);
+    return TeamJoinRequestMapper.ensureInitialized().hashValue(
+      this as TeamJoinRequest,
+    );
   }
 }
 
@@ -2071,7 +2386,8 @@ abstract class TeamJoinRequestCopyWith<$R, $In extends TeamJoinRequest, $Out>
   @override
   $R call({String? team});
   TeamJoinRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _TeamJoinRequestCopyWithImpl<$R, $Out>
@@ -2091,8 +2407,8 @@ class _TeamJoinRequestCopyWithImpl<$R, $Out>
 
   @override
   TeamJoinRequestCopyWith<$R2, TeamJoinRequest, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _TeamJoinRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _TeamJoinRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class TeamLeaveRequestMapper extends SubClassMapperBase<TeamLeaveRequest> {
@@ -2114,9 +2430,7 @@ class TeamLeaveRequestMapper extends SubClassMapperBase<TeamLeaveRequest> {
   static const Field<TeamLeaveRequest, String> _f$team = Field('team', _$team);
 
   @override
-  final MappableFields<TeamLeaveRequest> fields = const {
-    #team: _f$team,
-  };
+  final MappableFields<TeamLeaveRequest> fields = const {#team: _f$team};
 
   @override
   final String discriminatorKey = 'type';
@@ -2154,33 +2468,40 @@ mixin TeamLeaveRequestMappable {
   }
 
   TeamLeaveRequestCopyWith<TeamLeaveRequest, TeamLeaveRequest, TeamLeaveRequest>
-      get copyWith =>
-          _TeamLeaveRequestCopyWithImpl<TeamLeaveRequest, TeamLeaveRequest>(
-              this as TeamLeaveRequest, $identity, $identity);
+  get copyWith =>
+      _TeamLeaveRequestCopyWithImpl<TeamLeaveRequest, TeamLeaveRequest>(
+        this as TeamLeaveRequest,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return TeamLeaveRequestMapper.ensureInitialized()
-        .stringifyValue(this as TeamLeaveRequest);
+    return TeamLeaveRequestMapper.ensureInitialized().stringifyValue(
+      this as TeamLeaveRequest,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return TeamLeaveRequestMapper.ensureInitialized()
-        .equalsValue(this as TeamLeaveRequest, other);
+    return TeamLeaveRequestMapper.ensureInitialized().equalsValue(
+      this as TeamLeaveRequest,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return TeamLeaveRequestMapper.ensureInitialized()
-        .hashValue(this as TeamLeaveRequest);
+    return TeamLeaveRequestMapper.ensureInitialized().hashValue(
+      this as TeamLeaveRequest,
+    );
   }
 }
 
 extension TeamLeaveRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, TeamLeaveRequest, $Out> {
   TeamLeaveRequestCopyWith<$R, TeamLeaveRequest, $Out>
-      get $asTeamLeaveRequest => $base
-          .as((v, t, t2) => _TeamLeaveRequestCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asTeamLeaveRequest =>
+      $base.as((v, t, t2) => _TeamLeaveRequestCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class TeamLeaveRequestCopyWith<$R, $In extends TeamLeaveRequest, $Out>
@@ -2188,7 +2509,8 @@ abstract class TeamLeaveRequestCopyWith<$R, $In extends TeamLeaveRequest, $Out>
   @override
   $R call({String? team});
   TeamLeaveRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _TeamLeaveRequestCopyWithImpl<$R, $Out>
@@ -2208,8 +2530,8 @@ class _TeamLeaveRequestCopyWithImpl<$R, $Out>
 
   @override
   TeamLeaveRequestCopyWith<$R2, TeamLeaveRequest, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _TeamLeaveRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _TeamLeaveRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class CellRollRequestMapper extends SubClassMapperBase<CellRollRequest> {
@@ -2229,11 +2551,16 @@ class CellRollRequestMapper extends SubClassMapperBase<CellRollRequest> {
   final String id = 'CellRollRequest';
 
   static GlobalVectorDefinition _$cell(CellRollRequest v) => v.cell;
-  static const Field<CellRollRequest, GlobalVectorDefinition> _f$cell =
-      Field('cell', _$cell);
+  static const Field<CellRollRequest, GlobalVectorDefinition> _f$cell = Field(
+    'cell',
+    _$cell,
+  );
   static int? _$object(CellRollRequest v) => v.object;
-  static const Field<CellRollRequest, int> _f$object =
-      Field('object', _$object, opt: true);
+  static const Field<CellRollRequest, int> _f$object = Field(
+    'object',
+    _$object,
+    opt: true,
+  );
 
   @override
   final MappableFields<CellRollRequest> fields = const {
@@ -2272,30 +2599,38 @@ mixin CellRollRequestMappable {
   }
 
   Map<String, dynamic> toMap() {
-    return CellRollRequestMapper.ensureInitialized()
-        .encodeMap<CellRollRequest>(this as CellRollRequest);
+    return CellRollRequestMapper.ensureInitialized().encodeMap<CellRollRequest>(
+      this as CellRollRequest,
+    );
   }
 
   CellRollRequestCopyWith<CellRollRequest, CellRollRequest, CellRollRequest>
-      get copyWith =>
-          _CellRollRequestCopyWithImpl<CellRollRequest, CellRollRequest>(
-              this as CellRollRequest, $identity, $identity);
+  get copyWith =>
+      _CellRollRequestCopyWithImpl<CellRollRequest, CellRollRequest>(
+        this as CellRollRequest,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return CellRollRequestMapper.ensureInitialized()
-        .stringifyValue(this as CellRollRequest);
+    return CellRollRequestMapper.ensureInitialized().stringifyValue(
+      this as CellRollRequest,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return CellRollRequestMapper.ensureInitialized()
-        .equalsValue(this as CellRollRequest, other);
+    return CellRollRequestMapper.ensureInitialized().equalsValue(
+      this as CellRollRequest,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return CellRollRequestMapper.ensureInitialized()
-        .hashValue(this as CellRollRequest);
+    return CellRollRequestMapper.ensureInitialized().hashValue(
+      this as CellRollRequest,
+    );
   }
 }
 
@@ -2307,12 +2642,17 @@ extension CellRollRequestValueCopy<$R, $Out>
 
 abstract class CellRollRequestCopyWith<$R, $In extends CellRollRequest, $Out>
     implements ClientWorldEventCopyWith<$R, $In, $Out> {
-  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
-      GlobalVectorDefinition> get cell;
+  GlobalVectorDefinitionCopyWith<
+    $R,
+    GlobalVectorDefinition,
+    GlobalVectorDefinition
+  >
+  get cell;
   @override
   $R call({GlobalVectorDefinition? cell, int? object});
   CellRollRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _CellRollRequestCopyWithImpl<$R, $Out>
@@ -2324,24 +2664,29 @@ class _CellRollRequestCopyWithImpl<$R, $Out>
   late final ClassMapperBase<CellRollRequest> $mapper =
       CellRollRequestMapper.ensureInitialized();
   @override
-  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
-          GlobalVectorDefinition>
-      get cell => $value.cell.copyWith.$chain((v) => call(cell: v));
+  GlobalVectorDefinitionCopyWith<
+    $R,
+    GlobalVectorDefinition,
+    GlobalVectorDefinition
+  >
+  get cell => $value.cell.copyWith.$chain((v) => call(cell: v));
   @override
-  $R call({GlobalVectorDefinition? cell, Object? object = $none}) =>
-      $apply(FieldCopyWithData({
-        if (cell != null) #cell: cell,
-        if (object != $none) #object: object
-      }));
+  $R call({GlobalVectorDefinition? cell, Object? object = $none}) => $apply(
+    FieldCopyWithData({
+      if (cell != null) #cell: cell,
+      if (object != $none) #object: object,
+    }),
+  );
   @override
-  CellRollRequest $make(CopyWithData data) =>
-      CellRollRequest(data.get(#cell, or: $value.cell),
-          object: data.get(#object, or: $value.object));
+  CellRollRequest $make(CopyWithData data) => CellRollRequest(
+    data.get(#cell, or: $value.cell),
+    object: data.get(#object, or: $value.object),
+  );
 
   @override
   CellRollRequestCopyWith<$R2, CellRollRequest, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _CellRollRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _CellRollRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ShuffleCellRequestMapper extends SubClassMapperBase<ShuffleCellRequest> {
@@ -2365,9 +2710,7 @@ class ShuffleCellRequestMapper extends SubClassMapperBase<ShuffleCellRequest> {
       Field('cell', _$cell);
 
   @override
-  final MappableFields<ShuffleCellRequest> fields = const {
-    #cell: _f$cell,
-  };
+  final MappableFields<ShuffleCellRequest> fields = const {#cell: _f$cell};
 
   @override
   final String discriminatorKey = 'type';
@@ -2404,44 +2747,65 @@ mixin ShuffleCellRequestMappable {
         .encodeMap<ShuffleCellRequest>(this as ShuffleCellRequest);
   }
 
-  ShuffleCellRequestCopyWith<ShuffleCellRequest, ShuffleCellRequest,
-          ShuffleCellRequest>
-      get copyWith => _ShuffleCellRequestCopyWithImpl<ShuffleCellRequest,
-          ShuffleCellRequest>(this as ShuffleCellRequest, $identity, $identity);
+  ShuffleCellRequestCopyWith<
+    ShuffleCellRequest,
+    ShuffleCellRequest,
+    ShuffleCellRequest
+  >
+  get copyWith =>
+      _ShuffleCellRequestCopyWithImpl<ShuffleCellRequest, ShuffleCellRequest>(
+        this as ShuffleCellRequest,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return ShuffleCellRequestMapper.ensureInitialized()
-        .stringifyValue(this as ShuffleCellRequest);
+    return ShuffleCellRequestMapper.ensureInitialized().stringifyValue(
+      this as ShuffleCellRequest,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return ShuffleCellRequestMapper.ensureInitialized()
-        .equalsValue(this as ShuffleCellRequest, other);
+    return ShuffleCellRequestMapper.ensureInitialized().equalsValue(
+      this as ShuffleCellRequest,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return ShuffleCellRequestMapper.ensureInitialized()
-        .hashValue(this as ShuffleCellRequest);
+    return ShuffleCellRequestMapper.ensureInitialized().hashValue(
+      this as ShuffleCellRequest,
+    );
   }
 }
 
 extension ShuffleCellRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ShuffleCellRequest, $Out> {
   ShuffleCellRequestCopyWith<$R, ShuffleCellRequest, $Out>
-      get $asShuffleCellRequest => $base.as(
-          (v, t, t2) => _ShuffleCellRequestCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asShuffleCellRequest => $base.as(
+    (v, t, t2) => _ShuffleCellRequestCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
-abstract class ShuffleCellRequestCopyWith<$R, $In extends ShuffleCellRequest,
-    $Out> implements ClientWorldEventCopyWith<$R, $In, $Out> {
-  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
-      GlobalVectorDefinition> get cell;
+abstract class ShuffleCellRequestCopyWith<
+  $R,
+  $In extends ShuffleCellRequest,
+  $Out
+>
+    implements ClientWorldEventCopyWith<$R, $In, $Out> {
+  GlobalVectorDefinitionCopyWith<
+    $R,
+    GlobalVectorDefinition,
+    GlobalVectorDefinition
+  >
+  get cell;
   @override
   $R call({GlobalVectorDefinition? cell});
   ShuffleCellRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _ShuffleCellRequestCopyWithImpl<$R, $Out>
@@ -2453,9 +2817,12 @@ class _ShuffleCellRequestCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ShuffleCellRequest> $mapper =
       ShuffleCellRequestMapper.ensureInitialized();
   @override
-  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
-          GlobalVectorDefinition>
-      get cell => $value.cell.copyWith.$chain((v) => call(cell: v));
+  GlobalVectorDefinitionCopyWith<
+    $R,
+    GlobalVectorDefinition,
+    GlobalVectorDefinition
+  >
+  get cell => $value.cell.copyWith.$chain((v) => call(cell: v));
   @override
   $R call({GlobalVectorDefinition? cell}) =>
       $apply(FieldCopyWithData({if (cell != null) #cell: cell}));
@@ -2465,8 +2832,8 @@ class _ShuffleCellRequestCopyWithImpl<$R, $Out>
 
   @override
   ShuffleCellRequestCopyWith<$R2, ShuffleCellRequest, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _ShuffleCellRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _ShuffleCellRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class PacksChangeRequestMapper extends SubClassMapperBase<PacksChangeRequest> {
@@ -2485,13 +2852,13 @@ class PacksChangeRequestMapper extends SubClassMapperBase<PacksChangeRequest> {
   final String id = 'PacksChangeRequest';
 
   static List<String> _$packs(PacksChangeRequest v) => v.packs;
-  static const Field<PacksChangeRequest, List<String>> _f$packs =
-      Field('packs', _$packs);
+  static const Field<PacksChangeRequest, List<String>> _f$packs = Field(
+    'packs',
+    _$packs,
+  );
 
   @override
-  final MappableFields<PacksChangeRequest> fields = const {
-    #packs: _f$packs,
-  };
+  final MappableFields<PacksChangeRequest> fields = const {#packs: _f$packs};
 
   @override
   final String discriminatorKey = 'type';
@@ -2528,43 +2895,60 @@ mixin PacksChangeRequestMappable {
         .encodeMap<PacksChangeRequest>(this as PacksChangeRequest);
   }
 
-  PacksChangeRequestCopyWith<PacksChangeRequest, PacksChangeRequest,
-          PacksChangeRequest>
-      get copyWith => _PacksChangeRequestCopyWithImpl<PacksChangeRequest,
-          PacksChangeRequest>(this as PacksChangeRequest, $identity, $identity);
+  PacksChangeRequestCopyWith<
+    PacksChangeRequest,
+    PacksChangeRequest,
+    PacksChangeRequest
+  >
+  get copyWith =>
+      _PacksChangeRequestCopyWithImpl<PacksChangeRequest, PacksChangeRequest>(
+        this as PacksChangeRequest,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return PacksChangeRequestMapper.ensureInitialized()
-        .stringifyValue(this as PacksChangeRequest);
+    return PacksChangeRequestMapper.ensureInitialized().stringifyValue(
+      this as PacksChangeRequest,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return PacksChangeRequestMapper.ensureInitialized()
-        .equalsValue(this as PacksChangeRequest, other);
+    return PacksChangeRequestMapper.ensureInitialized().equalsValue(
+      this as PacksChangeRequest,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return PacksChangeRequestMapper.ensureInitialized()
-        .hashValue(this as PacksChangeRequest);
+    return PacksChangeRequestMapper.ensureInitialized().hashValue(
+      this as PacksChangeRequest,
+    );
   }
 }
 
 extension PacksChangeRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, PacksChangeRequest, $Out> {
   PacksChangeRequestCopyWith<$R, PacksChangeRequest, $Out>
-      get $asPacksChangeRequest => $base.as(
-          (v, t, t2) => _PacksChangeRequestCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asPacksChangeRequest => $base.as(
+    (v, t, t2) => _PacksChangeRequestCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
-abstract class PacksChangeRequestCopyWith<$R, $In extends PacksChangeRequest,
-    $Out> implements ClientWorldEventCopyWith<$R, $In, $Out> {
+abstract class PacksChangeRequestCopyWith<
+  $R,
+  $In extends PacksChangeRequest,
+  $Out
+>
+    implements ClientWorldEventCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get packs;
   @override
   $R call({List<String>? packs});
   PacksChangeRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _PacksChangeRequestCopyWithImpl<$R, $Out>
@@ -2577,8 +2961,11 @@ class _PacksChangeRequestCopyWithImpl<$R, $Out>
       PacksChangeRequestMapper.ensureInitialized();
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get packs =>
-      ListCopyWith($value.packs, (v, t) => ObjectCopyWith(v, $identity, t),
-          (v) => call(packs: v));
+      ListCopyWith(
+        $value.packs,
+        (v, t) => ObjectCopyWith(v, $identity, t),
+        (v) => call(packs: v),
+      );
   @override
   $R call({List<String>? packs}) =>
       $apply(FieldCopyWithData({if (packs != null) #packs: packs}));
@@ -2588,8 +2975,8 @@ class _PacksChangeRequestCopyWithImpl<$R, $Out>
 
   @override
   PacksChangeRequestCopyWith<$R2, PacksChangeRequest, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _PacksChangeRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _PacksChangeRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class MessageRequestMapper extends SubClassMapperBase<MessageRequest> {
@@ -2608,13 +2995,13 @@ class MessageRequestMapper extends SubClassMapperBase<MessageRequest> {
   final String id = 'MessageRequest';
 
   static String _$message(MessageRequest v) => v.message;
-  static const Field<MessageRequest, String> _f$message =
-      Field('message', _$message);
+  static const Field<MessageRequest, String> _f$message = Field(
+    'message',
+    _$message,
+  );
 
   @override
-  final MappableFields<MessageRequest> fields = const {
-    #message: _f$message,
-  };
+  final MappableFields<MessageRequest> fields = const {#message: _f$message};
 
   @override
   final String discriminatorKey = 'type';
@@ -2642,35 +3029,43 @@ class MessageRequestMapper extends SubClassMapperBase<MessageRequest> {
 
 mixin MessageRequestMappable {
   String toJson() {
-    return MessageRequestMapper.ensureInitialized()
-        .encodeJson<MessageRequest>(this as MessageRequest);
+    return MessageRequestMapper.ensureInitialized().encodeJson<MessageRequest>(
+      this as MessageRequest,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return MessageRequestMapper.ensureInitialized()
-        .encodeMap<MessageRequest>(this as MessageRequest);
+    return MessageRequestMapper.ensureInitialized().encodeMap<MessageRequest>(
+      this as MessageRequest,
+    );
   }
 
   MessageRequestCopyWith<MessageRequest, MessageRequest, MessageRequest>
-      get copyWith =>
-          _MessageRequestCopyWithImpl<MessageRequest, MessageRequest>(
-              this as MessageRequest, $identity, $identity);
+  get copyWith => _MessageRequestCopyWithImpl<MessageRequest, MessageRequest>(
+    this as MessageRequest,
+    $identity,
+    $identity,
+  );
   @override
   String toString() {
-    return MessageRequestMapper.ensureInitialized()
-        .stringifyValue(this as MessageRequest);
+    return MessageRequestMapper.ensureInitialized().stringifyValue(
+      this as MessageRequest,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return MessageRequestMapper.ensureInitialized()
-        .equalsValue(this as MessageRequest, other);
+    return MessageRequestMapper.ensureInitialized().equalsValue(
+      this as MessageRequest,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return MessageRequestMapper.ensureInitialized()
-        .hashValue(this as MessageRequest);
+    return MessageRequestMapper.ensureInitialized().hashValue(
+      this as MessageRequest,
+    );
   }
 }
 
@@ -2685,7 +3080,8 @@ abstract class MessageRequestCopyWith<$R, $In extends MessageRequest, $Out>
   @override
   $R call({String? message});
   MessageRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _MessageRequestCopyWithImpl<$R, $Out>
@@ -2705,8 +3101,8 @@ class _MessageRequestCopyWithImpl<$R, $Out>
 
   @override
   MessageRequestCopyWith<$R2, MessageRequest, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _MessageRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _MessageRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class BoardsSpawnRequestMapper extends SubClassMapperBase<BoardsSpawnRequest> {
@@ -2727,14 +3123,18 @@ class BoardsSpawnRequestMapper extends SubClassMapperBase<BoardsSpawnRequest> {
   final String id = 'BoardsSpawnRequest';
 
   static String _$table(BoardsSpawnRequest v) => v.table;
-  static const Field<BoardsSpawnRequest, String> _f$table =
-      Field('table', _$table);
+  static const Field<BoardsSpawnRequest, String> _f$table = Field(
+    'table',
+    _$table,
+  );
   static Map<VectorDefinition, List<ItemLocation>> _$assets(
-          BoardsSpawnRequest v) =>
-      v.assets;
-  static const Field<BoardsSpawnRequest,
-          Map<VectorDefinition, List<ItemLocation>>> _f$assets =
-      Field('assets', _$assets, opt: true, def: const {});
+    BoardsSpawnRequest v,
+  ) => v.assets;
+  static const Field<
+    BoardsSpawnRequest,
+    Map<VectorDefinition, List<ItemLocation>>
+  >
+  _f$assets = Field('assets', _$assets, opt: true, def: const {});
 
   @override
   final MappableFields<BoardsSpawnRequest> fields = const {
@@ -2777,44 +3177,66 @@ mixin BoardsSpawnRequestMappable {
         .encodeMap<BoardsSpawnRequest>(this as BoardsSpawnRequest);
   }
 
-  BoardsSpawnRequestCopyWith<BoardsSpawnRequest, BoardsSpawnRequest,
-          BoardsSpawnRequest>
-      get copyWith => _BoardsSpawnRequestCopyWithImpl<BoardsSpawnRequest,
-          BoardsSpawnRequest>(this as BoardsSpawnRequest, $identity, $identity);
+  BoardsSpawnRequestCopyWith<
+    BoardsSpawnRequest,
+    BoardsSpawnRequest,
+    BoardsSpawnRequest
+  >
+  get copyWith =>
+      _BoardsSpawnRequestCopyWithImpl<BoardsSpawnRequest, BoardsSpawnRequest>(
+        this as BoardsSpawnRequest,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return BoardsSpawnRequestMapper.ensureInitialized()
-        .stringifyValue(this as BoardsSpawnRequest);
+    return BoardsSpawnRequestMapper.ensureInitialized().stringifyValue(
+      this as BoardsSpawnRequest,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return BoardsSpawnRequestMapper.ensureInitialized()
-        .equalsValue(this as BoardsSpawnRequest, other);
+    return BoardsSpawnRequestMapper.ensureInitialized().equalsValue(
+      this as BoardsSpawnRequest,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return BoardsSpawnRequestMapper.ensureInitialized()
-        .hashValue(this as BoardsSpawnRequest);
+    return BoardsSpawnRequestMapper.ensureInitialized().hashValue(
+      this as BoardsSpawnRequest,
+    );
   }
 }
 
 extension BoardsSpawnRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BoardsSpawnRequest, $Out> {
   BoardsSpawnRequestCopyWith<$R, BoardsSpawnRequest, $Out>
-      get $asBoardsSpawnRequest => $base.as(
-          (v, t, t2) => _BoardsSpawnRequestCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asBoardsSpawnRequest => $base.as(
+    (v, t, t2) => _BoardsSpawnRequestCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
-abstract class BoardsSpawnRequestCopyWith<$R, $In extends BoardsSpawnRequest,
-    $Out> implements ClientWorldEventCopyWith<$R, $In, $Out> {
-  MapCopyWith<$R, VectorDefinition, List<ItemLocation>,
-      ObjectCopyWith<$R, List<ItemLocation>, List<ItemLocation>>> get assets;
+abstract class BoardsSpawnRequestCopyWith<
+  $R,
+  $In extends BoardsSpawnRequest,
+  $Out
+>
+    implements ClientWorldEventCopyWith<$R, $In, $Out> {
+  MapCopyWith<
+    $R,
+    VectorDefinition,
+    List<ItemLocation>,
+    ObjectCopyWith<$R, List<ItemLocation>, List<ItemLocation>>
+  >
+  get assets;
   @override
   $R call({String? table, Map<VectorDefinition, List<ItemLocation>>? assets});
   BoardsSpawnRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _BoardsSpawnRequestCopyWithImpl<$R, $Out>
@@ -2826,24 +3248,35 @@ class _BoardsSpawnRequestCopyWithImpl<$R, $Out>
   late final ClassMapperBase<BoardsSpawnRequest> $mapper =
       BoardsSpawnRequestMapper.ensureInitialized();
   @override
-  MapCopyWith<$R, VectorDefinition, List<ItemLocation>,
-          ObjectCopyWith<$R, List<ItemLocation>, List<ItemLocation>>>
-      get assets => MapCopyWith($value.assets,
-          (v, t) => ObjectCopyWith(v, $identity, t), (v) => call(assets: v));
+  MapCopyWith<
+    $R,
+    VectorDefinition,
+    List<ItemLocation>,
+    ObjectCopyWith<$R, List<ItemLocation>, List<ItemLocation>>
+  >
+  get assets => MapCopyWith(
+    $value.assets,
+    (v, t) => ObjectCopyWith(v, $identity, t),
+    (v) => call(assets: v),
+  );
   @override
   $R call({String? table, Map<VectorDefinition, List<ItemLocation>>? assets}) =>
-      $apply(FieldCopyWithData({
-        if (table != null) #table: table,
-        if (assets != null) #assets: assets
-      }));
+      $apply(
+        FieldCopyWithData({
+          if (table != null) #table: table,
+          if (assets != null) #assets: assets,
+        }),
+      );
   @override
   BoardsSpawnRequest $make(CopyWithData data) => BoardsSpawnRequest(
-      data.get(#table, or: $value.table), data.get(#assets, or: $value.assets));
+    data.get(#table, or: $value.table),
+    data.get(#assets, or: $value.assets),
+  );
 
   @override
   BoardsSpawnRequestCopyWith<$R2, BoardsSpawnRequest, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _BoardsSpawnRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _BoardsSpawnRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class BoardRemoveRequestMapper extends SubClassMapperBase<BoardRemoveRequest> {
@@ -2866,8 +3299,10 @@ class BoardRemoveRequestMapper extends SubClassMapperBase<BoardRemoveRequest> {
   static const Field<BoardRemoveRequest, GlobalVectorDefinition> _f$position =
       Field('position', _$position);
   static int _$index(BoardRemoveRequest v) => v.index;
-  static const Field<BoardRemoveRequest, int> _f$index =
-      Field('index', _$index);
+  static const Field<BoardRemoveRequest, int> _f$index = Field(
+    'index',
+    _$index,
+  );
 
   @override
   final MappableFields<BoardRemoveRequest> fields = const {
@@ -2910,44 +3345,65 @@ mixin BoardRemoveRequestMappable {
         .encodeMap<BoardRemoveRequest>(this as BoardRemoveRequest);
   }
 
-  BoardRemoveRequestCopyWith<BoardRemoveRequest, BoardRemoveRequest,
-          BoardRemoveRequest>
-      get copyWith => _BoardRemoveRequestCopyWithImpl<BoardRemoveRequest,
-          BoardRemoveRequest>(this as BoardRemoveRequest, $identity, $identity);
+  BoardRemoveRequestCopyWith<
+    BoardRemoveRequest,
+    BoardRemoveRequest,
+    BoardRemoveRequest
+  >
+  get copyWith =>
+      _BoardRemoveRequestCopyWithImpl<BoardRemoveRequest, BoardRemoveRequest>(
+        this as BoardRemoveRequest,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return BoardRemoveRequestMapper.ensureInitialized()
-        .stringifyValue(this as BoardRemoveRequest);
+    return BoardRemoveRequestMapper.ensureInitialized().stringifyValue(
+      this as BoardRemoveRequest,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return BoardRemoveRequestMapper.ensureInitialized()
-        .equalsValue(this as BoardRemoveRequest, other);
+    return BoardRemoveRequestMapper.ensureInitialized().equalsValue(
+      this as BoardRemoveRequest,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return BoardRemoveRequestMapper.ensureInitialized()
-        .hashValue(this as BoardRemoveRequest);
+    return BoardRemoveRequestMapper.ensureInitialized().hashValue(
+      this as BoardRemoveRequest,
+    );
   }
 }
 
 extension BoardRemoveRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BoardRemoveRequest, $Out> {
   BoardRemoveRequestCopyWith<$R, BoardRemoveRequest, $Out>
-      get $asBoardRemoveRequest => $base.as(
-          (v, t, t2) => _BoardRemoveRequestCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asBoardRemoveRequest => $base.as(
+    (v, t, t2) => _BoardRemoveRequestCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
-abstract class BoardRemoveRequestCopyWith<$R, $In extends BoardRemoveRequest,
-    $Out> implements ClientWorldEventCopyWith<$R, $In, $Out> {
-  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
-      GlobalVectorDefinition> get position;
+abstract class BoardRemoveRequestCopyWith<
+  $R,
+  $In extends BoardRemoveRequest,
+  $Out
+>
+    implements ClientWorldEventCopyWith<$R, $In, $Out> {
+  GlobalVectorDefinitionCopyWith<
+    $R,
+    GlobalVectorDefinition,
+    GlobalVectorDefinition
+  >
+  get position;
   @override
   $R call({GlobalVectorDefinition? position, int? index});
   BoardRemoveRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _BoardRemoveRequestCopyWithImpl<$R, $Out>
@@ -2959,24 +3415,29 @@ class _BoardRemoveRequestCopyWithImpl<$R, $Out>
   late final ClassMapperBase<BoardRemoveRequest> $mapper =
       BoardRemoveRequestMapper.ensureInitialized();
   @override
-  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
-          GlobalVectorDefinition>
-      get position => $value.position.copyWith.$chain((v) => call(position: v));
+  GlobalVectorDefinitionCopyWith<
+    $R,
+    GlobalVectorDefinition,
+    GlobalVectorDefinition
+  >
+  get position => $value.position.copyWith.$chain((v) => call(position: v));
   @override
-  $R call({GlobalVectorDefinition? position, int? index}) =>
-      $apply(FieldCopyWithData({
-        if (position != null) #position: position,
-        if (index != null) #index: index
-      }));
+  $R call({GlobalVectorDefinition? position, int? index}) => $apply(
+    FieldCopyWithData({
+      if (position != null) #position: position,
+      if (index != null) #index: index,
+    }),
+  );
   @override
   BoardRemoveRequest $make(CopyWithData data) => BoardRemoveRequest(
-      data.get(#position, or: $value.position),
-      data.get(#index, or: $value.index));
+    data.get(#position, or: $value.position),
+    data.get(#index, or: $value.index),
+  );
 
   @override
   BoardRemoveRequestCopyWith<$R2, BoardRemoveRequest, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _BoardRemoveRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _BoardRemoveRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class BoardMoveRequestMapper extends SubClassMapperBase<BoardMoveRequest> {
@@ -2996,14 +3457,20 @@ class BoardMoveRequestMapper extends SubClassMapperBase<BoardMoveRequest> {
   final String id = 'BoardMoveRequest';
 
   static String _$table(BoardMoveRequest v) => v.table;
-  static const Field<BoardMoveRequest, String> _f$table =
-      Field('table', _$table);
+  static const Field<BoardMoveRequest, String> _f$table = Field(
+    'table',
+    _$table,
+  );
   static VectorDefinition _$from(BoardMoveRequest v) => v.from;
-  static const Field<BoardMoveRequest, VectorDefinition> _f$from =
-      Field('from', _$from);
+  static const Field<BoardMoveRequest, VectorDefinition> _f$from = Field(
+    'from',
+    _$from,
+  );
   static VectorDefinition _$to(BoardMoveRequest v) => v.to;
-  static const Field<BoardMoveRequest, VectorDefinition> _f$to =
-      Field('to', _$to);
+  static const Field<BoardMoveRequest, VectorDefinition> _f$to = Field(
+    'to',
+    _$to,
+  );
   static int _$index(BoardMoveRequest v) => v.index;
   static const Field<BoardMoveRequest, int> _f$index = Field('index', _$index);
 
@@ -3024,8 +3491,12 @@ class BoardMoveRequestMapper extends SubClassMapperBase<BoardMoveRequest> {
       ClientWorldEventMapper.ensureInitialized();
 
   static BoardMoveRequest _instantiate(DecodingData data) {
-    return BoardMoveRequest(data.dec(_f$table), data.dec(_f$from),
-        data.dec(_f$to), data.dec(_f$index));
+    return BoardMoveRequest(
+      data.dec(_f$table),
+      data.dec(_f$from),
+      data.dec(_f$to),
+      data.dec(_f$index),
+    );
   }
 
   @override
@@ -3052,33 +3523,40 @@ mixin BoardMoveRequestMappable {
   }
 
   BoardMoveRequestCopyWith<BoardMoveRequest, BoardMoveRequest, BoardMoveRequest>
-      get copyWith =>
-          _BoardMoveRequestCopyWithImpl<BoardMoveRequest, BoardMoveRequest>(
-              this as BoardMoveRequest, $identity, $identity);
+  get copyWith =>
+      _BoardMoveRequestCopyWithImpl<BoardMoveRequest, BoardMoveRequest>(
+        this as BoardMoveRequest,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return BoardMoveRequestMapper.ensureInitialized()
-        .stringifyValue(this as BoardMoveRequest);
+    return BoardMoveRequestMapper.ensureInitialized().stringifyValue(
+      this as BoardMoveRequest,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return BoardMoveRequestMapper.ensureInitialized()
-        .equalsValue(this as BoardMoveRequest, other);
+    return BoardMoveRequestMapper.ensureInitialized().equalsValue(
+      this as BoardMoveRequest,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return BoardMoveRequestMapper.ensureInitialized()
-        .hashValue(this as BoardMoveRequest);
+    return BoardMoveRequestMapper.ensureInitialized().hashValue(
+      this as BoardMoveRequest,
+    );
   }
 }
 
 extension BoardMoveRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BoardMoveRequest, $Out> {
   BoardMoveRequestCopyWith<$R, BoardMoveRequest, $Out>
-      get $asBoardMoveRequest => $base
-          .as((v, t, t2) => _BoardMoveRequestCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asBoardMoveRequest =>
+      $base.as((v, t, t2) => _BoardMoveRequestCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class BoardMoveRequestCopyWith<$R, $In extends BoardMoveRequest, $Out>
@@ -3086,13 +3564,15 @@ abstract class BoardMoveRequestCopyWith<$R, $In extends BoardMoveRequest, $Out>
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get from;
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get to;
   @override
-  $R call(
-      {String? table,
-      VectorDefinition? from,
-      VectorDefinition? to,
-      int? index});
+  $R call({
+    String? table,
+    VectorDefinition? from,
+    VectorDefinition? to,
+    int? index,
+  });
   BoardMoveRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _BoardMoveRequestCopyWithImpl<$R, $Out>
@@ -3110,28 +3590,31 @@ class _BoardMoveRequestCopyWithImpl<$R, $Out>
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get to =>
       $value.to.copyWith.$chain((v) => call(to: v));
   @override
-  $R call(
-          {String? table,
-          VectorDefinition? from,
-          VectorDefinition? to,
-          int? index}) =>
-      $apply(FieldCopyWithData({
-        if (table != null) #table: table,
-        if (from != null) #from: from,
-        if (to != null) #to: to,
-        if (index != null) #index: index
-      }));
+  $R call({
+    String? table,
+    VectorDefinition? from,
+    VectorDefinition? to,
+    int? index,
+  }) => $apply(
+    FieldCopyWithData({
+      if (table != null) #table: table,
+      if (from != null) #from: from,
+      if (to != null) #to: to,
+      if (index != null) #index: index,
+    }),
+  );
   @override
   BoardMoveRequest $make(CopyWithData data) => BoardMoveRequest(
-      data.get(#table, or: $value.table),
-      data.get(#from, or: $value.from),
-      data.get(#to, or: $value.to),
-      data.get(#index, or: $value.index));
+    data.get(#table, or: $value.table),
+    data.get(#from, or: $value.from),
+    data.get(#to, or: $value.to),
+    data.get(#index, or: $value.index),
+  );
 
   @override
   BoardMoveRequestCopyWith<$R2, BoardMoveRequest, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _BoardMoveRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _BoardMoveRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class DialogCloseRequestMapper extends SubClassMapperBase<DialogCloseRequest> {
@@ -3153,8 +3636,10 @@ class DialogCloseRequestMapper extends SubClassMapperBase<DialogCloseRequest> {
   static String _$id(DialogCloseRequest v) => v.id;
   static const Field<DialogCloseRequest, String> _f$id = Field('id', _$id);
   static GameDialogValue? _$value(DialogCloseRequest v) => v.value;
-  static const Field<DialogCloseRequest, GameDialogValue> _f$value =
-      Field('value', _$value);
+  static const Field<DialogCloseRequest, GameDialogValue> _f$value = Field(
+    'value',
+    _$value,
+  );
 
   @override
   final MappableFields<DialogCloseRequest> fields = const {
@@ -3197,43 +3682,60 @@ mixin DialogCloseRequestMappable {
         .encodeMap<DialogCloseRequest>(this as DialogCloseRequest);
   }
 
-  DialogCloseRequestCopyWith<DialogCloseRequest, DialogCloseRequest,
-          DialogCloseRequest>
-      get copyWith => _DialogCloseRequestCopyWithImpl<DialogCloseRequest,
-          DialogCloseRequest>(this as DialogCloseRequest, $identity, $identity);
+  DialogCloseRequestCopyWith<
+    DialogCloseRequest,
+    DialogCloseRequest,
+    DialogCloseRequest
+  >
+  get copyWith =>
+      _DialogCloseRequestCopyWithImpl<DialogCloseRequest, DialogCloseRequest>(
+        this as DialogCloseRequest,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return DialogCloseRequestMapper.ensureInitialized()
-        .stringifyValue(this as DialogCloseRequest);
+    return DialogCloseRequestMapper.ensureInitialized().stringifyValue(
+      this as DialogCloseRequest,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return DialogCloseRequestMapper.ensureInitialized()
-        .equalsValue(this as DialogCloseRequest, other);
+    return DialogCloseRequestMapper.ensureInitialized().equalsValue(
+      this as DialogCloseRequest,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return DialogCloseRequestMapper.ensureInitialized()
-        .hashValue(this as DialogCloseRequest);
+    return DialogCloseRequestMapper.ensureInitialized().hashValue(
+      this as DialogCloseRequest,
+    );
   }
 }
 
 extension DialogCloseRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, DialogCloseRequest, $Out> {
   DialogCloseRequestCopyWith<$R, DialogCloseRequest, $Out>
-      get $asDialogCloseRequest => $base.as(
-          (v, t, t2) => _DialogCloseRequestCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asDialogCloseRequest => $base.as(
+    (v, t, t2) => _DialogCloseRequestCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
-abstract class DialogCloseRequestCopyWith<$R, $In extends DialogCloseRequest,
-    $Out> implements ClientWorldEventCopyWith<$R, $In, $Out> {
+abstract class DialogCloseRequestCopyWith<
+  $R,
+  $In extends DialogCloseRequest,
+  $Out
+>
+    implements ClientWorldEventCopyWith<$R, $In, $Out> {
   GameDialogValueCopyWith<$R, GameDialogValue, GameDialogValue>? get value;
   @override
   $R call({String? id, GameDialogValue? value});
   DialogCloseRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _DialogCloseRequestCopyWithImpl<$R, $Out>
@@ -3248,16 +3750,22 @@ class _DialogCloseRequestCopyWithImpl<$R, $Out>
   GameDialogValueCopyWith<$R, GameDialogValue, GameDialogValue>? get value =>
       $value.value?.copyWith.$chain((v) => call(value: v));
   @override
-  $R call({String? id, Object? value = $none}) => $apply(FieldCopyWithData(
-      {if (id != null) #id: id, if (value != $none) #value: value}));
+  $R call({String? id, Object? value = $none}) => $apply(
+    FieldCopyWithData({
+      if (id != null) #id: id,
+      if (value != $none) #value: value,
+    }),
+  );
   @override
   DialogCloseRequest $make(CopyWithData data) => DialogCloseRequest(
-      data.get(#id, or: $value.id), data.get(#value, or: $value.value));
+    data.get(#id, or: $value.id),
+    data.get(#value, or: $value.value),
+  );
 
   @override
   DialogCloseRequestCopyWith<$R2, DialogCloseRequest, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _DialogCloseRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _DialogCloseRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ImagesRequestMapper extends SubClassMapperBase<ImagesRequest> {
@@ -3279,9 +3787,7 @@ class ImagesRequestMapper extends SubClassMapperBase<ImagesRequest> {
   static const Field<ImagesRequest, List<String>> _f$ids = Field('ids', _$ids);
 
   @override
-  final MappableFields<ImagesRequest> fields = const {
-    #ids: _f$ids,
-  };
+  final MappableFields<ImagesRequest> fields = const {#ids: _f$ids};
 
   @override
   final String discriminatorKey = 'type';
@@ -3309,34 +3815,43 @@ class ImagesRequestMapper extends SubClassMapperBase<ImagesRequest> {
 
 mixin ImagesRequestMappable {
   String toJson() {
-    return ImagesRequestMapper.ensureInitialized()
-        .encodeJson<ImagesRequest>(this as ImagesRequest);
+    return ImagesRequestMapper.ensureInitialized().encodeJson<ImagesRequest>(
+      this as ImagesRequest,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return ImagesRequestMapper.ensureInitialized()
-        .encodeMap<ImagesRequest>(this as ImagesRequest);
+    return ImagesRequestMapper.ensureInitialized().encodeMap<ImagesRequest>(
+      this as ImagesRequest,
+    );
   }
 
   ImagesRequestCopyWith<ImagesRequest, ImagesRequest, ImagesRequest>
-      get copyWith => _ImagesRequestCopyWithImpl<ImagesRequest, ImagesRequest>(
-          this as ImagesRequest, $identity, $identity);
+  get copyWith => _ImagesRequestCopyWithImpl<ImagesRequest, ImagesRequest>(
+    this as ImagesRequest,
+    $identity,
+    $identity,
+  );
   @override
   String toString() {
-    return ImagesRequestMapper.ensureInitialized()
-        .stringifyValue(this as ImagesRequest);
+    return ImagesRequestMapper.ensureInitialized().stringifyValue(
+      this as ImagesRequest,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return ImagesRequestMapper.ensureInitialized()
-        .equalsValue(this as ImagesRequest, other);
+    return ImagesRequestMapper.ensureInitialized().equalsValue(
+      this as ImagesRequest,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return ImagesRequestMapper.ensureInitialized()
-        .hashValue(this as ImagesRequest);
+    return ImagesRequestMapper.ensureInitialized().hashValue(
+      this as ImagesRequest,
+    );
   }
 }
 
@@ -3364,8 +3879,11 @@ class _ImagesRequestCopyWithImpl<$R, $Out>
       ImagesRequestMapper.ensureInitialized();
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get ids =>
-      ListCopyWith($value.ids, (v, t) => ObjectCopyWith(v, $identity, t),
-          (v) => call(ids: v));
+      ListCopyWith(
+        $value.ids,
+        (v, t) => ObjectCopyWith(v, $identity, t),
+        (v) => call(ids: v),
+      );
   @override
   $R call({List<String>? ids}) =>
       $apply(FieldCopyWithData({if (ids != null) #ids: ids}));
@@ -3375,8 +3893,8 @@ class _ImagesRequestCopyWithImpl<$R, $Out>
 
   @override
   ImagesRequestCopyWith<$R2, ImagesRequest, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _ImagesRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _ImagesRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ModeChangeRequestMapper extends SubClassMapperBase<ModeChangeRequest> {
@@ -3396,8 +3914,10 @@ class ModeChangeRequestMapper extends SubClassMapperBase<ModeChangeRequest> {
   final String id = 'ModeChangeRequest';
 
   static ItemLocation? _$location(ModeChangeRequest v) => v.location;
-  static const Field<ModeChangeRequest, ItemLocation> _f$location =
-      Field('location', _$location);
+  static const Field<ModeChangeRequest, ItemLocation> _f$location = Field(
+    'location',
+    _$location,
+  );
 
   @override
   final MappableFields<ModeChangeRequest> fields = const {
@@ -3439,44 +3959,60 @@ mixin ModeChangeRequestMappable {
         .encodeMap<ModeChangeRequest>(this as ModeChangeRequest);
   }
 
-  ModeChangeRequestCopyWith<ModeChangeRequest, ModeChangeRequest,
-          ModeChangeRequest>
-      get copyWith =>
-          _ModeChangeRequestCopyWithImpl<ModeChangeRequest, ModeChangeRequest>(
-              this as ModeChangeRequest, $identity, $identity);
+  ModeChangeRequestCopyWith<
+    ModeChangeRequest,
+    ModeChangeRequest,
+    ModeChangeRequest
+  >
+  get copyWith =>
+      _ModeChangeRequestCopyWithImpl<ModeChangeRequest, ModeChangeRequest>(
+        this as ModeChangeRequest,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return ModeChangeRequestMapper.ensureInitialized()
-        .stringifyValue(this as ModeChangeRequest);
+    return ModeChangeRequestMapper.ensureInitialized().stringifyValue(
+      this as ModeChangeRequest,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return ModeChangeRequestMapper.ensureInitialized()
-        .equalsValue(this as ModeChangeRequest, other);
+    return ModeChangeRequestMapper.ensureInitialized().equalsValue(
+      this as ModeChangeRequest,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return ModeChangeRequestMapper.ensureInitialized()
-        .hashValue(this as ModeChangeRequest);
+    return ModeChangeRequestMapper.ensureInitialized().hashValue(
+      this as ModeChangeRequest,
+    );
   }
 }
 
 extension ModeChangeRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ModeChangeRequest, $Out> {
   ModeChangeRequestCopyWith<$R, ModeChangeRequest, $Out>
-      get $asModeChangeRequest => $base
-          .as((v, t, t2) => _ModeChangeRequestCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asModeChangeRequest => $base.as(
+    (v, t, t2) => _ModeChangeRequestCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
-abstract class ModeChangeRequestCopyWith<$R, $In extends ModeChangeRequest,
-    $Out> implements ClientWorldEventCopyWith<$R, $In, $Out> {
+abstract class ModeChangeRequestCopyWith<
+  $R,
+  $In extends ModeChangeRequest,
+  $Out
+>
+    implements ClientWorldEventCopyWith<$R, $In, $Out> {
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get location;
   @override
   $R call({ItemLocation? location});
   ModeChangeRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _ModeChangeRequestCopyWithImpl<$R, $Out>
@@ -3499,8 +4035,8 @@ class _ModeChangeRequestCopyWithImpl<$R, $Out>
 
   @override
   ModeChangeRequestCopyWith<$R2, ModeChangeRequest, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _ModeChangeRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _ModeChangeRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class AuthenticateRequestMapper
@@ -3521,11 +4057,15 @@ class AuthenticateRequestMapper
   final String id = 'AuthenticateRequest';
 
   static Uint8List _$signature(AuthenticateRequest v) => v.signature;
-  static const Field<AuthenticateRequest, Uint8List> _f$signature =
-      Field('signature', _$signature);
+  static const Field<AuthenticateRequest, Uint8List> _f$signature = Field(
+    'signature',
+    _$signature,
+  );
   static Uint8List _$publicKey(AuthenticateRequest v) => v.publicKey;
-  static const Field<AuthenticateRequest, Uint8List> _f$publicKey =
-      Field('publicKey', _$publicKey);
+  static const Field<AuthenticateRequest, Uint8List> _f$publicKey = Field(
+    'publicKey',
+    _$publicKey,
+  );
 
   @override
   final MappableFields<AuthenticateRequest> fields = const {
@@ -3568,42 +4108,58 @@ mixin AuthenticateRequestMappable {
         .encodeMap<AuthenticateRequest>(this as AuthenticateRequest);
   }
 
-  AuthenticateRequestCopyWith<AuthenticateRequest, AuthenticateRequest,
-      AuthenticateRequest> get copyWith => _AuthenticateRequestCopyWithImpl<
-          AuthenticateRequest, AuthenticateRequest>(
-      this as AuthenticateRequest, $identity, $identity);
+  AuthenticateRequestCopyWith<
+    AuthenticateRequest,
+    AuthenticateRequest,
+    AuthenticateRequest
+  >
+  get copyWith =>
+      _AuthenticateRequestCopyWithImpl<
+        AuthenticateRequest,
+        AuthenticateRequest
+      >(this as AuthenticateRequest, $identity, $identity);
   @override
   String toString() {
-    return AuthenticateRequestMapper.ensureInitialized()
-        .stringifyValue(this as AuthenticateRequest);
+    return AuthenticateRequestMapper.ensureInitialized().stringifyValue(
+      this as AuthenticateRequest,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return AuthenticateRequestMapper.ensureInitialized()
-        .equalsValue(this as AuthenticateRequest, other);
+    return AuthenticateRequestMapper.ensureInitialized().equalsValue(
+      this as AuthenticateRequest,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return AuthenticateRequestMapper.ensureInitialized()
-        .hashValue(this as AuthenticateRequest);
+    return AuthenticateRequestMapper.ensureInitialized().hashValue(
+      this as AuthenticateRequest,
+    );
   }
 }
 
 extension AuthenticateRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, AuthenticateRequest, $Out> {
   AuthenticateRequestCopyWith<$R, AuthenticateRequest, $Out>
-      get $asAuthenticateRequest => $base.as(
-          (v, t, t2) => _AuthenticateRequestCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asAuthenticateRequest => $base.as(
+    (v, t, t2) => _AuthenticateRequestCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
-abstract class AuthenticateRequestCopyWith<$R, $In extends AuthenticateRequest,
-    $Out> implements ClientWorldEventCopyWith<$R, $In, $Out> {
+abstract class AuthenticateRequestCopyWith<
+  $R,
+  $In extends AuthenticateRequest,
+  $Out
+>
+    implements ClientWorldEventCopyWith<$R, $In, $Out> {
   @override
   $R call({Uint8List? signature, Uint8List? publicKey});
   AuthenticateRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _AuthenticateRequestCopyWithImpl<$R, $Out>
@@ -3615,20 +4171,22 @@ class _AuthenticateRequestCopyWithImpl<$R, $Out>
   late final ClassMapperBase<AuthenticateRequest> $mapper =
       AuthenticateRequestMapper.ensureInitialized();
   @override
-  $R call({Uint8List? signature, Uint8List? publicKey}) =>
-      $apply(FieldCopyWithData({
-        if (signature != null) #signature: signature,
-        if (publicKey != null) #publicKey: publicKey
-      }));
+  $R call({Uint8List? signature, Uint8List? publicKey}) => $apply(
+    FieldCopyWithData({
+      if (signature != null) #signature: signature,
+      if (publicKey != null) #publicKey: publicKey,
+    }),
+  );
   @override
   AuthenticateRequest $make(CopyWithData data) => AuthenticateRequest(
-      data.get(#signature, or: $value.signature),
-      data.get(#publicKey, or: $value.publicKey));
+    data.get(#signature, or: $value.signature),
+    data.get(#publicKey, or: $value.publicKey),
+  );
 
   @override
   AuthenticateRequestCopyWith<$R2, AuthenticateRequest, $Out2>
-      $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _AuthenticateRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _AuthenticateRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class HybridWorldEventMapper extends SubClassMapperBase<HybridWorldEvent> {
@@ -3671,7 +4229,10 @@ class HybridWorldEventMapper extends SubClassMapperBase<HybridWorldEvent> {
 
   static HybridWorldEvent _instantiate(DecodingData data) {
     throw MapperException.missingSubclass(
-        'HybridWorldEvent', 'type', '${data.value['type']}');
+      'HybridWorldEvent',
+      'type',
+      '${data.value['type']}',
+    );
   }
 
   @override
@@ -3690,7 +4251,7 @@ mixin HybridWorldEventMappable {
   String toJson();
   Map<String, dynamic> toMap();
   HybridWorldEventCopyWith<HybridWorldEvent, HybridWorldEvent, HybridWorldEvent>
-      get copyWith;
+  get copyWith;
 }
 
 abstract class HybridWorldEventCopyWith<$R, $In extends HybridWorldEvent, $Out>
@@ -3701,7 +4262,8 @@ abstract class HybridWorldEventCopyWith<$R, $In extends HybridWorldEvent, $Out>
   @override
   $R call();
   HybridWorldEventCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class BackgroundChangedMapper extends SubClassMapperBase<BackgroundChanged> {
@@ -3721,8 +4283,10 @@ class BackgroundChangedMapper extends SubClassMapperBase<BackgroundChanged> {
   final String id = 'BackgroundChanged';
 
   static ItemLocation _$background(BackgroundChanged v) => v.background;
-  static const Field<BackgroundChanged, ItemLocation> _f$background =
-      Field('background', _$background);
+  static const Field<BackgroundChanged, ItemLocation> _f$background = Field(
+    'background',
+    _$background,
+  );
 
   @override
   final MappableFields<BackgroundChanged> fields = const {
@@ -3764,44 +4328,60 @@ mixin BackgroundChangedMappable {
         .encodeMap<BackgroundChanged>(this as BackgroundChanged);
   }
 
-  BackgroundChangedCopyWith<BackgroundChanged, BackgroundChanged,
-          BackgroundChanged>
-      get copyWith =>
-          _BackgroundChangedCopyWithImpl<BackgroundChanged, BackgroundChanged>(
-              this as BackgroundChanged, $identity, $identity);
+  BackgroundChangedCopyWith<
+    BackgroundChanged,
+    BackgroundChanged,
+    BackgroundChanged
+  >
+  get copyWith =>
+      _BackgroundChangedCopyWithImpl<BackgroundChanged, BackgroundChanged>(
+        this as BackgroundChanged,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return BackgroundChangedMapper.ensureInitialized()
-        .stringifyValue(this as BackgroundChanged);
+    return BackgroundChangedMapper.ensureInitialized().stringifyValue(
+      this as BackgroundChanged,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return BackgroundChangedMapper.ensureInitialized()
-        .equalsValue(this as BackgroundChanged, other);
+    return BackgroundChangedMapper.ensureInitialized().equalsValue(
+      this as BackgroundChanged,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return BackgroundChangedMapper.ensureInitialized()
-        .hashValue(this as BackgroundChanged);
+    return BackgroundChangedMapper.ensureInitialized().hashValue(
+      this as BackgroundChanged,
+    );
   }
 }
 
 extension BackgroundChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BackgroundChanged, $Out> {
   BackgroundChangedCopyWith<$R, BackgroundChanged, $Out>
-      get $asBackgroundChanged => $base
-          .as((v, t, t2) => _BackgroundChangedCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asBackgroundChanged => $base.as(
+    (v, t, t2) => _BackgroundChangedCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
-abstract class BackgroundChangedCopyWith<$R, $In extends BackgroundChanged,
-    $Out> implements HybridWorldEventCopyWith<$R, $In, $Out> {
+abstract class BackgroundChangedCopyWith<
+  $R,
+  $In extends BackgroundChanged,
+  $Out
+>
+    implements HybridWorldEventCopyWith<$R, $In, $Out> {
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation> get background;
   @override
   $R call({ItemLocation? background});
   BackgroundChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _BackgroundChangedCopyWithImpl<$R, $Out>
@@ -3817,15 +4397,16 @@ class _BackgroundChangedCopyWithImpl<$R, $Out>
       $value.background.copyWith.$chain((v) => call(background: v));
   @override
   $R call({ItemLocation? background}) => $apply(
-      FieldCopyWithData({if (background != null) #background: background}));
+    FieldCopyWithData({if (background != null) #background: background}),
+  );
   @override
   BackgroundChanged $make(CopyWithData data) =>
       BackgroundChanged(data.get(#background, or: $value.background));
 
   @override
   BackgroundChangedCopyWith<$R2, BackgroundChanged, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _BackgroundChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _BackgroundChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ObjectsSpawnedMapper extends SubClassMapperBase<ObjectsSpawned> {
@@ -3850,7 +4431,7 @@ class ObjectsSpawnedMapper extends SubClassMapperBase<ObjectsSpawned> {
   static Map<VectorDefinition, List<GameObject>> _$objects(ObjectsSpawned v) =>
       v.objects;
   static const Field<ObjectsSpawned, Map<VectorDefinition, List<GameObject>>>
-      _f$objects = Field('objects', _$objects, opt: true, def: const {});
+  _f$objects = Field('objects', _$objects, opt: true, def: const {});
 
   @override
   final MappableFields<ObjectsSpawned> fields = const {
@@ -3884,35 +4465,43 @@ class ObjectsSpawnedMapper extends SubClassMapperBase<ObjectsSpawned> {
 
 mixin ObjectsSpawnedMappable {
   String toJson() {
-    return ObjectsSpawnedMapper.ensureInitialized()
-        .encodeJson<ObjectsSpawned>(this as ObjectsSpawned);
+    return ObjectsSpawnedMapper.ensureInitialized().encodeJson<ObjectsSpawned>(
+      this as ObjectsSpawned,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return ObjectsSpawnedMapper.ensureInitialized()
-        .encodeMap<ObjectsSpawned>(this as ObjectsSpawned);
+    return ObjectsSpawnedMapper.ensureInitialized().encodeMap<ObjectsSpawned>(
+      this as ObjectsSpawned,
+    );
   }
 
   ObjectsSpawnedCopyWith<ObjectsSpawned, ObjectsSpawned, ObjectsSpawned>
-      get copyWith =>
-          _ObjectsSpawnedCopyWithImpl<ObjectsSpawned, ObjectsSpawned>(
-              this as ObjectsSpawned, $identity, $identity);
+  get copyWith => _ObjectsSpawnedCopyWithImpl<ObjectsSpawned, ObjectsSpawned>(
+    this as ObjectsSpawned,
+    $identity,
+    $identity,
+  );
   @override
   String toString() {
-    return ObjectsSpawnedMapper.ensureInitialized()
-        .stringifyValue(this as ObjectsSpawned);
+    return ObjectsSpawnedMapper.ensureInitialized().stringifyValue(
+      this as ObjectsSpawned,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return ObjectsSpawnedMapper.ensureInitialized()
-        .equalsValue(this as ObjectsSpawned, other);
+    return ObjectsSpawnedMapper.ensureInitialized().equalsValue(
+      this as ObjectsSpawned,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return ObjectsSpawnedMapper.ensureInitialized()
-        .hashValue(this as ObjectsSpawned);
+    return ObjectsSpawnedMapper.ensureInitialized().hashValue(
+      this as ObjectsSpawned,
+    );
   }
 }
 
@@ -3924,12 +4513,18 @@ extension ObjectsSpawnedValueCopy<$R, $Out>
 
 abstract class ObjectsSpawnedCopyWith<$R, $In extends ObjectsSpawned, $Out>
     implements HybridWorldEventCopyWith<$R, $In, $Out> {
-  MapCopyWith<$R, VectorDefinition, List<GameObject>,
-      ObjectCopyWith<$R, List<GameObject>, List<GameObject>>> get objects;
+  MapCopyWith<
+    $R,
+    VectorDefinition,
+    List<GameObject>,
+    ObjectCopyWith<$R, List<GameObject>, List<GameObject>>
+  >
+  get objects;
   @override
   $R call({String? table, Map<VectorDefinition, List<GameObject>>? objects});
   ObjectsSpawnedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _ObjectsSpawnedCopyWithImpl<$R, $Out>
@@ -3941,25 +4536,35 @@ class _ObjectsSpawnedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ObjectsSpawned> $mapper =
       ObjectsSpawnedMapper.ensureInitialized();
   @override
-  MapCopyWith<$R, VectorDefinition, List<GameObject>,
-          ObjectCopyWith<$R, List<GameObject>, List<GameObject>>>
-      get objects => MapCopyWith($value.objects,
-          (v, t) => ObjectCopyWith(v, $identity, t), (v) => call(objects: v));
+  MapCopyWith<
+    $R,
+    VectorDefinition,
+    List<GameObject>,
+    ObjectCopyWith<$R, List<GameObject>, List<GameObject>>
+  >
+  get objects => MapCopyWith(
+    $value.objects,
+    (v, t) => ObjectCopyWith(v, $identity, t),
+    (v) => call(objects: v),
+  );
   @override
   $R call({String? table, Map<VectorDefinition, List<GameObject>>? objects}) =>
-      $apply(FieldCopyWithData({
-        if (table != null) #table: table,
-        if (objects != null) #objects: objects
-      }));
+      $apply(
+        FieldCopyWithData({
+          if (table != null) #table: table,
+          if (objects != null) #objects: objects,
+        }),
+      );
   @override
   ObjectsSpawned $make(CopyWithData data) => ObjectsSpawned(
-      data.get(#table, or: $value.table),
-      data.get(#objects, or: $value.objects));
+    data.get(#table, or: $value.table),
+    data.get(#objects, or: $value.objects),
+  );
 
   @override
   ObjectsSpawnedCopyWith<$R2, ObjectsSpawned, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _ObjectsSpawnedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _ObjectsSpawnedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ObjectsMovedMapper extends SubClassMapperBase<ObjectsMoved> {
@@ -3981,11 +4586,15 @@ class ObjectsMovedMapper extends SubClassMapperBase<ObjectsMoved> {
   static String _$table(ObjectsMoved v) => v.table;
   static const Field<ObjectsMoved, String> _f$table = Field('table', _$table);
   static List<int> _$objects(ObjectsMoved v) => v.objects;
-  static const Field<ObjectsMoved, List<int>> _f$objects =
-      Field('objects', _$objects);
+  static const Field<ObjectsMoved, List<int>> _f$objects = Field(
+    'objects',
+    _$objects,
+  );
   static VectorDefinition _$from(ObjectsMoved v) => v.from;
-  static const Field<ObjectsMoved, VectorDefinition> _f$from =
-      Field('from', _$from);
+  static const Field<ObjectsMoved, VectorDefinition> _f$from = Field(
+    'from',
+    _$from,
+  );
   static VectorDefinition _$to(ObjectsMoved v) => v.to;
   static const Field<ObjectsMoved, VectorDefinition> _f$to = Field('to', _$to);
 
@@ -4006,8 +4615,12 @@ class ObjectsMovedMapper extends SubClassMapperBase<ObjectsMoved> {
       HybridWorldEventMapper.ensureInitialized();
 
   static ObjectsMoved _instantiate(DecodingData data) {
-    return ObjectsMoved(data.dec(_f$table), data.dec(_f$objects),
-        data.dec(_f$from), data.dec(_f$to));
+    return ObjectsMoved(
+      data.dec(_f$table),
+      data.dec(_f$objects),
+      data.dec(_f$from),
+      data.dec(_f$to),
+    );
   }
 
   @override
@@ -4024,34 +4637,43 @@ class ObjectsMovedMapper extends SubClassMapperBase<ObjectsMoved> {
 
 mixin ObjectsMovedMappable {
   String toJson() {
-    return ObjectsMovedMapper.ensureInitialized()
-        .encodeJson<ObjectsMoved>(this as ObjectsMoved);
+    return ObjectsMovedMapper.ensureInitialized().encodeJson<ObjectsMoved>(
+      this as ObjectsMoved,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return ObjectsMovedMapper.ensureInitialized()
-        .encodeMap<ObjectsMoved>(this as ObjectsMoved);
+    return ObjectsMovedMapper.ensureInitialized().encodeMap<ObjectsMoved>(
+      this as ObjectsMoved,
+    );
   }
 
   ObjectsMovedCopyWith<ObjectsMoved, ObjectsMoved, ObjectsMoved> get copyWith =>
       _ObjectsMovedCopyWithImpl<ObjectsMoved, ObjectsMoved>(
-          this as ObjectsMoved, $identity, $identity);
+        this as ObjectsMoved,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return ObjectsMovedMapper.ensureInitialized()
-        .stringifyValue(this as ObjectsMoved);
+    return ObjectsMovedMapper.ensureInitialized().stringifyValue(
+      this as ObjectsMoved,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return ObjectsMovedMapper.ensureInitialized()
-        .equalsValue(this as ObjectsMoved, other);
+    return ObjectsMovedMapper.ensureInitialized().equalsValue(
+      this as ObjectsMoved,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return ObjectsMovedMapper.ensureInitialized()
-        .hashValue(this as ObjectsMoved);
+    return ObjectsMovedMapper.ensureInitialized().hashValue(
+      this as ObjectsMoved,
+    );
   }
 }
 
@@ -4067,11 +4689,12 @@ abstract class ObjectsMovedCopyWith<$R, $In extends ObjectsMoved, $Out>
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get from;
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get to;
   @override
-  $R call(
-      {String? table,
-      List<int>? objects,
-      VectorDefinition? from,
-      VectorDefinition? to});
+  $R call({
+    String? table,
+    List<int>? objects,
+    VectorDefinition? from,
+    VectorDefinition? to,
+  });
   ObjectsMovedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -4085,8 +4708,11 @@ class _ObjectsMovedCopyWithImpl<$R, $Out>
       ObjectsMovedMapper.ensureInitialized();
   @override
   ListCopyWith<$R, int, ObjectCopyWith<$R, int, int>> get objects =>
-      ListCopyWith($value.objects, (v, t) => ObjectCopyWith(v, $identity, t),
-          (v) => call(objects: v));
+      ListCopyWith(
+        $value.objects,
+        (v, t) => ObjectCopyWith(v, $identity, t),
+        (v) => call(objects: v),
+      );
   @override
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get from =>
       $value.from.copyWith.$chain((v) => call(from: v));
@@ -4094,28 +4720,31 @@ class _ObjectsMovedCopyWithImpl<$R, $Out>
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get to =>
       $value.to.copyWith.$chain((v) => call(to: v));
   @override
-  $R call(
-          {String? table,
-          List<int>? objects,
-          VectorDefinition? from,
-          VectorDefinition? to}) =>
-      $apply(FieldCopyWithData({
-        if (table != null) #table: table,
-        if (objects != null) #objects: objects,
-        if (from != null) #from: from,
-        if (to != null) #to: to
-      }));
+  $R call({
+    String? table,
+    List<int>? objects,
+    VectorDefinition? from,
+    VectorDefinition? to,
+  }) => $apply(
+    FieldCopyWithData({
+      if (table != null) #table: table,
+      if (objects != null) #objects: objects,
+      if (from != null) #from: from,
+      if (to != null) #to: to,
+    }),
+  );
   @override
   ObjectsMoved $make(CopyWithData data) => ObjectsMoved(
-      data.get(#table, or: $value.table),
-      data.get(#objects, or: $value.objects),
-      data.get(#from, or: $value.from),
-      data.get(#to, or: $value.to));
+    data.get(#table, or: $value.table),
+    data.get(#objects, or: $value.objects),
+    data.get(#from, or: $value.from),
+    data.get(#to, or: $value.to),
+  );
 
   @override
   ObjectsMovedCopyWith<$R2, ObjectsMoved, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _ObjectsMovedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _ObjectsMovedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class CellHideChangedMapper extends SubClassMapperBase<CellHideChanged> {
@@ -4135,14 +4764,22 @@ class CellHideChangedMapper extends SubClassMapperBase<CellHideChanged> {
   final String id = 'CellHideChanged';
 
   static GlobalVectorDefinition _$cell(CellHideChanged v) => v.cell;
-  static const Field<CellHideChanged, GlobalVectorDefinition> _f$cell =
-      Field('cell', _$cell);
+  static const Field<CellHideChanged, GlobalVectorDefinition> _f$cell = Field(
+    'cell',
+    _$cell,
+  );
   static int? _$object(CellHideChanged v) => v.object;
-  static const Field<CellHideChanged, int> _f$object =
-      Field('object', _$object, opt: true);
+  static const Field<CellHideChanged, int> _f$object = Field(
+    'object',
+    _$object,
+    opt: true,
+  );
   static bool? _$hide(CellHideChanged v) => v.hide;
-  static const Field<CellHideChanged, bool> _f$hide =
-      Field('hide', _$hide, opt: true);
+  static const Field<CellHideChanged, bool> _f$hide = Field(
+    'hide',
+    _$hide,
+    opt: true,
+  );
 
   @override
   final MappableFields<CellHideChanged> fields = const {
@@ -4160,8 +4797,11 @@ class CellHideChangedMapper extends SubClassMapperBase<CellHideChanged> {
       HybridWorldEventMapper.ensureInitialized();
 
   static CellHideChanged _instantiate(DecodingData data) {
-    return CellHideChanged(data.dec(_f$cell),
-        object: data.dec(_f$object), hide: data.dec(_f$hide));
+    return CellHideChanged(
+      data.dec(_f$cell),
+      object: data.dec(_f$object),
+      hide: data.dec(_f$hide),
+    );
   }
 
   @override
@@ -4183,30 +4823,38 @@ mixin CellHideChangedMappable {
   }
 
   Map<String, dynamic> toMap() {
-    return CellHideChangedMapper.ensureInitialized()
-        .encodeMap<CellHideChanged>(this as CellHideChanged);
+    return CellHideChangedMapper.ensureInitialized().encodeMap<CellHideChanged>(
+      this as CellHideChanged,
+    );
   }
 
   CellHideChangedCopyWith<CellHideChanged, CellHideChanged, CellHideChanged>
-      get copyWith =>
-          _CellHideChangedCopyWithImpl<CellHideChanged, CellHideChanged>(
-              this as CellHideChanged, $identity, $identity);
+  get copyWith =>
+      _CellHideChangedCopyWithImpl<CellHideChanged, CellHideChanged>(
+        this as CellHideChanged,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return CellHideChangedMapper.ensureInitialized()
-        .stringifyValue(this as CellHideChanged);
+    return CellHideChangedMapper.ensureInitialized().stringifyValue(
+      this as CellHideChanged,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return CellHideChangedMapper.ensureInitialized()
-        .equalsValue(this as CellHideChanged, other);
+    return CellHideChangedMapper.ensureInitialized().equalsValue(
+      this as CellHideChanged,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return CellHideChangedMapper.ensureInitialized()
-        .hashValue(this as CellHideChanged);
+    return CellHideChangedMapper.ensureInitialized().hashValue(
+      this as CellHideChanged,
+    );
   }
 }
 
@@ -4218,12 +4866,17 @@ extension CellHideChangedValueCopy<$R, $Out>
 
 abstract class CellHideChangedCopyWith<$R, $In extends CellHideChanged, $Out>
     implements HybridWorldEventCopyWith<$R, $In, $Out> {
-  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
-      GlobalVectorDefinition> get cell;
+  GlobalVectorDefinitionCopyWith<
+    $R,
+    GlobalVectorDefinition,
+    GlobalVectorDefinition
+  >
+  get cell;
   @override
   $R call({GlobalVectorDefinition? cell, int? object, bool? hide});
   CellHideChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _CellHideChangedCopyWithImpl<$R, $Out>
@@ -4235,29 +4888,35 @@ class _CellHideChangedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<CellHideChanged> $mapper =
       CellHideChangedMapper.ensureInitialized();
   @override
-  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
-          GlobalVectorDefinition>
-      get cell => $value.cell.copyWith.$chain((v) => call(cell: v));
+  GlobalVectorDefinitionCopyWith<
+    $R,
+    GlobalVectorDefinition,
+    GlobalVectorDefinition
+  >
+  get cell => $value.cell.copyWith.$chain((v) => call(cell: v));
   @override
-  $R call(
-          {GlobalVectorDefinition? cell,
-          Object? object = $none,
-          Object? hide = $none}) =>
-      $apply(FieldCopyWithData({
-        if (cell != null) #cell: cell,
-        if (object != $none) #object: object,
-        if (hide != $none) #hide: hide
-      }));
+  $R call({
+    GlobalVectorDefinition? cell,
+    Object? object = $none,
+    Object? hide = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (cell != null) #cell: cell,
+      if (object != $none) #object: object,
+      if (hide != $none) #hide: hide,
+    }),
+  );
   @override
-  CellHideChanged $make(CopyWithData data) =>
-      CellHideChanged(data.get(#cell, or: $value.cell),
-          object: data.get(#object, or: $value.object),
-          hide: data.get(#hide, or: $value.hide));
+  CellHideChanged $make(CopyWithData data) => CellHideChanged(
+    data.get(#cell, or: $value.cell),
+    object: data.get(#object, or: $value.object),
+    hide: data.get(#hide, or: $value.hide),
+  );
 
   @override
   CellHideChangedCopyWith<$R2, CellHideChanged, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _CellHideChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _CellHideChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ObjectIndexChangedMapper extends SubClassMapperBase<ObjectIndexChanged> {
@@ -4280,11 +4939,15 @@ class ObjectIndexChangedMapper extends SubClassMapperBase<ObjectIndexChanged> {
   static const Field<ObjectIndexChanged, GlobalVectorDefinition> _f$cell =
       Field('cell', _$cell);
   static int _$object(ObjectIndexChanged v) => v.object;
-  static const Field<ObjectIndexChanged, int> _f$object =
-      Field('object', _$object);
+  static const Field<ObjectIndexChanged, int> _f$object = Field(
+    'object',
+    _$object,
+  );
   static int _$index(ObjectIndexChanged v) => v.index;
-  static const Field<ObjectIndexChanged, int> _f$index =
-      Field('index', _$index);
+  static const Field<ObjectIndexChanged, int> _f$index = Field(
+    'index',
+    _$index,
+  );
 
   @override
   final MappableFields<ObjectIndexChanged> fields = const {
@@ -4303,7 +4966,10 @@ class ObjectIndexChangedMapper extends SubClassMapperBase<ObjectIndexChanged> {
 
   static ObjectIndexChanged _instantiate(DecodingData data) {
     return ObjectIndexChanged(
-        data.dec(_f$cell), data.dec(_f$object), data.dec(_f$index));
+      data.dec(_f$cell),
+      data.dec(_f$object),
+      data.dec(_f$index),
+    );
   }
 
   @override
@@ -4329,44 +4995,65 @@ mixin ObjectIndexChangedMappable {
         .encodeMap<ObjectIndexChanged>(this as ObjectIndexChanged);
   }
 
-  ObjectIndexChangedCopyWith<ObjectIndexChanged, ObjectIndexChanged,
-          ObjectIndexChanged>
-      get copyWith => _ObjectIndexChangedCopyWithImpl<ObjectIndexChanged,
-          ObjectIndexChanged>(this as ObjectIndexChanged, $identity, $identity);
+  ObjectIndexChangedCopyWith<
+    ObjectIndexChanged,
+    ObjectIndexChanged,
+    ObjectIndexChanged
+  >
+  get copyWith =>
+      _ObjectIndexChangedCopyWithImpl<ObjectIndexChanged, ObjectIndexChanged>(
+        this as ObjectIndexChanged,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return ObjectIndexChangedMapper.ensureInitialized()
-        .stringifyValue(this as ObjectIndexChanged);
+    return ObjectIndexChangedMapper.ensureInitialized().stringifyValue(
+      this as ObjectIndexChanged,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return ObjectIndexChangedMapper.ensureInitialized()
-        .equalsValue(this as ObjectIndexChanged, other);
+    return ObjectIndexChangedMapper.ensureInitialized().equalsValue(
+      this as ObjectIndexChanged,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return ObjectIndexChangedMapper.ensureInitialized()
-        .hashValue(this as ObjectIndexChanged);
+    return ObjectIndexChangedMapper.ensureInitialized().hashValue(
+      this as ObjectIndexChanged,
+    );
   }
 }
 
 extension ObjectIndexChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ObjectIndexChanged, $Out> {
   ObjectIndexChangedCopyWith<$R, ObjectIndexChanged, $Out>
-      get $asObjectIndexChanged => $base.as(
-          (v, t, t2) => _ObjectIndexChangedCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asObjectIndexChanged => $base.as(
+    (v, t, t2) => _ObjectIndexChangedCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
-abstract class ObjectIndexChangedCopyWith<$R, $In extends ObjectIndexChanged,
-    $Out> implements HybridWorldEventCopyWith<$R, $In, $Out> {
-  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
-      GlobalVectorDefinition> get cell;
+abstract class ObjectIndexChangedCopyWith<
+  $R,
+  $In extends ObjectIndexChanged,
+  $Out
+>
+    implements HybridWorldEventCopyWith<$R, $In, $Out> {
+  GlobalVectorDefinitionCopyWith<
+    $R,
+    GlobalVectorDefinition,
+    GlobalVectorDefinition
+  >
+  get cell;
   @override
   $R call({GlobalVectorDefinition? cell, int? object, int? index});
   ObjectIndexChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _ObjectIndexChangedCopyWithImpl<$R, $Out>
@@ -4378,26 +5065,31 @@ class _ObjectIndexChangedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ObjectIndexChanged> $mapper =
       ObjectIndexChangedMapper.ensureInitialized();
   @override
-  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
-          GlobalVectorDefinition>
-      get cell => $value.cell.copyWith.$chain((v) => call(cell: v));
+  GlobalVectorDefinitionCopyWith<
+    $R,
+    GlobalVectorDefinition,
+    GlobalVectorDefinition
+  >
+  get cell => $value.cell.copyWith.$chain((v) => call(cell: v));
   @override
-  $R call({GlobalVectorDefinition? cell, int? object, int? index}) =>
-      $apply(FieldCopyWithData({
-        if (cell != null) #cell: cell,
-        if (object != null) #object: object,
-        if (index != null) #index: index
-      }));
+  $R call({GlobalVectorDefinition? cell, int? object, int? index}) => $apply(
+    FieldCopyWithData({
+      if (cell != null) #cell: cell,
+      if (object != null) #object: object,
+      if (index != null) #index: index,
+    }),
+  );
   @override
   ObjectIndexChanged $make(CopyWithData data) => ObjectIndexChanged(
-      data.get(#cell, or: $value.cell),
-      data.get(#object, or: $value.object),
-      data.get(#index, or: $value.index));
+    data.get(#cell, or: $value.cell),
+    data.get(#object, or: $value.object),
+    data.get(#index, or: $value.index),
+  );
 
   @override
   ObjectIndexChangedCopyWith<$R2, ObjectIndexChanged, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _ObjectIndexChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _ObjectIndexChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class TeamChangedMapper extends SubClassMapperBase<TeamChanged> {
@@ -4419,8 +5111,10 @@ class TeamChangedMapper extends SubClassMapperBase<TeamChanged> {
   static String _$name(TeamChanged v) => v.name;
   static const Field<TeamChanged, String> _f$name = Field('name', _$name);
   static String? _$newName(TeamChanged v) => v.newName;
-  static const Field<TeamChanged, String> _f$newName =
-      Field('newName', _$newName);
+  static const Field<TeamChanged, String> _f$newName = Field(
+    'newName',
+    _$newName,
+  );
   static GameTeam _$team(TeamChanged v) => v.team;
   static const Field<TeamChanged, GameTeam> _f$team = Field('team', _$team);
 
@@ -4441,7 +5135,10 @@ class TeamChangedMapper extends SubClassMapperBase<TeamChanged> {
 
   static TeamChanged _instantiate(DecodingData data) {
     return TeamChanged.rename(
-        data.dec(_f$name), data.dec(_f$newName), data.dec(_f$team));
+      data.dec(_f$name),
+      data.dec(_f$newName),
+      data.dec(_f$team),
+    );
   }
 
   @override
@@ -4458,28 +5155,36 @@ class TeamChangedMapper extends SubClassMapperBase<TeamChanged> {
 
 mixin TeamChangedMappable {
   String toJson() {
-    return TeamChangedMapper.ensureInitialized()
-        .encodeJson<TeamChanged>(this as TeamChanged);
+    return TeamChangedMapper.ensureInitialized().encodeJson<TeamChanged>(
+      this as TeamChanged,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return TeamChangedMapper.ensureInitialized()
-        .encodeMap<TeamChanged>(this as TeamChanged);
+    return TeamChangedMapper.ensureInitialized().encodeMap<TeamChanged>(
+      this as TeamChanged,
+    );
   }
 
   TeamChangedCopyWith<TeamChanged, TeamChanged, TeamChanged> get copyWith =>
       _TeamChangedCopyWithImpl<TeamChanged, TeamChanged>(
-          this as TeamChanged, $identity, $identity);
+        this as TeamChanged,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return TeamChangedMapper.ensureInitialized()
-        .stringifyValue(this as TeamChanged);
+    return TeamChangedMapper.ensureInitialized().stringifyValue(
+      this as TeamChanged,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return TeamChangedMapper.ensureInitialized()
-        .equalsValue(this as TeamChanged, other);
+    return TeamChangedMapper.ensureInitialized().equalsValue(
+      this as TeamChanged,
+      other,
+    );
   }
 
   @override
@@ -4514,22 +5219,24 @@ class _TeamChangedCopyWithImpl<$R, $Out>
   GameTeamCopyWith<$R, GameTeam, GameTeam> get team =>
       $value.team.copyWith.$chain((v) => call(team: v));
   @override
-  $R call({String? name, Object? newName = $none, GameTeam? team}) =>
-      $apply(FieldCopyWithData({
-        if (name != null) #name: name,
-        if (newName != $none) #newName: newName,
-        if (team != null) #team: team
-      }));
+  $R call({String? name, Object? newName = $none, GameTeam? team}) => $apply(
+    FieldCopyWithData({
+      if (name != null) #name: name,
+      if (newName != $none) #newName: newName,
+      if (team != null) #team: team,
+    }),
+  );
   @override
   TeamChanged $make(CopyWithData data) => TeamChanged.rename(
-      data.get(#name, or: $value.name),
-      data.get(#newName, or: $value.newName),
-      data.get(#team, or: $value.team));
+    data.get(#name, or: $value.name),
+    data.get(#newName, or: $value.newName),
+    data.get(#team, or: $value.team),
+  );
 
   @override
   TeamChangedCopyWith<$R2, TeamChanged, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _TeamChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _TeamChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class TeamRemovedMapper extends SubClassMapperBase<TeamRemoved> {
@@ -4551,9 +5258,7 @@ class TeamRemovedMapper extends SubClassMapperBase<TeamRemoved> {
   static const Field<TeamRemoved, String> _f$team = Field('team', _$team);
 
   @override
-  final MappableFields<TeamRemoved> fields = const {
-    #team: _f$team,
-  };
+  final MappableFields<TeamRemoved> fields = const {#team: _f$team};
 
   @override
   final String discriminatorKey = 'type';
@@ -4581,28 +5286,36 @@ class TeamRemovedMapper extends SubClassMapperBase<TeamRemoved> {
 
 mixin TeamRemovedMappable {
   String toJson() {
-    return TeamRemovedMapper.ensureInitialized()
-        .encodeJson<TeamRemoved>(this as TeamRemoved);
+    return TeamRemovedMapper.ensureInitialized().encodeJson<TeamRemoved>(
+      this as TeamRemoved,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return TeamRemovedMapper.ensureInitialized()
-        .encodeMap<TeamRemoved>(this as TeamRemoved);
+    return TeamRemovedMapper.ensureInitialized().encodeMap<TeamRemoved>(
+      this as TeamRemoved,
+    );
   }
 
   TeamRemovedCopyWith<TeamRemoved, TeamRemoved, TeamRemoved> get copyWith =>
       _TeamRemovedCopyWithImpl<TeamRemoved, TeamRemoved>(
-          this as TeamRemoved, $identity, $identity);
+        this as TeamRemoved,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return TeamRemovedMapper.ensureInitialized()
-        .stringifyValue(this as TeamRemoved);
+    return TeamRemovedMapper.ensureInitialized().stringifyValue(
+      this as TeamRemoved,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return TeamRemovedMapper.ensureInitialized()
-        .equalsValue(this as TeamRemoved, other);
+    return TeamRemovedMapper.ensureInitialized().equalsValue(
+      this as TeamRemoved,
+      other,
+    );
   }
 
   @override
@@ -4641,8 +5354,8 @@ class _TeamRemovedCopyWithImpl<$R, $Out>
 
   @override
   TeamRemovedCopyWith<$R2, TeamRemoved, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _TeamRemovedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _TeamRemovedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class MetadataChangedMapper extends SubClassMapperBase<MetadataChanged> {
@@ -4662,13 +5375,13 @@ class MetadataChangedMapper extends SubClassMapperBase<MetadataChanged> {
   final String id = 'MetadataChanged';
 
   static FileMetadata _$metadata(MetadataChanged v) => v.metadata;
-  static const Field<MetadataChanged, FileMetadata> _f$metadata =
-      Field('metadata', _$metadata);
+  static const Field<MetadataChanged, FileMetadata> _f$metadata = Field(
+    'metadata',
+    _$metadata,
+  );
 
   @override
-  final MappableFields<MetadataChanged> fields = const {
-    #metadata: _f$metadata,
-  };
+  final MappableFields<MetadataChanged> fields = const {#metadata: _f$metadata};
 
   @override
   final String discriminatorKey = 'type';
@@ -4701,30 +5414,38 @@ mixin MetadataChangedMappable {
   }
 
   Map<String, dynamic> toMap() {
-    return MetadataChangedMapper.ensureInitialized()
-        .encodeMap<MetadataChanged>(this as MetadataChanged);
+    return MetadataChangedMapper.ensureInitialized().encodeMap<MetadataChanged>(
+      this as MetadataChanged,
+    );
   }
 
   MetadataChangedCopyWith<MetadataChanged, MetadataChanged, MetadataChanged>
-      get copyWith =>
-          _MetadataChangedCopyWithImpl<MetadataChanged, MetadataChanged>(
-              this as MetadataChanged, $identity, $identity);
+  get copyWith =>
+      _MetadataChangedCopyWithImpl<MetadataChanged, MetadataChanged>(
+        this as MetadataChanged,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return MetadataChangedMapper.ensureInitialized()
-        .stringifyValue(this as MetadataChanged);
+    return MetadataChangedMapper.ensureInitialized().stringifyValue(
+      this as MetadataChanged,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return MetadataChangedMapper.ensureInitialized()
-        .equalsValue(this as MetadataChanged, other);
+    return MetadataChangedMapper.ensureInitialized().equalsValue(
+      this as MetadataChanged,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return MetadataChangedMapper.ensureInitialized()
-        .hashValue(this as MetadataChanged);
+    return MetadataChangedMapper.ensureInitialized().hashValue(
+      this as MetadataChanged,
+    );
   }
 }
 
@@ -4740,7 +5461,8 @@ abstract class MetadataChangedCopyWith<$R, $In extends MetadataChanged, $Out>
   @override
   $R call({FileMetadata? metadata});
   MetadataChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _MetadataChangedCopyWithImpl<$R, $Out>
@@ -4763,8 +5485,8 @@ class _MetadataChangedCopyWithImpl<$R, $Out>
 
   @override
   MetadataChangedCopyWith<$R2, MetadataChanged, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _MetadataChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _MetadataChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ObjectsRemovedMapper extends SubClassMapperBase<ObjectsRemoved> {
@@ -4784,11 +5506,16 @@ class ObjectsRemovedMapper extends SubClassMapperBase<ObjectsRemoved> {
   final String id = 'ObjectsRemoved';
 
   static GlobalVectorDefinition _$cell(ObjectsRemoved v) => v.cell;
-  static const Field<ObjectsRemoved, GlobalVectorDefinition> _f$cell =
-      Field('cell', _$cell);
+  static const Field<ObjectsRemoved, GlobalVectorDefinition> _f$cell = Field(
+    'cell',
+    _$cell,
+  );
   static List<int>? _$objects(ObjectsRemoved v) => v.objects;
-  static const Field<ObjectsRemoved, List<int>> _f$objects =
-      Field('objects', _$objects, opt: true);
+  static const Field<ObjectsRemoved, List<int>> _f$objects = Field(
+    'objects',
+    _$objects,
+    opt: true,
+  );
 
   @override
   final MappableFields<ObjectsRemoved> fields = const {
@@ -4822,35 +5549,43 @@ class ObjectsRemovedMapper extends SubClassMapperBase<ObjectsRemoved> {
 
 mixin ObjectsRemovedMappable {
   String toJson() {
-    return ObjectsRemovedMapper.ensureInitialized()
-        .encodeJson<ObjectsRemoved>(this as ObjectsRemoved);
+    return ObjectsRemovedMapper.ensureInitialized().encodeJson<ObjectsRemoved>(
+      this as ObjectsRemoved,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return ObjectsRemovedMapper.ensureInitialized()
-        .encodeMap<ObjectsRemoved>(this as ObjectsRemoved);
+    return ObjectsRemovedMapper.ensureInitialized().encodeMap<ObjectsRemoved>(
+      this as ObjectsRemoved,
+    );
   }
 
   ObjectsRemovedCopyWith<ObjectsRemoved, ObjectsRemoved, ObjectsRemoved>
-      get copyWith =>
-          _ObjectsRemovedCopyWithImpl<ObjectsRemoved, ObjectsRemoved>(
-              this as ObjectsRemoved, $identity, $identity);
+  get copyWith => _ObjectsRemovedCopyWithImpl<ObjectsRemoved, ObjectsRemoved>(
+    this as ObjectsRemoved,
+    $identity,
+    $identity,
+  );
   @override
   String toString() {
-    return ObjectsRemovedMapper.ensureInitialized()
-        .stringifyValue(this as ObjectsRemoved);
+    return ObjectsRemovedMapper.ensureInitialized().stringifyValue(
+      this as ObjectsRemoved,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return ObjectsRemovedMapper.ensureInitialized()
-        .equalsValue(this as ObjectsRemoved, other);
+    return ObjectsRemovedMapper.ensureInitialized().equalsValue(
+      this as ObjectsRemoved,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return ObjectsRemovedMapper.ensureInitialized()
-        .hashValue(this as ObjectsRemoved);
+    return ObjectsRemovedMapper.ensureInitialized().hashValue(
+      this as ObjectsRemoved,
+    );
   }
 }
 
@@ -4862,13 +5597,18 @@ extension ObjectsRemovedValueCopy<$R, $Out>
 
 abstract class ObjectsRemovedCopyWith<$R, $In extends ObjectsRemoved, $Out>
     implements HybridWorldEventCopyWith<$R, $In, $Out> {
-  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
-      GlobalVectorDefinition> get cell;
+  GlobalVectorDefinitionCopyWith<
+    $R,
+    GlobalVectorDefinition,
+    GlobalVectorDefinition
+  >
+  get cell;
   ListCopyWith<$R, int, ObjectCopyWith<$R, int, int>>? get objects;
   @override
   $R call({GlobalVectorDefinition? cell, List<int>? objects});
   ObjectsRemovedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _ObjectsRemovedCopyWithImpl<$R, $Out>
@@ -4880,32 +5620,38 @@ class _ObjectsRemovedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ObjectsRemoved> $mapper =
       ObjectsRemovedMapper.ensureInitialized();
   @override
-  GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition,
-          GlobalVectorDefinition>
-      get cell => $value.cell.copyWith.$chain((v) => call(cell: v));
+  GlobalVectorDefinitionCopyWith<
+    $R,
+    GlobalVectorDefinition,
+    GlobalVectorDefinition
+  >
+  get cell => $value.cell.copyWith.$chain((v) => call(cell: v));
   @override
   ListCopyWith<$R, int, ObjectCopyWith<$R, int, int>>? get objects =>
       $value.objects != null
-          ? ListCopyWith(
-              $value.objects!,
-              (v, t) => ObjectCopyWith(v, $identity, t),
-              (v) => call(objects: v))
-          : null;
+      ? ListCopyWith(
+          $value.objects!,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(objects: v),
+        )
+      : null;
   @override
-  $R call({GlobalVectorDefinition? cell, Object? objects = $none}) =>
-      $apply(FieldCopyWithData({
-        if (cell != null) #cell: cell,
-        if (objects != $none) #objects: objects
-      }));
+  $R call({GlobalVectorDefinition? cell, Object? objects = $none}) => $apply(
+    FieldCopyWithData({
+      if (cell != null) #cell: cell,
+      if (objects != $none) #objects: objects,
+    }),
+  );
   @override
-  ObjectsRemoved $make(CopyWithData data) =>
-      ObjectsRemoved(data.get(#cell, or: $value.cell),
-          objects: data.get(#objects, or: $value.objects));
+  ObjectsRemoved $make(CopyWithData data) => ObjectsRemoved(
+    data.get(#cell, or: $value.cell),
+    objects: data.get(#objects, or: $value.objects),
+  );
 
   @override
   ObjectsRemovedCopyWith<$R2, ObjectsRemoved, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _ObjectsRemovedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _ObjectsRemovedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class TableRenamedMapper extends SubClassMapperBase<TableRenamed> {
@@ -4926,8 +5672,10 @@ class TableRenamedMapper extends SubClassMapperBase<TableRenamed> {
   static String _$name(TableRenamed v) => v.name;
   static const Field<TableRenamed, String> _f$name = Field('name', _$name);
   static String _$newName(TableRenamed v) => v.newName;
-  static const Field<TableRenamed, String> _f$newName =
-      Field('newName', _$newName);
+  static const Field<TableRenamed, String> _f$newName = Field(
+    'newName',
+    _$newName,
+  );
 
   @override
   final MappableFields<TableRenamed> fields = const {
@@ -4961,34 +5709,43 @@ class TableRenamedMapper extends SubClassMapperBase<TableRenamed> {
 
 mixin TableRenamedMappable {
   String toJson() {
-    return TableRenamedMapper.ensureInitialized()
-        .encodeJson<TableRenamed>(this as TableRenamed);
+    return TableRenamedMapper.ensureInitialized().encodeJson<TableRenamed>(
+      this as TableRenamed,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return TableRenamedMapper.ensureInitialized()
-        .encodeMap<TableRenamed>(this as TableRenamed);
+    return TableRenamedMapper.ensureInitialized().encodeMap<TableRenamed>(
+      this as TableRenamed,
+    );
   }
 
   TableRenamedCopyWith<TableRenamed, TableRenamed, TableRenamed> get copyWith =>
       _TableRenamedCopyWithImpl<TableRenamed, TableRenamed>(
-          this as TableRenamed, $identity, $identity);
+        this as TableRenamed,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return TableRenamedMapper.ensureInitialized()
-        .stringifyValue(this as TableRenamed);
+    return TableRenamedMapper.ensureInitialized().stringifyValue(
+      this as TableRenamed,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return TableRenamedMapper.ensureInitialized()
-        .equalsValue(this as TableRenamed, other);
+    return TableRenamedMapper.ensureInitialized().equalsValue(
+      this as TableRenamed,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return TableRenamedMapper.ensureInitialized()
-        .hashValue(this as TableRenamed);
+    return TableRenamedMapper.ensureInitialized().hashValue(
+      this as TableRenamed,
+    );
   }
 }
 
@@ -5014,16 +5771,22 @@ class _TableRenamedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<TableRenamed> $mapper =
       TableRenamedMapper.ensureInitialized();
   @override
-  $R call({String? name, String? newName}) => $apply(FieldCopyWithData(
-      {if (name != null) #name: name, if (newName != null) #newName: newName}));
+  $R call({String? name, String? newName}) => $apply(
+    FieldCopyWithData({
+      if (name != null) #name: name,
+      if (newName != null) #newName: newName,
+    }),
+  );
   @override
   TableRenamed $make(CopyWithData data) => TableRenamed(
-      data.get(#name, or: $value.name), data.get(#newName, or: $value.newName));
+    data.get(#name, or: $value.name),
+    data.get(#newName, or: $value.newName),
+  );
 
   @override
   TableRenamedCopyWith<$R2, TableRenamed, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _TableRenamedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _TableRenamedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class TableRemovedMapper extends SubClassMapperBase<TableRemoved> {
@@ -5045,9 +5808,7 @@ class TableRemovedMapper extends SubClassMapperBase<TableRemoved> {
   static const Field<TableRemoved, String> _f$name = Field('name', _$name);
 
   @override
-  final MappableFields<TableRemoved> fields = const {
-    #name: _f$name,
-  };
+  final MappableFields<TableRemoved> fields = const {#name: _f$name};
 
   @override
   final String discriminatorKey = 'type';
@@ -5075,34 +5836,43 @@ class TableRemovedMapper extends SubClassMapperBase<TableRemoved> {
 
 mixin TableRemovedMappable {
   String toJson() {
-    return TableRemovedMapper.ensureInitialized()
-        .encodeJson<TableRemoved>(this as TableRemoved);
+    return TableRemovedMapper.ensureInitialized().encodeJson<TableRemoved>(
+      this as TableRemoved,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return TableRemovedMapper.ensureInitialized()
-        .encodeMap<TableRemoved>(this as TableRemoved);
+    return TableRemovedMapper.ensureInitialized().encodeMap<TableRemoved>(
+      this as TableRemoved,
+    );
   }
 
   TableRemovedCopyWith<TableRemoved, TableRemoved, TableRemoved> get copyWith =>
       _TableRemovedCopyWithImpl<TableRemoved, TableRemoved>(
-          this as TableRemoved, $identity, $identity);
+        this as TableRemoved,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return TableRemovedMapper.ensureInitialized()
-        .stringifyValue(this as TableRemoved);
+    return TableRemovedMapper.ensureInitialized().stringifyValue(
+      this as TableRemoved,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return TableRemovedMapper.ensureInitialized()
-        .equalsValue(this as TableRemoved, other);
+    return TableRemovedMapper.ensureInitialized().equalsValue(
+      this as TableRemoved,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return TableRemovedMapper.ensureInitialized()
-        .hashValue(this as TableRemoved);
+    return TableRemovedMapper.ensureInitialized().hashValue(
+      this as TableRemoved,
+    );
   }
 }
 
@@ -5136,8 +5906,8 @@ class _TableRemovedCopyWithImpl<$R, $Out>
 
   @override
   TableRemovedCopyWith<$R2, TableRemoved, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _TableRemovedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _TableRemovedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class NoteChangedMapper extends SubClassMapperBase<NoteChanged> {
@@ -5158,8 +5928,10 @@ class NoteChangedMapper extends SubClassMapperBase<NoteChanged> {
   static String _$name(NoteChanged v) => v.name;
   static const Field<NoteChanged, String> _f$name = Field('name', _$name);
   static String _$content(NoteChanged v) => v.content;
-  static const Field<NoteChanged, String> _f$content =
-      Field('content', _$content);
+  static const Field<NoteChanged, String> _f$content = Field(
+    'content',
+    _$content,
+  );
 
   @override
   final MappableFields<NoteChanged> fields = const {
@@ -5193,28 +5965,36 @@ class NoteChangedMapper extends SubClassMapperBase<NoteChanged> {
 
 mixin NoteChangedMappable {
   String toJson() {
-    return NoteChangedMapper.ensureInitialized()
-        .encodeJson<NoteChanged>(this as NoteChanged);
+    return NoteChangedMapper.ensureInitialized().encodeJson<NoteChanged>(
+      this as NoteChanged,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return NoteChangedMapper.ensureInitialized()
-        .encodeMap<NoteChanged>(this as NoteChanged);
+    return NoteChangedMapper.ensureInitialized().encodeMap<NoteChanged>(
+      this as NoteChanged,
+    );
   }
 
   NoteChangedCopyWith<NoteChanged, NoteChanged, NoteChanged> get copyWith =>
       _NoteChangedCopyWithImpl<NoteChanged, NoteChanged>(
-          this as NoteChanged, $identity, $identity);
+        this as NoteChanged,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return NoteChangedMapper.ensureInitialized()
-        .stringifyValue(this as NoteChanged);
+    return NoteChangedMapper.ensureInitialized().stringifyValue(
+      this as NoteChanged,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return NoteChangedMapper.ensureInitialized()
-        .equalsValue(this as NoteChanged, other);
+    return NoteChangedMapper.ensureInitialized().equalsValue(
+      this as NoteChanged,
+      other,
+    );
   }
 
   @override
@@ -5245,16 +6025,22 @@ class _NoteChangedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<NoteChanged> $mapper =
       NoteChangedMapper.ensureInitialized();
   @override
-  $R call({String? name, String? content}) => $apply(FieldCopyWithData(
-      {if (name != null) #name: name, if (content != null) #content: content}));
+  $R call({String? name, String? content}) => $apply(
+    FieldCopyWithData({
+      if (name != null) #name: name,
+      if (content != null) #content: content,
+    }),
+  );
   @override
   NoteChanged $make(CopyWithData data) => NoteChanged(
-      data.get(#name, or: $value.name), data.get(#content, or: $value.content));
+    data.get(#name, or: $value.name),
+    data.get(#content, or: $value.content),
+  );
 
   @override
   NoteChangedCopyWith<$R2, NoteChanged, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _NoteChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _NoteChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class NoteRemovedMapper extends SubClassMapperBase<NoteRemoved> {
@@ -5276,9 +6062,7 @@ class NoteRemovedMapper extends SubClassMapperBase<NoteRemoved> {
   static const Field<NoteRemoved, String> _f$name = Field('name', _$name);
 
   @override
-  final MappableFields<NoteRemoved> fields = const {
-    #name: _f$name,
-  };
+  final MappableFields<NoteRemoved> fields = const {#name: _f$name};
 
   @override
   final String discriminatorKey = 'type';
@@ -5306,28 +6090,36 @@ class NoteRemovedMapper extends SubClassMapperBase<NoteRemoved> {
 
 mixin NoteRemovedMappable {
   String toJson() {
-    return NoteRemovedMapper.ensureInitialized()
-        .encodeJson<NoteRemoved>(this as NoteRemoved);
+    return NoteRemovedMapper.ensureInitialized().encodeJson<NoteRemoved>(
+      this as NoteRemoved,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return NoteRemovedMapper.ensureInitialized()
-        .encodeMap<NoteRemoved>(this as NoteRemoved);
+    return NoteRemovedMapper.ensureInitialized().encodeMap<NoteRemoved>(
+      this as NoteRemoved,
+    );
   }
 
   NoteRemovedCopyWith<NoteRemoved, NoteRemoved, NoteRemoved> get copyWith =>
       _NoteRemovedCopyWithImpl<NoteRemoved, NoteRemoved>(
-          this as NoteRemoved, $identity, $identity);
+        this as NoteRemoved,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return NoteRemovedMapper.ensureInitialized()
-        .stringifyValue(this as NoteRemoved);
+    return NoteRemovedMapper.ensureInitialized().stringifyValue(
+      this as NoteRemoved,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return NoteRemovedMapper.ensureInitialized()
-        .equalsValue(this as NoteRemoved, other);
+    return NoteRemovedMapper.ensureInitialized().equalsValue(
+      this as NoteRemoved,
+      other,
+    );
   }
 
   @override
@@ -5366,8 +6158,8 @@ class _NoteRemovedCopyWithImpl<$R, $Out>
 
   @override
   NoteRemovedCopyWith<$R2, NoteRemoved, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _NoteRemovedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _NoteRemovedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class LocalWorldEventMapper extends SubClassMapperBase<LocalWorldEvent> {
@@ -5415,7 +6207,7 @@ mixin LocalWorldEventMappable {
   String toJson();
   Map<String, dynamic> toMap();
   LocalWorldEventCopyWith<LocalWorldEvent, LocalWorldEvent, LocalWorldEvent>
-      get copyWith;
+  get copyWith;
 }
 
 abstract class LocalWorldEventCopyWith<$R, $In extends LocalWorldEvent, $Out>
@@ -5425,5 +6217,6 @@ abstract class LocalWorldEventCopyWith<$R, $In extends LocalWorldEvent, $Out>
   @override
   $R call();
   LocalWorldEventCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }

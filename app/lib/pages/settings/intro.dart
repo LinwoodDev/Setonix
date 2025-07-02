@@ -39,11 +39,7 @@ class _IntroDialogState extends State<IntroDialog> {
       content: ListView(
         shrinkWrap: true,
         children: [
-          Image.asset(
-            'images/logo.png',
-            width: 100,
-            height: 100,
-          ),
+          Image.asset('images/logo.png', width: 100, height: 100),
           Text(
             AppLocalizations.of(context).welcomeContent,
             style: Theme.of(context).textTheme.bodyLarge,
@@ -56,7 +52,8 @@ class _IntroDialogState extends State<IntroDialog> {
             onChanged: (e) => setState(() => _loadDefaultServers = e),
             title: Text(AppLocalizations.of(context).loadDefaultServerList),
             subtitle: Text(
-                AppLocalizations.of(context).loadDefaultServerListDescription),
+              AppLocalizations.of(context).loadDefaultServerListDescription,
+            ),
           ),
           const SizedBox(height: 16),
           FilledButton.icon(

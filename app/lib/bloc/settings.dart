@@ -20,15 +20,13 @@ enum ThemeDensity {
   standard;
 
   VisualDensity toFlutter() => switch (this) {
-        ThemeDensity.maximize =>
-          const VisualDensity(horizontal: -4, vertical: -4),
-        ThemeDensity.desktop =>
-          const VisualDensity(horizontal: -3, vertical: -3),
-        ThemeDensity.compact => VisualDensity.compact,
-        ThemeDensity.comfortable => VisualDensity.comfortable,
-        ThemeDensity.standard => VisualDensity.standard,
-        ThemeDensity.system => VisualDensity.adaptivePlatformDensity,
-      };
+    ThemeDensity.maximize => const VisualDensity(horizontal: -4, vertical: -4),
+    ThemeDensity.desktop => const VisualDensity(horizontal: -3, vertical: -3),
+    ThemeDensity.compact => VisualDensity.compact,
+    ThemeDensity.comfortable => VisualDensity.comfortable,
+    ThemeDensity.standard => VisualDensity.standard,
+    ThemeDensity.system => VisualDensity.adaptivePlatformDensity,
+  };
 }
 
 List<String> getDefaultServerList() {
@@ -106,33 +104,34 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
   }
 
   factory SetonixSettings.fromPrefs(SharedPreferences prefs) => SetonixSettings(
-        theme: ThemeMode.values.byName(prefs.getString('theme') ?? 'system'),
-        design: prefs.getString('design') ?? '',
-        dataDirectory: prefs.getString('dataDirectory') ?? '',
-        nativeTitleBar: prefs.getBool('nativeTitleBar') ?? false,
-        localeTag: prefs.getString('locale') ?? '',
-        showConnectYour: prefs.getBool('showConnectYour') ?? true,
-        showConnectBrowse: prefs.getBool('showConnectBrowse') ?? false,
-        lastVersion: prefs.getString('lastVersion'),
-        gameProperty: prefs.containsKey('gameProperty')
-            ? GamePropertyMapper.fromJson(prefs.getString('gameProperty')!)
-            : GameProperty.defaultProperty,
-        servers: prefs
-                .getStringList('servers')
-                ?.map((e) => ListGameServerMapper.fromJson(e))
-                .toList() ??
-            [],
-        highContrast: prefs.getBool('highContrast') ?? false,
-        zoom: prefs.getDouble('zoom') ?? 1,
-        swamps: prefs.getStringList('swamps') ?? [],
-        scrollSensitivity: prefs.getDouble('scrollSensitivity') ?? 1,
-        stackedCards: prefs.getBool('stackedCards') ?? true,
-        density: ThemeDensity.values.byName(
-          prefs.getString('density') ?? ThemeDensity.system.name,
-        ),
-        serverList: prefs.getStringList('serverList') ?? [],
-        showIntro: prefs.getBool('showIntro') ?? true,
-      );
+    theme: ThemeMode.values.byName(prefs.getString('theme') ?? 'system'),
+    design: prefs.getString('design') ?? '',
+    dataDirectory: prefs.getString('dataDirectory') ?? '',
+    nativeTitleBar: prefs.getBool('nativeTitleBar') ?? false,
+    localeTag: prefs.getString('locale') ?? '',
+    showConnectYour: prefs.getBool('showConnectYour') ?? true,
+    showConnectBrowse: prefs.getBool('showConnectBrowse') ?? false,
+    lastVersion: prefs.getString('lastVersion'),
+    gameProperty: prefs.containsKey('gameProperty')
+        ? GamePropertyMapper.fromJson(prefs.getString('gameProperty')!)
+        : GameProperty.defaultProperty,
+    servers:
+        prefs
+            .getStringList('servers')
+            ?.map((e) => ListGameServerMapper.fromJson(e))
+            .toList() ??
+        [],
+    highContrast: prefs.getBool('highContrast') ?? false,
+    zoom: prefs.getDouble('zoom') ?? 1,
+    swamps: prefs.getStringList('swamps') ?? [],
+    scrollSensitivity: prefs.getDouble('scrollSensitivity') ?? 1,
+    stackedCards: prefs.getBool('stackedCards') ?? true,
+    density: ThemeDensity.values.byName(
+      prefs.getString('density') ?? ThemeDensity.system.name,
+    ),
+    serverList: prefs.getStringList('serverList') ?? [],
+    showIntro: prefs.getBool('showIntro') ?? true,
+  );
 
   Future<void> save() async {
     final prefs = await SharedPreferences.getInstance();
@@ -153,7 +152,9 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
     await prefs.setBool('stackedCards', stackedCards);
     await prefs.setString('gameProperty', gameProperty.toJson());
     await prefs.setStringList(
-        'servers', servers.map((e) => e.toJson()).toList());
+      'servers',
+      servers.map((e) => e.toJson()).toList(),
+    );
     await prefs.setBool('highContrast', highContrast);
     await prefs.setDouble('zoom', zoom);
     await prefs.setStringList('swamps', swamps);
@@ -167,7 +168,7 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
 class SettingsCubit extends Cubit<SetonixSettings>
     with LeapSettingsBlocBaseMixin<SetonixSettings> {
   SettingsCubit(SharedPreferences prefs)
-      : super(SetonixSettings.fromPrefs(prefs));
+    : super(SetonixSettings.fromPrefs(prefs));
 
   Future<void> changeTheme(ThemeMode theme) {
     emit(state.copyWith(theme: theme));
@@ -182,10 +183,11 @@ class SettingsCubit extends Cubit<SetonixSettings>
   void setNativeTitleBar([bool? value]) {
     if (kIsWeb || !isWindow) return;
     windowManager.setTitleBarStyle(
-        (value ?? state.nativeTitleBar)
-            ? TitleBarStyle.normal
-            : TitleBarStyle.hidden,
-        windowButtonVisibility: state.nativeTitleBar);
+      (value ?? state.nativeTitleBar)
+          ? TitleBarStyle.normal
+          : TitleBarStyle.hidden,
+      windowButtonVisibility: state.nativeTitleBar,
+    );
   }
 
   Future<void> changeNativeTitleBar(bool value, [bool modify = true]) {

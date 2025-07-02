@@ -27,10 +27,14 @@ class ServersSettingsPage extends StatelessWidget {
               showDialog<bool>(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title:
-                      Text(AppLocalizations.of(context).loadDefaultServerList),
-                  content: Text(AppLocalizations.of(context)
-                      .loadDefaultServerListDescription),
+                  title: Text(
+                    AppLocalizations.of(context).loadDefaultServerList,
+                  ),
+                  content: Text(
+                    AppLocalizations.of(
+                      context,
+                    ).loadDefaultServerListDescription,
+                  ),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.of(context).pop(false),
@@ -39,7 +43,9 @@ class ServersSettingsPage extends StatelessWidget {
                     OutlinedButton(
                       onPressed: () {
                         settingsCubit.addServersToList(
-                            getDefaultServerList(), true);
+                          getDefaultServerList(),
+                          true,
+                        );
                         Navigator.of(context).pop(true);
                       },
                       child: Text(AppLocalizations.of(context).reset),
@@ -82,10 +88,8 @@ class ServersSettingsPage extends StatelessWidget {
               return Dismissible(
                 key: Key(server),
                 child: ContextRegion(
-                  builder: (context, button, controller) => ListTile(
-                    title: Text(server),
-                    trailing: button,
-                  ),
+                  builder: (context, button, controller) =>
+                      ListTile(title: Text(server), trailing: button),
                   menuChildren: [
                     MenuItemButton(
                       leadingIcon: const PhosphorIcon(PhosphorIconsLight.trash),
@@ -104,7 +108,9 @@ class ServersSettingsPage extends StatelessWidget {
         onPressed: () async {
           final settingsCubit = context.read<SettingsCubit>();
           final name = await showDialog(
-              context: context, builder: (context) => NameDialog());
+            context: context,
+            builder: (context) => NameDialog(),
+          );
           if (name == null) return;
           var uri = Uri.tryParse(name);
           if (uri == null) return;

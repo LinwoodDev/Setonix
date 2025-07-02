@@ -12,8 +12,9 @@ class FigureDefinitionHandItem
 
   @override
   String getLabel(ClientWorldState state) {
-    final translation =
-        getAssetManager(state).getTranslations(item.$1.namespace);
+    final translation = getAssetManager(
+      state,
+    ).getTranslations(item.$1.namespace);
     final variation = item.$2;
     if (variation != null) {
       return translation
@@ -34,10 +35,14 @@ class FigureDefinitionHandItem
   void moveItem(HandItemDropZone zone) {
     if (zone is! GameCell) return;
     final global = zone.toGlobalDefinition(bloc.state);
-    bloc.process(ObjectsSpawned.single(global, [
-      GameObject(ItemLocation(item.$1.namespace, item.$1.id),
-          variation: item.$2)
-    ]));
+    bloc.process(
+      ObjectsSpawned.single(global, [
+        GameObject(
+          ItemLocation(item.$1.namespace, item.$1.id),
+          variation: item.$2,
+        ),
+      ]),
+    );
     if (bloc.state.switchCellOnMove) {
       bloc.process(CellSwitched(global.position));
     }

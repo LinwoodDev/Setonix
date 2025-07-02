@@ -35,25 +35,31 @@ class GameBoardBackground extends PositionComponent
   }
 
   Future<Sprite?> _loadSprite(
-      ClientWorldState state, PackItem<BackgroundDefinition>? item) {
+    ClientWorldState state,
+    PackItem<BackgroundDefinition>? item,
+  ) {
     if (item == null) return Future.value(null);
     return state.assetManager.loadSprite(item.item.texture, item.namespace);
   }
 
   Future<void> updateBackground(ClientWorldState state) async {
     final backgroundLocation = state.table.background;
-    final background = await _loadSprite(
-            state,
-            backgroundLocation == null
-                ? null
-                : state.assetManager.getBackgroundItem(backgroundLocation)) ??
+    final background =
         await _loadSprite(
-            state,
-            state.packs
-                .map((pack) =>
-                    pack.value.getBackgroundItems(pack.key).firstOrNull)
-                .nonNulls
-                .firstOrNull);
+          state,
+          backgroundLocation == null
+              ? null
+              : state.assetManager.getBackgroundItem(backgroundLocation),
+        ) ??
+        await _loadSprite(
+          state,
+          state.packs
+              .map(
+                (pack) => pack.value.getBackgroundItems(pack.key).firstOrNull,
+              )
+              .nonNulls
+              .firstOrNull,
+        );
     if (background == null) return;
     final shouldAdd = _sprite == null;
     final sprite = _sprite ??= SpriteComponent(

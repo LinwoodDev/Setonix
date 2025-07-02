@@ -36,19 +36,20 @@ class TexturesEditorPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
-          final data = await fs.openFile(acceptedTypeGroups: [
-            imageTypeGroup,
-          ]);
+          final data = await fs.openFile(acceptedTypeGroups: [imageTypeGroup]);
           if (data == null) return;
           final bytes = await data.readAsBytes();
           if (!context.mounted) return;
           final name = await showDialog<String>(
-              context: context,
-              builder: (context) => NameDialog(
-                    value: data.name,
-                    validator: defaultNameValidator(
-                        context, cubit.state.getTextures().toList()),
-                  ));
+            context: context,
+            builder: (context) => NameDialog(
+              value: data.name,
+              validator: defaultNameValidator(
+                context,
+                cubit.state.getTextures().toList(),
+              ),
+            ),
+          );
           if (name == null) return;
           cubit.setTexture(name, bytes);
         },
@@ -80,18 +81,21 @@ class EditorTextureListTile extends StatelessWidget {
         final data = state.getTexture(value);
         return ListTile(
           title: Text(label ?? AppLocalizations.of(context).texture),
-          subtitle:
-              Text(value.isEmpty ? AppLocalizations.of(context).notSet : ''),
-          leading:
-              data == null ? null : Image.memory(data, width: 48, height: 48),
-          onTap: () => showDialog(
-            context: context,
-            builder: (context) =>
-                TextureDialog(textures: state.getTexturesData()),
-          ).then((texture) {
-            if (texture == null) return;
-            onChanged(texture);
-          }),
+          subtitle: Text(
+            value.isEmpty ? AppLocalizations.of(context).notSet : '',
+          ),
+          leading: data == null
+              ? null
+              : Image.memory(data, width: 48, height: 48),
+          onTap: () =>
+              showDialog(
+                context: context,
+                builder: (context) =>
+                    TextureDialog(textures: state.getTexturesData()),
+              ).then((texture) {
+                if (texture == null) return;
+                onChanged(texture);
+              }),
           trailing: onRemove == null
               ? null
               : IconButton(
@@ -107,10 +111,7 @@ class EditorTextureListTile extends StatelessWidget {
 class TextureDialog extends StatelessWidget {
   final Map<String, Uint8List?> textures;
 
-  const TextureDialog({
-    super.key,
-    required this.textures,
-  });
+  const TextureDialog({super.key, required this.textures});
 
   @override
   Widget build(BuildContext context) {
@@ -118,8 +119,9 @@ class TextureDialog extends StatelessWidget {
       title: Text(AppLocalizations.of(context).textures),
       scrollable: true,
       content: _TexturesColumn(
-          textures: textures,
-          onClick: (texture) => Navigator.of(context).pop(texture)),
+        textures: textures,
+        onClick: (texture) => Navigator.of(context).pop(texture),
+      ),
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
@@ -135,11 +137,7 @@ class _TexturesColumn extends StatelessWidget {
   final void Function(String)? onClick;
   final void Function(String)? onRemove;
 
-  const _TexturesColumn({
-    required this.textures,
-    this.onClick,
-    this.onRemove,
-  });
+  const _TexturesColumn({required this.textures, this.onClick, this.onRemove});
 
   @override
   Widget build(BuildContext context) {
@@ -157,8 +155,9 @@ class _TexturesColumn extends StatelessWidget {
         final data = entry.value;
         final tile = ListTile(
           title: Text(texture),
-          leading:
-              data == null ? null : Image.memory(data, width: 48, height: 48),
+          leading: data == null
+              ? null
+              : Image.memory(data, width: 48, height: 48),
           trailing: onRemove == null
               ? null
               : IconButton(
@@ -213,8 +212,9 @@ class VisualEditingView<T extends VisualDefinition> extends StatelessWidget {
         size == null
             ? ListTile(
                 title: Text(AppLocalizations.of(context).size),
-                subtitle:
-                    Text(AppLocalizations.of(context).wholeSizeClickCustomize),
+                subtitle: Text(
+                  AppLocalizations.of(context).wholeSizeClickCustomize,
+                ),
                 onTap: () =>
                     onChanged(value.copyWith(size: VectorDefinition.one) as T),
               )
@@ -223,7 +223,8 @@ class VisualEditingView<T extends VisualDefinition> extends StatelessWidget {
                 title: Text(AppLocalizations.of(context).size),
                 fractionDigits: 0,
                 onChanged: (offset) => onChanged(
-                    value.copyWith(offset: offset.toDefinition()) as T),
+                  value.copyWith(offset: offset.toDefinition()) as T,
+                ),
                 trailing: IconButton(
                   tooltip: AppLocalizations.of(context).clear,
                   icon: const Icon(PhosphorIconsLight.x),

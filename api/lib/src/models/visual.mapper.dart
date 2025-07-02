@@ -22,14 +22,22 @@ class VisualDefinitionMapper extends ClassMapperBase<VisualDefinition> {
   final String id = 'VisualDefinition';
 
   static String _$texture(VisualDefinition v) => v.texture;
-  static const Field<VisualDefinition, String> _f$texture =
-      Field('texture', _$texture);
+  static const Field<VisualDefinition, String> _f$texture = Field(
+    'texture',
+    _$texture,
+  );
   static VectorDefinition _$offset(VisualDefinition v) => v.offset;
-  static const Field<VisualDefinition, VectorDefinition> _f$offset =
-      Field('offset', _$offset, opt: true, def: VectorDefinition.zero);
+  static const Field<VisualDefinition, VectorDefinition> _f$offset = Field(
+    'offset',
+    _$offset,
+    opt: true,
+    def: VectorDefinition.zero,
+  );
   static VectorDefinition? _$size(VisualDefinition v) => v.size;
-  static const Field<VisualDefinition, VectorDefinition> _f$size =
-      Field('size', _$size);
+  static const Field<VisualDefinition, VectorDefinition> _f$size = Field(
+    'size',
+    _$size,
+  );
 
   @override
   final MappableFields<VisualDefinition> fields = const {
@@ -58,7 +66,7 @@ mixin VisualDefinitionMappable {
   String toJson();
   Map<String, dynamic> toMap();
   VisualDefinitionCopyWith<VisualDefinition, VisualDefinition, VisualDefinition>
-      get copyWith;
+  get copyWith;
 }
 
 abstract class VisualDefinitionCopyWith<$R, $In extends VisualDefinition, $Out>
@@ -67,5 +75,6 @@ abstract class VisualDefinitionCopyWith<$R, $In extends VisualDefinition, $Out>
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>? get size;
   $R call({String? texture, VectorDefinition? offset, VectorDefinition? size});
   VisualDefinitionCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }

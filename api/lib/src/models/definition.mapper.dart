@@ -25,14 +25,19 @@ class FigureDefinitionMapper extends ClassMapperBase<FigureDefinition> {
   static Map<String, VariationDefinition> _$variations(FigureDefinition v) =>
       v.variations;
   static const Field<FigureDefinition, Map<String, VariationDefinition>>
-      _f$variations =
-      Field('variations', _$variations, opt: true, def: const {});
+  _f$variations = Field('variations', _$variations, opt: true, def: const {});
   static bool _$rollable(FigureDefinition v) => v.rollable;
-  static const Field<FigureDefinition, bool> _f$rollable =
-      Field('rollable', _$rollable, opt: true, def: false);
+  static const Field<FigureDefinition, bool> _f$rollable = Field(
+    'rollable',
+    _$rollable,
+    opt: true,
+    def: false,
+  );
   static FigureBackDefinition _$back(FigureDefinition v) => v.back;
-  static const Field<FigureDefinition, FigureBackDefinition> _f$back =
-      Field('back', _$back);
+  static const Field<FigureDefinition, FigureBackDefinition> _f$back = Field(
+    'back',
+    _$back,
+  );
 
   @override
   final MappableFields<FigureDefinition> fields = const {
@@ -43,9 +48,10 @@ class FigureDefinitionMapper extends ClassMapperBase<FigureDefinition> {
 
   static FigureDefinition _instantiate(DecodingData data) {
     return FigureDefinition(
-        variations: data.dec(_f$variations),
-        rollable: data.dec(_f$rollable),
-        back: data.dec(_f$back));
+      variations: data.dec(_f$variations),
+      rollable: data.dec(_f$rollable),
+      back: data.dec(_f$back),
+    );
   }
 
   @override
@@ -72,51 +78,61 @@ mixin FigureDefinitionMappable {
   }
 
   FigureDefinitionCopyWith<FigureDefinition, FigureDefinition, FigureDefinition>
-      get copyWith =>
-          _FigureDefinitionCopyWithImpl<FigureDefinition, FigureDefinition>(
-              this as FigureDefinition, $identity, $identity);
+  get copyWith =>
+      _FigureDefinitionCopyWithImpl<FigureDefinition, FigureDefinition>(
+        this as FigureDefinition,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return FigureDefinitionMapper.ensureInitialized()
-        .stringifyValue(this as FigureDefinition);
+    return FigureDefinitionMapper.ensureInitialized().stringifyValue(
+      this as FigureDefinition,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return FigureDefinitionMapper.ensureInitialized()
-        .equalsValue(this as FigureDefinition, other);
+    return FigureDefinitionMapper.ensureInitialized().equalsValue(
+      this as FigureDefinition,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return FigureDefinitionMapper.ensureInitialized()
-        .hashValue(this as FigureDefinition);
+    return FigureDefinitionMapper.ensureInitialized().hashValue(
+      this as FigureDefinition,
+    );
   }
 }
 
 extension FigureDefinitionValueCopy<$R, $Out>
     on ObjectCopyWith<$R, FigureDefinition, $Out> {
   FigureDefinitionCopyWith<$R, FigureDefinition, $Out>
-      get $asFigureDefinition => $base
-          .as((v, t, t2) => _FigureDefinitionCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asFigureDefinition =>
+      $base.as((v, t, t2) => _FigureDefinitionCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class FigureDefinitionCopyWith<$R, $In extends FigureDefinition, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   MapCopyWith<
-      $R,
-      String,
-      VariationDefinition,
-      VariationDefinitionCopyWith<$R, VariationDefinition,
-          VariationDefinition>> get variations;
+    $R,
+    String,
+    VariationDefinition,
+    VariationDefinitionCopyWith<$R, VariationDefinition, VariationDefinition>
+  >
+  get variations;
   FigureBackDefinitionCopyWith<$R, FigureBackDefinition, FigureBackDefinition>
-      get back;
-  $R call(
-      {Map<String, VariationDefinition>? variations,
-      bool? rollable,
-      FigureBackDefinition? back});
+  get back;
+  $R call({
+    Map<String, VariationDefinition>? variations,
+    bool? rollable,
+    FigureBackDefinition? back,
+  });
   FigureDefinitionCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _FigureDefinitionCopyWithImpl<$R, $Out>
@@ -129,35 +145,42 @@ class _FigureDefinitionCopyWithImpl<$R, $Out>
       FigureDefinitionMapper.ensureInitialized();
   @override
   MapCopyWith<
-      $R,
-      String,
-      VariationDefinition,
-      VariationDefinitionCopyWith<$R, VariationDefinition,
-          VariationDefinition>> get variations => MapCopyWith($value.variations,
-      (v, t) => v.copyWith.$chain(t), (v) => call(variations: v));
+    $R,
+    String,
+    VariationDefinition,
+    VariationDefinitionCopyWith<$R, VariationDefinition, VariationDefinition>
+  >
+  get variations => MapCopyWith(
+    $value.variations,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(variations: v),
+  );
   @override
   FigureBackDefinitionCopyWith<$R, FigureBackDefinition, FigureBackDefinition>
-      get back => $value.back.copyWith.$chain((v) => call(back: v));
+  get back => $value.back.copyWith.$chain((v) => call(back: v));
   @override
-  $R call(
-          {Map<String, VariationDefinition>? variations,
-          bool? rollable,
-          FigureBackDefinition? back}) =>
-      $apply(FieldCopyWithData({
-        if (variations != null) #variations: variations,
-        if (rollable != null) #rollable: rollable,
-        if (back != null) #back: back
-      }));
+  $R call({
+    Map<String, VariationDefinition>? variations,
+    bool? rollable,
+    FigureBackDefinition? back,
+  }) => $apply(
+    FieldCopyWithData({
+      if (variations != null) #variations: variations,
+      if (rollable != null) #rollable: rollable,
+      if (back != null) #back: back,
+    }),
+  );
   @override
   FigureDefinition $make(CopyWithData data) => FigureDefinition(
-      variations: data.get(#variations, or: $value.variations),
-      rollable: data.get(#rollable, or: $value.rollable),
-      back: data.get(#back, or: $value.back));
+    variations: data.get(#variations, or: $value.variations),
+    rollable: data.get(#rollable, or: $value.rollable),
+    back: data.get(#back, or: $value.back),
+  );
 
   @override
   FigureDefinitionCopyWith<$R2, FigureDefinition, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _FigureDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _FigureDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class VariationDefinitionMapper extends ClassMapperBase<VariationDefinition> {
@@ -177,17 +200,29 @@ class VariationDefinitionMapper extends ClassMapperBase<VariationDefinition> {
   final String id = 'VariationDefinition';
 
   static String? _$category(VariationDefinition v) => v.category;
-  static const Field<VariationDefinition, String> _f$category =
-      Field('category', _$category, opt: true);
+  static const Field<VariationDefinition, String> _f$category = Field(
+    'category',
+    _$category,
+    opt: true,
+  );
   static String _$texture(VariationDefinition v) => v.texture;
-  static const Field<VariationDefinition, String> _f$texture =
-      Field('texture', _$texture);
+  static const Field<VariationDefinition, String> _f$texture = Field(
+    'texture',
+    _$texture,
+  );
   static VectorDefinition _$offset(VariationDefinition v) => v.offset;
-  static const Field<VariationDefinition, VectorDefinition> _f$offset =
-      Field('offset', _$offset, opt: true, def: VectorDefinition.zero);
+  static const Field<VariationDefinition, VectorDefinition> _f$offset = Field(
+    'offset',
+    _$offset,
+    opt: true,
+    def: VectorDefinition.zero,
+  );
   static VectorDefinition? _$size(VariationDefinition v) => v.size;
-  static const Field<VariationDefinition, VectorDefinition> _f$size =
-      Field('size', _$size, opt: true);
+  static const Field<VariationDefinition, VectorDefinition> _f$size = Field(
+    'size',
+    _$size,
+    opt: true,
+  );
 
   @override
   final MappableFields<VariationDefinition> fields = const {
@@ -199,10 +234,11 @@ class VariationDefinitionMapper extends ClassMapperBase<VariationDefinition> {
 
   static VariationDefinition _instantiate(DecodingData data) {
     return VariationDefinition(
-        category: data.dec(_f$category),
-        texture: data.dec(_f$texture),
-        offset: data.dec(_f$offset),
-        size: data.dec(_f$size));
+      category: data.dec(_f$category),
+      texture: data.dec(_f$texture),
+      offset: data.dec(_f$offset),
+      size: data.dec(_f$size),
+    );
   }
 
   @override
@@ -228,50 +264,67 @@ mixin VariationDefinitionMappable {
         .encodeMap<VariationDefinition>(this as VariationDefinition);
   }
 
-  VariationDefinitionCopyWith<VariationDefinition, VariationDefinition,
-      VariationDefinition> get copyWith => _VariationDefinitionCopyWithImpl<
-          VariationDefinition, VariationDefinition>(
-      this as VariationDefinition, $identity, $identity);
+  VariationDefinitionCopyWith<
+    VariationDefinition,
+    VariationDefinition,
+    VariationDefinition
+  >
+  get copyWith =>
+      _VariationDefinitionCopyWithImpl<
+        VariationDefinition,
+        VariationDefinition
+      >(this as VariationDefinition, $identity, $identity);
   @override
   String toString() {
-    return VariationDefinitionMapper.ensureInitialized()
-        .stringifyValue(this as VariationDefinition);
+    return VariationDefinitionMapper.ensureInitialized().stringifyValue(
+      this as VariationDefinition,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return VariationDefinitionMapper.ensureInitialized()
-        .equalsValue(this as VariationDefinition, other);
+    return VariationDefinitionMapper.ensureInitialized().equalsValue(
+      this as VariationDefinition,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return VariationDefinitionMapper.ensureInitialized()
-        .hashValue(this as VariationDefinition);
+    return VariationDefinitionMapper.ensureInitialized().hashValue(
+      this as VariationDefinition,
+    );
   }
 }
 
 extension VariationDefinitionValueCopy<$R, $Out>
     on ObjectCopyWith<$R, VariationDefinition, $Out> {
   VariationDefinitionCopyWith<$R, VariationDefinition, $Out>
-      get $asVariationDefinition => $base.as(
-          (v, t, t2) => _VariationDefinitionCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asVariationDefinition => $base.as(
+    (v, t, t2) => _VariationDefinitionCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
-abstract class VariationDefinitionCopyWith<$R, $In extends VariationDefinition,
-    $Out> implements VisualDefinitionCopyWith<$R, $In, $Out> {
+abstract class VariationDefinitionCopyWith<
+  $R,
+  $In extends VariationDefinition,
+  $Out
+>
+    implements VisualDefinitionCopyWith<$R, $In, $Out> {
   @override
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get offset;
   @override
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>? get size;
   @override
-  $R call(
-      {String? category,
-      String? texture,
-      VectorDefinition? offset,
-      VectorDefinition? size});
+  $R call({
+    String? category,
+    String? texture,
+    VectorDefinition? offset,
+    VectorDefinition? size,
+  });
   VariationDefinitionCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _VariationDefinitionCopyWithImpl<$R, $Out>
@@ -289,28 +342,31 @@ class _VariationDefinitionCopyWithImpl<$R, $Out>
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>? get size =>
       $value.size?.copyWith.$chain((v) => call(size: v));
   @override
-  $R call(
-          {Object? category = $none,
-          String? texture,
-          VectorDefinition? offset,
-          Object? size = $none}) =>
-      $apply(FieldCopyWithData({
-        if (category != $none) #category: category,
-        if (texture != null) #texture: texture,
-        if (offset != null) #offset: offset,
-        if (size != $none) #size: size
-      }));
+  $R call({
+    Object? category = $none,
+    String? texture,
+    VectorDefinition? offset,
+    Object? size = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (category != $none) #category: category,
+      if (texture != null) #texture: texture,
+      if (offset != null) #offset: offset,
+      if (size != $none) #size: size,
+    }),
+  );
   @override
   VariationDefinition $make(CopyWithData data) => VariationDefinition(
-      category: data.get(#category, or: $value.category),
-      texture: data.get(#texture, or: $value.texture),
-      offset: data.get(#offset, or: $value.offset),
-      size: data.get(#size, or: $value.size));
+    category: data.get(#category, or: $value.category),
+    texture: data.get(#texture, or: $value.texture),
+    offset: data.get(#offset, or: $value.offset),
+    size: data.get(#size, or: $value.size),
+  );
 
   @override
   VariationDefinitionCopyWith<$R2, VariationDefinition, $Out2>
-      $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _VariationDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _VariationDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class FigureBackDefinitionMapper extends ClassMapperBase<FigureBackDefinition> {
@@ -330,14 +386,23 @@ class FigureBackDefinitionMapper extends ClassMapperBase<FigureBackDefinition> {
   final String id = 'FigureBackDefinition';
 
   static String _$texture(FigureBackDefinition v) => v.texture;
-  static const Field<FigureBackDefinition, String> _f$texture =
-      Field('texture', _$texture);
+  static const Field<FigureBackDefinition, String> _f$texture = Field(
+    'texture',
+    _$texture,
+  );
   static VectorDefinition _$offset(FigureBackDefinition v) => v.offset;
-  static const Field<FigureBackDefinition, VectorDefinition> _f$offset =
-      Field('offset', _$offset, opt: true, def: VectorDefinition.zero);
+  static const Field<FigureBackDefinition, VectorDefinition> _f$offset = Field(
+    'offset',
+    _$offset,
+    opt: true,
+    def: VectorDefinition.zero,
+  );
   static VectorDefinition? _$size(FigureBackDefinition v) => v.size;
-  static const Field<FigureBackDefinition, VectorDefinition> _f$size =
-      Field('size', _$size, opt: true);
+  static const Field<FigureBackDefinition, VectorDefinition> _f$size = Field(
+    'size',
+    _$size,
+    opt: true,
+  );
 
   @override
   final MappableFields<FigureBackDefinition> fields = const {
@@ -348,9 +413,10 @@ class FigureBackDefinitionMapper extends ClassMapperBase<FigureBackDefinition> {
 
   static FigureBackDefinition _instantiate(DecodingData data) {
     return FigureBackDefinition(
-        texture: data.dec(_f$texture),
-        offset: data.dec(_f$offset),
-        size: data.dec(_f$size));
+      texture: data.dec(_f$texture),
+      offset: data.dec(_f$offset),
+      size: data.dec(_f$size),
+    );
   }
 
   @override
@@ -376,40 +442,53 @@ mixin FigureBackDefinitionMappable {
         .encodeMap<FigureBackDefinition>(this as FigureBackDefinition);
   }
 
-  FigureBackDefinitionCopyWith<FigureBackDefinition, FigureBackDefinition,
-      FigureBackDefinition> get copyWith => _FigureBackDefinitionCopyWithImpl<
-          FigureBackDefinition, FigureBackDefinition>(
-      this as FigureBackDefinition, $identity, $identity);
+  FigureBackDefinitionCopyWith<
+    FigureBackDefinition,
+    FigureBackDefinition,
+    FigureBackDefinition
+  >
+  get copyWith =>
+      _FigureBackDefinitionCopyWithImpl<
+        FigureBackDefinition,
+        FigureBackDefinition
+      >(this as FigureBackDefinition, $identity, $identity);
   @override
   String toString() {
-    return FigureBackDefinitionMapper.ensureInitialized()
-        .stringifyValue(this as FigureBackDefinition);
+    return FigureBackDefinitionMapper.ensureInitialized().stringifyValue(
+      this as FigureBackDefinition,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return FigureBackDefinitionMapper.ensureInitialized()
-        .equalsValue(this as FigureBackDefinition, other);
+    return FigureBackDefinitionMapper.ensureInitialized().equalsValue(
+      this as FigureBackDefinition,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return FigureBackDefinitionMapper.ensureInitialized()
-        .hashValue(this as FigureBackDefinition);
+    return FigureBackDefinitionMapper.ensureInitialized().hashValue(
+      this as FigureBackDefinition,
+    );
   }
 }
 
 extension FigureBackDefinitionValueCopy<$R, $Out>
     on ObjectCopyWith<$R, FigureBackDefinition, $Out> {
   FigureBackDefinitionCopyWith<$R, FigureBackDefinition, $Out>
-      get $asFigureBackDefinition => $base.as(
-          (v, t, t2) => _FigureBackDefinitionCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asFigureBackDefinition => $base.as(
+    (v, t, t2) => _FigureBackDefinitionCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
 abstract class FigureBackDefinitionCopyWith<
-    $R,
-    $In extends FigureBackDefinition,
-    $Out> implements VisualDefinitionCopyWith<$R, $In, $Out> {
+  $R,
+  $In extends FigureBackDefinition,
+  $Out
+>
+    implements VisualDefinitionCopyWith<$R, $In, $Out> {
   @override
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get offset;
   @override
@@ -417,7 +496,8 @@ abstract class FigureBackDefinitionCopyWith<
   @override
   $R call({String? texture, VectorDefinition? offset, VectorDefinition? size});
   FigureBackDefinitionCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _FigureBackDefinitionCopyWithImpl<$R, $Out>
@@ -436,21 +516,24 @@ class _FigureBackDefinitionCopyWithImpl<$R, $Out>
       $value.size?.copyWith.$chain((v) => call(size: v));
   @override
   $R call({String? texture, VectorDefinition? offset, Object? size = $none}) =>
-      $apply(FieldCopyWithData({
-        if (texture != null) #texture: texture,
-        if (offset != null) #offset: offset,
-        if (size != $none) #size: size
-      }));
+      $apply(
+        FieldCopyWithData({
+          if (texture != null) #texture: texture,
+          if (offset != null) #offset: offset,
+          if (size != $none) #size: size,
+        }),
+      );
   @override
   FigureBackDefinition $make(CopyWithData data) => FigureBackDefinition(
-      texture: data.get(#texture, or: $value.texture),
-      offset: data.get(#offset, or: $value.offset),
-      size: data.get(#size, or: $value.size));
+    texture: data.get(#texture, or: $value.texture),
+    offset: data.get(#offset, or: $value.offset),
+    size: data.get(#size, or: $value.size),
+  );
 
   @override
   FigureBackDefinitionCopyWith<$R2, FigureBackDefinition, $Out2>
-      $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _FigureBackDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _FigureBackDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class BoardDefinitionMapper extends ClassMapperBase<BoardDefinition> {
@@ -470,17 +553,30 @@ class BoardDefinitionMapper extends ClassMapperBase<BoardDefinition> {
   final String id = 'BoardDefinition';
 
   static VectorDefinition _$offset(BoardDefinition v) => v.offset;
-  static const Field<BoardDefinition, VectorDefinition> _f$offset =
-      Field('offset', _$offset, opt: true, def: VectorDefinition.zero);
+  static const Field<BoardDefinition, VectorDefinition> _f$offset = Field(
+    'offset',
+    _$offset,
+    opt: true,
+    def: VectorDefinition.zero,
+  );
   static VectorDefinition? _$size(BoardDefinition v) => v.size;
-  static const Field<BoardDefinition, VectorDefinition> _f$size =
-      Field('size', _$size, opt: true);
+  static const Field<BoardDefinition, VectorDefinition> _f$size = Field(
+    'size',
+    _$size,
+    opt: true,
+  );
   static String _$texture(BoardDefinition v) => v.texture;
-  static const Field<BoardDefinition, String> _f$texture =
-      Field('texture', _$texture);
+  static const Field<BoardDefinition, String> _f$texture = Field(
+    'texture',
+    _$texture,
+  );
   static VectorDefinition _$tiles(BoardDefinition v) => v.tiles;
-  static const Field<BoardDefinition, VectorDefinition> _f$tiles =
-      Field('tiles', _$tiles, opt: true, def: VectorDefinition.one);
+  static const Field<BoardDefinition, VectorDefinition> _f$tiles = Field(
+    'tiles',
+    _$tiles,
+    opt: true,
+    def: VectorDefinition.one,
+  );
 
   @override
   final MappableFields<BoardDefinition> fields = const {
@@ -492,10 +588,11 @@ class BoardDefinitionMapper extends ClassMapperBase<BoardDefinition> {
 
   static BoardDefinition _instantiate(DecodingData data) {
     return BoardDefinition(
-        offset: data.dec(_f$offset),
-        size: data.dec(_f$size),
-        texture: data.dec(_f$texture),
-        tiles: data.dec(_f$tiles));
+      offset: data.dec(_f$offset),
+      size: data.dec(_f$size),
+      texture: data.dec(_f$texture),
+      tiles: data.dec(_f$tiles),
+    );
   }
 
   @override
@@ -517,30 +614,38 @@ mixin BoardDefinitionMappable {
   }
 
   Map<String, dynamic> toMap() {
-    return BoardDefinitionMapper.ensureInitialized()
-        .encodeMap<BoardDefinition>(this as BoardDefinition);
+    return BoardDefinitionMapper.ensureInitialized().encodeMap<BoardDefinition>(
+      this as BoardDefinition,
+    );
   }
 
   BoardDefinitionCopyWith<BoardDefinition, BoardDefinition, BoardDefinition>
-      get copyWith =>
-          _BoardDefinitionCopyWithImpl<BoardDefinition, BoardDefinition>(
-              this as BoardDefinition, $identity, $identity);
+  get copyWith =>
+      _BoardDefinitionCopyWithImpl<BoardDefinition, BoardDefinition>(
+        this as BoardDefinition,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return BoardDefinitionMapper.ensureInitialized()
-        .stringifyValue(this as BoardDefinition);
+    return BoardDefinitionMapper.ensureInitialized().stringifyValue(
+      this as BoardDefinition,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return BoardDefinitionMapper.ensureInitialized()
-        .equalsValue(this as BoardDefinition, other);
+    return BoardDefinitionMapper.ensureInitialized().equalsValue(
+      this as BoardDefinition,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return BoardDefinitionMapper.ensureInitialized()
-        .hashValue(this as BoardDefinition);
+    return BoardDefinitionMapper.ensureInitialized().hashValue(
+      this as BoardDefinition,
+    );
   }
 }
 
@@ -558,13 +663,15 @@ abstract class BoardDefinitionCopyWith<$R, $In extends BoardDefinition, $Out>
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>? get size;
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get tiles;
   @override
-  $R call(
-      {VectorDefinition? offset,
-      VectorDefinition? size,
-      String? texture,
-      VectorDefinition? tiles});
+  $R call({
+    VectorDefinition? offset,
+    VectorDefinition? size,
+    String? texture,
+    VectorDefinition? tiles,
+  });
   BoardDefinitionCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _BoardDefinitionCopyWithImpl<$R, $Out>
@@ -585,26 +692,29 @@ class _BoardDefinitionCopyWithImpl<$R, $Out>
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get tiles =>
       $value.tiles.copyWith.$chain((v) => call(tiles: v));
   @override
-  $R call(
-          {VectorDefinition? offset,
-          Object? size = $none,
-          String? texture,
-          VectorDefinition? tiles}) =>
-      $apply(FieldCopyWithData({
-        if (offset != null) #offset: offset,
-        if (size != $none) #size: size,
-        if (texture != null) #texture: texture,
-        if (tiles != null) #tiles: tiles
-      }));
+  $R call({
+    VectorDefinition? offset,
+    Object? size = $none,
+    String? texture,
+    VectorDefinition? tiles,
+  }) => $apply(
+    FieldCopyWithData({
+      if (offset != null) #offset: offset,
+      if (size != $none) #size: size,
+      if (texture != null) #texture: texture,
+      if (tiles != null) #tiles: tiles,
+    }),
+  );
   @override
   BoardDefinition $make(CopyWithData data) => BoardDefinition(
-      offset: data.get(#offset, or: $value.offset),
-      size: data.get(#size, or: $value.size),
-      texture: data.get(#texture, or: $value.texture),
-      tiles: data.get(#tiles, or: $value.tiles));
+    offset: data.get(#offset, or: $value.offset),
+    size: data.get(#size, or: $value.size),
+    texture: data.get(#texture, or: $value.texture),
+    tiles: data.get(#tiles, or: $value.tiles),
+  );
 
   @override
   BoardDefinitionCopyWith<$R2, BoardDefinition, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _BoardDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _BoardDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

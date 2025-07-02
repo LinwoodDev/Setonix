@@ -12,8 +12,9 @@ class BoardTileHandItem extends HandItem<(VectorDefinition, int, BoardTile)> {
   @override
   String getLabel(ClientWorldState state) {
     final object = item.$3;
-    final translation =
-        getAssetManager(state).getTranslations(object.asset.namespace);
+    final translation = getAssetManager(
+      state,
+    ).getTranslations(object.asset.namespace);
     return translation.getBoardTranslation(object.asset.id).name;
   }
 
@@ -25,17 +26,19 @@ class BoardTileHandItem extends HandItem<(VectorDefinition, int, BoardTile)> {
   @override
   get contextItemsBuilder {
     return (context, onClose) => [
-          ContextMenuButtonItem(
-            label: AppLocalizations.of(context).remove,
-            onPressed: () {
-              bloc.process(BoardRemoveRequest(
-                GlobalVectorDefinition.fromLocal(bloc.state.tableName, item.$1),
-                item.$2,
-              ));
-              onClose();
-            },
-          ),
-        ];
+      ContextMenuButtonItem(
+        label: AppLocalizations.of(context).remove,
+        onPressed: () {
+          bloc.process(
+            BoardRemoveRequest(
+              GlobalVectorDefinition.fromLocal(bloc.state.tableName, item.$1),
+              item.$2,
+            ),
+          );
+          onClose();
+        },
+      ),
+    ];
   }
 
   @override

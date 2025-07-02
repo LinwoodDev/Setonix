@@ -20,23 +20,40 @@ class KickMessageMapper extends ClassMapperBase<KickMessage> {
   @override
   final String id = 'KickMessage';
 
-  static String _$message(KickMessage v) => v.message;
-  static const Field<KickMessage, String> _f$message =
-      Field('message', _$message);
+  static String? _$message(KickMessage v) => v.message;
+  static const Field<KickMessage, String> _f$message = Field(
+    'message',
+    _$message,
+    opt: true,
+  );
   static String? _$link(KickMessage v) => v.link;
-  static const Field<KickMessage, String> _f$link =
-      Field('link', _$link, opt: true);
+  static const Field<KickMessage, String> _f$link = Field(
+    'link',
+    _$link,
+    opt: true,
+  );
+  static KickReason? _$reason(KickMessage v) => v.reason;
+  static const Field<KickMessage, KickReason> _f$reason = Field(
+    'reason',
+    _$reason,
+    opt: true,
+  );
 
   @override
   final MappableFields<KickMessage> fields = const {
     #message: _f$message,
     #link: _f$link,
+    #reason: _f$reason,
   };
 
   @override
   final MappingHook hook = const KickMessageHook();
   static KickMessage _instantiate(DecodingData data) {
-    return KickMessage(message: data.dec(_f$message), link: data.dec(_f$link));
+    return KickMessage(
+      message: data.dec(_f$message),
+      link: data.dec(_f$link),
+      reason: data.dec(_f$reason),
+    );
   }
 
   @override
@@ -53,28 +70,36 @@ class KickMessageMapper extends ClassMapperBase<KickMessage> {
 
 mixin KickMessageMappable {
   String toJson() {
-    return KickMessageMapper.ensureInitialized()
-        .encodeJson<KickMessage>(this as KickMessage);
+    return KickMessageMapper.ensureInitialized().encodeJson<KickMessage>(
+      this as KickMessage,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return KickMessageMapper.ensureInitialized()
-        .encodeMap<KickMessage>(this as KickMessage);
+    return KickMessageMapper.ensureInitialized().encodeMap<KickMessage>(
+      this as KickMessage,
+    );
   }
 
   KickMessageCopyWith<KickMessage, KickMessage, KickMessage> get copyWith =>
       _KickMessageCopyWithImpl<KickMessage, KickMessage>(
-          this as KickMessage, $identity, $identity);
+        this as KickMessage,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return KickMessageMapper.ensureInitialized()
-        .stringifyValue(this as KickMessage);
+    return KickMessageMapper.ensureInitialized().stringifyValue(
+      this as KickMessage,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return KickMessageMapper.ensureInitialized()
-        .equalsValue(this as KickMessage, other);
+    return KickMessageMapper.ensureInitialized().equalsValue(
+      this as KickMessage,
+      other,
+    );
   }
 
   @override
@@ -91,7 +116,7 @@ extension KickMessageValueCopy<$R, $Out>
 
 abstract class KickMessageCopyWith<$R, $In extends KickMessage, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call({String? message, String? link});
+  $R call({String? message, String? link, KickReason? reason});
   KickMessageCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -104,17 +129,26 @@ class _KickMessageCopyWithImpl<$R, $Out>
   late final ClassMapperBase<KickMessage> $mapper =
       KickMessageMapper.ensureInitialized();
   @override
-  $R call({String? message, Object? link = $none}) => $apply(FieldCopyWithData({
-        if (message != null) #message: message,
-        if (link != $none) #link: link
-      }));
+  $R call({
+    Object? message = $none,
+    Object? link = $none,
+    Object? reason = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (message != $none) #message: message,
+      if (link != $none) #link: link,
+      if (reason != $none) #reason: reason,
+    }),
+  );
   @override
   KickMessage $make(CopyWithData data) => KickMessage(
-      message: data.get(#message, or: $value.message),
-      link: data.get(#link, or: $value.link));
+    message: data.get(#message, or: $value.message),
+    link: data.get(#link, or: $value.link),
+    reason: data.get(#reason, or: $value.reason),
+  );
 
   @override
   KickMessageCopyWith<$R2, KickMessage, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _KickMessageCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _KickMessageCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

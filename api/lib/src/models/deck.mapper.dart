@@ -37,7 +37,9 @@ class DeckDefinitionMapper extends ClassMapperBase<DeckDefinition> {
 
   static DeckDefinition _instantiate(DecodingData data) {
     return DeckDefinition(
-        figures: data.dec(_f$figures), boards: data.dec(_f$boards));
+      figures: data.dec(_f$figures),
+      boards: data.dec(_f$boards),
+    );
   }
 
   @override
@@ -54,35 +56,43 @@ class DeckDefinitionMapper extends ClassMapperBase<DeckDefinition> {
 
 mixin DeckDefinitionMappable {
   String toJson() {
-    return DeckDefinitionMapper.ensureInitialized()
-        .encodeJson<DeckDefinition>(this as DeckDefinition);
+    return DeckDefinitionMapper.ensureInitialized().encodeJson<DeckDefinition>(
+      this as DeckDefinition,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return DeckDefinitionMapper.ensureInitialized()
-        .encodeMap<DeckDefinition>(this as DeckDefinition);
+    return DeckDefinitionMapper.ensureInitialized().encodeMap<DeckDefinition>(
+      this as DeckDefinition,
+    );
   }
 
   DeckDefinitionCopyWith<DeckDefinition, DeckDefinition, DeckDefinition>
-      get copyWith =>
-          _DeckDefinitionCopyWithImpl<DeckDefinition, DeckDefinition>(
-              this as DeckDefinition, $identity, $identity);
+  get copyWith => _DeckDefinitionCopyWithImpl<DeckDefinition, DeckDefinition>(
+    this as DeckDefinition,
+    $identity,
+    $identity,
+  );
   @override
   String toString() {
-    return DeckDefinitionMapper.ensureInitialized()
-        .stringifyValue(this as DeckDefinition);
+    return DeckDefinitionMapper.ensureInitialized().stringifyValue(
+      this as DeckDefinition,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return DeckDefinitionMapper.ensureInitialized()
-        .equalsValue(this as DeckDefinition, other);
+    return DeckDefinitionMapper.ensureInitialized().equalsValue(
+      this as DeckDefinition,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return DeckDefinitionMapper.ensureInitialized()
-        .hashValue(this as DeckDefinition);
+    return DeckDefinitionMapper.ensureInitialized().hashValue(
+      this as DeckDefinition,
+    );
   }
 }
 
@@ -95,19 +105,24 @@ extension DeckDefinitionValueCopy<$R, $Out>
 abstract class DeckDefinitionCopyWith<$R, $In extends DeckDefinition, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<
-      $R,
-      FigureDeckDefinition,
-      FigureDeckDefinitionCopyWith<$R, FigureDeckDefinition,
-          FigureDeckDefinition>> get figures;
+    $R,
+    FigureDeckDefinition,
+    FigureDeckDefinitionCopyWith<$R, FigureDeckDefinition, FigureDeckDefinition>
+  >
+  get figures;
   ListCopyWith<
-      $R,
-      BoardDeckDefinition,
-      BoardDeckDefinitionCopyWith<$R, BoardDeckDefinition,
-          BoardDeckDefinition>> get boards;
-  $R call(
-      {List<FigureDeckDefinition>? figures, List<BoardDeckDefinition>? boards});
+    $R,
+    BoardDeckDefinition,
+    BoardDeckDefinitionCopyWith<$R, BoardDeckDefinition, BoardDeckDefinition>
+  >
+  get boards;
+  $R call({
+    List<FigureDeckDefinition>? figures,
+    List<BoardDeckDefinition>? boards,
+  });
   DeckDefinitionCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _DeckDefinitionCopyWithImpl<$R, $Out>
@@ -120,35 +135,46 @@ class _DeckDefinitionCopyWithImpl<$R, $Out>
       DeckDefinitionMapper.ensureInitialized();
   @override
   ListCopyWith<
-      $R,
-      FigureDeckDefinition,
-      FigureDeckDefinitionCopyWith<$R, FigureDeckDefinition,
-          FigureDeckDefinition>> get figures => ListCopyWith(
-      $value.figures, (v, t) => v.copyWith.$chain(t), (v) => call(figures: v));
+    $R,
+    FigureDeckDefinition,
+    FigureDeckDefinitionCopyWith<$R, FigureDeckDefinition, FigureDeckDefinition>
+  >
+  get figures => ListCopyWith(
+    $value.figures,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(figures: v),
+  );
   @override
   ListCopyWith<
-      $R,
-      BoardDeckDefinition,
-      BoardDeckDefinitionCopyWith<$R, BoardDeckDefinition,
-          BoardDeckDefinition>> get boards => ListCopyWith(
-      $value.boards, (v, t) => v.copyWith.$chain(t), (v) => call(boards: v));
+    $R,
+    BoardDeckDefinition,
+    BoardDeckDefinitionCopyWith<$R, BoardDeckDefinition, BoardDeckDefinition>
+  >
+  get boards => ListCopyWith(
+    $value.boards,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(boards: v),
+  );
   @override
-  $R call(
-          {List<FigureDeckDefinition>? figures,
-          List<BoardDeckDefinition>? boards}) =>
-      $apply(FieldCopyWithData({
-        if (figures != null) #figures: figures,
-        if (boards != null) #boards: boards
-      }));
+  $R call({
+    List<FigureDeckDefinition>? figures,
+    List<BoardDeckDefinition>? boards,
+  }) => $apply(
+    FieldCopyWithData({
+      if (figures != null) #figures: figures,
+      if (boards != null) #boards: boards,
+    }),
+  );
   @override
   DeckDefinition $make(CopyWithData data) => DeckDefinition(
-      figures: data.get(#figures, or: $value.figures),
-      boards: data.get(#boards, or: $value.boards));
+    figures: data.get(#figures, or: $value.figures),
+    boards: data.get(#boards, or: $value.boards),
+  );
 
   @override
   DeckDefinitionCopyWith<$R2, DeckDefinition, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _DeckDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _DeckDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class FigureDeckDefinitionMapper extends ClassMapperBase<FigureDeckDefinition> {
@@ -167,11 +193,16 @@ class FigureDeckDefinitionMapper extends ClassMapperBase<FigureDeckDefinition> {
   final String id = 'FigureDeckDefinition';
 
   static String _$name(FigureDeckDefinition v) => v.name;
-  static const Field<FigureDeckDefinition, String> _f$name =
-      Field('name', _$name);
+  static const Field<FigureDeckDefinition, String> _f$name = Field(
+    'name',
+    _$name,
+  );
   static String? _$variation(FigureDeckDefinition v) => v.variation;
-  static const Field<FigureDeckDefinition, String> _f$variation =
-      Field('variation', _$variation, opt: true);
+  static const Field<FigureDeckDefinition, String> _f$variation = Field(
+    'variation',
+    _$variation,
+    opt: true,
+  );
   static VectorDefinition _$position(FigureDeckDefinition v) => v.position;
   static const Field<FigureDeckDefinition, VectorDefinition> _f$position =
       Field('position', _$position, opt: true, def: VectorDefinition.zero);
@@ -185,9 +216,10 @@ class FigureDeckDefinitionMapper extends ClassMapperBase<FigureDeckDefinition> {
 
   static FigureDeckDefinition _instantiate(DecodingData data) {
     return FigureDeckDefinition(
-        name: data.dec(_f$name),
-        variation: data.dec(_f$variation),
-        position: data.dec(_f$position));
+      name: data.dec(_f$name),
+      variation: data.dec(_f$variation),
+      position: data.dec(_f$position),
+    );
   }
 
   @override
@@ -213,44 +245,58 @@ mixin FigureDeckDefinitionMappable {
         .encodeMap<FigureDeckDefinition>(this as FigureDeckDefinition);
   }
 
-  FigureDeckDefinitionCopyWith<FigureDeckDefinition, FigureDeckDefinition,
-      FigureDeckDefinition> get copyWith => _FigureDeckDefinitionCopyWithImpl<
-          FigureDeckDefinition, FigureDeckDefinition>(
-      this as FigureDeckDefinition, $identity, $identity);
+  FigureDeckDefinitionCopyWith<
+    FigureDeckDefinition,
+    FigureDeckDefinition,
+    FigureDeckDefinition
+  >
+  get copyWith =>
+      _FigureDeckDefinitionCopyWithImpl<
+        FigureDeckDefinition,
+        FigureDeckDefinition
+      >(this as FigureDeckDefinition, $identity, $identity);
   @override
   String toString() {
-    return FigureDeckDefinitionMapper.ensureInitialized()
-        .stringifyValue(this as FigureDeckDefinition);
+    return FigureDeckDefinitionMapper.ensureInitialized().stringifyValue(
+      this as FigureDeckDefinition,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return FigureDeckDefinitionMapper.ensureInitialized()
-        .equalsValue(this as FigureDeckDefinition, other);
+    return FigureDeckDefinitionMapper.ensureInitialized().equalsValue(
+      this as FigureDeckDefinition,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return FigureDeckDefinitionMapper.ensureInitialized()
-        .hashValue(this as FigureDeckDefinition);
+    return FigureDeckDefinitionMapper.ensureInitialized().hashValue(
+      this as FigureDeckDefinition,
+    );
   }
 }
 
 extension FigureDeckDefinitionValueCopy<$R, $Out>
     on ObjectCopyWith<$R, FigureDeckDefinition, $Out> {
   FigureDeckDefinitionCopyWith<$R, FigureDeckDefinition, $Out>
-      get $asFigureDeckDefinition => $base.as(
-          (v, t, t2) => _FigureDeckDefinitionCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asFigureDeckDefinition => $base.as(
+    (v, t, t2) => _FigureDeckDefinitionCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
 abstract class FigureDeckDefinitionCopyWith<
-    $R,
-    $In extends FigureDeckDefinition,
-    $Out> implements ClassCopyWith<$R, $In, $Out> {
+  $R,
+  $In extends FigureDeckDefinition,
+  $Out
+>
+    implements ClassCopyWith<$R, $In, $Out> {
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get position;
   $R call({String? name, String? variation, VectorDefinition? position});
   FigureDeckDefinitionCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _FigureDeckDefinitionCopyWithImpl<$R, $Out>
@@ -263,27 +309,30 @@ class _FigureDeckDefinitionCopyWithImpl<$R, $Out>
       FigureDeckDefinitionMapper.ensureInitialized();
   @override
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>
-      get position => $value.position.copyWith.$chain((v) => call(position: v));
+  get position => $value.position.copyWith.$chain((v) => call(position: v));
   @override
-  $R call(
-          {String? name,
-          Object? variation = $none,
-          VectorDefinition? position}) =>
-      $apply(FieldCopyWithData({
-        if (name != null) #name: name,
-        if (variation != $none) #variation: variation,
-        if (position != null) #position: position
-      }));
+  $R call({
+    String? name,
+    Object? variation = $none,
+    VectorDefinition? position,
+  }) => $apply(
+    FieldCopyWithData({
+      if (name != null) #name: name,
+      if (variation != $none) #variation: variation,
+      if (position != null) #position: position,
+    }),
+  );
   @override
   FigureDeckDefinition $make(CopyWithData data) => FigureDeckDefinition(
-      name: data.get(#name, or: $value.name),
-      variation: data.get(#variation, or: $value.variation),
-      position: data.get(#position, or: $value.position));
+    name: data.get(#name, or: $value.name),
+    variation: data.get(#variation, or: $value.variation),
+    position: data.get(#position, or: $value.position),
+  );
 
   @override
   FigureDeckDefinitionCopyWith<$R2, FigureDeckDefinition, $Out2>
-      $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _FigureDeckDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _FigureDeckDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class BoardDeckDefinitionMapper extends ClassMapperBase<BoardDeckDefinition> {
@@ -302,11 +351,17 @@ class BoardDeckDefinitionMapper extends ClassMapperBase<BoardDeckDefinition> {
   final String id = 'BoardDeckDefinition';
 
   static String _$name(BoardDeckDefinition v) => v.name;
-  static const Field<BoardDeckDefinition, String> _f$name =
-      Field('name', _$name);
+  static const Field<BoardDeckDefinition, String> _f$name = Field(
+    'name',
+    _$name,
+  );
   static VectorDefinition _$position(BoardDeckDefinition v) => v.position;
-  static const Field<BoardDeckDefinition, VectorDefinition> _f$position =
-      Field('position', _$position, opt: true, def: VectorDefinition.zero);
+  static const Field<BoardDeckDefinition, VectorDefinition> _f$position = Field(
+    'position',
+    _$position,
+    opt: true,
+    def: VectorDefinition.zero,
+  );
 
   @override
   final MappableFields<BoardDeckDefinition> fields = const {
@@ -316,7 +371,9 @@ class BoardDeckDefinitionMapper extends ClassMapperBase<BoardDeckDefinition> {
 
   static BoardDeckDefinition _instantiate(DecodingData data) {
     return BoardDeckDefinition(
-        name: data.dec(_f$name), position: data.dec(_f$position));
+      name: data.dec(_f$name),
+      position: data.dec(_f$position),
+    );
   }
 
   @override
@@ -342,42 +399,58 @@ mixin BoardDeckDefinitionMappable {
         .encodeMap<BoardDeckDefinition>(this as BoardDeckDefinition);
   }
 
-  BoardDeckDefinitionCopyWith<BoardDeckDefinition, BoardDeckDefinition,
-      BoardDeckDefinition> get copyWith => _BoardDeckDefinitionCopyWithImpl<
-          BoardDeckDefinition, BoardDeckDefinition>(
-      this as BoardDeckDefinition, $identity, $identity);
+  BoardDeckDefinitionCopyWith<
+    BoardDeckDefinition,
+    BoardDeckDefinition,
+    BoardDeckDefinition
+  >
+  get copyWith =>
+      _BoardDeckDefinitionCopyWithImpl<
+        BoardDeckDefinition,
+        BoardDeckDefinition
+      >(this as BoardDeckDefinition, $identity, $identity);
   @override
   String toString() {
-    return BoardDeckDefinitionMapper.ensureInitialized()
-        .stringifyValue(this as BoardDeckDefinition);
+    return BoardDeckDefinitionMapper.ensureInitialized().stringifyValue(
+      this as BoardDeckDefinition,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return BoardDeckDefinitionMapper.ensureInitialized()
-        .equalsValue(this as BoardDeckDefinition, other);
+    return BoardDeckDefinitionMapper.ensureInitialized().equalsValue(
+      this as BoardDeckDefinition,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return BoardDeckDefinitionMapper.ensureInitialized()
-        .hashValue(this as BoardDeckDefinition);
+    return BoardDeckDefinitionMapper.ensureInitialized().hashValue(
+      this as BoardDeckDefinition,
+    );
   }
 }
 
 extension BoardDeckDefinitionValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BoardDeckDefinition, $Out> {
   BoardDeckDefinitionCopyWith<$R, BoardDeckDefinition, $Out>
-      get $asBoardDeckDefinition => $base.as(
-          (v, t, t2) => _BoardDeckDefinitionCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asBoardDeckDefinition => $base.as(
+    (v, t, t2) => _BoardDeckDefinitionCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
-abstract class BoardDeckDefinitionCopyWith<$R, $In extends BoardDeckDefinition,
-    $Out> implements ClassCopyWith<$R, $In, $Out> {
+abstract class BoardDeckDefinitionCopyWith<
+  $R,
+  $In extends BoardDeckDefinition,
+  $Out
+>
+    implements ClassCopyWith<$R, $In, $Out> {
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get position;
   $R call({String? name, VectorDefinition? position});
   BoardDeckDefinitionCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _BoardDeckDefinitionCopyWithImpl<$R, $Out>
@@ -390,20 +463,22 @@ class _BoardDeckDefinitionCopyWithImpl<$R, $Out>
       BoardDeckDefinitionMapper.ensureInitialized();
   @override
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>
-      get position => $value.position.copyWith.$chain((v) => call(position: v));
+  get position => $value.position.copyWith.$chain((v) => call(position: v));
   @override
-  $R call({String? name, VectorDefinition? position}) =>
-      $apply(FieldCopyWithData({
-        if (name != null) #name: name,
-        if (position != null) #position: position
-      }));
+  $R call({String? name, VectorDefinition? position}) => $apply(
+    FieldCopyWithData({
+      if (name != null) #name: name,
+      if (position != null) #position: position,
+    }),
+  );
   @override
   BoardDeckDefinition $make(CopyWithData data) => BoardDeckDefinition(
-      name: data.get(#name, or: $value.name),
-      position: data.get(#position, or: $value.position));
+    name: data.get(#name, or: $value.name),
+    position: data.get(#position, or: $value.position),
+  );
 
   @override
   BoardDeckDefinitionCopyWith<$R2, BoardDeckDefinition, $Out2>
-      $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _BoardDeckDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _BoardDeckDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

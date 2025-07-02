@@ -47,18 +47,20 @@ Future<void> onLoad(SetonixServer server) async {
   server.defaultEventSystem
     ..on<ObjectsMoved>((e) {
       print("Listener was called, opening dialog");
-      server.sendEvent(DialogOpened(
-        GameDialog(id: "testDialog", title: "TestDialog", image: "logo")
-            .markdown(testContent)
-            .textField(
-              "TestTextField",
-              id: "testTextField",
-              placeholder: "TestPlaceholder",
-              multiline: true,
-              password: true,
-            )
-            .action(GameDialogButton("TestButton")),
-      ));
+      server.sendEvent(
+        DialogOpened(
+          GameDialog(id: "testDialog", title: "TestDialog", image: "logo")
+              .markdown(testContent)
+              .textField(
+                "TestTextField",
+                id: "testTextField",
+                placeholder: "TestPlaceholder",
+                multiline: true,
+                password: true,
+              )
+              .action(GameDialogButton("TestButton")),
+        ),
+      );
     })
     ..on<UserJoined>((e) {
       print("play joined");
