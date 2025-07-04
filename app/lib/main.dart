@@ -191,7 +191,7 @@ class SetonixApp extends StatelessWidget {
                 builder: (context, state) => const AccountsSettingsPage(),
               ),
               GoRoute(
-                path: 'serverlist',
+                path: 'servers',
                 builder: (context, state) => const ServersSettingsPage(),
               ),
             ],
@@ -207,4 +207,4 @@ const isNightly =
     flavor == 'nightly' || flavor == 'dev' || flavor == 'development';
 const shortApplicationName = isNightly ? 'Setonix Nightly' : 'Setonix';
 const applicationName = 'Linwood $shortApplicationName';
-const applicationMinorVersion = '0.5.0';
+const applicationMinorVersion = '0.5.1';
