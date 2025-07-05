@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:networker/networker.dart';
 import 'package:setonix_api/event.dart';
@@ -33,6 +34,10 @@ abstract class UserService {
     DateTime? lastLogin,
   });
 }
+
+const kUserReferenceID = '#';
+const kUserReferenceName = '@';
+const kUserReferenceFingerprint = '*';
 
 final class UserManager {
   final Map<Channel, SetonixUser> _users = {};
@@ -121,4 +126,40 @@ final class UserManager {
     _users[channel] = updatedUser;
     return true;
   }
+
+  Future<SetonixUser?> getUserByReference(String reference) async {
+    if (reference.isEmpty) return null;
+    switch (reference[0]) {
+      case kUserReferenceID:
+        final id = reference.substring(1);
+        if (id.isEmpty) return null;
+        final idInt = int.tryParse(id);
+        if (idInt == null) return null;
+        return getUser(idInt);
+      case kUserReferenceName:
+        final name = reference.substring(1);
+        return getUserByName(name);
+      case kUserReferenceFingerprint:
+        final fingerprint = reference.substring(1);
+        return service?.getUser(fingerprint);
+      default:
+        final id = int.tryParse(reference);
+        if (id != null) {
+          return getUser(id);
+        }
+        final user = getUserByName(reference);
+        if (user != null) {
+          return user;
+        }
+        return service?.getUserFromName(reference);
+    }
+  }
+
+  Future<Channel?> getUserIdByReference(String reference) async {
+    final user = await getUserByReference(reference);
+    if (user == null) return null;
+    return _users.entries.firstWhereOrNull((e) => e.value == user)?.key;
+  }
+
+  Iterable<MapEntry<Channel, SetonixUser>> getUsers() => _users.entries;
 }

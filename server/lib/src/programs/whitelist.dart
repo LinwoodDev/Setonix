@@ -21,11 +21,23 @@ class WhitelistProgram extends ConsoleProgram {
       return;
     }
     final action = args[0].toLowerCase();
-    final user = args[1];
+    final user = await server.userManager.getUserByReference(args[1]);
+    if (user == null) {
+      server.log("User not found: ${args[1]}", level: LogLevel.error);
+      return;
+    }
+    final fingerprint = user.fingerprint;
+    if (fingerprint == null) {
+      server.log(
+        "User $user does not have a fingerprint. Cannot add to whitelist.",
+        level: LogLevel.error,
+      );
+      return;
+    }
 
     if (action == 'add') {
       final result = await server.userManager.service?.updateUser(
-        user,
+        fingerprint,
         onWhitelist: true,
       );
       if (result != true) {
@@ -38,7 +50,7 @@ class WhitelistProgram extends ConsoleProgram {
       server.log("User $user added to whitelist", level: LogLevel.info);
     } else if (action == 'remove') {
       final result = await server.userManager.service?.updateUser(
-        user,
+        fingerprint,
         onWhitelist: false,
       );
       if (result != true) {

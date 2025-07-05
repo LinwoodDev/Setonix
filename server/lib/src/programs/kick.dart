@@ -11,14 +11,14 @@ class KickProgram extends ConsoleProgram {
   String getDescription() => "Kick a player";
 
   @override
-  String getUsage() => 'kick <ID> [<Reason>] [<Link>]';
+  String getUsage() => 'kick <User> [<Reason>] [<Link>]';
 
   @override
-  void run(String label, List<String> args) {
+  Future<void> run(String label, List<String> args) async {
     if (args.isEmpty || args.length > 3) {
       server.log("Wrong usage, use ${getUsage()}", level: LogLevel.error);
     }
-    final arg = int.tryParse(args[0]);
+    final arg = await server.userManager.getUserIdByReference(args[0]);
     if (arg == null) {
       server.log("ID should be a number", level: LogLevel.error);
       return;
