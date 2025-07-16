@@ -23,11 +23,18 @@ class HandChangedMapper extends SubClassMapperBase<HandChanged> {
   final String id = 'HandChanged';
 
   static ItemLocation? _$deck(HandChanged v) => v.deck;
-  static const Field<HandChanged, ItemLocation> _f$deck =
-      Field('deck', _$deck, opt: true);
+  static const Field<HandChanged, ItemLocation> _f$deck = Field(
+    'deck',
+    _$deck,
+    opt: true,
+  );
   static bool? _$show(HandChanged v) => v.show;
-  static const Field<HandChanged, bool> _f$show =
-      Field('show', _$show, opt: true, def: true);
+  static const Field<HandChanged, bool> _f$show = Field(
+    'show',
+    _$show,
+    opt: true,
+    def: true,
+  );
 
   @override
   final MappableFields<HandChanged> fields = const {
@@ -61,28 +68,36 @@ class HandChangedMapper extends SubClassMapperBase<HandChanged> {
 
 mixin HandChangedMappable {
   String toJson() {
-    return HandChangedMapper.ensureInitialized()
-        .encodeJson<HandChanged>(this as HandChanged);
+    return HandChangedMapper.ensureInitialized().encodeJson<HandChanged>(
+      this as HandChanged,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return HandChangedMapper.ensureInitialized()
-        .encodeMap<HandChanged>(this as HandChanged);
+    return HandChangedMapper.ensureInitialized().encodeMap<HandChanged>(
+      this as HandChanged,
+    );
   }
 
   HandChangedCopyWith<HandChanged, HandChanged, HandChanged> get copyWith =>
       _HandChangedCopyWithImpl<HandChanged, HandChanged>(
-          this as HandChanged, $identity, $identity);
+        this as HandChanged,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return HandChangedMapper.ensureInitialized()
-        .stringifyValue(this as HandChanged);
+    return HandChangedMapper.ensureInitialized().stringifyValue(
+      this as HandChanged,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return HandChangedMapper.ensureInitialized()
-        .equalsValue(this as HandChanged, other);
+    return HandChangedMapper.ensureInitialized().equalsValue(
+      this as HandChanged,
+      other,
+    );
   }
 
   @override
@@ -117,17 +132,22 @@ class _HandChangedCopyWithImpl<$R, $Out>
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get deck =>
       $value.deck?.copyWith.$chain((v) => call(deck: v));
   @override
-  $R call({Object? deck = $none, bool? show}) => $apply(FieldCopyWithData(
-      {if (deck != $none) #deck: deck, if (show != null) #show: show}));
+  $R call({Object? deck = $none, bool? show}) => $apply(
+    FieldCopyWithData({
+      if (deck != $none) #deck: deck,
+      if (show != null) #show: show,
+    }),
+  );
   @override
   HandChanged $make(CopyWithData data) => HandChanged(
-      deck: data.get(#deck, or: $value.deck),
-      show: data.get(#show, or: $value.show));
+    deck: data.get(#deck, or: $value.deck),
+    show: data.get(#show, or: $value.show),
+  );
 
   @override
   HandChangedCopyWith<$R2, HandChanged, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _HandChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _HandChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class CellSwitchedMapper extends SubClassMapperBase<CellSwitched> {
@@ -147,11 +167,17 @@ class CellSwitchedMapper extends SubClassMapperBase<CellSwitched> {
   final String id = 'CellSwitched';
 
   static VectorDefinition? _$cell(CellSwitched v) => v.cell;
-  static const Field<CellSwitched, VectorDefinition> _f$cell =
-      Field('cell', _$cell);
+  static const Field<CellSwitched, VectorDefinition> _f$cell = Field(
+    'cell',
+    _$cell,
+  );
   static bool _$toggle(CellSwitched v) => v.toggle;
-  static const Field<CellSwitched, bool> _f$toggle =
-      Field('toggle', _$toggle, opt: true, def: false);
+  static const Field<CellSwitched, bool> _f$toggle = Field(
+    'toggle',
+    _$toggle,
+    opt: true,
+    def: false,
+  );
 
   @override
   final MappableFields<CellSwitched> fields = const {
@@ -185,34 +211,43 @@ class CellSwitchedMapper extends SubClassMapperBase<CellSwitched> {
 
 mixin CellSwitchedMappable {
   String toJson() {
-    return CellSwitchedMapper.ensureInitialized()
-        .encodeJson<CellSwitched>(this as CellSwitched);
+    return CellSwitchedMapper.ensureInitialized().encodeJson<CellSwitched>(
+      this as CellSwitched,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return CellSwitchedMapper.ensureInitialized()
-        .encodeMap<CellSwitched>(this as CellSwitched);
+    return CellSwitchedMapper.ensureInitialized().encodeMap<CellSwitched>(
+      this as CellSwitched,
+    );
   }
 
   CellSwitchedCopyWith<CellSwitched, CellSwitched, CellSwitched> get copyWith =>
       _CellSwitchedCopyWithImpl<CellSwitched, CellSwitched>(
-          this as CellSwitched, $identity, $identity);
+        this as CellSwitched,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return CellSwitchedMapper.ensureInitialized()
-        .stringifyValue(this as CellSwitched);
+    return CellSwitchedMapper.ensureInitialized().stringifyValue(
+      this as CellSwitched,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return CellSwitchedMapper.ensureInitialized()
-        .equalsValue(this as CellSwitched, other);
+    return CellSwitchedMapper.ensureInitialized().equalsValue(
+      this as CellSwitched,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return CellSwitchedMapper.ensureInitialized()
-        .hashValue(this as CellSwitched);
+    return CellSwitchedMapper.ensureInitialized().hashValue(
+      this as CellSwitched,
+    );
   }
 }
 
@@ -242,17 +277,22 @@ class _CellSwitchedCopyWithImpl<$R, $Out>
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>? get cell =>
       $value.cell?.copyWith.$chain((v) => call(cell: v));
   @override
-  $R call({Object? cell = $none, bool? toggle}) => $apply(FieldCopyWithData(
-      {if (cell != $none) #cell: cell, if (toggle != null) #toggle: toggle}));
+  $R call({Object? cell = $none, bool? toggle}) => $apply(
+    FieldCopyWithData({
+      if (cell != $none) #cell: cell,
+      if (toggle != null) #toggle: toggle,
+    }),
+  );
   @override
-  CellSwitched $make(CopyWithData data) =>
-      CellSwitched(data.get(#cell, or: $value.cell),
-          toggle: data.get(#toggle, or: $value.toggle));
+  CellSwitched $make(CopyWithData data) => CellSwitched(
+    data.get(#cell, or: $value.cell),
+    toggle: data.get(#toggle, or: $value.toggle),
+  );
 
   @override
   CellSwitchedCopyWith<$R2, CellSwitched, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _CellSwitchedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _CellSwitchedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ColorSchemeChangedMapper extends SubClassMapperBase<ColorSchemeChanged> {
@@ -271,8 +311,10 @@ class ColorSchemeChangedMapper extends SubClassMapperBase<ColorSchemeChanged> {
   final String id = 'ColorSchemeChanged';
 
   static ColorScheme? _$colorScheme(ColorSchemeChanged v) => v.colorScheme;
-  static const Field<ColorSchemeChanged, ColorScheme> _f$colorScheme =
-      Field('colorScheme', _$colorScheme);
+  static const Field<ColorSchemeChanged, ColorScheme> _f$colorScheme = Field(
+    'colorScheme',
+    _$colorScheme,
+  );
 
   @override
   final MappableFields<ColorSchemeChanged> fields = const {
@@ -314,42 +356,59 @@ mixin ColorSchemeChangedMappable {
         .encodeMap<ColorSchemeChanged>(this as ColorSchemeChanged);
   }
 
-  ColorSchemeChangedCopyWith<ColorSchemeChanged, ColorSchemeChanged,
-          ColorSchemeChanged>
-      get copyWith => _ColorSchemeChangedCopyWithImpl<ColorSchemeChanged,
-          ColorSchemeChanged>(this as ColorSchemeChanged, $identity, $identity);
+  ColorSchemeChangedCopyWith<
+    ColorSchemeChanged,
+    ColorSchemeChanged,
+    ColorSchemeChanged
+  >
+  get copyWith =>
+      _ColorSchemeChangedCopyWithImpl<ColorSchemeChanged, ColorSchemeChanged>(
+        this as ColorSchemeChanged,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return ColorSchemeChangedMapper.ensureInitialized()
-        .stringifyValue(this as ColorSchemeChanged);
+    return ColorSchemeChangedMapper.ensureInitialized().stringifyValue(
+      this as ColorSchemeChanged,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return ColorSchemeChangedMapper.ensureInitialized()
-        .equalsValue(this as ColorSchemeChanged, other);
+    return ColorSchemeChangedMapper.ensureInitialized().equalsValue(
+      this as ColorSchemeChanged,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return ColorSchemeChangedMapper.ensureInitialized()
-        .hashValue(this as ColorSchemeChanged);
+    return ColorSchemeChangedMapper.ensureInitialized().hashValue(
+      this as ColorSchemeChanged,
+    );
   }
 }
 
 extension ColorSchemeChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ColorSchemeChanged, $Out> {
   ColorSchemeChangedCopyWith<$R, ColorSchemeChanged, $Out>
-      get $asColorSchemeChanged => $base.as(
-          (v, t, t2) => _ColorSchemeChangedCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asColorSchemeChanged => $base.as(
+    (v, t, t2) => _ColorSchemeChangedCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
-abstract class ColorSchemeChangedCopyWith<$R, $In extends ColorSchemeChanged,
-    $Out> implements LocalWorldEventCopyWith<$R, $In, $Out> {
+abstract class ColorSchemeChangedCopyWith<
+  $R,
+  $In extends ColorSchemeChanged,
+  $Out
+>
+    implements LocalWorldEventCopyWith<$R, $In, $Out> {
   @override
   $R call({ColorScheme? colorScheme});
   ColorSchemeChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _ColorSchemeChangedCopyWithImpl<$R, $Out>
@@ -362,15 +421,16 @@ class _ColorSchemeChangedCopyWithImpl<$R, $Out>
       ColorSchemeChangedMapper.ensureInitialized();
   @override
   $R call({Object? colorScheme = $none}) => $apply(
-      FieldCopyWithData({if (colorScheme != $none) #colorScheme: colorScheme}));
+    FieldCopyWithData({if (colorScheme != $none) #colorScheme: colorScheme}),
+  );
   @override
   ColorSchemeChanged $make(CopyWithData data) =>
       ColorSchemeChanged(data.get(#colorScheme, or: $value.colorScheme));
 
   @override
   ColorSchemeChangedCopyWith<$R2, ColorSchemeChanged, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _ColorSchemeChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _ColorSchemeChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class SwitchCellOnMoveChangedMapper
@@ -380,8 +440,9 @@ class SwitchCellOnMoveChangedMapper
   static SwitchCellOnMoveChangedMapper? _instance;
   static SwitchCellOnMoveChangedMapper ensureInitialized() {
     if (_instance == null) {
-      MapperContainer.globals
-          .use(_instance = SwitchCellOnMoveChangedMapper._());
+      MapperContainer.globals.use(
+        _instance = SwitchCellOnMoveChangedMapper._(),
+      );
       LocalWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
     }
     return _instance!;
@@ -391,8 +452,10 @@ class SwitchCellOnMoveChangedMapper
   final String id = 'SwitchCellOnMoveChanged';
 
   static bool _$value(SwitchCellOnMoveChanged v) => v.value;
-  static const Field<SwitchCellOnMoveChanged, bool> _f$value =
-      Field('value', _$value);
+  static const Field<SwitchCellOnMoveChanged, bool> _f$value = Field(
+    'value',
+    _$value,
+  );
 
   @override
   final MappableFields<SwitchCellOnMoveChanged> fields = const {
@@ -434,45 +497,58 @@ mixin SwitchCellOnMoveChangedMappable {
         .encodeMap<SwitchCellOnMoveChanged>(this as SwitchCellOnMoveChanged);
   }
 
-  SwitchCellOnMoveChangedCopyWith<SwitchCellOnMoveChanged,
-          SwitchCellOnMoveChanged, SwitchCellOnMoveChanged>
-      get copyWith => _SwitchCellOnMoveChangedCopyWithImpl<
-              SwitchCellOnMoveChanged, SwitchCellOnMoveChanged>(
-          this as SwitchCellOnMoveChanged, $identity, $identity);
+  SwitchCellOnMoveChangedCopyWith<
+    SwitchCellOnMoveChanged,
+    SwitchCellOnMoveChanged,
+    SwitchCellOnMoveChanged
+  >
+  get copyWith =>
+      _SwitchCellOnMoveChangedCopyWithImpl<
+        SwitchCellOnMoveChanged,
+        SwitchCellOnMoveChanged
+      >(this as SwitchCellOnMoveChanged, $identity, $identity);
   @override
   String toString() {
-    return SwitchCellOnMoveChangedMapper.ensureInitialized()
-        .stringifyValue(this as SwitchCellOnMoveChanged);
+    return SwitchCellOnMoveChangedMapper.ensureInitialized().stringifyValue(
+      this as SwitchCellOnMoveChanged,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return SwitchCellOnMoveChangedMapper.ensureInitialized()
-        .equalsValue(this as SwitchCellOnMoveChanged, other);
+    return SwitchCellOnMoveChangedMapper.ensureInitialized().equalsValue(
+      this as SwitchCellOnMoveChanged,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return SwitchCellOnMoveChangedMapper.ensureInitialized()
-        .hashValue(this as SwitchCellOnMoveChanged);
+    return SwitchCellOnMoveChangedMapper.ensureInitialized().hashValue(
+      this as SwitchCellOnMoveChanged,
+    );
   }
 }
 
 extension SwitchCellOnMoveChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, SwitchCellOnMoveChanged, $Out> {
   SwitchCellOnMoveChangedCopyWith<$R, SwitchCellOnMoveChanged, $Out>
-      get $asSwitchCellOnMoveChanged => $base.as((v, t, t2) =>
-          _SwitchCellOnMoveChangedCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asSwitchCellOnMoveChanged => $base.as(
+    (v, t, t2) => _SwitchCellOnMoveChangedCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
 abstract class SwitchCellOnMoveChangedCopyWith<
-    $R,
-    $In extends SwitchCellOnMoveChanged,
-    $Out> implements LocalWorldEventCopyWith<$R, $In, $Out> {
+  $R,
+  $In extends SwitchCellOnMoveChanged,
+  $Out
+>
+    implements LocalWorldEventCopyWith<$R, $In, $Out> {
   @override
   $R call({bool? value});
   SwitchCellOnMoveChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _SwitchCellOnMoveChangedCopyWithImpl<$R, $Out>
@@ -493,8 +569,8 @@ class _SwitchCellOnMoveChangedCopyWithImpl<$R, $Out>
 
   @override
   SwitchCellOnMoveChangedCopyWith<$R2, SwitchCellOnMoveChanged, $Out2>
-      $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _SwitchCellOnMoveChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _SwitchCellOnMoveChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class TableSwitchedMapper extends SubClassMapperBase<TableSwitched> {
@@ -513,13 +589,15 @@ class TableSwitchedMapper extends SubClassMapperBase<TableSwitched> {
   final String id = 'TableSwitched';
 
   static String _$name(TableSwitched v) => v.name;
-  static const Field<TableSwitched, String> _f$name =
-      Field('name', _$name, opt: true, def: '');
+  static const Field<TableSwitched, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+    def: '',
+  );
 
   @override
-  final MappableFields<TableSwitched> fields = const {
-    #name: _f$name,
-  };
+  final MappableFields<TableSwitched> fields = const {#name: _f$name};
 
   @override
   final String discriminatorKey = 'type';
@@ -547,34 +625,43 @@ class TableSwitchedMapper extends SubClassMapperBase<TableSwitched> {
 
 mixin TableSwitchedMappable {
   String toJson() {
-    return TableSwitchedMapper.ensureInitialized()
-        .encodeJson<TableSwitched>(this as TableSwitched);
+    return TableSwitchedMapper.ensureInitialized().encodeJson<TableSwitched>(
+      this as TableSwitched,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return TableSwitchedMapper.ensureInitialized()
-        .encodeMap<TableSwitched>(this as TableSwitched);
+    return TableSwitchedMapper.ensureInitialized().encodeMap<TableSwitched>(
+      this as TableSwitched,
+    );
   }
 
   TableSwitchedCopyWith<TableSwitched, TableSwitched, TableSwitched>
-      get copyWith => _TableSwitchedCopyWithImpl<TableSwitched, TableSwitched>(
-          this as TableSwitched, $identity, $identity);
+  get copyWith => _TableSwitchedCopyWithImpl<TableSwitched, TableSwitched>(
+    this as TableSwitched,
+    $identity,
+    $identity,
+  );
   @override
   String toString() {
-    return TableSwitchedMapper.ensureInitialized()
-        .stringifyValue(this as TableSwitched);
+    return TableSwitchedMapper.ensureInitialized().stringifyValue(
+      this as TableSwitched,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return TableSwitchedMapper.ensureInitialized()
-        .equalsValue(this as TableSwitched, other);
+    return TableSwitchedMapper.ensureInitialized().equalsValue(
+      this as TableSwitched,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return TableSwitchedMapper.ensureInitialized()
-        .hashValue(this as TableSwitched);
+    return TableSwitchedMapper.ensureInitialized().hashValue(
+      this as TableSwitched,
+    );
   }
 }
 
@@ -608,8 +695,8 @@ class _TableSwitchedCopyWithImpl<$R, $Out>
 
   @override
   TableSwitchedCopyWith<$R2, TableSwitched, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _TableSwitchedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _TableSwitchedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class DrawerViewChangedMapper extends SubClassMapperBase<DrawerViewChanged> {
@@ -629,13 +716,13 @@ class DrawerViewChangedMapper extends SubClassMapperBase<DrawerViewChanged> {
   final String id = 'DrawerViewChanged';
 
   static DrawerView _$view(DrawerViewChanged v) => v.view;
-  static const Field<DrawerViewChanged, DrawerView> _f$view =
-      Field('view', _$view);
+  static const Field<DrawerViewChanged, DrawerView> _f$view = Field(
+    'view',
+    _$view,
+  );
 
   @override
-  final MappableFields<DrawerViewChanged> fields = const {
-    #view: _f$view,
-  };
+  final MappableFields<DrawerViewChanged> fields = const {#view: _f$view};
 
   @override
   final String discriminatorKey = 'type';
@@ -672,43 +759,59 @@ mixin DrawerViewChangedMappable {
         .encodeMap<DrawerViewChanged>(this as DrawerViewChanged);
   }
 
-  DrawerViewChangedCopyWith<DrawerViewChanged, DrawerViewChanged,
-          DrawerViewChanged>
-      get copyWith =>
-          _DrawerViewChangedCopyWithImpl<DrawerViewChanged, DrawerViewChanged>(
-              this as DrawerViewChanged, $identity, $identity);
+  DrawerViewChangedCopyWith<
+    DrawerViewChanged,
+    DrawerViewChanged,
+    DrawerViewChanged
+  >
+  get copyWith =>
+      _DrawerViewChangedCopyWithImpl<DrawerViewChanged, DrawerViewChanged>(
+        this as DrawerViewChanged,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return DrawerViewChangedMapper.ensureInitialized()
-        .stringifyValue(this as DrawerViewChanged);
+    return DrawerViewChangedMapper.ensureInitialized().stringifyValue(
+      this as DrawerViewChanged,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return DrawerViewChangedMapper.ensureInitialized()
-        .equalsValue(this as DrawerViewChanged, other);
+    return DrawerViewChangedMapper.ensureInitialized().equalsValue(
+      this as DrawerViewChanged,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return DrawerViewChangedMapper.ensureInitialized()
-        .hashValue(this as DrawerViewChanged);
+    return DrawerViewChangedMapper.ensureInitialized().hashValue(
+      this as DrawerViewChanged,
+    );
   }
 }
 
 extension DrawerViewChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, DrawerViewChanged, $Out> {
   DrawerViewChangedCopyWith<$R, DrawerViewChanged, $Out>
-      get $asDrawerViewChanged => $base
-          .as((v, t, t2) => _DrawerViewChangedCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asDrawerViewChanged => $base.as(
+    (v, t, t2) => _DrawerViewChangedCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
-abstract class DrawerViewChangedCopyWith<$R, $In extends DrawerViewChanged,
-    $Out> implements LocalWorldEventCopyWith<$R, $In, $Out> {
+abstract class DrawerViewChangedCopyWith<
+  $R,
+  $In extends DrawerViewChanged,
+  $Out
+>
+    implements LocalWorldEventCopyWith<$R, $In, $Out> {
   @override
   $R call({DrawerView? view});
   DrawerViewChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _DrawerViewChangedCopyWithImpl<$R, $Out>
@@ -728,8 +831,8 @@ class _DrawerViewChangedCopyWithImpl<$R, $Out>
 
   @override
   DrawerViewChangedCopyWith<$R2, DrawerViewChanged, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _DrawerViewChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _DrawerViewChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class SearchTermChangedMapper extends SubClassMapperBase<SearchTermChanged> {
@@ -751,9 +854,7 @@ class SearchTermChangedMapper extends SubClassMapperBase<SearchTermChanged> {
   static const Field<SearchTermChanged, String> _f$term = Field('term', _$term);
 
   @override
-  final MappableFields<SearchTermChanged> fields = const {
-    #term: _f$term,
-  };
+  final MappableFields<SearchTermChanged> fields = const {#term: _f$term};
 
   @override
   final String discriminatorKey = 'type';
@@ -790,43 +891,59 @@ mixin SearchTermChangedMappable {
         .encodeMap<SearchTermChanged>(this as SearchTermChanged);
   }
 
-  SearchTermChangedCopyWith<SearchTermChanged, SearchTermChanged,
-          SearchTermChanged>
-      get copyWith =>
-          _SearchTermChangedCopyWithImpl<SearchTermChanged, SearchTermChanged>(
-              this as SearchTermChanged, $identity, $identity);
+  SearchTermChangedCopyWith<
+    SearchTermChanged,
+    SearchTermChanged,
+    SearchTermChanged
+  >
+  get copyWith =>
+      _SearchTermChangedCopyWithImpl<SearchTermChanged, SearchTermChanged>(
+        this as SearchTermChanged,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return SearchTermChangedMapper.ensureInitialized()
-        .stringifyValue(this as SearchTermChanged);
+    return SearchTermChangedMapper.ensureInitialized().stringifyValue(
+      this as SearchTermChanged,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return SearchTermChangedMapper.ensureInitialized()
-        .equalsValue(this as SearchTermChanged, other);
+    return SearchTermChangedMapper.ensureInitialized().equalsValue(
+      this as SearchTermChanged,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return SearchTermChangedMapper.ensureInitialized()
-        .hashValue(this as SearchTermChanged);
+    return SearchTermChangedMapper.ensureInitialized().hashValue(
+      this as SearchTermChanged,
+    );
   }
 }
 
 extension SearchTermChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, SearchTermChanged, $Out> {
   SearchTermChangedCopyWith<$R, SearchTermChanged, $Out>
-      get $asSearchTermChanged => $base
-          .as((v, t, t2) => _SearchTermChangedCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asSearchTermChanged => $base.as(
+    (v, t, t2) => _SearchTermChangedCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
-abstract class SearchTermChangedCopyWith<$R, $In extends SearchTermChanged,
-    $Out> implements LocalWorldEventCopyWith<$R, $In, $Out> {
+abstract class SearchTermChangedCopyWith<
+  $R,
+  $In extends SearchTermChanged,
+  $Out
+>
+    implements LocalWorldEventCopyWith<$R, $In, $Out> {
   @override
   $R call({String? term});
   SearchTermChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _SearchTermChangedCopyWithImpl<$R, $Out>
@@ -846,8 +963,8 @@ class _SearchTermChangedCopyWithImpl<$R, $Out>
 
   @override
   SearchTermChangedCopyWith<$R2, SearchTermChanged, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _SearchTermChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _SearchTermChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ShowDuplicatesChangedMapper
@@ -867,13 +984,13 @@ class ShowDuplicatesChangedMapper
   final String id = 'ShowDuplicatesChanged';
 
   static bool? _$value(ShowDuplicatesChanged v) => v.value;
-  static const Field<ShowDuplicatesChanged, bool> _f$value =
-      Field('value', _$value);
+  static const Field<ShowDuplicatesChanged, bool> _f$value = Field(
+    'value',
+    _$value,
+  );
 
   @override
-  final MappableFields<ShowDuplicatesChanged> fields = const {
-    #value: _f$value,
-  };
+  final MappableFields<ShowDuplicatesChanged> fields = const {#value: _f$value};
 
   @override
   final String discriminatorKey = 'type';
@@ -910,44 +1027,58 @@ mixin ShowDuplicatesChangedMappable {
         .encodeMap<ShowDuplicatesChanged>(this as ShowDuplicatesChanged);
   }
 
-  ShowDuplicatesChangedCopyWith<ShowDuplicatesChanged, ShowDuplicatesChanged,
-      ShowDuplicatesChanged> get copyWith => _ShowDuplicatesChangedCopyWithImpl<
-          ShowDuplicatesChanged, ShowDuplicatesChanged>(
-      this as ShowDuplicatesChanged, $identity, $identity);
+  ShowDuplicatesChangedCopyWith<
+    ShowDuplicatesChanged,
+    ShowDuplicatesChanged,
+    ShowDuplicatesChanged
+  >
+  get copyWith =>
+      _ShowDuplicatesChangedCopyWithImpl<
+        ShowDuplicatesChanged,
+        ShowDuplicatesChanged
+      >(this as ShowDuplicatesChanged, $identity, $identity);
   @override
   String toString() {
-    return ShowDuplicatesChangedMapper.ensureInitialized()
-        .stringifyValue(this as ShowDuplicatesChanged);
+    return ShowDuplicatesChangedMapper.ensureInitialized().stringifyValue(
+      this as ShowDuplicatesChanged,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return ShowDuplicatesChangedMapper.ensureInitialized()
-        .equalsValue(this as ShowDuplicatesChanged, other);
+    return ShowDuplicatesChangedMapper.ensureInitialized().equalsValue(
+      this as ShowDuplicatesChanged,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return ShowDuplicatesChangedMapper.ensureInitialized()
-        .hashValue(this as ShowDuplicatesChanged);
+    return ShowDuplicatesChangedMapper.ensureInitialized().hashValue(
+      this as ShowDuplicatesChanged,
+    );
   }
 }
 
 extension ShowDuplicatesChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ShowDuplicatesChanged, $Out> {
   ShowDuplicatesChangedCopyWith<$R, ShowDuplicatesChanged, $Out>
-      get $asShowDuplicatesChanged => $base.as(
-          (v, t, t2) => _ShowDuplicatesChangedCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asShowDuplicatesChanged => $base.as(
+    (v, t, t2) => _ShowDuplicatesChangedCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
 abstract class ShowDuplicatesChangedCopyWith<
-    $R,
-    $In extends ShowDuplicatesChanged,
-    $Out> implements LocalWorldEventCopyWith<$R, $In, $Out> {
+  $R,
+  $In extends ShowDuplicatesChanged,
+  $Out
+>
+    implements LocalWorldEventCopyWith<$R, $In, $Out> {
   @override
   $R call({bool? value});
   ShowDuplicatesChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _ShowDuplicatesChangedCopyWithImpl<$R, $Out>
@@ -967,6 +1098,6 @@ class _ShowDuplicatesChangedCopyWithImpl<$R, $Out>
 
   @override
   ShowDuplicatesChangedCopyWith<$R2, ShowDuplicatesChanged, $Out2>
-      $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _ShowDuplicatesChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _ShowDuplicatesChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

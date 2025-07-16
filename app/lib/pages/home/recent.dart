@@ -10,8 +10,8 @@ class RecentHomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      shrinkWrap: true,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Card(
           child: Padding(

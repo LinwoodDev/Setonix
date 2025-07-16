@@ -94,40 +94,54 @@ class _HomePageState extends State<HomePage> {
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
+          final controls = Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              ...items.map(
+                (item) => HomeListCard(
+                  icon: Icon(item.$2),
+                  title: Text(item.$1),
+                  onTap: item.$3,
+                ),
+              ),
+            ],
+          );
+          final recently = RecentHomeView();
           return Stack(
             alignment: Alignment.center,
             children: [
-              DotsBackground(),
+              ListenableBuilder(
+                listenable: _scrollController,
+                builder: (context, child) => DotsBackground(
+                  offset: _scrollController.hasClients
+                      ? _scrollController.offset
+                      : 0,
+                ),
+              ),
               ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: LeapBreakpoints.expanded),
-                child: Column(
+                child: ListView(
+                  controller: _scrollController,
                   children: [
                     HeaderHomeView(),
                     const SizedBox(height: 16),
-                    Expanded(
-                      child: Row(
-                        spacing: 12,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: ListView(
-                              controller: _scrollController,
-                              children: [
-                                ...items.map(
-                                  (item) => HomeListCard(
-                                    icon: Icon(item.$2),
-                                    title: Text(item.$1),
-                                    onTap: item.$3,
-                                  ),
-                                ),
-                              ],
-                            ),
+                    constraints.maxWidth >= LeapBreakpoints.medium
+                        ? Row(
+                            spacing: 12,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(flex: 1, child: controls),
+                              Expanded(flex: 2, child: recently),
+                            ],
+                          )
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              controls,
+                              const SizedBox(height: 16),
+                              recently,
+                            ],
                           ),
-                          Expanded(flex: 2, child: RecentHomeView()),
-                        ],
-                      ),
-                    ),
                   ],
                 ),
               ),

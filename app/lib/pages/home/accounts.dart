@@ -43,6 +43,10 @@ class _AccountsDialogState extends State<AccountsDialog> {
         maxWidth: LeapBreakpoints.medium,
         maxHeight: 500,
       ),
+      leading: IconButton.outlined(
+        onPressed: () => Navigator.of(context).pop(),
+        icon: const PhosphorIcon(PhosphorIconsLight.x),
+      ),
       headerActions: [
         IconButton(
           icon: const PhosphorIcon(PhosphorIconsLight.arrowSquareIn),
