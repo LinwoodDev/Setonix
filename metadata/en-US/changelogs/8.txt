@@ -1,4 +1,5 @@
 * Redesign cards to have higher resolution
+* Redesign home page
 * Upgrade to agb 8.11
 * Allow referencing user with name and fingerprint
 * Fix serverlist route

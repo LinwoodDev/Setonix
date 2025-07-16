@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:setonix/pages/home/accounts.dart';
+import 'package:setonix/pages/home/recent.dart';
 import 'package:setonix/pages/settings/intro.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
@@ -42,28 +44,22 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
-  List<(String, IconData, VoidCallback, Widget?, bool)> _getItems(
-    BuildContext context,
-  ) => [
+  List<(String, IconData, VoidCallback)> _getItems(BuildContext context) => [
     (
-      AppLocalizations.of(context).play,
-      PhosphorIconsLight.play,
+      AppLocalizations.of(context).singleplayer,
+      PhosphorIconsLight.gameController,
       () => showDialog(
         context: context,
         builder: (context) => const PlayDialog(),
       ),
-      null,
-      false,
     ),
     (
-      AppLocalizations.of(context).servers,
+      AppLocalizations.of(context).multiplayer,
       PhosphorIconsLight.plugsConnected,
       () => showDialog(
         context: context,
         builder: (context) => const ServersDialog(),
       ),
-      null,
-      false,
     ),
     (
       AppLocalizations.of(context).packs,
@@ -72,22 +68,25 @@ class _HomePageState extends State<HomePage> {
         context: context,
         builder: (context) => const PacksDialog(),
       ),
-      null,
-      false,
+    ),
+    (
+      AppLocalizations.of(context).accounts,
+      PhosphorIconsLight.users,
+      () => showDialog(
+        context: context,
+        builder: (context) => const AccountsDialog(),
+      ),
     ),
     (
       AppLocalizations.of(context).settings,
       PhosphorIconsLight.gear,
       () => openSettings(context),
-      null,
-      false,
     ),
   ];
 
   @override
   Widget build(BuildContext context) {
     final items = _getItems(context);
-    final theme = Theme.of(context);
     return Scaffold(
       appBar: WindowTitleBar<SettingsCubit, SetonixSettings>(
         title: Text(applicationName),
@@ -96,61 +95,40 @@ class _HomePageState extends State<HomePage> {
       body: LayoutBuilder(
         builder: (context, constraints) {
           return Stack(
+            alignment: Alignment.center,
             children: [
-              ListenableBuilder(
-                listenable: _scrollController,
-                builder: (context, child) => DotsBackground(
-                  offset: _scrollController.hasClients
-                      ? _scrollController.offset
-                      : 0,
-                ),
-              ),
-              SingleChildScrollView(
-                controller: _scrollController,
-                child: Align(
-                  child: Container(
-                    constraints: BoxConstraints(
-                      minHeight: constraints.maxHeight,
-                      maxWidth: LeapBreakpoints.expanded,
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 8.0,
-                      horizontal: 8.0,
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        HeaderHomeView(),
-                        if (constraints.maxWidth < LeapBreakpoints.compact)
-                          Card(
-                            clipBehavior: Clip.antiAlias,
+              DotsBackground(),
+              ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: LeapBreakpoints.expanded),
+                child: Column(
+                  children: [
+                    HeaderHomeView(),
+                    const SizedBox(height: 16),
+                    Expanded(
+                      child: Row(
+                        spacing: 12,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 1,
                             child: ListView(
-                              shrinkWrap: true,
-                              children: items.map((item) {
-                                return ListTile(
-                                  title: Text(item.$1),
-                                  subtitle: item.$4,
-                                  leading: Icon(
-                                    item.$2,
-                                    color: theme.colorScheme.primary,
+                              controller: _scrollController,
+                              children: [
+                                ...items.map(
+                                  (item) => HomeListCard(
+                                    icon: Icon(item.$2),
+                                    title: Text(item.$1),
+                                    onTap: item.$3,
                                   ),
-                                  trailing: item.$5
-                                      ? Icon(
-                                          PhosphorIconsFill.arrowSquareOut,
-                                          color: theme.colorScheme.primaryFixed,
-                                        )
-                                      : null,
-                                  onTap: item.$3,
-                                );
-                              }).toList(),
+                                ),
+                              ],
                             ),
-                          )
-                        else
-                          _GridHomeView(items: items),
-                      ],
+                          ),
+                          Expanded(flex: 2, child: RecentHomeView()),
+                        ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ),
             ],
@@ -161,83 +139,42 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class _GridHomeView extends StatelessWidget {
-  const _GridHomeView({required this.items});
+class HomeListCard extends StatelessWidget {
+  final Widget icon, title;
+  final VoidCallback onTap;
 
-  final List<(String, IconData, VoidCallback, Widget?, bool)> items;
+  const HomeListCard({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return LayoutBuilder(
-      builder: (context, constraints) => GridView.count(
-        shrinkWrap: true,
-        crossAxisCount: constraints.maxWidth >= LeapBreakpoints.medium ? 4 : 2,
-        mainAxisSpacing: 8,
-        crossAxisSpacing: 8,
-        children: items.map((item) {
-          return LayoutBuilder(
-            builder: (context, constraints) => Card.outlined(
-              child: InkWell(
-                onTap: item.$3,
-                borderRadius: BorderRadius.circular(8.0),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Icon(
-                              item.$2,
-                              size: constraints.maxWidth / 2,
-                              color: theme.colorScheme.primary,
-                            ),
-                            if (item.$5)
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: Icon(
-                                  PhosphorIconsFill.arrowSquareOut,
-                                  color: theme.colorScheme.primaryFixed,
-                                ),
-                              ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 64,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                item.$1,
-                                style: theme.textTheme.headlineSmall,
-                              ),
-                            ),
-                            if (item.$4 != null)
-                              DefaultTextStyle(
-                                style:
-                                    (theme.textTheme.headlineSmall ??
-                                            const TextStyle())
-                                        .copyWith(
-                                          color: theme.colorScheme.primary,
-                                        ),
-                                child: item.$4!,
-                              ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              IconTheme(
+                data: Theme.of(context).iconTheme.copyWith(size: 32),
+                child: icon,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: DefaultTextStyle(
+                  style: TextTheme.of(context).titleLarge ?? const TextStyle(),
+                  child: title,
                 ),
               ),
-            ),
-          );
-        }).toList(),
+            ],
+          ),
+        ),
       ),
     );
   }

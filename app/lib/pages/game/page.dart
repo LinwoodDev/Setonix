@@ -1,7 +1,6 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:setonix/api/open.dart';
 import 'package:setonix/pages/game/auth.dart';
 import 'package:setonix/pages/game/dialog.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
@@ -68,11 +67,14 @@ class _GamePageState extends State<GamePage> {
       colorScheme: Theme.of(context).colorScheme,
       gameState: address == null ? GameState.play : GameState.configuration,
     );
+    final name = world.state.name;
+    final uri = address != null ? Uri.parse(address) : null;
+    if (name != null) {
+      context.read<SettingsCubit>().addRecentGame(name, uri ?? Uri.file(name));
+    }
     await world.state.assetManager.loadPacks();
-    if (address != null) {
-      cubit.connect(
-        buildServerAddress(parseConnectUri(Uri.parse(address)), widget.secure),
-      );
+    if (uri != null) {
+      cubit.connect(buildServerAddress(uri, widget.secure));
     }
     return (cubit, world);
   }

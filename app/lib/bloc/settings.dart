@@ -51,6 +51,37 @@ final class ThemeModeMapper extends SimpleMapper<ThemeMode> {
   }
 }
 
+final class UriMapper extends SimpleMapper<Uri> {
+  const UriMapper();
+
+  @override
+  Uri decode(Object value) {
+    return Uri.parse(value.toString());
+  }
+
+  @override
+  String encode(Uri value) {
+    return value.toString();
+  }
+}
+
+@MappableClass(includeCustomMappers: [UriMapper()])
+final class RecentGameEntry with RecentGameEntryMappable {
+  final String name;
+  final Uri location;
+  final DateTime? lastPlayed;
+
+  const RecentGameEntry({
+    required this.name,
+    required this.location,
+    required this.lastPlayed,
+  });
+
+  bool get isMultiplayer => location.hasScheme;
+}
+
+const kRecentHistorySize = 10;
+
 @MappableClass(includeCustomMappers: [ThemeModeMapper()])
 class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
   final String localeTag;
@@ -71,6 +102,7 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
   final ThemeDensity density;
   final List<String> serverList;
   final bool showIntro;
+  final List<RecentGameEntry> recentGames;
 
   const SetonixSettings({
     this.localeTag = '',
@@ -91,6 +123,7 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
     this.scrollSensitivity = 1,
     this.serverList = const [],
     this.showIntro = true,
+    this.recentGames = const [],
   });
 
   Locale? get locale {
@@ -131,6 +164,12 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
     ),
     serverList: prefs.getStringList('serverList') ?? [],
     showIntro: prefs.getBool('showIntro') ?? true,
+    recentGames:
+        prefs
+            .getStringList('recentGames')
+            ?.map((e) => RecentGameEntryMapper.fromJson(e))
+            .toList() ??
+        [],
   );
 
   Future<void> save() async {
@@ -162,6 +201,10 @@ class SetonixSettings with SetonixSettingsMappable implements LeapSettings {
     await prefs.setString('density', density.name);
     await prefs.setStringList('serverList', serverList);
     await prefs.setBool('showIntro', showIntro);
+    await prefs.setStringList(
+      'recentGames',
+      recentGames.map((e) => e.toJson()).toList(),
+    );
   }
 }
 
@@ -314,5 +357,19 @@ class SettingsCubit extends Cubit<SetonixSettings>
 
   Future<String> exportSettings() async {
     return state.toJson();
+  }
+
+  Future<void> addRecentGame(String name, Uri uri) async {
+    final newList = List<RecentGameEntry>.from(state.recentGames);
+    newList.removeWhere((e) => e.location == uri);
+    newList.insert(
+      0,
+      RecentGameEntry(name: name, location: uri, lastPlayed: DateTime.now()),
+    );
+    if (newList.length > kRecentHistorySize) {
+      newList.removeLast();
+    }
+    emit(state.copyWith(recentGames: newList));
+    return save();
   }
 }

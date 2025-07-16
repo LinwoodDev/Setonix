@@ -276,5 +276,8 @@
   "notWhitelisted": "You are not whitelisted on the server.",
   "notRegistered": "You are not registered on the server.",
   "challengeFailed": "Account challenge failed. Please try again later.",
-  "pleaseLink": "Please link your account to the server using the provided link."
+  "pleaseLink": "Please link your account to the server using the provided link.",
+  "singleplayer": "Singleplayer",
+  "recentGames": "Recent games",
+  "noRecentGames": "There are no recent games available"
 }

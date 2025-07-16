@@ -117,67 +117,38 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
   final String id = 'ClientWorldState';
 
   static MultiplayerCubit _$multiplayer(ClientWorldState v) => v.multiplayer;
-  static const Field<ClientWorldState, MultiplayerCubit> _f$multiplayer = Field(
-    'multiplayer',
-    _$multiplayer,
-  );
+  static const Field<ClientWorldState, MultiplayerCubit> _f$multiplayer =
+      Field('multiplayer', _$multiplayer);
   static ColorScheme _$colorScheme(ClientWorldState v) => v.colorScheme;
-  static const Field<ClientWorldState, ColorScheme> _f$colorScheme = Field(
-    'colorScheme',
-    _$colorScheme,
-  );
+  static const Field<ClientWorldState, ColorScheme> _f$colorScheme =
+      Field('colorScheme', _$colorScheme);
   static GameAssetManager _$assetManager(ClientWorldState v) => v.assetManager;
   static const Field<ClientWorldState, GameAssetManager> _f$assetManager =
       Field('assetManager', _$assetManager);
   static WorldState _$world(ClientWorldState v) => v.world;
-  static const Field<ClientWorldState, WorldState> _f$world = Field(
-    'world',
-    _$world,
-  );
+  static const Field<ClientWorldState, WorldState> _f$world =
+      Field('world', _$world);
   static VectorDefinition? _$selectedCell(ClientWorldState v) => v.selectedCell;
   static const Field<ClientWorldState, VectorDefinition> _f$selectedCell =
       Field('selectedCell', _$selectedCell, opt: true);
   static ItemLocation? _$selectedDeck(ClientWorldState v) => v.selectedDeck;
-  static const Field<ClientWorldState, ItemLocation> _f$selectedDeck = Field(
-    'selectedDeck',
-    _$selectedDeck,
-    opt: true,
-  );
+  static const Field<ClientWorldState, ItemLocation> _f$selectedDeck =
+      Field('selectedDeck', _$selectedDeck, opt: true);
   static bool _$showHand(ClientWorldState v) => v.showHand;
-  static const Field<ClientWorldState, bool> _f$showHand = Field(
-    'showHand',
-    _$showHand,
-    opt: true,
-    def: false,
-  );
+  static const Field<ClientWorldState, bool> _f$showHand =
+      Field('showHand', _$showHand, opt: true, def: false);
   static bool _$switchCellOnMove(ClientWorldState v) => v.switchCellOnMove;
-  static const Field<ClientWorldState, bool> _f$switchCellOnMove = Field(
-    'switchCellOnMove',
-    _$switchCellOnMove,
-    opt: true,
-    def: false,
-  );
+  static const Field<ClientWorldState, bool> _f$switchCellOnMove =
+      Field('switchCellOnMove', _$switchCellOnMove, opt: true, def: false);
   static DrawerView _$drawerView(ClientWorldState v) => v.drawerView;
-  static const Field<ClientWorldState, DrawerView> _f$drawerView = Field(
-    'drawerView',
-    _$drawerView,
-    opt: true,
-    def: DrawerView.chat,
-  );
+  static const Field<ClientWorldState, DrawerView> _f$drawerView =
+      Field('drawerView', _$drawerView, opt: true, def: DrawerView.chat);
   static String _$searchTerm(ClientWorldState v) => v.searchTerm;
-  static const Field<ClientWorldState, String> _f$searchTerm = Field(
-    'searchTerm',
-    _$searchTerm,
-    opt: true,
-    def: '',
-  );
+  static const Field<ClientWorldState, String> _f$searchTerm =
+      Field('searchTerm', _$searchTerm, opt: true, def: '');
   static bool _$showDuplicates(ClientWorldState v) => v.showDuplicates;
-  static const Field<ClientWorldState, bool> _f$showDuplicates = Field(
-    'showDuplicates',
-    _$showDuplicates,
-    opt: true,
-    def: false,
-  );
+  static const Field<ClientWorldState, bool> _f$showDuplicates =
+      Field('showDuplicates', _$showDuplicates, opt: true, def: false);
 
   @override
   final MappableFields<ClientWorldState> fields = const {
@@ -196,18 +167,17 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
 
   static ClientWorldState _instantiate(DecodingData data) {
     return ClientWorldState(
-      multiplayer: data.dec(_f$multiplayer),
-      colorScheme: data.dec(_f$colorScheme),
-      assetManager: data.dec(_f$assetManager),
-      world: data.dec(_f$world),
-      selectedCell: data.dec(_f$selectedCell),
-      selectedDeck: data.dec(_f$selectedDeck),
-      showHand: data.dec(_f$showHand),
-      switchCellOnMove: data.dec(_f$switchCellOnMove),
-      drawerView: data.dec(_f$drawerView),
-      searchTerm: data.dec(_f$searchTerm),
-      showDuplicates: data.dec(_f$showDuplicates),
-    );
+        multiplayer: data.dec(_f$multiplayer),
+        colorScheme: data.dec(_f$colorScheme),
+        assetManager: data.dec(_f$assetManager),
+        world: data.dec(_f$world),
+        selectedCell: data.dec(_f$selectedCell),
+        selectedDeck: data.dec(_f$selectedDeck),
+        showHand: data.dec(_f$showHand),
+        switchCellOnMove: data.dec(_f$switchCellOnMove),
+        drawerView: data.dec(_f$drawerView),
+        searchTerm: data.dec(_f$searchTerm),
+        showDuplicates: data.dec(_f$showDuplicates));
   }
 
   @override
@@ -234,64 +204,55 @@ mixin ClientWorldStateMappable {
   }
 
   ClientWorldStateCopyWith<ClientWorldState, ClientWorldState, ClientWorldState>
-  get copyWith =>
-      _ClientWorldStateCopyWithImpl<ClientWorldState, ClientWorldState>(
-        this as ClientWorldState,
-        $identity,
-        $identity,
-      );
+      get copyWith =>
+          _ClientWorldStateCopyWithImpl<ClientWorldState, ClientWorldState>(
+              this as ClientWorldState, $identity, $identity);
   @override
   String toString() {
-    return ClientWorldStateMapper.ensureInitialized().stringifyValue(
-      this as ClientWorldState,
-    );
+    return ClientWorldStateMapper.ensureInitialized()
+        .stringifyValue(this as ClientWorldState);
   }
 
   @override
   bool operator ==(Object other) {
-    return ClientWorldStateMapper.ensureInitialized().equalsValue(
-      this as ClientWorldState,
-      other,
-    );
+    return ClientWorldStateMapper.ensureInitialized()
+        .equalsValue(this as ClientWorldState, other);
   }
 
   @override
   int get hashCode {
-    return ClientWorldStateMapper.ensureInitialized().hashValue(
-      this as ClientWorldState,
-    );
+    return ClientWorldStateMapper.ensureInitialized()
+        .hashValue(this as ClientWorldState);
   }
 }
 
 extension ClientWorldStateValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ClientWorldState, $Out> {
   ClientWorldStateCopyWith<$R, ClientWorldState, $Out>
-  get $asClientWorldState =>
-      $base.as((v, t, t2) => _ClientWorldStateCopyWithImpl<$R, $Out>(v, t, t2));
+      get $asClientWorldState => $base
+          .as((v, t, t2) => _ClientWorldStateCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class ClientWorldStateCopyWith<$R, $In extends ClientWorldState, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   WorldStateCopyWith<$R, WorldState, WorldState> get world;
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>?
-  get selectedCell;
+      get selectedCell;
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get selectedDeck;
-  $R call({
-    MultiplayerCubit? multiplayer,
-    ColorScheme? colorScheme,
-    GameAssetManager? assetManager,
-    WorldState? world,
-    VectorDefinition? selectedCell,
-    ItemLocation? selectedDeck,
-    bool? showHand,
-    bool? switchCellOnMove,
-    DrawerView? drawerView,
-    String? searchTerm,
-    bool? showDuplicates,
-  });
+  $R call(
+      {MultiplayerCubit? multiplayer,
+      ColorScheme? colorScheme,
+      GameAssetManager? assetManager,
+      WorldState? world,
+      VectorDefinition? selectedCell,
+      ItemLocation? selectedDeck,
+      bool? showHand,
+      bool? switchCellOnMove,
+      DrawerView? drawerView,
+      String? searchTerm,
+      bool? showDuplicates});
   ClientWorldStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-    Then<$Out2, $R2> t,
-  );
+      Then<$Out2, $R2> t);
 }
 
 class _ClientWorldStateCopyWithImpl<$R, $Out>
@@ -307,56 +268,54 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
       $value.world.copyWith.$chain((v) => call(world: v));
   @override
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>?
-  get selectedCell =>
-      $value.selectedCell?.copyWith.$chain((v) => call(selectedCell: v));
+      get selectedCell =>
+          $value.selectedCell?.copyWith.$chain((v) => call(selectedCell: v));
   @override
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get selectedDeck =>
       $value.selectedDeck?.copyWith.$chain((v) => call(selectedDeck: v));
   @override
-  $R call({
-    MultiplayerCubit? multiplayer,
-    ColorScheme? colorScheme,
-    GameAssetManager? assetManager,
-    WorldState? world,
-    Object? selectedCell = $none,
-    Object? selectedDeck = $none,
-    bool? showHand,
-    bool? switchCellOnMove,
-    DrawerView? drawerView,
-    String? searchTerm,
-    bool? showDuplicates,
-  }) => $apply(
-    FieldCopyWithData({
-      if (multiplayer != null) #multiplayer: multiplayer,
-      if (colorScheme != null) #colorScheme: colorScheme,
-      if (assetManager != null) #assetManager: assetManager,
-      if (world != null) #world: world,
-      if (selectedCell != $none) #selectedCell: selectedCell,
-      if (selectedDeck != $none) #selectedDeck: selectedDeck,
-      if (showHand != null) #showHand: showHand,
-      if (switchCellOnMove != null) #switchCellOnMove: switchCellOnMove,
-      if (drawerView != null) #drawerView: drawerView,
-      if (searchTerm != null) #searchTerm: searchTerm,
-      if (showDuplicates != null) #showDuplicates: showDuplicates,
-    }),
-  );
+  $R call(
+          {MultiplayerCubit? multiplayer,
+          ColorScheme? colorScheme,
+          GameAssetManager? assetManager,
+          WorldState? world,
+          Object? selectedCell = $none,
+          Object? selectedDeck = $none,
+          bool? showHand,
+          bool? switchCellOnMove,
+          DrawerView? drawerView,
+          String? searchTerm,
+          bool? showDuplicates}) =>
+      $apply(FieldCopyWithData({
+        if (multiplayer != null) #multiplayer: multiplayer,
+        if (colorScheme != null) #colorScheme: colorScheme,
+        if (assetManager != null) #assetManager: assetManager,
+        if (world != null) #world: world,
+        if (selectedCell != $none) #selectedCell: selectedCell,
+        if (selectedDeck != $none) #selectedDeck: selectedDeck,
+        if (showHand != null) #showHand: showHand,
+        if (switchCellOnMove != null) #switchCellOnMove: switchCellOnMove,
+        if (drawerView != null) #drawerView: drawerView,
+        if (searchTerm != null) #searchTerm: searchTerm,
+        if (showDuplicates != null) #showDuplicates: showDuplicates
+      }));
   @override
   ClientWorldState $make(CopyWithData data) => ClientWorldState(
-    multiplayer: data.get(#multiplayer, or: $value.multiplayer),
-    colorScheme: data.get(#colorScheme, or: $value.colorScheme),
-    assetManager: data.get(#assetManager, or: $value.assetManager),
-    world: data.get(#world, or: $value.world),
-    selectedCell: data.get(#selectedCell, or: $value.selectedCell),
-    selectedDeck: data.get(#selectedDeck, or: $value.selectedDeck),
-    showHand: data.get(#showHand, or: $value.showHand),
-    switchCellOnMove: data.get(#switchCellOnMove, or: $value.switchCellOnMove),
-    drawerView: data.get(#drawerView, or: $value.drawerView),
-    searchTerm: data.get(#searchTerm, or: $value.searchTerm),
-    showDuplicates: data.get(#showDuplicates, or: $value.showDuplicates),
-  );
+      multiplayer: data.get(#multiplayer, or: $value.multiplayer),
+      colorScheme: data.get(#colorScheme, or: $value.colorScheme),
+      assetManager: data.get(#assetManager, or: $value.assetManager),
+      world: data.get(#world, or: $value.world),
+      selectedCell: data.get(#selectedCell, or: $value.selectedCell),
+      selectedDeck: data.get(#selectedDeck, or: $value.selectedDeck),
+      showHand: data.get(#showHand, or: $value.showHand),
+      switchCellOnMove:
+          data.get(#switchCellOnMove, or: $value.switchCellOnMove),
+      drawerView: data.get(#drawerView, or: $value.drawerView),
+      searchTerm: data.get(#searchTerm, or: $value.searchTerm),
+      showDuplicates: data.get(#showDuplicates, or: $value.showDuplicates));
 
   @override
   ClientWorldStateCopyWith<$R2, ClientWorldState, $Out2> $chain<$R2, $Out2>(
-    Then<$Out2, $R2> t,
-  ) => _ClientWorldStateCopyWithImpl<$R2, $Out2>($value, $cast, t);
+          Then<$Out2, $R2> t) =>
+      _ClientWorldStateCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

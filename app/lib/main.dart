@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:setonix/pages/settings/accounts.dart';
+import 'package:setonix/pages/home/accounts.dart';
 import 'package:setonix/pages/settings/data.dart';
 import 'package:setonix/pages/settings/general.dart';
 import 'package:setonix/pages/settings/input.dart';
@@ -188,7 +188,7 @@ class SetonixApp extends StatelessWidget {
               ),
               GoRoute(
                 path: 'accounts',
-                builder: (context, state) => const AccountsSettingsPage(),
+                builder: (context, state) => const AccountsDialog(),
               ),
               GoRoute(
                 path: 'servers',

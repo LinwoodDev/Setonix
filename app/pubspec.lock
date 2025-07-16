@@ -13,10 +13,10 @@ packages:
     dependency: transitive
     description:
       name: analyzer
-      sha256: "01949bf52ad33f0e0f74f881fbaac4f348c556531951d92c8d16f1262aa19ff8"
+      sha256: f4ad0fea5f102201015c9aae9d93bc02f75dd9491529a8c21f88d17a8523d44c
       url: "https://pub.dev"
     source: hosted
-    version: "7.5.4"
+    version: "7.6.0"
   ansicolor:
     dependency: transitive
     description:
@@ -398,26 +398,26 @@ packages:
     dependency: "direct main"
     description:
       name: flame
-      sha256: ec0d2a536b543ff7c611a6fd331c24004590b8d898b4bd2feef7fe29eeeb7eca
+      sha256: c50e2f39e118f5f6a6f3339ce6825ee803c7e5fada95ec50fb02eb27944e0e76
       url: "https://pub.dev"
     source: hosted
-    version: "1.30.0"
+    version: "1.30.1"
   flame_bloc:
     dependency: "direct main"
     description:
       name: flame_bloc
-      sha256: "868152d51ef1b5d1bb4631c9065a196371bcba835395bbe9a70bac4c5a476e01"
+      sha256: ebf19287035178396a2c08ba66204f48ed2d935f9eee761e2ce8524b816f6890
       url: "https://pub.dev"
     source: hosted
-    version: "1.12.14"
+    version: "1.12.15"
   flame_tiled:
     dependency: "direct main"
     description:
       name: flame_tiled
-      sha256: fb1383ad729f8ebfcc5082230b6269a3f61489e8dd8f1976aa959c8dc3764758
+      sha256: "54a1d6c812ed021b137ff24755077838d97beccce8331a631f27a877034f0d38"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.4"
+    version: "3.0.5"
   flex_color_scheme:
     dependency: "direct main"
     description:
@@ -485,10 +485,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_rust_bridge
-      sha256: b416ff56002789e636244fb4cc449f587656eff995e5a7169457eb0593fcaddb
+      sha256: "37ef40bc6f863652e865f0b2563ea07f0d3c58d8efad803cc01933a4b2ee067e"
       url: "https://pub.dev"
     source: hosted
-    version: "2.10.0"
+    version: "2.11.1"
   flutter_secure_storage:
     dependency: "direct main"
     description:
@@ -1341,10 +1341,10 @@ packages:
     dependency: "direct main"
     description:
       name: url_launcher
-      sha256: "9d06212b1362abc2f0f0d78e6f09f726608c74e3b9462e8368bb03314aa8d603"
+      sha256: f6a7e5c4835bb4e3026a04793a4199ca2d14c739ec378fdfe23fc8075d0439f8
       url: "https://pub.dev"
     source: hosted
-    version: "6.3.1"
+    version: "6.3.2"
   url_launcher_android:
     dependency: transitive
     description:
@@ -1517,10 +1517,10 @@ packages:
     dependency: "direct main"
     description:
       name: window_manager
-      sha256: "51d50168ab267d344b975b15390426b1243600d436770d3f13de67e55b05ec16"
+      sha256: "7eb6d6c4164ec08e1bf978d6e733f3cebe792e2a23fb07cbca25c2872bfdbdcd"
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.0"
+    version: "0.5.1"
   xdg_directories:
     dependency: transitive
     description:
@@ -1547,4 +1547,4 @@ packages:
     version: "3.1.3"
 sdks:
   dart: ">=3.8.1 <4.0.0"
-  flutter: ">=3.32.5"
+  flutter: ">=3.32.6"
