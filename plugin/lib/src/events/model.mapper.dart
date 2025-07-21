@@ -73,7 +73,11 @@ mixin UserJoinedMappable {
   }
 
   UserJoinedCopyWith<UserJoined, UserJoined, UserJoined> get copyWith =>
-      _UserJoinedCopyWithImpl(this as UserJoined, $identity, $identity);
+      _UserJoinedCopyWithImpl<UserJoined, UserJoined>(
+        this as UserJoined,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
     return UserJoinedMapper.ensureInitialized().stringifyValue(
@@ -98,7 +102,7 @@ mixin UserJoinedMappable {
 extension UserJoinedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, UserJoined, $Out> {
   UserJoinedCopyWith<$R, UserJoined, $Out> get $asUserJoined =>
-      $base.as((v, t, t2) => _UserJoinedCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _UserJoinedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class UserJoinedCopyWith<$R, $In extends UserJoined, $Out>
@@ -132,5 +136,5 @@ class _UserJoinedCopyWithImpl<$R, $Out>
   @override
   UserJoinedCopyWith<$R2, UserJoined, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
-  ) => _UserJoinedCopyWithImpl($value, $cast, t);
+  ) => _UserJoinedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
