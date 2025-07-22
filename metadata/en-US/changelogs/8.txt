@@ -3,5 +3,6 @@
 * Upgrade to agb 8.11
 * Allow referencing user with name and fingerprint
 * Fix serverlist route
+* Add support for arm AppImage builds
 
 Read more here: https://linwood.dev/setonix/0.5.1
