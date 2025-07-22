@@ -442,7 +442,7 @@ packages:
       path: "../api"
       relative: true
     source: path
-    version: "0.5.1"
+    version: "0.5.2"
   shelf:
     dependency: transitive
     description:
