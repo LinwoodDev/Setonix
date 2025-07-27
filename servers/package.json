@@ -11,8 +11,8 @@
   "packageManager": "pnpm@10.13.1",
   "dependencies": {
     "@astrojs/node": "^9.3.0",
-    "@cacheable/node-cache": "^1.6.0",
+    "@cacheable/node-cache": "^1.6.1",
     "@linwooddev/style": "^0.4.2",
-    "astro": "^5.12.1"
+    "astro": "^5.12.3"
   }
 }

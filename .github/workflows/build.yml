@@ -166,6 +166,32 @@ jobs:
           name: windows-setup
           path: |
             app/linwood-setonix-windows-setup-x86_64.exe
+  build-msix:
+    name: build-msix
+    runs-on: windows-2025
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - name: ⬆️ Checkout
+        uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2.21.0
+        with:
+          flutter-version-file: app/pubspec.yaml
+          cache: true
+      - name: 📦 Get dependencies
+        run: |
+          flutter clean
+          flutter pub get
+          flutter doctor -v
+      - name: 🏭 Build MSIX
+        run: |
+          dart run msix:create
+      - name: Archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: msix-build
+          path: app/build/windows/x64/runner/Release/setonix.msix
   build-linux:
     strategy:
       fail-fast: false
@@ -310,6 +336,42 @@ jobs:
           name: linux-${{ matrix.arch.name }}-appimage
           path: |
             app/linwood-setonix-linux-${{ matrix.arch.name }}.AppImage
+  build-snap:
+    name: build-snap
+    strategy:
+      fail-fast: false
+      matrix:
+        arch:
+          - image: ubuntu-24.04
+            name: x86_64
+            dir: x64
+            appimage: x86_64
+          - image: ubuntu-24.04-arm
+            name: arm64
+            dir: arm64
+            appimage: aarch64
+    runs-on: ${{ matrix.arch.image }}
+    steps:
+      - name: ⬆️ Checkout
+        uses: actions/checkout@v4
+      - name: Add snapcraft directory
+        run: |
+          mkdir -p snap
+          cp app/snapcraft.yaml snap/snapcraft.yaml
+      - uses: snapcore/action-build@v1
+        id: build
+      - uses: snapcore/action-publish@v1
+        name: Publish Snap to Store
+        if: ${{ github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main' || github.ref == 'refs/tags/nightly' || github.ref == 'refs/tags/stable' }}
+        env:
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAP_CREDENTIALS }}
+        with:
+          snap: ${{ steps.build.outputs.snap }}
+          release: ${{ github.ref == 'refs/heads/develop' && 'edge' || github.ref == 'refs/heads/main' && 'candidate' || github.ref == 'refs/tags/nightly' && 'beta' || 'stable' }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux-${{ matrix.arch.name }}-snap
+          path: ${{ steps.build.outputs.snap }}
   build-flatpak:
     name: build-flatpak
     defaults:
@@ -427,7 +489,6 @@ jobs:
       - uses: subosito/flutter-action@v2.21.0
         with:
           flutter-version-file: app/pubspec.yaml
-          cache: true
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -454,7 +515,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 24.3.0
+          node-version: "24.3.0"
       - name: Install appdmg
         run: |
           python3 -m pip install setuptools
@@ -518,27 +579,6 @@ jobs:
           name: ipa-build
           path: app/build/ios/iphoneos/linwood-setonix-ios.ipa
           compression-level: 0 #ipa is already compressed
-
-  # build-snap:
-  #   name: Build Snap
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     matrix:
-  #       architecture:
-  #         - amd64
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - uses: docker/setup-qemu-action@v2
-  #       with:
-  #         image: tonistiigi/binfmt@sha256:df15403e06a03c2f461c1f7938b171fda34a5849eb63a70e2a2109ed5a778bde
-  #     - uses: diddlesnaps/snapcraft-multiarch-action@v1
-  #       id: build
-  #       with:
-  #         architecture: ${{ matrix.architecture }}
-  #     - uses: actions/upload-artifact@v4
-  #       with:
-  #         name: setonix-snap
-  #         path: ${{ steps.build.outputs.snap }}
   build-server:
     defaults:
       run:
