@@ -184,6 +184,13 @@ jobs:
           flutter clean
           flutter pub get
           flutter doctor -v
+      - name: Build nessesary files
+        working-directory: ./
+        run: |
+          cd tools
+          dart pub get
+          cd ..
+          dart run tools/generate.dart
       - name: 🏭 Build MSIX
         run: |
           dart run msix:create
