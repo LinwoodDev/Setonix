@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
@@ -95,12 +96,19 @@ class RecentGameEntryMapper extends ClassMapperBase<RecentGameEntry> {
     'lastPlayed',
     _$lastPlayed,
   );
+  static bool _$isMultiplayer(RecentGameEntry v) => v.isMultiplayer;
+  static const Field<RecentGameEntry, bool> _f$isMultiplayer = Field(
+    'isMultiplayer',
+    _$isMultiplayer,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<RecentGameEntry> fields = const {
     #name: _f$name,
     #location: _f$location,
     #lastPlayed: _f$lastPlayed,
+    #isMultiplayer: _f$isMultiplayer,
   };
 
   static RecentGameEntry _instantiate(DecodingData data) {
@@ -356,6 +364,12 @@ class SetonixSettingsMapper extends ClassMapperBase<SetonixSettings> {
       v.recentGames;
   static const Field<SetonixSettings, List<RecentGameEntry>> _f$recentGames =
       Field('recentGames', _$recentGames, opt: true, def: const []);
+  static Locale? _$locale(SetonixSettings v) => v.locale;
+  static const Field<SetonixSettings, Locale> _f$locale = Field(
+    'locale',
+    _$locale,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<SetonixSettings> fields = const {
@@ -378,6 +392,7 @@ class SetonixSettingsMapper extends ClassMapperBase<SetonixSettings> {
     #serverList: _f$serverList,
     #showIntro: _f$showIntro,
     #recentGames: _f$recentGames,
+    #locale: _f$locale,
   };
 
   static SetonixSettings _instantiate(DecodingData data) {
@@ -632,3 +647,4 @@ class _SetonixSettingsCopyWithImpl<$R, $Out>
     Then<$Out2, $R2> t,
   ) => _SetonixSettingsCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
@@ -289,11 +290,18 @@ class GameDialogButtonMapper extends ClassMapperBase<GameDialogButton> {
     _$id,
     opt: true,
   );
+  static String _$idOrLabel(GameDialogButton v) => v.idOrLabel;
+  static const Field<GameDialogButton, String> _f$idOrLabel = Field(
+    'idOrLabel',
+    _$idOrLabel,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<GameDialogButton> fields = const {
     #label: _f$label,
     #id: _f$id,
+    #idOrLabel: _f$idOrLabel,
   };
 
   static GameDialogButton _instantiate(DecodingData data) {
@@ -585,6 +593,12 @@ class GameDialogTextFieldComponentMapper
     opt: true,
     def: false,
   );
+  static String _$idOrLabel(GameDialogTextFieldComponent v) => v.idOrLabel;
+  static const Field<GameDialogTextFieldComponent, String> _f$idOrLabel = Field(
+    'idOrLabel',
+    _$idOrLabel,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<GameDialogTextFieldComponent> fields = const {
@@ -593,6 +607,7 @@ class GameDialogTextFieldComponentMapper
     #placeholder: _f$placeholder,
     #multiline: _f$multiline,
     #password: _f$password,
+    #idOrLabel: _f$idOrLabel,
   };
 
   static GameDialogTextFieldComponent _instantiate(DecodingData data) {
@@ -1183,3 +1198,4 @@ class _GameDialogTextFieldValueCopyWithImpl<$R, $Out>
   $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _GameDialogTextFieldValueCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

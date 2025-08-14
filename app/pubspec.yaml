@@ -203,8 +203,7 @@ msix_config:
   display_name: Linwood Setonix
   publisher_display_name: Linwood Development
   identity_name: LinwoodDevelopment.linwood-setonix
-  msix_version: 0.5.2.0
   logo_path: images/logo.png
   capabilities: documentsLibrary
-  languages: en-us, af, ar, ca, cs, da, de, el, es, fi, fr, he, hi, hu, it, ja, ko, nl, no, pl, pt-br, pt, ro, ru, sr, sv, th, tr, uk, vi, zh-Hans, zh-Hant
+  languages: en-us
   install_certificate: false

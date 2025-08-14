@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
@@ -156,11 +157,15 @@ class GameTableMapper extends ClassMapperBase<GameTable> {
     _$background,
     opt: true,
   );
+  static Map<VectorDefinition, TableCell> _$cells(GameTable v) => v.cells;
+  static const Field<GameTable, Map<VectorDefinition, TableCell>> _f$cells =
+      Field('cells', _$cells, mode: FieldMode.member);
 
   @override
   final MappableFields<GameTable> fields = const {
     #cellsBox: _f$cellsBox,
     #background: _f$background,
+    #cells: _f$cells,
   };
 
   static GameTable _instantiate(DecodingData data) {
@@ -315,11 +320,18 @@ class TableCellMapper extends ClassMapperBase<TableCell> {
     opt: true,
     def: const [],
   );
+  static bool _$isEmpty(TableCell v) => v.isEmpty;
+  static const Field<TableCell, bool> _f$isEmpty = Field(
+    'isEmpty',
+    _$isEmpty,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<TableCell> fields = const {
     #objects: _f$objects,
     #tiles: _f$tiles,
+    #isEmpty: _f$isEmpty,
   };
 
   static TableCell _instantiate(DecodingData data) {
@@ -1100,3 +1112,4 @@ class _GameSeatCopyWithImpl<$R, $Out>
     Then<$Out2, $R2> t,
   ) => _GameSeatCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+
