@@ -414,26 +414,26 @@ packages:
     dependency: "direct main"
     description:
       name: flame
-      sha256: c50e2f39e118f5f6a6f3339ce6825ee803c7e5fada95ec50fb02eb27944e0e76
+      sha256: "1da87b0c07e09491517b28bcfdbfdb7b77c2e1527c4d160e394f66c3a9635026"
       url: "https://pub.dev"
     source: hosted
-    version: "1.30.1"
+    version: "1.31.0"
   flame_bloc:
     dependency: "direct main"
     description:
       name: flame_bloc
-      sha256: ebf19287035178396a2c08ba66204f48ed2d935f9eee761e2ce8524b816f6890
+      sha256: aab41281f9f922584d1f64fc4842e23db5a3968ba7d95697af95ed3c0b7e6229
       url: "https://pub.dev"
     source: hosted
-    version: "1.12.15"
+    version: "1.12.16"
   flame_tiled:
     dependency: "direct main"
     description:
       name: flame_tiled
-      sha256: "54a1d6c812ed021b137ff24755077838d97beccce8331a631f27a877034f0d38"
+      sha256: d07074e74c216736b8cb50458611307036f0b2a2a0f9b42db4f72593ff20f299
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.5"
+    version: "3.0.6"
   flex_color_scheme:
     dependency: "direct main"
     description:

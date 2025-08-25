@@ -4,4 +4,4 @@
 * Use minSdkVersion 24 instead of 23 (The minimum version of android is 7.0 (Nougat))
 * Upgrade to flutter 3.35
 
-Read more here: https://linwood.dev/setonix/0.6.0
+Read more here: https://linwood.dev/setonix/0.5.2
