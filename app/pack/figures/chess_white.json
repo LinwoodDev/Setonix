@@ -1,39 +1,39 @@
 {
   "back": {
     "texture": "figures/chess.png",
-    "offset": [0, 16],
-    "size": [16, 16]
+    "offset": [0, 32],
+    "size": [32, 32]
   },
   "variations": {
     "king": {
       "texture": "figures/chess.png",
-      "offset": [16, 16],
-      "size": [16, 16]
+      "offset": [32, 32],
+      "size": [32, 32]
     },
     "queen": {
       "texture": "figures/chess.png",
-      "offset": [32, 16],
-      "size": [16, 16]
+      "offset": [64, 32],
+      "size": [32, 32]
     },
     "bishop": {
       "texture": "figures/chess.png",
-      "offset": [48, 16],
-      "size": [16, 16]
+      "offset": [96, 32],
+      "size": [32, 32]
     },
     "knight": {
       "texture": "figures/chess.png",
-      "offset": [64, 16],
-      "size": [16, 16]
+      "offset": [128, 32],
+      "size": [32, 32]
     },
     "rook": {
       "texture": "figures/chess.png",
-      "offset": [80, 16],
-      "size": [16, 16]
+      "offset": [160, 32],
+      "size": [32, 32]
     },
     "pawn": {
       "texture": "figures/chess.png",
-      "offset": [96, 16],
-      "size": [16, 16]
+      "offset": [192, 32],
+      "size": [32, 32]
     }
   }
 }
