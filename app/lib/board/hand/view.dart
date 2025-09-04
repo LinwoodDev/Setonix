@@ -235,14 +235,14 @@ class GameHand extends CustomPainterComponent
   Future<void> _buildCellHand(VectorDefinition location, TableCell? cell) {
     return Future.wait([
       _addChildren(
-        cell?.objects.asMap().entries.map(
-              (e) => GameObjectHandItem(item: (location, e.key, e.value)),
+        cell?.tiles.asMap().entries.map(
+              (e) => BoardTileHandItem(item: (location, e.key, e.value)),
             ) ??
             const Iterable.empty(),
       ),
       _addChildren(
-        cell?.tiles.asMap().entries.map(
-              (e) => BoardTileHandItem(item: (location, e.key, e.value)),
+        cell?.objects.asMap().entries.map(
+              (e) => GameObjectHandItem(item: (location, e.key, e.value)),
             ) ??
             const Iterable.empty(),
       ),
