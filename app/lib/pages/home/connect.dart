@@ -205,7 +205,7 @@ class _ServersDialogState extends State<ServersDialog> {
           previous.showConnectBrowse != current.showConnectBrowse,
       listener: (context, state) => _refreshServers(state),
       builder: (context, settings) => ResponsiveAlertDialog(
-        title: Text(AppLocalizations.of(context).servers),
+        title: Text(AppLocalizations.of(context).multiplayer),
         leading: IconButton.outlined(
           icon: const Icon(PhosphorIconsLight.x),
           onPressed: () => Navigator.of(context).pop(),

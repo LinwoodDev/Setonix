@@ -2,39 +2,39 @@
   "back": {
     "texture": "figures/d6.png",
     "offset": [0, 0],
-    "size": [16, 16]
+    "size": [32, 32]
   },
   "rollable": true,
   "variations": {
     "1": {
       "texture": "figures/d6.png",
-      "offset": [16, 0],
-      "size": [16, 16]
+      "offset": [32, 0],
+      "size": [32, 32]
     },
     "2": {
       "texture": "figures/d6.png",
-      "offset": [32, 0],
-      "size": [16, 16]
+      "offset": [64, 0],
+      "size": [32, 32]
     },
     "3": {
       "texture": "figures/d6.png",
-      "offset": [48, 0],
-      "size": [16, 16]
+      "offset": [96, 0],
+      "size": [32, 32]
     },
     "4": {
       "texture": "figures/d6.png",
-      "offset": [64, 0],
-      "size": [16, 16]
+      "offset": [128, 0],
+      "size": [32, 32]
     },
     "5": {
       "texture": "figures/d6.png",
-      "offset": [80, 0],
-      "size": [16, 16]
+      "offset": [160, 0],
+      "size": [32, 32]
     },
     "6": {
       "texture": "figures/d6.png",
-      "offset": [96, 0],
-      "size": [16, 16]
+      "offset": [192, 0],
+      "size": [32, 32]
     }
   }
 }

@@ -54,7 +54,7 @@ class _PacksDialogState extends State<PacksDialog>
   void initState() {
     super.initState();
     _packsFuture = _getPacks();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.dismissed) {
         setState(() {
@@ -158,10 +158,6 @@ class _PacksDialogState extends State<PacksDialog>
                 icon: const PhosphorIcon(PhosphorIconsLight.folder),
                 label: Text(AppLocalizations.of(context).installed),
               ),
-              HorizontalTab(
-                icon: const PhosphorIcon(PhosphorIconsLight.globe),
-                label: Text(AppLocalizations.of(context).browse),
-              ),
               if (!isWorldLoaded)
                 HorizontalTab(
                   icon: const PhosphorIcon(PhosphorIconsLight.notePencil),
@@ -226,11 +222,6 @@ class _PacksDialogState extends State<PacksDialog>
                               onReload: _reloadPacks,
                               onUnselect: _unselect,
                               selected: selected,
-                            ),
-                            Center(
-                              child: Text(
-                                AppLocalizations.of(context).comingSoon,
-                              ),
                             ),
                             if (bloc == null)
                               _EditorPacksView(onReload: _reloadPacks),

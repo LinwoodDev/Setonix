@@ -18,7 +18,7 @@
 	<url type="homepage">https://setonix.linwood.dev/</url>
 	<url type="bugtracker">https://github.com/LinwoodDev/Setonix/issues</url>
 	<url type="help">https://setonix.linwood.dev/docs/v1/intro</url>
-	<url type="translate">https://linwood.dev/setonix/crowdin</url>
+	<url type="translate">https://linwood.dev/setonix/translate</url>
 	<url type="vcs-browser">https://github.com/LinwoodDev/Setonix.git</url>
 	<url type="contribute">https://github.com/LinwoodDev/Setonix/blob/develop/CONTRIBUTING.md</url>
 	<description>
@@ -41,6 +41,7 @@
 	</description>
 	<launchable type="desktop-id">dev.linwood.setonix.desktop</launchable>
 	<releases>
+		<release version="0.5.1" date="2025-07-22" />
 		<release version="0.5.0" date="2025-07-02" />
 		<release version="0.4.1" date="2025-06-09" />
 		<release version="0.4.0" date="2025-06-05" />

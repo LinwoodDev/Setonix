@@ -2,43 +2,43 @@
   "back": {
     "texture": "figures/chips.png",
     "offset": [0, 0],
-    "size": [16, 16]
+    "size": [32, 32]
   },
   "variations": {
     "white": {
       "texture": "figures/chips.png",
-      "offset": [16, 0],
-      "size": [16, 16]
+      "offset": [32, 0],
+      "size": [32, 32]
     },
     "black": {
       "texture": "figures/chips.png",
-      "offset": [32, 0],
-      "size": [16, 16]
+      "offset": [64, 0],
+      "size": [32, 32]
     },
     "red": {
       "texture": "figures/chips.png",
-      "offset": [48, 0],
-      "size": [16, 16]
+      "offset": [96, 0],
+      "size": [32, 32]
     },
     "yellow": {
       "texture": "figures/chips.png",
-      "offset": [0, 16],
-      "size": [16, 16]
+      "offset": [0, 32],
+      "size": [32, 32]
     },
     "green": {
       "texture": "figures/chips.png",
-      "offset": [16, 16],
-      "size": [16, 16]
+      "offset": [32, 32],
+      "size": [32, 32]
     },
     "blue": {
       "texture": "figures/chips.png",
-      "offset": [32, 16],
-      "size": [16, 16]
+      "offset": [64, 32],
+      "size": [32, 32]
     },
     "indigo": {
       "texture": "figures/chips.png",
-      "offset": [48, 16],
-      "size": [16, 16]
+      "offset": [96, 32],
+      "size": [32, 32]
     }
   }
 }

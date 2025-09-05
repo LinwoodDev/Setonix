@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
@@ -178,6 +179,68 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
     opt: true,
     def: false,
   );
+  static SetonixFileSystem _$fileSystem(ClientWorldState v) => v.fileSystem;
+  static const Field<ClientWorldState, SetonixFileSystem> _f$fileSystem = Field(
+    'fileSystem',
+    _$fileSystem,
+    mode: FieldMode.member,
+  );
+  static Iterable<MapEntry<String, SetonixData>> _$packs(ClientWorldState v) =>
+      v.packs;
+  static const Field<ClientWorldState, Iterable<MapEntry<String, SetonixData>>>
+  _f$packs = Field('packs', _$packs, mode: FieldMode.member);
+  static GameTable _$table(ClientWorldState v) => v.table;
+  static const Field<ClientWorldState, GameTable> _f$table = Field(
+    'table',
+    _$table,
+    mode: FieldMode.member,
+  );
+  static String _$tableName(ClientWorldState v) => v.tableName;
+  static const Field<ClientWorldState, String> _f$tableName = Field(
+    'tableName',
+    _$tableName,
+    mode: FieldMode.member,
+  );
+  static GameInfo _$info(ClientWorldState v) => v.info;
+  static const Field<ClientWorldState, GameInfo> _f$info = Field(
+    'info',
+    _$info,
+    mode: FieldMode.member,
+  );
+  static Map<String, Set<int>> _$teamMembers(ClientWorldState v) =>
+      v.teamMembers;
+  static const Field<ClientWorldState, Map<String, Set<int>>> _f$teamMembers =
+      Field('teamMembers', _$teamMembers, mode: FieldMode.member);
+  static int _$id(ClientWorldState v) => v.id;
+  static const Field<ClientWorldState, int> _f$id = Field(
+    'id',
+    _$id,
+    mode: FieldMode.member,
+  );
+  static List<ChatMessage> _$messages(ClientWorldState v) => v.messages;
+  static const Field<ClientWorldState, List<ChatMessage>> _f$messages = Field(
+    'messages',
+    _$messages,
+    mode: FieldMode.member,
+  );
+  static String? _$name(ClientWorldState v) => v.name;
+  static const Field<ClientWorldState, String> _f$name = Field(
+    'name',
+    _$name,
+    mode: FieldMode.member,
+  );
+  static FileMetadata _$metadata(ClientWorldState v) => v.metadata;
+  static const Field<ClientWorldState, FileMetadata> _f$metadata = Field(
+    'metadata',
+    _$metadata,
+    mode: FieldMode.member,
+  );
+  static SetonixData _$data(ClientWorldState v) => v.data;
+  static const Field<ClientWorldState, SetonixData> _f$data = Field(
+    'data',
+    _$data,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<ClientWorldState> fields = const {
@@ -192,6 +255,17 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
     #drawerView: _f$drawerView,
     #searchTerm: _f$searchTerm,
     #showDuplicates: _f$showDuplicates,
+    #fileSystem: _f$fileSystem,
+    #packs: _f$packs,
+    #table: _f$table,
+    #tableName: _f$tableName,
+    #info: _f$info,
+    #teamMembers: _f$teamMembers,
+    #id: _f$id,
+    #messages: _f$messages,
+    #name: _f$name,
+    #metadata: _f$metadata,
+    #data: _f$data,
   };
 
   static ClientWorldState _instantiate(DecodingData data) {
@@ -360,3 +434,4 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
     Then<$Out2, $R2> t,
   ) => _ClientWorldStateCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

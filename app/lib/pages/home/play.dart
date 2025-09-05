@@ -233,7 +233,7 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
       ],
     );
     return ResponsiveAlertDialog(
-      title: Text(AppLocalizations.of(context).play),
+      title: Text(AppLocalizations.of(context).singleplayer),
       leading: IconButton.outlined(
         icon: const Icon(PhosphorIconsLight.x),
         onPressed: () => Navigator.of(context).pop(),

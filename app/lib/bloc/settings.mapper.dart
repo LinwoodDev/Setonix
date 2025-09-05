@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
@@ -68,6 +69,153 @@ extension ThemeDensityMapperExtension on ThemeDensity {
   }
 }
 
+class RecentGameEntryMapper extends ClassMapperBase<RecentGameEntry> {
+  RecentGameEntryMapper._();
+
+  static RecentGameEntryMapper? _instance;
+  static RecentGameEntryMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = RecentGameEntryMapper._());
+      MapperContainer.globals.useAll([UriMapper()]);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'RecentGameEntry';
+
+  static String _$name(RecentGameEntry v) => v.name;
+  static const Field<RecentGameEntry, String> _f$name = Field('name', _$name);
+  static Uri _$location(RecentGameEntry v) => v.location;
+  static const Field<RecentGameEntry, Uri> _f$location = Field(
+    'location',
+    _$location,
+  );
+  static DateTime? _$lastPlayed(RecentGameEntry v) => v.lastPlayed;
+  static const Field<RecentGameEntry, DateTime> _f$lastPlayed = Field(
+    'lastPlayed',
+    _$lastPlayed,
+  );
+  static bool _$isMultiplayer(RecentGameEntry v) => v.isMultiplayer;
+  static const Field<RecentGameEntry, bool> _f$isMultiplayer = Field(
+    'isMultiplayer',
+    _$isMultiplayer,
+    mode: FieldMode.member,
+  );
+
+  @override
+  final MappableFields<RecentGameEntry> fields = const {
+    #name: _f$name,
+    #location: _f$location,
+    #lastPlayed: _f$lastPlayed,
+    #isMultiplayer: _f$isMultiplayer,
+  };
+
+  static RecentGameEntry _instantiate(DecodingData data) {
+    return RecentGameEntry(
+      name: data.dec(_f$name),
+      location: data.dec(_f$location),
+      lastPlayed: data.dec(_f$lastPlayed),
+    );
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static RecentGameEntry fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<RecentGameEntry>(map);
+  }
+
+  static RecentGameEntry fromJson(String json) {
+    return ensureInitialized().decodeJson<RecentGameEntry>(json);
+  }
+}
+
+mixin RecentGameEntryMappable {
+  String toJson() {
+    return RecentGameEntryMapper.ensureInitialized()
+        .encodeJson<RecentGameEntry>(this as RecentGameEntry);
+  }
+
+  Map<String, dynamic> toMap() {
+    return RecentGameEntryMapper.ensureInitialized().encodeMap<RecentGameEntry>(
+      this as RecentGameEntry,
+    );
+  }
+
+  RecentGameEntryCopyWith<RecentGameEntry, RecentGameEntry, RecentGameEntry>
+  get copyWith =>
+      _RecentGameEntryCopyWithImpl<RecentGameEntry, RecentGameEntry>(
+        this as RecentGameEntry,
+        $identity,
+        $identity,
+      );
+  @override
+  String toString() {
+    return RecentGameEntryMapper.ensureInitialized().stringifyValue(
+      this as RecentGameEntry,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return RecentGameEntryMapper.ensureInitialized().equalsValue(
+      this as RecentGameEntry,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return RecentGameEntryMapper.ensureInitialized().hashValue(
+      this as RecentGameEntry,
+    );
+  }
+}
+
+extension RecentGameEntryValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, RecentGameEntry, $Out> {
+  RecentGameEntryCopyWith<$R, RecentGameEntry, $Out> get $asRecentGameEntry =>
+      $base.as((v, t, t2) => _RecentGameEntryCopyWithImpl<$R, $Out>(v, t, t2));
+}
+
+abstract class RecentGameEntryCopyWith<$R, $In extends RecentGameEntry, $Out>
+    implements ClassCopyWith<$R, $In, $Out> {
+  $R call({String? name, Uri? location, DateTime? lastPlayed});
+  RecentGameEntryCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class _RecentGameEntryCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, RecentGameEntry, $Out>
+    implements RecentGameEntryCopyWith<$R, RecentGameEntry, $Out> {
+  _RecentGameEntryCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<RecentGameEntry> $mapper =
+      RecentGameEntryMapper.ensureInitialized();
+  @override
+  $R call({String? name, Uri? location, Object? lastPlayed = $none}) => $apply(
+    FieldCopyWithData({
+      if (name != null) #name: name,
+      if (location != null) #location: location,
+      if (lastPlayed != $none) #lastPlayed: lastPlayed,
+    }),
+  );
+  @override
+  RecentGameEntry $make(CopyWithData data) => RecentGameEntry(
+    name: data.get(#name, or: $value.name),
+    location: data.get(#location, or: $value.location),
+    lastPlayed: data.get(#lastPlayed, or: $value.lastPlayed),
+  );
+
+  @override
+  RecentGameEntryCopyWith<$R2, RecentGameEntry, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _RecentGameEntryCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
 class SetonixSettingsMapper extends ClassMapperBase<SetonixSettings> {
   SetonixSettingsMapper._();
 
@@ -79,6 +227,7 @@ class SetonixSettingsMapper extends ClassMapperBase<SetonixSettings> {
       GamePropertyMapper.ensureInitialized();
       ListGameServerMapper.ensureInitialized();
       ThemeDensityMapper.ensureInitialized();
+      RecentGameEntryMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -211,6 +360,16 @@ class SetonixSettingsMapper extends ClassMapperBase<SetonixSettings> {
     opt: true,
     def: true,
   );
+  static List<RecentGameEntry> _$recentGames(SetonixSettings v) =>
+      v.recentGames;
+  static const Field<SetonixSettings, List<RecentGameEntry>> _f$recentGames =
+      Field('recentGames', _$recentGames, opt: true, def: const []);
+  static Locale? _$locale(SetonixSettings v) => v.locale;
+  static const Field<SetonixSettings, Locale> _f$locale = Field(
+    'locale',
+    _$locale,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<SetonixSettings> fields = const {
@@ -232,6 +391,8 @@ class SetonixSettingsMapper extends ClassMapperBase<SetonixSettings> {
     #scrollSensitivity: _f$scrollSensitivity,
     #serverList: _f$serverList,
     #showIntro: _f$showIntro,
+    #recentGames: _f$recentGames,
+    #locale: _f$locale,
   };
 
   static SetonixSettings _instantiate(DecodingData data) {
@@ -254,6 +415,7 @@ class SetonixSettingsMapper extends ClassMapperBase<SetonixSettings> {
       scrollSensitivity: data.dec(_f$scrollSensitivity),
       serverList: data.dec(_f$serverList),
       showIntro: data.dec(_f$showIntro),
+      recentGames: data.dec(_f$recentGames),
     );
   }
 
@@ -328,6 +490,12 @@ abstract class SetonixSettingsCopyWith<$R, $In extends SetonixSettings, $Out>
   get servers;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get swamps;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get serverList;
+  ListCopyWith<
+    $R,
+    RecentGameEntry,
+    RecentGameEntryCopyWith<$R, RecentGameEntry, RecentGameEntry>
+  >
+  get recentGames;
   $R call({
     String? localeTag,
     ThemeMode? theme,
@@ -347,6 +515,7 @@ abstract class SetonixSettingsCopyWith<$R, $In extends SetonixSettings, $Out>
     double? scrollSensitivity,
     List<String>? serverList,
     bool? showIntro,
+    List<RecentGameEntry>? recentGames,
   });
   SetonixSettingsCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
@@ -390,6 +559,17 @@ class _SetonixSettingsCopyWithImpl<$R, $Out>
         (v) => call(serverList: v),
       );
   @override
+  ListCopyWith<
+    $R,
+    RecentGameEntry,
+    RecentGameEntryCopyWith<$R, RecentGameEntry, RecentGameEntry>
+  >
+  get recentGames => ListCopyWith(
+    $value.recentGames,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(recentGames: v),
+  );
+  @override
   $R call({
     String? localeTag,
     ThemeMode? theme,
@@ -409,6 +589,7 @@ class _SetonixSettingsCopyWithImpl<$R, $Out>
     double? scrollSensitivity,
     List<String>? serverList,
     bool? showIntro,
+    List<RecentGameEntry>? recentGames,
   }) => $apply(
     FieldCopyWithData({
       if (localeTag != null) #localeTag: localeTag,
@@ -429,6 +610,7 @@ class _SetonixSettingsCopyWithImpl<$R, $Out>
       if (scrollSensitivity != null) #scrollSensitivity: scrollSensitivity,
       if (serverList != null) #serverList: serverList,
       if (showIntro != null) #showIntro: showIntro,
+      if (recentGames != null) #recentGames: recentGames,
     }),
   );
   @override
@@ -457,6 +639,7 @@ class _SetonixSettingsCopyWithImpl<$R, $Out>
     ),
     serverList: data.get(#serverList, or: $value.serverList),
     showIntro: data.get(#showIntro, or: $value.showIntro),
+    recentGames: data.get(#recentGames, or: $value.recentGames),
   );
 
   @override
@@ -464,3 +647,4 @@ class _SetonixSettingsCopyWithImpl<$R, $Out>
     Then<$Out2, $R2> t,
   ) => _SetonixSettingsCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

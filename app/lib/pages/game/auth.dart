@@ -4,10 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:setonix/api/settings.dart';
 import 'package:setonix/bloc/world/bloc.dart';
 import 'package:setonix/bloc/world/state.dart';
-import 'package:setonix/pages/settings/home.dart';
+import 'package:setonix/pages/home/accounts.dart';
 import 'package:setonix/services/file_system.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:setonix_api/setonix_api.dart';
@@ -66,7 +65,10 @@ class _AuthGameViewState extends State<AuthGameView> {
                 IconButton(
                   icon: const Icon(PhosphorIconsLight.gear),
                   onPressed: () async {
-                    await openSettings(context, view: SettingsView.accounts);
+                    await showDialog(
+                      context: context,
+                      builder: (context) => AccountsDialog(),
+                    );
                     setState(() {
                       _buildKeysFuture();
                     });

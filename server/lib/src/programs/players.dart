@@ -12,10 +12,13 @@ class PlayersProgram extends ConsoleProgram {
   @override
   void run(String label, List<String> args) {
     print("-----");
-    final players = server.players;
+    final players = server.userManager.getUsers();
     print("${players.length} player(s) connected.");
-    for (final player in players.entries) {
-      print("${player.value.address} (${player.key})");
+    for (final player in players) {
+      final connectionInfo = server.players[player.key];
+      print(
+        "${connectionInfo?.address} | #${player.key}) | @${player.value.name} | *${player.value.fingerprint ?? 'No Fingerprint'}",
+      );
     }
     print("-----");
   }

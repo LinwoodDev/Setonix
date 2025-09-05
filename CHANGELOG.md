@@ -2,6 +2,17 @@
 
 <!--ENTER CHANGELOG HERE-->
 
+## 0.5.1 (2025-07-22)
+
+* Redesign cards to have higher resolution
+* Redesign home page
+* Upgrade to agb 8.11
+* Allow referencing user with name and fingerprint
+* Fix serverlist route
+* Add support for arm AppImage builds
+
+Read more here: https://linwood.dev/setonix/0.5.1
+
 ## 0.5.0 (2025-07-02)
 
 * Add account system

@@ -29,12 +29,14 @@ body:
     id: platform
     attributes:
       label: Platform
-      description: What type is your server running on?
+      description: On which platform did you encounter this bug?
       options:
         - Android
         - Windows
+        - MacOS
         - Linux
         - Web
+      multiple: true
     validations:
       required: true
   - type: textarea
@@ -47,7 +49,7 @@ body:
     id: terms
     attributes:
       label: Code of Conduct
-      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/LinwoodDev/Setonix/blob/develop/CODE_OF_CONDUCT.md)
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/LinwoodDev/butterfly/blob/develop/CODE_OF_CONDUCT.md)
       options:
         - label: I agree to follow this project's Code of Conduct
           required: true
