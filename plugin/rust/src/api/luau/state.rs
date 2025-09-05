@@ -19,5 +19,22 @@ impl LuaUserData for LuauStateUserData {
                 Ok(serialized)
             });
         }
+        fields.add_field_method_get("Table", move |lua, this: &LuauStateUserData| {
+            let callback = this.0.table_access.clone();
+            let result = block_on(callback(None));
+            let result = serde_json::from_str::<Value>(&result).unwrap();
+            let serialized = lua.to_value(&result).unwrap();
+            Ok(serialized)
+        });
+    }
+
+    fn add_methods<M: LuaUserDataMethods<Self>>(methods: &mut M) {
+        methods.add_method("GetTable", |lua, this: &LuauStateUserData, table_name: Option<String>| {
+            let callback = this.0.table_access.clone();
+            let result = block_on(callback(table_name));
+            let result = serde_json::from_str::<Value>(&result).unwrap();
+            let serialized = lua.to_value(&result).unwrap();
+            Ok(serialized)
+        });
     }
 }

@@ -66,7 +66,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.11.1';
 
   @override
-  int get rustContentHash => 2139481266;
+  int get rustContentHash => -1139025024;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -111,6 +111,11 @@ abstract class RustLibApi extends BaseApi {
   void crateApiPluginPluginCallbackChangeStateFieldAccess({
     required PluginCallback that,
     required FutureOr<String> Function(StateFieldAccess) stateFieldAccess,
+  });
+
+  void crateApiPluginPluginCallbackChangeTableAccess({
+    required PluginCallback that,
+    required FutureOr<String> Function(String?) tableAccess,
   });
 
   PluginCallback crateApiPluginPluginCallbackDefault();
@@ -409,12 +414,48 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  void crateApiPluginPluginCallbackChangeTableAccess({
+    required PluginCallback that,
+    required FutureOr<String> Function(String?) tableAccess,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
+            that,
+            serializer,
+          );
+          sse_encode_DartFn_Inputs_opt_String_Output_String_AnyhowException(
+            tableAccess,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 8)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiPluginPluginCallbackChangeTableAccessConstMeta,
+        argValues: [that, tableAccess],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiPluginPluginCallbackChangeTableAccessConstMeta =>
+      const TaskConstMeta(
+        debugName: "PluginCallback_change_table_access",
+        argNames: ["that", "tableAccess"],
+      );
+
+  @override
   PluginCallback crateApiPluginPluginCallbackDefault() {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 8)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 9)!;
         },
         codec: SseCodec(
           decodeSuccessData:
@@ -445,7 +486,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 11,
+            funcId: 12,
             port: port_,
           );
         },
@@ -574,6 +615,41 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   Future<void> Function(int, dynamic)
+  encode_DartFn_Inputs_opt_String_Output_String_AnyhowException(
+    FutureOr<String> Function(String?) raw,
+  ) {
+    return (callId, rawArg0) async {
+      final arg0 = dco_decode_opt_String(rawArg0);
+
+      Box<String>? rawOutput;
+      Box<AnyhowException>? rawError;
+      try {
+        rawOutput = Box(await raw(arg0));
+      } catch (e, s) {
+        rawError = Box(AnyhowException("$e\n\n$s"));
+      }
+
+      final serializer = SseSerializer(generalizedFrbRustBinding);
+      assert((rawOutput != null) ^ (rawError != null));
+      if (rawOutput != null) {
+        serializer.buffer.putUint8(0);
+        sse_encode_String(rawOutput.value, serializer);
+      } else {
+        serializer.buffer.putUint8(1);
+        sse_encode_AnyhowException(rawError!.value, serializer);
+      }
+      final output = serializer.intoRaw();
+
+      generalizedFrbRustBinding.dartFnDeliverOutput(
+        callId: callId,
+        ptr: output.ptr,
+        rustVecLen: output.rustVecLen,
+        dataLen: output.dataLen,
+      );
+    };
+  }
+
+  Future<void> Function(int, dynamic)
   encode_DartFn_Inputs_state_field_access_Output_String_AnyhowException(
     FutureOr<String> Function(StateFieldAccess) raw,
   ) {
@@ -685,6 +761,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   FutureOr<void> Function(String, int?)
   dco_decode_DartFn_Inputs_String_opt_box_autoadd_i_16_Output_unit_AnyhowException(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    throw UnimplementedError('');
+  }
+
+  @protected
+  FutureOr<String> Function(String?)
+  dco_decode_DartFn_Inputs_opt_String_Output_String_AnyhowException(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -1186,6 +1271,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_DartFn_Inputs_opt_String_Output_String_AnyhowException(
+    FutureOr<String> Function(String?) self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_DartOpaque(
+      encode_DartFn_Inputs_opt_String_Output_String_AnyhowException(self),
+      serializer,
+    );
+  }
+
+  @protected
   void
   sse_encode_DartFn_Inputs_state_field_access_Output_String_AnyhowException(
     FutureOr<String> Function(StateFieldAccess) self,
@@ -1469,5 +1566,12 @@ class PluginCallbackImpl extends RustOpaque implements PluginCallback {
   }) => RustLib.instance.api.crateApiPluginPluginCallbackChangeStateFieldAccess(
     that: this,
     stateFieldAccess: stateFieldAccess,
+  );
+
+  void changeTableAccess({
+    required FutureOr<String> Function(String?) tableAccess,
+  }) => RustLib.instance.api.crateApiPluginPluginCallbackChangeTableAccess(
+    that: this,
+    tableAccess: tableAccess,
   );
 }

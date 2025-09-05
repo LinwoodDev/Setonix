@@ -7,6 +7,68 @@
 
 part of 'kick.dart';
 
+class KickReasonMapper extends EnumMapper<KickReason> {
+  KickReasonMapper._();
+
+  static KickReasonMapper? _instance;
+  static KickReasonMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = KickReasonMapper._());
+    }
+    return _instance!;
+  }
+
+  static KickReason fromValue(dynamic value) {
+    ensureInitialized();
+    return MapperContainer.globals.fromValue(value);
+  }
+
+  @override
+  KickReason decode(dynamic value) {
+    switch (value) {
+      case r'kick':
+        return KickReason.kick;
+      case r'ban':
+        return KickReason.ban;
+      case r'notWhitelisted':
+        return KickReason.notWhitelisted;
+      case r'notRegistered':
+        return KickReason.notRegistered;
+      case r'challengeFailed':
+        return KickReason.challengeFailed;
+      case r'pleaseLink':
+        return KickReason.pleaseLink;
+      default:
+        throw MapperException.unknownEnumValue(value);
+    }
+  }
+
+  @override
+  dynamic encode(KickReason self) {
+    switch (self) {
+      case KickReason.kick:
+        return r'kick';
+      case KickReason.ban:
+        return r'ban';
+      case KickReason.notWhitelisted:
+        return r'notWhitelisted';
+      case KickReason.notRegistered:
+        return r'notRegistered';
+      case KickReason.challengeFailed:
+        return r'challengeFailed';
+      case KickReason.pleaseLink:
+        return r'pleaseLink';
+    }
+  }
+}
+
+extension KickReasonMapperExtension on KickReason {
+  String toValue() {
+    KickReasonMapper.ensureInitialized();
+    return MapperContainer.globals.toValue<KickReason>(this) as String;
+  }
+}
+
 class KickMessageMapper extends ClassMapperBase<KickMessage> {
   KickMessageMapper._();
 
@@ -14,6 +76,7 @@ class KickMessageMapper extends ClassMapperBase<KickMessage> {
   static KickMessageMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = KickMessageMapper._());
+      KickReasonMapper.ensureInitialized();
     }
     return _instance!;
   }

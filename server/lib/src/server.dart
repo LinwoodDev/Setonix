@@ -217,6 +217,7 @@ final class SetonixServer {
       'whitelist': WhitelistProgram(this),
       null: UnknownProgram(),
     });
+    await defaultWorld.init();
   }
 
   void _onClientEvent(

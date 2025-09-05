@@ -6,6 +6,7 @@ doc/
 # Runtime files
 world.stnx
 packs/
+scripts/
 setonix.db
 config.json
 

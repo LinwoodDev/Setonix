@@ -37,6 +37,11 @@ class _WorldServerInterfaceImpl implements ServerInterface {
   }
 
   @override
+  void print(String message, [String? plugin]) {
+    // TODO: implement better logging
+  }
+
+  @override
   WorldState get state => bloc.state.world;
 
   @override

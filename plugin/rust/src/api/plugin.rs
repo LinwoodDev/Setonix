@@ -13,8 +13,8 @@ pub type DartCallback2<T, U> = Arc<dyn Fn(T, U) -> DartFnFuture<()> + Send + Syn
 
 #[derive(strum::Display, strum::EnumIter, Clone, Copy)]
 pub enum StateFieldAccess {
-    Table,
     TableName,
+    Tables,
     Info,
     Players,
     TeamMembers,
@@ -26,6 +26,7 @@ pub struct PluginCallback {
     pub(crate) process_event: DartCallback2<String, Option<bool>>,
     pub(crate) send_event: DartCallback2<String, Option<Channel>>,
     pub(crate) state_field_access: Arc<dyn Fn(StateFieldAccess) -> DartFnFuture<String> + Send + Sync>,
+    pub(crate) table_access: Arc<dyn Fn(Option<String>) -> DartFnFuture<String> + Send + Sync>,
 }
 
 impl Default for PluginCallback {
@@ -40,6 +41,7 @@ impl Default for PluginCallback {
             process_event: Arc::new(|_, _| Box::pin(async {})),
             send_event: Arc::new(|_, _| Box::pin(async {})),
             state_field_access: Arc::new(|_| Box::pin(async { "".to_string() })),
+            table_access: Arc::new(|_| Box::pin(async { "".to_string() })),
         }
     }
 }
@@ -62,6 +64,11 @@ impl PluginCallback {
     #[frb(sync)]
     pub fn change_state_field_access(&mut self, state_field_access: impl Fn(StateFieldAccess) -> DartFnFuture<String> + 'static + Send + Sync) {
         self.state_field_access = Arc::new(Box::new(state_field_access)); // or sth like that
+    }
+
+    #[frb(sync)]
+    pub fn change_table_access(&mut self, table_access: impl Fn(Option<String>) -> DartFnFuture<String> + 'static + Send + Sync) {
+        self.table_access = Arc::new(Box::new(table_access)); // or sth like that
     }
 }
 

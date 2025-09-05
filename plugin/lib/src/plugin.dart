@@ -22,6 +22,8 @@ mixin ServerInterface {
     required String plugin,
   });
 
+  void print(String message, [String? plugin]);
+
   WorldState get state;
   List<int> get players;
 }
@@ -32,16 +34,16 @@ final class PluginSystem {
 
   PluginSystem({required this.server});
 
-  SetonixPlugin registerPlugin(
+  Future<SetonixPlugin> registerPlugin(
     String name,
-    SetonixPlugin Function(PluginServerInterface) pluginBuilder,
-  ) {
+    FutureOr<SetonixPlugin> Function(PluginServerInterface) pluginBuilder,
+  ) async {
     final pluginServer = _PluginServerInterfaceImpl(server, name);
-    final plugin = pluginBuilder(pluginServer);
+    final plugin = await pluginBuilder(pluginServer);
     return _plugins[name] = plugin;
   }
 
-  SetonixPlugin registerLuauPlugin(
+  Future<SetonixPlugin> registerLuauPlugin(
     String name,
     String code, {
     void Function(String)? onPrint,
@@ -52,6 +54,7 @@ final class PluginSystem {
       (pluginServer) => RustSetonixPlugin.build(
         (c) => LuauPlugin(code: code, callback: c),
         pluginServer,
+        onPrint: (e) => server.print(e, name),
       ),
     );
   }
@@ -83,7 +86,7 @@ final class PluginSystem {
         .getPack(location.namespace)
         ?.getScript(location.id);
     if (data == null) return;
-    registerLuauPlugin(name, data);
+    registerLuauPlugin(name, data, onPrint: (e) => server.print(e, name));
   }
 
   bool get _nativeEnabled => RustLib.instance.initialized;
@@ -167,14 +170,12 @@ final class RustSetonixPlugin extends SetonixPlugin {
 
   RustSetonixPlugin._(super.server, this.plugin);
 
-  factory RustSetonixPlugin.build(
+  static Future<RustSetonixPlugin> build(
     RustPlugin Function(PluginCallback) builder,
     PluginServerInterface server, {
     void Function(String)? onPrint,
-  }) {
+  }) async {
     final callback = PluginCallback.default_();
-    final plugin = builder(callback);
-    final instance = RustSetonixPlugin._(server, plugin);
     if (onPrint != null) {
       callback.changeOnPrint(onPrint: onPrint);
     }
@@ -195,13 +196,17 @@ final class RustSetonixPlugin extends SetonixPlugin {
         final state = server.state;
         return switch (field) {
           StateFieldAccess.info => state.info.toJson(),
-          StateFieldAccess.table => state.table.toJson(),
+          StateFieldAccess.tables => jsonEncode(
+            state.data.getTables().toList(),
+          ),
           StateFieldAccess.tableName => jsonEncode(state.tableName),
           StateFieldAccess.players => jsonEncode(server.players),
           StateFieldAccess.teamMembers => jsonEncode(state.teamMembers),
         };
       },
     );
+    final plugin = builder(callback);
+    final instance = RustSetonixPlugin._(server, plugin);
     instance.eventSystem.on<WorldEvent>((e) {
       instance.plugin.runEvent(
         eventType: e.clientEvent.runtimeType.toString(),
@@ -211,6 +216,7 @@ final class RustSetonixPlugin extends SetonixPlugin {
         source: e.source,
       );
     });
+    await instance.plugin.run();
     return instance;
   }
 

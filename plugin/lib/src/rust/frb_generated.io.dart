@@ -72,6 +72,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  FutureOr<String> Function(String?)
+  dco_decode_DartFn_Inputs_opt_String_Output_String_AnyhowException(
+    dynamic raw,
+  );
+
+  @protected
   FutureOr<String> Function(StateFieldAccess)
   dco_decode_DartFn_Inputs_state_field_access_Output_String_AnyhowException(
     dynamic raw,
@@ -302,6 +308,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void
   sse_encode_DartFn_Inputs_String_opt_box_autoadd_i_16_Output_unit_AnyhowException(
     FutureOr<void> Function(String, int?) self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_DartFn_Inputs_opt_String_Output_String_AnyhowException(
+    FutureOr<String> Function(String?) self,
     SseSerializer serializer,
   );
 
