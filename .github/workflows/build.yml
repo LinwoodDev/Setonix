@@ -21,7 +21,7 @@ jobs:
       - name: ⬆️ Checkout
         uses: actions/checkout@v5
       - name: 🔧 Setup java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: "17"
           distribution: "temurin"
@@ -56,16 +56,31 @@ jobs:
         run: |
           flutter build apk -v --release --flavor nightly --dart-define=flavor=nightly
           cp build/app/outputs/flutter-apk/app-nightly-release.apk linwood-setonix-android.apk
+      - name: 🏭 Build nightly (legacy packaging)
+        if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.release.prerelease) }}
+        run: |
+          USE_LEGACY_PACKAGING=true flutter build apk -v --release --flavor nightly --dart-define=flavor=nightly
+          cp build/app/outputs/flutter-apk/app-nightly-release.apk linwood-setonix-android-legacy.apk
       - name: 🏭 Build production
         if: ${{ github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease) }}
         run: |
           flutter build apk -v --release --flavor production
           cp build/app/outputs/flutter-apk/app-production-release.apk linwood-setonix-android.apk
+      - name: 🏭 Build production (legacy packaging)
+        if: ${{ github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease) }}
+        run: |
+          USE_LEGACY_PACKAGING=true flutter build apk -v --release --flavor production
+          cp build/app/outputs/flutter-apk/app-production-release.apk linwood-setonix-android-legacy.apk
       - name: Archive
         uses: actions/upload-artifact@v4
         with:
           name: apk-build
           path: app/linwood-setonix-android.apk
+      - name: Archive (legacy)
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk-build-legacy
+          path: app/linwood-setonix-android-legacy.apk
       - name: 🏭 Build architecture nightly
         if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.release.prerelease) }}
         run: |
@@ -73,6 +88,13 @@ jobs:
           cp build/app/outputs/flutter-apk/app-armeabi-v7a-nightly-release.apk linwood-setonix-android-arm.apk
           cp build/app/outputs/flutter-apk/app-arm64-v8a-nightly-release.apk linwood-setonix-android-arm64.apk
           cp build/app/outputs/flutter-apk/app-x86_64-nightly-release.apk linwood-setonix-android-x86_64.apk
+      - name: 🏭 Build architecture nightly (legacy packaging)
+        if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.release.prerelease) }}
+        run: |
+          USE_LEGACY_PACKAGING=true flutter build apk -v --release --target-platform android-arm,android-arm64,android-x64 --split-per-abi --flavor nightly --dart-define=flavor=nightly
+          cp build/app/outputs/flutter-apk/app-armeabi-v7a-nightly-release.apk linwood-setonix-android-arm-legacy.apk
+          cp build/app/outputs/flutter-apk/app-arm64-v8a-nightly-release.apk linwood-setonix-android-arm64-legacy.apk
+          cp build/app/outputs/flutter-apk/app-x86_64-nightly-release.apk linwood-setonix-android-x86_64-legacy.apk
       - name: 🏭 Build architecture production
         if: ${{ github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease) }}
         run: |
@@ -80,6 +102,13 @@ jobs:
           cp build/app/outputs/flutter-apk/app-armeabi-v7a-production-release.apk linwood-setonix-android-arm.apk
           cp build/app/outputs/flutter-apk/app-arm64-v8a-production-release.apk linwood-setonix-android-arm64.apk
           cp build/app/outputs/flutter-apk/app-x86_64-production-release.apk linwood-setonix-android-x86_64.apk
+      - name: 🏭 Build architecture production (legacy packaging)
+        if: ${{ github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease) }}
+        run: |
+          USE_LEGACY_PACKAGING=true flutter build apk -v --release --target-platform android-arm,android-arm64,android-x64 --split-per-abi --flavor production
+          cp build/app/outputs/flutter-apk/app-armeabi-v7a-production-release.apk linwood-setonix-android-arm-legacy.apk
+          cp build/app/outputs/flutter-apk/app-arm64-v8a-production-release.apk linwood-setonix-android-arm64-legacy.apk
+          cp build/app/outputs/flutter-apk/app-x86_64-production-release.apk linwood-setonix-android-x86_64-legacy.apk
       - name: Archive
         uses: actions/upload-artifact@v4
         with:
@@ -104,6 +133,21 @@ jobs:
         with:
           name: corepack
           path: core.stnx
+      - name: Archive (legacy arm)
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk-arm-build-legacy
+          path: app/linwood-setonix-android-arm-legacy.apk
+      - name: Archive (legacy arm64)
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk-arm64-build-legacy
+          path: app/linwood-setonix-android-arm64-legacy.apk
+      - name: Archive (legacy x86_64)
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk-x86_64-build-legacy
+          path: app/linwood-setonix-android-x86_64-legacy.apk
   build-windows:
     runs-on: windows-2025
     defaults:
@@ -398,9 +442,9 @@ jobs:
       - uses: subosito/flutter-action@v2.21.0
         with:
           flutter-version-file: app/pubspec.yaml
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
-          python-version: "3.12"
+          python-version: "3.13"
       - name: ✅ Enable platforms
         run: flutter config --enable-macos-desktop
       - name: 📦 Get dependencies
@@ -422,7 +466,7 @@ jobs:
         working-directory: app/build/macos/Build/Products/Release
         run: zip --symlinks -qr linwood-setonix-macos.zip setonix.app
       - name: Setup node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 24
       - name: Install appdmg
@@ -559,6 +603,43 @@ jobs:
         with:
           name: server-build-${{ matrix.os.label }}
           path: server/server-build
+  # build-docker:
+  #   runs-on: ubuntu-24.04
+  #   if: github.event_name != 'pull_request'
+  #   steps:
+  #     - name: ⬆️ Checkout
+  #       uses: actions/checkout@v5
+  #     - name: Set Docker tag
+  #       id: docker_tag
+  #       run: |
+  #         if [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
+  #           echo "tag=latest" >> $GITHUB_ENV
+  #         elif [[ "${GITHUB_REF}" == "refs/heads/develop" ]]; then
+  #           echo "tag=dev" >> $GITHUB_ENV
+  #         elif [[ "${GITHUB_REF}" == refs/tags/v* || "${GITHUB_REF}" == "refs/tags/stable" || "${GITHUB_REF}" == "refs/tags/nightly" ]]; then
+  #           echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+  #         else
+  #           echo "tag=unknown" >> $GITHUB_ENV
+  #         fi
+  #     - name: Log Docker tag
+  #       run: echo "Docker tag is ${{ env.tag }}"
+  #     - name: Login to Docker Hub
+  #       uses: docker/login-action@v3
+  #       with:
+  #         username: ${{ secrets.DOCKERHUB_USERNAME }}
+  #         password: ${{ secrets.DOCKERHUB_TOKEN }}
+  #     - name: Set up QEMU
+  #       uses: docker/setup-qemu-action@v3
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v3
+  #     - name: Build and push Docker image
+  #       uses: docker/build-push-action@v6
+  #       if: ${{ env.tag != 'unknown' }}
+  #       with:
+  #         context: .
+  #         file: ./Dockerfile
+  #         push: true
+  #         tags: linwooddev/setonix:${{ env.tag }}
   deploy:
     runs-on: ubuntu-24.04
     if: github.event_name != 'pull_request'
@@ -604,6 +685,18 @@ jobs:
       - uses: actions/download-artifact@v5
         with:
           name: apk-x86_64-build
+      - uses: actions/download-artifact@v5
+        with:
+          name: apk-build-legacy
+      - uses: actions/download-artifact@v5
+        with:
+          name: apk-arm-build-legacy
+      - uses: actions/download-artifact@v5
+        with:
+          name: apk-arm64-build-legacy
+      - uses: actions/download-artifact@v5
+        with:
+          name: apk-x86_64-build-legacy
       - uses: actions/download-artifact@v5
         with:
           name: windows-build
@@ -737,6 +830,10 @@ jobs:
             linwood-setonix-android-arm.apk
             linwood-setonix-android-arm64.apk
             linwood-setonix-android-x86_64.apk
+            linwood-setonix-android-legacy.apk
+            linwood-setonix-android-arm-legacy.apk
+            linwood-setonix-android-arm64-legacy.apk
+            linwood-setonix-android-x86_64-legacy.apk
             linwood-setonix-ios.ipa
             checksums.txt
         env:
@@ -773,6 +870,10 @@ jobs:
             linwood-setonix-android-arm.apk
             linwood-setonix-android-arm64.apk
             linwood-setonix-android-x86_64.apk
+            linwood-setonix-android-legacy.apk
+            linwood-setonix-android-arm-legacy.apk
+            linwood-setonix-android-arm64-legacy.apk
+            linwood-setonix-android-x86_64-legacy.apk
             linwood-setonix-ios.ipa
             checksums.txt
         env:
@@ -807,6 +908,10 @@ jobs:
             linwood-setonix-android-arm.apk
             linwood-setonix-android-arm64.apk
             linwood-setonix-android-x86_64.apk
+            linwood-setonix-android-legacy.apk
+            linwood-setonix-android-arm-legacy.apk
+            linwood-setonix-android-arm64-legacy.apk
+            linwood-setonix-android-x86_64-legacy.apk
             linwood-setonix-ios.ipa
             checksums.txt
         env:
@@ -840,7 +945,7 @@ jobs:
           if [[ -n "$KEY_JKS" ]] ; then echo "$KEY_JKS" | base64 --decode > key.jks  ; fi
           echo "$PLAY_STORE_CREDENTIALS" | base64 --decode > play-store-credentials.json
       - name: 🔧 Setup java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: "17"
           distribution: "temurin"
@@ -861,7 +966,7 @@ jobs:
       - name: Setup Fastlane
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.4.5"
+          ruby-version: "3.4.6"
           bundler-cache: true
           working-directory: app/android
       - name: 🚀 Deploy to Play Store
