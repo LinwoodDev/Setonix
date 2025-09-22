@@ -8,9 +8,9 @@ part 'info.mapper.dart';
 class GameInfo with GameInfoMappable {
   final Map<String, GameTeam> teams;
   final List<String> packs;
-  final ItemLocation? script;
+  final ItemLocation? gameMode;
 
-  const GameInfo({this.teams = const {}, this.packs = const [], this.script});
+  const GameInfo({this.teams = const {}, this.packs = const [], this.gameMode});
 }
 
 @MappableEnum()

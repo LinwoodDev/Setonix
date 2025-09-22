@@ -119,7 +119,7 @@ class GameInfoMapper extends ClassMapperBase<GameInfo> {
     opt: true,
     def: const [],
   );
-  static ItemLocation? _$script(GameInfo v) => v.script;
+  static ItemLocation? _$script(GameInfo v) => v.gameMode;
   static const Field<GameInfo, ItemLocation> _f$script = Field(
     'script',
     _$script,
@@ -137,7 +137,7 @@ class GameInfoMapper extends ClassMapperBase<GameInfo> {
     return GameInfo(
       teams: data.dec(_f$teams),
       packs: data.dec(_f$packs),
-      script: data.dec(_f$script),
+      gameMode: data.dec(_f$script),
     );
   }
 
@@ -234,7 +234,7 @@ class _GameInfoCopyWithImpl<$R, $Out>
       );
   @override
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get script =>
-      $value.script?.copyWith.$chain((v) => call(script: v));
+      $value.gameMode?.copyWith.$chain((v) => call(script: v));
   @override
   $R call({
     Map<String, GameTeam>? teams,
@@ -251,7 +251,7 @@ class _GameInfoCopyWithImpl<$R, $Out>
   GameInfo $make(CopyWithData data) => GameInfo(
     teams: data.get(#teams, or: $value.teams),
     packs: data.get(#packs, or: $value.packs),
-    script: data.get(#script, or: $value.script),
+    gameMode: data.get(#script, or: $value.gameMode),
   );
 
   @override

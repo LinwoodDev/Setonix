@@ -10,7 +10,9 @@ class ConfigManager {
   SetonixConfig _argsConfig = SetonixConfig();
 
   ConfigManager({SetonixConfig? argsConfig, SetonixConfig? envConfig})
-    : _envConfig = envConfig ?? SetonixConfig.fromEnvironment();
+    : _envConfig = (envConfig ?? SetonixConfig.fromEnvironment()).merge(
+        argsConfig ?? SetonixConfig(),
+      );
 
   SetonixConfig _mergeConfig() {
     return _config.merge(_envConfig).merge(_argsConfig);

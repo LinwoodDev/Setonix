@@ -38,17 +38,19 @@ class SetonixData extends ArchiveData<SetonixData> {
     : identifier = identifier ?? createPackIdentifier(data),
       super.fromBytes();
 
-  factory SetonixData.fromMode(ItemLocation? location, GameMode? mode) {
+  factory SetonixData.fromMode(
+    PackItem<GameMode>? mode, {
+    Set<String> packs = const {},
+  }) {
+    if (mode == null) return SetonixData.empty();
     var data = SetonixData.empty().setInfo(
       GameInfo(
-        packs: [?location?.namespace],
-        script: location,
-        teams: mode?.teams ?? const {},
+        packs: {...packs, mode.namespace}.toList(),
+        gameMode: mode.location,
+        teams: mode.item.teams,
       ),
     );
-    for (final entry
-        in mode?.tables.entries ??
-            Iterable<MapEntry<String, GameTable>>.empty()) {
+    for (final entry in mode.item.tables.entries) {
       data = data.setTable(entry.value, entry.key);
     }
     return data;
@@ -413,6 +415,6 @@ final class PackItem<T> {
   String get namespace => location.namespace;
   String get id => location.id;
 
-  PackItem<E> withItem<E>(E backgroundTranslation) =>
-      PackItem(pack: pack, location: location, item: backgroundTranslation);
+  PackItem<E> withItem<E>(E item) =>
+      PackItem(pack: pack, location: location, item: item);
 }

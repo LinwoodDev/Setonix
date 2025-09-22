@@ -159,7 +159,8 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
       );
     });
     if (!state.multiplayer.isClient) {
-      _loadScript(state.world.info.script);
+      final mode = state.world.info.gameMode;
+      if (mode != null) _loadGameMode(mode);
     }
   }
 
@@ -227,10 +228,20 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
     }
   }
 
-  Future<void> _loadScript(ItemLocation? location) async {
+  Future<void> _loadGameMode(ItemLocation? location) async {
     try {
       if (location == null) return;
-      pluginSystem.loadLuaPluginFromLocation(state.assetManager, location);
+      final gameMode = state.assetManager
+          .getPack(location.namespace)
+          ?.getMode(location.id);
+      if (gameMode == null) return;
+      final script = gameMode.script;
+      if (script != null && script.isNotEmpty) {
+        pluginSystem.loadLuaPluginFromLocation(
+          state.assetManager,
+          ItemLocation(location.namespace, script),
+        );
+      }
       // ignore: empty_catches
     } catch (e) {}
   }

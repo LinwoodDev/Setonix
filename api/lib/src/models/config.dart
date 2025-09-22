@@ -152,5 +152,6 @@ final class SetonixConfig with SetonixConfigMappable {
     whitelistEnabled: other.whitelistEnabled ?? whitelistEnabled,
     apiEndpoint: other.apiEndpoint ?? apiEndpoint,
     endpointSecret: other.endpointSecret ?? endpointSecret,
+    gameMode: other.gameMode ?? gameMode,
   );
 }

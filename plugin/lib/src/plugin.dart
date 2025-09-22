@@ -38,16 +38,13 @@ final class PluginSystem {
     String name,
     FutureOr<SetonixPlugin> Function(PluginServerInterface) pluginBuilder,
   ) async {
+    unregisterPlugin(name);
     final pluginServer = _PluginServerInterfaceImpl(server, name);
     final plugin = await pluginBuilder(pluginServer);
     return _plugins[name] = plugin;
   }
 
-  Future<SetonixPlugin> registerLuauPlugin(
-    String name,
-    String code, {
-    void Function(String)? onPrint,
-  }) {
+  Future<SetonixPlugin> registerLuauPlugin(String name, String code) {
     if (!_nativeEnabled) throw Exception('Native not enabled');
     return registerPlugin(
       name,
@@ -72,28 +69,20 @@ final class PluginSystem {
         .getPack(location.namespace)
         ?.getScript(location.id);
     if (data == null) return;
-    loadLuaPlugin(assetManager, data, name);
-  }
-
-  void loadLuaPlugin(
-    AssetManager assetManager,
-    String script, [
-    String name = 'game',
-  ]) {
-    unregisterPlugin(name);
-    final location = ItemLocation.fromString(script);
-    final data = assetManager
-        .getPack(location.namespace)
-        ?.getScript(location.id);
-    if (data == null) return;
-    registerLuauPlugin(name, data, onPrint: (e) => server.print(e, name));
+    registerLuauPlugin(name, data);
   }
 
   bool get _nativeEnabled => RustLib.instance.initialized;
 
+  Iterable<String> get plugins => _plugins.keys;
+
   void dispose([bool disposeNative = true]) {
-    List<String>.from(_plugins.keys).forEach(unregisterPlugin);
+    unregisterAll();
     if (disposeNative) disposePluginSystem();
+  }
+
+  void unregisterAll() {
+    List<String>.from(_plugins.keys).forEach(unregisterPlugin);
   }
 
   void fire(Event event) {

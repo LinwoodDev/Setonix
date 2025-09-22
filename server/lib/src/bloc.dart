@@ -16,6 +16,8 @@ Future<ServerProcessed> _computeEvent(
   );
 }
 
+const scriptSuffix = '.lua';
+
 class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
     with ServerInterface {
   final SetonixServer server;
@@ -52,14 +54,14 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
       processed.responses.forEach(process);
       if (event is WorldInitialized) {
         server.log(
-          "World initialized${(event.info?.script != null) ? " with script ${event.info?.script}" : ""}",
+          "World initialized${(event.info?.gameMode != null) ? " with script ${event.info?.gameMode}" : ""}",
           level: LogLevel.info,
         );
         _serverPlugin = await _pluginSystem.registerPlugin(
           '',
           SetonixPlugin.new,
         );
-        await _loadScripts((newState ?? state).info.script);
+        await _loadScripts((newState ?? state).info.gameMode);
       }
       if (newState == null) return;
       emit(newState);
@@ -79,11 +81,19 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
     }
   }
 
-  Future<void> _loadScripts(ItemLocation? location) async {
+  Future<void> _loadGameMode(ItemLocation location) async {
+    final mode = assetManager.getPack(location.namespace)?.getMode(location.id);
+    if (mode == null) return;
+    final script = mode.script;
+    if (script == null) return;
+    final scriptLocation = ItemLocation.fromString(script, location.namespace);
+    pluginSystem.loadLuaPluginFromLocation(assetManager, scriptLocation);
+  }
+
+  Future<void> _loadScripts(ItemLocation? mode) async {
+    pluginSystem.unregisterAll();
     try {
-      if (location != null) {
-        pluginSystem.loadLuaPluginFromLocation(assetManager, location);
-      }
+      if (mode != null) await _loadGameMode(mode);
     } catch (e) {
       server.log('Error loading script: $e', level: LogLevel.error);
     }
@@ -94,7 +104,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
     }
     final scriptFiles = (await scriptsFolder.list().toList())
         .whereType<File>()
-        .where((file) => file.path.endsWith('.lua'));
+        .where((file) => file.path.endsWith(scriptSuffix));
     server.log(
       "Found ${scriptFiles.length} script file(s)",
       level: LogLevel.info,
@@ -102,8 +112,11 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
     for (final file in scriptFiles) {
       try {
         final code = await file.readAsString();
-        final relativePath = file.path.substring(scriptsFolder.path.length + 1);
-        pluginSystem.registerLuauPlugin(relativePath, code);
+        final relativePath = file.path.substring(
+          scriptsFolder.path.length + 1,
+          file.path.length - scriptSuffix.length,
+        );
+        await pluginSystem.registerLuauPlugin(relativePath, code);
       } catch (e) {
         server.log(
           'Error loading script from ${file.path}: $e',
@@ -114,7 +127,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
   }
 
   Future<void> init() async {
-    await _loadScripts(state.info.script);
+    await _loadScripts(state.info.gameMode);
   }
 
   Future<void> resetWorld([ItemLocation? mode]) async {
@@ -124,7 +137,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
 
   Future<void> save({bool force = false}) async {
     var file = File(
-      worldName == defaultWorldName ? 'world.stnx' : 'worlds/$worldName.stnx',
+      '${worldName == defaultWorldName ? SetonixServer.defaultWorldName : '${SetonixServer.worldDirectory}/$worldName'}${SetonixServer.worldSuffix}',
     );
     if (!await file.exists()) {
       await file.create(recursive: true);
