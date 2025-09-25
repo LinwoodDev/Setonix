@@ -279,5 +279,6 @@
   "pleaseLink": "Please link your account to the server using the provided link.",
   "singleplayer": "Singleplayer",
   "recentGames": "Recent games",
-  "noRecentGames": "There are no recent games available"
+  "noRecentGames": "There are no recent games available",
+  "copy": "Copy"
 }
