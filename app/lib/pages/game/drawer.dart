@@ -181,6 +181,59 @@ class GameDrawer extends StatelessWidget {
                 );
               },
             ),
+            AdvancedSwitchListTile(
+              title: Text(AppLocalizations.of(context).waypoints),
+              leading: const Icon(PhosphorIconsLight.mapPin),
+              value: false,
+              onChanged: (value) {},
+              onTap: () {
+                final bloc = context.read<WorldBloc>();
+                final state = bloc.state;
+                Widget buildWaypointTile(Waypoint waypoint, {String? team}) =>
+                    ContextRegion(
+                      builder: (context, button, controller) => ListTile(
+                        title: Text(waypoint.name),
+                        leading: Icon(
+                          team != null
+                              ? PhosphorIconsLight.users
+                              : PhosphorIconsLight.mapPin,
+                        ),
+                        trailing: button,
+                      ),
+                      menuChildren: [
+                        MenuItemButton(
+                          leadingIcon: const Icon(PhosphorIconsLight.pencil),
+                          child: Text(AppLocalizations.of(context).edit),
+                          onPressed: () {},
+                        ),
+                        MenuItemButton(
+                          leadingIcon: const Icon(PhosphorIconsLight.trash),
+                          child: Text(AppLocalizations.of(context).delete),
+                          onPressed: () {
+                            bloc.add(
+                              WaypointRemoved(name: waypoint.name, team: team),
+                            );
+                          },
+                        ),
+                      ],
+                    );
+                showLeapBottomSheet(
+                  context: context,
+                  titleBuilder: (context) =>
+                      Text(AppLocalizations.of(context).waypoints),
+                  childrenBuilder: (context) => [
+                    ...state.world.getTeams().expand(
+                      (e) =>
+                          state.info.teams[e]?.waypoints.map(
+                            (waypoint) => buildWaypointTile(waypoint, team: e),
+                          ) ??
+                          <Widget>[],
+                    ),
+                    ...state.info.waypoints.map((e) => buildWaypointTile(e)),
+                  ],
+                );
+              },
+            ),
             BlocBuilder<SettingsCubit, SetonixSettings>(
               buildWhen: (previous, current) => previous.zoom != current.zoom,
               builder: (context, state) => ListTile(

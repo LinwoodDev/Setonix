@@ -1,6 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 
 import 'table.dart';
+import 'waypoint.dart';
 
 part 'info.mapper.dart';
 
@@ -9,8 +10,14 @@ class GameInfo with GameInfoMappable {
   final Map<String, GameTeam> teams;
   final List<String> packs;
   final ItemLocation? gameMode;
+  final List<Waypoint> waypoints;
 
-  const GameInfo({this.teams = const {}, this.packs = const [], this.gameMode});
+  const GameInfo({
+    this.teams = const {},
+    this.packs = const [],
+    this.gameMode,
+    this.waypoints = const [],
+  });
 }
 
 @MappableEnum()
@@ -33,6 +40,12 @@ class GameTeam with GameTeamMappable {
   final String description;
   final TeamColor? color;
   final Set<GlobalVectorDefinition> claimedCells;
+  final List<Waypoint> waypoints;
 
-  GameTeam({this.description = '', this.color, this.claimedCells = const {}});
+  GameTeam({
+    this.description = '',
+    this.color,
+    this.claimedCells = const {},
+    this.waypoints = const [],
+  });
 }

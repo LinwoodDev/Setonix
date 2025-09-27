@@ -4211,6 +4211,8 @@ class HybridWorldEventMapper extends SubClassMapperBase<HybridWorldEvent> {
       TableRemovedMapper.ensureInitialized();
       NoteChangedMapper.ensureInitialized();
       NoteRemovedMapper.ensureInitialized();
+      WaypointChangedMapper.ensureInitialized();
+      WaypointRemovedMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -6161,6 +6163,304 @@ class _NoteRemovedCopyWithImpl<$R, $Out>
   NoteRemovedCopyWith<$R2, NoteRemoved, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   ) => _NoteRemovedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+class WaypointChangedMapper extends SubClassMapperBase<WaypointChanged> {
+  WaypointChangedMapper._();
+
+  static WaypointChangedMapper? _instance;
+  static WaypointChangedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = WaypointChangedMapper._());
+      HybridWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      WaypointMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'WaypointChanged';
+
+  static String? _$team(WaypointChanged v) => v.team;
+  static const Field<WaypointChanged, String> _f$team = Field(
+    'team',
+    _$team,
+    opt: true,
+  );
+  static Waypoint _$waypoint(WaypointChanged v) => v.waypoint;
+  static const Field<WaypointChanged, Waypoint> _f$waypoint = Field(
+    'waypoint',
+    _$waypoint,
+  );
+  static String? _$name(WaypointChanged v) => v.name;
+  static const Field<WaypointChanged, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
+
+  @override
+  final MappableFields<WaypointChanged> fields = const {
+    #team: _f$team,
+    #waypoint: _f$waypoint,
+    #name: _f$name,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'WaypointChanged';
+  @override
+  late final ClassMapperBase superMapper =
+      HybridWorldEventMapper.ensureInitialized();
+
+  static WaypointChanged _instantiate(DecodingData data) {
+    return WaypointChanged(
+      team: data.dec(_f$team),
+      waypoint: data.dec(_f$waypoint),
+      name: data.dec(_f$name),
+    );
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static WaypointChanged fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<WaypointChanged>(map);
+  }
+
+  static WaypointChanged fromJson(String json) {
+    return ensureInitialized().decodeJson<WaypointChanged>(json);
+  }
+}
+
+mixin WaypointChangedMappable {
+  String toJson() {
+    return WaypointChangedMapper.ensureInitialized()
+        .encodeJson<WaypointChanged>(this as WaypointChanged);
+  }
+
+  Map<String, dynamic> toMap() {
+    return WaypointChangedMapper.ensureInitialized().encodeMap<WaypointChanged>(
+      this as WaypointChanged,
+    );
+  }
+
+  WaypointChangedCopyWith<WaypointChanged, WaypointChanged, WaypointChanged>
+  get copyWith =>
+      _WaypointChangedCopyWithImpl<WaypointChanged, WaypointChanged>(
+        this as WaypointChanged,
+        $identity,
+        $identity,
+      );
+  @override
+  String toString() {
+    return WaypointChangedMapper.ensureInitialized().stringifyValue(
+      this as WaypointChanged,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return WaypointChangedMapper.ensureInitialized().equalsValue(
+      this as WaypointChanged,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return WaypointChangedMapper.ensureInitialized().hashValue(
+      this as WaypointChanged,
+    );
+  }
+}
+
+extension WaypointChangedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, WaypointChanged, $Out> {
+  WaypointChangedCopyWith<$R, WaypointChanged, $Out> get $asWaypointChanged =>
+      $base.as((v, t, t2) => _WaypointChangedCopyWithImpl<$R, $Out>(v, t, t2));
+}
+
+abstract class WaypointChangedCopyWith<$R, $In extends WaypointChanged, $Out>
+    implements HybridWorldEventCopyWith<$R, $In, $Out> {
+  WaypointCopyWith<$R, Waypoint, Waypoint> get waypoint;
+  @override
+  $R call({String? team, Waypoint? waypoint, String? name});
+  WaypointChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class _WaypointChangedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, WaypointChanged, $Out>
+    implements WaypointChangedCopyWith<$R, WaypointChanged, $Out> {
+  _WaypointChangedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<WaypointChanged> $mapper =
+      WaypointChangedMapper.ensureInitialized();
+  @override
+  WaypointCopyWith<$R, Waypoint, Waypoint> get waypoint =>
+      $value.waypoint.copyWith.$chain((v) => call(waypoint: v));
+  @override
+  $R call({Object? team = $none, Waypoint? waypoint, Object? name = $none}) =>
+      $apply(
+        FieldCopyWithData({
+          if (team != $none) #team: team,
+          if (waypoint != null) #waypoint: waypoint,
+          if (name != $none) #name: name,
+        }),
+      );
+  @override
+  WaypointChanged $make(CopyWithData data) => WaypointChanged(
+    team: data.get(#team, or: $value.team),
+    waypoint: data.get(#waypoint, or: $value.waypoint),
+    name: data.get(#name, or: $value.name),
+  );
+
+  @override
+  WaypointChangedCopyWith<$R2, WaypointChanged, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _WaypointChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+class WaypointRemovedMapper extends SubClassMapperBase<WaypointRemoved> {
+  WaypointRemovedMapper._();
+
+  static WaypointRemovedMapper? _instance;
+  static WaypointRemovedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = WaypointRemovedMapper._());
+      HybridWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'WaypointRemoved';
+
+  static String? _$team(WaypointRemoved v) => v.team;
+  static const Field<WaypointRemoved, String> _f$team = Field(
+    'team',
+    _$team,
+    opt: true,
+  );
+  static String _$name(WaypointRemoved v) => v.name;
+  static const Field<WaypointRemoved, String> _f$name = Field('name', _$name);
+
+  @override
+  final MappableFields<WaypointRemoved> fields = const {
+    #team: _f$team,
+    #name: _f$name,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'WaypointRemoved';
+  @override
+  late final ClassMapperBase superMapper =
+      HybridWorldEventMapper.ensureInitialized();
+
+  static WaypointRemoved _instantiate(DecodingData data) {
+    return WaypointRemoved(team: data.dec(_f$team), name: data.dec(_f$name));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static WaypointRemoved fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<WaypointRemoved>(map);
+  }
+
+  static WaypointRemoved fromJson(String json) {
+    return ensureInitialized().decodeJson<WaypointRemoved>(json);
+  }
+}
+
+mixin WaypointRemovedMappable {
+  String toJson() {
+    return WaypointRemovedMapper.ensureInitialized()
+        .encodeJson<WaypointRemoved>(this as WaypointRemoved);
+  }
+
+  Map<String, dynamic> toMap() {
+    return WaypointRemovedMapper.ensureInitialized().encodeMap<WaypointRemoved>(
+      this as WaypointRemoved,
+    );
+  }
+
+  WaypointRemovedCopyWith<WaypointRemoved, WaypointRemoved, WaypointRemoved>
+  get copyWith =>
+      _WaypointRemovedCopyWithImpl<WaypointRemoved, WaypointRemoved>(
+        this as WaypointRemoved,
+        $identity,
+        $identity,
+      );
+  @override
+  String toString() {
+    return WaypointRemovedMapper.ensureInitialized().stringifyValue(
+      this as WaypointRemoved,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return WaypointRemovedMapper.ensureInitialized().equalsValue(
+      this as WaypointRemoved,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return WaypointRemovedMapper.ensureInitialized().hashValue(
+      this as WaypointRemoved,
+    );
+  }
+}
+
+extension WaypointRemovedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, WaypointRemoved, $Out> {
+  WaypointRemovedCopyWith<$R, WaypointRemoved, $Out> get $asWaypointRemoved =>
+      $base.as((v, t, t2) => _WaypointRemovedCopyWithImpl<$R, $Out>(v, t, t2));
+}
+
+abstract class WaypointRemovedCopyWith<$R, $In extends WaypointRemoved, $Out>
+    implements HybridWorldEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({String? team, String? name});
+  WaypointRemovedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class _WaypointRemovedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, WaypointRemoved, $Out>
+    implements WaypointRemovedCopyWith<$R, WaypointRemoved, $Out> {
+  _WaypointRemovedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<WaypointRemoved> $mapper =
+      WaypointRemovedMapper.ensureInitialized();
+  @override
+  $R call({Object? team = $none, String? name}) => $apply(
+    FieldCopyWithData({
+      if (team != $none) #team: team,
+      if (name != null) #name: name,
+    }),
+  );
+  @override
+  WaypointRemoved $make(CopyWithData data) => WaypointRemoved(
+    team: data.get(#team, or: $value.team),
+    name: data.get(#name, or: $value.name),
+  );
+
+  @override
+  WaypointRemovedCopyWith<$R2, WaypointRemoved, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _WaypointRemovedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class LocalWorldEventMapper extends SubClassMapperBase<LocalWorldEvent> {

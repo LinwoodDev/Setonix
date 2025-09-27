@@ -224,3 +224,22 @@ final class NoteRemoved extends HybridWorldEvent with NoteRemovedMappable {
 
   NoteRemoved(this.name);
 }
+
+@MappableClass()
+final class WaypointChanged extends HybridWorldEvent
+    with WaypointChangedMappable {
+  final String? team;
+  final Waypoint waypoint;
+  final String? name;
+
+  WaypointChanged({this.team, required this.waypoint, this.name});
+}
+
+@MappableClass()
+final class WaypointRemoved extends HybridWorldEvent
+    with WaypointRemovedMappable {
+  final String? team;
+  final String name;
+
+  WaypointRemoved({this.team, required this.name});
+}

@@ -83,13 +83,6 @@ class GlobalVectorDefinition with GlobalVectorDefinitionMappable {
 }
 
 @MappableClass()
-class GameSeat with GameSeatMappable {
-  final int? color;
-
-  GameSeat({this.color});
-}
-
-@MappableClass()
 class TableCell with TableCellMappable {
   final List<GameObject> objects;
   final List<BoardTile> tiles;
