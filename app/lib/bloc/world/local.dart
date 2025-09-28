@@ -16,14 +16,6 @@ final class HandChanged extends LocalWorldEvent with HandChangedMappable {
 }
 
 @MappableClass()
-final class CellSwitched extends LocalWorldEvent with CellSwitchedMappable {
-  final VectorDefinition? cell;
-  final bool toggle;
-
-  CellSwitched(this.cell, {this.toggle = false});
-}
-
-@MappableClass()
 final class ColorSchemeChanged extends LocalWorldEvent
     with ColorSchemeChangedMappable {
   final ColorScheme? colorScheme;

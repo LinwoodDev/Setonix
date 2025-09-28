@@ -7,6 +7,7 @@ import 'package:flame/events.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:setonix/pages/game/waypoint.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:setonix/bloc/world/bloc.dart';
@@ -120,7 +121,7 @@ class GameCell extends PositionComponent
     if (isSelected) {
       bloc.process(HandChanged.hide());
     } else {
-      bloc.process(CellSwitched(toDefinition(), toggle: true));
+      bloc.process(CellSwitched(isSelected ? null : toDefinition()));
     }
   }
 
@@ -289,6 +290,21 @@ class GameCell extends PositionComponent
                 onPressed: () {
                   bloc.process(ObjectsRemoved(toGlobalDefinition(bloc.state)));
                   onClose();
+                },
+              ),
+              ContextMenuButtonItem(
+                label: AppLocalizations.of(context).addWaypoint,
+                onPressed: () {
+                  onClose();
+                  showDialog(
+                    context: context,
+                    builder: (context) => BlocProvider.value(
+                      value: bloc,
+                      child: WaypointDialog(
+                        position: toGlobalDefinition(bloc.state),
+                      ),
+                    ),
+                  );
                 },
               ),
               ContextMenuButtonItem(

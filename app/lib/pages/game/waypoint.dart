@@ -26,11 +26,12 @@ class WaypointDialog extends StatelessWidget {
     final bloc = context.read<WorldBloc>();
     return ResponsiveAlertDialog(
       title: Text(isCreated ? loc.addWaypoint : loc.editWaypoint),
+      constraints: const BoxConstraints(maxWidth: LeapBreakpoints.compact),
       content: ListView(
         shrinkWrap: true,
         children: [
           TextFormField(
-            decoration: InputDecoration(labelText: loc.name),
+            decoration: InputDecoration(labelText: loc.name, filled: true),
             initialValue: waypoint.name,
             onChanged: (value) {
               waypoint = waypoint.copyWith(name: value);
@@ -38,8 +39,9 @@ class WaypointDialog extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           DropdownMenu<String?>(
+            expandedInsets: EdgeInsets.symmetric(horizontal: 0, vertical: 12),
             dropdownMenuEntries: [
-              DropdownMenuEntry<String?>(value: null, label: loc.name),
+              DropdownMenuEntry<String?>(value: null, label: loc.public),
               ...bloc.state.world.getTeams().map(
                 (e) => DropdownMenuEntry<String?>(value: e, label: e),
               ),
@@ -66,6 +68,7 @@ class WaypointDialog extends StatelessWidget {
                 name: this.waypoint?.name,
               ),
             );
+            Navigator.of(context).pop();
           },
           child: Text(isCreated ? loc.add : loc.save),
         ),

@@ -87,6 +87,15 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
       })
       ..serverEvents.listen(_processEvent);
 
+    on<CellSwitched>((event, emit) {
+      emit(
+        state.copyWith(
+          selectedCell: event.selected ? event.cell : state.selectedCell,
+          selectedDeck: null,
+          showHand: true,
+        ),
+      );
+    });
     on<ServerWorldEvent>((event, emit) async {
       try {
         final signature = state.assetManager.createSignature();
@@ -118,17 +127,6 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
                   state.selectedCell != null),
           selectedDeck: event.deck,
           selectedCell: null,
-        ),
-      );
-    });
-    on<CellSwitched>((event, emit) {
-      emit(
-        state.copyWith(
-          selectedCell: event.toggle && state.selectedCell == event.cell
-              ? null
-              : event.cell,
-          selectedDeck: null,
-          showHand: true,
         ),
       );
     });

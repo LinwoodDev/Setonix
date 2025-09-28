@@ -34,7 +34,7 @@ final class WorldInitialized extends ServerWorldEvent
     clearUserInterface: true,
     info: state.info.copyWith(
       teams: mode?.item.teams ?? {},
-      script: mode?.location,
+      gameMode: mode?.location,
     ),
     table: mode?.item.tables[state.tableName] ?? GameTable(),
     teamMembers: const {},

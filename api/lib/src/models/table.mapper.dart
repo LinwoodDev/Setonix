@@ -603,18 +603,11 @@ class ItemLocationMapper extends ClassMapperBase<ItemLocation> {
   );
   static String _$id(ItemLocation v) => v.id;
   static const Field<ItemLocation, String> _f$id = Field('id', _$id);
-  static bool _$isEmpty(ItemLocation v) => v.isEmpty;
-  static const Field<ItemLocation, bool> _f$isEmpty = Field(
-    'isEmpty',
-    _$isEmpty,
-    mode: FieldMode.member,
-  );
 
   @override
   final MappableFields<ItemLocation> fields = const {
     #namespace: _f$namespace,
     #id: _f$id,
-    #isEmpty: _f$isEmpty,
   };
 
   @override

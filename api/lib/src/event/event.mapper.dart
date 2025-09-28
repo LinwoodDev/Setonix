@@ -4198,6 +4198,7 @@ class HybridWorldEventMapper extends SubClassMapperBase<HybridWorldEvent> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = HybridWorldEventMapper._());
       WorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      CellSwitchedMapper.ensureInitialized();
       BackgroundChangedMapper.ensureInitialized();
       ObjectsSpawnedMapper.ensureInitialized();
       ObjectsMovedMapper.ensureInitialized();
@@ -4267,6 +4268,165 @@ abstract class HybridWorldEventCopyWith<$R, $In extends HybridWorldEvent, $Out>
   HybridWorldEventCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
+}
+
+class CellSwitchedMapper extends SubClassMapperBase<CellSwitched> {
+  CellSwitchedMapper._();
+
+  static CellSwitchedMapper? _instance;
+  static CellSwitchedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = CellSwitchedMapper._());
+      HybridWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      VectorDefinitionMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'CellSwitched';
+
+  static VectorDefinition? _$cell(CellSwitched v) => v.cell;
+  static const Field<CellSwitched, VectorDefinition> _f$cell = Field(
+    'cell',
+    _$cell,
+  );
+  static bool _$selected(CellSwitched v) => v.selected;
+  static const Field<CellSwitched, bool> _f$selected = Field(
+    'selected',
+    _$selected,
+    opt: true,
+    def: true,
+  );
+  static bool _$teleport(CellSwitched v) => v.teleport;
+  static const Field<CellSwitched, bool> _f$teleport = Field(
+    'teleport',
+    _$teleport,
+    opt: true,
+    def: false,
+  );
+
+  @override
+  final MappableFields<CellSwitched> fields = const {
+    #cell: _f$cell,
+    #selected: _f$selected,
+    #teleport: _f$teleport,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'CellSwitched';
+  @override
+  late final ClassMapperBase superMapper =
+      HybridWorldEventMapper.ensureInitialized();
+
+  static CellSwitched _instantiate(DecodingData data) {
+    return CellSwitched(
+      data.dec(_f$cell),
+      selected: data.dec(_f$selected),
+      teleport: data.dec(_f$teleport),
+    );
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static CellSwitched fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<CellSwitched>(map);
+  }
+
+  static CellSwitched fromJson(String json) {
+    return ensureInitialized().decodeJson<CellSwitched>(json);
+  }
+}
+
+mixin CellSwitchedMappable {
+  String toJson() {
+    return CellSwitchedMapper.ensureInitialized().encodeJson<CellSwitched>(
+      this as CellSwitched,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return CellSwitchedMapper.ensureInitialized().encodeMap<CellSwitched>(
+      this as CellSwitched,
+    );
+  }
+
+  CellSwitchedCopyWith<CellSwitched, CellSwitched, CellSwitched> get copyWith =>
+      _CellSwitchedCopyWithImpl<CellSwitched, CellSwitched>(
+        this as CellSwitched,
+        $identity,
+        $identity,
+      );
+  @override
+  String toString() {
+    return CellSwitchedMapper.ensureInitialized().stringifyValue(
+      this as CellSwitched,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return CellSwitchedMapper.ensureInitialized().equalsValue(
+      this as CellSwitched,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return CellSwitchedMapper.ensureInitialized().hashValue(
+      this as CellSwitched,
+    );
+  }
+}
+
+extension CellSwitchedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, CellSwitched, $Out> {
+  CellSwitchedCopyWith<$R, CellSwitched, $Out> get $asCellSwitched =>
+      $base.as((v, t, t2) => _CellSwitchedCopyWithImpl<$R, $Out>(v, t, t2));
+}
+
+abstract class CellSwitchedCopyWith<$R, $In extends CellSwitched, $Out>
+    implements HybridWorldEventCopyWith<$R, $In, $Out> {
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>? get cell;
+  @override
+  $R call({VectorDefinition? cell, bool? selected, bool? teleport});
+  CellSwitchedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _CellSwitchedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, CellSwitched, $Out>
+    implements CellSwitchedCopyWith<$R, CellSwitched, $Out> {
+  _CellSwitchedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<CellSwitched> $mapper =
+      CellSwitchedMapper.ensureInitialized();
+  @override
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>? get cell =>
+      $value.cell?.copyWith.$chain((v) => call(cell: v));
+  @override
+  $R call({Object? cell = $none, bool? selected, bool? teleport}) => $apply(
+    FieldCopyWithData({
+      if (cell != $none) #cell: cell,
+      if (selected != null) #selected: selected,
+      if (teleport != null) #teleport: teleport,
+    }),
+  );
+  @override
+  CellSwitched $make(CopyWithData data) => CellSwitched(
+    data.get(#cell, or: $value.cell),
+    selected: data.get(#selected, or: $value.selected),
+    teleport: data.get(#teleport, or: $value.teleport),
+  );
+
+  @override
+  CellSwitchedCopyWith<$R2, CellSwitched, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _CellSwitchedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class BackgroundChangedMapper extends SubClassMapperBase<BackgroundChanged> {

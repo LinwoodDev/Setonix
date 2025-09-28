@@ -147,6 +147,12 @@ class _GamePageState extends State<GamePage> {
                     onReconnect: () async => (await _bloc)?.$1.reconnect(),
                   );
                 }
+                final game = BoardGame(
+                  bloc: context.read<WorldBloc>(),
+                  settingsCubit: context.read<SettingsCubit>(),
+                  contextMenuController: _contextMenuController,
+                  onEscape: () => Scaffold.of(context).openDrawer(),
+                );
                 return Scaffold(
                   appBar: WindowTitleBar<SettingsCubit, SetonixSettings>(
                     title: Text(AppLocalizations.of(context).game),
@@ -181,7 +187,7 @@ class _GamePageState extends State<GamePage> {
                       ),
                     ],
                   ),
-                  drawer: const GameDrawer(),
+                  drawer: GameDrawer(game: game),
                   endDrawer: BlocBuilder<WorldBloc, ClientWorldState>(
                     buildWhen: (previous, current) =>
                         previous.drawerView != current.drawerView,
@@ -258,13 +264,7 @@ class _GamePageState extends State<GamePage> {
                               )
                             else
                               GameWidget(
-                                game: BoardGame(
-                                  bloc: context.read<WorldBloc>(),
-                                  settingsCubit: context.read<SettingsCubit>(),
-                                  contextMenuController: _contextMenuController,
-                                  onEscape: () =>
-                                      Scaffold.of(context).openDrawer(),
-                                ),
+                                game: game,
                                 focusNode: _focusNode,
                                 initialActiveOverlays: ['dialogs', 'filter'],
                                 overlayBuilderMap: {

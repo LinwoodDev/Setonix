@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:setonix/board/game.dart';
 import 'package:setonix/pages/game/multiplayer/dialog.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -20,7 +21,9 @@ import 'package:setonix/pages/packs/dialog.dart';
 import 'package:setonix_api/setonix_api.dart';
 
 class GameDrawer extends StatelessWidget {
-  const GameDrawer({super.key});
+  final BoardGame game;
+
+  const GameDrawer({super.key, required this.game});
 
   @override
   Widget build(BuildContext context) {
@@ -191,7 +194,7 @@ class GameDrawer extends StatelessWidget {
                 final state = bloc.state;
                 Widget buildWaypointTile(Waypoint waypoint, {String? team}) =>
                     ContextRegion(
-                      builder: (context, button, controller) => ListTile(
+                      builder: (ctx, button, controller) => ListTile(
                         title: Text(waypoint.name),
                         leading: Icon(
                           team != null
@@ -199,6 +202,11 @@ class GameDrawer extends StatelessWidget {
                               : PhosphorIconsLight.mapPin,
                         ),
                         trailing: button,
+                        onTap: () {
+                          Navigator.of(ctx).pop();
+                          game.teleport(waypoint.position);
+                          Scaffold.of(context).closeDrawer();
+                        },
                       ),
                       menuChildren: [
                         MenuItemButton(

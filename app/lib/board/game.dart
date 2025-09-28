@@ -14,6 +14,8 @@ import 'package:setonix/board/grid.dart';
 import 'package:setonix/board/hand/view.dart';
 import 'package:setonix/helpers/scroll.dart';
 import 'package:setonix/helpers/secondary.dart';
+import 'package:setonix/helpers/vector.dart';
+import 'package:setonix_api/setonix_api.dart';
 
 class BoardGame extends FlameGame
     with
@@ -170,6 +172,17 @@ class BoardGame extends FlameGame
       context: context,
       contextMenuBuilder: (context) =>
           contextMenuBuilder(context, contextMenuController.remove),
+    );
+  }
+
+  void teleport(GlobalVectorDefinition position) {
+    final table = position.table;
+    if (table != bloc.state.world.tableName) {
+      bloc.add(TableSwitched(table));
+    }
+    final cellSize = grid.cellSize;
+    camera.moveTo(
+      (position.position.toVector()..multiply(cellSize)) + cellSize / 2,
     );
   }
 }

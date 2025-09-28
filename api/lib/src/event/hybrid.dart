@@ -6,6 +6,14 @@ sealed class HybridWorldEvent extends WorldEvent
     implements ClientWorldEvent, ServerWorldEvent {}
 
 @MappableClass()
+final class CellSwitched extends HybridWorldEvent with CellSwitchedMappable {
+  final VectorDefinition? cell;
+  final bool selected, teleport;
+
+  CellSwitched(this.cell, {this.selected = true, this.teleport = false});
+}
+
+@MappableClass()
 final class BackgroundChanged extends HybridWorldEvent
     with BackgroundChangedMappable {
   final ItemLocation background;

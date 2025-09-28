@@ -284,5 +284,6 @@
   "waypoints": "Waypoints",
   "addWaypoint": "Add waypoint",
   "editWaypoint": "Edit waypoint",
-  "team": "Team"
+  "team": "Team",
+  "public": "Public"
 }
