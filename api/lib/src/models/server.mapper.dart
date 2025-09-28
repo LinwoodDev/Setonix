@@ -35,18 +35,11 @@ class GameServerMapper extends ClassMapperBase<GameServer> {
     opt: true,
     def: true,
   );
-  static String _$display(GameServer v) => v.display;
-  static const Field<GameServer, String> _f$display = Field(
-    'display',
-    _$display,
-    mode: FieldMode.member,
-  );
 
   @override
   final MappableFields<GameServer> fields = const {
     #address: _f$address,
     #secure: _f$secure,
-    #display: _f$display,
   };
 
   static GameServer _instantiate(DecodingData data) {
@@ -104,18 +97,11 @@ class LanGameServerMapper extends ClassMapperBase<LanGameServer> {
     opt: true,
     def: true,
   );
-  static String _$display(LanGameServer v) => v.display;
-  static const Field<LanGameServer, String> _f$display = Field(
-    'display',
-    _$display,
-    mode: FieldMode.member,
-  );
 
   @override
   final MappableFields<LanGameServer> fields = const {
     #address: _f$address,
     #secure: _f$secure,
-    #display: _f$display,
   };
 
   static LanGameServer _instantiate(DecodingData data) {
@@ -261,12 +247,6 @@ class ListGameServerMapper extends ClassMapperBase<ListGameServer> {
     opt: true,
     def: false,
   );
-  static String _$display(ListGameServer v) => v.display;
-  static const Field<ListGameServer, String> _f$display = Field(
-    'display',
-    _$display,
-    mode: FieldMode.member,
-  );
 
   @override
   final MappableFields<ListGameServer> fields = const {
@@ -274,7 +254,6 @@ class ListGameServerMapper extends ClassMapperBase<ListGameServer> {
     #address: _f$address,
     #secure: _f$secure,
     #highlighted: _f$highlighted,
-    #display: _f$display,
   };
 
   static ListGameServer _instantiate(DecodingData data) {
@@ -428,12 +407,6 @@ class BrowsedGameServerMapper extends ClassMapperBase<BrowsedGameServer> {
     opt: true,
     def: false,
   );
-  static String _$display(BrowsedGameServer v) => v.display;
-  static const Field<BrowsedGameServer, String> _f$display = Field(
-    'display',
-    _$display,
-    mode: FieldMode.member,
-  );
 
   @override
   final MappableFields<BrowsedGameServer> fields = const {
@@ -441,7 +414,6 @@ class BrowsedGameServerMapper extends ClassMapperBase<BrowsedGameServer> {
     #address: _f$address,
     #secure: _f$secure,
     #highlighted: _f$highlighted,
-    #display: _f$display,
   };
 
   static BrowsedGameServer _instantiate(DecodingData data) {

@@ -24,6 +24,7 @@ class _InstalledPacksViewState extends State<_InstalledPacksView> {
   late final SetonixFileSystem _fileSystem = context.read<SetonixFileSystem>();
 
   List<Widget> _buildDetailsChildren(
+    String key,
     SetonixFile pack,
     FileMetadata metadata,
     DataMetadata data,
@@ -31,6 +32,14 @@ class _InstalledPacksViewState extends State<_InstalledPacksView> {
     final locale = Localizations.localeOf(context).languageCode;
     final lastUsed = data.lastUsed();
     return [
+      ListTile(
+        title: Text(key),
+        trailing: IconButton(
+          icon: const Icon(PhosphorIconsLight.copy),
+          tooltip: AppLocalizations.of(context).copy,
+          onPressed: () => saveToClipboard(context, key),
+        ),
+      ),
       SizedBox(
         height: 50,
         child: Row(
@@ -137,8 +146,8 @@ class _InstalledPacksViewState extends State<_InstalledPacksView> {
     DataMetadata data,
   ) {
     widget.onSelected(
-      Text(key),
-      _buildDetailsChildren(file, metadata, data),
+      Text(metadata.name),
+      _buildDetailsChildren(key, file, metadata, data),
       _buildActionsChildren(
         file.load(),
         onRemove: _allowRemoving(key, true) ? _removePack : null,

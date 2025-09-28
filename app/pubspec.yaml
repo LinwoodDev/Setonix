@@ -16,7 +16,7 @@ publish_to: none
 
 environment:
   sdk: ">=3.8.0 <4.0.0"
-  flutter: 3.35.3
+  flutter: 3.35.4
 
 dependencies:
   flutter:
@@ -32,7 +32,7 @@ dependencies:
   material_leap:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 792044f51747d7d078203904e460d4ef504a9db9
+      ref: 12843672e8f33e9370444b13fca8134f4543f7ee
       path: packages/material_leap
   flex_color_scheme: ^8.1.0
   flutter_svg: ^2.2.0
@@ -69,8 +69,8 @@ dependencies:
       path: api
   # System Information
   dynamic_color: ^1.7.0
-  device_info_plus: ^11.3.0
-  package_info_plus: ^8.0.0
+  device_info_plus: ^12.1.0
+  package_info_plus: ^9.0.0
   path_provider: ^2.1.4
   url_launcher: ^6.2.6
   file_selector: ^1.0.3
@@ -78,12 +78,12 @@ dependencies:
   lw_file_system:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 792044f51747d7d078203904e460d4ef504a9db9
+      ref: 12843672e8f33e9370444b13fca8134f4543f7ee
       path: packages/lw_file_system
   lw_sysapi:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 82ef4b4f68a18e55226b3030293e26c28b4964c2
+      ref: 3f886507656f057d89a8b98de6ddbc7f5a21868e
       path: packages/lw_sysapi
   setonix_api:
     path: ../api
