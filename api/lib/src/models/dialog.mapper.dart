@@ -290,18 +290,11 @@ class GameDialogButtonMapper extends ClassMapperBase<GameDialogButton> {
     _$id,
     opt: true,
   );
-  static String _$idOrLabel(GameDialogButton v) => v.idOrLabel;
-  static const Field<GameDialogButton, String> _f$idOrLabel = Field(
-    'idOrLabel',
-    _$idOrLabel,
-    mode: FieldMode.member,
-  );
 
   @override
   final MappableFields<GameDialogButton> fields = const {
     #label: _f$label,
     #id: _f$id,
-    #idOrLabel: _f$idOrLabel,
   };
 
   static GameDialogButton _instantiate(DecodingData data) {
@@ -593,12 +586,6 @@ class GameDialogTextFieldComponentMapper
     opt: true,
     def: false,
   );
-  static String _$idOrLabel(GameDialogTextFieldComponent v) => v.idOrLabel;
-  static const Field<GameDialogTextFieldComponent, String> _f$idOrLabel = Field(
-    'idOrLabel',
-    _$idOrLabel,
-    mode: FieldMode.member,
-  );
 
   @override
   final MappableFields<GameDialogTextFieldComponent> fields = const {
@@ -607,7 +594,6 @@ class GameDialogTextFieldComponentMapper
     #placeholder: _f$placeholder,
     #multiline: _f$multiline,
     #password: _f$password,
-    #idOrLabel: _f$idOrLabel,
   };
 
   static GameDialogTextFieldComponent _instantiate(DecodingData data) {

@@ -96,19 +96,12 @@ class RecentGameEntryMapper extends ClassMapperBase<RecentGameEntry> {
     'lastPlayed',
     _$lastPlayed,
   );
-  static bool _$isMultiplayer(RecentGameEntry v) => v.isMultiplayer;
-  static const Field<RecentGameEntry, bool> _f$isMultiplayer = Field(
-    'isMultiplayer',
-    _$isMultiplayer,
-    mode: FieldMode.member,
-  );
 
   @override
   final MappableFields<RecentGameEntry> fields = const {
     #name: _f$name,
     #location: _f$location,
     #lastPlayed: _f$lastPlayed,
-    #isMultiplayer: _f$isMultiplayer,
   };
 
   static RecentGameEntry _instantiate(DecodingData data) {
@@ -364,12 +357,6 @@ class SetonixSettingsMapper extends ClassMapperBase<SetonixSettings> {
       v.recentGames;
   static const Field<SetonixSettings, List<RecentGameEntry>> _f$recentGames =
       Field('recentGames', _$recentGames, opt: true, def: const []);
-  static Locale? _$locale(SetonixSettings v) => v.locale;
-  static const Field<SetonixSettings, Locale> _f$locale = Field(
-    'locale',
-    _$locale,
-    mode: FieldMode.member,
-  );
 
   @override
   final MappableFields<SetonixSettings> fields = const {
@@ -392,7 +379,6 @@ class SetonixSettingsMapper extends ClassMapperBase<SetonixSettings> {
     #serverList: _f$serverList,
     #showIntro: _f$showIntro,
     #recentGames: _f$recentGames,
-    #locale: _f$locale,
   };
 
   static SetonixSettings _instantiate(DecodingData data) {

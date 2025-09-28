@@ -25,38 +25,8 @@ class MultiplayerStateMapper extends ClassMapperBase<MultiplayerState> {
   @override
   final String id = 'MultiplayerState';
 
-  static bool _$isConnected(MultiplayerState v) => v.isConnected;
-  static const Field<MultiplayerState, bool> _f$isConnected = Field(
-    'isConnected',
-    _$isConnected,
-    mode: FieldMode.member,
-  );
-  static bool _$isClient(MultiplayerState v) => v.isClient;
-  static const Field<MultiplayerState, bool> _f$isClient = Field(
-    'isClient',
-    _$isClient,
-    mode: FieldMode.member,
-  );
-  static bool _$isServer(MultiplayerState v) => v.isServer;
-  static const Field<MultiplayerState, bool> _f$isServer = Field(
-    'isServer',
-    _$isServer,
-    mode: FieldMode.member,
-  );
-  static UserManager? _$userManager(MultiplayerState v) => v.userManager;
-  static const Field<MultiplayerState, UserManager> _f$userManager = Field(
-    'userManager',
-    _$userManager,
-    mode: FieldMode.member,
-  );
-
   @override
-  final MappableFields<MultiplayerState> fields = const {
-    #isConnected: _f$isConnected,
-    #isClient: _f$isClient,
-    #isServer: _f$isServer,
-    #userManager: _f$userManager,
-  };
+  final MappableFields<MultiplayerState> fields = const {};
 
   static MultiplayerState _instantiate(DecodingData data) {
     throw MapperException.missingConstructor('MultiplayerState');
@@ -107,36 +77,8 @@ class MultiplayerDisabledStateMapper
   @override
   final String id = 'MultiplayerDisabledState';
 
-  static bool _$isConnected(MultiplayerDisabledState v) => v.isConnected;
-  static const Field<MultiplayerDisabledState, bool> _f$isConnected = Field(
-    'isConnected',
-    _$isConnected,
-    mode: FieldMode.member,
-  );
-  static bool _$isClient(MultiplayerDisabledState v) => v.isClient;
-  static const Field<MultiplayerDisabledState, bool> _f$isClient = Field(
-    'isClient',
-    _$isClient,
-    mode: FieldMode.member,
-  );
-  static bool _$isServer(MultiplayerDisabledState v) => v.isServer;
-  static const Field<MultiplayerDisabledState, bool> _f$isServer = Field(
-    'isServer',
-    _$isServer,
-    mode: FieldMode.member,
-  );
-  static UserManager? _$userManager(MultiplayerDisabledState v) =>
-      v.userManager;
-  static const Field<MultiplayerDisabledState, UserManager> _f$userManager =
-      Field('userManager', _$userManager, mode: FieldMode.member);
-
   @override
-  final MappableFields<MultiplayerDisabledState> fields = const {
-    #isConnected: _f$isConnected,
-    #isClient: _f$isClient,
-    #isServer: _f$isServer,
-    #userManager: _f$userManager,
-  };
+  final MappableFields<MultiplayerDisabledState> fields = const {};
 
   static MultiplayerDisabledState _instantiate(DecodingData data) {
     return MultiplayerDisabledState();
@@ -258,36 +200,8 @@ class MultiplayerConnectingStateMapper
   @override
   final String id = 'MultiplayerConnectingState';
 
-  static bool _$isConnected(MultiplayerConnectingState v) => v.isConnected;
-  static const Field<MultiplayerConnectingState, bool> _f$isConnected = Field(
-    'isConnected',
-    _$isConnected,
-    mode: FieldMode.member,
-  );
-  static bool _$isClient(MultiplayerConnectingState v) => v.isClient;
-  static const Field<MultiplayerConnectingState, bool> _f$isClient = Field(
-    'isClient',
-    _$isClient,
-    mode: FieldMode.member,
-  );
-  static bool _$isServer(MultiplayerConnectingState v) => v.isServer;
-  static const Field<MultiplayerConnectingState, bool> _f$isServer = Field(
-    'isServer',
-    _$isServer,
-    mode: FieldMode.member,
-  );
-  static UserManager? _$userManager(MultiplayerConnectingState v) =>
-      v.userManager;
-  static const Field<MultiplayerConnectingState, UserManager> _f$userManager =
-      Field('userManager', _$userManager, mode: FieldMode.member);
-
   @override
-  final MappableFields<MultiplayerConnectingState> fields = const {
-    #isConnected: _f$isConnected,
-    #isClient: _f$isClient,
-    #isServer: _f$isServer,
-    #userManager: _f$userManager,
-  };
+  final MappableFields<MultiplayerConnectingState> fields = const {};
 
   static MultiplayerConnectingState _instantiate(DecodingData data) {
     return MultiplayerConnectingState();
@@ -429,41 +343,11 @@ class MultiplayerDisconnectedStateMapper
   ) => v.oldState;
   static const Field<MultiplayerDisconnectedState, MultiplayerConnectedState>
   _f$oldState = Field('oldState', _$oldState, opt: true);
-  static bool _$isConnected(MultiplayerDisconnectedState v) => v.isConnected;
-  static const Field<MultiplayerDisconnectedState, bool> _f$isConnected = Field(
-    'isConnected',
-    _$isConnected,
-    mode: FieldMode.member,
-  );
-  static bool _$isClient(MultiplayerDisconnectedState v) => v.isClient;
-  static const Field<MultiplayerDisconnectedState, bool> _f$isClient = Field(
-    'isClient',
-    _$isClient,
-    mode: FieldMode.member,
-  );
-  static bool _$isServer(MultiplayerDisconnectedState v) => v.isServer;
-  static const Field<MultiplayerDisconnectedState, bool> _f$isServer = Field(
-    'isServer',
-    _$isServer,
-    mode: FieldMode.member,
-  );
-  static UserManager? _$userManager(MultiplayerDisconnectedState v) =>
-      v.userManager;
-  static const Field<MultiplayerDisconnectedState, UserManager> _f$userManager =
-      Field('userManager', _$userManager, mode: FieldMode.member);
-  static bool _$canReconnect(MultiplayerDisconnectedState v) => v.canReconnect;
-  static const Field<MultiplayerDisconnectedState, bool> _f$canReconnect =
-      Field('canReconnect', _$canReconnect, mode: FieldMode.member);
 
   @override
   final MappableFields<MultiplayerDisconnectedState> fields = const {
     #error: _f$error,
     #oldState: _f$oldState,
-    #isConnected: _f$isConnected,
-    #isClient: _f$isClient,
-    #isServer: _f$isServer,
-    #userManager: _f$userManager,
-    #canReconnect: _f$canReconnect,
   };
 
   static MultiplayerDisconnectedState _instantiate(DecodingData data) {
@@ -630,46 +514,16 @@ class MultiplayerConnectedStateMapper
       v.pipe;
   static const Field<MultiplayerConnectedState, SimpleNetworkerPipe<WorldEvent>>
   _f$pipe = Field('pipe', _$pipe);
-  static bool _$isConnected(MultiplayerConnectedState v) => v.isConnected;
-  static const Field<MultiplayerConnectedState, bool> _f$isConnected = Field(
-    'isConnected',
-    _$isConnected,
-    mode: FieldMode.member,
-  );
-  static bool _$isClient(MultiplayerConnectedState v) => v.isClient;
-  static const Field<MultiplayerConnectedState, bool> _f$isClient = Field(
-    'isClient',
-    _$isClient,
-    mode: FieldMode.member,
-  );
-  static bool _$isServer(MultiplayerConnectedState v) => v.isServer;
-  static const Field<MultiplayerConnectedState, bool> _f$isServer = Field(
-    'isServer',
-    _$isServer,
-    mode: FieldMode.member,
-  );
-  static UserManager? _$userManager(MultiplayerConnectedState v) =>
+  static UserManager _$userManager(MultiplayerConnectedState v) =>
       v.userManager;
   static const Field<MultiplayerConnectedState, UserManager> _f$userManager =
       Field('userManager', _$userManager, mode: FieldMode.member);
-  static Stream<Set<int>>? _$clientChange(MultiplayerConnectedState v) =>
-      v.clientChange;
-  static const Field<MultiplayerConnectedState, Stream<Set<int>>>
-  _f$clientChange = Field(
-    'clientChange',
-    _$clientChange,
-    mode: FieldMode.member,
-  );
 
   @override
   final MappableFields<MultiplayerConnectedState> fields = const {
     #networker: _f$networker,
     #pipe: _f$pipe,
-    #isConnected: _f$isConnected,
-    #isClient: _f$isClient,
-    #isServer: _f$isServer,
     #userManager: _f$userManager,
-    #clientChange: _f$clientChange,
   };
 
   static MultiplayerConnectedState _instantiate(DecodingData data) {
