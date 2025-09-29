@@ -32,6 +32,14 @@ final class SwitchCellOnMoveChanged extends LocalWorldEvent
 }
 
 @MappableClass()
+final class WaypointVisibilityChanged extends LocalWorldEvent
+    with WaypointVisibilityChangedMappable {
+  final bool value;
+
+  WaypointVisibilityChanged(this.value);
+}
+
+@MappableClass()
 final class TableSwitched extends LocalWorldEvent with TableSwitchedMappable {
   final String name;
 

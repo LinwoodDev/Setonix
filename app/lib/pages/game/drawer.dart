@@ -184,61 +184,80 @@ class GameDrawer extends StatelessWidget {
                 );
               },
             ),
-            AdvancedSwitchListTile(
-              title: Text(AppLocalizations.of(context).waypoints),
-              leading: const Icon(PhosphorIconsLight.mapPin),
-              value: false,
-              onChanged: (value) {},
-              onTap: () {
-                final bloc = context.read<WorldBloc>();
-                final state = bloc.state;
-                Widget buildWaypointTile(Waypoint waypoint, {String? team}) =>
-                    ContextRegion(
-                      builder: (ctx, button, controller) => ListTile(
-                        title: Text(waypoint.name),
-                        leading: Icon(
-                          team != null
-                              ? PhosphorIconsLight.users
-                              : PhosphorIconsLight.mapPin,
-                        ),
-                        trailing: button,
-                        onTap: () {
-                          Navigator.of(ctx).pop();
-                          game.teleport(waypoint.position);
-                          Scaffold.of(context).closeDrawer();
-                        },
-                      ),
-                      menuChildren: [
-                        MenuItemButton(
-                          leadingIcon: const Icon(PhosphorIconsLight.pencil),
-                          child: Text(AppLocalizations.of(context).edit),
-                          onPressed: () {},
-                        ),
-                        MenuItemButton(
-                          leadingIcon: const Icon(PhosphorIconsLight.trash),
-                          child: Text(AppLocalizations.of(context).delete),
-                          onPressed: () {
-                            bloc.add(
-                              WaypointRemoved(name: waypoint.name, team: team),
-                            );
+            BlocBuilder<WorldBloc, ClientWorldState>(
+              buildWhen: (previous, current) =>
+                  previous.showWaypoints != current.showWaypoints,
+              builder: (context, state) {
+                return Padding(
+                  padding: EdgeInsets.only(right: 24),
+                  child: AdvancedSwitchListTile(
+                    title: Text(AppLocalizations.of(context).waypoints),
+                    leading: const Icon(PhosphorIconsLight.mapPin),
+                    value: state.showWaypoints,
+                    onChanged: (value) => context.read<WorldBloc>().process(
+                      WaypointVisibilityChanged(value),
+                    ),
+                    onTap: () {
+                      final bloc = context.read<WorldBloc>();
+                      final state = bloc.state;
+                      Widget buildWaypointTile(
+                        Waypoint waypoint, {
+                        String? team,
+                      }) => ContextRegion(
+                        builder: (ctx, button, controller) => ListTile(
+                          title: Text(waypoint.name),
+                          leading: Icon(
+                            team != null
+                                ? PhosphorIconsLight.users
+                                : PhosphorIconsLight.mapPin,
+                          ),
+                          trailing: button,
+                          onTap: () {
+                            Navigator.of(ctx).pop();
+                            game.teleport(waypoint.position);
+                            Scaffold.of(context).closeDrawer();
                           },
                         ),
-                      ],
-                    );
-                showLeapBottomSheet(
-                  context: context,
-                  titleBuilder: (context) =>
-                      Text(AppLocalizations.of(context).waypoints),
-                  childrenBuilder: (context) => [
-                    ...state.world.getTeams().expand(
-                      (e) =>
-                          state.info.teams[e]?.waypoints.map(
-                            (waypoint) => buildWaypointTile(waypoint, team: e),
-                          ) ??
-                          <Widget>[],
-                    ),
-                    ...state.info.waypoints.map((e) => buildWaypointTile(e)),
-                  ],
+                        menuChildren: [
+                          MenuItemButton(
+                            leadingIcon: const Icon(PhosphorIconsLight.pencil),
+                            child: Text(AppLocalizations.of(context).edit),
+                            onPressed: () {},
+                          ),
+                          MenuItemButton(
+                            leadingIcon: const Icon(PhosphorIconsLight.trash),
+                            child: Text(AppLocalizations.of(context).delete),
+                            onPressed: () {
+                              bloc.add(
+                                WaypointRemoved(
+                                  name: waypoint.name,
+                                  team: team,
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      );
+                      showLeapBottomSheet(
+                        context: context,
+                        titleBuilder: (context) =>
+                            Text(AppLocalizations.of(context).waypoints),
+                        childrenBuilder: (context) => [
+                          ...state.world.getTeams().expand(
+                            (e) =>
+                                state.info.teams[e]?.waypoints.map(
+                                  (waypoint) =>
+                                      buildWaypointTile(waypoint, team: e),
+                                ) ??
+                                <Widget>[],
+                          ),
+                          ...state.info.waypoints.map(
+                            (e) => buildWaypointTile(e),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
                 );
               },
             ),

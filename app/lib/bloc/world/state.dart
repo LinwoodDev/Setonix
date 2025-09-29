@@ -22,7 +22,7 @@ final class ClientWorldState with ClientWorldStateMappable {
   final ColorScheme colorScheme;
   final VectorDefinition? selectedCell;
   final ItemLocation? selectedDeck;
-  final bool showHand, switchCellOnMove;
+  final bool showHand, switchCellOnMove, showWaypoints;
   final DrawerView drawerView;
   final String searchTerm;
   final bool showDuplicates;
@@ -36,6 +36,7 @@ final class ClientWorldState with ClientWorldStateMappable {
     this.selectedDeck,
     this.showHand = false,
     this.switchCellOnMove = false,
+    this.showWaypoints = false,
     this.drawerView = DrawerView.chat,
     this.searchTerm = '',
     this.showDuplicates = false,

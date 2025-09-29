@@ -4,6 +4,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
+import 'package:flame/text.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,6 +39,7 @@ class GameCell extends PositionComponent
         ScrollCallbacks {
   late final SpriteComponent _selectionComponent;
   SpriteComponent? _cardComponent, _boardComponent;
+  TextElementComponent? _waypointComponent;
   late final BoardGrid grid;
   List<Effect>? _effects;
 
@@ -61,6 +63,66 @@ class GameCell extends PositionComponent
     }
   }
 
+  void _buildWaypointComponent(ClientWorldState state) {
+    final visible = state.showWaypoints;
+    _waypointComponent?.removeFromParent();
+    _waypointComponent = null;
+    if (!visible) {
+      return;
+    }
+    final global = toGlobalDefinition(state);
+    final globalWaypoints = state.info.waypoints
+        .where((waypoint) => waypoint.position == global)
+        .map<InlineTextNode>((e) => PlainTextNode(e.name))
+        .toList();
+    final teamWaypoints = state.world.getTeams().expand((name) {
+      final team = state.info.teams[name];
+      if (team == null) return Iterable<InlineTextNode>.empty();
+      return team.waypoints
+          .where((waypoint) => waypoint.position == global)
+          .map<InlineTextNode>(
+            (e) => CustomInlineTextNode(
+              PlainTextNode(e.name),
+              styleName: 'team-$name',
+            ),
+          );
+    }).toList();
+    if (globalWaypoints.isEmpty && teamWaypoints.isEmpty) {
+      return;
+    }
+    final blocks = <BlockNode>[
+      ParagraphNode.group(globalWaypoints),
+      ParagraphNode.group(teamWaypoints),
+    ];
+    final document = DocumentRoot(blocks);
+    final component = _waypointComponent = TextElementComponent.fromDocument(
+      document: document,
+      size: size,
+      priority: 2,
+      style: DocumentStyle(
+        paragraph: BlockStyle(textAlign: TextAlign.center),
+        customStyles: {
+          for (final entry in state.world.getTeams())
+            'team-$entry': InlineTextStyle(
+              color:
+                  state.info.teams[entry]?.color?.color ??
+                  state.colorScheme.primary,
+            ),
+        },
+        text: InlineTextStyle(
+          shadows: [
+            Shadow(
+              color: Colors.black,
+              offset: const Offset(0, 0),
+              blurRadius: 2,
+            ),
+          ],
+        ),
+      ),
+    );
+    add(component);
+  }
+
   @override
   void onLoad() {
     super.onLoad();
@@ -82,7 +144,8 @@ class GameCell extends PositionComponent
         previousState.table.cells[definition] !=
             newState.table.cells[definition] ||
         previousState.teamMembers != newState.teamMembers ||
-        previousState.colorScheme != newState.colorScheme;
+        previousState.colorScheme != newState.colorScheme ||
+        previousState.showWaypoints != newState.showWaypoints;
   }
 
   bool get isSelected => isMounted && bloc.state.selectedCell == toDefinition();
@@ -134,6 +197,7 @@ class GameCell extends PositionComponent
   @override
   void onInitialState(ClientWorldState state) {
     if (state.selectedCell != toDefinition()) _selectionComponent.opacity = 0;
+    _buildWaypointComponent(state);
   }
 
   bool isClaimed(ClientWorldState state) => state.info.teams.entries.any(
@@ -178,6 +242,7 @@ class GameCell extends PositionComponent
         ),
       ]);
     }
+    _buildWaypointComponent(state);
   }
 
   Future<void> _updateTop() async {

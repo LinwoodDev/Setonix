@@ -429,6 +429,150 @@ class _SwitchCellOnMoveChangedCopyWithImpl<$R, $Out>
       _SwitchCellOnMoveChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+class WaypointVisibilityChangedMapper
+    extends SubClassMapperBase<WaypointVisibilityChanged> {
+  WaypointVisibilityChangedMapper._();
+
+  static WaypointVisibilityChangedMapper? _instance;
+  static WaypointVisibilityChangedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(
+        _instance = WaypointVisibilityChangedMapper._(),
+      );
+      LocalWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'WaypointVisibilityChanged';
+
+  static bool _$value(WaypointVisibilityChanged v) => v.value;
+  static const Field<WaypointVisibilityChanged, bool> _f$value = Field(
+    'value',
+    _$value,
+  );
+
+  @override
+  final MappableFields<WaypointVisibilityChanged> fields = const {
+    #value: _f$value,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'WaypointVisibilityChanged';
+  @override
+  late final ClassMapperBase superMapper =
+      LocalWorldEventMapper.ensureInitialized();
+
+  static WaypointVisibilityChanged _instantiate(DecodingData data) {
+    return WaypointVisibilityChanged(data.dec(_f$value));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static WaypointVisibilityChanged fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<WaypointVisibilityChanged>(map);
+  }
+
+  static WaypointVisibilityChanged fromJson(String json) {
+    return ensureInitialized().decodeJson<WaypointVisibilityChanged>(json);
+  }
+}
+
+mixin WaypointVisibilityChangedMappable {
+  String toJson() {
+    return WaypointVisibilityChangedMapper.ensureInitialized()
+        .encodeJson<WaypointVisibilityChanged>(
+          this as WaypointVisibilityChanged,
+        );
+  }
+
+  Map<String, dynamic> toMap() {
+    return WaypointVisibilityChangedMapper.ensureInitialized()
+        .encodeMap<WaypointVisibilityChanged>(
+          this as WaypointVisibilityChanged,
+        );
+  }
+
+  WaypointVisibilityChangedCopyWith<
+    WaypointVisibilityChanged,
+    WaypointVisibilityChanged,
+    WaypointVisibilityChanged
+  >
+  get copyWith =>
+      _WaypointVisibilityChangedCopyWithImpl<
+        WaypointVisibilityChanged,
+        WaypointVisibilityChanged
+      >(this as WaypointVisibilityChanged, $identity, $identity);
+  @override
+  String toString() {
+    return WaypointVisibilityChangedMapper.ensureInitialized().stringifyValue(
+      this as WaypointVisibilityChanged,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return WaypointVisibilityChangedMapper.ensureInitialized().equalsValue(
+      this as WaypointVisibilityChanged,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return WaypointVisibilityChangedMapper.ensureInitialized().hashValue(
+      this as WaypointVisibilityChanged,
+    );
+  }
+}
+
+extension WaypointVisibilityChangedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, WaypointVisibilityChanged, $Out> {
+  WaypointVisibilityChangedCopyWith<$R, WaypointVisibilityChanged, $Out>
+  get $asWaypointVisibilityChanged => $base.as(
+    (v, t, t2) => _WaypointVisibilityChangedCopyWithImpl<$R, $Out>(v, t, t2),
+  );
+}
+
+abstract class WaypointVisibilityChangedCopyWith<
+  $R,
+  $In extends WaypointVisibilityChanged,
+  $Out
+>
+    implements LocalWorldEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({bool? value});
+  WaypointVisibilityChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class _WaypointVisibilityChangedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, WaypointVisibilityChanged, $Out>
+    implements
+        WaypointVisibilityChangedCopyWith<$R, WaypointVisibilityChanged, $Out> {
+  _WaypointVisibilityChangedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<WaypointVisibilityChanged> $mapper =
+      WaypointVisibilityChangedMapper.ensureInitialized();
+  @override
+  $R call({bool? value}) =>
+      $apply(FieldCopyWithData({if (value != null) #value: value}));
+  @override
+  WaypointVisibilityChanged $make(CopyWithData data) =>
+      WaypointVisibilityChanged(data.get(#value, or: $value.value));
+
+  @override
+  WaypointVisibilityChangedCopyWith<$R2, WaypointVisibilityChanged, $Out2>
+  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _WaypointVisibilityChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
 class TableSwitchedMapper extends SubClassMapperBase<TableSwitched> {
   TableSwitchedMapper._();
 

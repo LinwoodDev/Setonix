@@ -133,6 +133,9 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
     on<SwitchCellOnMoveChanged>((event, emit) {
       emit(state.copyWith(switchCellOnMove: event.value));
     });
+    on<WaypointVisibilityChanged>((event, emit) {
+      emit(state.copyWith(showWaypoints: event.value));
+    });
     on<TableSwitched>((event, emit) {
       emit(
         state.copyWith.world(
