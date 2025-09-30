@@ -2,6 +2,20 @@
 
 <!--ENTER CHANGELOG HERE-->
 
+## 0.5.2 (2025-09-30)
+
+* Add snap support
+* Rename single player and multiplayer dialog
+* Remove browse tab
+* Improve textures of spades in cards and add better resolution to the card background, chips and dice
+* Improve display of identifier of installed packs in dialog
+* Swap board and figures in hand view
+* Redesign chess figures
+* Use minSdkVersion 24 instead of 23 (The minimum version of android is 7.0 (Nougat))
+* Upgrade to flutter 3.35
+
+Read more here: https://linwood.dev/setonix/0.5.2
+
 ## 0.5.1 (2025-07-22)
 
 * Redesign cards to have higher resolution
