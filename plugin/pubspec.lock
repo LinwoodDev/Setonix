@@ -418,7 +418,7 @@ packages:
       path: "../api"
       relative: true
     source: path
-    version: "0.5.2"
+    version: "0.6.0"
   shelf:
     dependency: transitive
     description:
