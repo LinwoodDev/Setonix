@@ -1,0 +1,6 @@
+* Add lua scripting support to server
+  * Add game modes to packs
+  * Add scripts directory
+* Add waypoints
+
+Read more here: https://linwood.dev/setonix/0.6.0
