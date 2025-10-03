@@ -10,7 +10,9 @@ class ConfigManager {
   SetonixConfig _argsConfig = SetonixConfig();
 
   ConfigManager({SetonixConfig? argsConfig, SetonixConfig? envConfig})
-    : _envConfig = envConfig ?? SetonixConfig.fromEnvironment();
+    : _envConfig = (envConfig ?? SetonixConfig.fromEnvironment()).merge(
+        argsConfig ?? SetonixConfig(),
+      );
 
   SetonixConfig _mergeConfig() {
     return _config.merge(_envConfig).merge(_argsConfig);
@@ -67,4 +69,10 @@ class ConfigManager {
 
   String get endpointSecret =>
       _mergedConfig.endpointSecret ?? SetonixConfig.defaultEndpointSecret;
+
+  ItemLocation? get gameMode {
+    final data = _mergedConfig.gameMode ?? SetonixConfig.defaultGameMode;
+    if (data.isEmpty) return null;
+    return ItemLocation.fromString(data);
+  }
 }

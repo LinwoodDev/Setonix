@@ -158,6 +158,13 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
     opt: true,
     def: false,
   );
+  static bool _$showWaypoints(ClientWorldState v) => v.showWaypoints;
+  static const Field<ClientWorldState, bool> _f$showWaypoints = Field(
+    'showWaypoints',
+    _$showWaypoints,
+    opt: true,
+    def: false,
+  );
   static DrawerView _$drawerView(ClientWorldState v) => v.drawerView;
   static const Field<ClientWorldState, DrawerView> _f$drawerView = Field(
     'drawerView',
@@ -190,6 +197,7 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
     #selectedDeck: _f$selectedDeck,
     #showHand: _f$showHand,
     #switchCellOnMove: _f$switchCellOnMove,
+    #showWaypoints: _f$showWaypoints,
     #drawerView: _f$drawerView,
     #searchTerm: _f$searchTerm,
     #showDuplicates: _f$showDuplicates,
@@ -205,6 +213,7 @@ class ClientWorldStateMapper extends ClassMapperBase<ClientWorldState> {
       selectedDeck: data.dec(_f$selectedDeck),
       showHand: data.dec(_f$showHand),
       switchCellOnMove: data.dec(_f$switchCellOnMove),
+      showWaypoints: data.dec(_f$showWaypoints),
       drawerView: data.dec(_f$drawerView),
       searchTerm: data.dec(_f$searchTerm),
       showDuplicates: data.dec(_f$showDuplicates),
@@ -286,6 +295,7 @@ abstract class ClientWorldStateCopyWith<$R, $In extends ClientWorldState, $Out>
     ItemLocation? selectedDeck,
     bool? showHand,
     bool? switchCellOnMove,
+    bool? showWaypoints,
     DrawerView? drawerView,
     String? searchTerm,
     bool? showDuplicates,
@@ -323,6 +333,7 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
     Object? selectedDeck = $none,
     bool? showHand,
     bool? switchCellOnMove,
+    bool? showWaypoints,
     DrawerView? drawerView,
     String? searchTerm,
     bool? showDuplicates,
@@ -336,6 +347,7 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
       if (selectedDeck != $none) #selectedDeck: selectedDeck,
       if (showHand != null) #showHand: showHand,
       if (switchCellOnMove != null) #switchCellOnMove: switchCellOnMove,
+      if (showWaypoints != null) #showWaypoints: showWaypoints,
       if (drawerView != null) #drawerView: drawerView,
       if (searchTerm != null) #searchTerm: searchTerm,
       if (showDuplicates != null) #showDuplicates: showDuplicates,
@@ -351,6 +363,7 @@ class _ClientWorldStateCopyWithImpl<$R, $Out>
     selectedDeck: data.get(#selectedDeck, or: $value.selectedDeck),
     showHand: data.get(#showHand, or: $value.showHand),
     switchCellOnMove: data.get(#switchCellOnMove, or: $value.switchCellOnMove),
+    showWaypoints: data.get(#showWaypoints, or: $value.showWaypoints),
     drawerView: data.get(#drawerView, or: $value.drawerView),
     searchTerm: data.get(#searchTerm, or: $value.searchTerm),
     showDuplicates: data.get(#showDuplicates, or: $value.showDuplicates),

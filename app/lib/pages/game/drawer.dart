@@ -2,7 +2,9 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:setonix/board/game.dart';
 import 'package:setonix/pages/game/multiplayer/dialog.dart';
+import 'package:setonix/pages/game/waypoint.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_leap/material_leap.dart';
@@ -20,7 +22,9 @@ import 'package:setonix/pages/packs/dialog.dart';
 import 'package:setonix_api/setonix_api.dart';
 
 class GameDrawer extends StatelessWidget {
-  const GameDrawer({super.key});
+  final BoardGame game;
+
+  const GameDrawer({super.key, required this.game});
 
   @override
   Widget build(BuildContext context) {
@@ -178,6 +182,24 @@ class GameDrawer extends StatelessWidget {
                       SwitchCellOnMoveChanged(value),
                     );
                   },
+                );
+              },
+            ),
+            BlocBuilder<WorldBloc, ClientWorldState>(
+              buildWhen: (previous, current) =>
+                  previous.showWaypoints != current.showWaypoints,
+              builder: (context, state) {
+                return Padding(
+                  padding: EdgeInsets.only(right: 24),
+                  child: AdvancedSwitchListTile(
+                    title: Text(AppLocalizations.of(context).waypoints),
+                    leading: const Icon(PhosphorIconsLight.mapPin),
+                    value: state.showWaypoints,
+                    onChanged: (value) => context.read<WorldBloc>().process(
+                      WaypointVisibilityChanged(value),
+                    ),
+                    onTap: () => _showWaypointsDialog(context),
+                  ),
                 );
               },
             ),
@@ -640,6 +662,123 @@ class GameDrawer extends StatelessWidget {
                   ),
                 ),
               ],
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  void _showWaypointsDialog(BuildContext context) {
+    final bloc = context.read<WorldBloc>();
+    Widget buildWaypointTile(Waypoint waypoint, {String? team}) {
+      final gameTeam = bloc.state.info.teams[team];
+      return ContextRegion(
+        builder: (ctx, button, controller) => ListTile(
+          title: Text(waypoint.name),
+          leading: Icon(
+            team != null ? PhosphorIconsLight.users : PhosphorIconsLight.mapPin,
+            color: gameTeam?.color?.color,
+          ),
+          trailing: button,
+          onTap: () {
+            Navigator.of(ctx).pop();
+            game.teleport(waypoint.position);
+            Scaffold.of(context).closeDrawer();
+          },
+        ),
+        menuChildren: [
+          MenuItemButton(
+            leadingIcon: const Icon(PhosphorIconsLight.pencil),
+            child: Text(AppLocalizations.of(context).edit),
+            onPressed: () => showDialog(
+              context: context,
+              builder: (context) => BlocProvider.value(
+                value: bloc,
+                child: WaypointDialog(waypoint: waypoint, team: team),
+              ),
+            ),
+          ),
+          MenuItemButton(
+            leadingIcon: const Icon(PhosphorIconsLight.trash),
+            child: Text(AppLocalizations.of(context).delete),
+            onPressed: () {
+              bloc.add(WaypointRemoved(name: waypoint.name, team: team));
+            },
+          ),
+        ],
+      );
+    }
+
+    bool showPublic = true, showTeams = true;
+
+    showLeapBottomSheet(
+      context: context,
+      titleBuilder: (context) => Text(AppLocalizations.of(context).waypoints),
+      childrenBuilder: (context) => [
+        StatefulBuilder(
+          builder: (context, setLocalState) {
+            return BlocBuilder<WorldBloc, ClientWorldState>(
+              bloc: bloc,
+              buildWhen: (previous, current) =>
+                  previous.info.waypoints != current.info.waypoints ||
+                  previous.info.teams != current.info.teams ||
+                  previous.teamMembers != current.teamMembers,
+              builder: (context, state) {
+                final List<Widget> waypointTiles = [];
+
+                if (showTeams) {
+                  waypointTiles.addAll(
+                    state.world.getTeams().expand(
+                      (e) =>
+                          state.info.teams[e]?.waypoints.map(
+                            (waypoint) => buildWaypointTile(waypoint, team: e),
+                          ) ??
+                          <Widget>[],
+                    ),
+                  );
+                }
+
+                if (showPublic) {
+                  waypointTiles.addAll(
+                    state.info.waypoints.map((e) => buildWaypointTile(e)),
+                  );
+                }
+
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 4,
+                      children: [
+                        FilterChip(
+                          label: Text(AppLocalizations.of(context).teams),
+                          selected: showTeams,
+                          onSelected: (v) => setLocalState(() => showTeams = v),
+                        ),
+                        FilterChip(
+                          label: const Text('Public'),
+                          selected: showPublic,
+                          onSelected: (v) =>
+                              setLocalState(() => showPublic = v),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    if (waypointTiles.isEmpty)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        child: Center(
+                          child: Text(AppLocalizations.of(context).noWaypoints),
+                        ),
+                      )
+                    else
+                      ...waypointTiles,
+                  ],
+                );
+              },
             );
           },
         ),

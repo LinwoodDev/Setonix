@@ -14,6 +14,7 @@ import 'package:setonix_server/src/programs/players.dart';
 import 'package:setonix_server/src/programs/reset.dart';
 import 'package:setonix_server/src/programs/save.dart';
 import 'package:setonix_server/src/programs/say.dart';
+import 'package:setonix_server/src/programs/scripts.dart';
 import 'package:setonix_server/src/programs/stop.dart';
 import 'package:setonix_plugin/setonix_plugin.dart';
 import 'package:setonix_server/src/programs/whitelist.dart';
@@ -29,6 +30,10 @@ String limitOutput(Object? value, [int limit = 500]) {
 }
 
 final class SetonixServer {
+  static const String defaultWorldName = 'world';
+  static const String worldDirectory = 'worlds';
+  static const String worldSuffix = '.stnx';
+
   final Consoler consoler;
   final ConfigManager configManager;
   final ServerAssetManager assetManager;
@@ -51,8 +56,16 @@ final class SetonixServer {
       ));
 
   SetonixData _buildDefaultWorld() {
-    final data = SetonixData.empty().setInfo(
-      GameInfo(packs: assetManager.getPackIds().toList()),
+    final location = configManager.gameMode;
+    PackItem<GameMode>? gameMode;
+    if (location != null) {
+      gameMode = assetManager
+          .getPack(location.namespace)
+          ?.getModeItem(location.id, location.namespace);
+    }
+    final data = SetonixData.fromMode(
+      gameMode,
+      packs: assetManager.getPackIds().toSet(),
     );
     return data;
   }
@@ -124,8 +137,6 @@ final class SetonixServer {
 
   void log(Object? message, {LogLevel? level}) =>
       consoler.print(message, level: level);
-
-  static final String defaultWorldFile = 'world.stnx';
 
   Map<int, ConnectionInfo> get players => Map.fromEntries(
     (_server?.clientConnections ?? {}).map(
@@ -209,8 +220,10 @@ final class SetonixServer {
       'reset': ResetProgram(this),
       'kick': KickProgram(this),
       'whitelist': WhitelistProgram(this),
+      'scripts': ScriptsProgram(this),
       null: UnknownProgram(),
     });
+    await loadWorlds();
   }
 
   void _onClientEvent(
@@ -273,6 +286,53 @@ final class SetonixServer {
     _userWorlds.remove(user);
     userManager.removeUser(user);
     challengeManager?.removeChallenge(user);
+  }
+
+  Future<void> loadWorlds() async {
+    Map<String, SetonixData> worlds = {};
+    final defaultFile = File('$worldDirectory/$defaultWorldName$worldSuffix');
+    if (await defaultFile.exists()) {
+      try {
+        final bytes = await defaultFile.readAsBytes();
+        worlds[defaultWorldName] = SetonixData.fromData(bytes);
+      } catch (e) {
+        log(
+          'Error loading default world from ${defaultFile.path}: $e',
+          level: LogLevel.warning,
+        );
+      }
+    } else {
+      worlds[defaultWorldName] = _buildDefaultWorld();
+      log('No default world found, creating new one', level: LogLevel.info);
+    }
+    final dir = Directory(worldDirectory);
+    if (await dir.exists()) {
+      await for (final file in dir.list(recursive: false)) {
+        if (file is! File || !file.path.endsWith(worldSuffix)) continue;
+        final name = file.path.substring(
+          dir.path.length + 1,
+          file.path.length - worldSuffix.length,
+        );
+        if (name == defaultWorldName) continue;
+        try {
+          final bytes = await file.readAsBytes();
+          worlds[name] = SetonixData.fromData(bytes);
+        } catch (e) {
+          log(
+            'Error loading world $name from ${file.path}: $e',
+            level: LogLevel.warning,
+          );
+        }
+      }
+    }
+    for (final entry in worlds.entries) {
+      final name = entry.key;
+      final data = entry.value;
+      final bloc = WorldBloc(data, this, name);
+      _worlds[name] = bloc;
+      await bloc.init();
+      log('Loaded world $name', level: LogLevel.info);
+    }
   }
 
   Future<void> saveAll({bool force = false}) async {

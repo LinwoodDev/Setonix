@@ -2,6 +2,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 
 part 'kick.mapper.dart';
 
+@MappableEnum()
 enum KickReason {
   kick,
   ban,

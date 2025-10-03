@@ -14,3 +14,4 @@ export 'src/models/table.dart';
 export 'src/models/translation.dart';
 export 'src/models/vector.dart';
 export 'src/models/visual.dart';
+export 'src/models/waypoint.dart';

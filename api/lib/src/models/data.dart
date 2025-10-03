@@ -38,6 +38,24 @@ class SetonixData extends ArchiveData<SetonixData> {
     : identifier = identifier ?? createPackIdentifier(data),
       super.fromBytes();
 
+  factory SetonixData.fromMode(
+    PackItem<GameMode>? mode, {
+    Set<String> packs = const {},
+  }) {
+    if (mode == null) return SetonixData.empty();
+    var data = SetonixData.empty().setInfo(
+      GameInfo(
+        packs: {...packs, mode.namespace}.toList(),
+        gameMode: mode.location,
+        teams: mode.item.teams,
+      ),
+    );
+    for (final entry in mode.item.tables.entries) {
+      data = data.setTable(entry.value, entry.key);
+    }
+    return data;
+  }
+
   GameTable? getTable([String name = '']) {
     final data = getAsset('$kGameTablePath/$name.json');
     if (data == null) return null;
@@ -305,6 +323,14 @@ class SetonixData extends ArchiveData<SetonixData> {
     }
   }
 
+  PackItem<GameMode>? getModeItem(String id, [String namespace = '']) =>
+      PackItem.wrap(
+        pack: this,
+        namespace: namespace,
+        id: id,
+        item: getMode(id),
+      );
+
   Map<String, GameMode> getModesData() => Map.fromEntries(
     getModes().map((e) {
       final mode = getMode(e);
@@ -389,6 +415,6 @@ final class PackItem<T> {
   String get namespace => location.namespace;
   String get id => location.id;
 
-  PackItem<E> withItem<E>(E backgroundTranslation) =>
-      PackItem(pack: pack, location: location, item: backgroundTranslation);
+  PackItem<E> withItem<E>(E item) =>
+      PackItem(pack: pack, location: location, item: item);
 }

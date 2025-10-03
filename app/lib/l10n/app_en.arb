@@ -280,5 +280,11 @@
   "singleplayer": "Singleplayer",
   "recentGames": "Recent games",
   "noRecentGames": "There are no recent games available",
-  "copy": "Copy"
+  "copy": "Copy",
+  "waypoints": "Waypoints",
+  "addWaypoint": "Add waypoint",
+  "editWaypoint": "Edit waypoint",
+  "team": "Team",
+  "public": "Public",
+  "noWaypoints": "There are no waypoints available"
 }

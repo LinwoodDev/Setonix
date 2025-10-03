@@ -362,9 +362,7 @@ Future<ServerResponse?> processClientEvent(
       );
     case ModeChangeRequest():
       final location = event.location;
-      final mode = location == null
-          ? null
-          : assetManager.getPack(location.namespace)?.getMode(location.id);
+      final mode = location == null ? null : assetManager.getModeItem(location);
       return UpdateServerResponse.builder(
         WorldInitialized.fromMode(mode, state),
         channel,

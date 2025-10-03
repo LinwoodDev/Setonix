@@ -60,6 +60,11 @@ ArgParser buildParser() {
       negatable: false,
       help: "Enable multi-world support",
       defaultsTo: false,
+    )
+    ..addOption(
+      'game-mode',
+      abbr: 'g',
+      help: 'The game mode to load. Otherwise it is a sandbox.',
     );
 }
 
@@ -81,6 +86,7 @@ Future<void> runServer(List<String> arguments, [ServerLoader? onLoad]) async {
   try {
     final ArgResults results = argParser.parse(arguments);
     bool verbose = false, autosave = false, multiWorld = false;
+    String? gameMode;
     int maxPlayers = 10;
 
     // Process the parsed arguments.
@@ -112,6 +118,9 @@ Future<void> runServer(List<String> arguments, [ServerLoader? onLoad]) async {
     if (results.wasParsed('host')) {
       host = results['host'];
     }
+    if (results.wasParsed('game-mode')) {
+      gameMode = results['game-mode'];
+    }
     final server = await SetonixServer.load(
       argsConfig: SetonixConfig(
         host: host,
@@ -120,6 +129,7 @@ Future<void> runServer(List<String> arguments, [ServerLoader? onLoad]) async {
         description: description,
         maxPlayers: maxPlayers,
         multiWorld: multiWorld,
+        gameMode: gameMode,
       ),
     );
     await server.init(verbose: verbose);

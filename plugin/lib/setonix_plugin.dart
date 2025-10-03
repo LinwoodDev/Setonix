@@ -5,10 +5,16 @@ export 'src/rust/api/plugin.dart';
 export 'src/rust/api/luau.dart';
 export 'events.dart';
 
+bool _isInitialized = false;
+
+bool get isPluginSystemInitialized => _isInitialized;
+
 Future<void> initPluginSystem() {
-  return Future.value();
+  _isInitialized = true;
+  return RustLib.init();
 }
 
 void disposePluginSystem() {
+  _isInitialized = false;
   RustLib.dispose();
 }

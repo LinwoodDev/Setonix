@@ -27,16 +27,18 @@ final class WorldInitialized extends ServerWorldEvent
     this.clearUserInterface = false,
   });
 
-  factory WorldInitialized.fromMode(GameMode? mode, WorldState state) =>
-      WorldInitialized(
-        clearUserInterface: true,
-        info: state.info.copyWith(
-          teams: mode?.teams ?? {},
-          script: mode?.script,
-        ),
-        table: mode?.tables[state.tableName] ?? GameTable(),
-        teamMembers: const {},
-      );
+  factory WorldInitialized.fromMode(
+    PackItem<GameMode>? mode,
+    WorldState state,
+  ) => WorldInitialized(
+    clearUserInterface: true,
+    info: state.info.copyWith(
+      teams: mode?.item.teams ?? {},
+      gameMode: mode?.location,
+    ),
+    table: mode?.item.tables[state.tableName] ?? GameTable(),
+    teamMembers: const {},
+  );
 }
 
 @MappableClass()

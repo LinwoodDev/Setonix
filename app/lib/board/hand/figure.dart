@@ -1,5 +1,4 @@
 import 'package:flame/widgets.dart';
-import 'package:setonix/bloc/world/local.dart';
 import 'package:setonix/bloc/world/state.dart';
 import 'package:setonix/board/cell.dart';
 import 'package:setonix/board/hand/item.dart';

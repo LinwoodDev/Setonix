@@ -610,6 +610,8 @@ class ItemLocationMapper extends ClassMapperBase<ItemLocation> {
     #id: _f$id,
   };
 
+  @override
+  final MappingHook hook = const ItemLocationHook();
   static ItemLocation _instantiate(DecodingData data) {
     return ItemLocation(data.dec(_f$namespace), data.dec(_f$id));
   }
@@ -990,115 +992,5 @@ class _GlobalVectorDefinitionCopyWithImpl<$R, $Out>
   GlobalVectorDefinitionCopyWith<$R2, GlobalVectorDefinition, $Out2>
   $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _GlobalVectorDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
-}
-
-class GameSeatMapper extends ClassMapperBase<GameSeat> {
-  GameSeatMapper._();
-
-  static GameSeatMapper? _instance;
-  static GameSeatMapper ensureInitialized() {
-    if (_instance == null) {
-      MapperContainer.globals.use(_instance = GameSeatMapper._());
-    }
-    return _instance!;
-  }
-
-  @override
-  final String id = 'GameSeat';
-
-  static int? _$color(GameSeat v) => v.color;
-  static const Field<GameSeat, int> _f$color = Field(
-    'color',
-    _$color,
-    opt: true,
-  );
-
-  @override
-  final MappableFields<GameSeat> fields = const {#color: _f$color};
-
-  static GameSeat _instantiate(DecodingData data) {
-    return GameSeat(color: data.dec(_f$color));
-  }
-
-  @override
-  final Function instantiate = _instantiate;
-
-  static GameSeat fromMap(Map<String, dynamic> map) {
-    return ensureInitialized().decodeMap<GameSeat>(map);
-  }
-
-  static GameSeat fromJson(String json) {
-    return ensureInitialized().decodeJson<GameSeat>(json);
-  }
-}
-
-mixin GameSeatMappable {
-  String toJson() {
-    return GameSeatMapper.ensureInitialized().encodeJson<GameSeat>(
-      this as GameSeat,
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return GameSeatMapper.ensureInitialized().encodeMap<GameSeat>(
-      this as GameSeat,
-    );
-  }
-
-  GameSeatCopyWith<GameSeat, GameSeat, GameSeat> get copyWith =>
-      _GameSeatCopyWithImpl<GameSeat, GameSeat>(
-        this as GameSeat,
-        $identity,
-        $identity,
-      );
-  @override
-  String toString() {
-    return GameSeatMapper.ensureInitialized().stringifyValue(this as GameSeat);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return GameSeatMapper.ensureInitialized().equalsValue(
-      this as GameSeat,
-      other,
-    );
-  }
-
-  @override
-  int get hashCode {
-    return GameSeatMapper.ensureInitialized().hashValue(this as GameSeat);
-  }
-}
-
-extension GameSeatValueCopy<$R, $Out> on ObjectCopyWith<$R, GameSeat, $Out> {
-  GameSeatCopyWith<$R, GameSeat, $Out> get $asGameSeat =>
-      $base.as((v, t, t2) => _GameSeatCopyWithImpl<$R, $Out>(v, t, t2));
-}
-
-abstract class GameSeatCopyWith<$R, $In extends GameSeat, $Out>
-    implements ClassCopyWith<$R, $In, $Out> {
-  $R call({int? color});
-  GameSeatCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
-}
-
-class _GameSeatCopyWithImpl<$R, $Out>
-    extends ClassCopyWithBase<$R, GameSeat, $Out>
-    implements GameSeatCopyWith<$R, GameSeat, $Out> {
-  _GameSeatCopyWithImpl(super.value, super.then, super.then2);
-
-  @override
-  late final ClassMapperBase<GameSeat> $mapper =
-      GameSeatMapper.ensureInitialized();
-  @override
-  $R call({Object? color = $none}) =>
-      $apply(FieldCopyWithData({if (color != $none) #color: color}));
-  @override
-  GameSeat $make(CopyWithData data) =>
-      GameSeat(color: data.get(#color, or: $value.color));
-
-  @override
-  GameSeatCopyWith<$R2, GameSeat, $Out2> $chain<$R2, $Out2>(
-    Then<$Out2, $R2> t,
-  ) => _GameSeatCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 

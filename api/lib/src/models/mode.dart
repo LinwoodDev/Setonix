@@ -10,13 +10,11 @@ final class GameMode with GameModeMappable {
   final String? script;
 
   final Map<String, GameTable> tables;
-  final String tableName;
   final Map<String, GameTeam> teams;
 
   GameMode({
     required this.script,
     this.tables = const {},
-    this.tableName = '',
     this.teams = const {},
   });
 }

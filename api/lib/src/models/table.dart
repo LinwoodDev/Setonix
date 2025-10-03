@@ -83,13 +83,6 @@ class GlobalVectorDefinition with GlobalVectorDefinitionMappable {
 }
 
 @MappableClass()
-class GameSeat with GameSeatMappable {
-  final int? color;
-
-  GameSeat({this.color});
-}
-
-@MappableClass()
 class TableCell with TableCellMappable {
   final List<GameObject> objects;
   final List<BoardTile> tiles;
@@ -116,7 +109,7 @@ class BoardTile with BoardTileMappable {
   BoardTile(this.asset, this.tile);
 }
 
-@MappableClass()
+@MappableClass(hook: ItemLocationHook())
 class ItemLocation with ItemLocationMappable {
   final String namespace, id;
 
@@ -130,6 +123,32 @@ class ItemLocation with ItemLocationMappable {
     return ItemLocation(splitted[0], splitted[1]);
   }
 
+  bool get isEmpty => namespace.isEmpty && id.isEmpty;
+
   @override
   String toString() => namespace.isEmpty ? id : '$namespace:$id';
+}
+
+class ItemLocationHook extends MappingHook {
+  final bool nullOnEmpty;
+
+  const ItemLocationHook({this.nullOnEmpty = true});
+
+  @override
+  Object? beforeDecode(Object? value) {
+    if (value is String) {
+      return ItemLocation.fromString(value).toMap();
+    }
+    return value;
+  }
+
+  @override
+  Object? afterEncode(Object? value) {
+    if (value is ItemLocation) {
+      if (value.isEmpty && nullOnEmpty) {
+        return null;
+      }
+    }
+    return value;
+  }
 }

@@ -37,6 +37,11 @@ class _WorldServerInterfaceImpl implements ServerInterface {
   }
 
   @override
+  void print(String message, [String? plugin]) {
+    // TODO: implement better logging
+  }
+
+  @override
   WorldState get state => bloc.state.world;
 
   @override
@@ -82,6 +87,15 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
       })
       ..serverEvents.listen(_processEvent);
 
+    on<CellSwitched>((event, emit) {
+      emit(
+        state.copyWith(
+          selectedCell: event.selected ? event.cell : state.selectedCell,
+          selectedDeck: null,
+          showHand: true,
+        ),
+      );
+    });
     on<ServerWorldEvent>((event, emit) async {
       try {
         final signature = state.assetManager.createSignature();
@@ -116,19 +130,11 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
         ),
       );
     });
-    on<CellSwitched>((event, emit) {
-      emit(
-        state.copyWith(
-          selectedCell: event.toggle && state.selectedCell == event.cell
-              ? null
-              : event.cell,
-          selectedDeck: null,
-          showHand: true,
-        ),
-      );
-    });
     on<SwitchCellOnMoveChanged>((event, emit) {
       emit(state.copyWith(switchCellOnMove: event.value));
+    });
+    on<WaypointVisibilityChanged>((event, emit) {
+      emit(state.copyWith(showWaypoints: event.value));
     });
     on<TableSwitched>((event, emit) {
       emit(
@@ -154,7 +160,8 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
       );
     });
     if (!state.multiplayer.isClient) {
-      _loadScript(state.world.info.script);
+      final mode = state.world.info.gameMode;
+      if (mode != null) _loadGameMode(mode);
     }
   }
 
@@ -222,10 +229,20 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
     }
   }
 
-  Future<void> _loadScript(String? script) async {
+  Future<void> _loadGameMode(ItemLocation? location) async {
     try {
-      if (script == null) return;
-      pluginSystem.loadLuaPlugin(state.assetManager, script);
+      if (location == null) return;
+      final gameMode = state.assetManager
+          .getPack(location.namespace)
+          ?.getMode(location.id);
+      if (gameMode == null) return;
+      final script = gameMode.script;
+      if (script != null && script.isNotEmpty) {
+        pluginSystem.loadLuaPluginFromLocation(
+          state.assetManager,
+          ItemLocation(location.namespace, script),
+        );
+      }
       // ignore: empty_catches
     } catch (e) {}
   }

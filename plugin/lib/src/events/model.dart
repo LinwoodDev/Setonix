@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:networker/networker.dart';
@@ -93,7 +95,45 @@ final class UserLeaveCallback {
   UserLeaveCallback({required this.channel, required this.info});
 }
 
-@MappableClass()
+class _ConvertedConnectionInfo extends ConnectionInfo {
+  final Uri address;
+
+  _ConvertedConnectionInfo(this.address);
+
+  @override
+  FutureOr<void> close() {}
+
+  @override
+  bool get isClosed => true;
+
+  @override
+  FutureOr<void> sendMessage(Uint8List data) {}
+}
+
+class ConnectionInfoMapper extends SimpleMapper<ConnectionInfo> {
+  const ConnectionInfoMapper();
+
+  @override
+  ConnectionInfo decode(Object value) {
+    if (value is Map<String, Object?>) {
+      return _ConvertedConnectionInfo(
+        Uri.parse(value['address'] as String? ?? 'http://localhost'),
+      );
+    }
+    return _ConvertedConnectionInfo(Uri.parse('http://localhost'));
+  }
+
+  @override
+  Object? encode(ConnectionInfo self) {
+    return {
+      'address': self is _ConvertedConnectionInfo
+          ? self.address.toString()
+          : '',
+    };
+  }
+}
+
+@MappableClass(includeCustomMappers: [ConnectionInfoMapper()])
 final class UserJoined extends LocalWorldEvent with UserJoinedMappable {
   final Channel channel;
   final ConnectionInfo info;

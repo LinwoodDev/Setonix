@@ -346,6 +346,21 @@ ServerProcessed processServerEvent(
         state.copyWith(
           tableName: state.tableName == event.name ? '' : state.tableName,
           data: state.data.removeTable(event.name),
+          info: state.info.copyWith(
+            teams: state.info.teams.map(
+              (k, v) => MapEntry(
+                k,
+                v.copyWith(
+                  claimedCells: v.claimedCells
+                      .where((e) => e.table != event.name)
+                      .toSet(),
+                  waypoints: v.waypoints
+                      .where((e) => e.position.table != event.name)
+                      .toList(),
+                ),
+              ),
+            ),
+          ),
         ),
       );
     case NoteChanged():
@@ -418,5 +433,52 @@ ServerProcessed processServerEvent(
       return ServerProcessed(state.copyWith(serverState: event.state));
     case AuthenticatedRequested():
       return ServerProcessed(state.copyWith(authRequest: event));
+    case WaypointChanged():
+      var info = state.info;
+      final team = event.team;
+      final waypoints = List<Waypoint>.from(
+        team == null ? info.waypoints : (info.teams[team]?.waypoints ?? []),
+      );
+      final index = waypoints.indexWhere(
+        (e) => e.name == (event.name ?? event.waypoint.name),
+      );
+      if (index != -1) {
+        waypoints[index] = event.waypoint;
+      } else {
+        waypoints.add(event.waypoint);
+      }
+      if (team == null) {
+        info = info.copyWith(waypoints: waypoints);
+      } else {
+        final gameTeam = info.teams[event.team];
+        if (gameTeam != null) {
+          info = info.copyWith.teams.put(
+            team,
+            gameTeam.copyWith(waypoints: waypoints),
+          );
+        }
+      }
+      return ServerProcessed(state.copyWith(info: info));
+    case WaypointRemoved():
+      var info = state.info;
+      final team = event.team;
+      final waypoints = team == null
+          ? List<Waypoint>.from(info.waypoints)
+          : List<Waypoint>.from(info.teams[team]?.waypoints ?? []);
+      waypoints.removeWhere((e) => e.name == event.name);
+      if (team == null) {
+        info = info.copyWith(waypoints: waypoints);
+      } else {
+        final gameTeam = info.teams[event.team];
+        if (gameTeam != null) {
+          info = info.copyWith.teams.put(
+            team,
+            gameTeam.copyWith(waypoints: waypoints),
+          );
+        }
+      }
+      return ServerProcessed(state.copyWith(info: info));
+    case CellSwitched():
+      return ServerProcessed(null);
   }
 }

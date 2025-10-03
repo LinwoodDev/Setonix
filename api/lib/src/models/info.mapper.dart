@@ -97,6 +97,8 @@ class GameInfoMapper extends ClassMapperBase<GameInfo> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = GameInfoMapper._());
       GameTeamMapper.ensureInitialized();
+      ItemLocationMapper.ensureInitialized();
+      WaypointMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -118,25 +120,34 @@ class GameInfoMapper extends ClassMapperBase<GameInfo> {
     opt: true,
     def: const [],
   );
-  static String? _$script(GameInfo v) => v.script;
-  static const Field<GameInfo, String> _f$script = Field(
-    'script',
-    _$script,
+  static ItemLocation? _$gameMode(GameInfo v) => v.gameMode;
+  static const Field<GameInfo, ItemLocation> _f$gameMode = Field(
+    'gameMode',
+    _$gameMode,
     opt: true,
+  );
+  static List<Waypoint> _$waypoints(GameInfo v) => v.waypoints;
+  static const Field<GameInfo, List<Waypoint>> _f$waypoints = Field(
+    'waypoints',
+    _$waypoints,
+    opt: true,
+    def: const [],
   );
 
   @override
   final MappableFields<GameInfo> fields = const {
     #teams: _f$teams,
     #packs: _f$packs,
-    #script: _f$script,
+    #gameMode: _f$gameMode,
+    #waypoints: _f$waypoints,
   };
 
   static GameInfo _instantiate(DecodingData data) {
     return GameInfo(
       teams: data.dec(_f$teams),
       packs: data.dec(_f$packs),
-      script: data.dec(_f$script),
+      gameMode: data.dec(_f$gameMode),
+      waypoints: data.dec(_f$waypoints),
     );
   }
 
@@ -200,7 +211,15 @@ abstract class GameInfoCopyWith<$R, $In extends GameInfo, $Out>
   MapCopyWith<$R, String, GameTeam, GameTeamCopyWith<$R, GameTeam, GameTeam>>
   get teams;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get packs;
-  $R call({Map<String, GameTeam>? teams, List<String>? packs, String? script});
+  ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get gameMode;
+  ListCopyWith<$R, Waypoint, WaypointCopyWith<$R, Waypoint, Waypoint>>
+  get waypoints;
+  $R call({
+    Map<String, GameTeam>? teams,
+    List<String>? packs,
+    ItemLocation? gameMode,
+    List<Waypoint>? waypoints,
+  });
   GameInfoCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -227,22 +246,35 @@ class _GameInfoCopyWithImpl<$R, $Out>
         (v) => call(packs: v),
       );
   @override
+  ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get gameMode =>
+      $value.gameMode?.copyWith.$chain((v) => call(gameMode: v));
+  @override
+  ListCopyWith<$R, Waypoint, WaypointCopyWith<$R, Waypoint, Waypoint>>
+  get waypoints => ListCopyWith(
+    $value.waypoints,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(waypoints: v),
+  );
+  @override
   $R call({
     Map<String, GameTeam>? teams,
     List<String>? packs,
-    Object? script = $none,
+    Object? gameMode = $none,
+    List<Waypoint>? waypoints,
   }) => $apply(
     FieldCopyWithData({
       if (teams != null) #teams: teams,
       if (packs != null) #packs: packs,
-      if (script != $none) #script: script,
+      if (gameMode != $none) #gameMode: gameMode,
+      if (waypoints != null) #waypoints: waypoints,
     }),
   );
   @override
   GameInfo $make(CopyWithData data) => GameInfo(
     teams: data.get(#teams, or: $value.teams),
     packs: data.get(#packs, or: $value.packs),
-    script: data.get(#script, or: $value.script),
+    gameMode: data.get(#gameMode, or: $value.gameMode),
+    waypoints: data.get(#waypoints, or: $value.waypoints),
   );
 
   @override
@@ -260,6 +292,7 @@ class GameTeamMapper extends ClassMapperBase<GameTeam> {
       MapperContainer.globals.use(_instance = GameTeamMapper._());
       TeamColorMapper.ensureInitialized();
       GlobalVectorDefinitionMapper.ensureInitialized();
+      WaypointMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -284,12 +317,20 @@ class GameTeamMapper extends ClassMapperBase<GameTeam> {
       v.claimedCells;
   static const Field<GameTeam, Set<GlobalVectorDefinition>> _f$claimedCells =
       Field('claimedCells', _$claimedCells, opt: true, def: const {});
+  static List<Waypoint> _$waypoints(GameTeam v) => v.waypoints;
+  static const Field<GameTeam, List<Waypoint>> _f$waypoints = Field(
+    'waypoints',
+    _$waypoints,
+    opt: true,
+    def: const [],
+  );
 
   @override
   final MappableFields<GameTeam> fields = const {
     #description: _f$description,
     #color: _f$color,
     #claimedCells: _f$claimedCells,
+    #waypoints: _f$waypoints,
   };
 
   static GameTeam _instantiate(DecodingData data) {
@@ -297,6 +338,7 @@ class GameTeamMapper extends ClassMapperBase<GameTeam> {
       description: data.dec(_f$description),
       color: data.dec(_f$color),
       claimedCells: data.dec(_f$claimedCells),
+      waypoints: data.dec(_f$waypoints),
     );
   }
 
@@ -357,10 +399,13 @@ extension GameTeamValueCopy<$R, $Out> on ObjectCopyWith<$R, GameTeam, $Out> {
 
 abstract class GameTeamCopyWith<$R, $In extends GameTeam, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
+  ListCopyWith<$R, Waypoint, WaypointCopyWith<$R, Waypoint, Waypoint>>
+  get waypoints;
   $R call({
     String? description,
     TeamColor? color,
     Set<GlobalVectorDefinition>? claimedCells,
+    List<Waypoint>? waypoints,
   });
   GameTeamCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -374,15 +419,24 @@ class _GameTeamCopyWithImpl<$R, $Out>
   late final ClassMapperBase<GameTeam> $mapper =
       GameTeamMapper.ensureInitialized();
   @override
+  ListCopyWith<$R, Waypoint, WaypointCopyWith<$R, Waypoint, Waypoint>>
+  get waypoints => ListCopyWith(
+    $value.waypoints,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(waypoints: v),
+  );
+  @override
   $R call({
     String? description,
     Object? color = $none,
     Set<GlobalVectorDefinition>? claimedCells,
+    List<Waypoint>? waypoints,
   }) => $apply(
     FieldCopyWithData({
       if (description != null) #description: description,
       if (color != $none) #color: color,
       if (claimedCells != null) #claimedCells: claimedCells,
+      if (waypoints != null) #waypoints: waypoints,
     }),
   );
   @override
@@ -390,6 +444,7 @@ class _GameTeamCopyWithImpl<$R, $Out>
     description: data.get(#description, or: $value.description),
     color: data.get(#color, or: $value.color),
     claimedCells: data.get(#claimedCells, or: $value.claimedCells),
+    waypoints: data.get(#waypoints, or: $value.waypoints),
   );
 
   @override

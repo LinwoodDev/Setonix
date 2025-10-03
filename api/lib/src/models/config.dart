@@ -41,6 +41,9 @@ final class SetonixConfig with SetonixConfigMappable {
   final String? endpointSecret;
   static const String defaultEndpointSecret = '';
   static const String envEndpointSecret = 'SETONIX_ENDPOINT_SECRET';
+  final String? gameMode;
+  static const String defaultGameMode = '';
+  static const String envGameMode = 'SETONIX_GAME_MODE';
 
   const SetonixConfig({
     this.host,
@@ -55,6 +58,7 @@ final class SetonixConfig with SetonixConfigMappable {
     this.accountRequired,
     this.apiEndpoint,
     this.endpointSecret,
+    this.gameMode,
   });
 
   static const defaultConfig = SetonixConfig(
@@ -70,6 +74,7 @@ final class SetonixConfig with SetonixConfigMappable {
     accountRequired: defaultAccountRequired,
     apiEndpoint: defaultApiEndpoint,
     endpointSecret: defaultEndpointSecret,
+    gameMode: defaultGameMode,
   );
 
   static SetonixConfig fromEnvironment() {
@@ -128,6 +133,9 @@ final class SetonixConfig with SetonixConfigMappable {
               defaultValue: defaultEndpointSecret,
             )
           : null,
+      gameMode: bool.hasEnvironment(envGameMode)
+          ? String.fromEnvironment(envGameMode, defaultValue: defaultGameMode)
+          : null,
     );
   }
 
@@ -144,5 +152,6 @@ final class SetonixConfig with SetonixConfigMappable {
     whitelistEnabled: other.whitelistEnabled ?? whitelistEnabled,
     apiEndpoint: other.apiEndpoint ?? apiEndpoint,
     endpointSecret: other.endpointSecret ?? endpointSecret,
+    gameMode: other.gameMode ?? gameMode,
   );
 }

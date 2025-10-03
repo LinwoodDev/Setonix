@@ -27,6 +27,10 @@ abstract class PluginCallback implements RustOpaqueInterface {
     required FutureOr<String> Function(StateFieldAccess) stateFieldAccess,
   });
 
+  void changeTableAccess({
+    required FutureOr<String> Function(String?) tableAccess,
+  });
+
   static PluginCallback default_() =>
       RustLib.instance.api.crateApiPluginPluginCallbackDefault();
 }
@@ -64,4 +68,4 @@ class EventResult {
           needsUpdate == other.needsUpdate;
 }
 
-enum StateFieldAccess { table, tableName, info, players, teamMembers }
+enum StateFieldAccess { tableName, tables, info, players, teamMembers }

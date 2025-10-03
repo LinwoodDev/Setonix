@@ -16,6 +16,8 @@ Future<ServerProcessed> _computeEvent(
   );
 }
 
+const scriptSuffix = '.lua';
+
 class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
     with ServerInterface {
   final SetonixServer server;
@@ -41,7 +43,6 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
         ),
       ) {
     _pluginSystem = PluginSystem(server: this);
-    _serverPlugin = _pluginSystem.registerPlugin('', SetonixPlugin.new);
     on<ServerWorldEvent>((event, emit) async {
       final signature = assetManager.createSignature();
       final processed = await _computeEvent(
@@ -53,10 +54,14 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
       processed.responses.forEach(process);
       if (event is WorldInitialized) {
         server.log(
-          "World initialized${(event.info?.script != null) ? " with script ${event.info?.script}" : ""}",
+          "World initialized${(event.info?.gameMode != null) ? " with script ${event.info?.gameMode}" : ""}",
           level: LogLevel.info,
         );
-        await _loadScript((newState ?? state).info.script);
+        _serverPlugin = await _pluginSystem.registerPlugin(
+          '',
+          SetonixPlugin.new,
+        );
+        await _loadScripts((newState ?? state).info.gameMode);
       }
       if (newState == null) return;
       emit(newState);
@@ -67,17 +72,62 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
     });
   }
 
-  Future<void> _loadScript(String? script) async {
+  @override
+  void print(String message, [String? plugin]) {
+    if (plugin != null && plugin.isNotEmpty) {
+      server.log("[$plugin] $message", level: LogLevel.info);
+    } else {
+      server.log(message, level: LogLevel.info);
+    }
+  }
+
+  Future<void> _loadGameMode(ItemLocation location) async {
+    final mode = assetManager.getPack(location.namespace)?.getMode(location.id);
+    if (mode == null) return;
+    final script = mode.script;
+    if (script == null) return;
+    final scriptLocation = ItemLocation.fromString(script, location.namespace);
+    pluginSystem.loadLuaPluginFromLocation(assetManager, scriptLocation);
+  }
+
+  Future<void> _loadScripts(ItemLocation? mode) async {
+    pluginSystem.unregisterAll();
     try {
-      if (script == null) return;
-      pluginSystem.loadLuaPlugin(assetManager, script);
+      if (mode != null) await _loadGameMode(mode);
     } catch (e) {
       server.log('Error loading script: $e', level: LogLevel.error);
+    }
+
+    final scriptsFolder = Directory('scripts');
+    if (!await scriptsFolder.exists()) {
+      await scriptsFolder.create(recursive: true);
+    }
+    final scriptFiles = (await scriptsFolder.list().toList())
+        .whereType<File>()
+        .where((file) => file.path.endsWith(scriptSuffix));
+    server.log(
+      "Found ${scriptFiles.length} script file(s)",
+      level: LogLevel.info,
+    );
+    for (final file in scriptFiles) {
+      try {
+        final code = await file.readAsString();
+        final relativePath = file.path.substring(
+          scriptsFolder.path.length + 1,
+          file.path.length - scriptSuffix.length,
+        );
+        await pluginSystem.registerLuauPlugin(relativePath, code);
+      } catch (e) {
+        server.log(
+          'Error loading script from ${file.path}: $e',
+          level: LogLevel.warning,
+        );
+      }
     }
   }
 
   Future<void> init() async {
-    await _loadScript(state.info.script);
+    await _loadScripts(state.info.gameMode);
   }
 
   Future<void> resetWorld([ItemLocation? mode]) async {
@@ -87,7 +137,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
 
   Future<void> save({bool force = false}) async {
     var file = File(
-      worldName == defaultWorldName ? 'world.stnx' : 'worlds/$worldName.stnx',
+      '${worldName == defaultWorldName ? SetonixServer.defaultWorldName : '${SetonixServer.worldDirectory}/$worldName'}${SetonixServer.worldSuffix}',
     );
     if (!await file.exists()) {
       await file.create(recursive: true);
@@ -128,7 +178,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
           worldName: worldName,
         );
         if (!force) {
-          server.defaultEventSystem.fire(event);
+          server.defaultWorld.pluginSystem.fire(event);
           if (event.cancelled) return;
           server.log(
             'Processing event by ${event.source}: ${limitOutput(event.clientEvent)}, answered with ${limitOutput(event.serverEvent)}',
