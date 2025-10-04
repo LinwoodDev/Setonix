@@ -30,3 +30,44 @@ class BoardTile with BoardTileMappable {
 
   BoardTile(this.asset, this.tile);
 }
+
+@MappableClass()
+sealed class CellMergeStrategy with CellMergeStrategyMappable {
+  const CellMergeStrategy();
+}
+
+@MappableClass()
+final class StackedCellMergeStrategy extends CellMergeStrategy
+    with StackedCellMergeStrategyMappable {
+  final int visiblePercentage;
+  final bool reverse;
+
+  const StackedCellMergeStrategy({
+    this.visiblePercentage = 10,
+    this.reverse = false,
+  });
+}
+
+@MappableClass()
+final class DistributeCellMergeStrategy extends CellMergeStrategy
+    with DistributeCellMergeStrategyMappable {
+  final int maxCards;
+  final bool reverse;
+  final bool fillVariableSpace;
+
+  const DistributeCellMergeStrategy({
+    this.maxCards = 5,
+    this.reverse = false,
+    this.fillVariableSpace = true,
+  });
+}
+
+@MappableClass()
+enum CellMergeDirection { horizontal, vertical }
+
+@MappableClass()
+final class DirectionalCellMerge extends CellMergeStrategy
+    with DirectionalCellMergeMappable {
+  final CellMergeDirection direction;
+  const DirectionalCellMerge(this.direction);
+}
