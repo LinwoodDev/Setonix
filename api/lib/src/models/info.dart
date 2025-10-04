@@ -1,6 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 
-import 'table.dart';
+import 'vector.dart';
 import 'waypoint.dart';
 
 part 'info.mapper.dart';

@@ -11,6 +11,7 @@ import 'mode.dart';
 import 'definition.dart';
 import 'table.dart';
 import 'translation.dart';
+import 'vector.dart';
 
 const kPackMetadataPath = 'pack.json';
 const kPackInfoPath = 'info.json';

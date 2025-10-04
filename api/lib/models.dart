@@ -1,4 +1,7 @@
+export 'src/helpers/equality.dart';
+
 export 'src/models/background.dart';
+export 'src/models/cell.dart';
 export 'src/models/chat.dart';
 export 'src/models/config.dart';
 export 'src/models/data.dart';

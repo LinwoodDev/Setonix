@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:networker/networker.dart';
 
+import '../models/cell.dart';
 import '../models/chat.dart';
 import '../models/data.dart';
 import '../models/dialog.dart';
