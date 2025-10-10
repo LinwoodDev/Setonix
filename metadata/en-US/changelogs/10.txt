@@ -2,5 +2,6 @@
   * Add game modes to packs
   * Add scripts directory
 * Add waypoints
+* Fix home page header text color in certain themes
 
 Read more here: https://linwood.dev/setonix/0.6.0
