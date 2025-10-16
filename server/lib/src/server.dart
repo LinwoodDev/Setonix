@@ -30,7 +30,6 @@ String limitOutput(Object? value, [int limit = 500]) {
 }
 
 final class SetonixServer {
-  static const String defaultWorldName = 'world';
   static const String worldDirectory = 'worlds';
   static const String worldSuffix = '.stnx';
 

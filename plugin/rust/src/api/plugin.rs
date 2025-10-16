@@ -18,6 +18,7 @@ pub enum StateFieldAccess {
     Info,
     Players,
     TeamMembers,
+    PluginId,
 }
 
 #[derive(Clone)]

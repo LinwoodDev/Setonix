@@ -1,10 +1,10 @@
 local DeckPosition = {
-  table=TableName,
+  table=State.TableName,
   x="0",
   y="0"
 }
 local StackPosition = {
-  table=TableName,
+  table=State.TableName,
   x="0",
   y="1"
 }
@@ -17,26 +17,28 @@ function Reset()
   Setup()
 end
 function Setup()
-  Process({
+  print("setup")
+  print(State.PluginId)
+  Server:Process({
     type="CellVisibilityChanged",
     cell=DeckPosition,
     visibility=false
-  })
-  Process({
+  }, true)
+  Server:Process({
     type="DeckSpawned",
     cell=DeckPosition,
-    deck=PluginId..":cards"
-  })
-  Process({
+    deck=State.PluginId..":cards"
+  }, true)
+  Server:Process({
     type="CellShuffleRequest",
-    cell=DeckPosition,
-  })
+    cell=DeckPosition
+  }, true)
 end
 function RemoveStack()
-  Process({
+  Server:Process({
     type="ObjectsRemoved",
     cell=StackPosition
-  })
+  }, true)
 end
 local VariationsScores : {[string]: {number}} = {
   ["1"] = {1},
@@ -57,7 +59,7 @@ local VariationsScores : {[string]: {number}} = {
 local MaxScore = 21
 function CalculateCard(identifier) : {number}
   local splitted = string.split(identifier, ":")
-  if #splitted ~= 2 or splitted[1] ~= PluginId then
+  if #splitted ~= 2 or splitted[1] ~= State.PluginId then
     return {0}
   end 
   splitted = string.split(splitted[2], "-")
@@ -68,7 +70,7 @@ function CalculateCard(identifier) : {number}
   return VariationsScores[value]
 end
 function GetCellObjects(position)
-  local cell = Table.cells["("..position.x..", "..position.y..")"]
+  local cell = State.Table.cells["("..position.x..", "..position.y..")"]
   if not cell then
     return {}
   end
@@ -121,15 +123,15 @@ function CalculateStack() : number
   return lowestOver or 0
 end
 function GetNextPlayer() : number?
-  local index = table.find(Players, CurrentPlayer)
+  local index = table.find(State.Players, CurrentPlayer)
   if not index then
     return nil
   end
   index = index + 1
-  if index > #Players then
+  if index > #State.Players then
     index = 1
   end
-  return Players[index]
+  return State.Players[index]
 end
 function NextRound()
   PlayerScores[CurrentPlayer] = CalculateStack()
@@ -195,3 +197,5 @@ Events.MessageRequest.Connect(function(event, details)
     details.cancelled = true
   end
 end)
+
+Setup()

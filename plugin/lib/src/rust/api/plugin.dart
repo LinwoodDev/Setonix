@@ -68,4 +68,11 @@ class EventResult {
           needsUpdate == other.needsUpdate;
 }
 
-enum StateFieldAccess { tableName, tables, info, players, teamMembers }
+enum StateFieldAccess {
+  tableName,
+  tables,
+  info,
+  players,
+  teamMembers,
+  pluginId,
+}

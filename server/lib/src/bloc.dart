@@ -57,10 +57,6 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
           "World initialized${(event.info?.gameMode != null) ? " with script ${event.info?.gameMode}" : ""}",
           level: LogLevel.info,
         );
-        _serverPlugin = await _pluginSystem.registerPlugin(
-          '',
-          SetonixPlugin.new,
-        );
         await _loadScripts((newState ?? state).info.gameMode);
       }
       if (newState == null) return;
@@ -81,19 +77,30 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
     }
   }
 
-  Future<void> _loadGameMode(ItemLocation location) async {
+  Future<bool> _loadGameMode(ItemLocation location) async {
     final mode = assetManager.getPack(location.namespace)?.getMode(location.id);
-    if (mode == null) return;
+    if (mode == null) return false;
     final script = mode.script;
-    if (script == null) return;
+    if (script == null) return false;
     final scriptLocation = ItemLocation.fromString(script, location.namespace);
-    pluginSystem.loadLuaPluginFromLocation(assetManager, scriptLocation);
+    return await pluginSystem.loadLuaPluginFromLocation(
+          assetManager,
+          scriptLocation,
+        ) !=
+        null;
   }
 
   Future<void> _loadScripts(ItemLocation? mode) async {
     pluginSystem.unregisterAll();
     try {
-      if (mode != null) await _loadGameMode(mode);
+      if (mode != null) {
+        if (!await _loadGameMode(mode)) {
+          server.log(
+            'Failed to load game mode script: $mode',
+            level: LogLevel.warning,
+          );
+        }
+      }
     } catch (e) {
       server.log('Error loading script: $e', level: LogLevel.error);
     }
@@ -127,6 +134,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
   }
 
   Future<void> init() async {
+    _serverPlugin = await _pluginSystem.registerPlugin('', SetonixPlugin.new);
     await _loadScripts(state.info.gameMode);
   }
 
@@ -137,7 +145,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
 
   Future<void> save({bool force = false}) async {
     var file = File(
-      '${worldName == defaultWorldName ? SetonixServer.defaultWorldName : '${SetonixServer.worldDirectory}/$worldName'}${SetonixServer.worldSuffix}',
+      '${worldName == defaultWorldName ? defaultWorldName : '${SetonixServer.worldDirectory}/$worldName'}${SetonixServer.worldSuffix}',
     );
     if (!await file.exists()) {
       await file.create(recursive: true);

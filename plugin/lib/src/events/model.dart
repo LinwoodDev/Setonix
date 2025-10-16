@@ -8,7 +8,7 @@ import 'package:setonix_api/setonix_api.dart';
 
 part 'model.mapper.dart';
 
-const defaultWorldName = '';
+const defaultWorldName = 'world';
 
 base class Event<T extends WorldEvent> {
   final T clientEvent;

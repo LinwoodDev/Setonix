@@ -914,6 +914,7 @@ impl SseDecode for crate::api::plugin::StateFieldAccess {
             2 => crate::api::plugin::StateFieldAccess::Info,
             3 => crate::api::plugin::StateFieldAccess::Players,
             4 => crate::api::plugin::StateFieldAccess::TeamMembers,
+            5 => crate::api::plugin::StateFieldAccess::PluginId,
             _ => unreachable!("Invalid variant for StateFieldAccess: {}", inner),
         };
     }
@@ -1061,6 +1062,7 @@ impl flutter_rust_bridge::IntoDart for crate::api::plugin::StateFieldAccess {
             Self::Info => 2.into_dart(),
             Self::Players => 3.into_dart(),
             Self::TeamMembers => 4.into_dart(),
+            Self::PluginId => 5.into_dart(),
             _ => unreachable!(),
         }
     }
@@ -1251,6 +1253,7 @@ impl SseEncode for crate::api::plugin::StateFieldAccess {
                 crate::api::plugin::StateFieldAccess::Info => 2,
                 crate::api::plugin::StateFieldAccess::Players => 3,
                 crate::api::plugin::StateFieldAccess::TeamMembers => 4,
+                crate::api::plugin::StateFieldAccess::PluginId => 5,
                 _ => {
                     unimplemented!("");
                 }

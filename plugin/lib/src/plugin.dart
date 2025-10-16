@@ -52,6 +52,7 @@ final class PluginSystem {
         (c) => LuauPlugin(code: code, callback: c),
         pluginServer,
         onPrint: (e) => server.print(e, name),
+        pluginId: () => name,
       ),
     );
   }
@@ -60,16 +61,16 @@ final class PluginSystem {
     _plugins.remove(name);
   }
 
-  void loadLuaPluginFromLocation(
+  Future<SetonixPlugin?> loadLuaPluginFromLocation(
     AssetManager assetManager,
     ItemLocation location, [
     String name = 'game',
-  ]) {
+  ]) async {
     final data = assetManager
         .getPack(location.namespace)
         ?.getScript(location.id);
-    if (data == null) return;
-    registerLuauPlugin(name, data);
+    if (data == null) return null;
+    return registerLuauPlugin(name, data);
   }
 
   bool get _nativeEnabled => RustLib.instance.initialized;
@@ -163,6 +164,7 @@ final class RustSetonixPlugin extends SetonixPlugin {
     RustPlugin Function(PluginCallback) builder,
     PluginServerInterface server, {
     void Function(String)? onPrint,
+    String Function()? pluginId,
   }) async {
     final callback = PluginCallback.default_();
     if (onPrint != null) {
@@ -191,7 +193,16 @@ final class RustSetonixPlugin extends SetonixPlugin {
           StateFieldAccess.tableName => jsonEncode(state.tableName),
           StateFieldAccess.players => jsonEncode(server.players),
           StateFieldAccess.teamMembers => jsonEncode(state.teamMembers),
+          StateFieldAccess.pluginId => jsonEncode(
+            pluginId?.call() ?? 'unknown',
+          ),
         };
+      },
+    );
+    callback.changeTableAccess(
+      tableAccess: (tableName) {
+        final table = server.state.data.getTable(tableName ?? '');
+        return table?.toJson() ?? "{}";
       },
     );
     final plugin = builder(callback);

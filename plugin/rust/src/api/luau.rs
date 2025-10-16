@@ -6,9 +6,12 @@ use futures::executor::block_on;
 use mlua::prelude::*;
 use state::LuauStateUserData;
 
+use crate::api::luau::server::LuauServerUserData;
+
 use super::plugin::*;
 
 pub mod event;
+pub mod server;
 pub mod state;
 
 impl PluginCallback {
@@ -71,9 +74,10 @@ impl LuauPlugin {
         let event_system = Arc::new(Mutex::new(event_system));
         engine
             .globals()
-            .set("Events", LuauEventSystemUserData(Arc::clone(&event_system), callback.clone()))
+            .set("Events", LuauEventSystemUserData(Arc::clone(&event_system)))
             .unwrap();
-        engine.globals().set("State", LuauStateUserData(callback)).unwrap();
+        engine.globals().set("State", LuauStateUserData(callback.clone())).unwrap();
+        engine.globals().set("Server", LuauServerUserData(callback)).unwrap();
 
         let engine = Arc::new(Mutex::new(engine));
         Self {
