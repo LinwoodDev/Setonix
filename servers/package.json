@@ -8,11 +8,11 @@
     "preview": "astro preview",
     "astro": "astro"
   },
-  "packageManager": "pnpm@10.18.3",
+  "packageManager": "pnpm@10.19.0",
   "dependencies": {
     "@astrojs/node": "^9.5.0",
-    "@cacheable/node-cache": "^1.7.3",
+    "@cacheable/node-cache": "^1.7.4",
     "@linwooddev/style": "^0.4.2",
-    "astro": "^5.14.5"
+    "astro": "^5.15.1"
   }
 }

@@ -13,16 +13,11 @@ import 'package:setonix/bloc/world/state.dart';
 import 'package:setonix/board/grid.dart';
 import 'package:setonix/board/hand/view.dart';
 import 'package:setonix/helpers/scroll.dart';
-import 'package:setonix/helpers/secondary.dart';
 import 'package:setonix/helpers/vector.dart';
 import 'package:setonix_api/setonix_api.dart';
 
 class BoardGame extends FlameGame
-    with
-        ScrollDetector,
-        KeyboardEvents,
-        SecondaryTapDetector,
-        HasCollisionDetection {
+    with ScrollDetector, KeyboardEvents, HasCollisionDetection {
   final VoidCallback onEscape;
   final ContextMenuController contextMenuController;
   late final Sprite selectionSprite, blankSprite;
@@ -84,13 +79,6 @@ class BoardGame extends FlameGame
     componentsAtPoint(
       info.eventPosition.widget,
     ).whereType<ScrollCallbacks>().any((element) => element.onScroll(info));
-  }
-
-  @override
-  void onSecondaryTapUp(TapUpInfo info) {
-    componentsAtPoint(info.eventPosition.widget)
-        .whereType<SecondaryTapCallbacks>()
-        .any((element) => element.onSecondaryTapUp(info));
   }
 
   Vector2 _currentCameraVelocity = Vector2.zero();

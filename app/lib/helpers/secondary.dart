@@ -3,18 +3,13 @@ import 'package:flame/game.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 
-mixin SecondaryTapCallbacks {
-  bool onSecondaryTapUp(TapUpInfo info) => false;
-}
-
 mixin DetailsTapCallbacks on SecondaryTapCallbacks, DoubleTapCallbacks {
   Vector2? _position;
 
   @override
   @mustCallSuper
-  bool onSecondaryTapUp(TapUpInfo info) {
-    onContextMenu(info.eventPosition.global);
-    return true;
+  void onSecondaryTapUp(SecondaryTapUpEvent event) {
+    onContextMenu(event.devicePosition);
   }
 
   @override

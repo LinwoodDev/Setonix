@@ -10,20 +10,20 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.4",
+    "@astrojs/check": "^0.9.5",
     "@astrojs/react": "^4.4.0",
     "@astrojs/starlight": "^0.36.1",
     "@phosphor-icons/react": "^2.1.10",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
-    "astro": "^5.14.5",
+    "astro": "^5.15.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "remark-gemoji": "^8.0.0",
     "remark-heading-id": "^1.0.1",
     "typescript": "^5.9.3"
   },
-  "packageManager": "pnpm@10.18.3",
+  "packageManager": "pnpm@10.19.0",
   "devDependencies": {
     "@vite-pwa/astro": "^1.1.1",
     "sass": "^1.93.2",
