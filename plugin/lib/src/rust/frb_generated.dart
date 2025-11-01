@@ -66,7 +66,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.11.1';
 
   @override
-  int get rustContentHash => -1139025024;
+  int get rustContentHash => 1649884672;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -90,6 +90,7 @@ abstract class RustLibApi extends BaseApi {
     required String event,
     required String serverEvent,
     required int source,
+    required bool cancelled,
     required int target,
   });
 
@@ -120,10 +121,23 @@ abstract class RustLibApi extends BaseApi {
 
   PluginCallback crateApiPluginPluginCallbackDefault();
 
+  Future<EventResult> crateApiPluginEventResultBuild({
+    required EventDetails details,
+    EventDetails? previous,
+  });
+
   Future<int> crateApiSimpleSimpleAdderTwinNormal({
     required int a,
     required int b,
   });
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_EventDetails;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_EventDetails;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_EventDetailsPtr;
 
   RustArcIncrementStrongCountFnType
   get rust_arc_increment_strong_count_LuauPlugin;
@@ -222,6 +236,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     required String event,
     required String serverEvent,
     required int source,
+    required bool cancelled,
     required int target,
   }) {
     return handler.executeNormal(
@@ -236,6 +251,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           sse_encode_String(event, serializer);
           sse_encode_String(serverEvent, serializer);
           sse_encode_i_16(source, serializer);
+          sse_encode_bool(cancelled, serializer);
           sse_encode_i_16(target, serializer);
           pdeCallFfi(
             generalizedFrbRustBinding,
@@ -249,7 +265,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeErrorData: null,
         ),
         constMeta: kCrateApiLuauLuauPluginRunEventConstMeta,
-        argValues: [that, eventType, event, serverEvent, source, target],
+        argValues: [
+          that,
+          eventType,
+          event,
+          serverEvent,
+          source,
+          cancelled,
+          target,
+        ],
         apiImpl: this,
       ),
     );
@@ -264,6 +288,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           "event",
           "serverEvent",
           "source",
+          "cancelled",
           "target",
         ],
       );
@@ -473,6 +498,47 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(debugName: "PluginCallback_default", argNames: []);
 
   @override
+  Future<EventResult> crateApiPluginEventResultBuild({
+    required EventDetails details,
+    EventDetails? previous,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+            details,
+            serializer,
+          );
+          sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+            previous,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 12,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_event_result,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiPluginEventResultBuildConstMeta,
+        argValues: [details, previous],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiPluginEventResultBuildConstMeta =>
+      const TaskConstMeta(
+        debugName: "event_result_build",
+        argNames: ["details", "previous"],
+      );
+
+  @override
   Future<int> crateApiSimpleSimpleAdderTwinNormal({
     required int a,
     required int b,
@@ -486,7 +552,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 12,
+            funcId: 13,
             port: port_,
           );
         },
@@ -685,6 +751,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_EventDetails => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_EventDetails => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails;
+
+  RustArcIncrementStrongCountFnType
   get rust_arc_increment_strong_count_LuauPlugin => wire
       .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin;
 
@@ -704,6 +778,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   AnyhowException dco_decode_AnyhowException(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return AnyhowException(raw as String);
+  }
+
+  @protected
+  EventDetails
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return EventDetailsImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
@@ -792,6 +875,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  EventDetails
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return EventDetailsImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
   LuauPlugin
   dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin(
     dynamic raw,
@@ -834,6 +926,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  EventDetails
+  dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+      raw,
+    );
+  }
+
+  @protected
   bool dco_decode_box_autoadd_bool(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as bool;
@@ -849,12 +952,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   EventResult dco_decode_event_result(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 3)
-      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    if (arr.length != 4)
+      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
     return EventResult(
       target: dco_decode_i_16(arr[0]),
       serverEvent: dco_decode_opt_String(arr[1]),
       needsUpdate: dco_decode_opt_Set_i_16_None(arr[2]),
+      cancelled: dco_decode_bool(arr[3]),
     );
   }
 
@@ -901,6 +1005,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  EventDetails?
+  dco_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null
+        ? null
+        : dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+            raw,
+          );
+  }
+
+  @protected
   bool? dco_decode_opt_box_autoadd_bool(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_bool(raw);
@@ -941,6 +1058,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_String(deserializer);
     return AnyhowException(inner);
+  }
+
+  @protected
+  EventDetails
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return EventDetailsImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
   }
 
   @protected
@@ -999,6 +1128,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  EventDetails
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return EventDetailsImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
   LuauPlugin
   sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin(
     SseDeserializer deserializer,
@@ -1043,6 +1184,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  EventDetails
+  sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+      deserializer,
+    ));
+  }
+
+  @protected
   bool sse_decode_box_autoadd_bool(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_bool(deserializer));
@@ -1060,10 +1212,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_target = sse_decode_i_16(deserializer);
     var var_serverEvent = sse_decode_opt_String(deserializer);
     var var_needsUpdate = sse_decode_opt_Set_i_16_None(deserializer);
+    var var_cancelled = sse_decode_bool(deserializer);
     return EventResult(
       target: var_target,
       serverEvent: var_serverEvent,
       needsUpdate: var_needsUpdate,
+      cancelled: var_cancelled,
     );
   }
 
@@ -1122,6 +1276,22 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  EventDetails?
+  sse_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+        deserializer,
+      ));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
   bool? sse_decode_opt_box_autoadd_bool(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -1174,6 +1344,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.message, serializer);
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+    EventDetails self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as EventDetailsImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
   }
 
   @protected
@@ -1314,6 +1497,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+    EventDetails self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as EventDetailsImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
   sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin(
     LuauPlugin self,
     SseSerializer serializer,
@@ -1360,6 +1556,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void
+  sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+    EventDetails self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+      self,
+      serializer,
+    );
+  }
+
+  @protected
   void sse_encode_box_autoadd_bool(bool self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_bool(self, serializer);
@@ -1377,6 +1586,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_i_16(self.target, serializer);
     sse_encode_opt_String(self.serverEvent, serializer);
     sse_encode_opt_Set_i_16_None(self.needsUpdate, serializer);
+    sse_encode_bool(self.cancelled, serializer);
   }
 
   @protected
@@ -1438,6 +1648,23 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void
+  sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+    EventDetails? self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+        self,
+        serializer,
+      );
+    }
+  }
+
+  @protected
   void sse_encode_opt_box_autoadd_bool(bool? self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -1485,6 +1712,26 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 }
 
 @sealed
+class EventDetailsImpl extends RustOpaque implements EventDetails {
+  // Not to be used by end users
+  EventDetailsImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  EventDetailsImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_EventDetails,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_EventDetails,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_EventDetailsPtr,
+  );
+}
+
+@sealed
 class LuauPluginImpl extends RustOpaque implements LuauPlugin {
   // Not to be used by end users
   LuauPluginImpl.frbInternalDcoDecode(List<dynamic> wire)
@@ -1511,6 +1758,7 @@ class LuauPluginImpl extends RustOpaque implements LuauPlugin {
     required String event,
     required String serverEvent,
     required int source,
+    required bool cancelled,
     required int target,
   }) => RustLib.instance.api.crateApiLuauLuauPluginRunEvent(
     that: this,
@@ -1518,6 +1766,7 @@ class LuauPluginImpl extends RustOpaque implements LuauPlugin {
     event: event,
     serverEvent: serverEvent,
     source: source,
+    cancelled: cancelled,
     target: target,
   );
 }

@@ -44,17 +44,18 @@ impl RustPlugin for LuauPlugin {
         event: String,
         server_event: String,
         source: Channel,
+        cancelled: bool,
         target: Channel,
     ) -> EventResult {
         let server_event: JsonObject = serde_json::from_str(&server_event).unwrap();
-        let details = EventDetails::new(server_event, target, source, None);
+        let details = EventDetails::new(server_event, target, source, cancelled, None);
         let lua_value = self.engine.lock().unwrap().to_value(&details).unwrap();
         self.event_system
             .lock()
             .unwrap()
             .run_event_handler(&event_type, (event, &lua_value));
-        let details: EventDetails = self.engine.lock().unwrap().from_value(lua_value).unwrap();
-        EventResult::from(details)
+        let updated: EventDetails = self.engine.lock().unwrap().from_value(lua_value).unwrap();
+        EventResult::build(updated, Some(details))
     }
 
     fn run(&self) -> anyhow::Result<()> {

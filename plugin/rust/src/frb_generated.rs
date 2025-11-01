@@ -40,7 +40,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.11.1";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -1139025024;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1649884672;
 
 // Section: executor
 
@@ -160,6 +160,7 @@ fn wire__crate__api__luau__LuauPlugin_run_event_impl(
             let api_event = <String>::sse_decode(&mut deserializer);
             let api_server_event = <String>::sse_decode(&mut deserializer);
             let api_source = <i16>::sse_decode(&mut deserializer);
+            let api_cancelled = <bool>::sse_decode(&mut deserializer);
             let api_target = <i16>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| {
@@ -184,6 +185,7 @@ fn wire__crate__api__luau__LuauPlugin_run_event_impl(
                         api_event,
                         api_server_event,
                         api_source,
+                        api_cancelled,
                         api_target,
                     ))?;
                     Ok(output_ok)
@@ -494,6 +496,43 @@ fn wire__crate__api__plugin__PluginCallback_default_impl(
         },
     )
 }
+fn wire__crate__api__plugin__event_result_build_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "event_result_build",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_details = <EventDetails>::sse_decode(&mut deserializer);
+            let api_previous = <Option<EventDetails>>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| {
+                transform_result_sse::<_, ()>((move || {
+                    let output_ok = Result::<_, ()>::Ok(crate::api::plugin::EventResult::build(
+                        api_details,
+                        api_previous,
+                    ))?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
 fn wire__crate__api__simple__simple_adder_twin_normal_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
@@ -713,6 +752,9 @@ fn decode_DartFn_Inputs_state_field_access_Output_String_AnyhowException(
     }
 }
 flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
+    flutter_rust_bridge::for_generated::RustAutoOpaqueInner<EventDetails>
+);
+flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
     flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LuauPlugin>
 );
 flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
@@ -726,6 +768,16 @@ impl SseDecode for flutter_rust_bridge::for_generated::anyhow::Error {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <String>::sse_decode(deserializer);
         return flutter_rust_bridge::for_generated::anyhow::anyhow!("{}", inner);
+    }
+}
+
+impl SseDecode for EventDetails {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <RustOpaqueMoi<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<EventDetails>,
+        >>::sse_decode(deserializer);
+        return flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(inner);
     }
 }
 
@@ -754,6 +806,16 @@ impl SseDecode for flutter_rust_bridge::DartOpaque {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <usize>::sse_decode(deserializer);
         return unsafe { flutter_rust_bridge::for_generated::sse_decode_dart_opaque(inner) };
+    }
+}
+
+impl SseDecode
+    for RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<EventDetails>>
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <usize>::sse_decode(deserializer);
+        return decode_rust_opaque_moi(inner);
     }
 }
 
@@ -807,10 +869,12 @@ impl SseDecode for crate::api::plugin::EventResult {
         let mut var_serverEvent = <Option<String>>::sse_decode(deserializer);
         let mut var_needsUpdate =
             <Option<std::collections::HashSet<i16>>>::sse_decode(deserializer);
+        let mut var_cancelled = <bool>::sse_decode(deserializer);
         return crate::api::plugin::EventResult {
             target: var_target,
             server_event: var_serverEvent,
             needs_update: var_needsUpdate,
+            cancelled: var_cancelled,
         };
     }
 }
@@ -876,6 +940,17 @@ impl SseDecode for Option<String> {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
             return Some(<String>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<EventDetails> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<EventDetails>::sse_decode(deserializer));
         } else {
             return None;
         }
@@ -950,7 +1025,8 @@ fn pde_ffi_dispatcher_primary_impl(
     match func_id {
         2 => wire__crate__api__luau__LuauPlugin_run_impl(port, ptr, rust_vec_len, data_len),
         3 => wire__crate__api__luau__LuauPlugin_run_event_impl(port, ptr, rust_vec_len, data_len),
-        12 => wire__crate__api__simple__simple_adder_twin_normal_impl(
+        12 => wire__crate__api__plugin__event_result_build_impl(port, ptr, rust_vec_len, data_len),
+        13 => wire__crate__api__simple__simple_adder_twin_normal_impl(
             port,
             ptr,
             rust_vec_len,
@@ -1002,6 +1078,21 @@ fn pde_ffi_dispatcher_sync_impl(
 // Section: rust2dart
 
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<EventDetails> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self.0)
+            .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for FrbWrapper<EventDetails> {}
+
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<EventDetails>> for EventDetails {
+    fn into_into_dart(self) -> FrbWrapper<EventDetails> {
+        self.into()
+    }
+}
+
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for FrbWrapper<LuauPlugin> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self.0)
@@ -1038,6 +1129,7 @@ impl flutter_rust_bridge::IntoDart for crate::api::plugin::EventResult {
             self.target.into_into_dart().into_dart(),
             self.server_event.into_into_dart().into_dart(),
             self.needs_update.into_into_dart().into_dart(),
+            self.cancelled.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -1086,6 +1178,13 @@ impl SseEncode for flutter_rust_bridge::for_generated::anyhow::Error {
     }
 }
 
+impl SseEncode for EventDetails {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<EventDetails>>>::sse_encode(flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self), serializer);
+    }
+}
+
 impl SseEncode for LuauPlugin {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -1104,6 +1203,17 @@ impl SseEncode for flutter_rust_bridge::DartOpaque {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <usize>::sse_encode(self.encode(), serializer);
+    }
+}
+
+impl SseEncode
+    for RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<EventDetails>>
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        let (ptr, size) = self.sse_encode_raw();
+        <usize>::sse_encode(ptr, serializer);
+        <i32>::sse_encode(size, serializer);
     }
 }
 
@@ -1156,6 +1266,7 @@ impl SseEncode for crate::api::plugin::EventResult {
         <i16>::sse_encode(self.target, serializer);
         <Option<String>>::sse_encode(self.server_event, serializer);
         <Option<std::collections::HashSet<i16>>>::sse_encode(self.needs_update, serializer);
+        <bool>::sse_encode(self.cancelled, serializer);
     }
 }
 
@@ -1219,6 +1330,16 @@ impl SseEncode for Option<String> {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
             <String>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<EventDetails> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <EventDetails>::sse_encode(value, serializer);
         }
     }
 }
@@ -1307,6 +1428,20 @@ mod io {
     flutter_rust_bridge::frb_generated_boilerplate_io!();
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_setonix_plugin_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+        ptr: *const std::ffi::c_void,
+    ) {
+        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<EventDetails>>::increment_strong_count(ptr as _);
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_setonix_plugin_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+        ptr: *const std::ffi::c_void,
+    ) {
+        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<EventDetails>>::decrement_strong_count(ptr as _);
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_setonix_plugin_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin(
         ptr: *const std::ffi::c_void,
     ) {
@@ -1360,6 +1495,20 @@ mod web {
     // Section: boilerplate
 
     flutter_rust_bridge::frb_generated_boilerplate_web!();
+
+    #[wasm_bindgen]
+    pub fn rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+        ptr: *const std::ffi::c_void,
+    ) {
+        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<EventDetails>>::increment_strong_count(ptr as _);
+    }
+
+    #[wasm_bindgen]
+    pub fn rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEventDetails(
+        ptr: *const std::ffi::c_void,
+    ) {
+        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<EventDetails>>::decrement_strong_count(ptr as _);
+    }
 
     #[wasm_bindgen]
     pub fn rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin(

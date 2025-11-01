@@ -86,9 +86,9 @@ final class PluginSystem {
     List<String>.from(_plugins.keys).forEach(unregisterPlugin);
   }
 
-  void fire(Event event) {
+  Future<void> fire(Event event) async {
     for (final plugin in _plugins.values) {
-      plugin.eventSystem.fire(event);
+      await plugin.eventSystem.fire(event);
     }
   }
 
@@ -207,14 +207,21 @@ final class RustSetonixPlugin extends SetonixPlugin {
     );
     final plugin = builder(callback);
     final instance = RustSetonixPlugin._(server, plugin);
-    instance.eventSystem.on<WorldEvent>((e) {
-      instance.plugin.runEvent(
+    instance.eventSystem.on<WorldEvent>((e) async {
+      final result = await instance.plugin.runEvent(
         eventType: e.clientEvent.runtimeType.toString(),
         event: e.clientEvent.toJson(),
         serverEvent: e.serverEvent.toJson(),
         target: e.target,
         source: e.source,
+        cancelled: e.cancelled,
       );
+      e.cancelled = result.cancelled;
+      e.needsUpdate = result.needsUpdate;
+      final serverEvent = result.serverEvent;
+      if (serverEvent != null) {
+        e.serverEvent = ServerWorldEventMapper.fromJson(serverEvent);
+      }
     });
     await instance.plugin.run();
     return instance;

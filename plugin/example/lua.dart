@@ -39,6 +39,7 @@ Future<void> main() async {
     serverEvent: '{"key": "server-value"}',
     source: 0,
     target: 0,
+    cancelled: false,
   );
   print("cancelled: ${result.serverEvent == null}");
   result = await plugin.runEvent(
@@ -47,6 +48,7 @@ Future<void> main() async {
     serverEvent: '{"key": "server-value"}',
     source: 0,
     target: 0,
+    cancelled: false,
   );
   print("cancelled: ${result.serverEvent == null}");
   callback.dispose();

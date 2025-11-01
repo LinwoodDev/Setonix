@@ -177,6 +177,10 @@ end
 Events.CellHideChanged.Connect(function(_, details)
   details.cancelled = true
 end)
+Events.ObjectsSpawned.Connect(function(event, details)
+  details.cancelled = true
+  print("Spawning objects is not allowed.")
+end)
 Events.ObjectMoved.Connect(function(event, details)
   local isFromDeck = event.from.table == DeckPosition.table and event.from.x == DeckPosition.x and event.from.y == DeckPosition.y
   local isToStack = event.to.table == StackPosition.table and event.to.x == StackPosition.x and event.to.y == StackPosition.y

@@ -7,9 +7,11 @@ import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 // These functions are ignored because they are not marked as `pub`: `get`, `new`
-// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `EventDetails`, `StateFieldAccessIter`
+// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `StateFieldAccessIter`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `fmt`, `fmt`, `iter`, `len`, `next_back`, `next`, `nth`, `size_hint`
-// These functions are ignored (category: IgnoreBecauseExplicitAttribute): `from`
+
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<EventDetails>>
+abstract class EventDetails implements RustOpaqueInterface {}
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<PluginCallback>>
 abstract class PluginCallback implements RustOpaqueInterface {
@@ -43,6 +45,7 @@ abstract class RustPlugin {
     required String event,
     required String serverEvent,
     required int source,
+    required bool cancelled,
     required int target,
   });
 }
@@ -51,12 +54,29 @@ class EventResult {
   final int target;
   final String? serverEvent;
   final Set<int>? needsUpdate;
+  final bool cancelled;
 
-  const EventResult({required this.target, this.serverEvent, this.needsUpdate});
+  const EventResult({
+    required this.target,
+    this.serverEvent,
+    this.needsUpdate,
+    required this.cancelled,
+  });
+
+  static Future<EventResult> build({
+    required EventDetails details,
+    EventDetails? previous,
+  }) => RustLib.instance.api.crateApiPluginEventResultBuild(
+    details: details,
+    previous: previous,
+  );
 
   @override
   int get hashCode =>
-      target.hashCode ^ serverEvent.hashCode ^ needsUpdate.hashCode;
+      target.hashCode ^
+      serverEvent.hashCode ^
+      needsUpdate.hashCode ^
+      cancelled.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -65,7 +85,8 @@ class EventResult {
           runtimeType == other.runtimeType &&
           target == other.target &&
           serverEvent == other.serverEvent &&
-          needsUpdate == other.needsUpdate;
+          needsUpdate == other.needsUpdate &&
+          cancelled == other.cancelled;
 }
 
 enum StateFieldAccess {

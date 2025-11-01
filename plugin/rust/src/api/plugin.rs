@@ -77,33 +77,32 @@ pub type Channel = i16;
 pub type JsonObject = Map<String, Value>;
 
 pub trait RustPlugin {
-    fn run_event(&self, event_type: String, event: String, server_event: String, source: Channel, target: Channel) -> EventResult;
+    fn run_event(&self, event_type: String, event: String, server_event: String, source: Channel, cancelled: bool, target: Channel) -> EventResult;
     fn run(&self) -> anyhow::Result<()>;
 }
 
 #[derive(Serialize, Deserialize)]
-#[frb(opaque)]
 pub(crate) struct EventDetails {
     pub(crate) source: Channel,
     pub(crate) server_event: JsonObject,
     pub(crate) target: Channel,
     pub(crate) cancelled: bool,
-    pub(crate) needs_update: Option<HashSet<Channel>>, // Option to handle nullable Set<Channel>?
+    pub(crate) needs_update: Option<HashSet<Channel>>,
 }
 
 impl EventDetails {
-    // Constructor equivalent
     pub(crate) fn new(
         server_event: JsonObject,
         target: Channel,
         source: Channel,
+        cancelled: bool,
         needs_update: Option<HashSet<Channel>>,
     ) -> Self {
         Self {
             server_event,
             target,
             source,
-            cancelled: false,
+            cancelled,
             needs_update,
         }
     }
@@ -114,15 +113,21 @@ pub struct EventResult {
     pub target: Channel,
     pub server_event: Option<String>,
     pub needs_update: Option<HashSet<Channel>>,
+    pub cancelled: bool,
 }
 
-impl From<EventDetails> for EventResult {
-    #[frb(ignore)]
-    fn from(details: EventDetails) -> Self {
+impl EventResult {
+    pub(crate) fn build(details: EventDetails, previous: Option<EventDetails>) -> Self {
+        let server_event = if previous.map_or(false, |prev| prev.server_event != details.server_event) {
+            serde_json::to_string(&details.server_event).ok()
+        } else {
+            None
+        };
         Self {
             target: details.target,
-            server_event: details.cancelled.then(|| serde_json::to_string(&details.server_event).unwrap()),
+            server_event: server_event,
             needs_update: details.needs_update,
+            cancelled: details.cancelled,
         }
     }
 }

@@ -26,6 +26,7 @@ abstract class LuauPlugin implements RustOpaqueInterface, RustPlugin {
     required String event,
     required String serverEvent,
     required int source,
+    required bool cancelled,
     required int target,
   });
 }
