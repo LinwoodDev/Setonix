@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 import 'package:setonix_plugin/setonix_plugin.dart';
 
@@ -13,15 +15,22 @@ end)
 ''';
 Future<void> main() async {
   await initPluginSystem();
-  final callback = await PluginCallback.default_();
-  callback.changeOnPrint(
+  final callback = PluginCallback(
     onPrint: (p0) {
-      print("SANDBOX: ${p0}");
+      print("PLUGIN: ${p0}");
     },
-  );
-  callback.changeStateFieldAccess(
     stateFieldAccess: (p0) {
-      print("FIELD: ${p0}");
+      print("FIELD ACCESS: ${p0}");
+      return '{"key": "value"}';
+    },
+    processEvent: (p0, p1) {
+      print("PROCESS EVENT: ${p0}, force: ${p1}");
+    },
+    sendEvent: (p0, p1) {
+      print("SEND EVENT: ${p0}, target: ${p1}");
+    },
+    tableAccess: (p0) {
+      print("TABLE ACCESS: ${p0}");
       return '{"key": "value"}';
     },
   );

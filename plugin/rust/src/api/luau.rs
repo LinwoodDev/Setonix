@@ -58,10 +58,12 @@ impl RustPlugin for LuauPlugin {
         EventResult::build(updated, Some(details))
     }
 
-    fn run(&self) -> anyhow::Result<()> {
-        let engine = self.engine.lock().unwrap();
-        engine.load(&self.code).exec()?;
-        Ok(())
+    async fn run(&self) -> Result<(), anyhow::Error> {
+        let chunk =  {
+            let engine = self.engine.lock().unwrap();
+            engine.load(&self.code)
+        };
+        chunk.exec_async().await.map_err(anyhow::Error::from)
     }
 }
 

@@ -7,16 +7,24 @@ pub(crate) struct LuauServerUserData(pub(crate) PluginCallback);
 impl LuaUserData for LuauServerUserData {
 
     fn add_methods<M: LuaUserDataMethods<Self>>(methods: &mut M) {
-        methods.add_method("Process", |_, this, (event, force): (LuaTable, Option<bool>)| {
+        methods.add_async_method("Process", async |_, this, (event, force): (LuaTable, Option<bool>)| {
+            let event_name = event.get::<String>("type");
+            println!("Processing event from Luau plugin: {:?}", event_name);
             let serialized_event = serde_json::to_string(&event).unwrap();
             let process_event = this.0.process_event.clone();
-            let _ = process_event(serialized_event, force);
+            flutter_rust_bridge::spawn( async move {
+                if let Err(err) = process_event(serialized_event, force).await {
+                    eprintln!("Error processing event: {:?}", err);
+                }
+
+            }).await.map_err(anyhow::Error::from)?;
+            println!("Processed event from Luau plugin {:?}", event_name);
             Ok(())
         });
-        methods.add_method("Send", |_, this, (event, target): (LuaTable, Option<Channel>)| {
+        methods.add_async_method("Send", async |_, this, (event, target): (LuaTable, Option<Channel>)| {
             let serialized_event = serde_json::to_string(&event).unwrap();
             let send_event = this.0.send_event.clone();
-            let _ = send_event(serialized_event, target);
+            let _ = send_event(serialized_event, target).await;
             Ok(())
         });
     }

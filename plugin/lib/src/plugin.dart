@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -15,8 +16,12 @@ typedef PluginSendEventCallback =
     );
 
 mixin ServerInterface {
-  void process(WorldEvent event, {bool force = false, required String plugin});
-  void sendEvent(
+  Future<void> process(
+    WorldEvent event, {
+    bool force = false,
+    required String plugin,
+  });
+  Future<void> sendEvent(
     PlayableWorldEvent event, {
     Channel target = kAnyChannel,
     required String plugin,
@@ -52,7 +57,7 @@ final class PluginSystem {
         (c) => LuauPlugin(code: code, callback: c),
         pluginServer,
         onPrint: (e) => server.print(e, name),
-        pluginId: () => name,
+        location: ItemLocation.fromString(name),
       ),
     );
   }
@@ -108,8 +113,11 @@ final class PluginSystem {
 }
 
 abstract class PluginServerInterface {
-  void process(WorldEvent event, {bool force = false});
-  void sendEvent(PlayableWorldEvent event, {Channel target = kAnyChannel});
+  Future<void> process(WorldEvent event, {bool force = false});
+  Future<void> sendEvent(
+    PlayableWorldEvent event, {
+    Channel target = kAnyChannel,
+  });
   WorldState get state;
   List<int> get players;
 }
@@ -121,14 +129,14 @@ class _PluginServerInterfaceImpl implements PluginServerInterface {
   _PluginServerInterfaceImpl(this.server, this.pluginName);
 
   @override
-  void process(WorldEvent event, {bool force = false}) {
-    server.process(event, force: force, plugin: pluginName);
-  }
+  Future<void> process(WorldEvent event, {bool force = false}) =>
+      server.process(event, force: force, plugin: pluginName);
 
   @override
-  void sendEvent(PlayableWorldEvent event, {Channel target = kAnyChannel}) {
-    server.sendEvent(event, target: target, plugin: pluginName);
-  }
+  Future<void> sendEvent(
+    PlayableWorldEvent event, {
+    Channel target = kAnyChannel,
+  }) => server.sendEvent(event, target: target, plugin: pluginName);
 
   @override
   WorldState get state => server.state;
@@ -164,25 +172,23 @@ final class RustSetonixPlugin extends SetonixPlugin {
     RustPlugin Function(PluginCallback) builder,
     PluginServerInterface server, {
     void Function(String)? onPrint,
-    String Function()? pluginId,
+    ItemLocation? location,
   }) async {
-    final callback = PluginCallback.default_();
-    if (onPrint != null) {
-      callback.changeOnPrint(onPrint: onPrint);
-    }
-    callback.changeProcessEvent(
-      processEvent: (eventSerizalized, force) {
-        final event = WorldEventMapper.fromJson(eventSerizalized);
-        server.process(event, force: force ?? false);
+    final processEventController = StreamController<(String, bool?)>();
+
+    final callback = PluginCallback(
+      onPrint: onPrint ?? (s) {},
+      processEvent: (eventSerizalized, force) async {
+        processEventController.add((eventSerizalized, force));
       },
-    );
-    callback.changeSendEvent(
       sendEvent: (eventSerizalized, target) {
-        final event = PlayableWorldEventMapper.fromJson(eventSerizalized);
-        server.sendEvent(event, target: target ?? kAnyChannel);
+        try {
+          final event = PlayableWorldEventMapper.fromJson(eventSerizalized);
+          server.sendEvent(event, target: target ?? kAnyChannel);
+        } catch (e) {
+          print("Error sending event from plugin: $e");
+        }
       },
-    );
-    callback.changeStateFieldAccess(
       stateFieldAccess: (field) {
         final state = server.state;
         return switch (field) {
@@ -193,18 +199,30 @@ final class RustSetonixPlugin extends SetonixPlugin {
           StateFieldAccess.tableName => jsonEncode(state.tableName),
           StateFieldAccess.players => jsonEncode(server.players),
           StateFieldAccess.teamMembers => jsonEncode(state.teamMembers),
-          StateFieldAccess.pluginId => jsonEncode(
-            pluginId?.call() ?? 'unknown',
+          StateFieldAccess.game => jsonEncode(location?.namespace ?? 'unknown'),
+          StateFieldAccess.namespace => jsonEncode(
+            location?.namespace ?? 'unknown',
           ),
         };
       },
-    );
-    callback.changeTableAccess(
       tableAccess: (tableName) {
         final table = server.state.data.getTable(tableName ?? '');
         return table?.toJson() ?? "{}";
       },
     );
+    processEventController.stream.listen((message) async {
+      final (eventSerizalized, force) = message;
+      final smallMsg = eventSerizalized.substring(0, 20);
+      try {
+        onPrint?.call("Process event called from plugin: $smallMsg");
+        final event = WorldEventMapper.fromJson(eventSerizalized);
+        await server.process(event, force: force ?? false);
+      } catch (e) {
+        onPrint?.call("Error processing event from plugin: $e");
+      } finally {
+        onPrint?.call("Finished processing event from plugin $smallMsg");
+      }
+    });
     final plugin = builder(callback);
     final instance = RustSetonixPlugin._(server, plugin);
     instance.eventSystem.on<WorldEvent>((e) async {

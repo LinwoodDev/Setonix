@@ -23,6 +23,8 @@ declare State: {
 	Info: JsonObject,
 	Players: { number },
 	PluginId: string,
+	Namespace: string,
+	Game: string,
 	Table: JsonObject,
 	GetTable: (self: any, name: string) -> JsonObject?
 }

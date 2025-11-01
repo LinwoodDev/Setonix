@@ -8,5 +8,6 @@ Future<void> main() async {
   // Copy to server/packs
   final file = File('app/assets/pack.stnx');
   final output = File('server/packs/core.stnx');
+  await output.parent.create(recursive: true);
   await output.writeAsBytes(await file.readAsBytes());
 }

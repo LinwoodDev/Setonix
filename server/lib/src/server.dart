@@ -249,12 +249,12 @@ final class SetonixServer {
     await _server?.onClosed.first;
   }
 
-  void sendEvent(
+  Future<void> sendEvent(
     PlayableWorldEvent event, {
     Channel target = kAnyChannel,
     String? worldName,
-  }) {
-    _pipe?.sendMessage(event, target);
+  }) async {
+    await _pipe?.sendMessage(event, target);
     if (target == kAnyChannel || target == kAuthorityChannel) {
       getWorld(worldName ?? defaultWorldName)?.add(event);
     }

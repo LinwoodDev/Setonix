@@ -23,18 +23,18 @@ class _WorldServerInterfaceImpl implements ServerInterface {
   _WorldServerInterfaceImpl(this.bloc);
 
   @override
-  void process(WorldEvent event, {bool force = false, required String plugin}) {
-    bloc.process(event);
-  }
+  Future<void> process(
+    WorldEvent event, {
+    bool force = false,
+    required String plugin,
+  }) => bloc.process(event);
 
   @override
-  void sendEvent(
+  Future<void> sendEvent(
     PlayableWorldEvent event, {
     Channel target = kAnyChannel,
     required String plugin,
-  }) {
-    bloc._processEvent(NetworkerPacket(event, target));
-  }
+  }) => bloc._processEvent(NetworkerPacket(event, target));
 
   @override
   void print(String message, [String? plugin]) {

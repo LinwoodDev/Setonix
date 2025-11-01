@@ -6,35 +6,25 @@
 import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-// These functions are ignored because they are not marked as `pub`: `get`, `new`
-// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `StateFieldAccessIter`
+// These functions are ignored because they are not marked as `pub`: `build`, `get`, `new`
+// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `EventDetails`, `StateFieldAccessIter`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `fmt`, `fmt`, `iter`, `len`, `next_back`, `next`, `nth`, `size_hint`
-
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<EventDetails>>
-abstract class EventDetails implements RustOpaqueInterface {}
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<PluginCallback>>
 abstract class PluginCallback implements RustOpaqueInterface {
-  void changeOnPrint({required FutureOr<void> Function(String) onPrint});
-
-  void changeProcessEvent({
+  factory PluginCallback({
+    required FutureOr<void> Function(String) onPrint,
     required FutureOr<void> Function(String, bool?) processEvent,
-  });
-
-  void changeSendEvent({
     required FutureOr<void> Function(String, int?) sendEvent,
-  });
-
-  void changeStateFieldAccess({
     required FutureOr<String> Function(StateFieldAccess) stateFieldAccess,
-  });
-
-  void changeTableAccess({
     required FutureOr<String> Function(String?) tableAccess,
-  });
-
-  static PluginCallback default_() =>
-      RustLib.instance.api.crateApiPluginPluginCallbackDefault();
+  }) => RustLib.instance.api.crateApiPluginPluginCallbackNew(
+    onPrint: onPrint,
+    processEvent: processEvent,
+    sendEvent: sendEvent,
+    stateFieldAccess: stateFieldAccess,
+    tableAccess: tableAccess,
+  );
 }
 
 abstract class RustPlugin {
@@ -63,14 +53,6 @@ class EventResult {
     required this.cancelled,
   });
 
-  static Future<EventResult> build({
-    required EventDetails details,
-    EventDetails? previous,
-  }) => RustLib.instance.api.crateApiPluginEventResultBuild(
-    details: details,
-    previous: previous,
-  );
-
   @override
   int get hashCode =>
       target.hashCode ^
@@ -95,5 +77,6 @@ enum StateFieldAccess {
   info,
   players,
   teamMembers,
-  pluginId,
+  namespace,
+  game,
 }

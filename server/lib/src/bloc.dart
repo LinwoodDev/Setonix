@@ -220,18 +220,15 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
   }
 
   @override
-  void process(WorldEvent event, {bool force = true, String? plugin}) {
-    onClientEvent(NetworkerPacket(event, kAuthorityChannel), force: force);
-  }
+  Future<void> process(WorldEvent event, {bool force = true, String? plugin}) =>
+      onClientEvent(NetworkerPacket(event, kAuthorityChannel), force: force);
 
   @override
-  void sendEvent(
+  Future<void> sendEvent(
     PlayableWorldEvent event, {
     Channel target = kAnyChannel,
     String? plugin,
-  }) {
-    server.sendEvent(event, target: target, worldName: worldName);
-  }
+  }) => server.sendEvent(event, target: target, worldName: worldName);
 
   @override
   List<int> get players => server.players.keys.toList(growable: false);

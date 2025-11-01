@@ -10,6 +10,56 @@ local StackPosition = {
 }
 local CurrentPlayer = 1
 local PlayerScores : {[number]: number} = {}
+local Colors = {
+  "heart",
+  "diamond",
+  "club",
+  "spade"
+}
+local Values = {
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "10",
+  "jack",
+  "queen",
+  "king",
+  "ace"
+}
+function GetVariations() : {string}
+  local variations = {}
+  for _, color in ipairs(Colors) do
+    for _, value in ipairs(Values) do
+      table.insert(variations, color.."-"..value)
+    end
+  end
+  return variations
+end
+function SpawnDeck(cell)
+  local variations = GetVariations()
+  local tableName = cell.table
+  local vector = "("..cell.x..", "..cell.y..")"
+  local objects = {}
+  for _, variation in ipairs(variations) do
+    table.insert(objects, {
+      asset=State.Namespace..":cards",
+      variation=variation,
+    })
+  end
+  Server:Process({
+    type="ObjectsSpawned",
+    table=tableName,
+    objects={
+      [vector]=objects
+    }
+  }, true)
+end
 function Reset()
   ResetWorld()
   PlayerScores = {}
@@ -18,19 +68,15 @@ function Reset()
 end
 function Setup()
   print("setup")
-  print(State.PluginId)
+  print(State.Namespace)
   Server:Process({
-    type="CellVisibilityChanged",
+    type="CellHideChanged",
     cell=DeckPosition,
-    visibility=false
+    hide=true
   }, true)
+  SpawnDeck(DeckPosition)
   Server:Process({
-    type="DeckSpawned",
-    cell=DeckPosition,
-    deck=State.PluginId..":cards"
-  }, true)
-  Server:Process({
-    type="CellShuffleRequest",
+    type="ShuffleCellRequest",
     cell=DeckPosition
   }, true)
 end
@@ -59,7 +105,7 @@ local VariationsScores : {[string]: {number}} = {
 local MaxScore = 21
 function CalculateCard(identifier) : {number}
   local splitted = string.split(identifier, ":")
-  if #splitted ~= 2 or splitted[1] ~= State.PluginId then
+  if #splitted ~= 2 or splitted[1] ~= State.Namespace then
     return {0}
   end 
   splitted = string.split(splitted[2], "-")
@@ -180,6 +226,10 @@ end)
 Events.ObjectsSpawned.Connect(function(event, details)
   details.cancelled = true
   print("Spawning objects is not allowed.")
+end)
+Events.BoardsSpawnRequest.Connect(function(event, details)
+  details.cancelled = true
+  print("Spawning boards is not allowed.")
 end)
 Events.ObjectMoved.Connect(function(event, details)
   local isFromDeck = event.from.table == DeckPosition.table and event.from.x == DeckPosition.x and event.from.y == DeckPosition.y
