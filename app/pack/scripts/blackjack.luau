@@ -17,7 +17,6 @@ local Colors = {
   "spade"
 }
 local Values = {
-  "1",
   "2",
   "3",
   "4",
@@ -87,7 +86,6 @@ function RemoveStack()
   }, true)
 end
 local VariationsScores : {[string]: {number}} = {
-  ["1"] = {1},
   ["2"] = {2},
   ["3"] = {3},
   ["4"] = {4},
@@ -122,16 +120,19 @@ function GetCellObjects(position)
   end
   return cell.objects or {}
 end
-function CalculateStack() : number
+function CalculateStack(optionalCardId : string?) : number
   -- Gather identifiers of cards currently in the stack cell.
   -- Assuming an API like GetCellObjects(cell) -> { { identifier = "..." }, ... }
   local objects = GetCellObjects(StackPosition)
+  if optionalCardId then
+    table.insert(objects, { identifier = optionalCardId })
+  end
 
   -- Start with a single possible sum: 0
   local sums = {0}
 
   for _, obj in pairs(objects) do
-    local id = obj.identifier or obj.id or obj.cardId
+    local id = obj.identifier
     if id then
       local values = CalculateCard(id) or {0}
       local newSums = {}
@@ -211,8 +212,16 @@ function FinishRound()
   end
   Reset()
 end
-function OnNewCard()
-  local score = CalculateStack()
+function GetTopCardFromDeck() : string?
+  local cell = State.Table.cells["("..DeckPosition.x..", "..DeckPosition.y..")"]
+  if not cell or not cell.objects or #cell.objects == 0 then
+    return nil
+  end
+  return cell.objects[1].identifier
+end
+function OnNewCard(from, objectId)
+  local topCardId = GetTopCardFromDeck()
+  local score = CalculateStack(topCardId)
   print("Current score: "..score)
   if score > MaxScore then
     print("Player "..CurrentPlayer.." busted!")
@@ -234,7 +243,8 @@ end)
 Events.ObjectMoved.Connect(function(event, details)
   local isFromDeck = event.from.table == DeckPosition.table and event.from.x == DeckPosition.x and event.from.y == DeckPosition.y
   local isToStack = event.to.table == StackPosition.table and event.to.x == StackPosition.x and event.to.y == StackPosition.y
-  if(not isFromDeck or not isToStack) then
+  local isOneObject = #event.objects == 1 and event.objects[1] == 0
+  if(not isFromDeck or not isToStack or not isOneObject) then
     details.cancelled = true
     return
   end
