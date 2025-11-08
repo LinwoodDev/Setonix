@@ -3,11 +3,13 @@ local DeckPosition = {
   x="0",
   y="0"
 }
+local DeckPositionLocation = "("..DeckPosition.x..", "..DeckPosition.y..")"
 local StackPosition = {
   table=State.TableName,
   x="0",
   y="1"
 }
+local StackPositionLocation = "("..StackPosition.x..", "..StackPosition.y..")"
 local CurrentPlayer = 1
 local PlayerScores : {[number]: number} = {}
 local Colors = {
@@ -45,18 +47,33 @@ function SpawnDeck(cell)
   local tableName = cell.table
   local vector = "("..cell.x..", "..cell.y..")"
   local objects = {}
+  for i = #variations, 2, -1 do
+    local j = math.random(i)
+    variations[i], variations[j] = variations[j], variations[i]
+  end
   for _, variation in ipairs(variations) do
     table.insert(objects, {
       asset=State.Namespace..":cards",
       variation=variation,
+      hidden=true,
     })
   end
-  Server:Process({
+  Server:SendEvent({
     type="ObjectsSpawned",
     table=tableName,
     objects={
       [vector]=objects
     }
+  }, true)
+end
+function ResetWorld()
+  Server:SendEvent({
+    type="ObjectsRemoved",
+    cell=DeckPosition
+  }, true)
+  Server:SendEvent({
+    type="ObjectsRemoved",
+    cell=StackPosition
   }, true)
 end
 function Reset()
@@ -68,19 +85,10 @@ end
 function Setup()
   print("setup")
   print(State.Namespace)
-  Server:Process({
-    type="CellHideChanged",
-    cell=DeckPosition,
-    hide=true
-  }, true)
   SpawnDeck(DeckPosition)
-  Server:Process({
-    type="ShuffleCellRequest",
-    cell=DeckPosition
-  }, true)
 end
 function RemoveStack()
-  Server:Process({
+  Server:SendEvent({
     type="ObjectsRemoved",
     cell=StackPosition
   }, true)
@@ -102,52 +110,55 @@ local VariationsScores : {[string]: {number}} = {
 }
 local MaxScore = 21
 function CalculateCard(identifier) : {number}
-  local splitted = string.split(identifier, ":")
-  if #splitted ~= 2 or splitted[1] ~= State.Namespace then
-    return {0}
-  end 
-  splitted = string.split(splitted[2], "-")
+  print(" - object: "..tostring(identifier["variation"]))
+  local splitted = string.split(identifier["variation"], "-")
+  print(" - splitted: "..tostring(#splitted))
   if #splitted ~= 2 then
-    return {0}
+    return {}
   end
-  local value = splitted[1]
+  local value = splitted[2]
+  print(" - value: "..tostring(value))
   return VariationsScores[value]
 end
 function GetCellObjects(position)
-  local cell = State.Table.cells["("..position.x..", "..position.y..")"]
+  local table = State:GetTable("")
+  for k, v in pairs(table.cells) do
+    print(" - "..tostring(k)..": "..tostring(v))
+  end
+  local cell = table.cells["("..position.x..", "..position.y..")"]
   if not cell then
     return {}
   end
   return cell.objects or {}
 end
-function CalculateStack(optionalCardId : string?) : number
+function CalculateStack(optionalCard : any) : number
   -- Gather identifiers of cards currently in the stack cell.
   -- Assuming an API like GetCellObjects(cell) -> { { identifier = "..." }, ... }
   local objects = GetCellObjects(StackPosition)
-  if optionalCardId then
-    table.insert(objects, { identifier = optionalCardId })
+  if optionalCard then
+    table.insert(objects, optionalCard)
   end
+  print("Calculating stack for "..#objects.." objects")
 
   -- Start with a single possible sum: 0
   local sums = {0}
 
   for _, obj in pairs(objects) do
-    local id = obj.identifier
-    if id then
-      local values = CalculateCard(id) or {0}
-      local newSums = {}
-      for _, base in ipairs(sums) do
-        for _, v in ipairs(values) do
-          local candidate = base + v
-            -- Deduplicate
-          if not table.find(newSums, candidate) then
-            table.insert(newSums, candidate)
-          end
+    local values = CalculateCard(obj) or {0}
+    print(" - possible values: "..table.concat(values, ", "))
+    local newSums = {}
+    for _, base in ipairs(sums) do
+      for _, v in ipairs(values) do
+        local candidate = base + v
+          -- Deduplicate
+        if not table.find(newSums, candidate) then
+          table.insert(newSums, candidate)
         end
       end
-      sums = newSums
     end
+    sums = newSums
   end
+  print(" - possible sums: "..table.concat(sums, ", "))
 
   -- Choose the best sum: highest <= MaxScore, otherwise the lowest bust
   local bestUnder = nil
@@ -213,16 +224,21 @@ function FinishRound()
   Reset()
 end
 function GetTopCardFromDeck() : string?
-  local cell = State.Table.cells["("..DeckPosition.x..", "..DeckPosition.y..")"]
+  local cell = State:GetTable("").cells["("..DeckPosition.x..", "..DeckPosition.y..")"]
   if not cell or not cell.objects or #cell.objects == 0 then
     return nil
   end
-  return cell.objects[1].identifier
+  return cell.objects[1]
 end
-function OnNewCard(from, objectId)
+function OnNewCard()
   local topCardId = GetTopCardFromDeck()
   local score = CalculateStack(topCardId)
   print("Current score: "..score)
+  Server:Send({
+    type="MessageSent",
+    user=0,
+    message="Your current score is "..score
+  }, 0)
   if score > MaxScore then
     print("Player "..CurrentPlayer.." busted!")
     NextRound()
@@ -240,15 +256,23 @@ Events.BoardsSpawnRequest.Connect(function(event, details)
   details.cancelled = true
   print("Spawning boards is not allowed.")
 end)
-Events.ObjectMoved.Connect(function(event, details)
-  local isFromDeck = event.from.table == DeckPosition.table and event.from.x == DeckPosition.x and event.from.y == DeckPosition.y
-  local isToStack = event.to.table == StackPosition.table and event.to.x == StackPosition.x and event.to.y == StackPosition.y
-  local isOneObject = #event.objects == 1 and event.objects[1] == 0
+Events.ObjectsMoved.Connect(function(event, details)
+  print("typing move event.."..type(event))
+  local isFromDeck = event.table == DeckPosition.table and event.from == DeckPositionLocation
+  local isToStack = event.table == StackPosition.table and event.to == StackPositionLocation
+  local objects = event.objects
+  local isOneObject = #objects == 1 and event.objects[1] == 0
   if(not isFromDeck or not isToStack or not isOneObject) then
+    print("Invalid move attempted.")
     details.cancelled = true
     return
   end
   OnNewCard()
+  Server:Process({
+    type="CellHideChanged",
+    cell=StackPosition,
+    hide=false
+  }, true)
 end)
 Events.MessageRequest.Connect(function(event, details)
   local message = event.message:lower()

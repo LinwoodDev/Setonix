@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -174,17 +173,20 @@ final class RustSetonixPlugin extends SetonixPlugin {
     void Function(String)? onPrint,
     ItemLocation? location,
   }) async {
-    final processEventController = StreamController<(String, bool?)>();
-
     final callback = PluginCallback(
       onPrint: onPrint ?? (s) {},
       processEvent: (eventSerizalized, force) async {
-        processEventController.add((eventSerizalized, force));
+        try {
+          final event = WorldEventMapper.fromJson(eventSerizalized);
+          await server.process(event, force: force ?? false);
+        } catch (e) {
+          print("Error processing event from plugin: $e");
+        }
       },
-      sendEvent: (eventSerizalized, target) {
+      sendEvent: (eventSerizalized, target) async {
         try {
           final event = PlayableWorldEventMapper.fromJson(eventSerizalized);
-          server.sendEvent(event, target: target ?? kAnyChannel);
+          await server.sendEvent(event, target: target ?? kAnyChannel);
         } catch (e) {
           print("Error sending event from plugin: $e");
         }
@@ -206,23 +208,12 @@ final class RustSetonixPlugin extends SetonixPlugin {
         };
       },
       tableAccess: (tableName) {
+        if (server.state.tableName == tableName)
+          return server.state.table.toJson();
         final table = server.state.data.getTable(tableName ?? '');
         return table?.toJson() ?? "{}";
       },
     );
-    processEventController.stream.listen((message) async {
-      final (eventSerizalized, force) = message;
-      final smallMsg = eventSerizalized.substring(0, 20);
-      try {
-        onPrint?.call("Process event called from plugin: $smallMsg");
-        final event = WorldEventMapper.fromJson(eventSerizalized);
-        await server.process(event, force: force ?? false);
-      } catch (e) {
-        onPrint?.call("Error processing event from plugin: $e");
-      } finally {
-        onPrint?.call("Finished processing event from plugin $smallMsg");
-      }
-    });
     final plugin = builder(callback);
     final instance = RustSetonixPlugin._(server, plugin);
     instance.eventSystem.on<WorldEvent>((e) async {

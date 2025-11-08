@@ -1,5 +1,6 @@
-use std::sync::{Arc, Mutex};
 use event::*;
+use tokio::sync::Mutex;
+use std::sync::Arc;
 
 use flutter_rust_bridge::frb;
 use futures::executor::block_on;
@@ -38,7 +39,7 @@ pub struct LuauPlugin {
 }
 
 impl RustPlugin for LuauPlugin {
-    fn run_event(
+    async fn run_event(
         &self,
         event_type: String,
         event: String,
@@ -49,18 +50,28 @@ impl RustPlugin for LuauPlugin {
     ) -> EventResult {
         let server_event: JsonObject = serde_json::from_str(&server_event).unwrap();
         let details = EventDetails::new(server_event, target, source, cancelled, None);
-        let lua_value = self.engine.lock().unwrap().to_value(&details).unwrap();
-        self.event_system
-            .lock()
-            .unwrap()
-            .run_event_handler(&event_type, (event, &lua_value));
-        let updated: EventDetails = self.engine.lock().unwrap().from_value(lua_value).unwrap();
+        let event : JsonObject = serde_json::from_str(&event).unwrap();
+        let (event, lua_value) = {
+            let engine = self.engine.lock().await;
+            (
+                engine.to_value(&event).unwrap(),
+                engine.to_value(&details).unwrap(),
+            )
+        };
+        {
+            println!("Runniong event '{:?}' in Luau plugin", event.to_string());
+            let engine = self.event_system.lock().await;
+            engine
+                .run_event_handler(&event_type, (event, &lua_value))
+                .await
+        };
+        let updated: EventDetails = self.engine.lock().await.from_value(lua_value).unwrap();
         EventResult::build(updated, Some(details))
     }
 
     async fn run(&self) -> Result<(), anyhow::Error> {
         let chunk =  {
-            let engine = self.engine.lock().unwrap();
+            let engine = self.engine.lock().await;
             engine.load(&self.code)
         };
         chunk.exec_async().await.map_err(anyhow::Error::from)
@@ -79,8 +90,14 @@ impl LuauPlugin {
             .globals()
             .set("Events", LuauEventSystemUserData(Arc::clone(&event_system)))
             .unwrap();
-        engine.globals().set("State", LuauStateUserData(callback.clone())).unwrap();
-        engine.globals().set("Server", LuauServerUserData(callback)).unwrap();
+        engine
+            .globals()
+            .set("State", LuauStateUserData(callback.clone()))
+            .unwrap();
+        engine
+            .globals()
+            .set("Server", LuauServerUserData(callback))
+            .unwrap();
 
         let engine = Arc::new(Mutex::new(engine));
         Self {

@@ -31,7 +31,7 @@ declare State: {
 
 declare Server: {
 	Process: (self: any, event: JsonObject, force: boolean) -> number,
-	Send: (self: any, event: JsonObject) -> number,
+	Send: (self: any, event: JsonObject, target: number) -> number,
 }
 
 declare Events: {

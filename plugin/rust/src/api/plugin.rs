@@ -55,7 +55,7 @@ pub type Channel = i16;
 pub type JsonObject = Map<String, Value>;
 
 pub(crate) trait RustPlugin {
-    fn run_event(&self, event_type: String, event: String, server_event: String, source: Channel, cancelled: bool, target: Channel) -> EventResult;
+    async fn run_event(&self, event_type: String, event: String, server_event: String, source: Channel, cancelled: bool, target: Channel) -> EventResult;
     async fn run(&self) -> Result<(), anyhow::Error>;
 }
 

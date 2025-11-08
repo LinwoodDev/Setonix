@@ -232,13 +232,11 @@ ServerProcessed processServerEvent(
                 ),
             );
           }
-          final hidden =
-              !(event.hide ?? cell.objects.firstOrNull?.hidden ?? false);
           return table.copyWith.cellsBox(
             content: Map<VectorDefinition, TableCell>.from(table.cells)
               ..[event.cell.position] = cell.copyWith(
                 objects: cell.objects
-                    .map((e) => e.copyWith(hidden: hidden))
+                    .map((e) => e.copyWith(hidden: event.hide ?? !e.hidden))
                     .toList(),
               ),
           );

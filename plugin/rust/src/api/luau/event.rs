@@ -1,7 +1,8 @@
-use std::{collections::HashMap, sync::{Arc, Mutex}};
+use std::{collections::HashMap, sync::{Arc}};
 
 use flutter_rust_bridge::frb;
 use mlua::prelude::*;
+use tokio::sync::Mutex;
 
 #[derive(Default)]
 #[frb(ignore)]
@@ -11,10 +12,12 @@ pub(crate) struct LuauEventSystem {
 }
 
 impl LuauEventSystem {
-    pub(crate) fn run_event_handler(&self, event: &str, args: impl IntoLuaMulti + Clone) {
+    pub(crate) async fn run_event_handler(&self, event: &str, args: impl IntoLuaMulti + Clone) {
         if let Some(handlers) = self.event_handlers.get(event) {
             for (_, handler) in handlers {
-                let _ = handler.call::<()>(args.clone());
+                if let Err(err) = handler.call_async::<()>(args.clone()).await {
+                    eprintln!("Failed to call handler for '{}': {}", event, err);
+                }
             }
         }
     }
@@ -31,24 +34,28 @@ impl LuaUserData for LuauEventSystemUserData {
             let tbl = lua.create_table()?;
 
             let connect_fn = {
-                let event_system = Arc::clone(&event_system);
-                let event_name = event_name.clone();
-                lua.create_function(move |lua_ctx, handler: LuaFunction| {
-                    let mut system = event_system.lock().unwrap();
-                    let handler_id = system.next_id;
-                    system.next_id += 1;
-                    system
-                        .event_handlers
-                        .entry(event_name.clone())
-                        .or_insert_with(Vec::new)
-                        .push((handler_id, handler.clone()));
+                let event_system_shared = Arc::clone(&event_system);
+                let event_name_shared = event_name.clone();
+                lua.create_async_function(move |lua_ctx, handler: LuaFunction| {
+                    let event_system = Arc::clone(&event_system_shared);
+                    let event_name = event_name_shared.clone();
+                    async move {
+                        let mut system = event_system.lock().await;
+                        let handler_id = system.next_id;
+                        system.next_id += 1;
+                        system
+                            .event_handlers
+                            .entry(event_name.clone())
+                            .or_insert_with(Vec::new)
+                            .push((handler_id, handler.clone()));
 
-                    let connection = LuauEventConnection {
-                        event_system: Arc::clone(&event_system),
-                        event_name: event_name.clone(),
-                        handler_id,
-                    };
-                    lua_ctx.create_userdata(connection)
+                        let connection = LuauEventConnection {
+                            event_system: Arc::clone(&event_system),
+                            event_name,
+                            handler_id,
+                        };
+                        lua_ctx.create_userdata(connection)
+                    }
                 })?
             };
             tbl.set("Connect", connect_fn)?;
@@ -66,8 +73,8 @@ pub(crate) struct LuauEventConnection {
 
 impl LuaUserData for LuauEventConnection {
     fn add_methods<M: mlua::UserDataMethods<Self>>(methods: &mut M) {
-        methods.add_method("Disconnect", |_, this, ()| {
-            let mut system = this.event_system.lock().unwrap();
+        methods.add_async_method("Disconnect", async |_, this, ()| {
+            let mut system = this.event_system.lock().await;
             if let Some(handlers) = system.event_handlers.get_mut(&this.event_name) {
                 handlers.retain(|(id, _)| *id != this.handler_id);
             }

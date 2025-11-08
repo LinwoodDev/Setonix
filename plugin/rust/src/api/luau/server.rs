@@ -18,13 +18,18 @@ impl LuaUserData for LuauServerUserData {
                 }
 
             }).await.map_err(anyhow::Error::from)?;
-            println!("Processed event from Luau plugin {:?}", event_name);
             Ok(())
         });
         methods.add_async_method("Send", async |_, this, (event, target): (LuaTable, Option<Channel>)| {
             let serialized_event = serde_json::to_string(&event).unwrap();
             let send_event = this.0.send_event.clone();
-            let _ = send_event(serialized_event, target).await;
+            println!("Sending event from Luau plugin to target {:?}: {:?}", target, serialized_event);
+            flutter_rust_bridge::spawn( async move {
+                if let Err(err) = send_event(serialized_event, target).await {
+                    eprintln!("Error processing event: {:?}", err);
+                }
+
+            }).await.map_err(anyhow::Error::from)?;
             Ok(())
         });
     }

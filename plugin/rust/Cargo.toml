@@ -14,6 +14,7 @@ futures = "0.3"
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
 strum = { version = "0.27", features = ["derive"] }
+tokio = "1"
 
 [features]
 
