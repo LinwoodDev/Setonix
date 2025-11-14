@@ -185,7 +185,10 @@ final class RustSetonixPlugin extends SetonixPlugin {
       },
       sendEvent: (eventSerizalized, target) async {
         try {
-          final event = PlayableWorldEventMapper.fromJson(eventSerizalized);
+          final event = WorldEventMapper.fromJson(eventSerizalized);
+          if (event is! PlayableWorldEvent) {
+            throw Exception("Event is not PlayableWorldEvent");
+          }
           await server.sendEvent(event, target: target ?? kAnyChannel);
         } catch (e) {
           print("Error sending event from plugin: $e");

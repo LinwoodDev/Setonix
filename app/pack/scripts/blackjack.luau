@@ -58,23 +58,23 @@ function SpawnDeck(cell)
       hidden=true,
     })
   end
-  Server:SendEvent({
+  Server:Send({
     type="ObjectsSpawned",
     table=tableName,
     objects={
       [vector]=objects
     }
-  }, true)
+  }, nil)
 end
 function ResetWorld()
-  Server:SendEvent({
+  Server:Send({
     type="ObjectsRemoved",
     cell=DeckPosition
-  }, true)
-  Server:SendEvent({
+  }, nil)
+  Server:Send({
     type="ObjectsRemoved",
     cell=StackPosition
-  }, true)
+  }, nil)
 end
 function Reset()
   ResetWorld()
@@ -88,10 +88,10 @@ function Setup()
   SpawnDeck(DeckPosition)
 end
 function RemoveStack()
-  Server:SendEvent({
+  Server:Send({
     type="ObjectsRemoved",
     cell=StackPosition
-  }, true)
+  }, nil)
 end
 local VariationsScores : {[string]: {number}} = {
   ["2"] = {2},
@@ -232,13 +232,14 @@ function GetTopCardFromDeck() : string?
 end
 function OnNewCard()
   local topCardId = GetTopCardFromDeck()
+  print("Dealt new card: "..tostring(topCardId))
   local score = CalculateStack(topCardId)
   print("Current score: "..score)
   Server:Send({
     type="MessageSent",
     user=0,
     message="Your current score is "..score
-  }, 0)
+  }, nil)
   if score > MaxScore then
     print("Player "..CurrentPlayer.." busted!")
     NextRound()
@@ -268,11 +269,11 @@ Events.ObjectsMoved.Connect(function(event, details)
     return
   end
   OnNewCard()
-  Server:Process({
+  Server:Send({
     type="CellHideChanged",
     cell=StackPosition,
     hide=false
-  }, true)
+  }, nil)
 end)
 Events.MessageRequest.Connect(function(event, details)
   local message = event.message:lower()
