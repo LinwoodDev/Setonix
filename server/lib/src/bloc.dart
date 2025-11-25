@@ -68,6 +68,23 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
     });
   }
 
+  List<(UpdateServerResponse, Set<int>?)> _scheduledUpdates = [];
+
+  @override
+  void onChange(Change<WorldState> change) {
+    super.onChange(change);
+    for (final (response, needsUpdate) in _scheduledUpdates) {
+      final updatePackets = response.buildUpdatePacketsFor(
+        change.nextState,
+        server.channels,
+        needsUpdate,
+      );
+      for (final packet in updatePackets) {
+        sendEvent(packet.data, target: packet.channel);
+      }
+    }
+  }
+
   @override
   void print(String message, [String? plugin]) {
     if (plugin != null && plugin.isNotEmpty) {
@@ -201,18 +218,14 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
             );
           default:
         }
-        server.sendEvent(
+        _scheduledUpdates.add((process, event.needsUpdate));
+        await server.sendEvent(
           event.serverEvent,
           target: event.target,
           worldName: worldName,
         );
-        final updatePackets = process.buildUpdatePacketsFor(
-          state,
-          server.channels,
-          event.needsUpdate,
-        );
-        for (final packet in updatePackets) {
-          sendEvent(packet.data, target: packet.channel);
+        for (final scheduled in event.scheduledEvents) {
+          onClientEvent(scheduled, force: true);
         }
       case KickServerResponse():
         server.kick(packet.channel, process.message);

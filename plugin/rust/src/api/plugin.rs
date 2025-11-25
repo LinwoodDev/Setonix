@@ -59,13 +59,14 @@ pub(crate) trait RustPlugin {
     async fn run(&self) -> Result<(), anyhow::Error>;
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub(crate) struct EventDetails {
     pub(crate) source: Channel,
     pub(crate) server_event: JsonObject,
     pub(crate) target: Channel,
     pub(crate) cancelled: bool,
     pub(crate) needs_update: Option<HashSet<Channel>>,
+    pub(crate) scheduled_events: Vec<(String, Channel)>,
 }
 
 impl EventDetails {
@@ -82,7 +83,12 @@ impl EventDetails {
             source,
             cancelled,
             needs_update,
+            scheduled_events: Vec::new(),
         }
+    }
+
+    pub(crate) fn schedule_event(&mut self, event: String, channel: Option<Channel>) {
+        self.scheduled_events.push((event, channel.unwrap_or(0)));
     }
 }
 
@@ -92,6 +98,7 @@ pub struct EventResult {
     pub server_event: Option<String>,
     pub needs_update: Option<HashSet<Channel>>,
     pub cancelled: bool,
+    pub scheduled_events: Vec<(String, Channel)>,
 }
 
 impl EventResult {
@@ -106,6 +113,7 @@ impl EventResult {
             server_event: server_event,
             needs_update: details.needs_update,
             cancelled: details.cancelled,
+            scheduled_events: details.scheduled_events,
         }
     }
 }

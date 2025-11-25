@@ -234,6 +234,11 @@ final class RustSetonixPlugin extends SetonixPlugin {
       if (serverEvent != null) {
         e.serverEvent = ServerWorldEventMapper.fromJson(serverEvent);
       }
+      e.scheduleEvents(
+        result.scheduledEvents.map(
+          (e) => NetworkerPacket(WorldEventMapper.fromJson(e.$1), e.$2),
+        ),
+      );
     });
     await instance.plugin.run();
     return instance;

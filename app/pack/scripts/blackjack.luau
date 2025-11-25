@@ -269,11 +269,11 @@ Events.ObjectsMoved.Connect(function(event, details)
     return
   end
   OnNewCard()
-  Server:Send({
+  details:ScheduleEvent({
     type="CellHideChanged",
     cell=StackPosition,
     hide=false
-  }, nil)
+  })
 end)
 Events.MessageRequest.Connect(function(event, details)
   local message = event.message:lower()

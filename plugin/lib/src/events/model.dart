@@ -18,6 +18,7 @@ base class Event<T extends WorldEvent> {
   Channel target;
   bool cancelled = false;
   Set<Channel>? needsUpdate;
+  final List<NetworkerPacket<WorldEvent>> _scheduledEvents = [];
 
   Event({
     required this.serverEvent,
@@ -28,6 +29,9 @@ base class Event<T extends WorldEvent> {
     this.needsUpdate,
   });
 
+  List<NetworkerPacket<WorldEvent>> get scheduledEvents =>
+      List.unmodifiable(_scheduledEvents);
+
   Event<C> castEvent<C extends WorldEvent>() {
     return _LinkedEvent<C>(this);
   }
@@ -35,6 +39,14 @@ base class Event<T extends WorldEvent> {
   void cancel() {
     cancelled = true;
     needsUpdate = null;
+  }
+
+  void scheduleEvent(WorldEvent event, [Channel channel = kAnyChannel]) {
+    _scheduledEvents.add(NetworkerPacket(event, channel));
+  }
+
+  void scheduleEvents(Iterable<NetworkerPacket<WorldEvent>> events) {
+    _scheduledEvents.addAll(events);
   }
 }
 
@@ -79,6 +91,22 @@ final class _LinkedEvent<T extends WorldEvent> implements Event<T> {
 
   @override
   String get worldName => parent.worldName;
+
+  @override
+  void scheduleEvent(WorldEvent event, [Channel channel = kAnyChannel]) {
+    parent.scheduleEvent(event, channel);
+  }
+
+  @override
+  void scheduleEvents(Iterable<NetworkerPacket<WorldEvent>> events) {
+    parent.scheduleEvents(events);
+  }
+
+  List<NetworkerPacket<WorldEvent>> get _scheduledEvents =>
+      parent._scheduledEvents;
+  @override
+  List<NetworkerPacket<WorldEvent>> get scheduledEvents =>
+      List.unmodifiable(_scheduledEvents);
 }
 
 final class ServerPing {

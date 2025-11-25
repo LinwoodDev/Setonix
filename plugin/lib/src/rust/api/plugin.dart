@@ -6,9 +6,9 @@
 import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-// These functions are ignored because they are not marked as `pub`: `build`, `get`, `new`
+// These functions are ignored because they are not marked as `pub`: `build`, `get`, `new`, `schedule_event`
 // These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `EventDetails`, `StateFieldAccessIter`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `fmt`, `fmt`, `iter`, `len`, `next_back`, `next`, `nth`, `size_hint`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `iter`, `len`, `next_back`, `next`, `nth`, `size_hint`
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<PluginCallback>>
 abstract class PluginCallback implements RustOpaqueInterface {
@@ -45,12 +45,14 @@ class EventResult {
   final String? serverEvent;
   final Set<int>? needsUpdate;
   final bool cancelled;
+  final List<(String, int)> scheduledEvents;
 
   const EventResult({
     required this.target,
     this.serverEvent,
     this.needsUpdate,
     required this.cancelled,
+    required this.scheduledEvents,
   });
 
   @override
@@ -58,7 +60,8 @@ class EventResult {
       target.hashCode ^
       serverEvent.hashCode ^
       needsUpdate.hashCode ^
-      cancelled.hashCode;
+      cancelled.hashCode ^
+      scheduledEvents.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -68,7 +71,8 @@ class EventResult {
           target == other.target &&
           serverEvent == other.serverEvent &&
           needsUpdate == other.needsUpdate &&
-          cancelled == other.cancelled;
+          cancelled == other.cancelled &&
+          scheduledEvents == other.scheduledEvents;
 }
 
 enum StateFieldAccess {

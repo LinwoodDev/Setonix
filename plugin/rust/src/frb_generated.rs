@@ -582,11 +582,13 @@ impl SseDecode for crate::api::plugin::EventResult {
         let mut var_needsUpdate =
             <Option<std::collections::HashSet<i16>>>::sse_decode(deserializer);
         let mut var_cancelled = <bool>::sse_decode(deserializer);
+        let mut var_scheduledEvents = <Vec<(String, i16)>>::sse_decode(deserializer);
         return crate::api::plugin::EventResult {
             target: var_target,
             server_event: var_serverEvent,
             needs_update: var_needsUpdate,
             cancelled: var_cancelled,
+            scheduled_events: var_scheduledEvents,
         };
     }
 }
@@ -636,6 +638,18 @@ impl SseDecode for Vec<u8> {
     }
 }
 
+impl SseDecode for Vec<(String, i16)> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<(String, i16)>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
 impl SseDecode for Option<std::collections::HashSet<i16>> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -677,6 +691,15 @@ impl SseDecode for Option<i16> {
         } else {
             return None;
         }
+    }
+}
+
+impl SseDecode for (String, i16) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_field0 = <String>::sse_decode(deserializer);
+        let mut var_field1 = <i16>::sse_decode(deserializer);
+        return (var_field0, var_field1);
     }
 }
 
@@ -791,6 +814,7 @@ impl flutter_rust_bridge::IntoDart for crate::api::plugin::EventResult {
             self.server_event.into_into_dart().into_dart(),
             self.needs_update.into_into_dart().into_dart(),
             self.cancelled.into_into_dart().into_dart(),
+            self.scheduled_events.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -911,6 +935,7 @@ impl SseEncode for crate::api::plugin::EventResult {
         <Option<String>>::sse_encode(self.server_event, serializer);
         <Option<std::collections::HashSet<i16>>>::sse_encode(self.needs_update, serializer);
         <bool>::sse_encode(self.cancelled, serializer);
+        <Vec<(String, i16)>>::sse_encode(self.scheduled_events, serializer);
     }
 }
 
@@ -958,6 +983,16 @@ impl SseEncode for Vec<u8> {
     }
 }
 
+impl SseEncode for Vec<(String, i16)> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <(String, i16)>::sse_encode(item, serializer);
+        }
+    }
+}
+
 impl SseEncode for Option<std::collections::HashSet<i16>> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -995,6 +1030,14 @@ impl SseEncode for Option<i16> {
         if let Some(value) = self {
             <i16>::sse_encode(value, serializer);
         }
+    }
+}
+
+impl SseEncode for (String, i16) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.0, serializer);
+        <i16>::sse_encode(self.1, serializer);
     }
 }
 

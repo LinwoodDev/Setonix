@@ -693,13 +693,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   EventResult dco_decode_event_result(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 4)
-      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
+    if (arr.length != 5)
+      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
     return EventResult(
       target: dco_decode_i_16(arr[0]),
       serverEvent: dco_decode_opt_String(arr[1]),
       needsUpdate: dco_decode_opt_Set_i_16_None(arr[2]),
       cancelled: dco_decode_bool(arr[3]),
+      scheduledEvents: dco_decode_list_record_string_i_16(arr[4]),
     );
   }
 
@@ -734,6 +735,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<(String, int)> dco_decode_list_record_string_i_16(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_record_string_i_16).toList();
+  }
+
+  @protected
   Set<int>? dco_decode_opt_Set_i_16_None(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_Set_i_16_None(raw);
@@ -755,6 +762,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   int? dco_decode_opt_box_autoadd_i_16(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_i_16(raw);
+  }
+
+  @protected
+  (String, int) dco_decode_record_string_i_16(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2) {
+      throw Exception('Expected 2 elements, got ${arr.length}');
+    }
+    return (dco_decode_String(arr[0]), dco_decode_i_16(arr[1]));
   }
 
   @protected
@@ -894,11 +911,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_serverEvent = sse_decode_opt_String(deserializer);
     var var_needsUpdate = sse_decode_opt_Set_i_16_None(deserializer);
     var var_cancelled = sse_decode_bool(deserializer);
+    var var_scheduledEvents = sse_decode_list_record_string_i_16(deserializer);
     return EventResult(
       target: var_target,
       serverEvent: var_serverEvent,
       needsUpdate: var_needsUpdate,
       cancelled: var_cancelled,
+      scheduledEvents: var_scheduledEvents,
     );
   }
 
@@ -932,6 +951,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var len_ = sse_decode_i_32(deserializer);
     return deserializer.buffer.getUint8List(len_);
+  }
+
+  @protected
+  List<(String, int)> sse_decode_list_record_string_i_16(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <(String, int)>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_record_string_i_16(deserializer));
+    }
+    return ans_;
   }
 
   @protected
@@ -976,6 +1009,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     } else {
       return null;
     }
+  }
+
+  @protected
+  (String, int) sse_decode_record_string_i_16(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_field0 = sse_decode_String(deserializer);
+    var var_field1 = sse_decode_i_16(deserializer);
+    return (var_field0, var_field1);
   }
 
   @protected
@@ -1200,6 +1241,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_opt_String(self.serverEvent, serializer);
     sse_encode_opt_Set_i_16_None(self.needsUpdate, serializer);
     sse_encode_bool(self.cancelled, serializer);
+    sse_encode_list_record_string_i_16(self.scheduledEvents, serializer);
   }
 
   @protected
@@ -1241,6 +1283,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_list_record_string_i_16(
+    List<(String, int)> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_record_string_i_16(item, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_opt_Set_i_16_None(Set<int>? self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -1278,6 +1332,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     if (self != null) {
       sse_encode_box_autoadd_i_16(self, serializer);
     }
+  }
+
+  @protected
+  void sse_encode_record_string_i_16(
+    (String, int) self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.$1, serializer);
+    sse_encode_i_16(self.$2, serializer);
   }
 
   @protected
