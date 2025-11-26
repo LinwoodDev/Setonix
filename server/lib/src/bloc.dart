@@ -68,14 +68,21 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
     });
   }
 
-  List<(UpdateServerResponse, Set<int>?)> _scheduledUpdates = [];
+  final List<(PlayableWorldEvent, UpdateServerResponse, Set<int>?)>
+  _scheduledUpdates = [];
 
   @override
-  void onChange(Change<WorldState> change) {
-    super.onChange(change);
-    for (final (response, needsUpdate) in _scheduledUpdates) {
+  void onTransition(Transition<PlayableWorldEvent, WorldState> transition) {
+    super.onTransition(transition);
+    final updateIndex = _scheduledUpdates.indexWhere(
+      (element) => element.$1 == transition.event,
+    );
+    if (updateIndex != -1) {
+      final (_, response, needsUpdate) = _scheduledUpdates.removeAt(
+        updateIndex,
+      );
       final updatePackets = response.buildUpdatePacketsFor(
-        change.nextState,
+        transition.nextState,
         server.channels,
         needsUpdate,
       );
@@ -218,14 +225,10 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
             );
           default:
         }
-        _scheduledUpdates.add((process, event.needsUpdate));
-        await server.sendEvent(
-          event.serverEvent,
-          target: event.target,
-          worldName: worldName,
-        );
+        _scheduledUpdates.add((event.serverEvent, process, event.needsUpdate));
+        await sendEvent(event.serverEvent, target: event.target);
         for (final scheduled in event.scheduledEvents) {
-          onClientEvent(scheduled, force: true);
+          await onClientEvent(scheduled, force: true);
         }
       case KickServerResponse():
         server.kick(packet.channel, process.message);

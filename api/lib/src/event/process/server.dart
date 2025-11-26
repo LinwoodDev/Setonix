@@ -478,5 +478,7 @@ ServerProcessed processServerEvent(
       return ServerProcessed(state.copyWith(info: info));
     case CellSwitched():
       return ServerProcessed(null);
+    case ToolbarUpdated():
+      return ServerProcessed(state.copyWith(toolbar: event.toolbar));
   }
 }

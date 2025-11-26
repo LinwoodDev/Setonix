@@ -18,7 +18,7 @@ base class Event<T extends WorldEvent> {
   Channel target;
   bool cancelled = false;
   Set<Channel>? needsUpdate;
-  final List<NetworkerPacket<WorldEvent>> _scheduledEvents = [];
+  final List<NetworkerPacket<PlayableWorldEvent>> _scheduledEvents = [];
 
   Event({
     required this.serverEvent,
@@ -29,7 +29,7 @@ base class Event<T extends WorldEvent> {
     this.needsUpdate,
   });
 
-  List<NetworkerPacket<WorldEvent>> get scheduledEvents =>
+  List<NetworkerPacket<PlayableWorldEvent>> get scheduledEvents =>
       List.unmodifiable(_scheduledEvents);
 
   Event<C> castEvent<C extends WorldEvent>() {
@@ -41,11 +41,14 @@ base class Event<T extends WorldEvent> {
     needsUpdate = null;
   }
 
-  void scheduleEvent(WorldEvent event, [Channel channel = kAnyChannel]) {
+  void scheduleEvent(
+    PlayableWorldEvent event, [
+    Channel channel = kAnyChannel,
+  ]) {
     _scheduledEvents.add(NetworkerPacket(event, channel));
   }
 
-  void scheduleEvents(Iterable<NetworkerPacket<WorldEvent>> events) {
+  void scheduleEvents(Iterable<NetworkerPacket<PlayableWorldEvent>> events) {
     _scheduledEvents.addAll(events);
   }
 }
@@ -93,19 +96,22 @@ final class _LinkedEvent<T extends WorldEvent> implements Event<T> {
   String get worldName => parent.worldName;
 
   @override
-  void scheduleEvent(WorldEvent event, [Channel channel = kAnyChannel]) {
+  void scheduleEvent(
+    PlayableWorldEvent event, [
+    Channel channel = kAnyChannel,
+  ]) {
     parent.scheduleEvent(event, channel);
   }
 
   @override
-  void scheduleEvents(Iterable<NetworkerPacket<WorldEvent>> events) {
+  void scheduleEvents(Iterable<NetworkerPacket<PlayableWorldEvent>> events) {
     parent.scheduleEvents(events);
   }
 
-  List<NetworkerPacket<WorldEvent>> get _scheduledEvents =>
+  List<NetworkerPacket<PlayableWorldEvent>> get _scheduledEvents =>
       parent._scheduledEvents;
   @override
-  List<NetworkerPacket<WorldEvent>> get scheduledEvents =>
+  List<NetworkerPacket<PlayableWorldEvent>> get scheduledEvents =>
       List.unmodifiable(_scheduledEvents);
 }
 

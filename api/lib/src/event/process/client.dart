@@ -418,5 +418,7 @@ Future<ServerResponse?> processClientEvent(
         );
       }
       return UpdateServerResponse.builder(buildInitialize(), channel);
+    case ToolbarActionRequest():
+      return null;
   }
 }

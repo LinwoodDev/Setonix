@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:networker/networker.dart';
+import 'package:setonix_api/src/models/toolbar.dart';
 
 import '../models/cell.dart';
 import '../models/chat.dart';
@@ -38,6 +39,7 @@ final class WorldState with WorldStateMappable {
   final ServerState serverState;
   final GameState gameState;
   final AuthenticatedRequested? authRequest;
+  final GameToolbar toolbar;
 
   const WorldState({
     this.name,
@@ -53,6 +55,7 @@ final class WorldState with WorldStateMappable {
     this.images = const {},
     this.serverState = const ServerState(),
     this.authRequest,
+    this.toolbar = const GameToolbar(),
     required this.data,
   });
 

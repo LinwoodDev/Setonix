@@ -254,9 +254,18 @@ final class SetonixServer {
     Channel target = kAnyChannel,
     String? worldName,
   }) async {
-    await _pipe?.sendMessage(event, target);
+    final world = getWorld(worldName ?? defaultWorldName);
+    final pipeTargets = [];
+    if (target == kAnyChannel) {
+      pipeTargets.addAll(world?.players ?? [kAnyChannel]);
+    } else {
+      pipeTargets.add(target);
+    }
+    for (final channel in pipeTargets) {
+      await _pipe?.sendMessage(event, channel);
+    }
     if (target == kAnyChannel || target == kAuthorityChannel) {
-      getWorld(worldName ?? defaultWorldName)?.add(event);
+      world?.add(event);
     }
   }
 

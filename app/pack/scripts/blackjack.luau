@@ -286,5 +286,25 @@ Events.MessageRequest.Connect(function(event, details)
     details.cancelled = true
   end
 end)
+Events.UserJoined.Connect(function(event, details)
+  Server:Send( {
+    type="ToolbarUpdated",
+    toolbar={
+      editable=false,
+      actions={
+        {
+          id="blackjack_hit",
+          label="Hit",
+          enabled=true,
+        },
+        {
+          id="blackjack_stand",
+          label="Stand",
+          enabled=true,
+        }
+      }
+    }
+  }, details.source)
+end)
 
 Setup()

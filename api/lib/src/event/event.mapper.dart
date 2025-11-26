@@ -152,6 +152,7 @@ class ServerWorldEventMapper extends SubClassMapperBase<ServerWorldEvent> {
       ImagesUpdatedMapper.ensureInitialized();
       ServerStateUpdatedMapper.ensureInitialized();
       AuthenticatedRequestedMapper.ensureInitialized();
+      ToolbarUpdatedMapper.ensureInitialized();
       HybridWorldEventMapper.ensureInitialized();
     }
     return _instance!;
@@ -2214,6 +2215,137 @@ class _AuthenticatedRequestedCopyWithImpl<$R, $Out>
       _AuthenticatedRequestedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+class ToolbarUpdatedMapper extends SubClassMapperBase<ToolbarUpdated> {
+  ToolbarUpdatedMapper._();
+
+  static ToolbarUpdatedMapper? _instance;
+  static ToolbarUpdatedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = ToolbarUpdatedMapper._());
+      ServerWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      GameToolbarMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'ToolbarUpdated';
+
+  static GameToolbar _$toolbar(ToolbarUpdated v) => v.toolbar;
+  static const Field<ToolbarUpdated, GameToolbar> _f$toolbar = Field(
+    'toolbar',
+    _$toolbar,
+  );
+
+  @override
+  final MappableFields<ToolbarUpdated> fields = const {#toolbar: _f$toolbar};
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'ToolbarUpdated';
+  @override
+  late final ClassMapperBase superMapper =
+      ServerWorldEventMapper.ensureInitialized();
+
+  static ToolbarUpdated _instantiate(DecodingData data) {
+    return ToolbarUpdated(data.dec(_f$toolbar));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static ToolbarUpdated fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<ToolbarUpdated>(map);
+  }
+
+  static ToolbarUpdated fromJson(String json) {
+    return ensureInitialized().decodeJson<ToolbarUpdated>(json);
+  }
+}
+
+mixin ToolbarUpdatedMappable {
+  String toJson() {
+    return ToolbarUpdatedMapper.ensureInitialized().encodeJson<ToolbarUpdated>(
+      this as ToolbarUpdated,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return ToolbarUpdatedMapper.ensureInitialized().encodeMap<ToolbarUpdated>(
+      this as ToolbarUpdated,
+    );
+  }
+
+  ToolbarUpdatedCopyWith<ToolbarUpdated, ToolbarUpdated, ToolbarUpdated>
+  get copyWith => _ToolbarUpdatedCopyWithImpl<ToolbarUpdated, ToolbarUpdated>(
+    this as ToolbarUpdated,
+    $identity,
+    $identity,
+  );
+  @override
+  String toString() {
+    return ToolbarUpdatedMapper.ensureInitialized().stringifyValue(
+      this as ToolbarUpdated,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return ToolbarUpdatedMapper.ensureInitialized().equalsValue(
+      this as ToolbarUpdated,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return ToolbarUpdatedMapper.ensureInitialized().hashValue(
+      this as ToolbarUpdated,
+    );
+  }
+}
+
+extension ToolbarUpdatedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, ToolbarUpdated, $Out> {
+  ToolbarUpdatedCopyWith<$R, ToolbarUpdated, $Out> get $asToolbarUpdated =>
+      $base.as((v, t, t2) => _ToolbarUpdatedCopyWithImpl<$R, $Out>(v, t, t2));
+}
+
+abstract class ToolbarUpdatedCopyWith<$R, $In extends ToolbarUpdated, $Out>
+    implements ServerWorldEventCopyWith<$R, $In, $Out> {
+  GameToolbarCopyWith<$R, GameToolbar, GameToolbar> get toolbar;
+  @override
+  $R call({GameToolbar? toolbar});
+  ToolbarUpdatedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class _ToolbarUpdatedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, ToolbarUpdated, $Out>
+    implements ToolbarUpdatedCopyWith<$R, ToolbarUpdated, $Out> {
+  _ToolbarUpdatedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<ToolbarUpdated> $mapper =
+      ToolbarUpdatedMapper.ensureInitialized();
+  @override
+  GameToolbarCopyWith<$R, GameToolbar, GameToolbar> get toolbar =>
+      $value.toolbar.copyWith.$chain((v) => call(toolbar: v));
+  @override
+  $R call({GameToolbar? toolbar}) =>
+      $apply(FieldCopyWithData({if (toolbar != null) #toolbar: toolbar}));
+  @override
+  ToolbarUpdated $make(CopyWithData data) =>
+      ToolbarUpdated(data.get(#toolbar, or: $value.toolbar));
+
+  @override
+  ToolbarUpdatedCopyWith<$R2, ToolbarUpdated, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _ToolbarUpdatedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
 class ClientWorldEventMapper extends SubClassMapperBase<ClientWorldEvent> {
   ClientWorldEventMapper._();
 
@@ -2235,6 +2367,7 @@ class ClientWorldEventMapper extends SubClassMapperBase<ClientWorldEvent> {
       ImagesRequestMapper.ensureInitialized();
       ModeChangeRequestMapper.ensureInitialized();
       AuthenticateRequestMapper.ensureInitialized();
+      ToolbarActionRequestMapper.ensureInitialized();
       HybridWorldEventMapper.ensureInitialized();
     }
     return _instance!;
@@ -4188,6 +4321,143 @@ class _AuthenticateRequestCopyWithImpl<$R, $Out>
   AuthenticateRequestCopyWith<$R2, AuthenticateRequest, $Out2>
   $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _AuthenticateRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+class ToolbarActionRequestMapper
+    extends SubClassMapperBase<ToolbarActionRequest> {
+  ToolbarActionRequestMapper._();
+
+  static ToolbarActionRequestMapper? _instance;
+  static ToolbarActionRequestMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = ToolbarActionRequestMapper._());
+      ClientWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'ToolbarActionRequest';
+
+  static String _$actionId(ToolbarActionRequest v) => v.actionId;
+  static const Field<ToolbarActionRequest, String> _f$actionId = Field(
+    'actionId',
+    _$actionId,
+  );
+
+  @override
+  final MappableFields<ToolbarActionRequest> fields = const {
+    #actionId: _f$actionId,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'ToolbarActionRequest';
+  @override
+  late final ClassMapperBase superMapper =
+      ClientWorldEventMapper.ensureInitialized();
+
+  static ToolbarActionRequest _instantiate(DecodingData data) {
+    return ToolbarActionRequest(data.dec(_f$actionId));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static ToolbarActionRequest fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<ToolbarActionRequest>(map);
+  }
+
+  static ToolbarActionRequest fromJson(String json) {
+    return ensureInitialized().decodeJson<ToolbarActionRequest>(json);
+  }
+}
+
+mixin ToolbarActionRequestMappable {
+  String toJson() {
+    return ToolbarActionRequestMapper.ensureInitialized()
+        .encodeJson<ToolbarActionRequest>(this as ToolbarActionRequest);
+  }
+
+  Map<String, dynamic> toMap() {
+    return ToolbarActionRequestMapper.ensureInitialized()
+        .encodeMap<ToolbarActionRequest>(this as ToolbarActionRequest);
+  }
+
+  ToolbarActionRequestCopyWith<
+    ToolbarActionRequest,
+    ToolbarActionRequest,
+    ToolbarActionRequest
+  >
+  get copyWith =>
+      _ToolbarActionRequestCopyWithImpl<
+        ToolbarActionRequest,
+        ToolbarActionRequest
+      >(this as ToolbarActionRequest, $identity, $identity);
+  @override
+  String toString() {
+    return ToolbarActionRequestMapper.ensureInitialized().stringifyValue(
+      this as ToolbarActionRequest,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return ToolbarActionRequestMapper.ensureInitialized().equalsValue(
+      this as ToolbarActionRequest,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return ToolbarActionRequestMapper.ensureInitialized().hashValue(
+      this as ToolbarActionRequest,
+    );
+  }
+}
+
+extension ToolbarActionRequestValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, ToolbarActionRequest, $Out> {
+  ToolbarActionRequestCopyWith<$R, ToolbarActionRequest, $Out>
+  get $asToolbarActionRequest => $base.as(
+    (v, t, t2) => _ToolbarActionRequestCopyWithImpl<$R, $Out>(v, t, t2),
+  );
+}
+
+abstract class ToolbarActionRequestCopyWith<
+  $R,
+  $In extends ToolbarActionRequest,
+  $Out
+>
+    implements ClientWorldEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({String? actionId});
+  ToolbarActionRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class _ToolbarActionRequestCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, ToolbarActionRequest, $Out>
+    implements ToolbarActionRequestCopyWith<$R, ToolbarActionRequest, $Out> {
+  _ToolbarActionRequestCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<ToolbarActionRequest> $mapper =
+      ToolbarActionRequestMapper.ensureInitialized();
+  @override
+  $R call({String? actionId}) =>
+      $apply(FieldCopyWithData({if (actionId != null) #actionId: actionId}));
+  @override
+  ToolbarActionRequest $make(CopyWithData data) =>
+      ToolbarActionRequest(data.get(#actionId, or: $value.actionId));
+
+  @override
+  ToolbarActionRequestCopyWith<$R2, ToolbarActionRequest, $Out2>
+  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _ToolbarActionRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class HybridWorldEventMapper extends SubClassMapperBase<HybridWorldEvent> {

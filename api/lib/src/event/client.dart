@@ -191,3 +191,11 @@ final class AuthenticateRequest extends ClientWorldEvent
     ),
   );
 }
+
+@MappableClass()
+final class ToolbarActionRequest extends ClientWorldEvent
+    with ToolbarActionRequestMappable {
+  final String actionId;
+
+  ToolbarActionRequest(this.actionId);
+}
