@@ -89,12 +89,12 @@ impl RustPlugin for LuauPlugin {
         &self,
         event_type: String,
         event: String,
-        server_event: String,
+        server_event: Option<String>,
         source: Channel,
         cancelled: bool,
         target: Channel,
     ) -> EventResult {
-        let server_event: JsonObject = serde_json::from_str(&server_event).unwrap();
+        let server_event: Option<JsonObject> = server_event.map(|e| serde_json::from_str(&e).unwrap());
         let old = EventDetails::new(server_event, target, source, cancelled, None);
         let details = LuaEventDetails(Arc::new(std::sync::Mutex::new(old.clone())));
         let event : JsonObject = serde_json::from_str(&event).unwrap();

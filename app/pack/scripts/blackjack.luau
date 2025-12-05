@@ -10,7 +10,7 @@ local StackPosition = {
   y="1"
 }
 local StackPositionLocation = "("..StackPosition.x..", "..StackPosition.y..")"
-local CurrentPlayer = 1
+local CurrentPlayer = nil
 local PlayerScores : {[number]: number} = {}
 local Colors = {
   "heart",
@@ -79,7 +79,7 @@ end
 function Reset()
   ResetWorld()
   PlayerScores = {}
-  CurrentPlayer = 1
+  CurrentPlayer = nil
   Setup()
 end
 function Setup()
@@ -180,26 +180,34 @@ function CalculateStack(optionalCard : any) : number
   end
   return lowestOver or 0
 end
-function GetNextPlayer() : number?
-  local index = table.find(State.Players, CurrentPlayer)
-  if not index then
-    return nil
+function FinishTurn(score)
+  if not score then
+    score = CalculateStack()
   end
-  index = index + 1
-  if index > #State.Players then
-    index = 1
-  end
-  return State.Players[index]
-end
-function NextRound()
-  PlayerScores[CurrentPlayer] = CalculateStack()
+  PlayerScores[CurrentPlayer] = score
+  Server:Send({
+    type="MessageSent",
+    user=0,
+    message="Player "..CurrentPlayer.." finished with "..score.." points."
+  }, nil)
   RemoveStack()
-  CurrentPlayer = GetNextPlayer() or CurrentPlayer
-  if CurrentPlayer == 1 then
-    -- All players had their turn, round is over.
-    FinishRound()
+  
+  local allPlayed = true
+  if State.Players then
+    for _, player in ipairs(State.Players) do
+      if not PlayerScores[player] then
+        allPlayed = false
+        break
+      end
+    end
   end
-  print("Player "..CurrentPlayer.."'s turn")
+
+  CurrentPlayer = nil
+  if allPlayed then
+    FinishRound()
+  else
+    print("Waiting for next player to take a card.")
+  end
 end
 function FinishRound()
   -- Determine winner(s)
@@ -242,7 +250,12 @@ function OnNewCard()
   }, nil)
   if score > MaxScore then
     print("Player "..CurrentPlayer.." busted!")
-    NextRound()
+    Server:Send({
+      type="MessageSent",
+      user=0,
+      message="Player "..CurrentPlayer.." busted with "..score.." points!"
+    }, nil)
+    FinishTurn(score)
   end
 end
 
@@ -268,6 +281,16 @@ Events.ObjectsMoved.Connect(function(event, details)
     details.cancelled = true
     return
   end
+
+  if CurrentPlayer == nil then
+    CurrentPlayer = details.source
+    print("Player "..CurrentPlayer.." started turn.")
+  elseif CurrentPlayer ~= details.source then
+    print("It's not your turn! Current player: "..tostring(CurrentPlayer))
+    details.cancelled = true
+    return
+  end
+
   OnNewCard()
   details:ScheduleEvent({
     type="CellHideChanged",
@@ -279,7 +302,7 @@ Events.MessageRequest.Connect(function(event, details)
   local message = event.message:lower()
   if message == "!stand" or message == "!stay" then
     if details.source == CurrentPlayer then
-      NextRound()
+      FinishTurn()
     else
       print("It's not your turn!")
     end
@@ -293,11 +316,6 @@ Events.UserJoined.Connect(function(event, details)
       editable=false,
       actions={
         {
-          id="blackjack_hit",
-          label="Hit",
-          enabled=true,
-        },
-        {
           id="blackjack_stand",
           label="Stand",
           enabled=true,
@@ -305,6 +323,24 @@ Events.UserJoined.Connect(function(event, details)
       }
     }
   }, details.source)
+end)
+Events.ToolbarActionRequest.Connect(function(event, details)
+  print("Toolbar action requested: "..event.actionId)
+  if event.actionId == "blackjack_hit" then
+    if details.source == CurrentPlayer then
+      OnNewCard()
+    else
+      print("It's not your turn!")
+    end
+    details.cancelled = true
+  elseif event.actionId == "blackjack_stand" then
+    if details.source == CurrentPlayer then
+      FinishTurn()
+    else
+      print("It's not your turn!")
+    end
+    details.cancelled = true
+  end
 end)
 
 Setup()

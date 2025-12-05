@@ -88,7 +88,7 @@ abstract class RustLibApi extends BaseApi {
     required LuauPlugin that,
     required String eventType,
     required String event,
-    required String serverEvent,
+    String? serverEvent,
     required int source,
     required bool cancelled,
     required int target,
@@ -202,7 +202,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     required LuauPlugin that,
     required String eventType,
     required String event,
-    required String serverEvent,
+    String? serverEvent,
     required int source,
     required bool cancelled,
     required int target,
@@ -217,7 +217,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           );
           sse_encode_String(eventType, serializer);
           sse_encode_String(event, serializer);
-          sse_encode_String(serverEvent, serializer);
+          sse_encode_opt_String(serverEvent, serializer);
           sse_encode_i_16(source, serializer);
           sse_encode_bool(cancelled, serializer);
           sse_encode_i_16(target, serializer);
@@ -1396,7 +1396,7 @@ class LuauPluginImpl extends RustOpaque implements LuauPlugin {
   Future<EventResult> runEvent({
     required String eventType,
     required String event,
-    required String serverEvent,
+    String? serverEvent,
     required int source,
     required bool cancelled,
     required int target,

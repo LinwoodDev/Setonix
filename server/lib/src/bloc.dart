@@ -68,7 +68,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
     });
   }
 
-  final List<(PlayableWorldEvent, UpdateServerResponse, Set<int>?)>
+  final List<(PlayableWorldEvent?, UpdateServerResponse, Set<int>?)>
   _scheduledUpdates = [];
 
   @override
@@ -202,8 +202,8 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
     switch (process) {
       case UpdateServerResponse():
         final event = Event(
-          serverEvent: process.main.data,
-          target: process.main.channel,
+          serverEvent: process.main?.data,
+          target: process.main?.channel ?? kAnyChannel,
           clientEvent: data,
           source: packet.channel,
           needsUpdate: process.needsUpdate,
@@ -226,7 +226,10 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
           default:
         }
         _scheduledUpdates.add((event.serverEvent, process, event.needsUpdate));
-        await sendEvent(event.serverEvent, target: event.target);
+        final serverEvent = event.serverEvent;
+        if (serverEvent != null) {
+          await sendEvent(serverEvent, target: event.target);
+        }
         for (final scheduled in event.scheduledEvents) {
           await onClientEvent(scheduled, force: true);
         }

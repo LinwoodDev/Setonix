@@ -33,7 +33,7 @@ abstract class RustPlugin {
   Future<EventResult> runEvent({
     required String eventType,
     required String event,
-    required String serverEvent,
+    String? serverEvent,
     required int source,
     required bool cancelled,
     required int target,

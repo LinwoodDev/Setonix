@@ -14,7 +14,7 @@ base class Event<T extends WorldEvent> {
   final T clientEvent;
   final Channel source;
   final String worldName;
-  ServerWorldEvent serverEvent;
+  ServerWorldEvent? serverEvent;
   Channel target;
   bool cancelled = false;
   Set<Channel>? needsUpdate;
@@ -65,9 +65,9 @@ final class _LinkedEvent<T extends WorldEvent> implements Event<T> {
   set cancelled(bool value) => parent.cancelled = value;
 
   @override
-  ServerWorldEvent get serverEvent => parent.serverEvent;
+  ServerWorldEvent? get serverEvent => parent.serverEvent;
   @override
-  set serverEvent(ServerWorldEvent value) => parent.serverEvent = value;
+  set serverEvent(ServerWorldEvent? value) => parent.serverEvent = value;
 
   @override
   Channel get target => parent.target;

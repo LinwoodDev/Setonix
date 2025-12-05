@@ -162,7 +162,7 @@ fn wire__crate__api__luau__LuauPlugin_run_event_impl(
             >>::sse_decode(&mut deserializer);
             let api_event_type = <String>::sse_decode(&mut deserializer);
             let api_event = <String>::sse_decode(&mut deserializer);
-            let api_server_event = <String>::sse_decode(&mut deserializer);
+            let api_server_event = <Option<String>>::sse_decode(&mut deserializer);
             let api_source = <i16>::sse_decode(&mut deserializer);
             let api_cancelled = <bool>::sse_decode(&mut deserializer);
             let api_target = <i16>::sse_decode(&mut deserializer);

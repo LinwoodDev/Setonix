@@ -96,21 +96,21 @@ class KickServerResponse extends ServerResponse {
 }
 
 class UpdateServerResponse extends ServerResponse {
-  final NetworkerPacket<ServerWorldEvent> main;
+  final NetworkerPacket<ServerWorldEvent>? main;
   final Set<Channel> needsUpdate;
 
   UpdateServerResponse(this.main, [this.needsUpdate = const {}]);
   UpdateServerResponse.builder(
-    ServerWorldEvent event, [
+    ServerWorldEvent? event, [
     Channel channel = kAnyChannel,
     this.needsUpdate = const {},
-  ]) : main = NetworkerPacket(event, channel);
+  ]) : main = event == null ? null : NetworkerPacket(event, channel);
 
   List<NetworkerPacket<ServerWorldEvent>> buildPackets(
     WorldState state,
     Iterable<Channel> connected,
   ) {
-    return [main, ...buildUpdatePackets(state, connected)];
+    return [?main, ...buildUpdatePackets(state, connected)];
   }
 
   List<NetworkerPacket<WorldInitialized>> buildUpdatePackets(
@@ -419,6 +419,6 @@ Future<ServerResponse?> processClientEvent(
       }
       return UpdateServerResponse.builder(buildInitialize(), channel);
     case ToolbarActionRequest():
-      return null;
+      return UpdateServerResponse.builder(null);
   }
 }

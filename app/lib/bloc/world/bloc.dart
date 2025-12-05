@@ -216,7 +216,8 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
             allowServerEvents: true,
           );
           if (event is! UpdateServerResponse) break;
-          add(event.main.data);
+          final result = event.main?.data;
+          if (result != null) add(result);
           final updatePacket = event.buildUpdatePackets(state.world, {
             kAuthorityChannel,
           }).firstOrNull;

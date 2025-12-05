@@ -55,14 +55,14 @@ pub type Channel = i16;
 pub type JsonObject = Map<String, Value>;
 
 pub(crate) trait RustPlugin {
-    async fn run_event(&self, event_type: String, event: String, server_event: String, source: Channel, cancelled: bool, target: Channel) -> EventResult;
+    async fn run_event(&self, event_type: String, event: String, server_event: Option<String>, source: Channel, cancelled: bool, target: Channel) -> EventResult;
     async fn run(&self) -> Result<(), anyhow::Error>;
 }
 
 #[derive(Serialize, Deserialize, Clone)]
 pub(crate) struct EventDetails {
     pub(crate) source: Channel,
-    pub(crate) server_event: JsonObject,
+    pub(crate) server_event: Option<JsonObject>,
     pub(crate) target: Channel,
     pub(crate) cancelled: bool,
     pub(crate) needs_update: Option<HashSet<Channel>>,
@@ -71,7 +71,7 @@ pub(crate) struct EventDetails {
 
 impl EventDetails {
     pub(crate) fn new(
-        server_event: JsonObject,
+        server_event: Option<JsonObject>,
         target: Channel,
         source: Channel,
         cancelled: bool,

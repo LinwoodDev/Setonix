@@ -223,7 +223,7 @@ final class RustSetonixPlugin extends SetonixPlugin {
       final result = await instance.plugin.runEvent(
         eventType: e.clientEvent.runtimeType.toString(),
         event: e.clientEvent.toJson(),
-        serverEvent: e.serverEvent.toJson(),
+        serverEvent: e.serverEvent?.toJson(),
         target: e.target,
         source: e.source,
         cancelled: e.cancelled,
