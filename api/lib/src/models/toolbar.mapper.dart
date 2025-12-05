@@ -27,7 +27,7 @@ class GameToolbarMapper extends ClassMapperBase<GameToolbar> {
     'editable',
     _$editable,
     opt: true,
-    def: false,
+    def: true,
   );
   static List<ToolbarAction> _$actions(GameToolbar v) => v.actions;
   static const Field<GameToolbar, List<ToolbarAction>> _f$actions = Field(

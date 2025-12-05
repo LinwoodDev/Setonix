@@ -322,6 +322,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.1"
+  file_picker:
+    dependency: transitive
+    description:
+      name: file_picker
+      sha256: "7872545770c277236fd32b022767576c562ba28366204ff1a5628853cf8f2200"
+      url: "https://pub.dev"
+    source: hosted
+    version: "10.3.7"
   file_selector:
     dependency: "direct main"
     description:
@@ -481,6 +489,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.5"
+  flutter_plugin_android_lifecycle:
+    dependency: transitive
+    description:
+      name: flutter_plugin_android_lifecycle
+      sha256: ee8068e0e1cd16c4a82714119918efdeed33b3ba7772c54b5d094ab53f9b7fd1
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.33"
   flutter_rust_bridge:
     dependency: transitive
     description:
@@ -721,8 +737,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/lw_file_system"
-      ref: "12843672e8f33e9370444b13fca8134f4543f7ee"
-      resolved-ref: "12843672e8f33e9370444b13fca8134f4543f7ee"
+      ref: "42bd9fde81a3692711862cdb0c60f05f648241a9"
+      resolved-ref: "42bd9fde81a3692711862cdb0c60f05f648241a9"
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "1.0.0"
@@ -739,8 +755,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/lw_sysapi"
-      ref: "3f886507656f057d89a8b98de6ddbc7f5a21868e"
-      resolved-ref: "3f886507656f057d89a8b98de6ddbc7f5a21868e"
+      ref: "38fd0a6df52bf4115a6926271734d36e601af9cf"
+      resolved-ref: "38fd0a6df52bf4115a6926271734d36e601af9cf"
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "0.0.1"
@@ -780,8 +796,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/material_leap"
-      ref: "12843672e8f33e9370444b13fca8134f4543f7ee"
-      resolved-ref: "12843672e8f33e9370444b13fca8134f4543f7ee"
+      ref: "7d58db18bf9f420236009d9519769ec13f9404b0"
+      resolved-ref: "7d58db18bf9f420236009d9519769ec13f9404b0"
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "0.0.1"
@@ -820,12 +836,11 @@ packages:
   network_info_plus:
     dependency: "direct main"
     description:
-      path: "packages/network_info_plus/network_info_plus"
-      ref: "9bd0c023f2dc209576dc66bf989048ba218127b6"
-      resolved-ref: "9bd0c023f2dc209576dc66bf989048ba218127b6"
-      url: "https://github.com/CodeDoctorDE/plus_plugins.git"
-    source: git
-    version: "6.1.3"
+      name: network_info_plus
+      sha256: "2866dadcbee2709e20d67737a1556f5675b8b0cdcf2c1659ba74bc21bffede4f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.0.0"
   network_info_plus_platform_interface:
     dependency: transitive
     description:

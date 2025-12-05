@@ -26,7 +26,7 @@ class ViewMultiplayerDialog extends StatelessWidget {
                 onTap: () {
                   exportFile(
                     context: context,
-                    bytes: svg.codeUnits,
+                    bytes: Uint8List.fromList(svg.codeUnits),
                     fileExtension: 'svg',
                     mimeType: 'image/svg',
                     uniformTypeIdentifier: 'public.svg-image',

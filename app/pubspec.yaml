@@ -32,7 +32,7 @@ dependencies:
   material_leap:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 12843672e8f33e9370444b13fca8134f4543f7ee
+      ref: 7d58db18bf9f420236009d9519769ec13f9404b0
       path: packages/material_leap
   flex_color_scheme: ^8.1.0
   flutter_svg: ^2.2.0
@@ -78,12 +78,12 @@ dependencies:
   lw_file_system:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 12843672e8f33e9370444b13fca8134f4543f7ee
+      ref: 42bd9fde81a3692711862cdb0c60f05f648241a9
       path: packages/lw_file_system
   lw_sysapi:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 3f886507656f057d89a8b98de6ddbc7f5a21868e
+      ref: 38fd0a6df52bf4115a6926271734d36e601af9cf
       path: packages/lw_sysapi
   setonix_api:
     path: ../api
@@ -100,11 +100,7 @@ dependencies:
     path: ../plugin
   cryptography_plus: ^2.7.1
   cryptography_flutter_plus: ^2.3.2
-  network_info_plus:
-    git:
-      url: https://github.com/CodeDoctorDE/plus_plugins.git
-      ref: 9bd0c023f2dc209576dc66bf989048ba218127b6
-      path: packages/network_info_plus/network_info_plus
+  network_info_plus: ^7.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
