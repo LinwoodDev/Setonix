@@ -596,7 +596,10 @@ jobs:
           dart pub get
           cd ..
           dart run tools/generate.dart
-          tree -a -L 2 server/server-build
+      - name: Copy core pack
+        run: |
+          cp packs/core.stnx server-build/packs/
+          tree -a -L 2 server-build
       - name: Archive
         uses: actions/upload-artifact@v4
         with:
