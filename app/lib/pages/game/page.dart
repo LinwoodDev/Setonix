@@ -249,9 +249,11 @@ class _GamePageState extends State<GamePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                AppLocalizations.of(
-                                  context,
-                                ).newMessage(message.author.toString()),
+                                AppLocalizations.of(context).newMessage(
+                                  AppLocalizations.of(
+                                    context,
+                                  ).defaultPlayerName(message.author),
+                                ),
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                               Text(

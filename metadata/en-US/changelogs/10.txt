@@ -1,11 +1,16 @@
 * Add lua scripting support to server
   * Add game modes to packs
   * Add scripts directory
+  * Add blackjack sample game mode
 * Add waypoints
 * Add action buttons support
+* Add toolbar options
 * Add welcome text to server
 * Fix home page header text color in certain themes
 * Fix released server archives have no core pack
+* Fix design name
+* Fix kick command usage
+* Improve message author display
 * Rebuild event system
 
 Read more here: https://linwood.dev/setonix/0.6.0

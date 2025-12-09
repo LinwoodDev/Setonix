@@ -60,5 +60,5 @@ FlexSchemeColor getFlexThemeColor(String name, bool dark) {
 }
 
 List<String> getThemes() {
-  return ['classic', ...FlexColor.schemesList.map((e) => e.name)];
+  return ['Classic', ...FlexColor.schemesList.map((e) => e.name)];
 }
