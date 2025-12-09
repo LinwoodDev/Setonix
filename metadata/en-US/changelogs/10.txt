@@ -5,6 +5,7 @@
 * Add action buttons support
 * Add welcome text to server
 * Fix home page header text color in certain themes
+* Fix released server archives have no core pack
 * Rebuild event system
 
 Read more here: https://linwood.dev/setonix/0.6.0

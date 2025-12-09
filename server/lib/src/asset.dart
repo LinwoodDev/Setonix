@@ -29,8 +29,9 @@ class ServerAssetManager extends AssetManager {
     final directory = Directory('packs');
     if (!await directory.exists()) {
       await directory.create();
-      print(
+      console.print(
         'WARNING: No packs directory found. Please add packs to the server.',
+        level: LogLevel.warning,
       );
     }
     await for (final file in directory.list()) {
