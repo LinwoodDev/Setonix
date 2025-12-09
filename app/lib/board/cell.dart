@@ -276,10 +276,12 @@ class GameCell extends PositionComponent
     }
     if (top != null) {
       final component = _cardComponent ??= SpriteComponent(
-        size: size,
         paint: paint,
         priority: 1,
       );
+      component
+        ..anchor = Anchor.center
+        ..position = size / 2;
       component.sprite =
           await state.assetManager.loadFigureSprite(
             top.asset,
@@ -288,6 +290,13 @@ class GameCell extends PositionComponent
                 : top.variation,
           ) ??
           game.blankSprite;
+      final sprite = component.sprite;
+      if (sprite != null) {
+        final scale = (size.x / sprite.srcSize.x) < (size.y / sprite.srcSize.y)
+            ? (size.x / sprite.srcSize.x)
+            : (size.y / sprite.srcSize.y);
+        component.size = sprite.srcSize * scale;
+      }
       if (!component.isMounted) {
         add(component);
       }

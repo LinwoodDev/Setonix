@@ -11,6 +11,7 @@
 * Fix released server archives have no core pack
 * Fix design name
 * Fix kick command usage
+* Fix cards stretches if texture is not rectangular
 * Improve message author display
 * Rebuild event system
 
