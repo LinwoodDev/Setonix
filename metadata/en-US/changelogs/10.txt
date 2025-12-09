@@ -6,6 +6,7 @@
 * Add action buttons support
 * Add toolbar options
 * Add welcome text to server
+* Add checkbox and dropdown dialog components
 * Fix home page header text color in certain themes
 * Fix released server archives have no core pack
 * Fix design name
