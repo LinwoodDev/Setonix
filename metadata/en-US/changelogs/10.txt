@@ -14,5 +14,6 @@
 * Fix cards stretches if texture is not rectangular
 * Improve message author display
 * Rebuild event system
+* Upgrade to flutter 3.38
 
 Read more here: https://linwood.dev/setonix/0.6.0
