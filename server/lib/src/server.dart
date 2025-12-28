@@ -177,7 +177,7 @@ final class SetonixServer {
     }
     if (configManager.whitelistEnabled && !configManager.accountRequired) {
       log(
-        'Whitelist is enabled, but account requirement is disabled. This allows users to join without an account.',
+        'Whitelist is enabled, but account requirement is disabled. With no accounts, the whitelist has no effect.',
         level: LogLevel.warning,
       );
     }

@@ -39,29 +39,44 @@ final class RemoteUserService extends UserService {
   }
 
   @override
-  FutureOr<bool> updateUser(
+  Future<bool> updateUser(
     String fingerprint, {
     String? name,
     bool? onWhitelist,
     DateTime? lastLogin,
-  }) {
+    bool createIfNotExists = false,
+  }) async {
     final body = jsonEncode({
       'name': name,
       'onWhitelist': onWhitelist,
       'lastLogin': lastLogin?.millisecondsSinceEpoch,
     });
-    final response = http.patch(
+    final response = await http.patch(
       Uri.parse('$apiEndpoint/user/${Uri.encodeComponent(fingerprint)}'),
       headers: {...headers, 'Content-Type': 'application/json'},
       body: body,
     );
-    return response.then((res) {
-      if (res.statusCode == 200) {
-        return true;
-      } else if (res.statusCode == 404) {
-        return false; // User not found
+
+    if (response.statusCode == 200) {
+      return true;
+    } else if (response.statusCode == 404) {
+      if (createIfNotExists) {
+        final createBody = jsonEncode({
+          'fingerprint': fingerprint,
+          'name': name,
+          'onWhitelist': onWhitelist,
+          'lastLogin': lastLogin?.millisecondsSinceEpoch,
+        });
+        final createResponse = await http.post(
+          Uri.parse('$apiEndpoint/user'),
+          headers: {...headers, 'Content-Type': 'application/json'},
+          body: createBody,
+        );
+        return createResponse.statusCode >= 200 &&
+            createResponse.statusCode < 300;
       }
-      throw Exception('Failed to update user: ${res.body}');
-    });
+      return false; // User not found
+    }
+    throw Exception('Failed to update user: ${response.body}');
   }
 }

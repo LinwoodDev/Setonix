@@ -32,6 +32,7 @@ abstract class UserService {
     String? name,
     bool? onWhitelist,
     DateTime? lastLogin,
+    bool createIfNotExists = false,
   });
 }
 
@@ -89,10 +90,15 @@ final class UserManager {
     SetonixUser? user;
     if (fingerprint != null) {
       user = await service?.getUser(fingerprint);
-      if (user == null) throw KickMessage(reason: KickReason.notRegistered);
-      name = user.name;
-      if (whitelistEnabled && !user.onWhitelist) {
-        throw KickMessage(reason: KickReason.notWhitelisted);
+      if (user == null) {
+        if (whitelistEnabled) {
+          throw KickMessage(reason: KickReason.notWhitelisted);
+        }
+      } else {
+        name = user.name;
+        if (whitelistEnabled && !user.onWhitelist) {
+          throw KickMessage(reason: KickReason.notWhitelisted);
+        }
       }
     }
     name ??= _generateGuestName();
@@ -102,7 +108,12 @@ final class UserManager {
     if (user == null) {
       user = SetonixUser(fingerprint: fingerprint, name: name);
       if (fingerprint != null) {
-        await service?.updateUser(fingerprint, name: name, onWhitelist: false);
+        await service?.updateUser(
+          fingerprint,
+          name: name,
+          onWhitelist: false,
+          createIfNotExists: true,
+        );
       }
     }
     _users[channel] = user;
