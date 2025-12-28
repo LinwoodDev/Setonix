@@ -541,15 +541,19 @@ jobs:
         os:
           - name: ubuntu-24.04
             label: linux-x86_64
+            dir: linux_x64
             rust: libsetonix_plugin.so
           - name: ubuntu-24.04-arm
             label: linux-arm64
+            dir: linux_arm64
             rust: libsetonix_plugin.so
           - name: windows-2025
             label: windows-x86_64
+            dir: windows_x64
             rust: setonix_plugin.dll
           - name: macos-latest
             label: macos
+            dir: macos_arm64
             rust: libsetonix_plugin.dylib
     runs-on: ${{ matrix.os.name }}
     steps:
@@ -579,11 +583,11 @@ jobs:
           cargo build --release
       - name: Compile
         run: |
-          dart compile exe bin/setonix_server.dart
+          dart build cli bin/setonix_server.dart
       - name: Create directory
         run: |
           mkdir -p server-build
-          mv bin/setonix_server.exe server-build/
+          mv build/cli/${{ matrix.os.dir }}/bundle/* server-build/
           mkdir -p server-build/packs
       - name: Move rust lib
         working-directory: ./
