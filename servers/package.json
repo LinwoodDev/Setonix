@@ -10,9 +10,9 @@
   },
   "packageManager": "pnpm@10.26.2",
   "dependencies": {
-    "@astrojs/node": "^9.5.1",
-    "@cacheable/node-cache": "^1.7.6",
+    "@astrojs/node": "^9.5.2",
+    "@cacheable/node-cache": "^2.0.0",
     "@linwooddev/style": "^0.4.2",
-    "astro": "^5.16.6"
+    "astro": "^5.16.10"
   }
 }

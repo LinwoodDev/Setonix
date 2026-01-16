@@ -16,6 +16,8 @@
 * Fix kick message
 * Fix user system on server
 * Rebuild event system
+* Add legacy android build
+* Modernize project structure
 * Upgrade to flutter 3.38
 
 Read more here: https://linwood.dev/setonix/0.6.0
