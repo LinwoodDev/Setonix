@@ -440,7 +440,7 @@ jobs:
           name: linux-${{ matrix.arch.name }}-snap
           path: ${{ steps.build.outputs.snap }}
   build-macos:
-    runs-on: macos-25
+    runs-on: macos-26
     defaults:
       run:
         working-directory: app
@@ -501,7 +501,7 @@ jobs:
 
   build-ipa:
     name: build-ipa (iOS)
-    runs-on: macos-25
+    runs-on: macos-26
     defaults:
       run:
         working-directory: app
