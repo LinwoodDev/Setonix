@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:path/path.dart' as p;
 import 'package:setonix_api/setonix_api.dart';
 import 'package:setonix_server/src/services/user/migrations.dart';
 import 'package:sqlite3/sqlite3.dart';
@@ -7,8 +8,8 @@ import 'package:sqlite3/sqlite3.dart';
 final class FileUserService extends UserService {
   Database? _database;
 
-  Future<void> setup() async {
-    final database = sqlite3.open('setonix.db');
+  Future<void> setup({String rootPath = '.'}) async {
+    final database = sqlite3.open(p.join(rootPath, 'setonix.db'));
     // Basic migration system
 
     final result = database.select('PRAGMA user_version');

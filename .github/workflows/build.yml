@@ -597,12 +597,17 @@ jobs:
       - name: Create directory
         run: |
           mkdir -p server-build
+          # Move the entire bundle structure (bin/ and lib/ as siblings)
+          # sqlite3 expects lib/ to be at ../lib/ relative to the executable in bin/
           mv build/cli/${{ matrix.os.dir }}/bundle/* server-build/
+          # Create packs and scripts directories at the root level (server-build/)
           mkdir -p server-build/packs
+          mkdir -p server-build/scripts
       - name: Move rust lib
         working-directory: ./
         run: |
-          cp plugin/rust/target/release/${{ matrix.os.rust }} server/server-build/
+          # Copy rust plugin to lib/ directory (alongside sqlite3 dll)
+          cp plugin/rust/target/release/${{ matrix.os.rust }} server/server-build/lib/
       - name: Build nessesary files
         working-directory: ./
         run: |
@@ -613,7 +618,7 @@ jobs:
       - name: Copy core pack
         run: |
           cp packs/core.stnx server-build/packs/
-          tree -a -L 2 server-build
+          tree -a -L 3 server-build
       - name: Archive
         uses: actions/upload-artifact@v4
         with:

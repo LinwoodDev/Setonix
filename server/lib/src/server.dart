@@ -5,6 +5,7 @@ import 'package:consoler/consoler.dart';
 import 'package:networker/networker.dart';
 import 'package:networker_socket/server.dart';
 import 'package:setonix_api/setonix_api.dart';
+import 'package:setonix_plugin/native.dart';
 import 'package:setonix_server/src/asset.dart';
 import 'package:setonix_server/src/bloc.dart';
 import 'package:setonix_server/src/config.dart';
@@ -20,6 +21,7 @@ import 'package:setonix_plugin/setonix_plugin.dart';
 import 'package:setonix_server/src/programs/whitelist.dart';
 import 'package:setonix_server/src/services/user/file.dart';
 import 'package:setonix_server/src/services/user/remote.dart';
+import 'package:path/path.dart' as p;
 
 String limitOutput(Object? value, [int limit = 500]) {
   final string = value.toString();
@@ -38,6 +40,7 @@ final class SetonixServer {
   final ServerAssetManager assetManager;
   final UserManager userManager;
   final ChallengeManager? challengeManager;
+  final String rootDirectory;
   final Map<String, WorldBloc> _worlds = {};
   final Map<Channel, String> _userWorlds = {};
 
@@ -90,12 +93,21 @@ final class SetonixServer {
     this.configManager,
     this.userManager,
     this.challengeManager,
+    this.rootDirectory,
   );
 
   static Future<SetonixServer> load({
     String? worldFile,
     SetonixConfig argsConfig = const SetonixConfig(),
   }) async {
+    String rootDirectory = Directory.current.path;
+    if (Platform.script.scheme == 'file') {
+      final scriptDir = p.dirname(Platform.script.toFilePath());
+      if (p.basename(scriptDir) == 'bin') {
+        rootDirectory = p.dirname(scriptDir);
+      }
+    }
+
     final assetManager = ServerAssetManager();
     final consoler = Consoler(
       defaultProgramConfig: DefaultProgramConfiguration(
@@ -104,17 +116,17 @@ final class SetonixServer {
     );
     await _runStaticLogZone(
       consoler,
-      () => assetManager.init(console: consoler),
+      () => assetManager.init(console: consoler, rootPath: rootDirectory),
     );
     final configManager = ConfigManager(argsConfig: argsConfig);
-    await configManager.loadConfig();
+    await configManager.loadConfig(rootPath: rootDirectory);
     final apiEndpoint = configManager.apiEndpoint;
     UserService userService;
     if (apiEndpoint.isNotEmpty) {
       userService = RemoteUserService(apiEndpoint: apiEndpoint);
     } else {
       final fileService = FileUserService();
-      await fileService.setup();
+      await fileService.setup(rootPath: rootDirectory);
       userService = fileService;
     }
     final userManager = UserManager(
@@ -131,6 +143,7 @@ final class SetonixServer {
       configManager,
       userManager,
       challengeManager,
+      rootDirectory,
     );
   }
 
@@ -153,7 +166,9 @@ final class SetonixServer {
     );
     log('Verbose logging activated', level: LogLevel.verbose);
     try {
-      await initPluginSystem();
+      await initPluginSystem(
+        externalLibrary: await loadExternalPluginLibrary(),
+      );
       log('Plugin system initialized', level: LogLevel.info);
     } catch (e) {
       log(
@@ -163,8 +178,12 @@ final class SetonixServer {
     }
     SecurityContext? securityContext;
     try {
-      final privateKey = await File('certs/server.key').readAsBytes();
-      final certificate = await File('certs/server.crt').readAsBytes();
+      final privateKey = await File(
+        p.join(rootDirectory, 'certs/server.key'),
+      ).readAsBytes();
+      final certificate = await File(
+        p.join(rootDirectory, 'certs/server.crt'),
+      ).readAsBytes();
       securityContext = SecurityContext()
         ..usePrivateKeyBytes(privateKey)
         ..useCertificateChainBytes(certificate);
@@ -298,7 +317,9 @@ final class SetonixServer {
 
   Future<void> loadWorlds() async {
     Map<String, SetonixData> worlds = {};
-    final defaultFile = File('$worldDirectory/$defaultWorldName$worldSuffix');
+    final defaultFile = File(
+      p.join(rootDirectory, worldDirectory, '$defaultWorldName$worldSuffix'),
+    );
     if (await defaultFile.exists()) {
       try {
         final bytes = await defaultFile.readAsBytes();
@@ -313,7 +334,7 @@ final class SetonixServer {
       worlds[defaultWorldName] = _buildDefaultWorld();
       log('No default world found, creating new one', level: LogLevel.info);
     }
-    final dir = Directory(worldDirectory);
+    final dir = Directory(p.join(rootDirectory, worldDirectory));
     if (await dir.exists()) {
       await for (final file in dir.list(recursive: false)) {
         if (file is! File || !file.path.endsWith(worldSuffix)) continue;

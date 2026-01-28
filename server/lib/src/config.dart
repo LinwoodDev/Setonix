@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:path/path.dart' as p;
 import 'package:setonix_server/setonix_server.dart';
 
 class ConfigManager {
@@ -23,8 +24,8 @@ class ConfigManager {
     _mergedConfig = _mergeConfig();
   }
 
-  Future<void> loadConfig() async {
-    final file = File('config.json');
+  Future<void> loadConfig({String rootPath = '.'}) async {
+    final file = File(p.join(rootPath, 'config.json'));
     if (await file.exists()) {
       final content = await file.readAsString();
       _config = SetonixConfigMapper.fromJson(content);
