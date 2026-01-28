@@ -4,6 +4,7 @@ import 'dart:isolate';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:consoler/consoler.dart';
+import 'package:path/path.dart' as p;
 import 'package:setonix_server/setonix_server.dart';
 
 Future<ServerProcessed> _computeEvent(
@@ -129,7 +130,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
       server.log('Error loading script: $e', level: LogLevel.error);
     }
 
-    final scriptsFolder = Directory('scripts');
+    final scriptsFolder = Directory(p.join(server.rootDirectory, 'scripts'));
     if (!await scriptsFolder.exists()) {
       await scriptsFolder.create(recursive: true);
     }
