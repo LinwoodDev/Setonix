@@ -30,7 +30,7 @@ Uri getLaunchUri({
 
 Uri getConnectUri(String url, [String? type]) => getLaunchUri(
   pathSegments: ['connect'],
-  queryParameters: {'url': url, if (type != null) 'type': type},
+  queryParameters: {'url': url, 'type': ?type},
 );
 
 Uri parseConnectUri(Uri uri) {

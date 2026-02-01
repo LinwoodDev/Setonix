@@ -786,6 +786,22 @@ jobs:
       - uses: actions/download-artifact@v5
         with:
           name: ipa-build
+      - uses: actions/download-artifact@v5
+        with:
+          name: server-build-linux-x86_64
+          path: server-build-linux-x86_64/
+      - uses: actions/download-artifact@v5
+        with:
+          name: server-build-linux-arm64
+          path: server-build-linux-arm64/
+      - uses: actions/download-artifact@v5
+        with:
+          name: server-build-windows-x86_64
+          path: server-build-windows-x86_64/
+      - uses: actions/download-artifact@v5
+        with:
+          name: server-build-macos
+          path: server-build-macos/
       - name: 📦 Zip artifacts
         run: |
           cd windows-build
@@ -795,6 +811,14 @@ jobs:
           tar -C linux-arm64-build -czf linwood-setonix-linux-arm64.tar.gz .
           tar -C linux-alternative-x86_64-build -czf linwood-setonix-linux-alternative-x86_64.tar.gz .
           tar -C linux-alternative-arm64-build -czf linwood-setonix-linux-alternative-arm64.tar.gz .
+          tar -C server-build-linux-x86_64 -czf linwood-setonix-server-linux-x86_64.tar.gz .
+          tar -C server-build-linux-arm64 -czf linwood-setonix-server-linux-arm64.tar.gz .
+          cd server-build-windows-x86_64
+          zip -r ../linwood-setonix-server-windows-x86_64.zip *
+          cd ..
+          cd server-build-macos
+          zip -r ../linwood-setonix-server-macos.zip *
+          cd ..
       - name: Configure git
         if: ${{ github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main' }}
         run: |
@@ -856,6 +880,10 @@ jobs:
             linwood-setonix-android-arm64-legacy.apk
             linwood-setonix-android-x86_64-legacy.apk
             linwood-setonix-ios.ipa
+            linwood-setonix-server-linux-x86_64.tar.gz
+            linwood-setonix-server-linux-arm64.tar.gz
+            linwood-setonix-server-windows-x86_64.zip
+            linwood-setonix-server-macos.zip
             checksums.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -896,6 +924,10 @@ jobs:
             linwood-setonix-android-arm64-legacy.apk
             linwood-setonix-android-x86_64-legacy.apk
             linwood-setonix-ios.ipa
+            linwood-setonix-server-linux-x86_64.tar.gz
+            linwood-setonix-server-linux-arm64.tar.gz
+            linwood-setonix-server-windows-x86_64.zip
+            linwood-setonix-server-macos.zip
             checksums.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -934,6 +966,10 @@ jobs:
             linwood-setonix-android-arm64-legacy.apk
             linwood-setonix-android-x86_64-legacy.apk
             linwood-setonix-ios.ipa
+            linwood-setonix-server-linux-x86_64.tar.gz
+            linwood-setonix-server-linux-arm64.tar.gz
+            linwood-setonix-server-windows-x86_64.zip
+            linwood-setonix-server-macos.zip
             checksums.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

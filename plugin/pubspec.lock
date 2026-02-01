@@ -190,10 +190,10 @@ packages:
     dependency: "direct dev"
     description:
       name: dart_mappable_builder
-      sha256: "0a9a4132f298b10c7870ab04f1f5778a08ecce14b9879c4243463716422815f4"
+      sha256: "27e8f109eb8fbff03eeeae61f8868a244ad28c8da5a8e429938aa039ae4ee32e"
       url: "https://pub.dev"
     source: hosted
-    version: "4.6.3"
+    version: "4.6.4"
   dart_style:
     dependency: transitive
     description:
@@ -294,10 +294,10 @@ packages:
     dependency: transitive
     description:
       name: json_annotation
-      sha256: "1ce844379ca14835a50d2f019a3099f419082cfdd231cd86a142af94dd5c6bb1"
+      sha256: "805fa86df56383000f640384b282ce0cb8431f1a7a2396de92fb66186d8c57df"
       url: "https://pub.dev"
     source: hosted
-    version: "4.9.0"
+    version: "4.10.0"
   logging:
     dependency: transitive
     description:
@@ -327,10 +327,10 @@ packages:
     dependency: "direct main"
     description:
       name: meta
-      sha256: "1741988757a65eb6b36abe716829688cf01910bbf91c34354ff7ec1c3de2b349"
+      sha256: "9f29b9bcc8ee287b1a31e0d01be0eae99a930dbffdaecf04b3f3d82a969f296f"
       url: "https://pub.dev"
     source: hosted
-    version: "1.18.0"
+    version: "1.18.1"
   mime:
     dependency: transitive
     description:

@@ -161,7 +161,7 @@ class SetonixFileSystem {
       hashCode: (a) => a.identifier.hashCode,
     )..addAll([
       ...(await packSystem.getFiles()).map((e) => e.data!),
-      if (corePack != null) corePack,
+      ?corePack,
     ]);
   }
 

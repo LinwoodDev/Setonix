@@ -95,7 +95,7 @@ class NetworkService {
                 .toList(),
           );
         });
-    yield* Rx.merge([if (serverStream != null) serverStream, settingsStream]);
+    yield* Rx.merge([?serverStream, settingsStream]);
   }
 
   (Timer, RawDatagramSocket)? _broadcast;
