@@ -189,7 +189,7 @@ class GameCell extends PositionComponent
   }
 
   VectorDefinition toDefinition() =>
-      (position.clone()..divide(grid.cellSizeWithZoom)).toDefinition();
+      (position.clone()..divide(grid.cellSize)).toDefinition();
 
   GlobalVectorDefinition toGlobalDefinition(ClientWorldState state) =>
       GlobalVectorDefinition.fromLocal(state.tableName, toDefinition());

@@ -4,6 +4,7 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame_bloc/flame_bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:setonix/bloc/settings.dart';
@@ -17,7 +18,7 @@ import 'package:setonix/helpers/vector.dart';
 import 'package:setonix_api/setonix_api.dart';
 
 class BoardGame extends FlameGame
-    with ScrollDetector, KeyboardEvents, HasCollisionDetection {
+    with ScrollDetector, KeyboardEvents, HasCollisionDetection, ScaleDetector {
   final VoidCallback onEscape;
   final ContextMenuController contextMenuController;
   late final Sprite selectionSprite, blankSprite;
@@ -45,10 +46,20 @@ class BoardGame extends FlameGame
     await add(
       FlameBlocProvider<SettingsCubit, SetonixSettings>.value(
         value: settingsCubit,
-        children: [provider],
+        children: [
+          provider,
+          FlameBlocListener<SettingsCubit, SetonixSettings>(
+            listenWhen: (previousState, newState) =>
+                previousState.zoom != newState.zoom,
+            onNewState: (state) {
+              camera.viewfinder.zoom = state.zoom.clamp(0.4, 2.0);
+            },
+          ),
+        ],
       ),
     );
     provider.addAll([camera, world]);
+    camera.viewfinder.zoom = settingsCubit.state.zoom;
     selectionSprite = await Sprite.load('selection.png');
     blankSprite = await Sprite.load('blank.png');
     _hand = GameHand();
@@ -74,11 +85,55 @@ class BoardGame extends FlameGame
 
   static const zoomPerScrollUnit = 0.02;
 
+  double _startZoom = 1.0;
+  Vector2 _startPosition = Vector2.zero();
+
+  @override
+  void onScaleStart(ScaleStartInfo info) {
+    _startZoom = camera.viewfinder.zoom;
+    _startPosition = info.eventPosition.global;
+  }
+
+  @override
+  void onScaleUpdate(ScaleUpdateInfo info) {
+    final zoom = camera.viewfinder.zoom;
+    final delta = (info.delta.global..negate()) / zoom;
+
+    if (info.scale.global.x == 0 || info.scale.global.x == 1.0) {
+      camera.moveBy(delta);
+      return;
+    }
+
+    final newZoom = (_startZoom * info.scale.global.x).clamp(0.4, 2.0);
+    final oldZoom = camera.viewfinder.zoom.clamp(0.4, 2.0);
+    camera.viewfinder.zoom = newZoom;
+    // Zoom inside towards the focal point
+    final screenCenter = camera.viewport.size / 2;
+    final zoomDelta = newZoom - oldZoom;
+    if (((4.0 - newZoom) < precisionErrorTolerance &&
+            (4.0 - oldZoom) < precisionErrorTolerance) ||
+        ((0.4 - newZoom) < precisionErrorTolerance &&
+            (0.4 - oldZoom) < precisionErrorTolerance)) {
+      return;
+    }
+    final focalPoint = info.eventPosition.global - screenCenter;
+    final focalDelta = (focalPoint - _startPosition) / newZoom;
+    camera.moveBy(focalDelta * (zoomDelta / newZoom) + delta);
+  }
+
+  @override
+  void onScaleEnd(ScaleEndInfo info) {
+    settingsCubit.resetZoom(camera.viewfinder.zoom);
+  }
+
   @override
   void onScroll(PointerScrollInfo info) {
-    componentsAtPoint(
+    final handled = componentsAtPoint(
       info.eventPosition.widget,
     ).whereType<ScrollCallbacks>().any((element) => element.onScroll(info));
+    if (handled) return;
+    camera.viewfinder.zoom +=
+        info.scrollDelta.global.y.sign * zoomPerScrollUnit;
   }
 
   Vector2 _currentCameraVelocity = Vector2.zero();
@@ -88,7 +143,8 @@ class BoardGame extends FlameGame
     super.update(dt);
 
     if (!_currentCameraVelocity.isZero()) {
-      camera.moveBy(_currentCameraVelocity * dt * 60);
+      final zoom = camera.viewfinder.zoom;
+      camera.moveBy(_currentCameraVelocity * dt * 500 / zoom);
     }
   }
 

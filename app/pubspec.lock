@@ -414,10 +414,10 @@ packages:
     dependency: "direct main"
     description:
       name: flame
-      sha256: "348136b7d928188a8c9a11cd844d9125b02e7afc6c83bb9a52a16aee88ab7e81"
+      sha256: "6a98c1697bfe4669c604e4459cb01ca96559f464d3523f6af90a8956bf2080ee"
       url: "https://pub.dev"
     source: hosted
-    version: "1.34.0"
+    version: "1.35.0"
   flame_bloc:
     dependency: "direct main"
     description:
