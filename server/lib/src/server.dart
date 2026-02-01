@@ -6,6 +6,7 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:networker/networker.dart';
 import 'package:networker_socket/server.dart';
 import 'package:setonix_api/setonix_api.dart';
+import 'package:setonix_plugin/native.dart';
 import 'package:setonix_server/src/asset.dart';
 import 'package:setonix_server/src/bloc.dart';
 import 'package:setonix_server/src/config.dart';
@@ -197,7 +198,9 @@ final class SetonixServer {
     );
     log('Verbose logging activated', level: LogLevel.verbose);
     try {
-      await initPluginSystem(externalLibrary: await _loadPluginLibrary());
+      await initPluginSystem(
+        externalLibrary: await loadExternalPluginLibrary(),
+      );
       log('Plugin system initialized', level: LogLevel.info);
     } catch (e) {
       log(
@@ -207,8 +210,12 @@ final class SetonixServer {
     }
     SecurityContext? securityContext;
     try {
-      final privateKey = await File(p.join(rootDirectory, 'certs/server.key')).readAsBytes();
-      final certificate = await File(p.join(rootDirectory, 'certs/server.crt')).readAsBytes();
+      final privateKey = await File(
+        p.join(rootDirectory, 'certs/server.key'),
+      ).readAsBytes();
+      final certificate = await File(
+        p.join(rootDirectory, 'certs/server.crt'),
+      ).readAsBytes();
       securityContext = SecurityContext()
         ..usePrivateKeyBytes(privateKey)
         ..useCertificateChainBytes(certificate);

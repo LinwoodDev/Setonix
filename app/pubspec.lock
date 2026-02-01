@@ -1147,7 +1147,7 @@ packages:
       path: "../api"
       relative: true
     source: path
-    version: "0.6.0"
+    version: "0.6.1"
   setonix_plugin:
     dependency: "direct main"
     description:
