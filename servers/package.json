@@ -8,7 +8,7 @@
     "preview": "astro preview",
     "astro": "astro"
   },
-  "packageManager": "pnpm@10.28.2",
+  "packageManager": "pnpm@10.29.2",
   "dependencies": {
     "@astrojs/node": "^9.5.2",
     "@cacheable/node-cache": "^2.0.1",

@@ -117,10 +117,10 @@ packages:
     dependency: "direct dev"
     description:
       name: build_runner
-      sha256: b4d854962a32fd9f8efc0b76f98214790b833af8b2e9b2df6bfc927c0415a072
+      sha256: "39ad4ca8a2876779737c60e4228b4bcd35d4352ef7e14e47514093edc012c734"
       url: "https://pub.dev"
     source: hosted
-    version: "2.10.5"
+    version: "2.11.1"
   built_collection:
     dependency: transitive
     description:
@@ -278,10 +278,10 @@ packages:
     dependency: transitive
     description:
       name: dbus
-      sha256: "79e0c23480ff85dc68de79e2cd6334add97e48f7f4865d17686dd6ea81a47e8c"
+      sha256: d0c98dcd4f5169878b6cf8f6e0a52403a9dff371a3e2f019697accbf6f44a270
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.11"
+    version: "0.7.12"
   device_info_plus:
     dependency: "direct main"
     description:
@@ -422,18 +422,18 @@ packages:
     dependency: "direct main"
     description:
       name: flame_bloc
-      sha256: "37a105f2ae0ec09ba64c15f9a9ceeb9a167b62cbd9a91d96f0427b2c1dc0b49d"
+      sha256: aea027e5f72c221ac73a4cb652a726be35aaa7b5dc259374fbcb483d87d86f26
       url: "https://pub.dev"
     source: hosted
-    version: "1.12.19"
+    version: "1.12.20"
   flame_tiled:
     dependency: "direct main"
     description:
       name: flame_tiled
-      sha256: "518561af847b5b8af49a007796964db0acd1d4682d9335f5bab24594f523d083"
+      sha256: "3407afee9e0c5a9fd4638f81a29c978dc97b5a44746eaaf16139fcc9bbb03b5c"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.9"
+    version: "3.0.10"
   flex_color_scheme:
     dependency: "direct main"
     description:
@@ -594,10 +594,10 @@ packages:
     dependency: "direct main"
     description:
       name: go_router
-      sha256: eff94d2a6fc79fa8b811dde79c7549808c2346037ee107a1121b4a644c745f2a
+      sha256: "7974313e217a7771557add6ff2238acb63f635317c35fa590d348fb238f00896"
       url: "https://pub.dev"
     source: hosted
-    version: "17.0.1"
+    version: "17.1.0"
   graphs:
     dependency: transitive
     description:
@@ -618,10 +618,10 @@ packages:
     dependency: transitive
     description:
       name: hooks
-      sha256: "5d309c86e7ce34cd8e37aa71cb30cb652d3829b900ab145e4d9da564b31d59f7"
+      sha256: "7a08a0d684cb3b8fb604b78455d5d352f502b68079f7b80b831c62220ab0a4f6"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.0"
+    version: "1.0.1"
   http:
     dependency: "direct main"
     description:
@@ -650,10 +650,10 @@ packages:
     dependency: "direct main"
     description:
       name: idb_shim
-      sha256: db2a5961ed324dcbb023559e5b22d887f70276ced6dbf3a8c3211823b7ea6c30
+      sha256: adbcc954e0e072cf5bd1699431fc783b5e54e4b3db40667eb794708f7446ee6a
       url: "https://pub.dev"
     source: hosted
-    version: "2.8.2"
+    version: "2.8.2+2"
   image:
     dependency: transitive
     description:
@@ -862,8 +862,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/networker/networker"
-      ref: "4f221c5943ceb786eb7bd427eb71a8cc1346b9b8"
-      resolved-ref: "4f221c5943ceb786eb7bd427eb71a8cc1346b9b8"
+      ref: "54d35ef572172ac74d853d47af0140a89b36d714"
+      resolved-ref: "54d35ef572172ac74d853d47af0140a89b36d714"
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "1.0.0"
@@ -871,8 +871,8 @@ packages:
     dependency: transitive
     description:
       path: "packages/networker/networker_crypto"
-      ref: ec6f31ba3eb0da17bdef6a8d66ef6caafcabd908
-      resolved-ref: ec6f31ba3eb0da17bdef6a8d66ef6caafcabd908
+      ref: "1ab8146be49b208ba5890935561b93af71702858"
+      resolved-ref: "1ab8146be49b208ba5890935561b93af71702858"
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "1.0.0"
@@ -880,8 +880,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/networker/networker_socket"
-      ref: "292186c11472eff9a964893b9b7c6027c000fd81"
-      resolved-ref: "292186c11472eff9a964893b9b7c6027c000fd81"
+      ref: "1ab8146be49b208ba5890935561b93af71702858"
+      resolved-ref: "1ab8146be49b208ba5890935561b93af71702858"
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "1.0.0"
@@ -897,10 +897,10 @@ packages:
     dependency: transitive
     description:
       name: objective_c
-      sha256: "983c7fa1501f6dcc0cb7af4e42072e9993cb28d73604d25ebf4dab08165d997e"
+      sha256: "100a1c87616ab6ed41ec263b083c0ef3261ee6cd1dc3b0f35f8ddfa4f996fe52"
       url: "https://pub.dev"
     source: hosted
-    version: "9.2.5"
+    version: "9.3.0"
   ordered_set:
     dependency: transitive
     description:
@@ -1260,10 +1260,10 @@ packages:
     dependency: transitive
     description:
       name: source_span
-      sha256: "254ee5351d6cb365c859e20ee823c3bb479bf4a293c22d17a9f1bf144ce86f7c"
+      sha256: "56a02f1f4cd1a2d96303c0144c93bd6d909eea6bee6bf5a0e0b685edbd4c47ab"
       url: "https://pub.dev"
     source: hosted
-    version: "1.10.1"
+    version: "1.10.2"
   stack_trace:
     dependency: transitive
     description:
@@ -1300,11 +1300,11 @@ packages:
     dependency: "direct main"
     description:
       path: api
-      ref: "1c15259fc8c5e043997ffcaafbf45348a77e3003"
-      resolved-ref: "1c15259fc8c5e043997ffcaafbf45348a77e3003"
+      ref: "90f85f5cb5018c0f229af1f0737dabcc33dec536"
+      resolved-ref: "90f85f5cb5018c0f229af1f0737dabcc33dec536"
       url: "https://github.com/LinwoodDev/Swamp.git"
     source: git
-    version: "1.0.0"
+    version: "0.2.0"
   synchronized:
     dependency: transitive
     description:
@@ -1373,10 +1373,10 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_ios
-      sha256: cfde38aa257dae62ffe79c87fab20165dfdf6988c1d31b58ebf59b9106062aad
+      sha256: b1aca26728b7cc7a3af971bb6f601554a8ae9df2e0a006de8450ba06a17ad36a
       url: "https://pub.dev"
     source: hosted
-    version: "6.3.6"
+    version: "6.4.0"
   url_launcher_linux:
     dependency: transitive
     description:
