@@ -11,12 +11,12 @@ description: Play games without internet
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 0.6.0+10
+version: 0.6.1+11
 publish_to: none
 
 environment:
   sdk: ">=3.8.0 <4.0.0"
-  flutter: 3.35.5
+  flutter: 3.41.1
 
 dependencies:
   flutter:
@@ -32,12 +32,12 @@ dependencies:
   material_leap:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 12843672e8f33e9370444b13fca8134f4543f7ee
+      ref: a6859b573815a6ebb3075efa340a8d48b73b5380
       path: packages/material_leap
   flex_color_scheme: ^8.1.0
   flutter_svg: ^2.2.0
   window_manager: ^0.5.0
-  go_router: ^16.0.0
+  go_router: ^17.0.0
   # Database
   shared_preferences: ^2.3.1
   # Generation
@@ -47,7 +47,7 @@ dependencies:
   rxdart: ^0.28.0
   collection: ^1.18.0
   flame_bloc: ^1.12.14
-  flame: ">=1.32.0 <1.33.0"
+  flame: ">=1.35.0 <1.36.0"
   flame_tiled: ^3.0.4
   # Networking
   http: ^1.2.1
@@ -55,17 +55,17 @@ dependencies:
   networker:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 4f221c5943ceb786eb7bd427eb71a8cc1346b9b8
+      ref: 54d35ef572172ac74d853d47af0140a89b36d714
       path: packages/networker/networker
   networker_socket:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 292186c11472eff9a964893b9b7c6027c000fd81
+      ref: 1ab8146be49b208ba5890935561b93af71702858
       path: packages/networker/networker_socket
   swamp_api:
     git:
       url: https://github.com/LinwoodDev/Swamp.git
-      ref: 1c15259fc8c5e043997ffcaafbf45348a77e3003
+      ref: 554e2e974ca4671b33a5fe5ab9b7702436eba838
       path: api
   # System Information
   dynamic_color: ^1.7.0
@@ -78,12 +78,12 @@ dependencies:
   lw_file_system:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 12843672e8f33e9370444b13fca8134f4543f7ee
+      ref: ce69a37397e931aebebcae6645ff8b5946c6d33c
       path: packages/lw_file_system
   lw_sysapi:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 3f886507656f057d89a8b98de6ddbc7f5a21868e
+      ref: 38fd0a6df52bf4115a6926271734d36e601af9cf
       path: packages/lw_sysapi
   setonix_api:
     path: ../api
@@ -100,19 +100,13 @@ dependencies:
     path: ../plugin
   cryptography_plus: ^2.7.1
   cryptography_flutter_plus: ^2.3.2
-  network_info_plus:
-    git:
-      url: https://github.com/CodeDoctorDE/plus_plugins.git
-      ref: 9bd0c023f2dc209576dc66bf989048ba218127b6
-      path: packages/network_info_plus/network_info_plus
+  network_info_plus: ^7.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
   build_runner: ^2.4.9
   flutter_lints: ^6.0.0
   dart_mappable_builder: ^4.2.3
-  integration_test:
-    sdk: flutter
   msix: ^3.16.10
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

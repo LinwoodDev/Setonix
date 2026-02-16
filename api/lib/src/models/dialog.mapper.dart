@@ -216,6 +216,8 @@ class GameDialogComponentMapper extends ClassMapperBase<GameDialogComponent> {
       MapperContainer.globals.use(_instance = GameDialogComponentMapper._());
       GameDialogMarkdownComponentMapper.ensureInitialized();
       GameDialogTextFieldComponentMapper.ensureInitialized();
+      GameDialogCheckboxComponentMapper.ensureInitialized();
+      GameDialogDropdownComponentMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -741,6 +743,541 @@ class _GameDialogTextFieldComponentCopyWithImpl<$R, $Out>
       _GameDialogTextFieldComponentCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+class GameDialogCheckboxComponentMapper
+    extends ClassMapperBase<GameDialogCheckboxComponent> {
+  GameDialogCheckboxComponentMapper._();
+
+  static GameDialogCheckboxComponentMapper? _instance;
+  static GameDialogCheckboxComponentMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(
+        _instance = GameDialogCheckboxComponentMapper._(),
+      );
+      GameDialogComponentMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'GameDialogCheckboxComponent';
+
+  static String _$label(GameDialogCheckboxComponent v) => v.label;
+  static const Field<GameDialogCheckboxComponent, String> _f$label = Field(
+    'label',
+    _$label,
+  );
+  static String? _$id(GameDialogCheckboxComponent v) => v.id;
+  static const Field<GameDialogCheckboxComponent, String> _f$id = Field(
+    'id',
+    _$id,
+    opt: true,
+  );
+  static bool _$initialValue(GameDialogCheckboxComponent v) => v.initialValue;
+  static const Field<GameDialogCheckboxComponent, bool> _f$initialValue = Field(
+    'initialValue',
+    _$initialValue,
+    opt: true,
+    def: false,
+  );
+
+  @override
+  final MappableFields<GameDialogCheckboxComponent> fields = const {
+    #label: _f$label,
+    #id: _f$id,
+    #initialValue: _f$initialValue,
+  };
+
+  static GameDialogCheckboxComponent _instantiate(DecodingData data) {
+    return GameDialogCheckboxComponent(
+      data.dec(_f$label),
+      id: data.dec(_f$id),
+      initialValue: data.dec(_f$initialValue),
+    );
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static GameDialogCheckboxComponent fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<GameDialogCheckboxComponent>(map);
+  }
+
+  static GameDialogCheckboxComponent fromJson(String json) {
+    return ensureInitialized().decodeJson<GameDialogCheckboxComponent>(json);
+  }
+}
+
+mixin GameDialogCheckboxComponentMappable {
+  String toJson() {
+    return GameDialogCheckboxComponentMapper.ensureInitialized()
+        .encodeJson<GameDialogCheckboxComponent>(
+          this as GameDialogCheckboxComponent,
+        );
+  }
+
+  Map<String, dynamic> toMap() {
+    return GameDialogCheckboxComponentMapper.ensureInitialized()
+        .encodeMap<GameDialogCheckboxComponent>(
+          this as GameDialogCheckboxComponent,
+        );
+  }
+
+  GameDialogCheckboxComponentCopyWith<
+    GameDialogCheckboxComponent,
+    GameDialogCheckboxComponent,
+    GameDialogCheckboxComponent
+  >
+  get copyWith =>
+      _GameDialogCheckboxComponentCopyWithImpl<
+        GameDialogCheckboxComponent,
+        GameDialogCheckboxComponent
+      >(this as GameDialogCheckboxComponent, $identity, $identity);
+  @override
+  String toString() {
+    return GameDialogCheckboxComponentMapper.ensureInitialized().stringifyValue(
+      this as GameDialogCheckboxComponent,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return GameDialogCheckboxComponentMapper.ensureInitialized().equalsValue(
+      this as GameDialogCheckboxComponent,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return GameDialogCheckboxComponentMapper.ensureInitialized().hashValue(
+      this as GameDialogCheckboxComponent,
+    );
+  }
+}
+
+extension GameDialogCheckboxComponentValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, GameDialogCheckboxComponent, $Out> {
+  GameDialogCheckboxComponentCopyWith<$R, GameDialogCheckboxComponent, $Out>
+  get $asGameDialogCheckboxComponent => $base.as(
+    (v, t, t2) => _GameDialogCheckboxComponentCopyWithImpl<$R, $Out>(v, t, t2),
+  );
+}
+
+abstract class GameDialogCheckboxComponentCopyWith<
+  $R,
+  $In extends GameDialogCheckboxComponent,
+  $Out
+>
+    implements GameDialogComponentCopyWith<$R, $In, $Out> {
+  @override
+  $R call({String? label, String? id, bool? initialValue});
+  GameDialogCheckboxComponentCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class _GameDialogCheckboxComponentCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, GameDialogCheckboxComponent, $Out>
+    implements
+        GameDialogCheckboxComponentCopyWith<
+          $R,
+          GameDialogCheckboxComponent,
+          $Out
+        > {
+  _GameDialogCheckboxComponentCopyWithImpl(
+    super.value,
+    super.then,
+    super.then2,
+  );
+
+  @override
+  late final ClassMapperBase<GameDialogCheckboxComponent> $mapper =
+      GameDialogCheckboxComponentMapper.ensureInitialized();
+  @override
+  $R call({String? label, Object? id = $none, bool? initialValue}) => $apply(
+    FieldCopyWithData({
+      if (label != null) #label: label,
+      if (id != $none) #id: id,
+      if (initialValue != null) #initialValue: initialValue,
+    }),
+  );
+  @override
+  GameDialogCheckboxComponent $make(CopyWithData data) =>
+      GameDialogCheckboxComponent(
+        data.get(#label, or: $value.label),
+        id: data.get(#id, or: $value.id),
+        initialValue: data.get(#initialValue, or: $value.initialValue),
+      );
+
+  @override
+  GameDialogCheckboxComponentCopyWith<$R2, GameDialogCheckboxComponent, $Out2>
+  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _GameDialogCheckboxComponentCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+class GameDialogDropdownComponentMapper
+    extends ClassMapperBase<GameDialogDropdownComponent> {
+  GameDialogDropdownComponentMapper._();
+
+  static GameDialogDropdownComponentMapper? _instance;
+  static GameDialogDropdownComponentMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(
+        _instance = GameDialogDropdownComponentMapper._(),
+      );
+      GameDialogComponentMapper.ensureInitialized();
+      GameDialogDropdownOptionMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'GameDialogDropdownComponent';
+
+  static String _$label(GameDialogDropdownComponent v) => v.label;
+  static const Field<GameDialogDropdownComponent, String> _f$label = Field(
+    'label',
+    _$label,
+  );
+  static List<GameDialogDropdownOption> _$options(
+    GameDialogDropdownComponent v,
+  ) => v.options;
+  static const Field<
+    GameDialogDropdownComponent,
+    List<GameDialogDropdownOption>
+  >
+  _f$options = Field('options', _$options);
+  static String? _$id(GameDialogDropdownComponent v) => v.id;
+  static const Field<GameDialogDropdownComponent, String> _f$id = Field(
+    'id',
+    _$id,
+    opt: true,
+  );
+  static String? _$initialValue(GameDialogDropdownComponent v) =>
+      v.initialValue;
+  static const Field<GameDialogDropdownComponent, String> _f$initialValue =
+      Field('initialValue', _$initialValue, opt: true);
+
+  @override
+  final MappableFields<GameDialogDropdownComponent> fields = const {
+    #label: _f$label,
+    #options: _f$options,
+    #id: _f$id,
+    #initialValue: _f$initialValue,
+  };
+
+  static GameDialogDropdownComponent _instantiate(DecodingData data) {
+    return GameDialogDropdownComponent(
+      data.dec(_f$label),
+      data.dec(_f$options),
+      id: data.dec(_f$id),
+      initialValue: data.dec(_f$initialValue),
+    );
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static GameDialogDropdownComponent fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<GameDialogDropdownComponent>(map);
+  }
+
+  static GameDialogDropdownComponent fromJson(String json) {
+    return ensureInitialized().decodeJson<GameDialogDropdownComponent>(json);
+  }
+}
+
+mixin GameDialogDropdownComponentMappable {
+  String toJson() {
+    return GameDialogDropdownComponentMapper.ensureInitialized()
+        .encodeJson<GameDialogDropdownComponent>(
+          this as GameDialogDropdownComponent,
+        );
+  }
+
+  Map<String, dynamic> toMap() {
+    return GameDialogDropdownComponentMapper.ensureInitialized()
+        .encodeMap<GameDialogDropdownComponent>(
+          this as GameDialogDropdownComponent,
+        );
+  }
+
+  GameDialogDropdownComponentCopyWith<
+    GameDialogDropdownComponent,
+    GameDialogDropdownComponent,
+    GameDialogDropdownComponent
+  >
+  get copyWith =>
+      _GameDialogDropdownComponentCopyWithImpl<
+        GameDialogDropdownComponent,
+        GameDialogDropdownComponent
+      >(this as GameDialogDropdownComponent, $identity, $identity);
+  @override
+  String toString() {
+    return GameDialogDropdownComponentMapper.ensureInitialized().stringifyValue(
+      this as GameDialogDropdownComponent,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return GameDialogDropdownComponentMapper.ensureInitialized().equalsValue(
+      this as GameDialogDropdownComponent,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return GameDialogDropdownComponentMapper.ensureInitialized().hashValue(
+      this as GameDialogDropdownComponent,
+    );
+  }
+}
+
+extension GameDialogDropdownComponentValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, GameDialogDropdownComponent, $Out> {
+  GameDialogDropdownComponentCopyWith<$R, GameDialogDropdownComponent, $Out>
+  get $asGameDialogDropdownComponent => $base.as(
+    (v, t, t2) => _GameDialogDropdownComponentCopyWithImpl<$R, $Out>(v, t, t2),
+  );
+}
+
+abstract class GameDialogDropdownComponentCopyWith<
+  $R,
+  $In extends GameDialogDropdownComponent,
+  $Out
+>
+    implements GameDialogComponentCopyWith<$R, $In, $Out> {
+  ListCopyWith<
+    $R,
+    GameDialogDropdownOption,
+    GameDialogDropdownOptionCopyWith<
+      $R,
+      GameDialogDropdownOption,
+      GameDialogDropdownOption
+    >
+  >
+  get options;
+  @override
+  $R call({
+    String? label,
+    List<GameDialogDropdownOption>? options,
+    String? id,
+    String? initialValue,
+  });
+  GameDialogDropdownComponentCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class _GameDialogDropdownComponentCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, GameDialogDropdownComponent, $Out>
+    implements
+        GameDialogDropdownComponentCopyWith<
+          $R,
+          GameDialogDropdownComponent,
+          $Out
+        > {
+  _GameDialogDropdownComponentCopyWithImpl(
+    super.value,
+    super.then,
+    super.then2,
+  );
+
+  @override
+  late final ClassMapperBase<GameDialogDropdownComponent> $mapper =
+      GameDialogDropdownComponentMapper.ensureInitialized();
+  @override
+  ListCopyWith<
+    $R,
+    GameDialogDropdownOption,
+    GameDialogDropdownOptionCopyWith<
+      $R,
+      GameDialogDropdownOption,
+      GameDialogDropdownOption
+    >
+  >
+  get options => ListCopyWith(
+    $value.options,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(options: v),
+  );
+  @override
+  $R call({
+    String? label,
+    List<GameDialogDropdownOption>? options,
+    Object? id = $none,
+    Object? initialValue = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (label != null) #label: label,
+      if (options != null) #options: options,
+      if (id != $none) #id: id,
+      if (initialValue != $none) #initialValue: initialValue,
+    }),
+  );
+  @override
+  GameDialogDropdownComponent $make(CopyWithData data) =>
+      GameDialogDropdownComponent(
+        data.get(#label, or: $value.label),
+        data.get(#options, or: $value.options),
+        id: data.get(#id, or: $value.id),
+        initialValue: data.get(#initialValue, or: $value.initialValue),
+      );
+
+  @override
+  GameDialogDropdownComponentCopyWith<$R2, GameDialogDropdownComponent, $Out2>
+  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _GameDialogDropdownComponentCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+class GameDialogDropdownOptionMapper
+    extends ClassMapperBase<GameDialogDropdownOption> {
+  GameDialogDropdownOptionMapper._();
+
+  static GameDialogDropdownOptionMapper? _instance;
+  static GameDialogDropdownOptionMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(
+        _instance = GameDialogDropdownOptionMapper._(),
+      );
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'GameDialogDropdownOption';
+
+  static String? _$label(GameDialogDropdownOption v) => v.label;
+  static const Field<GameDialogDropdownOption, String> _f$label = Field(
+    'label',
+    _$label,
+    opt: true,
+  );
+  static String _$value(GameDialogDropdownOption v) => v.value;
+  static const Field<GameDialogDropdownOption, String> _f$value = Field(
+    'value',
+    _$value,
+  );
+
+  @override
+  final MappableFields<GameDialogDropdownOption> fields = const {
+    #label: _f$label,
+    #value: _f$value,
+  };
+
+  static GameDialogDropdownOption _instantiate(DecodingData data) {
+    return GameDialogDropdownOption(
+      label: data.dec(_f$label),
+      value: data.dec(_f$value),
+    );
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static GameDialogDropdownOption fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<GameDialogDropdownOption>(map);
+  }
+
+  static GameDialogDropdownOption fromJson(String json) {
+    return ensureInitialized().decodeJson<GameDialogDropdownOption>(json);
+  }
+}
+
+mixin GameDialogDropdownOptionMappable {
+  String toJson() {
+    return GameDialogDropdownOptionMapper.ensureInitialized()
+        .encodeJson<GameDialogDropdownOption>(this as GameDialogDropdownOption);
+  }
+
+  Map<String, dynamic> toMap() {
+    return GameDialogDropdownOptionMapper.ensureInitialized()
+        .encodeMap<GameDialogDropdownOption>(this as GameDialogDropdownOption);
+  }
+
+  GameDialogDropdownOptionCopyWith<
+    GameDialogDropdownOption,
+    GameDialogDropdownOption,
+    GameDialogDropdownOption
+  >
+  get copyWith =>
+      _GameDialogDropdownOptionCopyWithImpl<
+        GameDialogDropdownOption,
+        GameDialogDropdownOption
+      >(this as GameDialogDropdownOption, $identity, $identity);
+  @override
+  String toString() {
+    return GameDialogDropdownOptionMapper.ensureInitialized().stringifyValue(
+      this as GameDialogDropdownOption,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return GameDialogDropdownOptionMapper.ensureInitialized().equalsValue(
+      this as GameDialogDropdownOption,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return GameDialogDropdownOptionMapper.ensureInitialized().hashValue(
+      this as GameDialogDropdownOption,
+    );
+  }
+}
+
+extension GameDialogDropdownOptionValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, GameDialogDropdownOption, $Out> {
+  GameDialogDropdownOptionCopyWith<$R, GameDialogDropdownOption, $Out>
+  get $asGameDialogDropdownOption => $base.as(
+    (v, t, t2) => _GameDialogDropdownOptionCopyWithImpl<$R, $Out>(v, t, t2),
+  );
+}
+
+abstract class GameDialogDropdownOptionCopyWith<
+  $R,
+  $In extends GameDialogDropdownOption,
+  $Out
+>
+    implements ClassCopyWith<$R, $In, $Out> {
+  $R call({String? label, String? value});
+  GameDialogDropdownOptionCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class _GameDialogDropdownOptionCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, GameDialogDropdownOption, $Out>
+    implements
+        GameDialogDropdownOptionCopyWith<$R, GameDialogDropdownOption, $Out> {
+  _GameDialogDropdownOptionCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<GameDialogDropdownOption> $mapper =
+      GameDialogDropdownOptionMapper.ensureInitialized();
+  @override
+  $R call({Object? label = $none, String? value}) => $apply(
+    FieldCopyWithData({
+      if (label != $none) #label: label,
+      if (value != null) #value: value,
+    }),
+  );
+  @override
+  GameDialogDropdownOption $make(CopyWithData data) => GameDialogDropdownOption(
+    label: data.get(#label, or: $value.label),
+    value: data.get(#value, or: $value.value),
+  );
+
+  @override
+  GameDialogDropdownOptionCopyWith<$R2, GameDialogDropdownOption, $Out2>
+  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _GameDialogDropdownOptionCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
 class GameDialogValueMapper extends ClassMapperBase<GameDialogValue> {
   GameDialogValueMapper._();
 
@@ -917,6 +1454,8 @@ class GameDialogComponentValueMapper
         _instance = GameDialogComponentValueMapper._(),
       );
       GameDialogTextFieldValueMapper.ensureInitialized();
+      GameDialogCheckboxValueMapper.ensureInitialized();
+      GameDialogDropdownValueMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -1183,5 +1722,299 @@ class _GameDialogTextFieldValueCopyWithImpl<$R, $Out>
   GameDialogTextFieldValueCopyWith<$R2, GameDialogTextFieldValue, $Out2>
   $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _GameDialogTextFieldValueCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+class GameDialogCheckboxValueMapper
+    extends ClassMapperBase<GameDialogCheckboxValue> {
+  GameDialogCheckboxValueMapper._();
+
+  static GameDialogCheckboxValueMapper? _instance;
+  static GameDialogCheckboxValueMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(
+        _instance = GameDialogCheckboxValueMapper._(),
+      );
+      GameDialogComponentValueMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'GameDialogCheckboxValue';
+
+  static bool _$value(GameDialogCheckboxValue v) => v.value;
+  static const Field<GameDialogCheckboxValue, bool> _f$value = Field(
+    'value',
+    _$value,
+  );
+  static int _$component(GameDialogCheckboxValue v) => v.component;
+  static const Field<GameDialogCheckboxValue, int> _f$component = Field(
+    'component',
+    _$component,
+  );
+
+  @override
+  final MappableFields<GameDialogCheckboxValue> fields = const {
+    #value: _f$value,
+    #component: _f$component,
+  };
+
+  static GameDialogCheckboxValue _instantiate(DecodingData data) {
+    return GameDialogCheckboxValue(
+      value: data.dec(_f$value),
+      component: data.dec(_f$component),
+    );
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static GameDialogCheckboxValue fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<GameDialogCheckboxValue>(map);
+  }
+
+  static GameDialogCheckboxValue fromJson(String json) {
+    return ensureInitialized().decodeJson<GameDialogCheckboxValue>(json);
+  }
+}
+
+mixin GameDialogCheckboxValueMappable {
+  String toJson() {
+    return GameDialogCheckboxValueMapper.ensureInitialized()
+        .encodeJson<GameDialogCheckboxValue>(this as GameDialogCheckboxValue);
+  }
+
+  Map<String, dynamic> toMap() {
+    return GameDialogCheckboxValueMapper.ensureInitialized()
+        .encodeMap<GameDialogCheckboxValue>(this as GameDialogCheckboxValue);
+  }
+
+  GameDialogCheckboxValueCopyWith<
+    GameDialogCheckboxValue,
+    GameDialogCheckboxValue,
+    GameDialogCheckboxValue
+  >
+  get copyWith =>
+      _GameDialogCheckboxValueCopyWithImpl<
+        GameDialogCheckboxValue,
+        GameDialogCheckboxValue
+      >(this as GameDialogCheckboxValue, $identity, $identity);
+  @override
+  String toString() {
+    return GameDialogCheckboxValueMapper.ensureInitialized().stringifyValue(
+      this as GameDialogCheckboxValue,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return GameDialogCheckboxValueMapper.ensureInitialized().equalsValue(
+      this as GameDialogCheckboxValue,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return GameDialogCheckboxValueMapper.ensureInitialized().hashValue(
+      this as GameDialogCheckboxValue,
+    );
+  }
+}
+
+extension GameDialogCheckboxValueValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, GameDialogCheckboxValue, $Out> {
+  GameDialogCheckboxValueCopyWith<$R, GameDialogCheckboxValue, $Out>
+  get $asGameDialogCheckboxValue => $base.as(
+    (v, t, t2) => _GameDialogCheckboxValueCopyWithImpl<$R, $Out>(v, t, t2),
+  );
+}
+
+abstract class GameDialogCheckboxValueCopyWith<
+  $R,
+  $In extends GameDialogCheckboxValue,
+  $Out
+>
+    implements GameDialogComponentValueCopyWith<$R, $In, $Out> {
+  @override
+  $R call({bool? value, int? component});
+  GameDialogCheckboxValueCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class _GameDialogCheckboxValueCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, GameDialogCheckboxValue, $Out>
+    implements
+        GameDialogCheckboxValueCopyWith<$R, GameDialogCheckboxValue, $Out> {
+  _GameDialogCheckboxValueCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<GameDialogCheckboxValue> $mapper =
+      GameDialogCheckboxValueMapper.ensureInitialized();
+  @override
+  $R call({bool? value, int? component}) => $apply(
+    FieldCopyWithData({
+      if (value != null) #value: value,
+      if (component != null) #component: component,
+    }),
+  );
+  @override
+  GameDialogCheckboxValue $make(CopyWithData data) => GameDialogCheckboxValue(
+    value: data.get(#value, or: $value.value),
+    component: data.get(#component, or: $value.component),
+  );
+
+  @override
+  GameDialogCheckboxValueCopyWith<$R2, GameDialogCheckboxValue, $Out2>
+  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _GameDialogCheckboxValueCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+class GameDialogDropdownValueMapper
+    extends ClassMapperBase<GameDialogDropdownValue> {
+  GameDialogDropdownValueMapper._();
+
+  static GameDialogDropdownValueMapper? _instance;
+  static GameDialogDropdownValueMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(
+        _instance = GameDialogDropdownValueMapper._(),
+      );
+      GameDialogComponentValueMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'GameDialogDropdownValue';
+
+  static String _$value(GameDialogDropdownValue v) => v.value;
+  static const Field<GameDialogDropdownValue, String> _f$value = Field(
+    'value',
+    _$value,
+  );
+  static int _$component(GameDialogDropdownValue v) => v.component;
+  static const Field<GameDialogDropdownValue, int> _f$component = Field(
+    'component',
+    _$component,
+  );
+
+  @override
+  final MappableFields<GameDialogDropdownValue> fields = const {
+    #value: _f$value,
+    #component: _f$component,
+  };
+
+  static GameDialogDropdownValue _instantiate(DecodingData data) {
+    return GameDialogDropdownValue(
+      value: data.dec(_f$value),
+      component: data.dec(_f$component),
+    );
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static GameDialogDropdownValue fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<GameDialogDropdownValue>(map);
+  }
+
+  static GameDialogDropdownValue fromJson(String json) {
+    return ensureInitialized().decodeJson<GameDialogDropdownValue>(json);
+  }
+}
+
+mixin GameDialogDropdownValueMappable {
+  String toJson() {
+    return GameDialogDropdownValueMapper.ensureInitialized()
+        .encodeJson<GameDialogDropdownValue>(this as GameDialogDropdownValue);
+  }
+
+  Map<String, dynamic> toMap() {
+    return GameDialogDropdownValueMapper.ensureInitialized()
+        .encodeMap<GameDialogDropdownValue>(this as GameDialogDropdownValue);
+  }
+
+  GameDialogDropdownValueCopyWith<
+    GameDialogDropdownValue,
+    GameDialogDropdownValue,
+    GameDialogDropdownValue
+  >
+  get copyWith =>
+      _GameDialogDropdownValueCopyWithImpl<
+        GameDialogDropdownValue,
+        GameDialogDropdownValue
+      >(this as GameDialogDropdownValue, $identity, $identity);
+  @override
+  String toString() {
+    return GameDialogDropdownValueMapper.ensureInitialized().stringifyValue(
+      this as GameDialogDropdownValue,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return GameDialogDropdownValueMapper.ensureInitialized().equalsValue(
+      this as GameDialogDropdownValue,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return GameDialogDropdownValueMapper.ensureInitialized().hashValue(
+      this as GameDialogDropdownValue,
+    );
+  }
+}
+
+extension GameDialogDropdownValueValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, GameDialogDropdownValue, $Out> {
+  GameDialogDropdownValueCopyWith<$R, GameDialogDropdownValue, $Out>
+  get $asGameDialogDropdownValue => $base.as(
+    (v, t, t2) => _GameDialogDropdownValueCopyWithImpl<$R, $Out>(v, t, t2),
+  );
+}
+
+abstract class GameDialogDropdownValueCopyWith<
+  $R,
+  $In extends GameDialogDropdownValue,
+  $Out
+>
+    implements GameDialogComponentValueCopyWith<$R, $In, $Out> {
+  @override
+  $R call({String? value, int? component});
+  GameDialogDropdownValueCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class _GameDialogDropdownValueCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, GameDialogDropdownValue, $Out>
+    implements
+        GameDialogDropdownValueCopyWith<$R, GameDialogDropdownValue, $Out> {
+  _GameDialogDropdownValueCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<GameDialogDropdownValue> $mapper =
+      GameDialogDropdownValueMapper.ensureInitialized();
+  @override
+  $R call({String? value, int? component}) => $apply(
+    FieldCopyWithData({
+      if (value != null) #value: value,
+      if (component != null) #component: component,
+    }),
+  );
+  @override
+  GameDialogDropdownValue $make(CopyWithData data) => GameDialogDropdownValue(
+    value: data.get(#value, or: $value.value),
+    component: data.get(#component, or: $value.component),
+  );
+
+  @override
+  GameDialogDropdownValueCopyWith<$R2, GameDialogDropdownValue, $Out2>
+  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _GameDialogDropdownValueCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 

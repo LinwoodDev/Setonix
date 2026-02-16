@@ -9,5 +9,8 @@ packs/
 scripts/
 setonix.db
 config.json
+# Build files
+build/
+server-build/
 
 *.so

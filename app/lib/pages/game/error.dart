@@ -27,7 +27,7 @@ class GameErrorView extends StatelessWidget {
     final theme = Theme.of(context);
     final error = state.error;
     var message = AppLocalizations.of(context).disconnectedMessage;
-    List<Widget>? content;
+    List<Widget> content = [];
     if (error is FatalServerEventError) {
       message = switch (error) {
         InvalidPacksError() => AppLocalizations.of(context).invalidPacks,
@@ -39,8 +39,8 @@ class GameErrorView extends StatelessWidget {
       };
     } else if (error is KickMessage) {
       final link = error.link;
-      var message = error.message;
-      if (message?.isEmpty ?? true) {
+      var respponse = error.message;
+      if (respponse?.isEmpty ?? true) {
         message = switch (error.reason) {
           KickReason.kick => AppLocalizations.of(context).kicked,
           KickReason.ban => AppLocalizations.of(context).banned,
@@ -105,7 +105,7 @@ class GameErrorView extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: theme.textTheme.bodySmall,
                     ),
-                    if (content != null) ...[
+                    if (content.isNotEmpty) ...[
                       const SizedBox(height: 16),
                       ...content,
                     ],

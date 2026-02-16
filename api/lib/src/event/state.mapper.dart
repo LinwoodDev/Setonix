@@ -114,6 +114,7 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
       GameDialogMapper.ensureInitialized();
       ServerStateMapper.ensureInitialized();
       AuthenticatedRequestedMapper.ensureInitialized();
+      GameToolbarMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -210,6 +211,13 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
     _$authRequest,
     opt: true,
   );
+  static GameToolbar _$toolbar(WorldState v) => v.toolbar;
+  static const Field<WorldState, GameToolbar> _f$toolbar = Field(
+    'toolbar',
+    _$toolbar,
+    opt: true,
+    def: const GameToolbar(),
+  );
   static SetonixData _$data(WorldState v) => v.data;
   static const Field<WorldState, SetonixData> _f$data = Field('data', _$data);
 
@@ -228,6 +236,7 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
     #images: _f$images,
     #serverState: _f$serverState,
     #authRequest: _f$authRequest,
+    #toolbar: _f$toolbar,
     #data: _f$data,
   };
 
@@ -246,6 +255,7 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
       images: data.dec(_f$images),
       serverState: data.dec(_f$serverState),
       authRequest: data.dec(_f$authRequest),
+      toolbar: data.dec(_f$toolbar),
       data: data.dec(_f$data),
     );
   }
@@ -332,6 +342,7 @@ abstract class WorldStateCopyWith<$R, $In extends WorldState, $Out>
     AuthenticatedRequested
   >?
   get authRequest;
+  GameToolbarCopyWith<$R, GameToolbar, GameToolbar> get toolbar;
   $R call({
     String? name,
     GameState? gameState,
@@ -346,6 +357,7 @@ abstract class WorldStateCopyWith<$R, $In extends WorldState, $Out>
     Map<String, Uint8List>? images,
     ServerState? serverState,
     AuthenticatedRequested? authRequest,
+    GameToolbar? toolbar,
     SetonixData? data,
   });
   WorldStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -412,6 +424,9 @@ class _WorldStateCopyWithImpl<$R, $Out>
   get authRequest =>
       $value.authRequest?.copyWith.$chain((v) => call(authRequest: v));
   @override
+  GameToolbarCopyWith<$R, GameToolbar, GameToolbar> get toolbar =>
+      $value.toolbar.copyWith.$chain((v) => call(toolbar: v));
+  @override
   $R call({
     Object? name = $none,
     GameState? gameState,
@@ -426,6 +441,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
     Map<String, Uint8List>? images,
     ServerState? serverState,
     Object? authRequest = $none,
+    GameToolbar? toolbar,
     SetonixData? data,
   }) => $apply(
     FieldCopyWithData({
@@ -442,6 +458,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
       if (images != null) #images: images,
       if (serverState != null) #serverState: serverState,
       if (authRequest != $none) #authRequest: authRequest,
+      if (toolbar != null) #toolbar: toolbar,
       if (data != null) #data: data,
     }),
   );
@@ -460,6 +477,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
     images: data.get(#images, or: $value.images),
     serverState: data.get(#serverState, or: $value.serverState),
     authRequest: data.get(#authRequest, or: $value.authRequest),
+    toolbar: data.get(#toolbar, or: $value.toolbar),
     data: data.get(#data, or: $value.data),
   );
 

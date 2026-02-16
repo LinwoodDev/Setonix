@@ -20,6 +20,8 @@ jobs:
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v5
+      - name: Setup Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
       - name: 🔧 Setup java
         uses: actions/setup-java@v5
         with:
@@ -156,6 +158,8 @@ jobs:
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v5
+      - name: Setup Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
       - name: Make yq tool available on Windows runners
         run: |
           choco install yq
@@ -219,6 +223,8 @@ jobs:
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v5
+      - name: Setup Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
       - uses: subosito/flutter-action@v2.21.0
         with:
           flutter-version-file: app/pubspec.yaml
@@ -271,6 +277,8 @@ jobs:
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v5
+      - name: Setup Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
       - name: Get dependencies
         run: |
           sudo apt-get update
@@ -432,13 +440,15 @@ jobs:
           name: linux-${{ matrix.arch.name }}-snap
           path: ${{ steps.build.outputs.snap }}
   build-macos:
-    runs-on: macos-14
+    runs-on: macos-26
     defaults:
       run:
         working-directory: app
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v5
+      - name: Setup Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
       - uses: subosito/flutter-action@v2.21.0
         with:
           flutter-version-file: app/pubspec.yaml
@@ -491,7 +501,7 @@ jobs:
 
   build-ipa:
     name: build-ipa (iOS)
-    runs-on: macos-14
+    runs-on: macos-26
     defaults:
       run:
         working-directory: app
@@ -541,15 +551,19 @@ jobs:
         os:
           - name: ubuntu-24.04
             label: linux-x86_64
+            dir: linux_x64
             rust: libsetonix_plugin.so
           - name: ubuntu-24.04-arm
             label: linux-arm64
+            dir: linux_arm64
             rust: libsetonix_plugin.so
           - name: windows-2025
             label: windows-x86_64
+            dir: windows_x64
             rust: setonix_plugin.dll
           - name: macos-latest
             label: macos
+            dir: macos_arm64
             rust: libsetonix_plugin.dylib
     runs-on: ${{ matrix.os.name }}
     steps:
@@ -579,16 +593,21 @@ jobs:
           cargo build --release
       - name: Compile
         run: |
-          dart compile exe bin/setonix_server.dart
+          dart build cli bin/setonix_server.dart
       - name: Create directory
         run: |
           mkdir -p server-build
-          mv bin/setonix_server.exe server-build/
+          # Move the entire bundle structure (bin/ and lib/ as siblings)
+          # sqlite3 expects lib/ to be at ../lib/ relative to the executable in bin/
+          mv build/cli/${{ matrix.os.dir }}/bundle/* server-build/
+          # Create packs and scripts directories at the root level (server-build/)
           mkdir -p server-build/packs
+          mkdir -p server-build/scripts
       - name: Move rust lib
         working-directory: ./
         run: |
-          cp plugin/rust/target/release/${{ matrix.os.rust }} server/server-build/
+          # Copy rust plugin to lib/ directory (alongside sqlite3 dll)
+          cp plugin/rust/target/release/${{ matrix.os.rust }} server/server-build/lib/
       - name: Build nessesary files
         working-directory: ./
         run: |
@@ -596,8 +615,10 @@ jobs:
           dart pub get
           cd ..
           dart run tools/generate.dart
-          cp app/assets/pack.stnx server/server-build/packs/core.stnx
-          tree -a -L 2 server/server-build
+      - name: Copy core pack
+        run: |
+          cp packs/core.stnx server-build/packs/
+          tree -a -L 3 server-build
       - name: Archive
         uses: actions/upload-artifact@v4
         with:
@@ -765,6 +786,22 @@ jobs:
       - uses: actions/download-artifact@v5
         with:
           name: ipa-build
+      - uses: actions/download-artifact@v5
+        with:
+          name: server-build-linux-x86_64
+          path: server-build-linux-x86_64/
+      - uses: actions/download-artifact@v5
+        with:
+          name: server-build-linux-arm64
+          path: server-build-linux-arm64/
+      - uses: actions/download-artifact@v5
+        with:
+          name: server-build-windows-x86_64
+          path: server-build-windows-x86_64/
+      - uses: actions/download-artifact@v5
+        with:
+          name: server-build-macos
+          path: server-build-macos/
       - name: 📦 Zip artifacts
         run: |
           cd windows-build
@@ -774,6 +811,14 @@ jobs:
           tar -C linux-arm64-build -czf linwood-setonix-linux-arm64.tar.gz .
           tar -C linux-alternative-x86_64-build -czf linwood-setonix-linux-alternative-x86_64.tar.gz .
           tar -C linux-alternative-arm64-build -czf linwood-setonix-linux-alternative-arm64.tar.gz .
+          tar -C server-build-linux-x86_64 -czf linwood-setonix-server-linux-x86_64.tar.gz .
+          tar -C server-build-linux-arm64 -czf linwood-setonix-server-linux-arm64.tar.gz .
+          cd server-build-windows-x86_64
+          zip -r ../linwood-setonix-server-windows-x86_64.zip *
+          cd ..
+          cd server-build-macos
+          zip -r ../linwood-setonix-server-macos.zip *
+          cd ..
       - name: Configure git
         if: ${{ github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main' }}
         run: |
@@ -835,6 +880,10 @@ jobs:
             linwood-setonix-android-arm64-legacy.apk
             linwood-setonix-android-x86_64-legacy.apk
             linwood-setonix-ios.ipa
+            linwood-setonix-server-linux-x86_64.tar.gz
+            linwood-setonix-server-linux-arm64.tar.gz
+            linwood-setonix-server-windows-x86_64.zip
+            linwood-setonix-server-macos.zip
             checksums.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -875,6 +924,10 @@ jobs:
             linwood-setonix-android-arm64-legacy.apk
             linwood-setonix-android-x86_64-legacy.apk
             linwood-setonix-ios.ipa
+            linwood-setonix-server-linux-x86_64.tar.gz
+            linwood-setonix-server-linux-arm64.tar.gz
+            linwood-setonix-server-windows-x86_64.zip
+            linwood-setonix-server-macos.zip
             checksums.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -913,6 +966,10 @@ jobs:
             linwood-setonix-android-arm64-legacy.apk
             linwood-setonix-android-x86_64-legacy.apk
             linwood-setonix-ios.ipa
+            linwood-setonix-server-linux-x86_64.tar.gz
+            linwood-setonix-server-linux-arm64.tar.gz
+            linwood-setonix-server-windows-x86_64.zip
+            linwood-setonix-server-macos.zip
             checksums.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -966,7 +1023,7 @@ jobs:
       - name: Setup Fastlane
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.4.6"
+          ruby-version: "3.4.8"
           bundler-cache: true
           working-directory: app/android
       - name: 🚀 Deploy to Play Store

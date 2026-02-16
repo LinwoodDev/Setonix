@@ -271,3 +271,11 @@ final class AuthenticatedRequested extends ServerWorldEvent
 
   const AuthenticatedRequested(this.challenge, {this.isRequired = true});
 }
+
+@MappableClass()
+final class ToolbarUpdated extends ServerWorldEvent
+    with ToolbarUpdatedMappable {
+  final GameToolbar toolbar;
+
+  const ToolbarUpdated(this.toolbar);
+}

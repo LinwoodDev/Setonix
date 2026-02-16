@@ -1,21 +1,17 @@
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
-import 'package:flame_bloc/flame_bloc.dart';
-import 'package:setonix/bloc/settings.dart';
 import 'package:setonix/board/cell.dart';
 
-class BoardGrid extends PositionComponent
-    with HasGameReference, FlameBlocListenable<SettingsCubit, SetonixSettings> {
+class BoardGrid extends PositionComponent with HasGameReference {
   final Vector2 cellSize;
   static const _padding = 3.0;
   Rect? _lastViewport;
-  double _zoom = 1.0;
 
   BoardGrid({required this.cellSize});
 
   Rect get viewport {
     final Rect viewport = game.camera.visibleWorldRect;
-    final currentSize = cellSizeWithZoom;
+    final currentSize = cellSize;
     return Rect.fromLTRB(
       (viewport.left / currentSize.x - _padding).floor() * currentSize.x,
       (viewport.top / currentSize.y - _padding).floor() * currentSize.y,
@@ -35,7 +31,7 @@ class BoardGrid extends PositionComponent
   void _updateGrid() {
     if (!shouldReset()) return;
     final viewport = this.viewport;
-    final currentSize = cellSizeWithZoom;
+    final currentSize = cellSize;
     // Remove components that are out of the viewport
     removeAll(
       children.where((element) {
@@ -67,8 +63,6 @@ class BoardGrid extends PositionComponent
     _lastViewport = viewport;
   }
 
-  Vector2 get cellSizeWithZoom => cellSize * _zoom;
-
   @override
   void update(double dt) {
     super.update(dt);
@@ -83,22 +77,4 @@ class BoardGrid extends PositionComponent
 
   Component _createCell({required Vector2 position, required Vector2 size}) =>
       GameCell(position: position, size: size);
-
-  @override
-  void onInitialState(SetonixSettings state) {
-    _zoom = state.zoom;
-  }
-
-  @override
-  bool listenWhen(SetonixSettings previousState, SetonixSettings newState) =>
-      previousState.zoom != newState.zoom;
-
-  @override
-  void onNewState(SetonixSettings state) {
-    if (_zoom != state.zoom) {
-      _zoom = state.zoom;
-      _lastViewport = null;
-      removeAll(children);
-    }
-  }
 }

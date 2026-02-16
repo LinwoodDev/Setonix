@@ -79,7 +79,9 @@ class _GameChatDrawerState extends State<GameChatDrawer> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  message.author.toString(),
+                                  AppLocalizations.of(
+                                    context,
+                                  ).defaultPlayerName(message.author),
                                   style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                                 Text(

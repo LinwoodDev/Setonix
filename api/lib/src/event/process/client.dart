@@ -96,21 +96,21 @@ class KickServerResponse extends ServerResponse {
 }
 
 class UpdateServerResponse extends ServerResponse {
-  final NetworkerPacket<ServerWorldEvent> main;
+  final NetworkerPacket<ServerWorldEvent>? main;
   final Set<Channel> needsUpdate;
 
   UpdateServerResponse(this.main, [this.needsUpdate = const {}]);
   UpdateServerResponse.builder(
-    ServerWorldEvent event, [
+    ServerWorldEvent? event, [
     Channel channel = kAnyChannel,
     this.needsUpdate = const {},
-  ]) : main = NetworkerPacket(event, channel);
+  ]) : main = event == null ? null : NetworkerPacket(event, channel);
 
   List<NetworkerPacket<ServerWorldEvent>> buildPackets(
     WorldState state,
     Iterable<Channel> connected,
   ) {
-    return [main, ...buildUpdatePackets(state, connected)];
+    return [?main, ...buildUpdatePackets(state, connected)];
   }
 
   List<NetworkerPacket<WorldInitialized>> buildUpdatePackets(
@@ -127,7 +127,7 @@ class UpdateServerResponse extends ServerResponse {
     if (needsUpdate.isEmpty) return [];
     final packets = <NetworkerPacket<WorldInitialized>>[];
     for (final channel in connected) {
-      if (needsUpdate.contains(channel) || channel == kAnyChannel) {
+      if (needsUpdate.contains(channel) || needsUpdate.contains(kAnyChannel)) {
         packets.add(
           NetworkerPacket(
             WorldInitialized(table: state.protectTable(channel)),
@@ -140,10 +140,27 @@ class UpdateServerResponse extends ServerResponse {
   }
 }
 
-Set<Channel> _hybridNeedsUpdate(HybridWorldEvent event, WorldState state) =>
+Set<Channel> _hybridNeedsUpdate(
+  HybridWorldEvent event,
+  WorldState state,
+  Channel channel,
+) => switch (event) {
+  TeamRemoved() => {kAnyChannel},
+  CellHideChanged() => {kAnyChannel},
+  _ => {},
+};
+
+HybridWorldEvent _hybridProtectPacket(HybridWorldEvent event) =>
     switch (event) {
-      TeamRemoved() => {kAnyChannel},
-      _ => {},
+      ObjectsSpawned() => event.copyWith(
+        objects: event.objects.map((cell, objects) {
+          final protectedObjects = objects
+              .map((e) => e.hidden ? e.copyWith(variation: null) : e)
+              .toList();
+          return MapEntry(cell, protectedObjects);
+        }),
+      ),
+      _ => event,
     };
 
 Future<ServerResponse?> processClientEvent(
@@ -183,9 +200,9 @@ Future<ServerResponse?> processClientEvent(
   switch (event) {
     case HybridWorldEvent():
       return UpdateServerResponse.builder(
-        event,
+        _hybridProtectPacket(event),
         kAnyChannel,
-        _hybridNeedsUpdate(event, state),
+        _hybridNeedsUpdate(event, state, channel),
       );
     case LocalWorldEvent():
       return null;
@@ -401,5 +418,7 @@ Future<ServerResponse?> processClientEvent(
         );
       }
       return UpdateServerResponse.builder(buildInitialize(), channel);
+    case ToolbarActionRequest():
+      return UpdateServerResponse.builder(null);
   }
 }

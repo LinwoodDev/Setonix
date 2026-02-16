@@ -4,6 +4,7 @@ import 'dart:isolate';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:consoler/consoler.dart';
+import 'package:path/path.dart' as p;
 import 'package:setonix_server/setonix_server.dart';
 
 Future<ServerProcessed> _computeEvent(
@@ -57,10 +58,6 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
           "World initialized${(event.info?.gameMode != null) ? " with script ${event.info?.gameMode}" : ""}",
           level: LogLevel.info,
         );
-        _serverPlugin = await _pluginSystem.registerPlugin(
-          '',
-          SetonixPlugin.new,
-        );
         await _loadScripts((newState ?? state).info.gameMode);
       }
       if (newState == null) return;
@@ -72,6 +69,30 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
     });
   }
 
+  final List<(PlayableWorldEvent?, UpdateServerResponse, Set<int>?)>
+  _scheduledUpdates = [];
+
+  @override
+  void onTransition(Transition<PlayableWorldEvent, WorldState> transition) {
+    super.onTransition(transition);
+    final updateIndex = _scheduledUpdates.indexWhere(
+      (element) => element.$1 == transition.event,
+    );
+    if (updateIndex != -1) {
+      final (_, response, needsUpdate) = _scheduledUpdates.removeAt(
+        updateIndex,
+      );
+      final updatePackets = response.buildUpdatePacketsFor(
+        transition.nextState,
+        server.channels,
+        needsUpdate,
+      );
+      for (final packet in updatePackets) {
+        sendEvent(packet.data, target: packet.channel);
+      }
+    }
+  }
+
   @override
   void print(String message, [String? plugin]) {
     if (plugin != null && plugin.isNotEmpty) {
@@ -81,24 +102,35 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
     }
   }
 
-  Future<void> _loadGameMode(ItemLocation location) async {
+  Future<bool> _loadGameMode(ItemLocation location) async {
     final mode = assetManager.getPack(location.namespace)?.getMode(location.id);
-    if (mode == null) return;
+    if (mode == null) return false;
     final script = mode.script;
-    if (script == null) return;
+    if (script == null) return false;
     final scriptLocation = ItemLocation.fromString(script, location.namespace);
-    pluginSystem.loadLuaPluginFromLocation(assetManager, scriptLocation);
+    return await pluginSystem.loadLuaPluginFromLocation(
+          assetManager,
+          scriptLocation,
+        ) !=
+        null;
   }
 
   Future<void> _loadScripts(ItemLocation? mode) async {
     pluginSystem.unregisterAll();
     try {
-      if (mode != null) await _loadGameMode(mode);
+      if (mode != null) {
+        if (!await _loadGameMode(mode)) {
+          server.log(
+            'Failed to load game mode script: $mode',
+            level: LogLevel.warning,
+          );
+        }
+      }
     } catch (e) {
       server.log('Error loading script: $e', level: LogLevel.error);
     }
 
-    final scriptsFolder = Directory('scripts');
+    final scriptsFolder = Directory(p.join(server.rootDirectory, 'scripts'));
     if (!await scriptsFolder.exists()) {
       await scriptsFolder.create(recursive: true);
     }
@@ -127,6 +159,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
   }
 
   Future<void> init() async {
+    _serverPlugin = await _pluginSystem.registerPlugin('', SetonixPlugin.new);
     await _loadScripts(state.info.gameMode);
   }
 
@@ -137,7 +170,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
 
   Future<void> save({bool force = false}) async {
     var file = File(
-      '${worldName == defaultWorldName ? SetonixServer.defaultWorldName : '${SetonixServer.worldDirectory}/$worldName'}${SetonixServer.worldSuffix}',
+      '${worldName == defaultWorldName ? defaultWorldName : '${SetonixServer.worldDirectory}/$worldName'}${SetonixServer.worldSuffix}',
     );
     if (!await file.exists()) {
       await file.create(recursive: true);
@@ -170,15 +203,15 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
     switch (process) {
       case UpdateServerResponse():
         final event = Event(
-          serverEvent: process.main.data,
-          target: process.main.channel,
+          serverEvent: process.main?.data,
+          target: process.main?.channel ?? kAnyChannel,
           clientEvent: data,
           source: packet.channel,
           needsUpdate: process.needsUpdate,
           worldName: worldName,
         );
         if (!force) {
-          server.defaultWorld.pluginSystem.fire(event);
+          await server.defaultWorld.pluginSystem.fire(event);
           if (event.cancelled) return;
           server.log(
             'Processing event by ${event.source}: ${limitOutput(event.clientEvent)}, answered with ${limitOutput(event.serverEvent)}',
@@ -193,18 +226,13 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
             );
           default:
         }
-        server.sendEvent(
-          event.serverEvent,
-          target: event.target,
-          worldName: worldName,
-        );
-        final updatePackets = process.buildUpdatePacketsFor(
-          state,
-          server.channels,
-          event.needsUpdate,
-        );
-        for (final packet in updatePackets) {
-          sendEvent(packet.data, target: packet.channel);
+        _scheduledUpdates.add((event.serverEvent, process, event.needsUpdate));
+        final serverEvent = event.serverEvent;
+        if (serverEvent != null) {
+          await sendEvent(serverEvent, target: event.target);
+        }
+        for (final scheduled in event.scheduledEvents) {
+          await onClientEvent(scheduled, force: true);
         }
       case KickServerResponse():
         server.kick(packet.channel, process.message);
@@ -212,18 +240,15 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
   }
 
   @override
-  void process(WorldEvent event, {bool force = true, String? plugin}) {
-    onClientEvent(NetworkerPacket(event, kAuthorityChannel), force: force);
-  }
+  Future<void> process(WorldEvent event, {bool force = true, String? plugin}) =>
+      onClientEvent(NetworkerPacket(event, kAuthorityChannel), force: force);
 
   @override
-  void sendEvent(
+  Future<void> sendEvent(
     PlayableWorldEvent event, {
     Channel target = kAnyChannel,
     String? plugin,
-  }) {
-    server.sendEvent(event, target: target, worldName: worldName);
-  }
+  }) => server.sendEvent(event, target: target, worldName: worldName);
 
   @override
   List<int> get players => server.players.keys.toList(growable: false);

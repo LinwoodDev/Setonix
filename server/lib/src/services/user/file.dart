@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:path/path.dart' as p;
 import 'package:setonix_api/setonix_api.dart';
 import 'package:setonix_server/src/services/user/migrations.dart';
 import 'package:sqlite3/sqlite3.dart';
@@ -7,8 +8,8 @@ import 'package:sqlite3/sqlite3.dart';
 final class FileUserService extends UserService {
   Database? _database;
 
-  Future<void> setup() async {
-    final database = sqlite3.open('setonix.db');
+  Future<void> setup({String rootPath = '.'}) async {
+    final database = sqlite3.open(p.join(rootPath, 'setonix.db'));
     // Basic migration system
 
     final result = database.select('PRAGMA user_version');
@@ -62,6 +63,7 @@ final class FileUserService extends UserService {
     String? name,
     bool? onWhitelist,
     DateTime? lastLogin,
+    bool createIfNotExists = false,
   }) {
     final updates = <String>[];
     final values = <dynamic>[];
@@ -76,22 +78,53 @@ final class FileUserService extends UserService {
     }
     if (lastLogin != null) {
       updates.add('last_login = ?');
-      values.add(lastLogin.toIso8601String());
+      values.add(lastLogin.millisecondsSinceEpoch);
     }
 
-    if (updates.isEmpty) return false;
+    if (updates.isEmpty && !createIfNotExists) return false;
 
-    // prepare bind values: first for INSERT (fingerprint + update values), then repeat update values for the UPDATE clause
-    final insertValues = [...values, fingerprint];
-    final bindValues = [fingerprint, ...insertValues, ...values];
-    _database?.execute('''
-      INSERT INTO users (
-        fingerprint${[...updates, 'name = ?'].map((u) => ', ${u.split(' = ').first}').join()}
-      ) VALUES (
-        ${List.filled(insertValues.length + 1, '?').join(', ')}
-      ) ON CONFLICT(fingerprint) DO UPDATE SET
-        ${updates.join(', ')};
-      ''', bindValues);
-    return _database?.updatedRows == 1;
+    if (!createIfNotExists) {
+      values.add(fingerprint);
+      _database?.execute(
+        'UPDATE users SET ${updates.join(', ')} WHERE fingerprint = ?',
+        values,
+      );
+      return _database?.updatedRows == 1;
+    }
+
+    final insertCols = ['fingerprint'];
+    final insertVals = <dynamic>[fingerprint];
+
+    if (name != null) {
+      insertCols.add('name');
+      insertVals.add(name);
+    }
+    if (onWhitelist != null) {
+      insertCols.add('on_whitelist');
+      insertVals.add(onWhitelist ? 1 : 0);
+    }
+    if (lastLogin != null) {
+      insertCols.add('last_login');
+      insertVals.add(lastLogin.millisecondsSinceEpoch);
+    }
+
+    final placeholders = List.filled(insertCols.length, '?').join(', ');
+
+    if (updates.isEmpty) {
+      _database?.execute(
+        'INSERT OR IGNORE INTO users (${insertCols.join(', ')}) VALUES ($placeholders)',
+        insertVals,
+      );
+    } else {
+      _database?.execute(
+        '''
+        INSERT INTO users (${insertCols.join(', ')})
+        VALUES ($placeholders)
+        ON CONFLICT(fingerprint) DO UPDATE SET ${updates.join(', ')}
+        ''',
+        [...insertVals, ...values],
+      );
+    }
+    return true;
   }
 }

@@ -155,6 +155,7 @@ abstract class HandItem<T> extends PositionComponent
       ),
     );
     _sprite.sprite = await loadIcon(state) ?? game.blankSprite;
+    _updateSpriteSize();
   }
 
   TextPaint _buildPaint(ClientWorldState state) => TextPaint(
@@ -179,17 +180,26 @@ abstract class HandItem<T> extends PositionComponent
   }
 
   void _updateSpriteSize() {
-    final spriteSize = _sprite.sprite?.srcSize ?? Vector2.zero();
-    var spriteHeight = height - labelHeight;
-    var spriteWidth = spriteSize.x * (spriteHeight / spriteSize.y);
-    var yOffset = 0.0;
-    if (spriteWidth > width) {
-      spriteWidth = width;
-      spriteHeight = spriteSize.y * (spriteWidth / spriteSize.x);
-      yOffset = (height - spriteHeight - labelHeight) / 2;
-    }
-    _sprite.size = Vector2(spriteWidth, spriteHeight);
-    _sprite.y = labelHeight + yOffset;
+    final sprite = _sprite.sprite;
+    if (sprite == null) return;
+    final spriteSize = sprite.srcSize;
+    if (spriteSize.x == 0 || spriteSize.y == 0) return;
+
+    final availableWidth = width;
+    final availableHeight = height - labelHeight;
+
+    final scaleX = availableWidth / spriteSize.x;
+    final scaleY = availableHeight / spriteSize.y;
+    final scale = scaleX < scaleY ? scaleX : scaleY;
+
+    final newWidth = spriteSize.x * scale;
+    final newHeight = spriteSize.y * scale;
+
+    _sprite.size = Vector2(newWidth, newHeight);
+    _sprite.position = Vector2(
+      (availableWidth - newWidth) / 2,
+      labelHeight + (availableHeight - newHeight) / 2,
+    );
   }
 
   HandItemDragCursorHitbox? _cursorHitbox;

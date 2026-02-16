@@ -1,6 +1,23 @@
 * Add lua scripting support to server
   * Add game modes to packs
   * Add scripts directory
+  * Add blackjack sample game mode
 * Add waypoints
+* Add action buttons support
+* Add toolbar options
+* Add welcome text to server
+* Add checkbox and dropdown dialog components
+* Improve message author display
+* Fix home page header text color in certain themes
+* Fix released server archives have no core pack
+* Fix design name
+* Fix kick command usage
+* Fix cards stretches if texture is not rectangular
+* Fix kick message
+* Fix user system on server
+* Rebuild event system
+* Add legacy android build
+* Modernize project structure
+* Upgrade to flutter 3.38
 
 Read more here: https://linwood.dev/setonix/0.6.0

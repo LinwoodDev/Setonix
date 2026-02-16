@@ -24,13 +24,18 @@ class ServerAssetManager extends AssetManager {
   @override
   Iterable<MapEntry<String, SetonixData>> get packs => _packs.entries;
 
-  Future<void> init({required Consoler console, bool verbose = false}) async {
+  Future<void> init({
+    required Consoler console,
+    bool verbose = false,
+    String rootPath = '.',
+  }) async {
     _packs.clear();
-    final directory = Directory('packs');
+    final directory = Directory(p.join(rootPath, 'packs'));
     if (!await directory.exists()) {
       await directory.create();
-      print(
+      console.print(
         'WARNING: No packs directory found. Please add packs to the server.',
+        level: LogLevel.warning,
       );
     }
     await for (final file in directory.list()) {

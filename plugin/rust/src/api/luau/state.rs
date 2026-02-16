@@ -19,11 +19,12 @@ impl LuaUserData for LuauStateUserData {
                 Ok(serialized)
             });
         }
-        fields.add_field_method_get("Table", move |lua, this: &LuauStateUserData| {
-            let callback = this.0.table_access.clone();
-            let result = block_on(callback(None));
-            let result = serde_json::from_str::<Value>(&result).unwrap();
-            let serialized = lua.to_value(&result).unwrap();
+        fields.add_field_method_get("PluginId", move |lua, this: &LuauStateUserData| {
+            let callback = this.0.state_field_access.clone();
+            let namespace_fut = block_on(callback(StateFieldAccess::Namespace));
+            let game_fut = block_on(callback(StateFieldAccess::Game));
+            let plugin_id = format!("{}:{}", namespace_fut, game_fut);
+            let serialized = lua.to_value(&plugin_id).unwrap();
             Ok(serialized)
         });
     }

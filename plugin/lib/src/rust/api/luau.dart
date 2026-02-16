@@ -8,6 +8,8 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'plugin.dart';
 
 // These functions are ignored because they are not marked as `pub`: `construct_globals`, `construct_on_print`
+// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `LuaEventDetails`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `add_fields`, `add_methods`, `clone`
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LuauPlugin>>
 abstract class LuauPlugin implements RustOpaqueInterface, RustPlugin {
@@ -24,8 +26,9 @@ abstract class LuauPlugin implements RustOpaqueInterface, RustPlugin {
   Future<EventResult> runEvent({
     required String eventType,
     required String event,
-    required String serverEvent,
+    String? serverEvent,
     required int source,
+    required bool cancelled,
     required int target,
   });
 }

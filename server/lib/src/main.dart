@@ -76,14 +76,15 @@ void printUsage(ArgParser argParser) {
 typedef ServerLoader = FutureOr<void> Function(SetonixServer server);
 
 const welcomeText = """
-  ____            __    __       
- / __ \\__ _____  / /__ / /_____ _
-/ /_/ / // / _ \\/  '_//  '_/ _ `/
-\\___\\_\\_,_/\\___/_/\\_\\/_/\\_\\\\_,_/
+   ____    __            _     
+  / __/__ / /____  ___  (_)_ __
+ _\\ \\/ -_) __/ _ \\/ _ \\/ /\\ \\ /
+/___/\\__/\\__/\\___/_//_/_//_\\_\\                         
 """;
 Future<void> runServer(List<String> arguments, [ServerLoader? onLoad]) async {
   final ArgParser argParser = buildParser();
   try {
+    print(welcomeText);
     final ArgResults results = argParser.parse(arguments);
     bool verbose = false, autosave = false, multiWorld = false;
     String? gameMode;

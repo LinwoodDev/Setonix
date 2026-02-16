@@ -44,12 +44,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
-  PluginCallback
-  dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
-    dynamic raw,
-  );
-
-  @protected
   LuauPlugin
   dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLuauPlugin(
     dynamic raw,
@@ -135,6 +129,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw);
 
   @protected
+  List<(String, int)> dco_decode_list_record_string_i_16(dynamic raw);
+
+  @protected
   Set<int>? dco_decode_opt_Set_i_16_None(dynamic raw);
 
   @protected
@@ -145,6 +142,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   int? dco_decode_opt_box_autoadd_i_16(dynamic raw);
+
+  @protected
+  (String, int) dco_decode_record_string_i_16(dynamic raw);
 
   @protected
   StateFieldAccess dco_decode_state_field_access(dynamic raw);
@@ -170,12 +170,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   PluginCallback
   sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
-    SseDeserializer deserializer,
-  );
-
-  @protected
-  PluginCallback
-  sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
     SseDeserializer deserializer,
   );
 
@@ -234,6 +228,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer);
 
   @protected
+  List<(String, int)> sse_decode_list_record_string_i_16(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   Set<int>? sse_decode_opt_Set_i_16_None(SseDeserializer deserializer);
 
   @protected
@@ -244,6 +243,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   int? sse_decode_opt_box_autoadd_i_16(SseDeserializer deserializer);
+
+  @protected
+  (String, int) sse_decode_record_string_i_16(SseDeserializer deserializer);
 
   @protected
   StateFieldAccess sse_decode_state_field_access(SseDeserializer deserializer);
@@ -273,13 +275,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void
   sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
-    PluginCallback self,
-    SseSerializer serializer,
-  );
-
-  @protected
-  void
-  sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
     PluginCallback self,
     SseSerializer serializer,
   );
@@ -381,6 +376,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_list_record_string_i_16(
+    List<(String, int)> self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_opt_Set_i_16_None(Set<int>? self, SseSerializer serializer);
 
   @protected
@@ -391,6 +392,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_opt_box_autoadd_i_16(int? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_record_string_i_16(
+    (String, int) self,
+    SseSerializer serializer,
+  );
 
   @protected
   void sse_encode_state_field_access(

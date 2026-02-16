@@ -38,9 +38,6 @@ Setonix is a table sandbox game where you can decide how to play. Spawn cards ev
   * This means you need to have the same version of the client and server
 * Missing checks on server
   * Make sure you only allow trusted people to connect
-* No rules are implemented yet
-  * You can only play without rules
-  * Will be added in 0.6
 * Missing error messages
   * Some errors are not displayed
 
@@ -50,7 +47,9 @@ Setonix is a table sandbox game where you can decide how to play. Spawn cards ev
 * **🚫 No internet connection required:** to play, multiplayer also works offline
 * **🚩 Configurable:** Configure if you want to play with or without rules
 * **🎨 Customizable:** Create custom cards, board and dices
-* ~~**➕ Extensible:** Develop your custom rules with lua~~ (Will be added in 0.6)
+* **➕ Extensible:** Develop your custom rules with lua (Currently server side) or use the server as library
+* **🔒 Authentication:** Decentralized client based authentication
+* ~~✅ **Verified player names:** Decentralized verification of player names~~ (Will be added in 0.7)
 * **📂 Share your packs:** Pack them all into a package and share it with your friends
 * **⚙️ Universal packs:** Load the rules in the server and the client
 * **📱 Works on every device:** The app is available for android, windows, linux, and in the web. You can use it on your phone, tablet, or computer.

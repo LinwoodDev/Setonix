@@ -14,6 +14,15 @@
   "game": "Game",
   "players": "Players",
   "noPlayers": "No players",
+  "defaultPlayerName": "Player #{index}",
+  "@defaultPlayerName": {
+    "placeholders": {
+      "index": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
   "you": "You",
   "seat": "Seat",
   "shuffle": "Shuffle",

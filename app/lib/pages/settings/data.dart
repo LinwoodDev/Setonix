@@ -108,7 +108,7 @@ class DataSettingsPage extends StatelessWidget {
                                 ArchiveFile('$key.stnx', entity.length, entity),
                               );
                             }
-                            final bytes = ZipEncoder().encode(archive);
+                            final bytes = ZipEncoder().encodeBytes(archive);
                             if (context.mounted) {
                               exportFile(
                                 context: context,

@@ -39,6 +39,25 @@ final class GameDialog with GameDialogMappable {
     ),
   );
 
+  GameDialog checkbox(String label, {String? id, bool initialValue = false}) =>
+      copyWith.components.add(
+        GameDialogCheckboxComponent(label, id: id, initialValue: initialValue),
+      );
+
+  GameDialog dropdown(
+    String label,
+    List<GameDialogDropdownOption> options, {
+    String? id,
+    String? initialValue,
+  }) => copyWith.components.add(
+    GameDialogDropdownComponent(
+      label,
+      options,
+      id: id,
+      initialValue: initialValue,
+    ),
+  );
+
   GameDialog action(GameDialogButton action) =>
       copyWith(actions: [...(actions ?? []), action]);
 
@@ -53,6 +72,13 @@ final class GameDialog with GameDialogMappable {
             return e.label.length <= 50 &&
                 (e.id?.length ?? 0) <= 100 &&
                 (e.placeholder?.length ?? 0) <= 50;
+          case GameDialogCheckboxComponent():
+            return e.label.length <= 50 && (e.id?.length ?? 0) <= 100;
+          case GameDialogDropdownComponent():
+            return e.label.length <= 50 &&
+                (e.id?.length ?? 0) <= 100 &&
+                e.options.length <= 20 &&
+                e.options.every((o) => o.isValid());
         }
       }) &&
       (actions ?? []).every(
@@ -89,6 +115,48 @@ final class GameDialogTextFieldComponent extends GameDialogComponent
   });
 
   String get idOrLabel => id ?? label;
+}
+
+@MappableClass()
+final class GameDialogCheckboxComponent extends GameDialogComponent
+    with GameDialogCheckboxComponentMappable {
+  final String label;
+  final String? id;
+  final bool initialValue;
+
+  GameDialogCheckboxComponent(this.label, {this.id, this.initialValue = false});
+
+  String get idOrLabel => id ?? label;
+}
+
+@MappableClass()
+final class GameDialogDropdownComponent extends GameDialogComponent
+    with GameDialogDropdownComponentMappable {
+  final String label;
+  final String? id;
+  final List<GameDialogDropdownOption> options;
+  final String? initialValue;
+
+  GameDialogDropdownComponent(
+    this.label,
+    this.options, {
+    this.id,
+    this.initialValue,
+  });
+
+  String get idOrLabel => id ?? label;
+}
+
+@MappableClass()
+final class GameDialogDropdownOption with GameDialogDropdownOptionMappable {
+  final String? label;
+  final String value;
+
+  GameDialogDropdownOption({this.label, required this.value});
+
+  bool isValid() => (label?.length ?? 0) <= 50 && value.length <= 50;
+
+  String get idOrLabel => label ?? value;
 }
 
 @MappableClass()
@@ -129,6 +197,36 @@ final class GameDialogTextFieldValue extends GameDialogComponentValue
   final String value;
 
   GameDialogTextFieldValue({required this.value, required super.component});
+
+  @override
+  String getAsString() => value;
+  @override
+  bool getAsBool() => value.isNotEmpty;
+  @override
+  int getAsInt() => int.tryParse(value) ?? 0;
+}
+
+@MappableClass()
+final class GameDialogCheckboxValue extends GameDialogComponentValue
+    with GameDialogCheckboxValueMappable {
+  final bool value;
+
+  GameDialogCheckboxValue({required this.value, required super.component});
+
+  @override
+  String getAsString() => value.toString();
+  @override
+  bool getAsBool() => value;
+  @override
+  int getAsInt() => value ? 1 : 0;
+}
+
+@MappableClass()
+final class GameDialogDropdownValue extends GameDialogComponentValue
+    with GameDialogDropdownValueMappable {
+  final String value;
+
+  GameDialogDropdownValue({required this.value, required super.component});
 
   @override
   String getAsString() => value;

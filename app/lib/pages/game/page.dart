@@ -160,9 +160,42 @@ class _GamePageState extends State<GamePage> {
                     actions: [
                       BlocBuilder<WorldBloc, ClientWorldState>(
                         buildWhen: (previous, current) =>
-                            previous.showHand != current.showHand ||
-                            previous.selectedCell != current.selectedCell,
+                            previous.world.toolbar.actions !=
+                            current.world.toolbar.actions,
                         builder: (context, state) {
+                          final actions = state.world.toolbar.actions;
+                          if (actions.isEmpty) {
+                            return const SizedBox.shrink();
+                          }
+                          return MenuAnchor(
+                            menuChildren: actions
+                                .map(
+                                  (action) => MenuItemButton(
+                                    onPressed: () {
+                                      context.read<WorldBloc>().process(
+                                        ToolbarActionRequest(action.id),
+                                      );
+                                    },
+                                    child: Text(action.label),
+                                  ),
+                                )
+                                .toList(),
+                            builder: defaultFilledMenuButton(
+                              icon: Icon(PhosphorIconsLight.play),
+                            ),
+                          );
+                        },
+                      ),
+                      BlocBuilder<WorldBloc, ClientWorldState>(
+                        buildWhen: (previous, current) =>
+                            previous.showHand != current.showHand ||
+                            previous.selectedCell != current.selectedCell ||
+                            previous.world.toolbar.editable !=
+                                current.world.toolbar.editable,
+                        builder: (context, state) {
+                          if (!state.world.toolbar.editable) {
+                            return const SizedBox.shrink();
+                          }
                           final selected =
                               state.showHand && state.selectedCell == null;
                           return IconButton(
@@ -216,9 +249,11 @@ class _GamePageState extends State<GamePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                AppLocalizations.of(
-                                  context,
-                                ).newMessage(message.author.toString()),
+                                AppLocalizations.of(context).newMessage(
+                                  AppLocalizations.of(
+                                    context,
+                                  ).defaultPlayerName(message.author),
+                                ),
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                               Text(

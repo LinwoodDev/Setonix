@@ -15,8 +15,12 @@ typedef PluginSendEventCallback =
     );
 
 mixin ServerInterface {
-  void process(WorldEvent event, {bool force = false, required String plugin});
-  void sendEvent(
+  Future<void> process(
+    WorldEvent event, {
+    bool force = false,
+    required String plugin,
+  });
+  Future<void> sendEvent(
     PlayableWorldEvent event, {
     Channel target = kAnyChannel,
     required String plugin,
@@ -52,6 +56,7 @@ final class PluginSystem {
         (c) => LuauPlugin(code: code, callback: c),
         pluginServer,
         onPrint: (e) => server.print(e, name),
+        location: ItemLocation.fromString(name),
       ),
     );
   }
@@ -60,16 +65,16 @@ final class PluginSystem {
     _plugins.remove(name);
   }
 
-  void loadLuaPluginFromLocation(
+  Future<SetonixPlugin?> loadLuaPluginFromLocation(
     AssetManager assetManager,
     ItemLocation location, [
     String name = 'game',
-  ]) {
+  ]) async {
     final data = assetManager
         .getPack(location.namespace)
         ?.getScript(location.id);
-    if (data == null) return;
-    registerLuauPlugin(name, data);
+    if (data == null) return null;
+    return registerLuauPlugin(name, data);
   }
 
   bool get _nativeEnabled => RustLib.instance.initialized;
@@ -85,9 +90,9 @@ final class PluginSystem {
     List<String>.from(_plugins.keys).forEach(unregisterPlugin);
   }
 
-  void fire(Event event) {
+  Future<void> fire(Event event) async {
     for (final plugin in _plugins.values) {
-      plugin.eventSystem.fire(event);
+      await plugin.eventSystem.fire(event);
     }
   }
 
@@ -107,8 +112,11 @@ final class PluginSystem {
 }
 
 abstract class PluginServerInterface {
-  void process(WorldEvent event, {bool force = false});
-  void sendEvent(PlayableWorldEvent event, {Channel target = kAnyChannel});
+  Future<void> process(WorldEvent event, {bool force = false});
+  Future<void> sendEvent(
+    PlayableWorldEvent event, {
+    Channel target = kAnyChannel,
+  });
   WorldState get state;
   List<int> get players;
 }
@@ -120,14 +128,14 @@ class _PluginServerInterfaceImpl implements PluginServerInterface {
   _PluginServerInterfaceImpl(this.server, this.pluginName);
 
   @override
-  void process(WorldEvent event, {bool force = false}) {
-    server.process(event, force: force, plugin: pluginName);
-  }
+  Future<void> process(WorldEvent event, {bool force = false}) =>
+      server.process(event, force: force, plugin: pluginName);
 
   @override
-  void sendEvent(PlayableWorldEvent event, {Channel target = kAnyChannel}) {
-    server.sendEvent(event, target: target, plugin: pluginName);
-  }
+  Future<void> sendEvent(
+    PlayableWorldEvent event, {
+    Channel target = kAnyChannel,
+  }) => server.sendEvent(event, target: target, plugin: pluginName);
 
   @override
   WorldState get state => server.state;
@@ -163,24 +171,29 @@ final class RustSetonixPlugin extends SetonixPlugin {
     RustPlugin Function(PluginCallback) builder,
     PluginServerInterface server, {
     void Function(String)? onPrint,
+    ItemLocation? location,
   }) async {
-    final callback = PluginCallback.default_();
-    if (onPrint != null) {
-      callback.changeOnPrint(onPrint: onPrint);
-    }
-    callback.changeProcessEvent(
-      processEvent: (eventSerizalized, force) {
-        final event = WorldEventMapper.fromJson(eventSerizalized);
-        server.process(event, force: force ?? false);
+    final callback = PluginCallback(
+      onPrint: onPrint ?? (s) {},
+      processEvent: (eventSerizalized, force) async {
+        try {
+          final event = WorldEventMapper.fromJson(eventSerizalized);
+          await server.process(event, force: force ?? false);
+        } catch (e) {
+          print("Error processing event from plugin: $e");
+        }
       },
-    );
-    callback.changeSendEvent(
-      sendEvent: (eventSerizalized, target) {
-        final event = PlayableWorldEventMapper.fromJson(eventSerizalized);
-        server.sendEvent(event, target: target ?? kAnyChannel);
+      sendEvent: (eventSerizalized, target) async {
+        try {
+          final event = WorldEventMapper.fromJson(eventSerizalized);
+          if (event is! PlayableWorldEvent) {
+            throw Exception("Event is not PlayableWorldEvent");
+          }
+          await server.sendEvent(event, target: target ?? kAnyChannel);
+        } catch (e) {
+          print("Error sending event from plugin: $e");
+        }
       },
-    );
-    callback.changeStateFieldAccess(
       stateFieldAccess: (field) {
         final state = server.state;
         return switch (field) {
@@ -191,18 +204,44 @@ final class RustSetonixPlugin extends SetonixPlugin {
           StateFieldAccess.tableName => jsonEncode(state.tableName),
           StateFieldAccess.players => jsonEncode(server.players),
           StateFieldAccess.teamMembers => jsonEncode(state.teamMembers),
+          StateFieldAccess.game => jsonEncode(location?.namespace ?? 'unknown'),
+          StateFieldAccess.namespace => jsonEncode(
+            location?.namespace ?? 'unknown',
+          ),
         };
+      },
+      tableAccess: (tableName) {
+        if (server.state.tableName == tableName)
+          return server.state.table.toJson();
+        final table = server.state.data.getTable(tableName ?? '');
+        return table?.toJson() ?? "{}";
       },
     );
     final plugin = builder(callback);
     final instance = RustSetonixPlugin._(server, plugin);
-    instance.eventSystem.on<WorldEvent>((e) {
-      instance.plugin.runEvent(
+    instance.eventSystem.on<WorldEvent>((e) async {
+      final result = await instance.plugin.runEvent(
         eventType: e.clientEvent.runtimeType.toString(),
         event: e.clientEvent.toJson(),
-        serverEvent: e.serverEvent.toJson(),
+        serverEvent: e.serverEvent?.toJson(),
         target: e.target,
         source: e.source,
+        cancelled: e.cancelled,
+      );
+      e.cancelled = result.cancelled;
+      e.needsUpdate = result.needsUpdate;
+      final serverEvent = result.serverEvent;
+      if (serverEvent != null) {
+        e.serverEvent = ServerWorldEventMapper.fromJson(serverEvent);
+      }
+      e.scheduleEvents(
+        result.scheduledEvents.map((e) {
+          final event = WorldEventMapper.fromJson(e.$1);
+          if (event is! PlayableWorldEvent) {
+            return null;
+          }
+          return NetworkerPacket(event, e.$2);
+        }).nonNulls,
       );
     });
     await instance.plugin.run();

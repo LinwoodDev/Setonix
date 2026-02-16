@@ -11,7 +11,7 @@ class KickProgram extends ConsoleProgram {
   String getDescription() => "Kick a player";
 
   @override
-  String getUsage() => 'kick <User> [<Reason>] [<Link>]';
+  String getUsage() => '<User> [<Reason>] [<Link>]';
 
   @override
   Future<void> run(String label, List<String> args) async {
