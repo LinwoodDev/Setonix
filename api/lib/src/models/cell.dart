@@ -12,7 +12,7 @@ class TableCell with TableCellMappable {
 
   TableCell({this.objects = const [], this.tiles = const [], this.merge});
 
-  bool get isEmpty => objects.isEmpty && tiles.isEmpty;
+  bool get isEmpty => objects.isEmpty && tiles.isEmpty && merge == null;
 }
 
 @MappableClass()

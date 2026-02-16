@@ -299,6 +299,7 @@ class GameCell extends PositionComponent
         priority = 100;
       }
     } else {
+      _currentVisible = true;
       if (size != grid.cellSize) {
         size = grid.cellSize;
         _backgroundComponent?.size = size;
@@ -428,7 +429,7 @@ class GameCell extends PositionComponent
             if (fillVariableSpace) {
               factor *= 2; // -1 to 1
             } else {
-              factor = 0; // Fallback or fixed spacing logic could go here
+              factor = (i - (count - 1) / 2.0) * 0.4;
             }
 
             if (direction == CellMergeDirection.vertical) {

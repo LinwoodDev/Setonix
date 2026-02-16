@@ -57,6 +57,12 @@ bool isValidServerEvent(ServerWorldEvent event, WorldState state) =>
                 .length -
             1,
       ),
+      CellMergeStrategyChanged() =>
+        (event.span ?? 1) > 0 &&
+            state
+                .getTableOrDefault(event.cell.table)
+                .cells
+                .containsKey(event.cell.position),
       DialogOpened() => event.dialog.isValid(),
       _ => true,
     };
