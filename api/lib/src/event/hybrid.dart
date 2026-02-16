@@ -171,6 +171,16 @@ final class TeamRemoved extends HybridWorldEvent with TeamRemovedMappable {
 }
 
 @MappableClass()
+final class CellMergeStrategyChanged extends HybridWorldEvent
+    with CellMergeStrategyChangedMappable {
+  final GlobalVectorDefinition cell;
+  final CellMergeStrategy? strategy;
+  final int? span;
+
+  CellMergeStrategyChanged(this.cell, this.strategy, {this.span});
+}
+
+@MappableClass()
 final class MetadataChanged extends HybridWorldEvent
     with MetadataChangedMappable {
   final FileMetadata metadata;

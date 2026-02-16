@@ -313,6 +313,75 @@ ServerProcessed processServerEvent(
           teamMembers: Map.from(state.teamMembers)..remove(event.team),
         ),
       );
+    case CellMergeStrategyChanged():
+      return ServerProcessed(
+        state.mapTableOrDefault(event.cell.table, (table) {
+          final cells = Map<VectorDefinition, TableCell>.from(table.cells);
+
+          CellMergeDirection? getDirection(CellMergeStrategy? strategy) {
+            if (strategy is StackedCellMergeStrategy) return strategy.direction;
+            if (strategy is DistributeCellMergeStrategy) {
+              return strategy.direction;
+            }
+            return null;
+          }
+
+          // Cleanup old neighbors
+          final oldCell = cells[event.cell.position];
+          final oldStrategy = oldCell?.merge;
+          final oldDirection = getDirection(oldStrategy);
+          if (oldDirection != null) {
+            final oldSpan = state.calculateSpan(
+              event.cell.position,
+              oldDirection,
+            );
+            if (oldSpan > 1) {
+              var current = event.cell.position;
+              for (var i = 1; i < oldSpan; i++) {
+                current =
+                    oldDirection == CellMergeDirection.horizontal
+                        ? VectorDefinition(current.x + 1, current.y)
+                        : VectorDefinition(current.x, current.y + 1);
+
+                final neighbor = cells[current] ?? TableCell();
+                if (neighbor.merge is MergedCellStrategy &&
+                    (neighbor.merge as MergedCellStrategy).direction ==
+                        oldDirection) {
+                  cells[current] = neighbor.copyWith(merge: null);
+                }
+              }
+            }
+          }
+
+          // Update target cell
+          final cell = cells[event.cell.position] ?? TableCell();
+          final newCell = cell.copyWith(merge: event.strategy);
+          cells[event.cell.position] = newCell;
+
+          // Expand new neighbors
+          final strategy = event.strategy;
+          final span = event.span;
+          if (span != null && span > 1 && strategy != null) {
+            final direction = getDirection(strategy);
+            if (direction != null) {
+              var current = event.cell.position;
+              for (var i = 1; i < span; i++) {
+                current =
+                    direction == CellMergeDirection.horizontal
+                        ? VectorDefinition(current.x + 1, current.y)
+                        : VectorDefinition(current.x, current.y + 1);
+
+                final neighbor = cells[current] ?? TableCell();
+                cells[current] = neighbor.copyWith(
+                  merge: MergedCellStrategy(direction),
+                );
+              }
+            }
+          }
+
+          return table.copyWith.cellsBox(content: cells);
+        }),
+      );
     case MetadataChanged():
       return ServerProcessed(state.copyWith(metadata: event.metadata));
     case MessageSent():

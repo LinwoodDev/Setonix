@@ -2,10 +2,57 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'cell.dart';
+
+class CellMergeDirectionMapper extends EnumMapper<CellMergeDirection> {
+  CellMergeDirectionMapper._();
+
+  static CellMergeDirectionMapper? _instance;
+  static CellMergeDirectionMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = CellMergeDirectionMapper._());
+    }
+    return _instance!;
+  }
+
+  static CellMergeDirection fromValue(dynamic value) {
+    ensureInitialized();
+    return MapperContainer.globals.fromValue(value);
+  }
+
+  @override
+  CellMergeDirection decode(dynamic value) {
+    switch (value) {
+      case r'horizontal':
+        return CellMergeDirection.horizontal;
+      case r'vertical':
+        return CellMergeDirection.vertical;
+      default:
+        throw MapperException.unknownEnumValue(value);
+    }
+  }
+
+  @override
+  dynamic encode(CellMergeDirection self) {
+    switch (self) {
+      case CellMergeDirection.horizontal:
+        return r'horizontal';
+      case CellMergeDirection.vertical:
+        return r'vertical';
+    }
+  }
+}
+
+extension CellMergeDirectionMapperExtension on CellMergeDirection {
+  String toValue() {
+    CellMergeDirectionMapper.ensureInitialized();
+    return MapperContainer.globals.toValue<CellMergeDirection>(this) as String;
+  }
+}
 
 class TableCellMapper extends ClassMapperBase<TableCell> {
   TableCellMapper._();
@@ -16,6 +63,7 @@ class TableCellMapper extends ClassMapperBase<TableCell> {
       MapperContainer.globals.use(_instance = TableCellMapper._());
       GameObjectMapper.ensureInitialized();
       BoardTileMapper.ensureInitialized();
+      CellMergeStrategyMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -37,15 +85,26 @@ class TableCellMapper extends ClassMapperBase<TableCell> {
     opt: true,
     def: const [],
   );
+  static CellMergeStrategy? _$merge(TableCell v) => v.merge;
+  static const Field<TableCell, CellMergeStrategy> _f$merge = Field(
+    'merge',
+    _$merge,
+    opt: true,
+  );
 
   @override
   final MappableFields<TableCell> fields = const {
     #objects: _f$objects,
     #tiles: _f$tiles,
+    #merge: _f$merge,
   };
 
   static TableCell _instantiate(DecodingData data) {
-    return TableCell(objects: data.dec(_f$objects), tiles: data.dec(_f$tiles));
+    return TableCell(
+      objects: data.dec(_f$objects),
+      tiles: data.dec(_f$tiles),
+      merge: data.dec(_f$merge),
+    );
   }
 
   @override
@@ -111,7 +170,13 @@ abstract class TableCellCopyWith<$R, $In extends TableCell, $Out>
   get objects;
   ListCopyWith<$R, BoardTile, BoardTileCopyWith<$R, BoardTile, BoardTile>>
   get tiles;
-  $R call({List<GameObject>? objects, List<BoardTile>? tiles});
+  CellMergeStrategyCopyWith<$R, CellMergeStrategy, CellMergeStrategy>?
+  get merge;
+  $R call({
+    List<GameObject>? objects,
+    List<BoardTile>? tiles,
+    CellMergeStrategy? merge,
+  });
   TableCellCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -138,16 +203,25 @@ class _TableCellCopyWithImpl<$R, $Out>
     (v) => call(tiles: v),
   );
   @override
-  $R call({List<GameObject>? objects, List<BoardTile>? tiles}) => $apply(
+  CellMergeStrategyCopyWith<$R, CellMergeStrategy, CellMergeStrategy>?
+  get merge => $value.merge?.copyWith.$chain((v) => call(merge: v));
+  @override
+  $R call({
+    List<GameObject>? objects,
+    List<BoardTile>? tiles,
+    Object? merge = $none,
+  }) => $apply(
     FieldCopyWithData({
       if (objects != null) #objects: objects,
       if (tiles != null) #tiles: tiles,
+      if (merge != $none) #merge: merge,
     }),
   );
   @override
   TableCell $make(CopyWithData data) => TableCell(
     objects: data.get(#objects, or: $value.objects),
     tiles: data.get(#tiles, or: $value.tiles),
+    merge: data.get(#merge, or: $value.merge),
   );
 
   @override
@@ -445,9 +519,9 @@ class CellMergeStrategyMapper extends ClassMapperBase<CellMergeStrategy> {
   static CellMergeStrategyMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = CellMergeStrategyMapper._());
-      StackedCellMergeStrategyMapper.ensureInitialized();
-      DistributeCellMergeStrategyMapper.ensureInitialized();
-      DirectionalCellMergeMapper.ensureInitialized();
+      MergedCellStrategyMapper.ensureInitialized();
+      LayoutCellMergeStrategyMapper.ensureInitialized();
+      CellMergeDirectionMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -455,8 +529,19 @@ class CellMergeStrategyMapper extends ClassMapperBase<CellMergeStrategy> {
   @override
   final String id = 'CellMergeStrategy';
 
+  static CellMergeDirection _$direction(CellMergeStrategy v) => v.direction;
+  static const Field<CellMergeStrategy, CellMergeDirection> _f$direction =
+      Field(
+        'direction',
+        _$direction,
+        opt: true,
+        def: CellMergeDirection.vertical,
+      );
+
   @override
-  final MappableFields<CellMergeStrategy> fields = const {};
+  final MappableFields<CellMergeStrategy> fields = const {
+    #direction: _f$direction,
+  };
 
   static CellMergeStrategy _instantiate(DecodingData data) {
     throw MapperException.missingConstructor('CellMergeStrategy');
@@ -491,8 +576,220 @@ abstract class CellMergeStrategyCopyWith<
   $Out
 >
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call();
+  $R call({CellMergeDirection? direction});
   CellMergeStrategyCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class MergedCellStrategyMapper extends ClassMapperBase<MergedCellStrategy> {
+  MergedCellStrategyMapper._();
+
+  static MergedCellStrategyMapper? _instance;
+  static MergedCellStrategyMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = MergedCellStrategyMapper._());
+      CellMergeStrategyMapper.ensureInitialized();
+      CellMergeDirectionMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'MergedCellStrategy';
+
+  static CellMergeDirection _$direction(MergedCellStrategy v) => v.direction;
+  static const Field<MergedCellStrategy, CellMergeDirection> _f$direction =
+      Field('direction', _$direction);
+
+  @override
+  final MappableFields<MergedCellStrategy> fields = const {
+    #direction: _f$direction,
+  };
+
+  static MergedCellStrategy _instantiate(DecodingData data) {
+    return MergedCellStrategy(data.dec(_f$direction));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static MergedCellStrategy fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<MergedCellStrategy>(map);
+  }
+
+  static MergedCellStrategy fromJson(String json) {
+    return ensureInitialized().decodeJson<MergedCellStrategy>(json);
+  }
+}
+
+mixin MergedCellStrategyMappable {
+  String toJson() {
+    return MergedCellStrategyMapper.ensureInitialized()
+        .encodeJson<MergedCellStrategy>(this as MergedCellStrategy);
+  }
+
+  Map<String, dynamic> toMap() {
+    return MergedCellStrategyMapper.ensureInitialized()
+        .encodeMap<MergedCellStrategy>(this as MergedCellStrategy);
+  }
+
+  MergedCellStrategyCopyWith<
+    MergedCellStrategy,
+    MergedCellStrategy,
+    MergedCellStrategy
+  >
+  get copyWith =>
+      _MergedCellStrategyCopyWithImpl<MergedCellStrategy, MergedCellStrategy>(
+        this as MergedCellStrategy,
+        $identity,
+        $identity,
+      );
+  @override
+  String toString() {
+    return MergedCellStrategyMapper.ensureInitialized().stringifyValue(
+      this as MergedCellStrategy,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return MergedCellStrategyMapper.ensureInitialized().equalsValue(
+      this as MergedCellStrategy,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return MergedCellStrategyMapper.ensureInitialized().hashValue(
+      this as MergedCellStrategy,
+    );
+  }
+}
+
+extension MergedCellStrategyValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, MergedCellStrategy, $Out> {
+  MergedCellStrategyCopyWith<$R, MergedCellStrategy, $Out>
+  get $asMergedCellStrategy => $base.as(
+    (v, t, t2) => _MergedCellStrategyCopyWithImpl<$R, $Out>(v, t, t2),
+  );
+}
+
+abstract class MergedCellStrategyCopyWith<
+  $R,
+  $In extends MergedCellStrategy,
+  $Out
+>
+    implements CellMergeStrategyCopyWith<$R, $In, $Out> {
+  @override
+  $R call({CellMergeDirection? direction});
+  MergedCellStrategyCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class _MergedCellStrategyCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, MergedCellStrategy, $Out>
+    implements MergedCellStrategyCopyWith<$R, MergedCellStrategy, $Out> {
+  _MergedCellStrategyCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<MergedCellStrategy> $mapper =
+      MergedCellStrategyMapper.ensureInitialized();
+  @override
+  $R call({CellMergeDirection? direction}) =>
+      $apply(FieldCopyWithData({if (direction != null) #direction: direction}));
+  @override
+  MergedCellStrategy $make(CopyWithData data) =>
+      MergedCellStrategy(data.get(#direction, or: $value.direction));
+
+  @override
+  MergedCellStrategyCopyWith<$R2, MergedCellStrategy, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _MergedCellStrategyCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+class LayoutCellMergeStrategyMapper
+    extends ClassMapperBase<LayoutCellMergeStrategy> {
+  LayoutCellMergeStrategyMapper._();
+
+  static LayoutCellMergeStrategyMapper? _instance;
+  static LayoutCellMergeStrategyMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(
+        _instance = LayoutCellMergeStrategyMapper._(),
+      );
+      CellMergeStrategyMapper.ensureInitialized();
+      StackedCellMergeStrategyMapper.ensureInitialized();
+      DistributeCellMergeStrategyMapper.ensureInitialized();
+      CellMergeDirectionMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'LayoutCellMergeStrategy';
+
+  static CellMergeDirection _$direction(LayoutCellMergeStrategy v) =>
+      v.direction;
+  static const Field<LayoutCellMergeStrategy, CellMergeDirection> _f$direction =
+      Field(
+        'direction',
+        _$direction,
+        opt: true,
+        def: CellMergeDirection.vertical,
+      );
+  static bool _$reverse(LayoutCellMergeStrategy v) => v.reverse;
+  static const Field<LayoutCellMergeStrategy, bool> _f$reverse = Field(
+    'reverse',
+    _$reverse,
+    opt: true,
+    def: false,
+  );
+
+  @override
+  final MappableFields<LayoutCellMergeStrategy> fields = const {
+    #direction: _f$direction,
+    #reverse: _f$reverse,
+  };
+
+  static LayoutCellMergeStrategy _instantiate(DecodingData data) {
+    throw MapperException.missingConstructor('LayoutCellMergeStrategy');
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static LayoutCellMergeStrategy fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<LayoutCellMergeStrategy>(map);
+  }
+
+  static LayoutCellMergeStrategy fromJson(String json) {
+    return ensureInitialized().decodeJson<LayoutCellMergeStrategy>(json);
+  }
+}
+
+mixin LayoutCellMergeStrategyMappable {
+  String toJson();
+  Map<String, dynamic> toMap();
+  LayoutCellMergeStrategyCopyWith<
+    LayoutCellMergeStrategy,
+    LayoutCellMergeStrategy,
+    LayoutCellMergeStrategy
+  >
+  get copyWith;
+}
+
+abstract class LayoutCellMergeStrategyCopyWith<
+  $R,
+  $In extends LayoutCellMergeStrategy,
+  $Out
+>
+    implements CellMergeStrategyCopyWith<$R, $In, $Out> {
+  @override
+  $R call({CellMergeDirection? direction, bool? reverse});
+  LayoutCellMergeStrategyCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
 }
@@ -507,7 +804,8 @@ class StackedCellMergeStrategyMapper
       MapperContainer.globals.use(
         _instance = StackedCellMergeStrategyMapper._(),
       );
-      CellMergeStrategyMapper.ensureInitialized();
+      LayoutCellMergeStrategyMapper.ensureInitialized();
+      CellMergeDirectionMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -526,17 +824,28 @@ class StackedCellMergeStrategyMapper
     opt: true,
     def: false,
   );
+  static CellMergeDirection _$direction(StackedCellMergeStrategy v) =>
+      v.direction;
+  static const Field<StackedCellMergeStrategy, CellMergeDirection>
+  _f$direction = Field(
+    'direction',
+    _$direction,
+    opt: true,
+    def: CellMergeDirection.vertical,
+  );
 
   @override
   final MappableFields<StackedCellMergeStrategy> fields = const {
     #visiblePercentage: _f$visiblePercentage,
     #reverse: _f$reverse,
+    #direction: _f$direction,
   };
 
   static StackedCellMergeStrategy _instantiate(DecodingData data) {
     return StackedCellMergeStrategy(
       visiblePercentage: data.dec(_f$visiblePercentage),
       reverse: data.dec(_f$reverse),
+      direction: data.dec(_f$direction),
     );
   }
 
@@ -609,9 +918,13 @@ abstract class StackedCellMergeStrategyCopyWith<
   $In extends StackedCellMergeStrategy,
   $Out
 >
-    implements CellMergeStrategyCopyWith<$R, $In, $Out> {
+    implements LayoutCellMergeStrategyCopyWith<$R, $In, $Out> {
   @override
-  $R call({int? visiblePercentage, bool? reverse});
+  $R call({
+    int? visiblePercentage,
+    bool? reverse,
+    CellMergeDirection? direction,
+  });
   StackedCellMergeStrategyCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -627,10 +940,15 @@ class _StackedCellMergeStrategyCopyWithImpl<$R, $Out>
   late final ClassMapperBase<StackedCellMergeStrategy> $mapper =
       StackedCellMergeStrategyMapper.ensureInitialized();
   @override
-  $R call({int? visiblePercentage, bool? reverse}) => $apply(
+  $R call({
+    int? visiblePercentage,
+    bool? reverse,
+    CellMergeDirection? direction,
+  }) => $apply(
     FieldCopyWithData({
       if (visiblePercentage != null) #visiblePercentage: visiblePercentage,
       if (reverse != null) #reverse: reverse,
+      if (direction != null) #direction: direction,
     }),
   );
   @override
@@ -640,6 +958,7 @@ class _StackedCellMergeStrategyCopyWithImpl<$R, $Out>
       or: $value.visiblePercentage,
     ),
     reverse: data.get(#reverse, or: $value.reverse),
+    direction: data.get(#direction, or: $value.direction),
   );
 
   @override
@@ -658,7 +977,8 @@ class DistributeCellMergeStrategyMapper
       MapperContainer.globals.use(
         _instance = DistributeCellMergeStrategyMapper._(),
       );
-      CellMergeStrategyMapper.ensureInitialized();
+      LayoutCellMergeStrategyMapper.ensureInitialized();
+      CellMergeDirectionMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -673,6 +993,10 @@ class DistributeCellMergeStrategyMapper
     opt: true,
     def: 5,
   );
+  static bool _$fillVariableSpace(DistributeCellMergeStrategy v) =>
+      v.fillVariableSpace;
+  static const Field<DistributeCellMergeStrategy, bool> _f$fillVariableSpace =
+      Field('fillVariableSpace', _$fillVariableSpace, opt: true, def: true);
   static bool _$reverse(DistributeCellMergeStrategy v) => v.reverse;
   static const Field<DistributeCellMergeStrategy, bool> _f$reverse = Field(
     'reverse',
@@ -680,23 +1004,30 @@ class DistributeCellMergeStrategyMapper
     opt: true,
     def: false,
   );
-  static bool _$fillVariableSpace(DistributeCellMergeStrategy v) =>
-      v.fillVariableSpace;
-  static const Field<DistributeCellMergeStrategy, bool> _f$fillVariableSpace =
-      Field('fillVariableSpace', _$fillVariableSpace, opt: true, def: true);
+  static CellMergeDirection _$direction(DistributeCellMergeStrategy v) =>
+      v.direction;
+  static const Field<DistributeCellMergeStrategy, CellMergeDirection>
+  _f$direction = Field(
+    'direction',
+    _$direction,
+    opt: true,
+    def: CellMergeDirection.horizontal,
+  );
 
   @override
   final MappableFields<DistributeCellMergeStrategy> fields = const {
     #maxCards: _f$maxCards,
-    #reverse: _f$reverse,
     #fillVariableSpace: _f$fillVariableSpace,
+    #reverse: _f$reverse,
+    #direction: _f$direction,
   };
 
   static DistributeCellMergeStrategy _instantiate(DecodingData data) {
     return DistributeCellMergeStrategy(
       maxCards: data.dec(_f$maxCards),
-      reverse: data.dec(_f$reverse),
       fillVariableSpace: data.dec(_f$fillVariableSpace),
+      reverse: data.dec(_f$reverse),
+      direction: data.dec(_f$direction),
     );
   }
 
@@ -773,9 +1104,14 @@ abstract class DistributeCellMergeStrategyCopyWith<
   $In extends DistributeCellMergeStrategy,
   $Out
 >
-    implements CellMergeStrategyCopyWith<$R, $In, $Out> {
+    implements LayoutCellMergeStrategyCopyWith<$R, $In, $Out> {
   @override
-  $R call({int? maxCards, bool? reverse, bool? fillVariableSpace});
+  $R call({
+    int? maxCards,
+    bool? fillVariableSpace,
+    bool? reverse,
+    CellMergeDirection? direction,
+  });
   DistributeCellMergeStrategyCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -799,153 +1135,34 @@ class _DistributeCellMergeStrategyCopyWithImpl<$R, $Out>
   late final ClassMapperBase<DistributeCellMergeStrategy> $mapper =
       DistributeCellMergeStrategyMapper.ensureInitialized();
   @override
-  $R call({int? maxCards, bool? reverse, bool? fillVariableSpace}) => $apply(
+  $R call({
+    int? maxCards,
+    bool? fillVariableSpace,
+    bool? reverse,
+    CellMergeDirection? direction,
+  }) => $apply(
     FieldCopyWithData({
       if (maxCards != null) #maxCards: maxCards,
-      if (reverse != null) #reverse: reverse,
       if (fillVariableSpace != null) #fillVariableSpace: fillVariableSpace,
+      if (reverse != null) #reverse: reverse,
+      if (direction != null) #direction: direction,
     }),
   );
   @override
   DistributeCellMergeStrategy $make(CopyWithData data) =>
       DistributeCellMergeStrategy(
         maxCards: data.get(#maxCards, or: $value.maxCards),
-        reverse: data.get(#reverse, or: $value.reverse),
         fillVariableSpace: data.get(
           #fillVariableSpace,
           or: $value.fillVariableSpace,
         ),
+        reverse: data.get(#reverse, or: $value.reverse),
+        direction: data.get(#direction, or: $value.direction),
       );
 
   @override
   DistributeCellMergeStrategyCopyWith<$R2, DistributeCellMergeStrategy, $Out2>
   $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _DistributeCellMergeStrategyCopyWithImpl<$R2, $Out2>($value, $cast, t);
-}
-
-class DirectionalCellMergeMapper extends ClassMapperBase<DirectionalCellMerge> {
-  DirectionalCellMergeMapper._();
-
-  static DirectionalCellMergeMapper? _instance;
-  static DirectionalCellMergeMapper ensureInitialized() {
-    if (_instance == null) {
-      MapperContainer.globals.use(_instance = DirectionalCellMergeMapper._());
-      CellMergeStrategyMapper.ensureInitialized();
-    }
-    return _instance!;
-  }
-
-  @override
-  final String id = 'DirectionalCellMerge';
-
-  static CellMergeDirection _$direction(DirectionalCellMerge v) => v.direction;
-  static const Field<DirectionalCellMerge, CellMergeDirection> _f$direction =
-      Field('direction', _$direction);
-
-  @override
-  final MappableFields<DirectionalCellMerge> fields = const {
-    #direction: _f$direction,
-  };
-
-  static DirectionalCellMerge _instantiate(DecodingData data) {
-    return DirectionalCellMerge(data.dec(_f$direction));
-  }
-
-  @override
-  final Function instantiate = _instantiate;
-
-  static DirectionalCellMerge fromMap(Map<String, dynamic> map) {
-    return ensureInitialized().decodeMap<DirectionalCellMerge>(map);
-  }
-
-  static DirectionalCellMerge fromJson(String json) {
-    return ensureInitialized().decodeJson<DirectionalCellMerge>(json);
-  }
-}
-
-mixin DirectionalCellMergeMappable {
-  String toJson() {
-    return DirectionalCellMergeMapper.ensureInitialized()
-        .encodeJson<DirectionalCellMerge>(this as DirectionalCellMerge);
-  }
-
-  Map<String, dynamic> toMap() {
-    return DirectionalCellMergeMapper.ensureInitialized()
-        .encodeMap<DirectionalCellMerge>(this as DirectionalCellMerge);
-  }
-
-  DirectionalCellMergeCopyWith<
-    DirectionalCellMerge,
-    DirectionalCellMerge,
-    DirectionalCellMerge
-  >
-  get copyWith =>
-      _DirectionalCellMergeCopyWithImpl<
-        DirectionalCellMerge,
-        DirectionalCellMerge
-      >(this as DirectionalCellMerge, $identity, $identity);
-  @override
-  String toString() {
-    return DirectionalCellMergeMapper.ensureInitialized().stringifyValue(
-      this as DirectionalCellMerge,
-    );
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return DirectionalCellMergeMapper.ensureInitialized().equalsValue(
-      this as DirectionalCellMerge,
-      other,
-    );
-  }
-
-  @override
-  int get hashCode {
-    return DirectionalCellMergeMapper.ensureInitialized().hashValue(
-      this as DirectionalCellMerge,
-    );
-  }
-}
-
-extension DirectionalCellMergeValueCopy<$R, $Out>
-    on ObjectCopyWith<$R, DirectionalCellMerge, $Out> {
-  DirectionalCellMergeCopyWith<$R, DirectionalCellMerge, $Out>
-  get $asDirectionalCellMerge => $base.as(
-    (v, t, t2) => _DirectionalCellMergeCopyWithImpl<$R, $Out>(v, t, t2),
-  );
-}
-
-abstract class DirectionalCellMergeCopyWith<
-  $R,
-  $In extends DirectionalCellMerge,
-  $Out
->
-    implements CellMergeStrategyCopyWith<$R, $In, $Out> {
-  @override
-  $R call({CellMergeDirection? direction});
-  DirectionalCellMergeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-    Then<$Out2, $R2> t,
-  );
-}
-
-class _DirectionalCellMergeCopyWithImpl<$R, $Out>
-    extends ClassCopyWithBase<$R, DirectionalCellMerge, $Out>
-    implements DirectionalCellMergeCopyWith<$R, DirectionalCellMerge, $Out> {
-  _DirectionalCellMergeCopyWithImpl(super.value, super.then, super.then2);
-
-  @override
-  late final ClassMapperBase<DirectionalCellMerge> $mapper =
-      DirectionalCellMergeMapper.ensureInitialized();
-  @override
-  $R call({CellMergeDirection? direction}) =>
-      $apply(FieldCopyWithData({if (direction != null) #direction: direction}));
-  @override
-  DirectionalCellMerge $make(CopyWithData data) =>
-      DirectionalCellMerge(data.get(#direction, or: $value.direction));
-
-  @override
-  DirectionalCellMergeCopyWith<$R2, DirectionalCellMerge, $Out2>
-  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-      _DirectionalCellMergeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 

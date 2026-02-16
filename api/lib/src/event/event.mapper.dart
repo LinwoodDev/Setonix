@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -4476,6 +4477,7 @@ class HybridWorldEventMapper extends SubClassMapperBase<HybridWorldEvent> {
       ObjectIndexChangedMapper.ensureInitialized();
       TeamChangedMapper.ensureInitialized();
       TeamRemovedMapper.ensureInitialized();
+      CellMergeStrategyChangedMapper.ensureInitialized();
       MetadataChangedMapper.ensureInitialized();
       ObjectsRemovedMapper.ensureInitialized();
       TableRenamedMapper.ensureInitialized();
@@ -5789,6 +5791,196 @@ class _TeamRemovedCopyWithImpl<$R, $Out>
   TeamRemovedCopyWith<$R2, TeamRemoved, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   ) => _TeamRemovedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+class CellMergeStrategyChangedMapper
+    extends SubClassMapperBase<CellMergeStrategyChanged> {
+  CellMergeStrategyChangedMapper._();
+
+  static CellMergeStrategyChangedMapper? _instance;
+  static CellMergeStrategyChangedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(
+        _instance = CellMergeStrategyChangedMapper._(),
+      );
+      HybridWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      GlobalVectorDefinitionMapper.ensureInitialized();
+      CellMergeStrategyMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'CellMergeStrategyChanged';
+
+  static GlobalVectorDefinition _$cell(CellMergeStrategyChanged v) => v.cell;
+  static const Field<CellMergeStrategyChanged, GlobalVectorDefinition> _f$cell =
+      Field('cell', _$cell);
+  static CellMergeStrategy? _$strategy(CellMergeStrategyChanged v) =>
+      v.strategy;
+  static const Field<CellMergeStrategyChanged, CellMergeStrategy> _f$strategy =
+      Field('strategy', _$strategy);
+  static int? _$span(CellMergeStrategyChanged v) => v.span;
+  static const Field<CellMergeStrategyChanged, int> _f$span = Field(
+    'span',
+    _$span,
+    opt: true,
+  );
+
+  @override
+  final MappableFields<CellMergeStrategyChanged> fields = const {
+    #cell: _f$cell,
+    #strategy: _f$strategy,
+    #span: _f$span,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'CellMergeStrategyChanged';
+  @override
+  late final ClassMapperBase superMapper =
+      HybridWorldEventMapper.ensureInitialized();
+
+  static CellMergeStrategyChanged _instantiate(DecodingData data) {
+    return CellMergeStrategyChanged(
+      data.dec(_f$cell),
+      data.dec(_f$strategy),
+      span: data.dec(_f$span),
+    );
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static CellMergeStrategyChanged fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<CellMergeStrategyChanged>(map);
+  }
+
+  static CellMergeStrategyChanged fromJson(String json) {
+    return ensureInitialized().decodeJson<CellMergeStrategyChanged>(json);
+  }
+}
+
+mixin CellMergeStrategyChangedMappable {
+  String toJson() {
+    return CellMergeStrategyChangedMapper.ensureInitialized()
+        .encodeJson<CellMergeStrategyChanged>(this as CellMergeStrategyChanged);
+  }
+
+  Map<String, dynamic> toMap() {
+    return CellMergeStrategyChangedMapper.ensureInitialized()
+        .encodeMap<CellMergeStrategyChanged>(this as CellMergeStrategyChanged);
+  }
+
+  CellMergeStrategyChangedCopyWith<
+    CellMergeStrategyChanged,
+    CellMergeStrategyChanged,
+    CellMergeStrategyChanged
+  >
+  get copyWith =>
+      _CellMergeStrategyChangedCopyWithImpl<
+        CellMergeStrategyChanged,
+        CellMergeStrategyChanged
+      >(this as CellMergeStrategyChanged, $identity, $identity);
+  @override
+  String toString() {
+    return CellMergeStrategyChangedMapper.ensureInitialized().stringifyValue(
+      this as CellMergeStrategyChanged,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return CellMergeStrategyChangedMapper.ensureInitialized().equalsValue(
+      this as CellMergeStrategyChanged,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return CellMergeStrategyChangedMapper.ensureInitialized().hashValue(
+      this as CellMergeStrategyChanged,
+    );
+  }
+}
+
+extension CellMergeStrategyChangedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, CellMergeStrategyChanged, $Out> {
+  CellMergeStrategyChangedCopyWith<$R, CellMergeStrategyChanged, $Out>
+  get $asCellMergeStrategyChanged => $base.as(
+    (v, t, t2) => _CellMergeStrategyChangedCopyWithImpl<$R, $Out>(v, t, t2),
+  );
+}
+
+abstract class CellMergeStrategyChangedCopyWith<
+  $R,
+  $In extends CellMergeStrategyChanged,
+  $Out
+>
+    implements HybridWorldEventCopyWith<$R, $In, $Out> {
+  GlobalVectorDefinitionCopyWith<
+    $R,
+    GlobalVectorDefinition,
+    GlobalVectorDefinition
+  >
+  get cell;
+  CellMergeStrategyCopyWith<$R, CellMergeStrategy, CellMergeStrategy>?
+  get strategy;
+  @override
+  $R call({
+    GlobalVectorDefinition? cell,
+    CellMergeStrategy? strategy,
+    int? span,
+  });
+  CellMergeStrategyChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class _CellMergeStrategyChangedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, CellMergeStrategyChanged, $Out>
+    implements
+        CellMergeStrategyChangedCopyWith<$R, CellMergeStrategyChanged, $Out> {
+  _CellMergeStrategyChangedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<CellMergeStrategyChanged> $mapper =
+      CellMergeStrategyChangedMapper.ensureInitialized();
+  @override
+  GlobalVectorDefinitionCopyWith<
+    $R,
+    GlobalVectorDefinition,
+    GlobalVectorDefinition
+  >
+  get cell => $value.cell.copyWith.$chain((v) => call(cell: v));
+  @override
+  CellMergeStrategyCopyWith<$R, CellMergeStrategy, CellMergeStrategy>?
+  get strategy => $value.strategy?.copyWith.$chain((v) => call(strategy: v));
+  @override
+  $R call({
+    GlobalVectorDefinition? cell,
+    Object? strategy = $none,
+    Object? span = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (cell != null) #cell: cell,
+      if (strategy != $none) #strategy: strategy,
+      if (span != $none) #span: span,
+    }),
+  );
+  @override
+  CellMergeStrategyChanged $make(CopyWithData data) => CellMergeStrategyChanged(
+    data.get(#cell, or: $value.cell),
+    data.get(#strategy, or: $value.strategy),
+    span: data.get(#span, or: $value.span),
+  );
+
+  @override
+  CellMergeStrategyChangedCopyWith<$R2, CellMergeStrategyChanged, $Out2>
+  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _CellMergeStrategyChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class MetadataChangedMapper extends SubClassMapperBase<MetadataChanged> {

@@ -124,4 +124,39 @@ final class WorldState with WorldStateMappable {
     String name,
     GameTable Function(GameTable) mapper,
   ) => updateTable(name, mapper(getTableOrDefault(name)));
+
+  int calculateSpan(VectorDefinition start, CellMergeDirection direction) {
+    var span = 1;
+    var current = start;
+    while (true) {
+      current =
+          direction == CellMergeDirection.horizontal
+              ? VectorDefinition(current.x + 1, current.y)
+              : VectorDefinition(current.x, current.y + 1);
+      final cell = table.cells[current];
+      final strategy = cell?.merge;
+      if (strategy is MergedCellStrategy && strategy.direction == direction) {
+        span++;
+      } else {
+        break;
+      }
+    }
+    return span;
+  }
+
+  VectorDefinition getParentCell(VectorDefinition position) {
+    var current = position;
+    while (true) {
+      final cell = table.cells[current];
+      final strategy = cell?.merge;
+      if (strategy is MergedCellStrategy) {
+        current =
+            strategy.direction == CellMergeDirection.horizontal
+                ? VectorDefinition(current.x - 1, current.y)
+                : VectorDefinition(current.x, current.y - 1);
+      } else {
+        return current;
+      }
+    }
+  }
 }

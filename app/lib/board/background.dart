@@ -1,18 +1,26 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:flame/components.dart';
 import 'package:flame_bloc/flame_bloc.dart';
+import 'package:flutter/rendering.dart';
 import 'package:setonix/bloc/world/bloc.dart';
 import 'package:setonix/bloc/world/state.dart';
+import 'package:setonix/board/grid.dart';
 import 'package:setonix_api/setonix_api.dart';
 
 class GameBoardBackground extends PositionComponent
     with FlameBlocListenable<WorldBloc, ClientWorldState> {
-  SpriteComponent? _sprite;
+  Sprite? _sprite;
   bool _isDirty = true;
+  late final BoardGrid grid;
 
   GameBoardBackground({super.size});
+
+  @override
+  void onLoad() {
+    super.onLoad();
+    grid = findParent<BoardGrid>()!;
+  }
 
   @override
   void onInitialState(ClientWorldState state) => _isDirty = true;
@@ -31,6 +39,22 @@ class GameBoardBackground extends PositionComponent
     if (_isDirty) {
       _isDirty = false;
       updateBackground(bloc.state);
+    }
+  }
+
+  @override
+  void render(Canvas canvas) {
+    final sprite = _sprite;
+    if (sprite != null) {
+      paintImage(
+        canvas: canvas,
+        rect: size.toRect(),
+        image: sprite.image,
+        repeat: ImageRepeat.repeat,
+        scale: sprite.image.width / grid.cellSize.x,
+        alignment: Alignment.topLeft,
+        filterQuality: FilterQuality.none,
+      );
     }
   }
 
@@ -60,13 +84,6 @@ class GameBoardBackground extends PositionComponent
               .nonNulls
               .firstOrNull,
         );
-    if (background == null) return;
-    final shouldAdd = _sprite == null;
-    final sprite = _sprite ??= SpriteComponent(
-      size: size,
-      paint: Paint()..isAntiAlias = false,
-    );
-    sprite.sprite = background;
-    if (shouldAdd) add(sprite);
+    _sprite = background;
   }
 }

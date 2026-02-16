@@ -8,8 +8,9 @@ part 'cell.mapper.dart';
 class TableCell with TableCellMappable {
   final List<GameObject> objects;
   final List<BoardTile> tiles;
+  final CellMergeStrategy? merge;
 
-  TableCell({this.objects = const [], this.tiles = const []});
+  TableCell({this.objects = const [], this.tiles = const [], this.merge});
 
   bool get isEmpty => objects.isEmpty && tiles.isEmpty;
 }
@@ -31,43 +32,51 @@ class BoardTile with BoardTileMappable {
   BoardTile(this.asset, this.tile);
 }
 
+@MappableEnum()
+enum CellMergeDirection { horizontal, vertical }
+
 @MappableClass()
 sealed class CellMergeStrategy with CellMergeStrategyMappable {
-  const CellMergeStrategy();
+  final CellMergeDirection direction;
+  const CellMergeStrategy({this.direction = CellMergeDirection.vertical});
 }
 
 @MappableClass()
-final class StackedCellMergeStrategy extends CellMergeStrategy
+final class MergedCellStrategy extends CellMergeStrategy
+    with MergedCellStrategyMappable {
+  const MergedCellStrategy(CellMergeDirection direction)
+    : super(direction: direction);
+}
+
+@MappableClass()
+sealed class LayoutCellMergeStrategy extends CellMergeStrategy
+    with LayoutCellMergeStrategyMappable {
+  final bool reverse;
+  const LayoutCellMergeStrategy({super.direction, this.reverse = false});
+}
+
+@MappableClass()
+final class StackedCellMergeStrategy extends LayoutCellMergeStrategy
     with StackedCellMergeStrategyMappable {
   final int visiblePercentage;
-  final bool reverse;
 
   const StackedCellMergeStrategy({
     this.visiblePercentage = 10,
-    this.reverse = false,
+    super.reverse,
+    super.direction,
   });
 }
 
 @MappableClass()
-final class DistributeCellMergeStrategy extends CellMergeStrategy
+final class DistributeCellMergeStrategy extends LayoutCellMergeStrategy
     with DistributeCellMergeStrategyMappable {
   final int maxCards;
-  final bool reverse;
   final bool fillVariableSpace;
 
   const DistributeCellMergeStrategy({
     this.maxCards = 5,
-    this.reverse = false,
     this.fillVariableSpace = true,
+    super.reverse,
+    super.direction = CellMergeDirection.horizontal,
   });
-}
-
-@MappableClass()
-enum CellMergeDirection { horizontal, vertical }
-
-@MappableClass()
-final class DirectionalCellMerge extends CellMergeStrategy
-    with DirectionalCellMergeMappable {
-  final CellMergeDirection direction;
-  const DirectionalCellMerge(this.direction);
 }
