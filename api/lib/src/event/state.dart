@@ -129,10 +129,9 @@ final class WorldState with WorldStateMappable {
     var span = 1;
     var current = start;
     while (true) {
-      current =
-          direction == CellMergeDirection.horizontal
-              ? VectorDefinition(current.x + 1, current.y)
-              : VectorDefinition(current.x, current.y + 1);
+      current = direction == CellMergeDirection.horizontal
+          ? VectorDefinition(current.x + 1, current.y)
+          : VectorDefinition(current.x, current.y + 1);
       final cell = table.cells[current];
       final strategy = cell?.merge;
       if (strategy is MergedCellStrategy && strategy.direction == direction) {
@@ -150,10 +149,9 @@ final class WorldState with WorldStateMappable {
       final cell = table.cells[current];
       final strategy = cell?.merge;
       if (strategy is MergedCellStrategy) {
-        current =
-            strategy.direction == CellMergeDirection.horizontal
-                ? VectorDefinition(current.x - 1, current.y)
-                : VectorDefinition(current.x, current.y - 1);
+        current = strategy.direction == CellMergeDirection.horizontal
+            ? VectorDefinition(current.x - 1, current.y)
+            : VectorDefinition(current.x, current.y - 1);
       } else {
         return current;
       }

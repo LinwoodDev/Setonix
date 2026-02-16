@@ -143,26 +143,16 @@ class GameCell extends PositionComponent
   @override
   bool listenWhen(ClientWorldState previousState, ClientWorldState newState) {
     final definition = toDefinition();
-    return (previousState.selectedCell == definition) !=
-            (newState.selectedCell == definition) ||
+    return previousState.isCellSelected(definition) !=
+            newState.isCellSelected(definition) ||
         previousState.table.cells[definition] !=
             newState.table.cells[definition] ||
         previousState.teamMembers != newState.teamMembers ||
         previousState.colorScheme != newState.colorScheme ||
-        previousState.showWaypoints != newState.showWaypoints ||
-        (newState.selectedCell != null &&
-                newState.getParentCell(newState.selectedCell!) == definition) !=
-            (previousState.selectedCell != null &&
-                previousState.getParentCell(previousState.selectedCell!) ==
-                    definition);
+        previousState.showWaypoints != newState.showWaypoints;
   }
 
-  bool get isSelected =>
-      isMounted &&
-      (bloc.state.selectedCell == toDefinition() ||
-          (bloc.state.selectedCell != null &&
-              bloc.state.getParentCell(bloc.state.selectedCell!) ==
-                  toDefinition()));
+  bool get isSelected => isMounted && bloc.state.isCellSelected(toDefinition());
 
   void _fadeIn() =>
       _updateEffects([OpacityEffect.fadeIn(EffectController(duration: 0.2))]);
@@ -235,10 +225,7 @@ class GameCell extends PositionComponent
 
   @override
   void onNewState(ClientWorldState state) {
-    final selected =
-        state.selectedCell == toDefinition() ||
-        (state.selectedCell != null &&
-            state.getParentCell(state.selectedCell!) == toDefinition());
+    final selected = state.isCellSelected(toDefinition());
     final color = isClaimed(state)
         ? isAllowed(state)
               ? state.colorScheme.secondary
@@ -292,8 +279,7 @@ class GameCell extends PositionComponent
     }
 
     int? newSpan;
-    if (strategy is StackedCellMergeStrategy ||
-        strategy is DistributeCellMergeStrategy) {
+    if (strategy is LayoutCellMergeStrategy) {
       final direction = strategy is StackedCellMergeStrategy
           ? strategy.direction
           : (strategy as DistributeCellMergeStrategy).direction;
@@ -360,9 +346,8 @@ class GameCell extends PositionComponent
     }.toList();
 
     final bool reverse;
-    if (strategy is StackedCellMergeStrategy) {
-      reverse = strategy.reverse;
-    } else if (strategy is DistributeCellMergeStrategy) {
+    final direction = cell?.merge?.direction;
+    if (strategy is LayoutCellMergeStrategy) {
       reverse = strategy.reverse;
     } else {
       reverse = false;
@@ -471,6 +456,26 @@ class GameCell extends PositionComponent
       if (bounds.contains(cRect.topLeft) &&
           bounds.contains(cRect.bottomRight)) {
         add(component);
+      } else {
+        // Optimization: Break if we are moving away from bounds
+        bool decreasing = true;
+        if (strategy is DistributeCellMergeStrategy && reverse) {
+          decreasing = false;
+        }
+
+        if (decreasing) {
+          if (direction == CellMergeDirection.horizontal) {
+            if (cRect.right < bounds.left) break;
+          } else {
+            if (cRect.bottom < bounds.top) break;
+          }
+        } else {
+          if (direction == CellMergeDirection.horizontal) {
+            if (cRect.left > bounds.right) break;
+          } else {
+            if (cRect.top > bounds.bottom) break;
+          }
+        }
       }
     }
   }
@@ -544,12 +549,7 @@ class GameCell extends PositionComponent
                         initialSpan: () {
                           final strategy =
                               bloc.state.table.cells[toDefinition()]?.merge;
-                          if (strategy is StackedCellMergeStrategy) {
-                            return bloc.state.calculateSpan(
-                              toDefinition(),
-                              strategy.direction,
-                            );
-                          } else if (strategy is DistributeCellMergeStrategy) {
+                          if (strategy is LayoutCellMergeStrategy) {
                             return bloc.state.calculateSpan(
                               toDefinition(),
                               strategy.direction,

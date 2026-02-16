@@ -319,10 +319,7 @@ ServerProcessed processServerEvent(
           final cells = Map<VectorDefinition, TableCell>.from(table.cells);
 
           CellMergeDirection? getDirection(CellMergeStrategy? strategy) {
-            if (strategy is StackedCellMergeStrategy) return strategy.direction;
-            if (strategy is DistributeCellMergeStrategy) {
-              return strategy.direction;
-            }
+            if (strategy is LayoutCellMergeStrategy) return strategy.direction;
             return null;
           }
 
@@ -338,10 +335,9 @@ ServerProcessed processServerEvent(
             if (oldSpan > 1) {
               var current = event.cell.position;
               for (var i = 1; i < oldSpan; i++) {
-                current =
-                    oldDirection == CellMergeDirection.horizontal
-                        ? VectorDefinition(current.x + 1, current.y)
-                        : VectorDefinition(current.x, current.y + 1);
+                current = oldDirection == CellMergeDirection.horizontal
+                    ? VectorDefinition(current.x + 1, current.y)
+                    : VectorDefinition(current.x, current.y + 1);
 
                 final neighbor = cells[current] ?? TableCell();
                 if (neighbor.merge is MergedCellStrategy &&
@@ -359,23 +355,41 @@ ServerProcessed processServerEvent(
           cells[event.cell.position] = newCell;
 
           // Expand new neighbors
+
           final strategy = event.strategy;
+
           final span = event.span;
+
           if (span != null && span > 1 && strategy != null) {
             final direction = getDirection(strategy);
+
             if (direction != null) {
               var current = event.cell.position;
+
+              final allObjects = (cells[current] ?? TableCell()).objects
+                  .toList();
+
               for (var i = 1; i < span; i++) {
-                current =
-                    direction == CellMergeDirection.horizontal
-                        ? VectorDefinition(current.x + 1, current.y)
-                        : VectorDefinition(current.x, current.y + 1);
+                current = direction == CellMergeDirection.horizontal
+                    ? VectorDefinition(current.x + 1, current.y)
+                    : VectorDefinition(current.x, current.y + 1);
 
                 final neighbor = cells[current] ?? TableCell();
+
+                if (neighbor.objects.isNotEmpty) {
+                  allObjects.addAll(neighbor.objects);
+                }
+
                 cells[current] = neighbor.copyWith(
                   merge: MergedCellStrategy(direction),
+
+                  objects: [],
                 );
               }
+
+              cells[event.cell.position] = cells[event.cell.position]!.copyWith(
+                objects: allObjects,
+              );
             }
           }
 

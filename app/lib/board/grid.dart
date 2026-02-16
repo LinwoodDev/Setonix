@@ -1,13 +1,33 @@
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
+import 'package:flame_bloc/flame_bloc.dart';
+import 'package:setonix/bloc/world/bloc.dart';
+import 'package:setonix/bloc/world/state.dart';
 import 'package:setonix/board/cell.dart';
+import 'package:setonix/board/game.dart';
+import 'package:setonix/helpers/vector.dart';
 
-class BoardGrid extends PositionComponent with HasGameReference {
+class BoardGrid extends PositionComponent
+    with
+        HasGameReference<BoardGame>,
+        FlameBlocListenable<WorldBloc, ClientWorldState> {
   final Vector2 cellSize;
   static const _padding = 3.0;
   Rect? _lastViewport;
+  bool _forceUpdate = false;
 
   BoardGrid({required this.cellSize});
+
+  @override
+  bool listenWhen(ClientWorldState previousState, ClientWorldState newState) {
+    return previousState.table != newState.table;
+  }
+
+  @override
+  void onNewState(ClientWorldState state) {
+    _forceUpdate = true;
+    _lastViewport = null;
+  }
 
   Rect get viewport {
     final Rect viewport = game.camera.visibleWorldRect;
@@ -25,11 +45,12 @@ class BoardGrid extends PositionComponent with HasGameReference {
     final Rect viewport = this.viewport;
     final Rect lastViewport = _lastViewport ?? Rect.zero;
     final bool shouldReset = viewport != lastViewport;
-    return shouldReset;
+    return shouldReset || _forceUpdate;
   }
 
   void _updateGrid() {
     if (!shouldReset()) return;
+    _forceUpdate = false;
     final viewport = this.viewport;
     final currentSize = cellSize;
     // Remove components that are out of the viewport
@@ -41,25 +62,45 @@ class BoardGrid extends PositionComponent with HasGameReference {
       }),
     );
     final last = _lastViewport ?? Rect.zero;
+    final existingPositions = children
+        .whereType<GameCell>()
+        .map((e) => e.position)
+        .fold<Set<Vector2>>({}, (set, pos) {
+          set.add(pos);
+          return set;
+        });
+
+    void tryAddCell(Vector2 position) {
+      final definition = (position.clone()..divide(cellSize)).toDefinition();
+      final parentDefinition = bloc.state.getParentCell(definition);
+      final parentPosition = parentDefinition.toVector()..multiply(cellSize);
+
+      if (!existingPositions.contains(parentPosition)) {
+        add(_createCell(position: parentPosition, size: currentSize));
+        existingPositions.add(parentPosition);
+      }
+    }
+
     // Add components that are in the viewport
     // Top and bottom
     for (var x = viewport.left; x < viewport.right; x += currentSize.x) {
       for (var y = viewport.top; y < last.top; y += currentSize.y) {
-        add(_createCell(position: Vector2(x, y), size: currentSize));
+        tryAddCell(Vector2(x, y));
       }
       for (var y = last.bottom; y < viewport.bottom; y += currentSize.y) {
-        add(_createCell(position: Vector2(x, y), size: currentSize));
+        tryAddCell(Vector2(x, y));
       }
     }
     // Left and right
     for (var y = last.top; y < last.bottom; y += currentSize.y) {
       for (var x = viewport.left; x < last.left; x += currentSize.x) {
-        add(_createCell(position: Vector2(x, y), size: currentSize));
+        tryAddCell(Vector2(x, y));
       }
       for (var x = last.right; x < viewport.right; x += currentSize.x) {
-        add(_createCell(position: Vector2(x, y), size: currentSize));
+        tryAddCell(Vector2(x, y));
       }
     }
+
     _lastViewport = viewport;
   }
 

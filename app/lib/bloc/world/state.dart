@@ -66,4 +66,9 @@ final class ClientWorldState with ClientWorldStateMappable {
 
   VectorDefinition getParentCell(VectorDefinition position) =>
       world.getParentCell(position);
+
+  bool isCellSelected(VectorDefinition cell) {
+    if (selectedCell == cell) return true;
+    return selectedCell != null && getParentCell(selectedCell!) == cell;
+  }
 }
