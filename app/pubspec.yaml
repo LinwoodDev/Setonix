@@ -16,7 +16,7 @@ publish_to: none
 
 environment:
   sdk: ">=3.8.0 <4.0.0"
-  flutter: 3.38.9
+  flutter: 3.41.1
 
 dependencies:
   flutter:
@@ -32,7 +32,7 @@ dependencies:
   material_leap:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 7d58db18bf9f420236009d9519769ec13f9404b0
+      ref: a6859b573815a6ebb3075efa340a8d48b73b5380
       path: packages/material_leap
   flex_color_scheme: ^8.1.0
   flutter_svg: ^2.2.0
@@ -65,7 +65,7 @@ dependencies:
   swamp_api:
     git:
       url: https://github.com/LinwoodDev/Swamp.git
-      ref: 90f85f5cb5018c0f229af1f0737dabcc33dec536
+      ref: 554e2e974ca4671b33a5fe5ab9b7702436eba838
       path: api
   # System Information
   dynamic_color: ^1.7.0
@@ -78,7 +78,7 @@ dependencies:
   lw_file_system:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 42bd9fde81a3692711862cdb0c60f05f648241a9
+      ref: ce69a37397e931aebebcae6645ff8b5946c6d33c
       path: packages/lw_file_system
   lw_sysapi:
     git:

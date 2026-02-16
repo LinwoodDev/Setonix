@@ -190,10 +190,10 @@ packages:
     dependency: transitive
     description:
       name: ffi
-      sha256: d07d37192dbf97461359c1518788f203b0c9102cfd2c35a716b823741219542c
+      sha256: "6d7fd89431262d8f3125e81b50d3847a091d846eafcd4fdb88dd06f36d705a45"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.5"
+    version: "2.2.0"
   file:
     dependency: transitive
     description:
@@ -286,8 +286,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/lw_file_system_api"
-      ref: ddd0761c3ed5a48108bddd0448df76d77eeb9da0
-      resolved-ref: ddd0761c3ed5a48108bddd0448df76d77eeb9da0
+      ref: "94a914c4bc3d3163bad28dfc24a65bf7a1ac06bc"
+      resolved-ref: "94a914c4bc3d3163bad28dfc24a65bf7a1ac06bc"
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "1.0.0"

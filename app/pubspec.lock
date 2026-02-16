@@ -141,10 +141,10 @@ packages:
     dependency: transitive
     description:
       name: characters
-      sha256: f71061c654a3380576a52b451dd5532377954cf9dbd272a78fc8479606670803
+      sha256: faf38497bda5ead2a8c7615f4f7939df04333478bf32e4173fcb06d428b5716b
       url: "https://pub.dev"
     source: hosted
-    version: "1.4.0"
+    version: "1.4.1"
   checked_yaml:
     dependency: transitive
     description:
@@ -318,10 +318,10 @@ packages:
     dependency: transitive
     description:
       name: ffi
-      sha256: d07d37192dbf97461359c1518788f203b0c9102cfd2c35a716b823741219542c
+      sha256: "6d7fd89431262d8f3125e81b50d3847a091d846eafcd4fdb88dd06f36d705a45"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.5"
+    version: "2.2.0"
   file:
     dependency: transitive
     description:
@@ -414,26 +414,26 @@ packages:
     dependency: "direct main"
     description:
       name: flame
-      sha256: "6a98c1697bfe4669c604e4459cb01ca96559f464d3523f6af90a8956bf2080ee"
+      sha256: d084557523a45ad446d2480a4fa5a1c75aade5f8eb54251418e0ed4ee73ff3b8
       url: "https://pub.dev"
     source: hosted
-    version: "1.35.0"
+    version: "1.35.1"
   flame_bloc:
     dependency: "direct main"
     description:
       name: flame_bloc
-      sha256: aea027e5f72c221ac73a4cb652a726be35aaa7b5dc259374fbcb483d87d86f26
+      sha256: cec04c911d8ed6bf7b2086fb086637c307836d1878bbeb228b0ac4efcb0cf9ce
       url: "https://pub.dev"
     source: hosted
-    version: "1.12.20"
+    version: "1.12.21"
   flame_tiled:
     dependency: "direct main"
     description:
       name: flame_tiled
-      sha256: "3407afee9e0c5a9fd4638f81a29c978dc97b5a44746eaaf16139fcc9bbb03b5c"
+      sha256: "7b42492023139e0a439eb57645784234b50f8020fda7126fb437e395de6ab26e"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.10"
+    version: "3.0.11"
   flex_color_scheme:
     dependency: "direct main"
     description:
@@ -650,10 +650,10 @@ packages:
     dependency: "direct main"
     description:
       name: idb_shim
-      sha256: adbcc954e0e072cf5bd1699431fc783b5e54e4b3db40667eb794708f7446ee6a
+      sha256: cc994e1095d69f2bcdf929246112ed0772d59d75be8a58995667acc2df091602
       url: "https://pub.dev"
     source: hosted
-    version: "2.8.2+2"
+    version: "2.8.2+3"
   image:
     dependency: transitive
     description:
@@ -738,8 +738,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/lw_file_system"
-      ref: "42bd9fde81a3692711862cdb0c60f05f648241a9"
-      resolved-ref: "42bd9fde81a3692711862cdb0c60f05f648241a9"
+      ref: ce69a37397e931aebebcae6645ff8b5946c6d33c
+      resolved-ref: ce69a37397e931aebebcae6645ff8b5946c6d33c
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "1.0.0"
@@ -747,8 +747,8 @@ packages:
     dependency: transitive
     description:
       path: "packages/lw_file_system_api"
-      ref: ddd0761c3ed5a48108bddd0448df76d77eeb9da0
-      resolved-ref: ddd0761c3ed5a48108bddd0448df76d77eeb9da0
+      ref: "94a914c4bc3d3163bad28dfc24a65bf7a1ac06bc"
+      resolved-ref: "94a914c4bc3d3163bad28dfc24a65bf7a1ac06bc"
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "1.0.0"
@@ -781,24 +781,24 @@ packages:
     dependency: transitive
     description:
       name: matcher
-      sha256: dc58c723c3c24bf8d3e2d3ad3f2f9d7bd9cf43ec6feaa64181775e60190153f2
+      sha256: "12956d0ad8390bbcc63ca2e1469c0619946ccb52809807067a7020d57e647aa6"
       url: "https://pub.dev"
     source: hosted
-    version: "0.12.17"
+    version: "0.12.18"
   material_color_utilities:
     dependency: transitive
     description:
       name: material_color_utilities
-      sha256: f7142bb1154231d7ea5f96bc7bde4bda2a0945d2806bb11670e30b850d56bdec
+      sha256: "9c337007e82b1889149c82ed242ed1cb24a66044e30979c44912381e9be4c48b"
       url: "https://pub.dev"
     source: hosted
-    version: "0.11.1"
+    version: "0.13.0"
   material_leap:
     dependency: "direct main"
     description:
       path: "packages/material_leap"
-      ref: "7d58db18bf9f420236009d9519769ec13f9404b0"
-      resolved-ref: "7d58db18bf9f420236009d9519769ec13f9404b0"
+      ref: a6859b573815a6ebb3075efa340a8d48b73b5380
+      resolved-ref: a6859b573815a6ebb3075efa340a8d48b73b5380
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "0.0.1"
@@ -1001,10 +1001,10 @@ packages:
     dependency: transitive
     description:
       name: petitparser
-      sha256: "1a97266a94f7350d30ae522c0af07890c70b8e62c71e8e3920d1db4d23c057d1"
+      sha256: "91bd59303e9f769f108f8df05e371341b15d59e995e6806aefab827b58336675"
       url: "https://pub.dev"
     source: hosted
-    version: "7.0.1"
+    version: "7.0.2"
   phosphor_flutter:
     dependency: "direct main"
     description:
@@ -1300,8 +1300,8 @@ packages:
     dependency: "direct main"
     description:
       path: api
-      ref: "90f85f5cb5018c0f229af1f0737dabcc33dec536"
-      resolved-ref: "90f85f5cb5018c0f229af1f0737dabcc33dec536"
+      ref: "554e2e974ca4671b33a5fe5ab9b7702436eba838"
+      resolved-ref: "554e2e974ca4671b33a5fe5ab9b7702436eba838"
       url: "https://github.com/LinwoodDev/Swamp.git"
     source: git
     version: "0.2.0"
@@ -1325,10 +1325,10 @@ packages:
     dependency: transitive
     description:
       name: test_api
-      sha256: ab2726c1a94d3176a45960b6234466ec367179b87dd74f1611adb1f3b5fb9d55
+      sha256: "93167629bfc610f71560ab9312acdda4959de4df6fac7492c89ff0d3886f6636"
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.7"
+    version: "0.7.9"
   tiled:
     dependency: transitive
     description:
@@ -1373,10 +1373,10 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_ios
-      sha256: b1aca26728b7cc7a3af971bb6f601554a8ae9df2e0a006de8450ba06a17ad36a
+      sha256: "580fe5dfb51671ae38191d316e027f6b76272b026370708c2d898799750a02b0"
       url: "https://pub.dev"
     source: hosted
-    version: "6.4.0"
+    version: "6.4.1"
   url_launcher_linux:
     dependency: transitive
     description:
@@ -1555,4 +1555,4 @@ packages:
     version: "3.1.3"
 sdks:
   dart: ">=3.10.3 <4.0.0"
-  flutter: ">=3.38.9"
+  flutter: ">=3.41.1"
