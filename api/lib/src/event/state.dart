@@ -124,4 +124,20 @@ final class WorldState with WorldStateMappable {
     String name,
     GameTable Function(GameTable) mapper,
   ) => updateTable(name, mapper(getTableOrDefault(name)));
+
+  int calculateLocalSpan(
+    VectorDefinition start,
+    CellMergeDirection direction,
+  ) => table.calculateSpan(start, direction);
+
+  int calculateSpan(
+    GlobalVectorDefinition start,
+    CellMergeDirection direction,
+  ) => getTableOrDefault(start.table).calculateSpan(start.position, direction);
+
+  VectorDefinition getLocalParentCell(VectorDefinition start) =>
+      table.getParentCell(start);
+
+  VectorDefinition getParentCell(GlobalVectorDefinition position) =>
+      getTableOrDefault(position.table).getParentCell(position.position);
 }

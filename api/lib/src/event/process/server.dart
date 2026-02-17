@@ -57,6 +57,8 @@ bool isValidServerEvent(ServerWorldEvent event, WorldState state) =>
                 .length -
             1,
       ),
+      CellMergeStrategyChanged() =>
+        event.span > 0 && event.span <= GameTable.maxMergeSpan,
       DialogOpened() => event.dialog.isValid(),
       _ => true,
     };
@@ -312,6 +314,88 @@ ServerProcessed processServerEvent(
           info: state.info.copyWith.teams.remove(event.team),
           teamMembers: Map.from(state.teamMembers)..remove(event.team),
         ),
+      );
+    case CellMergeStrategyChanged():
+      return ServerProcessed(
+        state.mapTableOrDefault(event.cell.table, (table) {
+          final cell = table.getCell(event.cell.position);
+          final cells = Map<VectorDefinition, TableCell>.from(table.cells);
+
+          CellMergeDirection? getDirection(CellMergeStrategy? strategy) {
+            if (strategy is LayoutCellMergeStrategy) return strategy.direction;
+            return null;
+          }
+
+          // Cleanup old neighbors
+          final oldCell = cells[event.cell.position];
+          final oldStrategy = oldCell?.merge;
+          final oldDirection = getDirection(oldStrategy);
+          if (oldDirection != null) {
+            final oldSpan = table.calculateSpan(
+              event.cell.position,
+              oldDirection,
+            );
+            if (oldSpan > 1) {
+              var current = event.cell.position;
+              for (var i = 1; i < oldSpan; i++) {
+                current = oldDirection == CellMergeDirection.horizontal
+                    ? VectorDefinition(current.x + 1, current.y)
+                    : VectorDefinition(current.x, current.y + 1);
+
+                final neighbor = cells[current] ?? TableCell();
+                if (neighbor.merge is MergedCellStrategy &&
+                    (neighbor.merge as MergedCellStrategy).direction ==
+                        oldDirection) {
+                  final updatedNeighbor = neighbor.copyWith(merge: null);
+                  if (updatedNeighbor.isEmpty) {
+                    cells.remove(current);
+                  } else {
+                    cells[current] = updatedNeighbor;
+                  }
+                }
+              }
+            }
+          }
+
+          // Update target cell
+          var newCell = cell.copyWith(merge: event.strategy);
+
+          // Expand new neighbors
+
+          final strategy = event.strategy;
+
+          final span = event.span;
+
+          if (strategy != null) {
+            final direction = getDirection(strategy);
+
+            if (direction != null) {
+              var current = event.cell.position;
+              final allObjects = (cells[current] ?? TableCell()).objects
+                  .toList();
+
+              for (var i = 1; i < span; i++) {
+                current = direction == CellMergeDirection.horizontal
+                    ? VectorDefinition(current.x + 1, current.y)
+                    : VectorDefinition(current.x, current.y + 1);
+
+                final neighbor = cells[current] ?? TableCell();
+                if (neighbor.objects.isNotEmpty) {
+                  allObjects.addAll(neighbor.objects);
+                }
+
+                cells[current] = neighbor.copyWith(
+                  merge: MergedCellStrategy(direction),
+                  objects: [],
+                );
+              }
+              newCell = newCell.copyWith(objects: allObjects);
+            }
+          }
+          cells[event.cell.position] = newCell;
+
+          return table.copyWith.cellsBox(content: cells);
+        }),
       );
     case MetadataChanged():
       return ServerProcessed(state.copyWith(metadata: event.metadata));

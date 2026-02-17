@@ -60,4 +60,23 @@ final class ClientWorldState with ClientWorldStateMappable {
   String? get name => world.name;
   FileMetadata get metadata => world.metadata;
   SetonixData get data => world.data;
+
+  int calculateLocalSpan(
+    VectorDefinition start,
+    CellMergeDirection direction,
+  ) => world.calculateLocalSpan(start, direction);
+  int calculateSpan(
+    GlobalVectorDefinition start,
+    CellMergeDirection direction,
+  ) => world.calculateSpan(start, direction);
+
+  VectorDefinition getLocalParentCell(VectorDefinition position) =>
+      world.getLocalParentCell(position);
+  VectorDefinition getParentCell(GlobalVectorDefinition position) =>
+      world.getParentCell(position);
+
+  bool isCellSelected(VectorDefinition cell) {
+    if (selectedCell == cell) return true;
+    return selectedCell != null && getLocalParentCell(selectedCell!) == cell;
+  }
 }

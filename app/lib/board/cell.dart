@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
@@ -9,6 +10,7 @@ import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:setonix/pages/game/waypoint.dart';
+import 'package:setonix/pages/game/merge.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:setonix/bloc/world/bloc.dart';
@@ -37,9 +39,9 @@ class GameCell extends PositionComponent
         HandItemDropZone,
         FlameBlocListenable<WorldBloc, ClientWorldState>,
         ScrollCallbacks {
-  late final SpriteComponent _selectionComponent;
-  SpriteComponent? _cardComponent, _boardComponent;
+  late final NineTileBoxComponent _selectionComponent;
   TextElementComponent? _waypointComponent;
+  GameBoardBackground? _backgroundComponent;
   late final BoardGrid grid;
   List<Effect>? _effects;
 
@@ -127,9 +129,10 @@ class GameCell extends PositionComponent
   void onLoad() {
     super.onLoad();
     grid = findParent<BoardGrid>()!;
-    add(GameBoardBackground(size: size));
-    _selectionComponent = SpriteComponent(
-      sprite: game.selectionSprite,
+    _backgroundComponent = GameBoardBackground(size: size);
+    add(_backgroundComponent!);
+    _selectionComponent = NineTileBoxComponent(
+      nineTileBox: NineTileBox(game.selectionSprite, tileSize: 12),
       size: size,
       priority: 1,
     );
@@ -139,8 +142,8 @@ class GameCell extends PositionComponent
   @override
   bool listenWhen(ClientWorldState previousState, ClientWorldState newState) {
     final definition = toDefinition();
-    return (previousState.selectedCell == definition) !=
-            (newState.selectedCell == definition) ||
+    return previousState.isCellSelected(definition) !=
+            newState.isCellSelected(definition) ||
         previousState.table.cells[definition] !=
             newState.table.cells[definition] ||
         previousState.teamMembers != newState.teamMembers ||
@@ -148,7 +151,7 @@ class GameCell extends PositionComponent
         previousState.showWaypoints != newState.showWaypoints;
   }
 
-  bool get isSelected => isMounted && bloc.state.selectedCell == toDefinition();
+  bool get isSelected => isMounted && bloc.state.isCellSelected(toDefinition());
 
   void _fadeIn() =>
       _updateEffects([OpacityEffect.fadeIn(EffectController(duration: 0.2))]);
@@ -214,13 +217,14 @@ class GameCell extends PositionComponent
             false,
       );
 
-  GameObject? _currentTop;
+  List<GameObject>? _currentObjects;
+  CellMergeStrategy? _currentStrategy;
   BoardTile? _currentTile;
   bool _currentVisible = true;
 
   @override
   void onNewState(ClientWorldState state) {
-    final selected = state.selectedCell == toDefinition();
+    final selected = state.isCellSelected(toDefinition());
     final color = isClaimed(state)
         ? isAllowed(state)
               ? state.colorScheme.secondary
@@ -245,63 +249,263 @@ class GameCell extends PositionComponent
     _buildWaypointComponent(state);
   }
 
+  int? _currentSpan;
+
   Future<void> _updateTop() async {
     final state = bloc.state;
-    final cell = state.table.cells[toDefinition()];
-    final top = cell?.objects.firstOrNull;
+    final cellDefinition = toDefinition();
+    final cell = state.table.cells[cellDefinition];
+    final objects = cell?.objects ?? const [];
+    final strategy = cell?.merge;
     final visible = state.isCellVisible(toGlobalDefinition(state));
     final tile = cell?.tiles.lastOrNull;
-    if (top == _currentTop &&
+
+    if (strategy is MergedCellStrategy) {
+      if (_currentVisible) {
+        _currentVisible = false;
+        size = Vector2.zero();
+        _backgroundComponent?.size = Vector2.zero();
+        _selectionComponent.size = Vector2.zero();
+        removeWhere((e) => e is _GameCellObjectComponent);
+        removeWhere((e) => e is _GameCellTileComponent);
+        _currentObjects = null;
+        _currentStrategy = null;
+        _currentSpan = null;
+        _currentTile = null;
+      }
+      return;
+    }
+
+    int? newSpan;
+    if (strategy is LayoutCellMergeStrategy) {
+      final direction = strategy is StackedCellMergeStrategy
+          ? strategy.direction
+          : (strategy as DistributeCellMergeStrategy).direction;
+      final span = state.calculateLocalSpan(cellDefinition, direction);
+      newSpan = span;
+      final s = grid.cellSize.clone();
+      if (direction == CellMergeDirection.horizontal) {
+        s.x *= span;
+      } else {
+        s.y *= span;
+      }
+      if (size != s) {
+        size = s;
+        _backgroundComponent?.size = s;
+        _selectionComponent.size = s;
+        priority = 100;
+      }
+    } else {
+      _currentVisible = true;
+      if (size != grid.cellSize) {
+        size = grid.cellSize;
+        _backgroundComponent?.size = size;
+        _selectionComponent.size = size;
+        priority = 0;
+      }
+    }
+
+    if (const ListEquality().equals(objects, _currentObjects) &&
+        strategy == _currentStrategy &&
+        newSpan == _currentSpan &&
         visible == _currentVisible &&
         tile == _currentTile) {
       return;
     }
-    _currentTop = top;
+    _currentObjects = objects;
+    _currentStrategy = strategy;
+    _currentSpan = newSpan;
     _currentVisible = visible;
     _currentTile = tile;
     final paint = Paint()..isAntiAlias = false;
-    if (tile != null) {
-      final component = _boardComponent ??= SpriteComponent(
-        size: size,
-        paint: paint,
-      );
+
+    removeWhere((e) => e is _GameCellTileComponent);
+
+    if (newSpan != null && newSpan > 1 && strategy is LayoutCellMergeStrategy) {
+      final direction = strategy.direction;
+      var current = cellDefinition;
+      for (var i = 0; i < newSpan; i++) {
+        if (i > 0) {
+          current = direction == CellMergeDirection.horizontal
+              ? VectorDefinition(current.x + 1, current.y)
+              : VectorDefinition(current.x, current.y + 1);
+        }
+
+        final targetCell = state.table.cells[current];
+        final targetTile = targetCell?.tiles.lastOrNull;
+
+        if (targetTile != null) {
+          final component = _GameCellTileComponent(paint: paint, priority: 0);
+          component.sprite =
+              await state.assetManager.loadBoardSprite(
+                targetTile.asset,
+                targetTile.tile,
+              ) ??
+              game.blankSprite;
+          component.size = grid.cellSize;
+
+          double tx = 0;
+          double ty = 0;
+          if (direction == CellMergeDirection.horizontal) {
+            tx = i * grid.cellSize.x;
+          } else {
+            ty = i * grid.cellSize.y;
+          }
+          component.position = Vector2(tx, ty);
+          add(component);
+        }
+      }
+    } else if (tile != null) {
+      final component = _GameCellTileComponent(paint: paint, priority: 0);
       component.sprite =
           await state.assetManager.loadBoardSprite(tile.asset, tile.tile) ??
           game.blankSprite;
-      if (!component.isMounted) {
-        add(component);
-      }
+      component.size = grid.cellSize;
+      component.position = Vector2.zero();
+      add(component);
     } else {
-      _boardComponent?.removeFromParent();
+      // Clear if no tile
     }
-    if (top != null) {
-      final component = _cardComponent ??= SpriteComponent(
-        paint: paint,
-        priority: 1,
-      );
-      component
-        ..anchor = Anchor.center
-        ..position = size / 2;
-      component.sprite =
-          await state.assetManager.loadFigureSprite(
-            top.asset,
-            top.hidden || !state.isCellVisible(toGlobalDefinition(state))
-                ? null
-                : top.variation,
-          ) ??
-          game.blankSprite;
-      final sprite = component.sprite;
-      if (sprite != null) {
-        final scale = (size.x / sprite.srcSize.x) < (size.y / sprite.srcSize.y)
-            ? (size.x / sprite.srcSize.x)
-            : (size.y / sprite.srcSize.y);
-        component.size = sprite.srcSize * scale;
-      }
-      if (!component.isMounted) {
-        add(component);
-      }
+    removeWhere((e) => e is _GameCellObjectComponent);
+    if (objects.isEmpty) return;
+
+    var displayObjects = switch (strategy) {
+      DistributeCellMergeStrategy(maxCards: final maxCards) => objects.take(
+        maxCards,
+      ),
+      _ => strategy == null ? [objects.first] : objects,
+    }.toList();
+
+    final bool reverse;
+    final CellMergeDirection? direction;
+    if (strategy is LayoutCellMergeStrategy) {
+      reverse = strategy.reverse;
+      direction = strategy.direction;
     } else {
-      _cardComponent?.removeFromParent();
+      reverse = false;
+      direction = null;
+    }
+
+    final renderObjects = displayObjects
+        .asMap()
+        .entries
+        .toList()
+        .reversed
+        .toList();
+    final cellRect = size.toRect();
+
+    for (final entry in renderObjects) {
+      final i = entry.key;
+      final object = entry.value;
+
+      final double x, y;
+      switch (strategy) {
+        case StackedCellMergeStrategy(
+          visiblePercentage: final visiblePercentage,
+        ):
+          final offsetStep = visiblePercentage / 100.0;
+          final count = displayObjects.length;
+
+          if (direction == CellMergeDirection.vertical) {
+            x = size.x / 2;
+            if (!reverse) {
+              final startY = grid.cellSize.y / 2;
+              y = startY + i * offsetStep * grid.cellSize.y;
+            } else {
+              final startY = size.y - grid.cellSize.y / 2;
+              y = startY - (count - 1 - i) * offsetStep * grid.cellSize.y;
+            }
+          } else {
+            y = size.y / 2;
+            if (!reverse) {
+              final startX = grid.cellSize.x / 2;
+              x = startX + i * offsetStep * grid.cellSize.x;
+            } else {
+              final startX = size.x - grid.cellSize.x / 2;
+              x = startX - (count - 1 - i) * offsetStep * grid.cellSize.x;
+            }
+          }
+        case DistributeCellMergeStrategy(
+          fillVariableSpace: final fillVariableSpace,
+        ):
+          final count = displayObjects.length;
+          if (count == 1) {
+            x = size.x / 2;
+            y = size.y / 2;
+          } else {
+            var factor = i / (count - 1);
+            // Center factor to -0.5 ... 0.5 range
+            factor -= 0.5;
+            if (reverse) factor = -factor;
+
+            if (fillVariableSpace) {
+              factor *= 2; // -1 to 1
+            } else {
+              factor = (i - (count - 1) / 2.0) * 0.4;
+            }
+
+            if (direction == CellMergeDirection.vertical) {
+              x = size.x / 2;
+              y = size.y / 2 + (size.y - grid.cellSize.y) / 2 * factor;
+            } else {
+              x = size.x / 2 + (size.x - grid.cellSize.x) / 2 * factor;
+              y = size.y / 2;
+            }
+          }
+        default:
+          x = size.x / 2;
+          y = size.y / 2;
+      }
+
+      final cRect = Rect.fromCenter(
+        center: Offset(x, y),
+        width: grid.cellSize.x,
+        height: grid.cellSize.y,
+      );
+
+      // Relaxed check to handle floating point precision
+      final bounds = cellRect.inflate(1);
+      if (bounds.contains(cRect.topLeft) &&
+          bounds.contains(cRect.bottomRight)) {
+        final component = _GameCellObjectComponent(paint: paint, priority: 1);
+        final sprite =
+            await state.assetManager.loadFigureSprite(
+              object.asset,
+              object.hidden || !visible ? null : object.variation,
+            ) ??
+            game.blankSprite;
+        component.sprite = sprite;
+
+        final scale =
+            (grid.cellSize.x / sprite.srcSize.x) <
+                (grid.cellSize.y / sprite.srcSize.y)
+            ? (grid.cellSize.x / sprite.srcSize.x)
+            : (grid.cellSize.y / sprite.srcSize.y);
+        component.size = sprite.srcSize * scale;
+        component.anchor = Anchor.center;
+        component.position = Vector2(x, y);
+        add(component);
+      } else {
+        // Optimization: Break if we are moving away from bounds
+        bool decreasing = true;
+        if (strategy is LayoutCellMergeStrategy && reverse) {
+          decreasing = false;
+        }
+
+        if (decreasing) {
+          if (direction == CellMergeDirection.horizontal) {
+            if (cRect.right < bounds.left) break;
+          } else {
+            if (cRect.bottom < bounds.top) break;
+          }
+        } else {
+          if (direction == CellMergeDirection.horizontal) {
+            if (cRect.left > bounds.right) break;
+          } else {
+            if (cRect.top > bounds.bottom) break;
+          }
+        }
+      }
     }
   }
 
@@ -359,6 +563,34 @@ class GameCell extends PositionComponent
                     onClose();
                   },
                 ),
+              ContextMenuButtonItem(
+                label: AppLocalizations.of(context).merge,
+                onPressed: () {
+                  onClose();
+                  showDialog(
+                    context: context,
+                    builder: (context) => BlocProvider.value(
+                      value: bloc,
+                      child: MergeDialog(
+                        cell: toGlobalDefinition(bloc.state),
+                        initialStrategy:
+                            bloc.state.table.cells[toDefinition()]?.merge,
+                        initialSpan: () {
+                          final strategy =
+                              bloc.state.table.cells[toDefinition()]?.merge;
+                          if (strategy is LayoutCellMergeStrategy) {
+                            return bloc.state.calculateLocalSpan(
+                              toDefinition(),
+                              strategy.direction,
+                            );
+                          }
+                          return 1;
+                        }(),
+                      ),
+                    ),
+                  );
+                },
+              ),
               ContextMenuButtonItem(
                 label: AppLocalizations.of(context).remove,
                 onPressed: () {
@@ -476,4 +708,12 @@ class GameCell extends PositionComponent
     game.camera.moveBy(delta / game.settingsCubit.state.scrollSensitivity);
     return false;
   }
+}
+
+class _GameCellObjectComponent extends SpriteComponent {
+  _GameCellObjectComponent({super.paint, super.priority});
+}
+
+class _GameCellTileComponent extends SpriteComponent {
+  _GameCellTileComponent({super.paint, super.priority});
 }

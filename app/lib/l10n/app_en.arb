@@ -295,5 +295,18 @@
   "editWaypoint": "Edit waypoint",
   "team": "Team",
   "public": "Public",
-  "noWaypoints": "There are no waypoints available"
+  "noWaypoints": "There are no waypoints available",
+  "merge": "Merge",
+  "mergeStrategy": "Merge strategy",
+  "stacked": "Stacked",
+  "distribute": "Distribute",
+  "visiblePercentage": "Visible percentage",
+  "reverse": "Reverse",
+  "direction": "Direction",
+  "horizontal": "Horizontal",
+  "vertical": "Vertical",
+  "maxCards": "Max cards",
+  "fillVariableSpace": "Fill variable space",
+  "none": "None",
+  "span": "Span"
 }
