@@ -72,7 +72,7 @@ class BoardGrid extends PositionComponent
 
     void tryAddCell(Vector2 position) {
       final definition = (position.clone()..divide(cellSize)).toDefinition();
-      final parentDefinition = bloc.state.getParentCell(definition);
+      final parentDefinition = bloc.state.getLocalParentCell(definition);
       final parentPosition = parentDefinition.toVector()..multiply(cellSize);
 
       if (!existingPositions.contains(parentPosition)) {

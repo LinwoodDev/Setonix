@@ -5820,11 +5820,12 @@ class CellMergeStrategyChangedMapper
       v.strategy;
   static const Field<CellMergeStrategyChanged, CellMergeStrategy> _f$strategy =
       Field('strategy', _$strategy);
-  static int? _$span(CellMergeStrategyChanged v) => v.span;
+  static int _$span(CellMergeStrategyChanged v) => v.span;
   static const Field<CellMergeStrategyChanged, int> _f$span = Field(
     'span',
     _$span,
     opt: true,
+    def: 1,
   );
 
   @override
@@ -5962,12 +5963,12 @@ class _CellMergeStrategyChangedCopyWithImpl<$R, $Out>
   $R call({
     GlobalVectorDefinition? cell,
     Object? strategy = $none,
-    Object? span = $none,
+    int? span,
   }) => $apply(
     FieldCopyWithData({
       if (cell != null) #cell: cell,
       if (strategy != $none) #strategy: strategy,
-      if (span != $none) #span: span,
+      if (span != null) #span: span,
     }),
   );
   @override

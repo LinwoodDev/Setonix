@@ -58,11 +58,7 @@ bool isValidServerEvent(ServerWorldEvent event, WorldState state) =>
             1,
       ),
       CellMergeStrategyChanged() =>
-        (event.span ?? 1) > 0 &&
-            state
-                .getTableOrDefault(event.cell.table)
-                .cells
-                .containsKey(event.cell.position),
+        event.span > 0 && event.span <= GameTable.maxMergeSpan,
       DialogOpened() => event.dialog.isValid(),
       _ => true,
     };
@@ -334,7 +330,7 @@ ServerProcessed processServerEvent(
           final oldStrategy = oldCell?.merge;
           final oldDirection = getDirection(oldStrategy);
           if (oldDirection != null) {
-            final oldSpan = state.calculateSpan(
+            final oldSpan = table.calculateSpan(
               event.cell.position,
               oldDirection,
             );
@@ -349,7 +345,12 @@ ServerProcessed processServerEvent(
                 if (neighbor.merge is MergedCellStrategy &&
                     (neighbor.merge as MergedCellStrategy).direction ==
                         oldDirection) {
-                  cells[current] = neighbor.copyWith(merge: null);
+                  final updatedNeighbor = neighbor.copyWith(merge: null);
+                  if (updatedNeighbor.isEmpty) {
+                    cells.remove(current);
+                  } else {
+                    cells[current] = updatedNeighbor;
+                  }
                 }
               }
             }
@@ -366,7 +367,7 @@ ServerProcessed processServerEvent(
 
           final span = event.span;
 
-          if (span != null && span > 1 && strategy != null) {
+          if (strategy != null) {
             final direction = getDirection(strategy);
 
             if (direction != null) {

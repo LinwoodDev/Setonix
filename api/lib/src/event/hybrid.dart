@@ -175,9 +175,9 @@ final class CellMergeStrategyChanged extends HybridWorldEvent
     with CellMergeStrategyChangedMappable {
   final GlobalVectorDefinition cell;
   final CellMergeStrategy? strategy;
-  final int? span;
+  final int span;
 
-  CellMergeStrategyChanged(this.cell, this.strategy, {this.span});
+  CellMergeStrategyChanged(this.cell, this.strategy, {this.span = 1});
 }
 
 @MappableClass()

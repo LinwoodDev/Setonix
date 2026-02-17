@@ -283,7 +283,7 @@ class GameCell extends PositionComponent
       final direction = strategy is StackedCellMergeStrategy
           ? strategy.direction
           : (strategy as DistributeCellMergeStrategy).direction;
-      final span = state.calculateSpan(cellDefinition, direction);
+      final span = state.calculateLocalSpan(cellDefinition, direction);
       newSpan = span;
       final s = grid.cellSize.clone();
       if (direction == CellMergeDirection.horizontal) {
@@ -365,30 +365,11 @@ class GameCell extends PositionComponent
     for (final entry in renderObjects) {
       final i = entry.key;
       final object = entry.value;
-      final component = _GameCellObjectComponent(paint: paint, priority: 1);
-      final sprite =
-          await state.assetManager.loadFigureSprite(
-            object.asset,
-            object.hidden || !state.isCellVisible(toGlobalDefinition(state))
-                ? null
-                : object.variation,
-          ) ??
-          game.blankSprite;
-      component.sprite = sprite;
-
-      final scale =
-          (grid.cellSize.x / sprite.srcSize.x) <
-              (grid.cellSize.y / sprite.srcSize.y)
-          ? (grid.cellSize.x / sprite.srcSize.x)
-          : (grid.cellSize.y / sprite.srcSize.y);
-      component.size = sprite.srcSize * scale;
-      component.anchor = Anchor.center;
 
       final double x, y;
       switch (strategy) {
         case StackedCellMergeStrategy(
           visiblePercentage: final visiblePercentage,
-          direction: final direction,
         ):
           final offsetStep = visiblePercentage / 100.0;
           final count = displayObjects.length;
@@ -413,7 +394,6 @@ class GameCell extends PositionComponent
             }
           }
         case DistributeCellMergeStrategy(
-          direction: final direction,
           fillVariableSpace: final fillVariableSpace,
         ):
           final count = displayObjects.length;
@@ -444,23 +424,39 @@ class GameCell extends PositionComponent
           x = size.x / 2;
           y = size.y / 2;
       }
-      component.position = Vector2(x, y);
 
       final cRect = Rect.fromCenter(
         center: Offset(x, y),
-        width: component.width,
-        height: component.height,
+        width: grid.cellSize.x,
+        height: grid.cellSize.y,
       );
 
       // Relaxed check to handle floating point precision
       final bounds = cellRect.inflate(1);
       if (bounds.contains(cRect.topLeft) &&
           bounds.contains(cRect.bottomRight)) {
+        final component = _GameCellObjectComponent(paint: paint, priority: 1);
+        final sprite =
+            await state.assetManager.loadFigureSprite(
+              object.asset,
+              object.hidden || !visible ? null : object.variation,
+            ) ??
+            game.blankSprite;
+        component.sprite = sprite;
+
+        final scale =
+            (grid.cellSize.x / sprite.srcSize.x) <
+                (grid.cellSize.y / sprite.srcSize.y)
+            ? (grid.cellSize.x / sprite.srcSize.x)
+            : (grid.cellSize.y / sprite.srcSize.y);
+        component.size = sprite.srcSize * scale;
+        component.anchor = Anchor.center;
+        component.position = Vector2(x, y);
         add(component);
       } else {
         // Optimization: Break if we are moving away from bounds
         bool decreasing = true;
-        if (strategy is DistributeCellMergeStrategy && reverse) {
+        if (strategy is LayoutCellMergeStrategy && reverse) {
           decreasing = false;
         }
 
@@ -551,7 +547,7 @@ class GameCell extends PositionComponent
                           final strategy =
                               bloc.state.table.cells[toDefinition()]?.merge;
                           if (strategy is LayoutCellMergeStrategy) {
-                            return bloc.state.calculateSpan(
+                            return bloc.state.calculateLocalSpan(
                               toDefinition(),
                               strategy.direction,
                             );
