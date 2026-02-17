@@ -40,7 +40,6 @@ class GameCell extends PositionComponent
         FlameBlocListenable<WorldBloc, ClientWorldState>,
         ScrollCallbacks {
   late final NineTileBoxComponent _selectionComponent;
-  SpriteComponent? _boardComponent;
   TextElementComponent? _waypointComponent;
   GameBoardBackground? _backgroundComponent;
   late final BoardGrid grid;
@@ -267,9 +266,8 @@ class GameCell extends PositionComponent
         size = Vector2.zero();
         _backgroundComponent?.size = Vector2.zero();
         _selectionComponent.size = Vector2.zero();
-        _boardComponent?.removeFromParent();
-        _boardComponent = null;
         removeWhere((e) => e is _GameCellObjectComponent);
+        removeWhere((e) => e is _GameCellTileComponent);
         _currentObjects = null;
         _currentStrategy = null;
         _currentSpan = null;
@@ -295,7 +293,6 @@ class GameCell extends PositionComponent
         size = s;
         _backgroundComponent?.size = s;
         _selectionComponent.size = s;
-        _boardComponent?.size = s;
         priority = 100;
       }
     } else {
@@ -304,7 +301,6 @@ class GameCell extends PositionComponent
         size = grid.cellSize;
         _backgroundComponent?.size = size;
         _selectionComponent.size = size;
-        _boardComponent?.size = size;
         priority = 0;
       }
     }
@@ -322,19 +318,53 @@ class GameCell extends PositionComponent
     _currentVisible = visible;
     _currentTile = tile;
     final paint = Paint()..isAntiAlias = false;
-    if (tile != null) {
-      final component = _boardComponent ??= SpriteComponent(
-        size: size,
-        paint: paint,
-      );
+
+    removeWhere((e) => e is _GameCellTileComponent);
+
+    if (newSpan != null && newSpan > 1 && strategy is LayoutCellMergeStrategy) {
+      final direction = strategy.direction;
+      var current = cellDefinition;
+      for (var i = 0; i < newSpan; i++) {
+        if (i > 0) {
+          current = direction == CellMergeDirection.horizontal
+              ? VectorDefinition(current.x + 1, current.y)
+              : VectorDefinition(current.x, current.y + 1);
+        }
+
+        final targetCell = state.table.cells[current];
+        final targetTile = targetCell?.tiles.lastOrNull;
+
+        if (targetTile != null) {
+          final component = _GameCellTileComponent(paint: paint, priority: 0);
+          component.sprite =
+              await state.assetManager.loadBoardSprite(
+                targetTile.asset,
+                targetTile.tile,
+              ) ??
+              game.blankSprite;
+          component.size = grid.cellSize;
+
+          double tx = 0;
+          double ty = 0;
+          if (direction == CellMergeDirection.horizontal) {
+            tx = i * grid.cellSize.x;
+          } else {
+            ty = i * grid.cellSize.y;
+          }
+          component.position = Vector2(tx, ty);
+          add(component);
+        }
+      }
+    } else if (tile != null) {
+      final component = _GameCellTileComponent(paint: paint, priority: 0);
       component.sprite =
           await state.assetManager.loadBoardSprite(tile.asset, tile.tile) ??
           game.blankSprite;
-      if (!component.isMounted) {
-        add(component);
-      }
+      component.size = grid.cellSize;
+      component.position = Vector2.zero();
+      add(component);
     } else {
-      _boardComponent?.removeFromParent();
+      // Clear if no tile
     }
     removeWhere((e) => e is _GameCellObjectComponent);
     if (objects.isEmpty) return;
@@ -347,11 +377,13 @@ class GameCell extends PositionComponent
     }.toList();
 
     final bool reverse;
-    final direction = cell?.merge?.direction;
+    final CellMergeDirection? direction;
     if (strategy is LayoutCellMergeStrategy) {
       reverse = strategy.reverse;
+      direction = strategy.direction;
     } else {
       reverse = false;
+      direction = null;
     }
 
     final renderObjects = displayObjects
@@ -680,4 +712,8 @@ class GameCell extends PositionComponent
 
 class _GameCellObjectComponent extends SpriteComponent {
   _GameCellObjectComponent({super.paint, super.priority});
+}
+
+class _GameCellTileComponent extends SpriteComponent {
+  _GameCellTileComponent({super.paint, super.priority});
 }

@@ -77,10 +77,6 @@ final class ClientWorldState with ClientWorldStateMappable {
 
   bool isCellSelected(VectorDefinition cell) {
     if (selectedCell == cell) return true;
-    return selectedCell != null &&
-        getParentCell(
-              GlobalVectorDefinition.fromLocal(tableName, selectedCell!),
-            ) ==
-            cell;
+    return selectedCell != null && getLocalParentCell(selectedCell!) == cell;
   }
 }

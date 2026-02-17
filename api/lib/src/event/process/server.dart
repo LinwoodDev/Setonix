@@ -318,6 +318,7 @@ ServerProcessed processServerEvent(
     case CellMergeStrategyChanged():
       return ServerProcessed(
         state.mapTableOrDefault(event.cell.table, (table) {
+          final cell = table.getCell(event.cell.position);
           final cells = Map<VectorDefinition, TableCell>.from(table.cells);
 
           CellMergeDirection? getDirection(CellMergeStrategy? strategy) {
@@ -357,9 +358,7 @@ ServerProcessed processServerEvent(
           }
 
           // Update target cell
-          final cell = cells[event.cell.position] ?? TableCell();
-          final newCell = cell.copyWith(merge: event.strategy);
-          cells[event.cell.position] = newCell;
+          var newCell = cell.copyWith(merge: event.strategy);
 
           // Expand new neighbors
 
@@ -372,7 +371,6 @@ ServerProcessed processServerEvent(
 
             if (direction != null) {
               var current = event.cell.position;
-
               final allObjects = (cells[current] ?? TableCell()).objects
                   .toList();
 
@@ -382,23 +380,19 @@ ServerProcessed processServerEvent(
                     : VectorDefinition(current.x, current.y + 1);
 
                 final neighbor = cells[current] ?? TableCell();
-
                 if (neighbor.objects.isNotEmpty) {
                   allObjects.addAll(neighbor.objects);
                 }
 
                 cells[current] = neighbor.copyWith(
                   merge: MergedCellStrategy(direction),
-
                   objects: [],
                 );
               }
-
-              cells[event.cell.position] = cells[event.cell.position]!.copyWith(
-                objects: allObjects,
-              );
+              newCell = newCell.copyWith(objects: allObjects);
             }
           }
+          cells[event.cell.position] = newCell;
 
           return table.copyWith.cellsBox(content: cells);
         }),
