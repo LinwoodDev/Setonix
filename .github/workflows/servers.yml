@@ -13,7 +13,7 @@ jobs:
       run:
         working-directory: servers
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Skip job if no changes
         run: echo "No changes detected in servers directory. Skipping build."
       - name: Install pnpm
