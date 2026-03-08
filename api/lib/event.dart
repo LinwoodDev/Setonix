@@ -1,3 +1,5 @@
+library;
+
 export 'models.dart';
 export 'src/event/event.dart';
 export 'src/event/state.dart';
