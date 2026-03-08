@@ -2,11 +2,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'model.dart';
 
+/// @nodoc
 class UserJoinedMapper extends SubClassMapperBase<UserJoined> {
   UserJoinedMapper._();
 
@@ -61,6 +63,7 @@ class UserJoinedMapper extends SubClassMapperBase<UserJoined> {
   }
 }
 
+/// @nodoc
 mixin UserJoinedMappable {
   String toJson() {
     return UserJoinedMapper.ensureInitialized().encodeJson<UserJoined>(
@@ -101,12 +104,14 @@ mixin UserJoinedMappable {
   }
 }
 
+/// @nodoc
 extension UserJoinedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, UserJoined, $Out> {
   UserJoinedCopyWith<$R, UserJoined, $Out> get $asUserJoined =>
       $base.as((v, t, t2) => _UserJoinedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class UserJoinedCopyWith<$R, $In extends UserJoined, $Out>
     implements LocalWorldEventCopyWith<$R, $In, $Out> {
   @override
@@ -114,6 +119,7 @@ abstract class UserJoinedCopyWith<$R, $In extends UserJoined, $Out>
   UserJoinedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _UserJoinedCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, UserJoined, $Out>
     implements UserJoinedCopyWith<$R, UserJoined, $Out> {

@@ -8,6 +8,7 @@
 
 part of 'definition.dart';
 
+/// @nodoc
 class FigureDefinitionMapper extends ClassMapperBase<FigureDefinition> {
   FigureDefinitionMapper._();
 
@@ -68,6 +69,7 @@ class FigureDefinitionMapper extends ClassMapperBase<FigureDefinition> {
   }
 }
 
+/// @nodoc
 mixin FigureDefinitionMappable {
   String toJson() {
     return FigureDefinitionMapper.ensureInitialized()
@@ -109,6 +111,7 @@ mixin FigureDefinitionMappable {
   }
 }
 
+/// @nodoc
 extension FigureDefinitionValueCopy<$R, $Out>
     on ObjectCopyWith<$R, FigureDefinition, $Out> {
   FigureDefinitionCopyWith<$R, FigureDefinition, $Out>
@@ -116,6 +119,7 @@ extension FigureDefinitionValueCopy<$R, $Out>
       $base.as((v, t, t2) => _FigureDefinitionCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class FigureDefinitionCopyWith<$R, $In extends FigureDefinition, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   MapCopyWith<
@@ -137,6 +141,7 @@ abstract class FigureDefinitionCopyWith<$R, $In extends FigureDefinition, $Out>
   );
 }
 
+/// @nodoc
 class _FigureDefinitionCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, FigureDefinition, $Out>
     implements FigureDefinitionCopyWith<$R, FigureDefinition, $Out> {
@@ -185,6 +190,7 @@ class _FigureDefinitionCopyWithImpl<$R, $Out>
   ) => _FigureDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class VariationDefinitionMapper extends ClassMapperBase<VariationDefinition> {
   VariationDefinitionMapper._();
 
@@ -255,6 +261,7 @@ class VariationDefinitionMapper extends ClassMapperBase<VariationDefinition> {
   }
 }
 
+/// @nodoc
 mixin VariationDefinitionMappable {
   String toJson() {
     return VariationDefinitionMapper.ensureInitialized()
@@ -299,6 +306,7 @@ mixin VariationDefinitionMappable {
   }
 }
 
+/// @nodoc
 extension VariationDefinitionValueCopy<$R, $Out>
     on ObjectCopyWith<$R, VariationDefinition, $Out> {
   VariationDefinitionCopyWith<$R, VariationDefinition, $Out>
@@ -307,6 +315,7 @@ extension VariationDefinitionValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class VariationDefinitionCopyWith<
   $R,
   $In extends VariationDefinition,
@@ -329,6 +338,7 @@ abstract class VariationDefinitionCopyWith<
   );
 }
 
+/// @nodoc
 class _VariationDefinitionCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, VariationDefinition, $Out>
     implements VariationDefinitionCopyWith<$R, VariationDefinition, $Out> {
@@ -371,6 +381,7 @@ class _VariationDefinitionCopyWithImpl<$R, $Out>
       _VariationDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class FigureBackDefinitionMapper extends ClassMapperBase<FigureBackDefinition> {
   FigureBackDefinitionMapper._();
 
@@ -433,6 +444,7 @@ class FigureBackDefinitionMapper extends ClassMapperBase<FigureBackDefinition> {
   }
 }
 
+/// @nodoc
 mixin FigureBackDefinitionMappable {
   String toJson() {
     return FigureBackDefinitionMapper.ensureInitialized()
@@ -477,6 +489,7 @@ mixin FigureBackDefinitionMappable {
   }
 }
 
+/// @nodoc
 extension FigureBackDefinitionValueCopy<$R, $Out>
     on ObjectCopyWith<$R, FigureBackDefinition, $Out> {
   FigureBackDefinitionCopyWith<$R, FigureBackDefinition, $Out>
@@ -485,6 +498,7 @@ extension FigureBackDefinitionValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class FigureBackDefinitionCopyWith<
   $R,
   $In extends FigureBackDefinition,
@@ -502,6 +516,7 @@ abstract class FigureBackDefinitionCopyWith<
   );
 }
 
+/// @nodoc
 class _FigureBackDefinitionCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, FigureBackDefinition, $Out>
     implements FigureBackDefinitionCopyWith<$R, FigureBackDefinition, $Out> {
@@ -538,6 +553,7 @@ class _FigureBackDefinitionCopyWithImpl<$R, $Out>
       _FigureBackDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class BoardDefinitionMapper extends ClassMapperBase<BoardDefinition> {
   BoardDefinitionMapper._();
 
@@ -609,6 +625,7 @@ class BoardDefinitionMapper extends ClassMapperBase<BoardDefinition> {
   }
 }
 
+/// @nodoc
 mixin BoardDefinitionMappable {
   String toJson() {
     return BoardDefinitionMapper.ensureInitialized()
@@ -651,12 +668,14 @@ mixin BoardDefinitionMappable {
   }
 }
 
+/// @nodoc
 extension BoardDefinitionValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BoardDefinition, $Out> {
   BoardDefinitionCopyWith<$R, BoardDefinition, $Out> get $asBoardDefinition =>
       $base.as((v, t, t2) => _BoardDefinitionCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class BoardDefinitionCopyWith<$R, $In extends BoardDefinition, $Out>
     implements VisualDefinitionCopyWith<$R, $In, $Out> {
   @override
@@ -676,6 +695,7 @@ abstract class BoardDefinitionCopyWith<$R, $In extends BoardDefinition, $Out>
   );
 }
 
+/// @nodoc
 class _BoardDefinitionCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, BoardDefinition, $Out>
     implements BoardDefinitionCopyWith<$R, BoardDefinition, $Out> {

@@ -1,4 +1,5 @@
 * Add zoom gestures
 * Fix server builds not created for released versions
+* Improve server docs by ignoring generated files
 
 Read more here: https://linwood.dev/setonix/0.6.1

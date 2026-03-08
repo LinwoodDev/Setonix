@@ -8,6 +8,7 @@
 
 part of 'background.dart';
 
+/// @nodoc
 class BackgroundDefinitionMapper extends ClassMapperBase<BackgroundDefinition> {
   BackgroundDefinitionMapper._();
 
@@ -79,6 +80,7 @@ class BackgroundDefinitionMapper extends ClassMapperBase<BackgroundDefinition> {
   }
 }
 
+/// @nodoc
 mixin BackgroundDefinitionMappable {
   String toJson() {
     return BackgroundDefinitionMapper.ensureInitialized()
@@ -123,6 +125,7 @@ mixin BackgroundDefinitionMappable {
   }
 }
 
+/// @nodoc
 extension BackgroundDefinitionValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BackgroundDefinition, $Out> {
   BackgroundDefinitionCopyWith<$R, BackgroundDefinition, $Out>
@@ -131,6 +134,7 @@ extension BackgroundDefinitionValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class BackgroundDefinitionCopyWith<
   $R,
   $In extends BackgroundDefinition,
@@ -153,6 +157,7 @@ abstract class BackgroundDefinitionCopyWith<
   );
 }
 
+/// @nodoc
 class _BackgroundDefinitionCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, BackgroundDefinition, $Out>
     implements BackgroundDefinitionCopyWith<$R, BackgroundDefinition, $Out> {

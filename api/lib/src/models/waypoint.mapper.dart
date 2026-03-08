@@ -8,6 +8,7 @@
 
 part of 'waypoint.dart';
 
+/// @nodoc
 class WaypointMapper extends ClassMapperBase<Waypoint> {
   WaypointMapper._();
 
@@ -53,6 +54,7 @@ class WaypointMapper extends ClassMapperBase<Waypoint> {
   }
 }
 
+/// @nodoc
 mixin WaypointMappable {
   String toJson() {
     return WaypointMapper.ensureInitialized().encodeJson<Waypoint>(
@@ -91,11 +93,13 @@ mixin WaypointMappable {
   }
 }
 
+/// @nodoc
 extension WaypointValueCopy<$R, $Out> on ObjectCopyWith<$R, Waypoint, $Out> {
   WaypointCopyWith<$R, Waypoint, $Out> get $asWaypoint =>
       $base.as((v, t, t2) => _WaypointCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class WaypointCopyWith<$R, $In extends Waypoint, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   GlobalVectorDefinitionCopyWith<
@@ -108,6 +112,7 @@ abstract class WaypointCopyWith<$R, $In extends Waypoint, $Out>
   WaypointCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _WaypointCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, Waypoint, $Out>
     implements WaypointCopyWith<$R, Waypoint, $Out> {

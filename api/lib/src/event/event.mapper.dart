@@ -8,6 +8,7 @@
 
 part of 'event.dart';
 
+/// @nodoc
 class WorldEventMapper extends ClassMapperBase<WorldEvent> {
   WorldEventMapper._();
 
@@ -49,18 +50,21 @@ class WorldEventMapper extends ClassMapperBase<WorldEvent> {
   }
 }
 
+/// @nodoc
 mixin WorldEventMappable {
   String toJson();
   Map<String, dynamic> toMap();
   WorldEventCopyWith<WorldEvent, WorldEvent, WorldEvent> get copyWith;
 }
 
+/// @nodoc
 abstract class WorldEventCopyWith<$R, $In extends WorldEvent, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call();
   WorldEventCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class PlayableWorldEventMapper extends SubClassMapperBase<PlayableWorldEvent> {
   PlayableWorldEventMapper._();
 
@@ -108,6 +112,7 @@ class PlayableWorldEventMapper extends SubClassMapperBase<PlayableWorldEvent> {
   }
 }
 
+/// @nodoc
 mixin PlayableWorldEventMappable {
   String toJson();
   Map<String, dynamic> toMap();
@@ -119,6 +124,7 @@ mixin PlayableWorldEventMappable {
   get copyWith;
 }
 
+/// @nodoc
 abstract class PlayableWorldEventCopyWith<
   $R,
   $In extends PlayableWorldEvent,
@@ -132,6 +138,7 @@ abstract class PlayableWorldEventCopyWith<
   );
 }
 
+/// @nodoc
 class ServerWorldEventMapper extends SubClassMapperBase<ServerWorldEvent> {
   ServerWorldEventMapper._();
 
@@ -193,6 +200,7 @@ class ServerWorldEventMapper extends SubClassMapperBase<ServerWorldEvent> {
   }
 }
 
+/// @nodoc
 mixin ServerWorldEventMappable {
   String toJson();
   Map<String, dynamic> toMap();
@@ -200,6 +208,7 @@ mixin ServerWorldEventMappable {
   get copyWith;
 }
 
+/// @nodoc
 abstract class ServerWorldEventCopyWith<$R, $In extends ServerWorldEvent, $Out>
     implements PlayableWorldEventCopyWith<$R, $In, $Out> {
   @override
@@ -209,6 +218,7 @@ abstract class ServerWorldEventCopyWith<$R, $In extends ServerWorldEvent, $Out>
   );
 }
 
+/// @nodoc
 class WorldInitializedMapper extends SubClassMapperBase<WorldInitialized> {
   WorldInitializedMapper._();
 
@@ -302,6 +312,7 @@ class WorldInitializedMapper extends SubClassMapperBase<WorldInitialized> {
   }
 }
 
+/// @nodoc
 mixin WorldInitializedMappable {
   String toJson() {
     return WorldInitializedMapper.ensureInitialized()
@@ -343,6 +354,7 @@ mixin WorldInitializedMappable {
   }
 }
 
+/// @nodoc
 extension WorldInitializedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, WorldInitialized, $Out> {
   WorldInitializedCopyWith<$R, WorldInitialized, $Out>
@@ -350,6 +362,7 @@ extension WorldInitializedValueCopy<$R, $Out>
       $base.as((v, t, t2) => _WorldInitializedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class WorldInitializedCopyWith<$R, $In extends WorldInitialized, $Out>
     implements ServerWorldEventCopyWith<$R, $In, $Out> {
   GameTableCopyWith<$R, GameTable, GameTable>? get table;
@@ -376,6 +389,7 @@ abstract class WorldInitializedCopyWith<$R, $In extends WorldInitialized, $Out>
   );
 }
 
+/// @nodoc
 class _WorldInitializedCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, WorldInitialized, $Out>
     implements WorldInitializedCopyWith<$R, WorldInitialized, $Out> {
@@ -449,6 +463,7 @@ class _WorldInitializedCopyWithImpl<$R, $Out>
   ) => _WorldInitializedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class TeamJoinedMapper extends SubClassMapperBase<TeamJoined> {
   TeamJoinedMapper._();
 
@@ -499,6 +514,7 @@ class TeamJoinedMapper extends SubClassMapperBase<TeamJoined> {
   }
 }
 
+/// @nodoc
 mixin TeamJoinedMappable {
   String toJson() {
     return TeamJoinedMapper.ensureInitialized().encodeJson<TeamJoined>(
@@ -539,12 +555,14 @@ mixin TeamJoinedMappable {
   }
 }
 
+/// @nodoc
 extension TeamJoinedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, TeamJoined, $Out> {
   TeamJoinedCopyWith<$R, TeamJoined, $Out> get $asTeamJoined =>
       $base.as((v, t, t2) => _TeamJoinedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class TeamJoinedCopyWith<$R, $In extends TeamJoined, $Out>
     implements ServerWorldEventCopyWith<$R, $In, $Out> {
   @override
@@ -552,6 +570,7 @@ abstract class TeamJoinedCopyWith<$R, $In extends TeamJoined, $Out>
   TeamJoinedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _TeamJoinedCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, TeamJoined, $Out>
     implements TeamJoinedCopyWith<$R, TeamJoined, $Out> {
@@ -579,6 +598,7 @@ class _TeamJoinedCopyWithImpl<$R, $Out>
   ) => _TeamJoinedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class TeamLeftMapper extends SubClassMapperBase<TeamLeft> {
   TeamLeftMapper._();
 
@@ -629,6 +649,7 @@ class TeamLeftMapper extends SubClassMapperBase<TeamLeft> {
   }
 }
 
+/// @nodoc
 mixin TeamLeftMappable {
   String toJson() {
     return TeamLeftMapper.ensureInitialized().encodeJson<TeamLeft>(
@@ -667,11 +688,13 @@ mixin TeamLeftMappable {
   }
 }
 
+/// @nodoc
 extension TeamLeftValueCopy<$R, $Out> on ObjectCopyWith<$R, TeamLeft, $Out> {
   TeamLeftCopyWith<$R, TeamLeft, $Out> get $asTeamLeft =>
       $base.as((v, t, t2) => _TeamLeftCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class TeamLeftCopyWith<$R, $In extends TeamLeft, $Out>
     implements ServerWorldEventCopyWith<$R, $In, $Out> {
   @override
@@ -679,6 +702,7 @@ abstract class TeamLeftCopyWith<$R, $In extends TeamLeft, $Out>
   TeamLeftCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _TeamLeftCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, TeamLeft, $Out>
     implements TeamLeftCopyWith<$R, TeamLeft, $Out> {
@@ -706,6 +730,7 @@ class _TeamLeftCopyWithImpl<$R, $Out>
   ) => _TeamLeftCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class ObjectsChangedMapper extends SubClassMapperBase<ObjectsChanged> {
   ObjectsChangedMapper._();
 
@@ -766,6 +791,7 @@ class ObjectsChangedMapper extends SubClassMapperBase<ObjectsChanged> {
   }
 }
 
+/// @nodoc
 mixin ObjectsChangedMappable {
   String toJson() {
     return ObjectsChangedMapper.ensureInitialized().encodeJson<ObjectsChanged>(
@@ -808,12 +834,14 @@ mixin ObjectsChangedMappable {
   }
 }
 
+/// @nodoc
 extension ObjectsChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ObjectsChanged, $Out> {
   ObjectsChangedCopyWith<$R, ObjectsChanged, $Out> get $asObjectsChanged =>
       $base.as((v, t, t2) => _ObjectsChangedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class ObjectsChangedCopyWith<$R, $In extends ObjectsChanged, $Out>
     implements ServerWorldEventCopyWith<$R, $In, $Out> {
   GlobalVectorDefinitionCopyWith<
@@ -831,6 +859,7 @@ abstract class ObjectsChangedCopyWith<$R, $In extends ObjectsChanged, $Out>
   );
 }
 
+/// @nodoc
 class _ObjectsChangedCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, ObjectsChanged, $Out>
     implements ObjectsChangedCopyWith<$R, ObjectsChanged, $Out> {
@@ -872,6 +901,7 @@ class _ObjectsChangedCopyWithImpl<$R, $Out>
   ) => _ObjectsChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class CellShuffledMapper extends SubClassMapperBase<CellShuffled> {
   CellShuffledMapper._();
 
@@ -931,6 +961,7 @@ class CellShuffledMapper extends SubClassMapperBase<CellShuffled> {
   }
 }
 
+/// @nodoc
 mixin CellShuffledMappable {
   String toJson() {
     return CellShuffledMapper.ensureInitialized().encodeJson<CellShuffled>(
@@ -973,12 +1004,14 @@ mixin CellShuffledMappable {
   }
 }
 
+/// @nodoc
 extension CellShuffledValueCopy<$R, $Out>
     on ObjectCopyWith<$R, CellShuffled, $Out> {
   CellShuffledCopyWith<$R, CellShuffled, $Out> get $asCellShuffled =>
       $base.as((v, t, t2) => _CellShuffledCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class CellShuffledCopyWith<$R, $In extends CellShuffled, $Out>
     implements ServerWorldEventCopyWith<$R, $In, $Out> {
   GlobalVectorDefinitionCopyWith<
@@ -993,6 +1026,7 @@ abstract class CellShuffledCopyWith<$R, $In extends CellShuffled, $Out>
   CellShuffledCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _CellShuffledCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, CellShuffled, $Out>
     implements CellShuffledCopyWith<$R, CellShuffled, $Out> {
@@ -1034,6 +1068,7 @@ class _CellShuffledCopyWithImpl<$R, $Out>
   ) => _CellShuffledCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class MessageSentMapper extends SubClassMapperBase<MessageSent> {
   MessageSentMapper._();
 
@@ -1087,6 +1122,7 @@ class MessageSentMapper extends SubClassMapperBase<MessageSent> {
   }
 }
 
+/// @nodoc
 mixin MessageSentMappable {
   String toJson() {
     return MessageSentMapper.ensureInitialized().encodeJson<MessageSent>(
@@ -1127,12 +1163,14 @@ mixin MessageSentMappable {
   }
 }
 
+/// @nodoc
 extension MessageSentValueCopy<$R, $Out>
     on ObjectCopyWith<$R, MessageSent, $Out> {
   MessageSentCopyWith<$R, MessageSent, $Out> get $asMessageSent =>
       $base.as((v, t, t2) => _MessageSentCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class MessageSentCopyWith<$R, $In extends MessageSent, $Out>
     implements ServerWorldEventCopyWith<$R, $In, $Out> {
   @override
@@ -1140,6 +1178,7 @@ abstract class MessageSentCopyWith<$R, $In extends MessageSent, $Out>
   MessageSentCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _MessageSentCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, MessageSent, $Out>
     implements MessageSentCopyWith<$R, MessageSent, $Out> {
@@ -1167,6 +1206,7 @@ class _MessageSentCopyWithImpl<$R, $Out>
   ) => _MessageSentCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class BoardTilesSpawnedMapper extends SubClassMapperBase<BoardTilesSpawned> {
   BoardTilesSpawnedMapper._();
 
@@ -1224,6 +1264,7 @@ class BoardTilesSpawnedMapper extends SubClassMapperBase<BoardTilesSpawned> {
   }
 }
 
+/// @nodoc
 mixin BoardTilesSpawnedMappable {
   String toJson() {
     return BoardTilesSpawnedMapper.ensureInitialized()
@@ -1269,6 +1310,7 @@ mixin BoardTilesSpawnedMappable {
   }
 }
 
+/// @nodoc
 extension BoardTilesSpawnedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BoardTilesSpawned, $Out> {
   BoardTilesSpawnedCopyWith<$R, BoardTilesSpawned, $Out>
@@ -1277,6 +1319,7 @@ extension BoardTilesSpawnedValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class BoardTilesSpawnedCopyWith<
   $R,
   $In extends BoardTilesSpawned,
@@ -1297,6 +1340,7 @@ abstract class BoardTilesSpawnedCopyWith<
   );
 }
 
+/// @nodoc
 class _BoardTilesSpawnedCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, BoardTilesSpawned, $Out>
     implements BoardTilesSpawnedCopyWith<$R, BoardTilesSpawned, $Out> {
@@ -1337,6 +1381,7 @@ class _BoardTilesSpawnedCopyWithImpl<$R, $Out>
   ) => _BoardTilesSpawnedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class BoardTilesChangedMapper extends SubClassMapperBase<BoardTilesChanged> {
   BoardTilesChangedMapper._();
 
@@ -1394,6 +1439,7 @@ class BoardTilesChangedMapper extends SubClassMapperBase<BoardTilesChanged> {
   }
 }
 
+/// @nodoc
 mixin BoardTilesChangedMappable {
   String toJson() {
     return BoardTilesChangedMapper.ensureInitialized()
@@ -1439,6 +1485,7 @@ mixin BoardTilesChangedMappable {
   }
 }
 
+/// @nodoc
 extension BoardTilesChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BoardTilesChanged, $Out> {
   BoardTilesChangedCopyWith<$R, BoardTilesChanged, $Out>
@@ -1447,6 +1494,7 @@ extension BoardTilesChangedValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class BoardTilesChangedCopyWith<
   $R,
   $In extends BoardTilesChanged,
@@ -1467,6 +1515,7 @@ abstract class BoardTilesChangedCopyWith<
   );
 }
 
+/// @nodoc
 class _BoardTilesChangedCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, BoardTilesChanged, $Out>
     implements BoardTilesChangedCopyWith<$R, BoardTilesChanged, $Out> {
@@ -1507,6 +1556,7 @@ class _BoardTilesChangedCopyWithImpl<$R, $Out>
   ) => _BoardTilesChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class DialogOpenedMapper extends SubClassMapperBase<DialogOpened> {
   DialogOpenedMapper._();
 
@@ -1569,6 +1619,7 @@ class DialogOpenedMapper extends SubClassMapperBase<DialogOpened> {
   }
 }
 
+/// @nodoc
 mixin DialogOpenedMappable {
   String toJson() {
     return DialogOpenedMapper.ensureInitialized().encodeJson<DialogOpened>(
@@ -1611,12 +1662,14 @@ mixin DialogOpenedMappable {
   }
 }
 
+/// @nodoc
 extension DialogOpenedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, DialogOpened, $Out> {
   DialogOpenedCopyWith<$R, DialogOpened, $Out> get $asDialogOpened =>
       $base.as((v, t, t2) => _DialogOpenedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class DialogOpenedCopyWith<$R, $In extends DialogOpened, $Out>
     implements ServerWorldEventCopyWith<$R, $In, $Out> {
   GameDialogCopyWith<$R, GameDialog, GameDialog> get dialog;
@@ -1625,6 +1678,7 @@ abstract class DialogOpenedCopyWith<$R, $In extends DialogOpened, $Out>
   DialogOpenedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _DialogOpenedCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, DialogOpened, $Out>
     implements DialogOpenedCopyWith<$R, DialogOpened, $Out> {
@@ -1655,6 +1709,7 @@ class _DialogOpenedCopyWithImpl<$R, $Out>
   ) => _DialogOpenedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class DialogsClosedMapper extends SubClassMapperBase<DialogsClosed> {
   DialogsClosedMapper._();
 
@@ -1700,6 +1755,7 @@ class DialogsClosedMapper extends SubClassMapperBase<DialogsClosed> {
   }
 }
 
+/// @nodoc
 mixin DialogsClosedMappable {
   String toJson() {
     return DialogsClosedMapper.ensureInitialized().encodeJson<DialogsClosed>(
@@ -1742,12 +1798,14 @@ mixin DialogsClosedMappable {
   }
 }
 
+/// @nodoc
 extension DialogsClosedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, DialogsClosed, $Out> {
   DialogsClosedCopyWith<$R, DialogsClosed, $Out> get $asDialogsClosed =>
       $base.as((v, t, t2) => _DialogsClosedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class DialogsClosedCopyWith<$R, $In extends DialogsClosed, $Out>
     implements ServerWorldEventCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>? get ids;
@@ -1756,6 +1814,7 @@ abstract class DialogsClosedCopyWith<$R, $In extends DialogsClosed, $Out>
   DialogsClosedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _DialogsClosedCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, DialogsClosed, $Out>
     implements DialogsClosedCopyWith<$R, DialogsClosed, $Out> {
@@ -1786,6 +1845,7 @@ class _DialogsClosedCopyWithImpl<$R, $Out>
   ) => _DialogsClosedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class ImagesUpdatedMapper extends SubClassMapperBase<ImagesUpdated> {
   ImagesUpdatedMapper._();
 
@@ -1835,6 +1895,7 @@ class ImagesUpdatedMapper extends SubClassMapperBase<ImagesUpdated> {
   }
 }
 
+/// @nodoc
 mixin ImagesUpdatedMappable {
   String toJson() {
     return ImagesUpdatedMapper.ensureInitialized().encodeJson<ImagesUpdated>(
@@ -1877,12 +1938,14 @@ mixin ImagesUpdatedMappable {
   }
 }
 
+/// @nodoc
 extension ImagesUpdatedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ImagesUpdated, $Out> {
   ImagesUpdatedCopyWith<$R, ImagesUpdated, $Out> get $asImagesUpdated =>
       $base.as((v, t, t2) => _ImagesUpdatedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class ImagesUpdatedCopyWith<$R, $In extends ImagesUpdated, $Out>
     implements ServerWorldEventCopyWith<$R, $In, $Out> {
   MapCopyWith<$R, String, Uint8List, ObjectCopyWith<$R, Uint8List, Uint8List>>
@@ -1892,6 +1955,7 @@ abstract class ImagesUpdatedCopyWith<$R, $In extends ImagesUpdated, $Out>
   ImagesUpdatedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _ImagesUpdatedCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, ImagesUpdated, $Out>
     implements ImagesUpdatedCopyWith<$R, ImagesUpdated, $Out> {
@@ -1920,6 +1984,7 @@ class _ImagesUpdatedCopyWithImpl<$R, $Out>
   ) => _ImagesUpdatedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class ServerStateUpdatedMapper extends SubClassMapperBase<ServerStateUpdated> {
   ServerStateUpdatedMapper._();
 
@@ -1969,6 +2034,7 @@ class ServerStateUpdatedMapper extends SubClassMapperBase<ServerStateUpdated> {
   }
 }
 
+/// @nodoc
 mixin ServerStateUpdatedMappable {
   String toJson() {
     return ServerStateUpdatedMapper.ensureInitialized()
@@ -2014,6 +2080,7 @@ mixin ServerStateUpdatedMappable {
   }
 }
 
+/// @nodoc
 extension ServerStateUpdatedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ServerStateUpdated, $Out> {
   ServerStateUpdatedCopyWith<$R, ServerStateUpdated, $Out>
@@ -2022,6 +2089,7 @@ extension ServerStateUpdatedValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class ServerStateUpdatedCopyWith<
   $R,
   $In extends ServerStateUpdated,
@@ -2036,6 +2104,7 @@ abstract class ServerStateUpdatedCopyWith<
   );
 }
 
+/// @nodoc
 class _ServerStateUpdatedCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, ServerStateUpdated, $Out>
     implements ServerStateUpdatedCopyWith<$R, ServerStateUpdated, $Out> {
@@ -2060,6 +2129,7 @@ class _ServerStateUpdatedCopyWithImpl<$R, $Out>
   ) => _ServerStateUpdatedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class AuthenticatedRequestedMapper
     extends SubClassMapperBase<AuthenticatedRequested> {
   AuthenticatedRequestedMapper._();
@@ -2123,6 +2193,7 @@ class AuthenticatedRequestedMapper
   }
 }
 
+/// @nodoc
 mixin AuthenticatedRequestedMappable {
   String toJson() {
     return AuthenticatedRequestedMapper.ensureInitialized()
@@ -2167,6 +2238,7 @@ mixin AuthenticatedRequestedMappable {
   }
 }
 
+/// @nodoc
 extension AuthenticatedRequestedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, AuthenticatedRequested, $Out> {
   AuthenticatedRequestedCopyWith<$R, AuthenticatedRequested, $Out>
@@ -2175,6 +2247,7 @@ extension AuthenticatedRequestedValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class AuthenticatedRequestedCopyWith<
   $R,
   $In extends AuthenticatedRequested,
@@ -2188,6 +2261,7 @@ abstract class AuthenticatedRequestedCopyWith<
   );
 }
 
+/// @nodoc
 class _AuthenticatedRequestedCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, AuthenticatedRequested, $Out>
     implements
@@ -2216,6 +2290,7 @@ class _AuthenticatedRequestedCopyWithImpl<$R, $Out>
       _AuthenticatedRequestedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class ToolbarUpdatedMapper extends SubClassMapperBase<ToolbarUpdated> {
   ToolbarUpdatedMapper._();
 
@@ -2265,6 +2340,7 @@ class ToolbarUpdatedMapper extends SubClassMapperBase<ToolbarUpdated> {
   }
 }
 
+/// @nodoc
 mixin ToolbarUpdatedMappable {
   String toJson() {
     return ToolbarUpdatedMapper.ensureInitialized().encodeJson<ToolbarUpdated>(
@@ -2307,12 +2383,14 @@ mixin ToolbarUpdatedMappable {
   }
 }
 
+/// @nodoc
 extension ToolbarUpdatedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ToolbarUpdated, $Out> {
   ToolbarUpdatedCopyWith<$R, ToolbarUpdated, $Out> get $asToolbarUpdated =>
       $base.as((v, t, t2) => _ToolbarUpdatedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class ToolbarUpdatedCopyWith<$R, $In extends ToolbarUpdated, $Out>
     implements ServerWorldEventCopyWith<$R, $In, $Out> {
   GameToolbarCopyWith<$R, GameToolbar, GameToolbar> get toolbar;
@@ -2323,6 +2401,7 @@ abstract class ToolbarUpdatedCopyWith<$R, $In extends ToolbarUpdated, $Out>
   );
 }
 
+/// @nodoc
 class _ToolbarUpdatedCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, ToolbarUpdated, $Out>
     implements ToolbarUpdatedCopyWith<$R, ToolbarUpdated, $Out> {
@@ -2347,6 +2426,7 @@ class _ToolbarUpdatedCopyWithImpl<$R, $Out>
   ) => _ToolbarUpdatedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class ClientWorldEventMapper extends SubClassMapperBase<ClientWorldEvent> {
   ClientWorldEventMapper._();
 
@@ -2407,6 +2487,7 @@ class ClientWorldEventMapper extends SubClassMapperBase<ClientWorldEvent> {
   }
 }
 
+/// @nodoc
 mixin ClientWorldEventMappable {
   String toJson();
   Map<String, dynamic> toMap();
@@ -2414,6 +2495,7 @@ mixin ClientWorldEventMappable {
   get copyWith;
 }
 
+/// @nodoc
 abstract class ClientWorldEventCopyWith<$R, $In extends ClientWorldEvent, $Out>
     implements WorldEventCopyWith<$R, $In, $Out> {
   @override
@@ -2423,6 +2505,7 @@ abstract class ClientWorldEventCopyWith<$R, $In extends ClientWorldEvent, $Out>
   );
 }
 
+/// @nodoc
 class TeamJoinRequestMapper extends SubClassMapperBase<TeamJoinRequest> {
   TeamJoinRequestMapper._();
 
@@ -2468,6 +2551,7 @@ class TeamJoinRequestMapper extends SubClassMapperBase<TeamJoinRequest> {
   }
 }
 
+/// @nodoc
 mixin TeamJoinRequestMappable {
   String toJson() {
     return TeamJoinRequestMapper.ensureInitialized()
@@ -2510,12 +2594,14 @@ mixin TeamJoinRequestMappable {
   }
 }
 
+/// @nodoc
 extension TeamJoinRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, TeamJoinRequest, $Out> {
   TeamJoinRequestCopyWith<$R, TeamJoinRequest, $Out> get $asTeamJoinRequest =>
       $base.as((v, t, t2) => _TeamJoinRequestCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class TeamJoinRequestCopyWith<$R, $In extends TeamJoinRequest, $Out>
     implements ClientWorldEventCopyWith<$R, $In, $Out> {
   @override
@@ -2525,6 +2611,7 @@ abstract class TeamJoinRequestCopyWith<$R, $In extends TeamJoinRequest, $Out>
   );
 }
 
+/// @nodoc
 class _TeamJoinRequestCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, TeamJoinRequest, $Out>
     implements TeamJoinRequestCopyWith<$R, TeamJoinRequest, $Out> {
@@ -2546,6 +2633,7 @@ class _TeamJoinRequestCopyWithImpl<$R, $Out>
   ) => _TeamJoinRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class TeamLeaveRequestMapper extends SubClassMapperBase<TeamLeaveRequest> {
   TeamLeaveRequestMapper._();
 
@@ -2591,6 +2679,7 @@ class TeamLeaveRequestMapper extends SubClassMapperBase<TeamLeaveRequest> {
   }
 }
 
+/// @nodoc
 mixin TeamLeaveRequestMappable {
   String toJson() {
     return TeamLeaveRequestMapper.ensureInitialized()
@@ -2632,6 +2721,7 @@ mixin TeamLeaveRequestMappable {
   }
 }
 
+/// @nodoc
 extension TeamLeaveRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, TeamLeaveRequest, $Out> {
   TeamLeaveRequestCopyWith<$R, TeamLeaveRequest, $Out>
@@ -2639,6 +2729,7 @@ extension TeamLeaveRequestValueCopy<$R, $Out>
       $base.as((v, t, t2) => _TeamLeaveRequestCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class TeamLeaveRequestCopyWith<$R, $In extends TeamLeaveRequest, $Out>
     implements ClientWorldEventCopyWith<$R, $In, $Out> {
   @override
@@ -2648,6 +2739,7 @@ abstract class TeamLeaveRequestCopyWith<$R, $In extends TeamLeaveRequest, $Out>
   );
 }
 
+/// @nodoc
 class _TeamLeaveRequestCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, TeamLeaveRequest, $Out>
     implements TeamLeaveRequestCopyWith<$R, TeamLeaveRequest, $Out> {
@@ -2669,6 +2761,7 @@ class _TeamLeaveRequestCopyWithImpl<$R, $Out>
   ) => _TeamLeaveRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class CellRollRequestMapper extends SubClassMapperBase<CellRollRequest> {
   CellRollRequestMapper._();
 
@@ -2727,6 +2820,7 @@ class CellRollRequestMapper extends SubClassMapperBase<CellRollRequest> {
   }
 }
 
+/// @nodoc
 mixin CellRollRequestMappable {
   String toJson() {
     return CellRollRequestMapper.ensureInitialized()
@@ -2769,12 +2863,14 @@ mixin CellRollRequestMappable {
   }
 }
 
+/// @nodoc
 extension CellRollRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, CellRollRequest, $Out> {
   CellRollRequestCopyWith<$R, CellRollRequest, $Out> get $asCellRollRequest =>
       $base.as((v, t, t2) => _CellRollRequestCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class CellRollRequestCopyWith<$R, $In extends CellRollRequest, $Out>
     implements ClientWorldEventCopyWith<$R, $In, $Out> {
   GlobalVectorDefinitionCopyWith<
@@ -2790,6 +2886,7 @@ abstract class CellRollRequestCopyWith<$R, $In extends CellRollRequest, $Out>
   );
 }
 
+/// @nodoc
 class _CellRollRequestCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, CellRollRequest, $Out>
     implements CellRollRequestCopyWith<$R, CellRollRequest, $Out> {
@@ -2824,6 +2921,7 @@ class _CellRollRequestCopyWithImpl<$R, $Out>
   ) => _CellRollRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class ShuffleCellRequestMapper extends SubClassMapperBase<ShuffleCellRequest> {
   ShuffleCellRequestMapper._();
 
@@ -2871,6 +2969,7 @@ class ShuffleCellRequestMapper extends SubClassMapperBase<ShuffleCellRequest> {
   }
 }
 
+/// @nodoc
 mixin ShuffleCellRequestMappable {
   String toJson() {
     return ShuffleCellRequestMapper.ensureInitialized()
@@ -2916,6 +3015,7 @@ mixin ShuffleCellRequestMappable {
   }
 }
 
+/// @nodoc
 extension ShuffleCellRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ShuffleCellRequest, $Out> {
   ShuffleCellRequestCopyWith<$R, ShuffleCellRequest, $Out>
@@ -2924,6 +3024,7 @@ extension ShuffleCellRequestValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class ShuffleCellRequestCopyWith<
   $R,
   $In extends ShuffleCellRequest,
@@ -2943,6 +3044,7 @@ abstract class ShuffleCellRequestCopyWith<
   );
 }
 
+/// @nodoc
 class _ShuffleCellRequestCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, ShuffleCellRequest, $Out>
     implements ShuffleCellRequestCopyWith<$R, ShuffleCellRequest, $Out> {
@@ -2971,6 +3073,7 @@ class _ShuffleCellRequestCopyWithImpl<$R, $Out>
   ) => _ShuffleCellRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class PacksChangeRequestMapper extends SubClassMapperBase<PacksChangeRequest> {
   PacksChangeRequestMapper._();
 
@@ -3019,6 +3122,7 @@ class PacksChangeRequestMapper extends SubClassMapperBase<PacksChangeRequest> {
   }
 }
 
+/// @nodoc
 mixin PacksChangeRequestMappable {
   String toJson() {
     return PacksChangeRequestMapper.ensureInitialized()
@@ -3064,6 +3168,7 @@ mixin PacksChangeRequestMappable {
   }
 }
 
+/// @nodoc
 extension PacksChangeRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, PacksChangeRequest, $Out> {
   PacksChangeRequestCopyWith<$R, PacksChangeRequest, $Out>
@@ -3072,6 +3177,7 @@ extension PacksChangeRequestValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class PacksChangeRequestCopyWith<
   $R,
   $In extends PacksChangeRequest,
@@ -3086,6 +3192,7 @@ abstract class PacksChangeRequestCopyWith<
   );
 }
 
+/// @nodoc
 class _PacksChangeRequestCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, PacksChangeRequest, $Out>
     implements PacksChangeRequestCopyWith<$R, PacksChangeRequest, $Out> {
@@ -3114,6 +3221,7 @@ class _PacksChangeRequestCopyWithImpl<$R, $Out>
   ) => _PacksChangeRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class MessageRequestMapper extends SubClassMapperBase<MessageRequest> {
   MessageRequestMapper._();
 
@@ -3162,6 +3270,7 @@ class MessageRequestMapper extends SubClassMapperBase<MessageRequest> {
   }
 }
 
+/// @nodoc
 mixin MessageRequestMappable {
   String toJson() {
     return MessageRequestMapper.ensureInitialized().encodeJson<MessageRequest>(
@@ -3204,12 +3313,14 @@ mixin MessageRequestMappable {
   }
 }
 
+/// @nodoc
 extension MessageRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, MessageRequest, $Out> {
   MessageRequestCopyWith<$R, MessageRequest, $Out> get $asMessageRequest =>
       $base.as((v, t, t2) => _MessageRequestCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class MessageRequestCopyWith<$R, $In extends MessageRequest, $Out>
     implements ClientWorldEventCopyWith<$R, $In, $Out> {
   @override
@@ -3219,6 +3330,7 @@ abstract class MessageRequestCopyWith<$R, $In extends MessageRequest, $Out>
   );
 }
 
+/// @nodoc
 class _MessageRequestCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, MessageRequest, $Out>
     implements MessageRequestCopyWith<$R, MessageRequest, $Out> {
@@ -3240,6 +3352,7 @@ class _MessageRequestCopyWithImpl<$R, $Out>
   ) => _MessageRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class BoardsSpawnRequestMapper extends SubClassMapperBase<BoardsSpawnRequest> {
   BoardsSpawnRequestMapper._();
 
@@ -3301,6 +3414,7 @@ class BoardsSpawnRequestMapper extends SubClassMapperBase<BoardsSpawnRequest> {
   }
 }
 
+/// @nodoc
 mixin BoardsSpawnRequestMappable {
   String toJson() {
     return BoardsSpawnRequestMapper.ensureInitialized()
@@ -3346,6 +3460,7 @@ mixin BoardsSpawnRequestMappable {
   }
 }
 
+/// @nodoc
 extension BoardsSpawnRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BoardsSpawnRequest, $Out> {
   BoardsSpawnRequestCopyWith<$R, BoardsSpawnRequest, $Out>
@@ -3354,6 +3469,7 @@ extension BoardsSpawnRequestValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class BoardsSpawnRequestCopyWith<
   $R,
   $In extends BoardsSpawnRequest,
@@ -3374,6 +3490,7 @@ abstract class BoardsSpawnRequestCopyWith<
   );
 }
 
+/// @nodoc
 class _BoardsSpawnRequestCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, BoardsSpawnRequest, $Out>
     implements BoardsSpawnRequestCopyWith<$R, BoardsSpawnRequest, $Out> {
@@ -3414,6 +3531,7 @@ class _BoardsSpawnRequestCopyWithImpl<$R, $Out>
   ) => _BoardsSpawnRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class BoardRemoveRequestMapper extends SubClassMapperBase<BoardRemoveRequest> {
   BoardRemoveRequestMapper._();
 
@@ -3469,6 +3587,7 @@ class BoardRemoveRequestMapper extends SubClassMapperBase<BoardRemoveRequest> {
   }
 }
 
+/// @nodoc
 mixin BoardRemoveRequestMappable {
   String toJson() {
     return BoardRemoveRequestMapper.ensureInitialized()
@@ -3514,6 +3633,7 @@ mixin BoardRemoveRequestMappable {
   }
 }
 
+/// @nodoc
 extension BoardRemoveRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BoardRemoveRequest, $Out> {
   BoardRemoveRequestCopyWith<$R, BoardRemoveRequest, $Out>
@@ -3522,6 +3642,7 @@ extension BoardRemoveRequestValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class BoardRemoveRequestCopyWith<
   $R,
   $In extends BoardRemoveRequest,
@@ -3541,6 +3662,7 @@ abstract class BoardRemoveRequestCopyWith<
   );
 }
 
+/// @nodoc
 class _BoardRemoveRequestCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, BoardRemoveRequest, $Out>
     implements BoardRemoveRequestCopyWith<$R, BoardRemoveRequest, $Out> {
@@ -3575,6 +3697,7 @@ class _BoardRemoveRequestCopyWithImpl<$R, $Out>
   ) => _BoardRemoveRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class BoardMoveRequestMapper extends SubClassMapperBase<BoardMoveRequest> {
   BoardMoveRequestMapper._();
 
@@ -3646,6 +3769,7 @@ class BoardMoveRequestMapper extends SubClassMapperBase<BoardMoveRequest> {
   }
 }
 
+/// @nodoc
 mixin BoardMoveRequestMappable {
   String toJson() {
     return BoardMoveRequestMapper.ensureInitialized()
@@ -3687,6 +3811,7 @@ mixin BoardMoveRequestMappable {
   }
 }
 
+/// @nodoc
 extension BoardMoveRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BoardMoveRequest, $Out> {
   BoardMoveRequestCopyWith<$R, BoardMoveRequest, $Out>
@@ -3694,6 +3819,7 @@ extension BoardMoveRequestValueCopy<$R, $Out>
       $base.as((v, t, t2) => _BoardMoveRequestCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class BoardMoveRequestCopyWith<$R, $In extends BoardMoveRequest, $Out>
     implements ClientWorldEventCopyWith<$R, $In, $Out> {
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get from;
@@ -3710,6 +3836,7 @@ abstract class BoardMoveRequestCopyWith<$R, $In extends BoardMoveRequest, $Out>
   );
 }
 
+/// @nodoc
 class _BoardMoveRequestCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, BoardMoveRequest, $Out>
     implements BoardMoveRequestCopyWith<$R, BoardMoveRequest, $Out> {
@@ -3752,6 +3879,7 @@ class _BoardMoveRequestCopyWithImpl<$R, $Out>
   ) => _BoardMoveRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class DialogCloseRequestMapper extends SubClassMapperBase<DialogCloseRequest> {
   DialogCloseRequestMapper._();
 
@@ -3806,6 +3934,7 @@ class DialogCloseRequestMapper extends SubClassMapperBase<DialogCloseRequest> {
   }
 }
 
+/// @nodoc
 mixin DialogCloseRequestMappable {
   String toJson() {
     return DialogCloseRequestMapper.ensureInitialized()
@@ -3851,6 +3980,7 @@ mixin DialogCloseRequestMappable {
   }
 }
 
+/// @nodoc
 extension DialogCloseRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, DialogCloseRequest, $Out> {
   DialogCloseRequestCopyWith<$R, DialogCloseRequest, $Out>
@@ -3859,6 +3989,7 @@ extension DialogCloseRequestValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class DialogCloseRequestCopyWith<
   $R,
   $In extends DialogCloseRequest,
@@ -3873,6 +4004,7 @@ abstract class DialogCloseRequestCopyWith<
   );
 }
 
+/// @nodoc
 class _DialogCloseRequestCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, DialogCloseRequest, $Out>
     implements DialogCloseRequestCopyWith<$R, DialogCloseRequest, $Out> {
@@ -3903,6 +4035,7 @@ class _DialogCloseRequestCopyWithImpl<$R, $Out>
   ) => _DialogCloseRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class ImagesRequestMapper extends SubClassMapperBase<ImagesRequest> {
   ImagesRequestMapper._();
 
@@ -3948,6 +4081,7 @@ class ImagesRequestMapper extends SubClassMapperBase<ImagesRequest> {
   }
 }
 
+/// @nodoc
 mixin ImagesRequestMappable {
   String toJson() {
     return ImagesRequestMapper.ensureInitialized().encodeJson<ImagesRequest>(
@@ -3990,12 +4124,14 @@ mixin ImagesRequestMappable {
   }
 }
 
+/// @nodoc
 extension ImagesRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ImagesRequest, $Out> {
   ImagesRequestCopyWith<$R, ImagesRequest, $Out> get $asImagesRequest =>
       $base.as((v, t, t2) => _ImagesRequestCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class ImagesRequestCopyWith<$R, $In extends ImagesRequest, $Out>
     implements ClientWorldEventCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get ids;
@@ -4004,6 +4140,7 @@ abstract class ImagesRequestCopyWith<$R, $In extends ImagesRequest, $Out>
   ImagesRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _ImagesRequestCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, ImagesRequest, $Out>
     implements ImagesRequestCopyWith<$R, ImagesRequest, $Out> {
@@ -4032,6 +4169,7 @@ class _ImagesRequestCopyWithImpl<$R, $Out>
   ) => _ImagesRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class ModeChangeRequestMapper extends SubClassMapperBase<ModeChangeRequest> {
   ModeChangeRequestMapper._();
 
@@ -4083,6 +4221,7 @@ class ModeChangeRequestMapper extends SubClassMapperBase<ModeChangeRequest> {
   }
 }
 
+/// @nodoc
 mixin ModeChangeRequestMappable {
   String toJson() {
     return ModeChangeRequestMapper.ensureInitialized()
@@ -4128,6 +4267,7 @@ mixin ModeChangeRequestMappable {
   }
 }
 
+/// @nodoc
 extension ModeChangeRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ModeChangeRequest, $Out> {
   ModeChangeRequestCopyWith<$R, ModeChangeRequest, $Out>
@@ -4136,6 +4276,7 @@ extension ModeChangeRequestValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class ModeChangeRequestCopyWith<
   $R,
   $In extends ModeChangeRequest,
@@ -4150,6 +4291,7 @@ abstract class ModeChangeRequestCopyWith<
   );
 }
 
+/// @nodoc
 class _ModeChangeRequestCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, ModeChangeRequest, $Out>
     implements ModeChangeRequestCopyWith<$R, ModeChangeRequest, $Out> {
@@ -4174,6 +4316,7 @@ class _ModeChangeRequestCopyWithImpl<$R, $Out>
   ) => _ModeChangeRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class AuthenticateRequestMapper
     extends SubClassMapperBase<AuthenticateRequest> {
   AuthenticateRequestMapper._();
@@ -4232,6 +4375,7 @@ class AuthenticateRequestMapper
   }
 }
 
+/// @nodoc
 mixin AuthenticateRequestMappable {
   String toJson() {
     return AuthenticateRequestMapper.ensureInitialized()
@@ -4276,6 +4420,7 @@ mixin AuthenticateRequestMappable {
   }
 }
 
+/// @nodoc
 extension AuthenticateRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, AuthenticateRequest, $Out> {
   AuthenticateRequestCopyWith<$R, AuthenticateRequest, $Out>
@@ -4284,6 +4429,7 @@ extension AuthenticateRequestValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class AuthenticateRequestCopyWith<
   $R,
   $In extends AuthenticateRequest,
@@ -4297,6 +4443,7 @@ abstract class AuthenticateRequestCopyWith<
   );
 }
 
+/// @nodoc
 class _AuthenticateRequestCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, AuthenticateRequest, $Out>
     implements AuthenticateRequestCopyWith<$R, AuthenticateRequest, $Out> {
@@ -4324,6 +4471,7 @@ class _AuthenticateRequestCopyWithImpl<$R, $Out>
       _AuthenticateRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class ToolbarActionRequestMapper
     extends SubClassMapperBase<ToolbarActionRequest> {
   ToolbarActionRequestMapper._();
@@ -4375,6 +4523,7 @@ class ToolbarActionRequestMapper
   }
 }
 
+/// @nodoc
 mixin ToolbarActionRequestMappable {
   String toJson() {
     return ToolbarActionRequestMapper.ensureInitialized()
@@ -4419,6 +4568,7 @@ mixin ToolbarActionRequestMappable {
   }
 }
 
+/// @nodoc
 extension ToolbarActionRequestValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ToolbarActionRequest, $Out> {
   ToolbarActionRequestCopyWith<$R, ToolbarActionRequest, $Out>
@@ -4427,6 +4577,7 @@ extension ToolbarActionRequestValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class ToolbarActionRequestCopyWith<
   $R,
   $In extends ToolbarActionRequest,
@@ -4440,6 +4591,7 @@ abstract class ToolbarActionRequestCopyWith<
   );
 }
 
+/// @nodoc
 class _ToolbarActionRequestCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, ToolbarActionRequest, $Out>
     implements ToolbarActionRequestCopyWith<$R, ToolbarActionRequest, $Out> {
@@ -4461,6 +4613,7 @@ class _ToolbarActionRequestCopyWithImpl<$R, $Out>
       _ToolbarActionRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class HybridWorldEventMapper extends SubClassMapperBase<HybridWorldEvent> {
   HybridWorldEventMapper._();
 
@@ -4523,6 +4676,7 @@ class HybridWorldEventMapper extends SubClassMapperBase<HybridWorldEvent> {
   }
 }
 
+/// @nodoc
 mixin HybridWorldEventMappable {
   String toJson();
   Map<String, dynamic> toMap();
@@ -4530,6 +4684,7 @@ mixin HybridWorldEventMappable {
   get copyWith;
 }
 
+/// @nodoc
 abstract class HybridWorldEventCopyWith<$R, $In extends HybridWorldEvent, $Out>
     implements
         WorldEventCopyWith<$R, $In, $Out>,
@@ -4542,6 +4697,7 @@ abstract class HybridWorldEventCopyWith<$R, $In extends HybridWorldEvent, $Out>
   );
 }
 
+/// @nodoc
 class CellSwitchedMapper extends SubClassMapperBase<CellSwitched> {
   CellSwitchedMapper._();
 
@@ -4613,6 +4769,7 @@ class CellSwitchedMapper extends SubClassMapperBase<CellSwitched> {
   }
 }
 
+/// @nodoc
 mixin CellSwitchedMappable {
   String toJson() {
     return CellSwitchedMapper.ensureInitialized().encodeJson<CellSwitched>(
@@ -4655,12 +4812,14 @@ mixin CellSwitchedMappable {
   }
 }
 
+/// @nodoc
 extension CellSwitchedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, CellSwitched, $Out> {
   CellSwitchedCopyWith<$R, CellSwitched, $Out> get $asCellSwitched =>
       $base.as((v, t, t2) => _CellSwitchedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class CellSwitchedCopyWith<$R, $In extends CellSwitched, $Out>
     implements HybridWorldEventCopyWith<$R, $In, $Out> {
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>? get cell;
@@ -4669,6 +4828,7 @@ abstract class CellSwitchedCopyWith<$R, $In extends CellSwitched, $Out>
   CellSwitchedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _CellSwitchedCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, CellSwitched, $Out>
     implements CellSwitchedCopyWith<$R, CellSwitched, $Out> {
@@ -4701,6 +4861,7 @@ class _CellSwitchedCopyWithImpl<$R, $Out>
   ) => _CellSwitchedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class BackgroundChangedMapper extends SubClassMapperBase<BackgroundChanged> {
   BackgroundChangedMapper._();
 
@@ -4752,6 +4913,7 @@ class BackgroundChangedMapper extends SubClassMapperBase<BackgroundChanged> {
   }
 }
 
+/// @nodoc
 mixin BackgroundChangedMappable {
   String toJson() {
     return BackgroundChangedMapper.ensureInitialized()
@@ -4797,6 +4959,7 @@ mixin BackgroundChangedMappable {
   }
 }
 
+/// @nodoc
 extension BackgroundChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BackgroundChanged, $Out> {
   BackgroundChangedCopyWith<$R, BackgroundChanged, $Out>
@@ -4805,6 +4968,7 @@ extension BackgroundChangedValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class BackgroundChangedCopyWith<
   $R,
   $In extends BackgroundChanged,
@@ -4819,6 +4983,7 @@ abstract class BackgroundChangedCopyWith<
   );
 }
 
+/// @nodoc
 class _BackgroundChangedCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, BackgroundChanged, $Out>
     implements BackgroundChangedCopyWith<$R, BackgroundChanged, $Out> {
@@ -4844,6 +5009,7 @@ class _BackgroundChangedCopyWithImpl<$R, $Out>
   ) => _BackgroundChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class ObjectsSpawnedMapper extends SubClassMapperBase<ObjectsSpawned> {
   ObjectsSpawnedMapper._();
 
@@ -4898,6 +5064,7 @@ class ObjectsSpawnedMapper extends SubClassMapperBase<ObjectsSpawned> {
   }
 }
 
+/// @nodoc
 mixin ObjectsSpawnedMappable {
   String toJson() {
     return ObjectsSpawnedMapper.ensureInitialized().encodeJson<ObjectsSpawned>(
@@ -4940,12 +5107,14 @@ mixin ObjectsSpawnedMappable {
   }
 }
 
+/// @nodoc
 extension ObjectsSpawnedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ObjectsSpawned, $Out> {
   ObjectsSpawnedCopyWith<$R, ObjectsSpawned, $Out> get $asObjectsSpawned =>
       $base.as((v, t, t2) => _ObjectsSpawnedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class ObjectsSpawnedCopyWith<$R, $In extends ObjectsSpawned, $Out>
     implements HybridWorldEventCopyWith<$R, $In, $Out> {
   MapCopyWith<
@@ -4962,6 +5131,7 @@ abstract class ObjectsSpawnedCopyWith<$R, $In extends ObjectsSpawned, $Out>
   );
 }
 
+/// @nodoc
 class _ObjectsSpawnedCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, ObjectsSpawned, $Out>
     implements ObjectsSpawnedCopyWith<$R, ObjectsSpawned, $Out> {
@@ -5002,6 +5172,7 @@ class _ObjectsSpawnedCopyWithImpl<$R, $Out>
   ) => _ObjectsSpawnedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class ObjectsMovedMapper extends SubClassMapperBase<ObjectsMoved> {
   ObjectsMovedMapper._();
 
@@ -5070,6 +5241,7 @@ class ObjectsMovedMapper extends SubClassMapperBase<ObjectsMoved> {
   }
 }
 
+/// @nodoc
 mixin ObjectsMovedMappable {
   String toJson() {
     return ObjectsMovedMapper.ensureInitialized().encodeJson<ObjectsMoved>(
@@ -5112,12 +5284,14 @@ mixin ObjectsMovedMappable {
   }
 }
 
+/// @nodoc
 extension ObjectsMovedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ObjectsMoved, $Out> {
   ObjectsMovedCopyWith<$R, ObjectsMoved, $Out> get $asObjectsMoved =>
       $base.as((v, t, t2) => _ObjectsMovedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class ObjectsMovedCopyWith<$R, $In extends ObjectsMoved, $Out>
     implements HybridWorldEventCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, int, ObjectCopyWith<$R, int, int>> get objects;
@@ -5133,6 +5307,7 @@ abstract class ObjectsMovedCopyWith<$R, $In extends ObjectsMoved, $Out>
   ObjectsMovedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _ObjectsMovedCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, ObjectsMoved, $Out>
     implements ObjectsMovedCopyWith<$R, ObjectsMoved, $Out> {
@@ -5182,6 +5357,7 @@ class _ObjectsMovedCopyWithImpl<$R, $Out>
   ) => _ObjectsMovedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class CellHideChangedMapper extends SubClassMapperBase<CellHideChanged> {
   CellHideChangedMapper._();
 
@@ -5251,6 +5427,7 @@ class CellHideChangedMapper extends SubClassMapperBase<CellHideChanged> {
   }
 }
 
+/// @nodoc
 mixin CellHideChangedMappable {
   String toJson() {
     return CellHideChangedMapper.ensureInitialized()
@@ -5293,12 +5470,14 @@ mixin CellHideChangedMappable {
   }
 }
 
+/// @nodoc
 extension CellHideChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, CellHideChanged, $Out> {
   CellHideChangedCopyWith<$R, CellHideChanged, $Out> get $asCellHideChanged =>
       $base.as((v, t, t2) => _CellHideChangedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class CellHideChangedCopyWith<$R, $In extends CellHideChanged, $Out>
     implements HybridWorldEventCopyWith<$R, $In, $Out> {
   GlobalVectorDefinitionCopyWith<
@@ -5314,6 +5493,7 @@ abstract class CellHideChangedCopyWith<$R, $In extends CellHideChanged, $Out>
   );
 }
 
+/// @nodoc
 class _CellHideChangedCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, CellHideChanged, $Out>
     implements CellHideChangedCopyWith<$R, CellHideChanged, $Out> {
@@ -5354,6 +5534,7 @@ class _CellHideChangedCopyWithImpl<$R, $Out>
   ) => _CellHideChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class ObjectIndexChangedMapper extends SubClassMapperBase<ObjectIndexChanged> {
   ObjectIndexChangedMapper._();
 
@@ -5419,6 +5600,7 @@ class ObjectIndexChangedMapper extends SubClassMapperBase<ObjectIndexChanged> {
   }
 }
 
+/// @nodoc
 mixin ObjectIndexChangedMappable {
   String toJson() {
     return ObjectIndexChangedMapper.ensureInitialized()
@@ -5464,6 +5646,7 @@ mixin ObjectIndexChangedMappable {
   }
 }
 
+/// @nodoc
 extension ObjectIndexChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ObjectIndexChanged, $Out> {
   ObjectIndexChangedCopyWith<$R, ObjectIndexChanged, $Out>
@@ -5472,6 +5655,7 @@ extension ObjectIndexChangedValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class ObjectIndexChangedCopyWith<
   $R,
   $In extends ObjectIndexChanged,
@@ -5491,6 +5675,7 @@ abstract class ObjectIndexChangedCopyWith<
   );
 }
 
+/// @nodoc
 class _ObjectIndexChangedCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, ObjectIndexChanged, $Out>
     implements ObjectIndexChangedCopyWith<$R, ObjectIndexChanged, $Out> {
@@ -5527,6 +5712,7 @@ class _ObjectIndexChangedCopyWithImpl<$R, $Out>
   ) => _ObjectIndexChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class TeamChangedMapper extends SubClassMapperBase<TeamChanged> {
   TeamChangedMapper._();
 
@@ -5588,6 +5774,7 @@ class TeamChangedMapper extends SubClassMapperBase<TeamChanged> {
   }
 }
 
+/// @nodoc
 mixin TeamChangedMappable {
   String toJson() {
     return TeamChangedMapper.ensureInitialized().encodeJson<TeamChanged>(
@@ -5628,12 +5815,14 @@ mixin TeamChangedMappable {
   }
 }
 
+/// @nodoc
 extension TeamChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, TeamChanged, $Out> {
   TeamChangedCopyWith<$R, TeamChanged, $Out> get $asTeamChanged =>
       $base.as((v, t, t2) => _TeamChangedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class TeamChangedCopyWith<$R, $In extends TeamChanged, $Out>
     implements HybridWorldEventCopyWith<$R, $In, $Out> {
   GameTeamCopyWith<$R, GameTeam, GameTeam> get team;
@@ -5642,6 +5831,7 @@ abstract class TeamChangedCopyWith<$R, $In extends TeamChanged, $Out>
   TeamChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _TeamChangedCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, TeamChanged, $Out>
     implements TeamChangedCopyWith<$R, TeamChanged, $Out> {
@@ -5674,6 +5864,7 @@ class _TeamChangedCopyWithImpl<$R, $Out>
   ) => _TeamChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class TeamRemovedMapper extends SubClassMapperBase<TeamRemoved> {
   TeamRemovedMapper._();
 
@@ -5719,6 +5910,7 @@ class TeamRemovedMapper extends SubClassMapperBase<TeamRemoved> {
   }
 }
 
+/// @nodoc
 mixin TeamRemovedMappable {
   String toJson() {
     return TeamRemovedMapper.ensureInitialized().encodeJson<TeamRemoved>(
@@ -5759,12 +5951,14 @@ mixin TeamRemovedMappable {
   }
 }
 
+/// @nodoc
 extension TeamRemovedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, TeamRemoved, $Out> {
   TeamRemovedCopyWith<$R, TeamRemoved, $Out> get $asTeamRemoved =>
       $base.as((v, t, t2) => _TeamRemovedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class TeamRemovedCopyWith<$R, $In extends TeamRemoved, $Out>
     implements HybridWorldEventCopyWith<$R, $In, $Out> {
   @override
@@ -5772,6 +5966,7 @@ abstract class TeamRemovedCopyWith<$R, $In extends TeamRemoved, $Out>
   TeamRemovedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _TeamRemovedCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, TeamRemoved, $Out>
     implements TeamRemovedCopyWith<$R, TeamRemoved, $Out> {
@@ -5793,6 +5988,7 @@ class _TeamRemovedCopyWithImpl<$R, $Out>
   ) => _TeamRemovedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class CellMergeStrategyChangedMapper
     extends SubClassMapperBase<CellMergeStrategyChanged> {
   CellMergeStrategyChangedMapper._();
@@ -5863,6 +6059,7 @@ class CellMergeStrategyChangedMapper
   }
 }
 
+/// @nodoc
 mixin CellMergeStrategyChangedMappable {
   String toJson() {
     return CellMergeStrategyChangedMapper.ensureInitialized()
@@ -5907,6 +6104,7 @@ mixin CellMergeStrategyChangedMappable {
   }
 }
 
+/// @nodoc
 extension CellMergeStrategyChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, CellMergeStrategyChanged, $Out> {
   CellMergeStrategyChangedCopyWith<$R, CellMergeStrategyChanged, $Out>
@@ -5915,6 +6113,7 @@ extension CellMergeStrategyChangedValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class CellMergeStrategyChangedCopyWith<
   $R,
   $In extends CellMergeStrategyChanged,
@@ -5940,6 +6139,7 @@ abstract class CellMergeStrategyChangedCopyWith<
   );
 }
 
+/// @nodoc
 class _CellMergeStrategyChangedCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, CellMergeStrategyChanged, $Out>
     implements
@@ -5984,6 +6184,7 @@ class _CellMergeStrategyChangedCopyWithImpl<$R, $Out>
       _CellMergeStrategyChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class MetadataChangedMapper extends SubClassMapperBase<MetadataChanged> {
   MetadataChangedMapper._();
 
@@ -6033,6 +6234,7 @@ class MetadataChangedMapper extends SubClassMapperBase<MetadataChanged> {
   }
 }
 
+/// @nodoc
 mixin MetadataChangedMappable {
   String toJson() {
     return MetadataChangedMapper.ensureInitialized()
@@ -6075,12 +6277,14 @@ mixin MetadataChangedMappable {
   }
 }
 
+/// @nodoc
 extension MetadataChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, MetadataChanged, $Out> {
   MetadataChangedCopyWith<$R, MetadataChanged, $Out> get $asMetadataChanged =>
       $base.as((v, t, t2) => _MetadataChangedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class MetadataChangedCopyWith<$R, $In extends MetadataChanged, $Out>
     implements HybridWorldEventCopyWith<$R, $In, $Out> {
   FileMetadataCopyWith<$R, FileMetadata, FileMetadata> get metadata;
@@ -6091,6 +6295,7 @@ abstract class MetadataChangedCopyWith<$R, $In extends MetadataChanged, $Out>
   );
 }
 
+/// @nodoc
 class _MetadataChangedCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, MetadataChanged, $Out>
     implements MetadataChangedCopyWith<$R, MetadataChanged, $Out> {
@@ -6115,6 +6320,7 @@ class _MetadataChangedCopyWithImpl<$R, $Out>
   ) => _MetadataChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class ObjectsRemovedMapper extends SubClassMapperBase<ObjectsRemoved> {
   ObjectsRemovedMapper._();
 
@@ -6173,6 +6379,7 @@ class ObjectsRemovedMapper extends SubClassMapperBase<ObjectsRemoved> {
   }
 }
 
+/// @nodoc
 mixin ObjectsRemovedMappable {
   String toJson() {
     return ObjectsRemovedMapper.ensureInitialized().encodeJson<ObjectsRemoved>(
@@ -6215,12 +6422,14 @@ mixin ObjectsRemovedMappable {
   }
 }
 
+/// @nodoc
 extension ObjectsRemovedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ObjectsRemoved, $Out> {
   ObjectsRemovedCopyWith<$R, ObjectsRemoved, $Out> get $asObjectsRemoved =>
       $base.as((v, t, t2) => _ObjectsRemovedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class ObjectsRemovedCopyWith<$R, $In extends ObjectsRemoved, $Out>
     implements HybridWorldEventCopyWith<$R, $In, $Out> {
   GlobalVectorDefinitionCopyWith<
@@ -6237,6 +6446,7 @@ abstract class ObjectsRemovedCopyWith<$R, $In extends ObjectsRemoved, $Out>
   );
 }
 
+/// @nodoc
 class _ObjectsRemovedCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, ObjectsRemoved, $Out>
     implements ObjectsRemovedCopyWith<$R, ObjectsRemoved, $Out> {
@@ -6280,6 +6490,7 @@ class _ObjectsRemovedCopyWithImpl<$R, $Out>
   ) => _ObjectsRemovedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class TableRenamedMapper extends SubClassMapperBase<TableRenamed> {
   TableRenamedMapper._();
 
@@ -6333,6 +6544,7 @@ class TableRenamedMapper extends SubClassMapperBase<TableRenamed> {
   }
 }
 
+/// @nodoc
 mixin TableRenamedMappable {
   String toJson() {
     return TableRenamedMapper.ensureInitialized().encodeJson<TableRenamed>(
@@ -6375,12 +6587,14 @@ mixin TableRenamedMappable {
   }
 }
 
+/// @nodoc
 extension TableRenamedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, TableRenamed, $Out> {
   TableRenamedCopyWith<$R, TableRenamed, $Out> get $asTableRenamed =>
       $base.as((v, t, t2) => _TableRenamedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class TableRenamedCopyWith<$R, $In extends TableRenamed, $Out>
     implements HybridWorldEventCopyWith<$R, $In, $Out> {
   @override
@@ -6388,6 +6602,7 @@ abstract class TableRenamedCopyWith<$R, $In extends TableRenamed, $Out>
   TableRenamedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _TableRenamedCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, TableRenamed, $Out>
     implements TableRenamedCopyWith<$R, TableRenamed, $Out> {
@@ -6415,6 +6630,7 @@ class _TableRenamedCopyWithImpl<$R, $Out>
   ) => _TableRenamedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class TableRemovedMapper extends SubClassMapperBase<TableRemoved> {
   TableRemovedMapper._();
 
@@ -6460,6 +6676,7 @@ class TableRemovedMapper extends SubClassMapperBase<TableRemoved> {
   }
 }
 
+/// @nodoc
 mixin TableRemovedMappable {
   String toJson() {
     return TableRemovedMapper.ensureInitialized().encodeJson<TableRemoved>(
@@ -6502,12 +6719,14 @@ mixin TableRemovedMappable {
   }
 }
 
+/// @nodoc
 extension TableRemovedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, TableRemoved, $Out> {
   TableRemovedCopyWith<$R, TableRemoved, $Out> get $asTableRemoved =>
       $base.as((v, t, t2) => _TableRemovedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class TableRemovedCopyWith<$R, $In extends TableRemoved, $Out>
     implements HybridWorldEventCopyWith<$R, $In, $Out> {
   @override
@@ -6515,6 +6734,7 @@ abstract class TableRemovedCopyWith<$R, $In extends TableRemoved, $Out>
   TableRemovedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _TableRemovedCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, TableRemoved, $Out>
     implements TableRemovedCopyWith<$R, TableRemoved, $Out> {
@@ -6536,6 +6756,7 @@ class _TableRemovedCopyWithImpl<$R, $Out>
   ) => _TableRemovedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class NoteChangedMapper extends SubClassMapperBase<NoteChanged> {
   NoteChangedMapper._();
 
@@ -6589,6 +6810,7 @@ class NoteChangedMapper extends SubClassMapperBase<NoteChanged> {
   }
 }
 
+/// @nodoc
 mixin NoteChangedMappable {
   String toJson() {
     return NoteChangedMapper.ensureInitialized().encodeJson<NoteChanged>(
@@ -6629,12 +6851,14 @@ mixin NoteChangedMappable {
   }
 }
 
+/// @nodoc
 extension NoteChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, NoteChanged, $Out> {
   NoteChangedCopyWith<$R, NoteChanged, $Out> get $asNoteChanged =>
       $base.as((v, t, t2) => _NoteChangedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class NoteChangedCopyWith<$R, $In extends NoteChanged, $Out>
     implements HybridWorldEventCopyWith<$R, $In, $Out> {
   @override
@@ -6642,6 +6866,7 @@ abstract class NoteChangedCopyWith<$R, $In extends NoteChanged, $Out>
   NoteChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _NoteChangedCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, NoteChanged, $Out>
     implements NoteChangedCopyWith<$R, NoteChanged, $Out> {
@@ -6669,6 +6894,7 @@ class _NoteChangedCopyWithImpl<$R, $Out>
   ) => _NoteChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class NoteRemovedMapper extends SubClassMapperBase<NoteRemoved> {
   NoteRemovedMapper._();
 
@@ -6714,6 +6940,7 @@ class NoteRemovedMapper extends SubClassMapperBase<NoteRemoved> {
   }
 }
 
+/// @nodoc
 mixin NoteRemovedMappable {
   String toJson() {
     return NoteRemovedMapper.ensureInitialized().encodeJson<NoteRemoved>(
@@ -6754,12 +6981,14 @@ mixin NoteRemovedMappable {
   }
 }
 
+/// @nodoc
 extension NoteRemovedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, NoteRemoved, $Out> {
   NoteRemovedCopyWith<$R, NoteRemoved, $Out> get $asNoteRemoved =>
       $base.as((v, t, t2) => _NoteRemovedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class NoteRemovedCopyWith<$R, $In extends NoteRemoved, $Out>
     implements HybridWorldEventCopyWith<$R, $In, $Out> {
   @override
@@ -6767,6 +6996,7 @@ abstract class NoteRemovedCopyWith<$R, $In extends NoteRemoved, $Out>
   NoteRemovedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _NoteRemovedCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, NoteRemoved, $Out>
     implements NoteRemovedCopyWith<$R, NoteRemoved, $Out> {
@@ -6788,6 +7018,7 @@ class _NoteRemovedCopyWithImpl<$R, $Out>
   ) => _NoteRemovedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class WaypointChangedMapper extends SubClassMapperBase<WaypointChanged> {
   WaypointChangedMapper._();
 
@@ -6857,6 +7088,7 @@ class WaypointChangedMapper extends SubClassMapperBase<WaypointChanged> {
   }
 }
 
+/// @nodoc
 mixin WaypointChangedMappable {
   String toJson() {
     return WaypointChangedMapper.ensureInitialized()
@@ -6899,12 +7131,14 @@ mixin WaypointChangedMappable {
   }
 }
 
+/// @nodoc
 extension WaypointChangedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, WaypointChanged, $Out> {
   WaypointChangedCopyWith<$R, WaypointChanged, $Out> get $asWaypointChanged =>
       $base.as((v, t, t2) => _WaypointChangedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class WaypointChangedCopyWith<$R, $In extends WaypointChanged, $Out>
     implements HybridWorldEventCopyWith<$R, $In, $Out> {
   WaypointCopyWith<$R, Waypoint, Waypoint> get waypoint;
@@ -6915,6 +7149,7 @@ abstract class WaypointChangedCopyWith<$R, $In extends WaypointChanged, $Out>
   );
 }
 
+/// @nodoc
 class _WaypointChangedCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, WaypointChanged, $Out>
     implements WaypointChangedCopyWith<$R, WaypointChanged, $Out> {
@@ -6948,6 +7183,7 @@ class _WaypointChangedCopyWithImpl<$R, $Out>
   ) => _WaypointChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class WaypointRemovedMapper extends SubClassMapperBase<WaypointRemoved> {
   WaypointRemovedMapper._();
 
@@ -7002,6 +7238,7 @@ class WaypointRemovedMapper extends SubClassMapperBase<WaypointRemoved> {
   }
 }
 
+/// @nodoc
 mixin WaypointRemovedMappable {
   String toJson() {
     return WaypointRemovedMapper.ensureInitialized()
@@ -7044,12 +7281,14 @@ mixin WaypointRemovedMappable {
   }
 }
 
+/// @nodoc
 extension WaypointRemovedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, WaypointRemoved, $Out> {
   WaypointRemovedCopyWith<$R, WaypointRemoved, $Out> get $asWaypointRemoved =>
       $base.as((v, t, t2) => _WaypointRemovedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class WaypointRemovedCopyWith<$R, $In extends WaypointRemoved, $Out>
     implements HybridWorldEventCopyWith<$R, $In, $Out> {
   @override
@@ -7059,6 +7298,7 @@ abstract class WaypointRemovedCopyWith<$R, $In extends WaypointRemoved, $Out>
   );
 }
 
+/// @nodoc
 class _WaypointRemovedCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, WaypointRemoved, $Out>
     implements WaypointRemovedCopyWith<$R, WaypointRemoved, $Out> {
@@ -7086,6 +7326,7 @@ class _WaypointRemovedCopyWithImpl<$R, $Out>
   ) => _WaypointRemovedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class LocalWorldEventMapper extends SubClassMapperBase<LocalWorldEvent> {
   LocalWorldEventMapper._();
 
@@ -7127,6 +7368,7 @@ class LocalWorldEventMapper extends SubClassMapperBase<LocalWorldEvent> {
   }
 }
 
+/// @nodoc
 mixin LocalWorldEventMappable {
   String toJson();
   Map<String, dynamic> toMap();
@@ -7134,6 +7376,7 @@ mixin LocalWorldEventMappable {
   get copyWith;
 }
 
+/// @nodoc
 abstract class LocalWorldEventCopyWith<$R, $In extends LocalWorldEvent, $Out>
     implements
         WorldEventCopyWith<$R, $In, $Out>,

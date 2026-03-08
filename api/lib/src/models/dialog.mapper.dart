@@ -8,6 +8,7 @@
 
 part of 'dialog.dart';
 
+/// @nodoc
 class GameDialogMapper extends ClassMapperBase<GameDialog> {
   GameDialogMapper._();
 
@@ -75,6 +76,7 @@ class GameDialogMapper extends ClassMapperBase<GameDialog> {
   }
 }
 
+/// @nodoc
 mixin GameDialogMappable {
   String toJson() {
     return GameDialogMapper.ensureInitialized().encodeJson<GameDialog>(
@@ -115,12 +117,14 @@ mixin GameDialogMappable {
   }
 }
 
+/// @nodoc
 extension GameDialogValueCopy<$R, $Out>
     on ObjectCopyWith<$R, GameDialog, $Out> {
   GameDialogCopyWith<$R, GameDialog, $Out> get $asGameDialog =>
       $base.as((v, t, t2) => _GameDialogCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class GameDialogCopyWith<$R, $In extends GameDialog, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<
@@ -145,6 +149,7 @@ abstract class GameDialogCopyWith<$R, $In extends GameDialog, $Out>
   GameDialogCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _GameDialogCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, GameDialog, $Out>
     implements GameDialogCopyWith<$R, GameDialog, $Out> {
@@ -208,6 +213,7 @@ class _GameDialogCopyWithImpl<$R, $Out>
   ) => _GameDialogCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class GameDialogComponentMapper extends ClassMapperBase<GameDialogComponent> {
   GameDialogComponentMapper._();
 
@@ -245,6 +251,7 @@ class GameDialogComponentMapper extends ClassMapperBase<GameDialogComponent> {
   }
 }
 
+/// @nodoc
 mixin GameDialogComponentMappable {
   String toJson();
   Map<String, dynamic> toMap();
@@ -256,6 +263,7 @@ mixin GameDialogComponentMappable {
   get copyWith;
 }
 
+/// @nodoc
 abstract class GameDialogComponentCopyWith<
   $R,
   $In extends GameDialogComponent,
@@ -268,6 +276,7 @@ abstract class GameDialogComponentCopyWith<
   );
 }
 
+/// @nodoc
 class GameDialogButtonMapper extends ClassMapperBase<GameDialogButton> {
   GameDialogButtonMapper._();
 
@@ -316,6 +325,7 @@ class GameDialogButtonMapper extends ClassMapperBase<GameDialogButton> {
   }
 }
 
+/// @nodoc
 mixin GameDialogButtonMappable {
   String toJson() {
     return GameDialogButtonMapper.ensureInitialized()
@@ -357,6 +367,7 @@ mixin GameDialogButtonMappable {
   }
 }
 
+/// @nodoc
 extension GameDialogButtonValueCopy<$R, $Out>
     on ObjectCopyWith<$R, GameDialogButton, $Out> {
   GameDialogButtonCopyWith<$R, GameDialogButton, $Out>
@@ -364,6 +375,7 @@ extension GameDialogButtonValueCopy<$R, $Out>
       $base.as((v, t, t2) => _GameDialogButtonCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class GameDialogButtonCopyWith<$R, $In extends GameDialogButton, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call({String? label, String? id});
@@ -372,6 +384,7 @@ abstract class GameDialogButtonCopyWith<$R, $In extends GameDialogButton, $Out>
   );
 }
 
+/// @nodoc
 class _GameDialogButtonCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, GameDialogButton, $Out>
     implements GameDialogButtonCopyWith<$R, GameDialogButton, $Out> {
@@ -399,6 +412,7 @@ class _GameDialogButtonCopyWithImpl<$R, $Out>
   ) => _GameDialogButtonCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class GameDialogMarkdownComponentMapper
     extends ClassMapperBase<GameDialogMarkdownComponent> {
   GameDialogMarkdownComponentMapper._();
@@ -444,6 +458,7 @@ class GameDialogMarkdownComponentMapper
   }
 }
 
+/// @nodoc
 mixin GameDialogMarkdownComponentMappable {
   String toJson() {
     return GameDialogMarkdownComponentMapper.ensureInitialized()
@@ -492,6 +507,7 @@ mixin GameDialogMarkdownComponentMappable {
   }
 }
 
+/// @nodoc
 extension GameDialogMarkdownComponentValueCopy<$R, $Out>
     on ObjectCopyWith<$R, GameDialogMarkdownComponent, $Out> {
   GameDialogMarkdownComponentCopyWith<$R, GameDialogMarkdownComponent, $Out>
@@ -500,6 +516,7 @@ extension GameDialogMarkdownComponentValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class GameDialogMarkdownComponentCopyWith<
   $R,
   $In extends GameDialogMarkdownComponent,
@@ -513,6 +530,7 @@ abstract class GameDialogMarkdownComponentCopyWith<
   );
 }
 
+/// @nodoc
 class _GameDialogMarkdownComponentCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, GameDialogMarkdownComponent, $Out>
     implements
@@ -543,6 +561,7 @@ class _GameDialogMarkdownComponentCopyWithImpl<$R, $Out>
       _GameDialogMarkdownComponentCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class GameDialogTextFieldComponentMapper
     extends ClassMapperBase<GameDialogTextFieldComponent> {
   GameDialogTextFieldComponentMapper._();
@@ -621,6 +640,7 @@ class GameDialogTextFieldComponentMapper
   }
 }
 
+/// @nodoc
 mixin GameDialogTextFieldComponentMappable {
   String toJson() {
     return GameDialogTextFieldComponentMapper.ensureInitialized()
@@ -668,6 +688,7 @@ mixin GameDialogTextFieldComponentMappable {
   }
 }
 
+/// @nodoc
 extension GameDialogTextFieldComponentValueCopy<$R, $Out>
     on ObjectCopyWith<$R, GameDialogTextFieldComponent, $Out> {
   GameDialogTextFieldComponentCopyWith<$R, GameDialogTextFieldComponent, $Out>
@@ -676,6 +697,7 @@ extension GameDialogTextFieldComponentValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class GameDialogTextFieldComponentCopyWith<
   $R,
   $In extends GameDialogTextFieldComponent,
@@ -695,6 +717,7 @@ abstract class GameDialogTextFieldComponentCopyWith<
   );
 }
 
+/// @nodoc
 class _GameDialogTextFieldComponentCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, GameDialogTextFieldComponent, $Out>
     implements
@@ -744,6 +767,7 @@ class _GameDialogTextFieldComponentCopyWithImpl<$R, $Out>
       _GameDialogTextFieldComponentCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class GameDialogCheckboxComponentMapper
     extends ClassMapperBase<GameDialogCheckboxComponent> {
   GameDialogCheckboxComponentMapper._();
@@ -808,6 +832,7 @@ class GameDialogCheckboxComponentMapper
   }
 }
 
+/// @nodoc
 mixin GameDialogCheckboxComponentMappable {
   String toJson() {
     return GameDialogCheckboxComponentMapper.ensureInitialized()
@@ -856,6 +881,7 @@ mixin GameDialogCheckboxComponentMappable {
   }
 }
 
+/// @nodoc
 extension GameDialogCheckboxComponentValueCopy<$R, $Out>
     on ObjectCopyWith<$R, GameDialogCheckboxComponent, $Out> {
   GameDialogCheckboxComponentCopyWith<$R, GameDialogCheckboxComponent, $Out>
@@ -864,6 +890,7 @@ extension GameDialogCheckboxComponentValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class GameDialogCheckboxComponentCopyWith<
   $R,
   $In extends GameDialogCheckboxComponent,
@@ -877,6 +904,7 @@ abstract class GameDialogCheckboxComponentCopyWith<
   );
 }
 
+/// @nodoc
 class _GameDialogCheckboxComponentCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, GameDialogCheckboxComponent, $Out>
     implements
@@ -916,6 +944,7 @@ class _GameDialogCheckboxComponentCopyWithImpl<$R, $Out>
       _GameDialogCheckboxComponentCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class GameDialogDropdownComponentMapper
     extends ClassMapperBase<GameDialogDropdownComponent> {
   GameDialogDropdownComponentMapper._();
@@ -988,6 +1017,7 @@ class GameDialogDropdownComponentMapper
   }
 }
 
+/// @nodoc
 mixin GameDialogDropdownComponentMappable {
   String toJson() {
     return GameDialogDropdownComponentMapper.ensureInitialized()
@@ -1036,6 +1066,7 @@ mixin GameDialogDropdownComponentMappable {
   }
 }
 
+/// @nodoc
 extension GameDialogDropdownComponentValueCopy<$R, $Out>
     on ObjectCopyWith<$R, GameDialogDropdownComponent, $Out> {
   GameDialogDropdownComponentCopyWith<$R, GameDialogDropdownComponent, $Out>
@@ -1044,6 +1075,7 @@ extension GameDialogDropdownComponentValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class GameDialogDropdownComponentCopyWith<
   $R,
   $In extends GameDialogDropdownComponent,
@@ -1072,6 +1104,7 @@ abstract class GameDialogDropdownComponentCopyWith<
   );
 }
 
+/// @nodoc
 class _GameDialogDropdownComponentCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, GameDialogDropdownComponent, $Out>
     implements
@@ -1133,6 +1166,7 @@ class _GameDialogDropdownComponentCopyWithImpl<$R, $Out>
       _GameDialogDropdownComponentCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class GameDialogDropdownOptionMapper
     extends ClassMapperBase<GameDialogDropdownOption> {
   GameDialogDropdownOptionMapper._();
@@ -1187,6 +1221,7 @@ class GameDialogDropdownOptionMapper
   }
 }
 
+/// @nodoc
 mixin GameDialogDropdownOptionMappable {
   String toJson() {
     return GameDialogDropdownOptionMapper.ensureInitialized()
@@ -1231,6 +1266,7 @@ mixin GameDialogDropdownOptionMappable {
   }
 }
 
+/// @nodoc
 extension GameDialogDropdownOptionValueCopy<$R, $Out>
     on ObjectCopyWith<$R, GameDialogDropdownOption, $Out> {
   GameDialogDropdownOptionCopyWith<$R, GameDialogDropdownOption, $Out>
@@ -1239,6 +1275,7 @@ extension GameDialogDropdownOptionValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class GameDialogDropdownOptionCopyWith<
   $R,
   $In extends GameDialogDropdownOption,
@@ -1251,6 +1288,7 @@ abstract class GameDialogDropdownOptionCopyWith<
   );
 }
 
+/// @nodoc
 class _GameDialogDropdownOptionCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, GameDialogDropdownOption, $Out>
     implements
@@ -1279,6 +1317,7 @@ class _GameDialogDropdownOptionCopyWithImpl<$R, $Out>
       _GameDialogDropdownOptionCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class GameDialogValueMapper extends ClassMapperBase<GameDialogValue> {
   GameDialogValueMapper._();
 
@@ -1328,6 +1367,7 @@ class GameDialogValueMapper extends ClassMapperBase<GameDialogValue> {
   }
 }
 
+/// @nodoc
 mixin GameDialogValueMappable {
   String toJson() {
     return GameDialogValueMapper.ensureInitialized()
@@ -1370,12 +1410,14 @@ mixin GameDialogValueMappable {
   }
 }
 
+/// @nodoc
 extension GameDialogValueValueCopy<$R, $Out>
     on ObjectCopyWith<$R, GameDialogValue, $Out> {
   GameDialogValueCopyWith<$R, GameDialogValue, $Out> get $asGameDialogValue =>
       $base.as((v, t, t2) => _GameDialogValueCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class GameDialogValueCopyWith<$R, $In extends GameDialogValue, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   MapCopyWith<
@@ -1398,6 +1440,7 @@ abstract class GameDialogValueCopyWith<$R, $In extends GameDialogValue, $Out>
   );
 }
 
+/// @nodoc
 class _GameDialogValueCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, GameDialogValue, $Out>
     implements GameDialogValueCopyWith<$R, GameDialogValue, $Out> {
@@ -1444,6 +1487,7 @@ class _GameDialogValueCopyWithImpl<$R, $Out>
   ) => _GameDialogValueCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class GameDialogComponentValueMapper
     extends ClassMapperBase<GameDialogComponentValue> {
   GameDialogComponentValueMapper._();
@@ -1491,6 +1535,7 @@ class GameDialogComponentValueMapper
   }
 }
 
+/// @nodoc
 mixin GameDialogComponentValueMappable {
   String toJson() {
     return GameDialogComponentValueMapper.ensureInitialized()
@@ -1535,6 +1580,7 @@ mixin GameDialogComponentValueMappable {
   }
 }
 
+/// @nodoc
 extension GameDialogComponentValueValueCopy<$R, $Out>
     on ObjectCopyWith<$R, GameDialogComponentValue, $Out> {
   GameDialogComponentValueCopyWith<$R, GameDialogComponentValue, $Out>
@@ -1543,6 +1589,7 @@ extension GameDialogComponentValueValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class GameDialogComponentValueCopyWith<
   $R,
   $In extends GameDialogComponentValue,
@@ -1555,6 +1602,7 @@ abstract class GameDialogComponentValueCopyWith<
   );
 }
 
+/// @nodoc
 class _GameDialogComponentValueCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, GameDialogComponentValue, $Out>
     implements
@@ -1578,6 +1626,7 @@ class _GameDialogComponentValueCopyWithImpl<$R, $Out>
       _GameDialogComponentValueCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class GameDialogTextFieldValueMapper
     extends ClassMapperBase<GameDialogTextFieldValue> {
   GameDialogTextFieldValueMapper._();
@@ -1632,6 +1681,7 @@ class GameDialogTextFieldValueMapper
   }
 }
 
+/// @nodoc
 mixin GameDialogTextFieldValueMappable {
   String toJson() {
     return GameDialogTextFieldValueMapper.ensureInitialized()
@@ -1676,6 +1726,7 @@ mixin GameDialogTextFieldValueMappable {
   }
 }
 
+/// @nodoc
 extension GameDialogTextFieldValueValueCopy<$R, $Out>
     on ObjectCopyWith<$R, GameDialogTextFieldValue, $Out> {
   GameDialogTextFieldValueCopyWith<$R, GameDialogTextFieldValue, $Out>
@@ -1684,6 +1735,7 @@ extension GameDialogTextFieldValueValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class GameDialogTextFieldValueCopyWith<
   $R,
   $In extends GameDialogTextFieldValue,
@@ -1697,6 +1749,7 @@ abstract class GameDialogTextFieldValueCopyWith<
   );
 }
 
+/// @nodoc
 class _GameDialogTextFieldValueCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, GameDialogTextFieldValue, $Out>
     implements
@@ -1725,6 +1778,7 @@ class _GameDialogTextFieldValueCopyWithImpl<$R, $Out>
       _GameDialogTextFieldValueCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class GameDialogCheckboxValueMapper
     extends ClassMapperBase<GameDialogCheckboxValue> {
   GameDialogCheckboxValueMapper._();
@@ -1779,6 +1833,7 @@ class GameDialogCheckboxValueMapper
   }
 }
 
+/// @nodoc
 mixin GameDialogCheckboxValueMappable {
   String toJson() {
     return GameDialogCheckboxValueMapper.ensureInitialized()
@@ -1823,6 +1878,7 @@ mixin GameDialogCheckboxValueMappable {
   }
 }
 
+/// @nodoc
 extension GameDialogCheckboxValueValueCopy<$R, $Out>
     on ObjectCopyWith<$R, GameDialogCheckboxValue, $Out> {
   GameDialogCheckboxValueCopyWith<$R, GameDialogCheckboxValue, $Out>
@@ -1831,6 +1887,7 @@ extension GameDialogCheckboxValueValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class GameDialogCheckboxValueCopyWith<
   $R,
   $In extends GameDialogCheckboxValue,
@@ -1844,6 +1901,7 @@ abstract class GameDialogCheckboxValueCopyWith<
   );
 }
 
+/// @nodoc
 class _GameDialogCheckboxValueCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, GameDialogCheckboxValue, $Out>
     implements
@@ -1872,6 +1930,7 @@ class _GameDialogCheckboxValueCopyWithImpl<$R, $Out>
       _GameDialogCheckboxValueCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class GameDialogDropdownValueMapper
     extends ClassMapperBase<GameDialogDropdownValue> {
   GameDialogDropdownValueMapper._();
@@ -1926,6 +1985,7 @@ class GameDialogDropdownValueMapper
   }
 }
 
+/// @nodoc
 mixin GameDialogDropdownValueMappable {
   String toJson() {
     return GameDialogDropdownValueMapper.ensureInitialized()
@@ -1970,6 +2030,7 @@ mixin GameDialogDropdownValueMappable {
   }
 }
 
+/// @nodoc
 extension GameDialogDropdownValueValueCopy<$R, $Out>
     on ObjectCopyWith<$R, GameDialogDropdownValue, $Out> {
   GameDialogDropdownValueCopyWith<$R, GameDialogDropdownValue, $Out>
@@ -1978,6 +2039,7 @@ extension GameDialogDropdownValueValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class GameDialogDropdownValueCopyWith<
   $R,
   $In extends GameDialogDropdownValue,
@@ -1991,6 +2053,7 @@ abstract class GameDialogDropdownValueCopyWith<
   );
 }
 
+/// @nodoc
 class _GameDialogDropdownValueCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, GameDialogDropdownValue, $Out>
     implements

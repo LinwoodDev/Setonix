@@ -8,6 +8,8 @@
 
 part of 'state.dart';
 
+/// @nodoc
+
 class WorldOperationModeMapper extends EnumMapper<WorldOperationMode> {
   WorldOperationModeMapper._();
 
@@ -47,12 +49,16 @@ class WorldOperationModeMapper extends EnumMapper<WorldOperationMode> {
   }
 }
 
+/// @nodoc
+
 extension WorldOperationModeMapperExtension on WorldOperationMode {
   String toValue() {
     WorldOperationModeMapper.ensureInitialized();
     return MapperContainer.globals.toValue<WorldOperationMode>(this) as String;
   }
 }
+
+/// @nodoc
 
 class GameStateMapper extends EnumMapper<GameState> {
   GameStateMapper._();
@@ -93,6 +99,8 @@ class GameStateMapper extends EnumMapper<GameState> {
   }
 }
 
+/// @nodoc
+
 extension GameStateMapperExtension on GameState {
   String toValue() {
     GameStateMapper.ensureInitialized();
@@ -100,6 +108,7 @@ extension GameStateMapperExtension on GameState {
   }
 }
 
+/// @nodoc
 class WorldStateMapper extends ClassMapperBase<WorldState> {
   WorldStateMapper._();
 
@@ -273,6 +282,7 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
   }
 }
 
+/// @nodoc
 mixin WorldStateMappable {
   String toJson() {
     return WorldStateMapper.ensureInitialized().encodeJson<WorldState>(
@@ -313,12 +323,14 @@ mixin WorldStateMappable {
   }
 }
 
+/// @nodoc
 extension WorldStateValueCopy<$R, $Out>
     on ObjectCopyWith<$R, WorldState, $Out> {
   WorldStateCopyWith<$R, WorldState, $Out> get $asWorldState =>
       $base.as((v, t, t2) => _WorldStateCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class WorldStateCopyWith<$R, $In extends WorldState, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   GameTableCopyWith<$R, GameTable, GameTable> get table;
@@ -364,6 +376,7 @@ abstract class WorldStateCopyWith<$R, $In extends WorldState, $Out>
   WorldStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _WorldStateCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, WorldState, $Out>
     implements WorldStateCopyWith<$R, WorldState, $Out> {

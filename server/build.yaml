@@ -1,0 +1,4 @@
+global_options:
+  dart_mappable_builder:
+    options:
+      useNodoc: true

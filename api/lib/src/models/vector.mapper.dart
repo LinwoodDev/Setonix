@@ -8,6 +8,7 @@
 
 part of 'vector.dart';
 
+/// @nodoc
 class VectorDefinitionMapper extends ClassMapperBase<VectorDefinition> {
   VectorDefinitionMapper._();
 
@@ -48,6 +49,7 @@ class VectorDefinitionMapper extends ClassMapperBase<VectorDefinition> {
   }
 }
 
+/// @nodoc
 mixin VectorDefinitionMappable {
   String toJson() {
     return VectorDefinitionMapper.ensureInitialized()
@@ -89,6 +91,7 @@ mixin VectorDefinitionMappable {
   }
 }
 
+/// @nodoc
 extension VectorDefinitionValueCopy<$R, $Out>
     on ObjectCopyWith<$R, VectorDefinition, $Out> {
   VectorDefinitionCopyWith<$R, VectorDefinition, $Out>
@@ -96,6 +99,7 @@ extension VectorDefinitionValueCopy<$R, $Out>
       $base.as((v, t, t2) => _VectorDefinitionCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class VectorDefinitionCopyWith<$R, $In extends VectorDefinition, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call({int? x, int? y});
@@ -104,6 +108,7 @@ abstract class VectorDefinitionCopyWith<$R, $In extends VectorDefinition, $Out>
   );
 }
 
+/// @nodoc
 class _VectorDefinitionCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, VectorDefinition, $Out>
     implements VectorDefinitionCopyWith<$R, VectorDefinition, $Out> {
@@ -125,6 +130,7 @@ class _VectorDefinitionCopyWithImpl<$R, $Out>
   ) => _VectorDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class GlobalVectorDefinitionMapper
     extends ClassMapperBase<GlobalVectorDefinition> {
   GlobalVectorDefinitionMapper._();
@@ -181,6 +187,7 @@ class GlobalVectorDefinitionMapper
   }
 }
 
+/// @nodoc
 mixin GlobalVectorDefinitionMappable {
   String toJson() {
     return GlobalVectorDefinitionMapper.ensureInitialized()
@@ -225,6 +232,7 @@ mixin GlobalVectorDefinitionMappable {
   }
 }
 
+/// @nodoc
 extension GlobalVectorDefinitionValueCopy<$R, $Out>
     on ObjectCopyWith<$R, GlobalVectorDefinition, $Out> {
   GlobalVectorDefinitionCopyWith<$R, GlobalVectorDefinition, $Out>
@@ -233,6 +241,7 @@ extension GlobalVectorDefinitionValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class GlobalVectorDefinitionCopyWith<
   $R,
   $In extends GlobalVectorDefinition,
@@ -245,6 +254,7 @@ abstract class GlobalVectorDefinitionCopyWith<
   );
 }
 
+/// @nodoc
 class _GlobalVectorDefinitionCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, GlobalVectorDefinition, $Out>
     implements
@@ -275,6 +285,7 @@ class _GlobalVectorDefinitionCopyWithImpl<$R, $Out>
       _GlobalVectorDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class ItemLocationMapper extends ClassMapperBase<ItemLocation> {
   ItemLocationMapper._();
 
@@ -321,6 +332,7 @@ class ItemLocationMapper extends ClassMapperBase<ItemLocation> {
   }
 }
 
+/// @nodoc
 mixin ItemLocationMappable {
   String toJson() {
     return ItemLocationMapper.ensureInitialized().encodeJson<ItemLocation>(
@@ -363,18 +375,21 @@ mixin ItemLocationMappable {
   }
 }
 
+/// @nodoc
 extension ItemLocationValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ItemLocation, $Out> {
   ItemLocationCopyWith<$R, ItemLocation, $Out> get $asItemLocation =>
       $base.as((v, t, t2) => _ItemLocationCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class ItemLocationCopyWith<$R, $In extends ItemLocation, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call({String? namespace, String? id});
   ItemLocationCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _ItemLocationCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, ItemLocation, $Out>
     implements ItemLocationCopyWith<$R, ItemLocation, $Out> {

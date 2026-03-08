@@ -8,6 +8,7 @@
 
 part of 'config.dart';
 
+/// @nodoc
 class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
   SetonixConfigMapper._();
 
@@ -148,6 +149,7 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
   }
 }
 
+/// @nodoc
 mixin SetonixConfigMappable {
   String toJson() {
     return SetonixConfigMapper.ensureInitialized().encodeJson<SetonixConfig>(
@@ -190,12 +192,14 @@ mixin SetonixConfigMappable {
   }
 }
 
+/// @nodoc
 extension SetonixConfigValueCopy<$R, $Out>
     on ObjectCopyWith<$R, SetonixConfig, $Out> {
   SetonixConfigCopyWith<$R, SetonixConfig, $Out> get $asSetonixConfig =>
       $base.as((v, t, t2) => _SetonixConfigCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class SetonixConfigCopyWith<$R, $In extends SetonixConfig, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call({
@@ -216,6 +220,7 @@ abstract class SetonixConfigCopyWith<$R, $In extends SetonixConfig, $Out>
   SetonixConfigCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _SetonixConfigCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, SetonixConfig, $Out>
     implements SetonixConfigCopyWith<$R, SetonixConfig, $Out> {

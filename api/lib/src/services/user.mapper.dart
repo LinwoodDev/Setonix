@@ -8,6 +8,7 @@
 
 part of 'user.dart';
 
+/// @nodoc
 class SetonixUserMapper extends ClassMapperBase<SetonixUser> {
   SetonixUserMapper._();
 
@@ -90,6 +91,7 @@ class SetonixUserMapper extends ClassMapperBase<SetonixUser> {
   }
 }
 
+/// @nodoc
 mixin SetonixUserMappable {
   String toJson() {
     return SetonixUserMapper.ensureInitialized().encodeJson<SetonixUser>(
@@ -130,12 +132,14 @@ mixin SetonixUserMappable {
   }
 }
 
+/// @nodoc
 extension SetonixUserValueCopy<$R, $Out>
     on ObjectCopyWith<$R, SetonixUser, $Out> {
   SetonixUserCopyWith<$R, SetonixUser, $Out> get $asSetonixUser =>
       $base.as((v, t, t2) => _SetonixUserCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class SetonixUserCopyWith<$R, $In extends SetonixUser, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call({
@@ -149,6 +153,7 @@ abstract class SetonixUserCopyWith<$R, $In extends SetonixUser, $Out>
   SetonixUserCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _SetonixUserCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, SetonixUser, $Out>
     implements SetonixUserCopyWith<$R, SetonixUser, $Out> {

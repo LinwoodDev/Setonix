@@ -8,6 +8,7 @@
 
 part of 'toolbar.dart';
 
+/// @nodoc
 class GameToolbarMapper extends ClassMapperBase<GameToolbar> {
   GameToolbarMapper._();
 
@@ -63,6 +64,7 @@ class GameToolbarMapper extends ClassMapperBase<GameToolbar> {
   }
 }
 
+/// @nodoc
 mixin GameToolbarMappable {
   String toJson() {
     return GameToolbarMapper.ensureInitialized().encodeJson<GameToolbar>(
@@ -103,12 +105,14 @@ mixin GameToolbarMappable {
   }
 }
 
+/// @nodoc
 extension GameToolbarValueCopy<$R, $Out>
     on ObjectCopyWith<$R, GameToolbar, $Out> {
   GameToolbarCopyWith<$R, GameToolbar, $Out> get $asGameToolbar =>
       $base.as((v, t, t2) => _GameToolbarCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class GameToolbarCopyWith<$R, $In extends GameToolbar, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<
@@ -121,6 +125,7 @@ abstract class GameToolbarCopyWith<$R, $In extends GameToolbar, $Out>
   GameToolbarCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _GameToolbarCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, GameToolbar, $Out>
     implements GameToolbarCopyWith<$R, GameToolbar, $Out> {
@@ -159,6 +164,7 @@ class _GameToolbarCopyWithImpl<$R, $Out>
   ) => _GameToolbarCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class ToolbarActionMapper extends ClassMapperBase<ToolbarAction> {
   ToolbarActionMapper._();
 
@@ -212,6 +218,7 @@ class ToolbarActionMapper extends ClassMapperBase<ToolbarAction> {
   }
 }
 
+/// @nodoc
 mixin ToolbarActionMappable {
   String toJson() {
     return ToolbarActionMapper.ensureInitialized().encodeJson<ToolbarAction>(
@@ -254,18 +261,21 @@ mixin ToolbarActionMappable {
   }
 }
 
+/// @nodoc
 extension ToolbarActionValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ToolbarAction, $Out> {
   ToolbarActionCopyWith<$R, ToolbarAction, $Out> get $asToolbarAction =>
       $base.as((v, t, t2) => _ToolbarActionCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class ToolbarActionCopyWith<$R, $In extends ToolbarAction, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call({String? id, String? label, bool? enabled});
   ToolbarActionCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _ToolbarActionCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, ToolbarAction, $Out>
     implements ToolbarActionCopyWith<$R, ToolbarAction, $Out> {

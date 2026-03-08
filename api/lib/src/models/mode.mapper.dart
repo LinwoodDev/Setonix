@@ -8,6 +8,7 @@
 
 part of 'mode.dart';
 
+/// @nodoc
 class GameModeMapper extends ClassMapperBase<GameMode> {
   GameModeMapper._();
 
@@ -68,6 +69,7 @@ class GameModeMapper extends ClassMapperBase<GameMode> {
   }
 }
 
+/// @nodoc
 mixin GameModeMappable {
   String toJson() {
     return GameModeMapper.ensureInitialized().encodeJson<GameMode>(
@@ -106,11 +108,13 @@ mixin GameModeMappable {
   }
 }
 
+/// @nodoc
 extension GameModeValueCopy<$R, $Out> on ObjectCopyWith<$R, GameMode, $Out> {
   GameModeCopyWith<$R, GameMode, $Out> get $asGameMode =>
       $base.as((v, t, t2) => _GameModeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class GameModeCopyWith<$R, $In extends GameMode, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   MapCopyWith<
@@ -130,6 +134,7 @@ abstract class GameModeCopyWith<$R, $In extends GameMode, $Out>
   GameModeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _GameModeCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, GameMode, $Out>
     implements GameModeCopyWith<$R, GameMode, $Out> {

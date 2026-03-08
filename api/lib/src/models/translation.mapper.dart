@@ -8,6 +8,7 @@
 
 part of 'translation.dart';
 
+/// @nodoc
 class PackTranslationMapper extends ClassMapperBase<PackTranslation> {
   PackTranslationMapper._();
 
@@ -75,6 +76,7 @@ class PackTranslationMapper extends ClassMapperBase<PackTranslation> {
   }
 }
 
+/// @nodoc
 mixin PackTranslationMappable {
   String toJson() {
     return PackTranslationMapper.ensureInitialized()
@@ -117,12 +119,14 @@ mixin PackTranslationMappable {
   }
 }
 
+/// @nodoc
 extension PackTranslationValueCopy<$R, $Out>
     on ObjectCopyWith<$R, PackTranslation, $Out> {
   PackTranslationCopyWith<$R, PackTranslation, $Out> get $asPackTranslation =>
       $base.as((v, t, t2) => _PackTranslationCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class PackTranslationCopyWith<$R, $In extends PackTranslation, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   MapCopyWith<
@@ -168,6 +172,7 @@ abstract class PackTranslationCopyWith<$R, $In extends PackTranslation, $Out>
   );
 }
 
+/// @nodoc
 class _PackTranslationCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, PackTranslation, $Out>
     implements PackTranslationCopyWith<$R, PackTranslation, $Out> {
@@ -256,6 +261,7 @@ class _PackTranslationCopyWithImpl<$R, $Out>
   ) => _PackTranslationCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class DeckTranslationMapper extends ClassMapperBase<DeckTranslation> {
   DeckTranslationMapper._();
 
@@ -305,6 +311,7 @@ class DeckTranslationMapper extends ClassMapperBase<DeckTranslation> {
   }
 }
 
+/// @nodoc
 mixin DeckTranslationMappable {
   String toJson() {
     return DeckTranslationMapper.ensureInitialized()
@@ -347,12 +354,14 @@ mixin DeckTranslationMappable {
   }
 }
 
+/// @nodoc
 extension DeckTranslationValueCopy<$R, $Out>
     on ObjectCopyWith<$R, DeckTranslation, $Out> {
   DeckTranslationCopyWith<$R, DeckTranslation, $Out> get $asDeckTranslation =>
       $base.as((v, t, t2) => _DeckTranslationCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class DeckTranslationCopyWith<$R, $In extends DeckTranslation, $Out>
     implements DescriptiveTranslationCopyWith<$R, $In, $Out> {
   @override
@@ -362,6 +371,7 @@ abstract class DeckTranslationCopyWith<$R, $In extends DeckTranslation, $Out>
   );
 }
 
+/// @nodoc
 class _DeckTranslationCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, DeckTranslation, $Out>
     implements DeckTranslationCopyWith<$R, DeckTranslation, $Out> {
@@ -389,6 +399,7 @@ class _DeckTranslationCopyWithImpl<$R, $Out>
   ) => _DeckTranslationCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class DescriptiveTranslationMapper
     extends ClassMapperBase<DescriptiveTranslation> {
   DescriptiveTranslationMapper._();
@@ -443,6 +454,7 @@ class DescriptiveTranslationMapper
   }
 }
 
+/// @nodoc
 mixin DescriptiveTranslationMappable {
   String toJson();
   Map<String, dynamic> toMap();
@@ -454,6 +466,7 @@ mixin DescriptiveTranslationMappable {
   get copyWith;
 }
 
+/// @nodoc
 abstract class DescriptiveTranslationCopyWith<
   $R,
   $In extends DescriptiveTranslation,
@@ -466,6 +479,7 @@ abstract class DescriptiveTranslationCopyWith<
   );
 }
 
+/// @nodoc
 class FigureTranslationMapper extends ClassMapperBase<FigureTranslation> {
   FigureTranslationMapper._();
 
@@ -523,6 +537,7 @@ class FigureTranslationMapper extends ClassMapperBase<FigureTranslation> {
   }
 }
 
+/// @nodoc
 mixin FigureTranslationMappable {
   String toJson() {
     return FigureTranslationMapper.ensureInitialized()
@@ -568,6 +583,7 @@ mixin FigureTranslationMappable {
   }
 }
 
+/// @nodoc
 extension FigureTranslationValueCopy<$R, $Out>
     on ObjectCopyWith<$R, FigureTranslation, $Out> {
   FigureTranslationCopyWith<$R, FigureTranslation, $Out>
@@ -576,6 +592,7 @@ extension FigureTranslationValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class FigureTranslationCopyWith<
   $R,
   $In extends FigureTranslation,
@@ -604,6 +621,7 @@ abstract class FigureTranslationCopyWith<
   );
 }
 
+/// @nodoc
 class _FigureTranslationCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, FigureTranslation, $Out>
     implements FigureTranslationCopyWith<$R, FigureTranslation, $Out> {
@@ -653,6 +671,7 @@ class _FigureTranslationCopyWithImpl<$R, $Out>
   ) => _FigureTranslationCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class FigureVariationTranslationMapper
     extends ClassMapperBase<FigureVariationTranslation> {
   FigureVariationTranslationMapper._();
@@ -708,6 +727,7 @@ class FigureVariationTranslationMapper
   }
 }
 
+/// @nodoc
 mixin FigureVariationTranslationMappable {
   String toJson() {
     return FigureVariationTranslationMapper.ensureInitialized()
@@ -756,6 +776,7 @@ mixin FigureVariationTranslationMappable {
   }
 }
 
+/// @nodoc
 extension FigureVariationTranslationValueCopy<$R, $Out>
     on ObjectCopyWith<$R, FigureVariationTranslation, $Out> {
   FigureVariationTranslationCopyWith<$R, FigureVariationTranslation, $Out>
@@ -764,6 +785,7 @@ extension FigureVariationTranslationValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class FigureVariationTranslationCopyWith<
   $R,
   $In extends FigureVariationTranslation,
@@ -777,6 +799,7 @@ abstract class FigureVariationTranslationCopyWith<
   );
 }
 
+/// @nodoc
 class _FigureVariationTranslationCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, FigureVariationTranslation, $Out>
     implements
@@ -810,6 +833,7 @@ class _FigureVariationTranslationCopyWithImpl<$R, $Out>
       _FigureVariationTranslationCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class BackgroundTranslationMapper
     extends ClassMapperBase<BackgroundTranslation> {
   BackgroundTranslationMapper._();
@@ -863,6 +887,7 @@ class BackgroundTranslationMapper
   }
 }
 
+/// @nodoc
 mixin BackgroundTranslationMappable {
   String toJson() {
     return BackgroundTranslationMapper.ensureInitialized()
@@ -907,6 +932,7 @@ mixin BackgroundTranslationMappable {
   }
 }
 
+/// @nodoc
 extension BackgroundTranslationValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BackgroundTranslation, $Out> {
   BackgroundTranslationCopyWith<$R, BackgroundTranslation, $Out>
@@ -915,6 +941,7 @@ extension BackgroundTranslationValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class BackgroundTranslationCopyWith<
   $R,
   $In extends BackgroundTranslation,
@@ -928,6 +955,7 @@ abstract class BackgroundTranslationCopyWith<
   );
 }
 
+/// @nodoc
 class _BackgroundTranslationCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, BackgroundTranslation, $Out>
     implements BackgroundTranslationCopyWith<$R, BackgroundTranslation, $Out> {
@@ -955,6 +983,7 @@ class _BackgroundTranslationCopyWithImpl<$R, $Out>
       _BackgroundTranslationCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class BoardTranslationMapper extends ClassMapperBase<BoardTranslation> {
   BoardTranslationMapper._();
 
@@ -1004,6 +1033,7 @@ class BoardTranslationMapper extends ClassMapperBase<BoardTranslation> {
   }
 }
 
+/// @nodoc
 mixin BoardTranslationMappable {
   String toJson() {
     return BoardTranslationMapper.ensureInitialized()
@@ -1045,6 +1075,7 @@ mixin BoardTranslationMappable {
   }
 }
 
+/// @nodoc
 extension BoardTranslationValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BoardTranslation, $Out> {
   BoardTranslationCopyWith<$R, BoardTranslation, $Out>
@@ -1052,6 +1083,7 @@ extension BoardTranslationValueCopy<$R, $Out>
       $base.as((v, t, t2) => _BoardTranslationCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class BoardTranslationCopyWith<$R, $In extends BoardTranslation, $Out>
     implements DescriptiveTranslationCopyWith<$R, $In, $Out> {
   @override
@@ -1061,6 +1093,7 @@ abstract class BoardTranslationCopyWith<$R, $In extends BoardTranslation, $Out>
   );
 }
 
+/// @nodoc
 class _BoardTranslationCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, BoardTranslation, $Out>
     implements BoardTranslationCopyWith<$R, BoardTranslation, $Out> {

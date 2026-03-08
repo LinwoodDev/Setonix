@@ -8,6 +8,8 @@
 
 part of 'cell.dart';
 
+/// @nodoc
+
 class CellMergeDirectionMapper extends EnumMapper<CellMergeDirection> {
   CellMergeDirectionMapper._();
 
@@ -47,6 +49,8 @@ class CellMergeDirectionMapper extends EnumMapper<CellMergeDirection> {
   }
 }
 
+/// @nodoc
+
 extension CellMergeDirectionMapperExtension on CellMergeDirection {
   String toValue() {
     CellMergeDirectionMapper.ensureInitialized();
@@ -54,6 +58,7 @@ extension CellMergeDirectionMapperExtension on CellMergeDirection {
   }
 }
 
+/// @nodoc
 class TableCellMapper extends ClassMapperBase<TableCell> {
   TableCellMapper._();
 
@@ -119,6 +124,7 @@ class TableCellMapper extends ClassMapperBase<TableCell> {
   }
 }
 
+/// @nodoc
 mixin TableCellMappable {
   String toJson() {
     return TableCellMapper.ensureInitialized().encodeJson<TableCell>(
@@ -159,11 +165,13 @@ mixin TableCellMappable {
   }
 }
 
+/// @nodoc
 extension TableCellValueCopy<$R, $Out> on ObjectCopyWith<$R, TableCell, $Out> {
   TableCellCopyWith<$R, TableCell, $Out> get $asTableCell =>
       $base.as((v, t, t2) => _TableCellCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class TableCellCopyWith<$R, $In extends TableCell, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, GameObject, GameObjectCopyWith<$R, GameObject, GameObject>>
@@ -180,6 +188,7 @@ abstract class TableCellCopyWith<$R, $In extends TableCell, $Out>
   TableCellCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _TableCellCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, TableCell, $Out>
     implements TableCellCopyWith<$R, TableCell, $Out> {
@@ -230,6 +239,7 @@ class _TableCellCopyWithImpl<$R, $Out>
   ) => _TableCellCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class GameObjectMapper extends ClassMapperBase<GameObject> {
   GameObjectMapper._();
 
@@ -291,6 +301,7 @@ class GameObjectMapper extends ClassMapperBase<GameObject> {
   }
 }
 
+/// @nodoc
 mixin GameObjectMappable {
   String toJson() {
     return GameObjectMapper.ensureInitialized().encodeJson<GameObject>(
@@ -331,12 +342,14 @@ mixin GameObjectMappable {
   }
 }
 
+/// @nodoc
 extension GameObjectValueCopy<$R, $Out>
     on ObjectCopyWith<$R, GameObject, $Out> {
   GameObjectCopyWith<$R, GameObject, $Out> get $asGameObject =>
       $base.as((v, t, t2) => _GameObjectCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class GameObjectCopyWith<$R, $In extends GameObject, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation> get asset;
@@ -344,6 +357,7 @@ abstract class GameObjectCopyWith<$R, $In extends GameObject, $Out>
   GameObjectCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _GameObjectCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, GameObject, $Out>
     implements GameObjectCopyWith<$R, GameObject, $Out> {
@@ -377,6 +391,7 @@ class _GameObjectCopyWithImpl<$R, $Out>
   ) => _GameObjectCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class BoardTileMapper extends ClassMapperBase<BoardTile> {
   BoardTileMapper._();
 
@@ -426,6 +441,7 @@ class BoardTileMapper extends ClassMapperBase<BoardTile> {
   }
 }
 
+/// @nodoc
 mixin BoardTileMappable {
   String toJson() {
     return BoardTileMapper.ensureInitialized().encodeJson<BoardTile>(
@@ -466,11 +482,13 @@ mixin BoardTileMappable {
   }
 }
 
+/// @nodoc
 extension BoardTileValueCopy<$R, $Out> on ObjectCopyWith<$R, BoardTile, $Out> {
   BoardTileCopyWith<$R, BoardTile, $Out> get $asBoardTile =>
       $base.as((v, t, t2) => _BoardTileCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class BoardTileCopyWith<$R, $In extends BoardTile, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation> get asset;
@@ -479,6 +497,7 @@ abstract class BoardTileCopyWith<$R, $In extends BoardTile, $Out>
   BoardTileCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _BoardTileCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, BoardTile, $Out>
     implements BoardTileCopyWith<$R, BoardTile, $Out> {
@@ -512,6 +531,7 @@ class _BoardTileCopyWithImpl<$R, $Out>
   ) => _BoardTileCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class CellMergeStrategyMapper extends ClassMapperBase<CellMergeStrategy> {
   CellMergeStrategyMapper._();
 
@@ -559,6 +579,7 @@ class CellMergeStrategyMapper extends ClassMapperBase<CellMergeStrategy> {
   }
 }
 
+/// @nodoc
 mixin CellMergeStrategyMappable {
   String toJson();
   Map<String, dynamic> toMap();
@@ -570,6 +591,7 @@ mixin CellMergeStrategyMappable {
   get copyWith;
 }
 
+/// @nodoc
 abstract class CellMergeStrategyCopyWith<
   $R,
   $In extends CellMergeStrategy,
@@ -582,6 +604,7 @@ abstract class CellMergeStrategyCopyWith<
   );
 }
 
+/// @nodoc
 class MergedCellStrategyMapper extends ClassMapperBase<MergedCellStrategy> {
   MergedCellStrategyMapper._();
 
@@ -623,6 +646,7 @@ class MergedCellStrategyMapper extends ClassMapperBase<MergedCellStrategy> {
   }
 }
 
+/// @nodoc
 mixin MergedCellStrategyMappable {
   String toJson() {
     return MergedCellStrategyMapper.ensureInitialized()
@@ -668,6 +692,7 @@ mixin MergedCellStrategyMappable {
   }
 }
 
+/// @nodoc
 extension MergedCellStrategyValueCopy<$R, $Out>
     on ObjectCopyWith<$R, MergedCellStrategy, $Out> {
   MergedCellStrategyCopyWith<$R, MergedCellStrategy, $Out>
@@ -676,6 +701,7 @@ extension MergedCellStrategyValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class MergedCellStrategyCopyWith<
   $R,
   $In extends MergedCellStrategy,
@@ -689,6 +715,7 @@ abstract class MergedCellStrategyCopyWith<
   );
 }
 
+/// @nodoc
 class _MergedCellStrategyCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, MergedCellStrategy, $Out>
     implements MergedCellStrategyCopyWith<$R, MergedCellStrategy, $Out> {
@@ -710,6 +737,7 @@ class _MergedCellStrategyCopyWithImpl<$R, $Out>
   ) => _MergedCellStrategyCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class LayoutCellMergeStrategyMapper
     extends ClassMapperBase<LayoutCellMergeStrategy> {
   LayoutCellMergeStrategyMapper._();
@@ -770,6 +798,7 @@ class LayoutCellMergeStrategyMapper
   }
 }
 
+/// @nodoc
 mixin LayoutCellMergeStrategyMappable {
   String toJson();
   Map<String, dynamic> toMap();
@@ -781,6 +810,7 @@ mixin LayoutCellMergeStrategyMappable {
   get copyWith;
 }
 
+/// @nodoc
 abstract class LayoutCellMergeStrategyCopyWith<
   $R,
   $In extends LayoutCellMergeStrategy,
@@ -794,6 +824,7 @@ abstract class LayoutCellMergeStrategyCopyWith<
   );
 }
 
+/// @nodoc
 class StackedCellMergeStrategyMapper
     extends ClassMapperBase<StackedCellMergeStrategy> {
   StackedCellMergeStrategyMapper._();
@@ -861,6 +892,7 @@ class StackedCellMergeStrategyMapper
   }
 }
 
+/// @nodoc
 mixin StackedCellMergeStrategyMappable {
   String toJson() {
     return StackedCellMergeStrategyMapper.ensureInitialized()
@@ -905,6 +937,7 @@ mixin StackedCellMergeStrategyMappable {
   }
 }
 
+/// @nodoc
 extension StackedCellMergeStrategyValueCopy<$R, $Out>
     on ObjectCopyWith<$R, StackedCellMergeStrategy, $Out> {
   StackedCellMergeStrategyCopyWith<$R, StackedCellMergeStrategy, $Out>
@@ -913,6 +946,7 @@ extension StackedCellMergeStrategyValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class StackedCellMergeStrategyCopyWith<
   $R,
   $In extends StackedCellMergeStrategy,
@@ -930,6 +964,7 @@ abstract class StackedCellMergeStrategyCopyWith<
   );
 }
 
+/// @nodoc
 class _StackedCellMergeStrategyCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, StackedCellMergeStrategy, $Out>
     implements
@@ -967,6 +1002,7 @@ class _StackedCellMergeStrategyCopyWithImpl<$R, $Out>
       _StackedCellMergeStrategyCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class DistributeCellMergeStrategyMapper
     extends ClassMapperBase<DistributeCellMergeStrategy> {
   DistributeCellMergeStrategyMapper._();
@@ -1043,6 +1079,7 @@ class DistributeCellMergeStrategyMapper
   }
 }
 
+/// @nodoc
 mixin DistributeCellMergeStrategyMappable {
   String toJson() {
     return DistributeCellMergeStrategyMapper.ensureInitialized()
@@ -1091,6 +1128,7 @@ mixin DistributeCellMergeStrategyMappable {
   }
 }
 
+/// @nodoc
 extension DistributeCellMergeStrategyValueCopy<$R, $Out>
     on ObjectCopyWith<$R, DistributeCellMergeStrategy, $Out> {
   DistributeCellMergeStrategyCopyWith<$R, DistributeCellMergeStrategy, $Out>
@@ -1099,6 +1137,7 @@ extension DistributeCellMergeStrategyValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class DistributeCellMergeStrategyCopyWith<
   $R,
   $In extends DistributeCellMergeStrategy,
@@ -1117,6 +1156,7 @@ abstract class DistributeCellMergeStrategyCopyWith<
   );
 }
 
+/// @nodoc
 class _DistributeCellMergeStrategyCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, DistributeCellMergeStrategy, $Out>
     implements

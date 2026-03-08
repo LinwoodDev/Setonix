@@ -8,6 +8,7 @@
 
 part of 'equality.dart';
 
+/// @nodoc
 class IgnoreEqualityBoxMapper extends ClassMapperBase<IgnoreEqualityBox> {
   IgnoreEqualityBoxMapper._();
 
@@ -53,6 +54,7 @@ class IgnoreEqualityBoxMapper extends ClassMapperBase<IgnoreEqualityBox> {
   }
 }
 
+/// @nodoc
 mixin IgnoreEqualityBoxMappable<T> {
   String toJson() {
     return IgnoreEqualityBoxMapper.ensureInitialized()
@@ -78,6 +80,7 @@ mixin IgnoreEqualityBoxMappable<T> {
       >(this as IgnoreEqualityBox<T>, $identity, $identity);
 }
 
+/// @nodoc
 extension IgnoreEqualityBoxValueCopy<$R, $Out, T>
     on ObjectCopyWith<$R, IgnoreEqualityBox<T>, $Out> {
   IgnoreEqualityBoxCopyWith<$R, IgnoreEqualityBox<T>, $Out, T>
@@ -86,6 +89,7 @@ extension IgnoreEqualityBoxValueCopy<$R, $Out, T>
   );
 }
 
+/// @nodoc
 abstract class IgnoreEqualityBoxCopyWith<
   $R,
   $In extends IgnoreEqualityBox<T>,
@@ -99,6 +103,7 @@ abstract class IgnoreEqualityBoxCopyWith<
   );
 }
 
+/// @nodoc
 class _IgnoreEqualityBoxCopyWithImpl<$R, $Out, T>
     extends ClassCopyWithBase<$R, IgnoreEqualityBox<T>, $Out>
     implements IgnoreEqualityBoxCopyWith<$R, IgnoreEqualityBox<T>, $Out, T> {

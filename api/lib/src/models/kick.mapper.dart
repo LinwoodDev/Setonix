@@ -8,6 +8,8 @@
 
 part of 'kick.dart';
 
+/// @nodoc
+
 class KickReasonMapper extends EnumMapper<KickReason> {
   KickReasonMapper._();
 
@@ -63,6 +65,8 @@ class KickReasonMapper extends EnumMapper<KickReason> {
   }
 }
 
+/// @nodoc
+
 extension KickReasonMapperExtension on KickReason {
   String toValue() {
     KickReasonMapper.ensureInitialized();
@@ -70,6 +74,7 @@ extension KickReasonMapperExtension on KickReason {
   }
 }
 
+/// @nodoc
 class KickMessageMapper extends ClassMapperBase<KickMessage> {
   KickMessageMapper._();
 
@@ -133,6 +138,7 @@ class KickMessageMapper extends ClassMapperBase<KickMessage> {
   }
 }
 
+/// @nodoc
 mixin KickMessageMappable {
   String toJson() {
     return KickMessageMapper.ensureInitialized().encodeJson<KickMessage>(
@@ -173,18 +179,21 @@ mixin KickMessageMappable {
   }
 }
 
+/// @nodoc
 extension KickMessageValueCopy<$R, $Out>
     on ObjectCopyWith<$R, KickMessage, $Out> {
   KickMessageCopyWith<$R, KickMessage, $Out> get $asKickMessage =>
       $base.as((v, t, t2) => _KickMessageCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class KickMessageCopyWith<$R, $In extends KickMessage, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call({String? message, String? link, KickReason? reason});
   KickMessageCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _KickMessageCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, KickMessage, $Out>
     implements KickMessageCopyWith<$R, KickMessage, $Out> {

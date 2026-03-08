@@ -8,6 +8,8 @@
 
 part of 'meta.dart';
 
+/// @nodoc
+
 class FileTypeMapper extends EnumMapper<FileType> {
   FileTypeMapper._();
 
@@ -55,6 +57,8 @@ class FileTypeMapper extends EnumMapper<FileType> {
   }
 }
 
+/// @nodoc
+
 extension FileTypeMapperExtension on FileType {
   String toValue() {
     FileTypeMapper.ensureInitialized();
@@ -62,6 +66,7 @@ extension FileTypeMapperExtension on FileType {
   }
 }
 
+/// @nodoc
 class FileMetadataMapper extends ClassMapperBase<FileMetadata> {
   FileMetadataMapper._();
 
@@ -162,6 +167,7 @@ class FileMetadataMapper extends ClassMapperBase<FileMetadata> {
   }
 }
 
+/// @nodoc
 mixin FileMetadataMappable {
   String toJson() {
     return FileMetadataMapper.ensureInitialized().encodeJson<FileMetadata>(
@@ -204,12 +210,14 @@ mixin FileMetadataMappable {
   }
 }
 
+/// @nodoc
 extension FileMetadataValueCopy<$R, $Out>
     on ObjectCopyWith<$R, FileMetadata, $Out> {
   FileMetadataCopyWith<$R, FileMetadata, $Out> get $asFileMetadata =>
       $base.as((v, t, t2) => _FileMetadataCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class FileMetadataCopyWith<$R, $In extends FileMetadata, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call({
@@ -224,6 +232,7 @@ abstract class FileMetadataCopyWith<$R, $In extends FileMetadata, $Out>
   FileMetadataCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _FileMetadataCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, FileMetadata, $Out>
     implements FileMetadataCopyWith<$R, FileMetadata, $Out> {
@@ -269,6 +278,7 @@ class _FileMetadataCopyWithImpl<$R, $Out>
   ) => _FileMetadataCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class SignatureMetadataMapper extends ClassMapperBase<SignatureMetadata> {
   SignatureMetadataMapper._();
 
@@ -326,6 +336,7 @@ class SignatureMetadataMapper extends ClassMapperBase<SignatureMetadata> {
   }
 }
 
+/// @nodoc
 mixin SignatureMetadataMappable {
   String toJson() {
     return SignatureMetadataMapper.ensureInitialized()
@@ -371,6 +382,7 @@ mixin SignatureMetadataMappable {
   }
 }
 
+/// @nodoc
 extension SignatureMetadataValueCopy<$R, $Out>
     on ObjectCopyWith<$R, SignatureMetadata, $Out> {
   SignatureMetadataCopyWith<$R, SignatureMetadata, $Out>
@@ -379,6 +391,7 @@ extension SignatureMetadataValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class SignatureMetadataCopyWith<
   $R,
   $In extends SignatureMetadata,
@@ -393,6 +406,7 @@ abstract class SignatureMetadataCopyWith<
   );
 }
 
+/// @nodoc
 class _SignatureMetadataCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, SignatureMetadata, $Out>
     implements SignatureMetadataCopyWith<$R, SignatureMetadata, $Out> {
@@ -433,6 +447,7 @@ class _SignatureMetadataCopyWithImpl<$R, $Out>
   ) => _SignatureMetadataCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class DataMetadataMapper extends ClassMapperBase<DataMetadata> {
   DataMetadataMapper._();
 
@@ -491,6 +506,7 @@ class DataMetadataMapper extends ClassMapperBase<DataMetadata> {
   }
 }
 
+/// @nodoc
 mixin DataMetadataMappable {
   String toJson() {
     return DataMetadataMapper.ensureInitialized().encodeJson<DataMetadata>(
@@ -533,12 +549,14 @@ mixin DataMetadataMappable {
   }
 }
 
+/// @nodoc
 extension DataMetadataValueCopy<$R, $Out>
     on ObjectCopyWith<$R, DataMetadata, $Out> {
   DataMetadataCopyWith<$R, DataMetadata, $Out> get $asDataMetadata =>
       $base.as((v, t, t2) => _DataMetadataCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class DataMetadataCopyWith<$R, $In extends DataMetadata, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   MapCopyWith<$R, String, DateTime, ObjectCopyWith<$R, DateTime, DateTime>>
@@ -551,6 +569,7 @@ abstract class DataMetadataCopyWith<$R, $In extends DataMetadata, $Out>
   DataMetadataCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _DataMetadataCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, DataMetadata, $Out>
     implements DataMetadataCopyWith<$R, DataMetadata, $Out> {

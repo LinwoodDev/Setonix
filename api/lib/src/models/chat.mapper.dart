@@ -8,6 +8,7 @@
 
 part of 'chat.dart';
 
+/// @nodoc
 class ChatMessageMapper extends ClassMapperBase<ChatMessage> {
   ChatMessageMapper._();
 
@@ -62,6 +63,7 @@ class ChatMessageMapper extends ClassMapperBase<ChatMessage> {
   }
 }
 
+/// @nodoc
 mixin ChatMessageMappable {
   String toJson() {
     return ChatMessageMapper.ensureInitialized().encodeJson<ChatMessage>(
@@ -102,18 +104,21 @@ mixin ChatMessageMappable {
   }
 }
 
+/// @nodoc
 extension ChatMessageValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ChatMessage, $Out> {
   ChatMessageCopyWith<$R, ChatMessage, $Out> get $asChatMessage =>
       $base.as((v, t, t2) => _ChatMessageCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class ChatMessageCopyWith<$R, $In extends ChatMessage, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call({int? author, String? content, DateTime? timestamp});
   ChatMessageCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _ChatMessageCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, ChatMessage, $Out>
     implements ChatMessageCopyWith<$R, ChatMessage, $Out> {

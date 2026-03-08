@@ -8,6 +8,7 @@
 
 part of 'deck.dart';
 
+/// @nodoc
 class DeckDefinitionMapper extends ClassMapperBase<DeckDefinition> {
   DeckDefinitionMapper._();
 
@@ -56,6 +57,7 @@ class DeckDefinitionMapper extends ClassMapperBase<DeckDefinition> {
   }
 }
 
+/// @nodoc
 mixin DeckDefinitionMappable {
   String toJson() {
     return DeckDefinitionMapper.ensureInitialized().encodeJson<DeckDefinition>(
@@ -98,12 +100,14 @@ mixin DeckDefinitionMappable {
   }
 }
 
+/// @nodoc
 extension DeckDefinitionValueCopy<$R, $Out>
     on ObjectCopyWith<$R, DeckDefinition, $Out> {
   DeckDefinitionCopyWith<$R, DeckDefinition, $Out> get $asDeckDefinition =>
       $base.as((v, t, t2) => _DeckDefinitionCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class DeckDefinitionCopyWith<$R, $In extends DeckDefinition, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<
@@ -127,6 +131,7 @@ abstract class DeckDefinitionCopyWith<$R, $In extends DeckDefinition, $Out>
   );
 }
 
+/// @nodoc
 class _DeckDefinitionCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, DeckDefinition, $Out>
     implements DeckDefinitionCopyWith<$R, DeckDefinition, $Out> {
@@ -179,6 +184,7 @@ class _DeckDefinitionCopyWithImpl<$R, $Out>
   ) => _DeckDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class FigureDeckDefinitionMapper extends ClassMapperBase<FigureDeckDefinition> {
   FigureDeckDefinitionMapper._();
 
@@ -236,6 +242,7 @@ class FigureDeckDefinitionMapper extends ClassMapperBase<FigureDeckDefinition> {
   }
 }
 
+/// @nodoc
 mixin FigureDeckDefinitionMappable {
   String toJson() {
     return FigureDeckDefinitionMapper.ensureInitialized()
@@ -280,6 +287,7 @@ mixin FigureDeckDefinitionMappable {
   }
 }
 
+/// @nodoc
 extension FigureDeckDefinitionValueCopy<$R, $Out>
     on ObjectCopyWith<$R, FigureDeckDefinition, $Out> {
   FigureDeckDefinitionCopyWith<$R, FigureDeckDefinition, $Out>
@@ -288,6 +296,7 @@ extension FigureDeckDefinitionValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class FigureDeckDefinitionCopyWith<
   $R,
   $In extends FigureDeckDefinition,
@@ -301,6 +310,7 @@ abstract class FigureDeckDefinitionCopyWith<
   );
 }
 
+/// @nodoc
 class _FigureDeckDefinitionCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, FigureDeckDefinition, $Out>
     implements FigureDeckDefinitionCopyWith<$R, FigureDeckDefinition, $Out> {
@@ -337,6 +347,7 @@ class _FigureDeckDefinitionCopyWithImpl<$R, $Out>
       _FigureDeckDefinitionCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class BoardDeckDefinitionMapper extends ClassMapperBase<BoardDeckDefinition> {
   BoardDeckDefinitionMapper._();
 
@@ -390,6 +401,7 @@ class BoardDeckDefinitionMapper extends ClassMapperBase<BoardDeckDefinition> {
   }
 }
 
+/// @nodoc
 mixin BoardDeckDefinitionMappable {
   String toJson() {
     return BoardDeckDefinitionMapper.ensureInitialized()
@@ -434,6 +446,7 @@ mixin BoardDeckDefinitionMappable {
   }
 }
 
+/// @nodoc
 extension BoardDeckDefinitionValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BoardDeckDefinition, $Out> {
   BoardDeckDefinitionCopyWith<$R, BoardDeckDefinition, $Out>
@@ -442,6 +455,7 @@ extension BoardDeckDefinitionValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class BoardDeckDefinitionCopyWith<
   $R,
   $In extends BoardDeckDefinition,
@@ -455,6 +469,7 @@ abstract class BoardDeckDefinitionCopyWith<
   );
 }
 
+/// @nodoc
 class _BoardDeckDefinitionCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, BoardDeckDefinition, $Out>
     implements BoardDeckDefinitionCopyWith<$R, BoardDeckDefinition, $Out> {

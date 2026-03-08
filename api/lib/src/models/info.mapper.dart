@@ -8,6 +8,8 @@
 
 part of 'info.dart';
 
+/// @nodoc
+
 class TeamColorMapper extends EnumMapper<TeamColor> {
   TeamColorMapper._();
 
@@ -83,6 +85,8 @@ class TeamColorMapper extends EnumMapper<TeamColor> {
   }
 }
 
+/// @nodoc
+
 extension TeamColorMapperExtension on TeamColor {
   String toValue() {
     TeamColorMapper.ensureInitialized();
@@ -90,6 +94,7 @@ extension TeamColorMapperExtension on TeamColor {
   }
 }
 
+/// @nodoc
 class GameInfoMapper extends ClassMapperBase<GameInfo> {
   GameInfoMapper._();
 
@@ -164,6 +169,7 @@ class GameInfoMapper extends ClassMapperBase<GameInfo> {
   }
 }
 
+/// @nodoc
 mixin GameInfoMappable {
   String toJson() {
     return GameInfoMapper.ensureInitialized().encodeJson<GameInfo>(
@@ -202,11 +208,13 @@ mixin GameInfoMappable {
   }
 }
 
+/// @nodoc
 extension GameInfoValueCopy<$R, $Out> on ObjectCopyWith<$R, GameInfo, $Out> {
   GameInfoCopyWith<$R, GameInfo, $Out> get $asGameInfo =>
       $base.as((v, t, t2) => _GameInfoCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class GameInfoCopyWith<$R, $In extends GameInfo, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   MapCopyWith<$R, String, GameTeam, GameTeamCopyWith<$R, GameTeam, GameTeam>>
@@ -224,6 +232,7 @@ abstract class GameInfoCopyWith<$R, $In extends GameInfo, $Out>
   GameInfoCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _GameInfoCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, GameInfo, $Out>
     implements GameInfoCopyWith<$R, GameInfo, $Out> {
@@ -284,6 +293,7 @@ class _GameInfoCopyWithImpl<$R, $Out>
   ) => _GameInfoCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class GameTeamMapper extends ClassMapperBase<GameTeam> {
   GameTeamMapper._();
 
@@ -355,6 +365,7 @@ class GameTeamMapper extends ClassMapperBase<GameTeam> {
   }
 }
 
+/// @nodoc
 mixin GameTeamMappable {
   String toJson() {
     return GameTeamMapper.ensureInitialized().encodeJson<GameTeam>(
@@ -393,11 +404,13 @@ mixin GameTeamMappable {
   }
 }
 
+/// @nodoc
 extension GameTeamValueCopy<$R, $Out> on ObjectCopyWith<$R, GameTeam, $Out> {
   GameTeamCopyWith<$R, GameTeam, $Out> get $asGameTeam =>
       $base.as((v, t, t2) => _GameTeamCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class GameTeamCopyWith<$R, $In extends GameTeam, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, Waypoint, WaypointCopyWith<$R, Waypoint, Waypoint>>
@@ -411,6 +424,7 @@ abstract class GameTeamCopyWith<$R, $In extends GameTeam, $Out>
   GameTeamCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _GameTeamCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, GameTeam, $Out>
     implements GameTeamCopyWith<$R, GameTeam, $Out> {

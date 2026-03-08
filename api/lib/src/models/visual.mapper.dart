@@ -8,6 +8,7 @@
 
 part of 'visual.dart';
 
+/// @nodoc
 class VisualDefinitionMapper extends ClassMapperBase<VisualDefinition> {
   VisualDefinitionMapper._();
 
@@ -64,6 +65,7 @@ class VisualDefinitionMapper extends ClassMapperBase<VisualDefinition> {
   }
 }
 
+/// @nodoc
 mixin VisualDefinitionMappable {
   String toJson();
   Map<String, dynamic> toMap();
@@ -71,6 +73,7 @@ mixin VisualDefinitionMappable {
   get copyWith;
 }
 
+/// @nodoc
 abstract class VisualDefinitionCopyWith<$R, $In extends VisualDefinition, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition> get offset;

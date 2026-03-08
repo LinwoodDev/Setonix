@@ -8,6 +8,7 @@
 
 part of 'server.dart';
 
+/// @nodoc
 class GameServerMapper extends ClassMapperBase<GameServer> {
   GameServerMapper._();
 
@@ -59,18 +60,21 @@ class GameServerMapper extends ClassMapperBase<GameServer> {
   }
 }
 
+/// @nodoc
 mixin GameServerMappable {
   String toJson();
   Map<String, dynamic> toMap();
   GameServerCopyWith<GameServer, GameServer, GameServer> get copyWith;
 }
 
+/// @nodoc
 abstract class GameServerCopyWith<$R, $In extends GameServer, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call({String? address, bool? secure});
   GameServerCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class LanGameServerMapper extends ClassMapperBase<LanGameServer> {
   LanGameServerMapper._();
 
@@ -124,6 +128,7 @@ class LanGameServerMapper extends ClassMapperBase<LanGameServer> {
   }
 }
 
+/// @nodoc
 mixin LanGameServerMappable {
   String toJson() {
     return LanGameServerMapper.ensureInitialized().encodeJson<LanGameServer>(
@@ -166,12 +171,14 @@ mixin LanGameServerMappable {
   }
 }
 
+/// @nodoc
 extension LanGameServerValueCopy<$R, $Out>
     on ObjectCopyWith<$R, LanGameServer, $Out> {
   LanGameServerCopyWith<$R, LanGameServer, $Out> get $asLanGameServer =>
       $base.as((v, t, t2) => _LanGameServerCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class LanGameServerCopyWith<$R, $In extends LanGameServer, $Out>
     implements GameServerCopyWith<$R, $In, $Out> {
   @override
@@ -179,6 +186,7 @@ abstract class LanGameServerCopyWith<$R, $In extends LanGameServer, $Out>
   LanGameServerCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _LanGameServerCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, LanGameServer, $Out>
     implements LanGameServerCopyWith<$R, LanGameServer, $Out> {
@@ -206,6 +214,7 @@ class _LanGameServerCopyWithImpl<$R, $Out>
   ) => _LanGameServerCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class ListGameServerMapper extends ClassMapperBase<ListGameServer> {
   ListGameServerMapper._();
 
@@ -278,6 +287,7 @@ class ListGameServerMapper extends ClassMapperBase<ListGameServer> {
   }
 }
 
+/// @nodoc
 mixin ListGameServerMappable {
   String toJson() {
     return ListGameServerMapper.ensureInitialized().encodeJson<ListGameServer>(
@@ -320,12 +330,14 @@ mixin ListGameServerMappable {
   }
 }
 
+/// @nodoc
 extension ListGameServerValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ListGameServer, $Out> {
   ListGameServerCopyWith<$R, ListGameServer, $Out> get $asListGameServer =>
       $base.as((v, t, t2) => _ListGameServerCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class ListGameServerCopyWith<$R, $In extends ListGameServer, $Out>
     implements GameServerCopyWith<$R, $In, $Out> {
   @override
@@ -335,6 +347,7 @@ abstract class ListGameServerCopyWith<$R, $In extends ListGameServer, $Out>
   );
 }
 
+/// @nodoc
 class _ListGameServerCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, ListGameServer, $Out>
     implements ListGameServerCopyWith<$R, ListGameServer, $Out> {
@@ -367,6 +380,7 @@ class _ListGameServerCopyWithImpl<$R, $Out>
   ) => _ListGameServerCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class BrowsedGameServerMapper extends ClassMapperBase<BrowsedGameServer> {
   BrowsedGameServerMapper._();
 
@@ -438,6 +452,7 @@ class BrowsedGameServerMapper extends ClassMapperBase<BrowsedGameServer> {
   }
 }
 
+/// @nodoc
 mixin BrowsedGameServerMappable {
   String toJson() {
     return BrowsedGameServerMapper.ensureInitialized()
@@ -483,6 +498,7 @@ mixin BrowsedGameServerMappable {
   }
 }
 
+/// @nodoc
 extension BrowsedGameServerValueCopy<$R, $Out>
     on ObjectCopyWith<$R, BrowsedGameServer, $Out> {
   BrowsedGameServerCopyWith<$R, BrowsedGameServer, $Out>
@@ -491,6 +507,7 @@ extension BrowsedGameServerValueCopy<$R, $Out>
   );
 }
 
+/// @nodoc
 abstract class BrowsedGameServerCopyWith<
   $R,
   $In extends BrowsedGameServer,
@@ -504,6 +521,7 @@ abstract class BrowsedGameServerCopyWith<
   );
 }
 
+/// @nodoc
 class _BrowsedGameServerCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, BrowsedGameServer, $Out>
     implements BrowsedGameServerCopyWith<$R, BrowsedGameServer, $Out> {
@@ -536,6 +554,7 @@ class _BrowsedGameServerCopyWithImpl<$R, $Out>
   ) => _BrowsedGameServerCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class GamePropertyMapper extends ClassMapperBase<GameProperty> {
   GamePropertyMapper._();
 
@@ -612,6 +631,7 @@ class GamePropertyMapper extends ClassMapperBase<GameProperty> {
   }
 }
 
+/// @nodoc
 mixin GamePropertyMappable {
   String toJson() {
     return GamePropertyMapper.ensureInitialized().encodeJson<GameProperty>(
@@ -654,12 +674,14 @@ mixin GamePropertyMappable {
   }
 }
 
+/// @nodoc
 extension GamePropertyValueCopy<$R, $Out>
     on ObjectCopyWith<$R, GameProperty, $Out> {
   GamePropertyCopyWith<$R, GameProperty, $Out> get $asGameProperty =>
       $base.as((v, t, t2) => _GamePropertyCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class GamePropertyCopyWith<$R, $In extends GameProperty, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   MapCopyWith<
@@ -678,6 +700,7 @@ abstract class GamePropertyCopyWith<$R, $In extends GameProperty, $Out>
   GamePropertyCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _GamePropertyCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, GameProperty, $Out>
     implements GamePropertyCopyWith<$R, GameProperty, $Out> {
@@ -726,6 +749,7 @@ class _GamePropertyCopyWithImpl<$R, $Out>
   ) => _GamePropertyCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class LanPropertyMapper extends ClassMapperBase<LanProperty> {
   LanPropertyMapper._();
 
@@ -810,6 +834,7 @@ class LanPropertyMapper extends ClassMapperBase<LanProperty> {
   }
 }
 
+/// @nodoc
 mixin LanPropertyMappable {
   String toJson() {
     return LanPropertyMapper.ensureInitialized().encodeJson<LanProperty>(
@@ -850,12 +875,14 @@ mixin LanPropertyMappable {
   }
 }
 
+/// @nodoc
 extension LanPropertyValueCopy<$R, $Out>
     on ObjectCopyWith<$R, LanProperty, $Out> {
   LanPropertyCopyWith<$R, LanProperty, $Out> get $asLanProperty =>
       $base.as((v, t, t2) => _LanPropertyCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class LanPropertyCopyWith<$R, $In extends LanProperty, $Out>
     implements GamePropertyCopyWith<$R, $In, $Out> {
   @override
@@ -877,6 +904,7 @@ abstract class LanPropertyCopyWith<$R, $In extends LanProperty, $Out>
   LanPropertyCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _LanPropertyCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, LanProperty, $Out>
     implements LanPropertyCopyWith<$R, LanProperty, $Out> {
@@ -928,6 +956,7 @@ class _LanPropertyCopyWithImpl<$R, $Out>
   ) => _LanPropertyCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class ListPropertyMapper extends ClassMapperBase<ListProperty> {
   ListPropertyMapper._();
 
@@ -1007,6 +1036,7 @@ class ListPropertyMapper extends ClassMapperBase<ListProperty> {
   }
 }
 
+/// @nodoc
 mixin ListPropertyMappable {
   String toJson() {
     return ListPropertyMapper.ensureInitialized().encodeJson<ListProperty>(
@@ -1049,12 +1079,14 @@ mixin ListPropertyMappable {
   }
 }
 
+/// @nodoc
 extension ListPropertyValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ListProperty, $Out> {
   ListPropertyCopyWith<$R, ListProperty, $Out> get $asListProperty =>
       $base.as((v, t, t2) => _ListPropertyCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class ListPropertyCopyWith<$R, $In extends ListProperty, $Out>
     implements GamePropertyCopyWith<$R, $In, $Out> {
   @override
@@ -1076,6 +1108,7 @@ abstract class ListPropertyCopyWith<$R, $In extends ListProperty, $Out>
   ListPropertyCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _ListPropertyCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, ListProperty, $Out>
     implements ListPropertyCopyWith<$R, ListProperty, $Out> {
@@ -1127,6 +1160,7 @@ class _ListPropertyCopyWithImpl<$R, $Out>
   ) => _ListPropertyCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class PlayerInfoMapper extends ClassMapperBase<PlayerInfo> {
   PlayerInfoMapper._();
 
@@ -1169,6 +1203,7 @@ class PlayerInfoMapper extends ClassMapperBase<PlayerInfo> {
   }
 }
 
+/// @nodoc
 mixin PlayerInfoMappable {
   String toJson() {
     return PlayerInfoMapper.ensureInitialized().encodeJson<PlayerInfo>(
@@ -1209,18 +1244,21 @@ mixin PlayerInfoMappable {
   }
 }
 
+/// @nodoc
 extension PlayerInfoValueCopy<$R, $Out>
     on ObjectCopyWith<$R, PlayerInfo, $Out> {
   PlayerInfoCopyWith<$R, PlayerInfo, $Out> get $asPlayerInfo =>
       $base.as((v, t, t2) => _PlayerInfoCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class PlayerInfoCopyWith<$R, $In extends PlayerInfo, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call({int? id, String? name});
   PlayerInfoCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _PlayerInfoCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, PlayerInfo, $Out>
     implements PlayerInfoCopyWith<$R, PlayerInfo, $Out> {
@@ -1248,6 +1286,7 @@ class _PlayerInfoCopyWithImpl<$R, $Out>
   ) => _PlayerInfoCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class ServerStateMapper extends ClassMapperBase<ServerState> {
   ServerStateMapper._();
 
@@ -1299,6 +1338,7 @@ class ServerStateMapper extends ClassMapperBase<ServerState> {
   }
 }
 
+/// @nodoc
 mixin ServerStateMappable {
   String toJson() {
     return ServerStateMapper.ensureInitialized().encodeJson<ServerState>(
@@ -1339,12 +1379,14 @@ mixin ServerStateMappable {
   }
 }
 
+/// @nodoc
 extension ServerStateValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ServerState, $Out> {
   ServerStateCopyWith<$R, ServerState, $Out> get $asServerState =>
       $base.as((v, t, t2) => _ServerStateCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class ServerStateCopyWith<$R, $In extends ServerState, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, PlayerInfo, PlayerInfoCopyWith<$R, PlayerInfo, PlayerInfo>>
@@ -1353,6 +1395,7 @@ abstract class ServerStateCopyWith<$R, $In extends ServerState, $Out>
   ServerStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _ServerStateCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, ServerState, $Out>
     implements ServerStateCopyWith<$R, ServerState, $Out> {
@@ -1387,6 +1430,7 @@ class _ServerStateCopyWithImpl<$R, $Out>
   ) => _ServerStateCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+/// @nodoc
 class ServerListMapper extends ClassMapperBase<ServerList> {
   ServerListMapper._();
 
@@ -1429,6 +1473,7 @@ class ServerListMapper extends ClassMapperBase<ServerList> {
   }
 }
 
+/// @nodoc
 mixin ServerListMappable {
   String toJson() {
     return ServerListMapper.ensureInitialized().encodeJson<ServerList>(
@@ -1469,12 +1514,14 @@ mixin ServerListMappable {
   }
 }
 
+/// @nodoc
 extension ServerListValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ServerList, $Out> {
   ServerListCopyWith<$R, ServerList, $Out> get $asServerList =>
       $base.as((v, t, t2) => _ServerListCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class ServerListCopyWith<$R, $In extends ServerList, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<
@@ -1487,6 +1534,7 @@ abstract class ServerListCopyWith<$R, $In extends ServerList, $Out>
   ServerListCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _ServerListCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, ServerList, $Out>
     implements ServerListCopyWith<$R, ServerList, $Out> {

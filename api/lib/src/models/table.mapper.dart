@@ -8,6 +8,7 @@
 
 part of 'table.dart';
 
+/// @nodoc
 class GameTableMapper extends ClassMapperBase<GameTable> {
   GameTableMapper._();
 
@@ -72,6 +73,7 @@ class GameTableMapper extends ClassMapperBase<GameTable> {
   }
 }
 
+/// @nodoc
 mixin GameTableMappable {
   String toJson() {
     return GameTableMapper.ensureInitialized().encodeJson<GameTable>(
@@ -112,11 +114,13 @@ mixin GameTableMappable {
   }
 }
 
+/// @nodoc
 extension GameTableValueCopy<$R, $Out> on ObjectCopyWith<$R, GameTable, $Out> {
   GameTableCopyWith<$R, GameTable, $Out> get $asGameTable =>
       $base.as((v, t, t2) => _GameTableCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
+/// @nodoc
 abstract class GameTableCopyWith<$R, $In extends GameTable, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   IgnoreEqualityBoxCopyWith<
@@ -134,6 +138,7 @@ abstract class GameTableCopyWith<$R, $In extends GameTable, $Out>
   GameTableCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+/// @nodoc
 class _GameTableCopyWithImpl<$R, $Out>
     extends ClassCopyWithBase<$R, GameTable, $Out>
     implements GameTableCopyWith<$R, GameTable, $Out> {
