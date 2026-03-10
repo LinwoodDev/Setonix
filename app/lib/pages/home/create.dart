@@ -32,6 +32,7 @@ class _CreateDialogState extends State<CreateDialog>
 
   String? _selectedTemplate;
   PackItem<BackgroundTranslation>? _background;
+  PackItem<GameMode>? _selectedModeTemplate;
   List<String>? _selectedPacks;
 
   bool _infoView = false;
@@ -126,6 +127,12 @@ class _CreateDialogState extends State<CreateDialog>
                                   )) {
                                 _background = null;
                               }
+                              if (_selectedModeTemplate != null &&
+                                  !_selectedPacks!.contains(
+                                    _selectedModeTemplate!.namespace,
+                                  )) {
+                                _selectedModeTemplate = null;
+                              }
                             }),
                           ),
                           ListView(
@@ -156,52 +163,97 @@ class _CreateDialogState extends State<CreateDialog>
                     if (templates == null) {
                       return const Center(child: CircularProgressIndicator());
                     }
-                    if (templates.isEmpty) {
-                      return Center(
-                        child: Text(AppLocalizations.of(context).noTemplates),
-                      );
-                    }
-                    return ListView.builder(
-                      itemCount: templates.length,
-                      itemBuilder: (context, index) {
-                        final entry = templates[index];
-                        final name = entry.pathWithoutLeadingSlash;
-                        return ListTile(
-                          title: Text(name),
-                          trailing: MenuAnchor(
-                            builder: defaultMenuButton(),
-                            menuChildren: [
-                              MenuItemButton(
-                                leadingIcon: const Icon(
-                                  PhosphorIconsLight.export,
+                    return FutureBuilder(
+                      future: _loadGameModes(),
+                      builder: (context, modesSnapshot) {
+                        if (!modesSnapshot.hasData) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        final modes = modesSnapshot.data!;
+                        if (templates.isEmpty && modes.isEmpty) {
+                          return Center(
+                            child: Text(
+                              AppLocalizations.of(context).noTemplates,
+                            ),
+                          );
+                        }
+                        return ListView(
+                          children: [
+                            ...templates.map((entry) {
+                              final name = entry.pathWithoutLeadingSlash;
+                              return ListTile(
+                                title: Text(name),
+                                trailing: MenuAnchor(
+                                  builder: defaultMenuButton(),
+                                  menuChildren: [
+                                    MenuItemButton(
+                                      leadingIcon: const Icon(
+                                        PhosphorIconsLight.export,
+                                      ),
+                                      child: Text(
+                                        AppLocalizations.of(context).export,
+                                      ),
+                                      onPressed: () => exportData(
+                                        context,
+                                        entry.data!,
+                                        entry.fileName,
+                                      ),
+                                    ),
+                                    MenuItemButton(
+                                      leadingIcon: const Icon(
+                                        PhosphorIconsLight.trash,
+                                      ),
+                                      child: Text(
+                                        AppLocalizations.of(context).delete,
+                                      ),
+                                      onPressed: () async {
+                                        await _templateSystem.deleteFile(
+                                          entry.path,
+                                        );
+                                        _reloadTemplates();
+                                      },
+                                    ),
+                                  ],
                                 ),
-                                child: Text(
-                                  AppLocalizations.of(context).export,
-                                ),
-                                onPressed: () => exportData(
-                                  context,
-                                  entry.data!,
-                                  entry.fileName,
-                                ),
-                              ),
-                              MenuItemButton(
-                                leadingIcon: const Icon(
-                                  PhosphorIconsLight.trash,
-                                ),
-                                child: Text(
-                                  AppLocalizations.of(context).delete,
-                                ),
-                                onPressed: () async {
-                                  await _templateSystem.deleteFile(entry.path);
-                                  _reloadTemplates();
-                                },
-                              ),
-                            ],
-                          ),
-                          selected: _selectedTemplate == name,
-                          onTap: () => setState(
-                            () => _selectedTemplate = entry.fileName,
-                          ),
+                                selected:
+                                    _selectedTemplate == name &&
+                                    _selectedModeTemplate == null,
+                                onTap: () => setState(() {
+                                  _selectedTemplate = entry.fileName;
+                                  _selectedModeTemplate = null;
+                                }),
+                              );
+                            }),
+                            ...modes
+                                .sorted(
+                                  (a, b) => _formatModeTemplateLabel(
+                                    a,
+                                  ).compareTo(_formatModeTemplateLabel(b)),
+                                )
+                                .map((entry) {
+                                  return ListTile(
+                                    leading: const PhosphorIcon(
+                                      PhosphorIconsLight.package,
+                                    ),
+                                    title: Text(
+                                      _formatModeTemplateLabel(entry),
+                                    ),
+                                    subtitle: Text(
+                                      '${entry.namespace}/${entry.id}',
+                                    ),
+                                    selected:
+                                        _selectedModeTemplate?.location ==
+                                            entry.location &&
+                                        _selectedTemplate == null,
+                                    onTap: () => setState(() {
+                                      _selectedModeTemplate = entry;
+                                      _selectedTemplate = null;
+                                    }),
+                                  );
+                                }),
+                          ],
                         );
                       },
                     );
@@ -305,26 +357,33 @@ class _CreateDialogState extends State<CreateDialog>
             onPressed: () async {
               final name = _nameController.text;
               final description = _descriptionController.text;
+              final packs =
+                  _selectedPacks ??
+                  (await _packsFuture).map((e) => e.identifier).toList();
               var template =
                   _selectedTemplate == null || _tabController.index == 0
                   ? null
                   : await _templateSystem.getFile(_selectedTemplate!);
-              template ??= SetonixData.empty().setInfo(
-                GameInfo(
-                  packs:
-                      _selectedPacks ??
-                      (await _packsFuture).map((e) => e.identifier).toList(),
+              template ??= _selectedModeTemplate == null
+                  ? SetonixData.empty().setInfo(GameInfo(packs: packs))
+                  : SetonixData.fromMode(
+                      _selectedModeTemplate,
+                      packs: packs.toSet(),
+                    );
+              if (_background != null) {
+                template = template.setTable(
+                  template.getTableOrDefault().copyWith(
+                    background: _background!.location,
+                  ),
+                );
+              }
+              template = template.setMetadata(
+                FileMetadata(
+                  name: name,
+                  description: description,
+                  type: FileType.game,
                 ),
               );
-              template = template
-                  .setMetadata(
-                    FileMetadata(
-                      name: name,
-                      description: description,
-                      type: FileType.game,
-                    ),
-                  )
-                  .setTable(GameTable(background: _background?.location));
               await _worldSystem.createFile(name, template);
 
               if (context.mounted) {
@@ -377,6 +436,30 @@ class _CreateDialogState extends State<CreateDialog>
           })
           .toList(),
     );
+  }
+
+  String _formatModeTemplateLabel(PackItem<GameMode> mode) {
+    final packName = mode.pack.getMetadata()?.name;
+    if (packName == null || packName.isEmpty) {
+      return mode.id;
+    }
+    return '$packName / ${mode.id}';
+  }
+
+  Future<List<PackItem<GameMode>>> _loadGameModes() async {
+    final modes = <PackItem<GameMode>>[];
+    final packs =
+        _selectedPacks ??
+        (await _packsFuture).map((e) => e.identifier).toList();
+    for (final name in packs) {
+      final pack = await _fileSystem.getPack(name);
+      if (pack == null) continue;
+      final data = pack.load();
+      modes.addAll(
+        data.getModes().map((id) => data.getModeItem(id, name)).nonNulls,
+      );
+    }
+    return modes;
   }
 }
 

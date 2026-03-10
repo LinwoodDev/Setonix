@@ -26,7 +26,11 @@ class GameModeMapper extends ClassMapperBase<GameMode> {
   final String id = 'GameMode';
 
   static String? _$script(GameMode v) => v.script;
-  static const Field<GameMode, String> _f$script = Field('script', _$script);
+  static const Field<GameMode, String> _f$script = Field(
+    'script',
+    _$script,
+    opt: true,
+  );
   static Map<String, GameTable> _$tables(GameMode v) => v.tables;
   static const Field<GameMode, Map<String, GameTable>> _f$tables = Field(
     'tables',

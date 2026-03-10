@@ -1,4 +1,5 @@
 * Add zoom gestures
+* Add create from template
 * Fix server builds not created for released versions
 * Improve server docs by ignoring generated files
 

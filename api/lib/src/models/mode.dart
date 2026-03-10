@@ -12,9 +12,5 @@ final class GameMode with GameModeMappable {
   final Map<String, GameTable> tables;
   final Map<String, GameTeam> teams;
 
-  GameMode({
-    required this.script,
-    this.tables = const {},
-    this.teams = const {},
-  });
+  GameMode({this.script, this.tables = const {}, this.teams = const {}});
 }
