@@ -1,99 +1,19 @@
-local DeckPosition = {
-  table=State.TableName,
-  x="0",
-  y="0"
-}
-local DeckPositionLocation = "("..DeckPosition.x..", "..DeckPosition.y..")"
-local StackPosition = {
-  table=State.TableName,
-  x="0",
-  y="1"
-}
-local StackPositionLocation = "("..StackPosition.x..", "..StackPosition.y..")"
-local CurrentPlayer = nil
+--!nolint UnknownGlobal
+
+local DeckCell = Setonix.cells.get(0, 0)
+local StackCell = Setonix.cells.get(0, 1)
+local MaxScore = 21
+local CurrentPlayer : number? = nil
 local PlayerScores : {[number]: number} = {}
-local Colors = {
-  "heart",
-  "diamond",
-  "club",
-  "spade"
+local Toolbar = {
+  editable = false,
+  actions = {
+    Setonix.server.toolbarAction("blackjack_hit", "Hit"),
+    Setonix.server.toolbarAction("blackjack_stand", "Stand"),
+  },
 }
-local Values = {
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  "10",
-  "jack",
-  "queen",
-  "king",
-  "ace"
-}
-function GetVariations() : {string}
-  local variations = {}
-  for _, color in ipairs(Colors) do
-    for _, value in ipairs(Values) do
-      table.insert(variations, color.."-"..value)
-    end
-  end
-  return variations
-end
-function SpawnDeck(cell)
-  local variations = GetVariations()
-  local tableName = cell.table
-  local vector = "("..cell.x..", "..cell.y..")"
-  local objects = {}
-  for i = #variations, 2, -1 do
-    local j = math.random(i)
-    variations[i], variations[j] = variations[j], variations[i]
-  end
-  for _, variation in ipairs(variations) do
-    table.insert(objects, {
-      asset=State.Namespace..":cards",
-      variation=variation,
-      hidden=true,
-    })
-  end
-  Server:Send({
-    type="ObjectsSpawned",
-    table=tableName,
-    objects={
-      [vector]=objects
-    }
-  }, nil)
-end
-function ResetWorld()
-  Server:Send({
-    type="ObjectsRemoved",
-    cell=DeckPosition
-  }, nil)
-  Server:Send({
-    type="ObjectsRemoved",
-    cell=StackPosition
-  }, nil)
-end
-function Reset()
-  ResetWorld()
-  PlayerScores = {}
-  CurrentPlayer = nil
-  Setup()
-end
-function Setup()
-  print("setup")
-  print(State.Namespace)
-  SpawnDeck(DeckPosition)
-end
-function RemoveStack()
-  Server:Send({
-    type="ObjectsRemoved",
-    cell=StackPosition
-  }, nil)
-end
-local VariationsScores : {[string]: {number}} = {
+
+local CardScores : {[string]: {number}} = {
   ["2"] = {2},
   ["3"] = {3},
   ["4"] = {4},
@@ -108,239 +28,264 @@ local VariationsScores : {[string]: {number}} = {
   king = {10},
   ace = {1, 11}
 }
-local MaxScore = 21
-function CalculateCard(identifier) : {number}
-  print(" - object: "..tostring(identifier["variation"]))
-  local splitted = string.split(identifier["variation"], "-")
-  print(" - splitted: "..tostring(#splitted))
-  if #splitted ~= 2 then
-    return {}
-  end
-  local value = splitted[2]
-  print(" - value: "..tostring(value))
-  return VariationsScores[value]
-end
-function GetCellObjects(position)
-  local table = State:GetTable("")
-  for k, v in pairs(table.cells) do
-    print(" - "..tostring(k)..": "..tostring(v))
-  end
-  local cell = table.cells["("..position.x..", "..position.y..")"]
-  if not cell then
-    return {}
-  end
-  return cell.objects or {}
-end
-function CalculateStack(optionalCard : any) : number
-  -- Gather identifiers of cards currently in the stack cell.
-  -- Assuming an API like GetCellObjects(cell) -> { { identifier = "..." }, ... }
-  local objects = GetCellObjects(StackPosition)
-  if optionalCard then
-    table.insert(objects, optionalCard)
-  end
-  print("Calculating stack for "..#objects.." objects")
 
-  -- Start with a single possible sum: 0
-  local sums = {0}
-
-  for _, obj in pairs(objects) do
-    local values = CalculateCard(obj) or {0}
-    print(" - possible values: "..table.concat(values, ", "))
-    local newSums = {}
-    for _, base in ipairs(sums) do
-      for _, v in ipairs(values) do
-        local candidate = base + v
-          -- Deduplicate
-        if not table.find(newSums, candidate) then
-          table.insert(newSums, candidate)
-        end
-      end
-    end
-    sums = newSums
-  end
-  print(" - possible sums: "..table.concat(sums, ", "))
-
-  -- Choose the best sum: highest <= MaxScore, otherwise the lowest bust
-  local bestUnder = nil
-  local lowestOver = nil
-  for _, total in ipairs(sums) do
-    if total <= MaxScore then
-      if not bestUnder or total > bestUnder then
-        bestUnder = total
-      end
-    else
-      if not lowestOver or total < lowestOver then
-        lowestOver = total
-      end
+local function getCardVariations() : {string}
+  local suits = {
+    "heart",
+    "diamond",
+    "club",
+    "spade",
+  }
+  local ranks = {
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "jack",
+    "queen",
+    "king",
+    "ace",
+  }
+  local variations = {}
+  for _, suit in ipairs(suits) do
+    for _, rank in ipairs(ranks) do
+      table.insert(variations, suit .. "-" .. rank)
     end
   end
-
-  if bestUnder then
-    return bestUnder
-  end
-  return lowestOver or 0
+  return variations
 end
-function FinishTurn(score)
-  if not score then
-    score = CalculateStack()
-  end
-  PlayerScores[CurrentPlayer] = score
-  Server:Send({
-    type="MessageSent",
-    user=0,
-    message="Player "..CurrentPlayer.." finished with "..score.." points."
-  }, nil)
-  RemoveStack()
-  
-  local allPlayed = true
-  if State.Players then
-    for _, player in ipairs(State.Players) do
-      if not PlayerScores[player] then
-        allPlayed = false
-        break
-      end
-    end
-  end
 
+local function spawnStackedObjects(cell, asset, variations, options)
+  local objects = {}
+  for _, variation in ipairs(variations) do
+    local object_options = {
+      hidden = options and options.hidden == true,
+      variation = variation,
+    }
+    table.insert(objects, Setonix.object(asset, object_options))
+  end
+  cell:spawn(objects)
+end
+
+local function resetWorld()
+  DeckCell:clear()
+  StackCell:clear()
+end
+
+local function resetRoundState()
+  PlayerScores = {}
   CurrentPlayer = nil
-  if allPlayed then
-    FinishRound()
-  else
-    print("Waiting for next player to take a card.")
-  end
 end
-function FinishRound()
-  -- Determine winner(s)
+
+local function setupRound()
+  resetWorld()
+  spawnStackedObjects(
+    DeckCell,
+    Setonix.namespace() .. ":cards",
+    Setonix.collections.shuffle(getCardVariations()),
+    { hidden = true }
+  )
+end
+
+local function resetRound()
+  resetRoundState()
+  setupRound()
+end
+
+local function notifyPlayer(playerId : number, message : string)
+  Setonix.player(playerId):sendMessage(message)
+end
+
+local function getStackCards(optionalCard : any?) : {any}
+  local cards = {}
+  for _, card in ipairs(StackCell:objects()) do
+    table.insert(cards, card)
+  end
+  if optionalCard ~= nil then
+    table.insert(cards, optionalCard)
+  end
+  return cards
+end
+
+local function calculateStack(optionalCard : any?) : number
+  local score_values = {}
+  for rank, values in pairs(CardScores) do
+    score_values[rank] = values
+  end
+  return Setonix.scoring.bestTotal(getStackCards(optionalCard), function(card)
+    local variation = card and card.variation
+    if variation == nil then
+      return {0}
+    end
+    local parts = string.split(variation, "-")
+    if #parts ~= 2 then
+      return {0}
+    end
+    return score_values[parts[2]] or {0}
+  end, MaxScore)
+end
+
+local function claimTurn(playerId : number) : boolean
+  if CurrentPlayer == nil then
+    CurrentPlayer = playerId
+    Setonix.broadcast("Player " .. playerId .. " started turn.")
+    return true
+  end
+  if CurrentPlayer ~= playerId then
+    notifyPlayer(playerId, "It's not your turn!")
+    return false
+  end
+  return true
+end
+
+local function finishRound()
   local highest = 0
   local winners = {}
-  for player, score in pairs(PlayerScores) do
+  for playerId, score in pairs(PlayerScores) do
     if score <= MaxScore then
       if score > highest then
         highest = score
-        winners = {player}
+        winners = { playerId }
       elseif score == highest then
-        table.insert(winners, player)
+        table.insert(winners, playerId)
       end
     end
   end
-  -- Announce winners (assuming an API like Send(event))
+
   if #winners > 0 then
-    print("Winners: "..table.concat(winners, ", ").." with score "..highest)
+    Setonix.broadcast(
+      "Winners: " .. table.concat(winners, ", ") .. " with score " .. highest
+    )
   else
-    print("No winners this round.")
+    Setonix.broadcast("No winners this round.")
   end
-  Reset()
+
+  resetRound()
 end
-function GetTopCardFromDeck() : string?
-  local cell = State:GetTable("").cells["("..DeckPosition.x..", "..DeckPosition.y..")"]
-  if not cell or not cell.objects or #cell.objects == 0 then
-    return nil
+
+local function finishTurn(score : number?)
+  local playerId = CurrentPlayer
+  if playerId == nil then
+    return
   end
-  return cell.objects[1]
+
+  local finalScore = score or calculateStack()
+  PlayerScores[playerId] = finalScore
+  Setonix.broadcast("Player " .. playerId .. " finished with " .. finalScore .. " points.")
+  StackCell:clear()
+  CurrentPlayer = nil
+
+  local allPlayed = true
+  for _, player in ipairs(Setonix.players.all()) do
+    if PlayerScores[player.id] == nil then
+      allPlayed = false
+      break
+    end
+  end
+
+  if allPlayed then
+    finishRound()
+  else
+    Setonix.broadcast("Waiting for next player to take a card.")
+  end
 end
-function OnNewCard()
-  local topCardId = GetTopCardFromDeck()
-  print("Dealt new card: "..tostring(topCardId))
-  local score = CalculateStack(topCardId)
-  print("Current score: "..score)
-  Server:Send({
-    type="MessageSent",
-    user=0,
-    message="Your current score is "..score
-  }, nil)
+
+local function evaluateDraw(playerId : number, drawnCard : any?)
+  local score = calculateStack(drawnCard)
+  notifyPlayer(playerId, "Your current score is " .. score)
   if score > MaxScore then
-    print("Player "..CurrentPlayer.." busted!")
-    Server:Send({
-      type="MessageSent",
-      user=0,
-      message="Player "..CurrentPlayer.." busted with "..score.." points!"
-    }, nil)
-    FinishTurn(score)
+    Setonix.broadcast("Player " .. playerId .. " busted with " .. score .. " points!")
+    finishTurn(score)
   end
 end
 
-Events.CellHideChanged.Connect(function(_, details)
-  details.cancelled = true
-end)
-Events.ObjectsSpawned.Connect(function(event, details)
-  details.cancelled = true
-  print("Spawning objects is not allowed.")
-end)
-Events.BoardsSpawnRequest.Connect(function(event, details)
-  details.cancelled = true
-  print("Spawning boards is not allowed.")
-end)
-Events.ObjectsMoved.Connect(function(event, details)
-  print("typing move event.."..type(event))
-  local isFromDeck = event.table == DeckPosition.table and event.from == DeckPositionLocation
-  local isToStack = event.table == StackPosition.table and event.to == StackPositionLocation
-  local objects = event.objects
-  local isOneObject = #objects == 1 and event.objects[1] == 0
-  if(not isFromDeck or not isToStack or not isOneObject) then
-    print("Invalid move attempted.")
-    details.cancelled = true
+local function drawFromToolbar(playerId : number)
+  if not claimTurn(playerId) then
     return
   end
 
-  if CurrentPlayer == nil then
-    CurrentPlayer = details.source
-    print("Player "..CurrentPlayer.." started turn.")
-  elseif CurrentPlayer ~= details.source then
-    print("It's not your turn! Current player: "..tostring(CurrentPlayer))
-    details.cancelled = true
+  local topCard = DeckCell:topObject()
+  if topCard == nil then
+    notifyPlayer(playerId, "No cards are left in the deck.")
     return
   end
 
-  OnNewCard()
-  details:ScheduleEvent({
-    type="CellHideChanged",
-    cell=StackPosition,
-    hide=false
-  })
+  DeckCell:moveTopTo(StackCell, 1)
+  StackCell:show()
+  evaluateDraw(playerId, topCard)
+end
+
+Setonix.events.on("cell_hide_changed", function(event)
+  event:cancel()
 end)
-Events.MessageRequest.Connect(function(event, details)
-  local message = event.message:lower()
-  if message == "!stand" or message == "!stay" then
-    if details.source == CurrentPlayer then
-      FinishTurn()
-    else
-      print("It's not your turn!")
-    end
-    details.cancelled = true
+
+Setonix.events.on("objects_spawned", function(event)
+  event:cancel()
+  Setonix.log("Spawning objects is not allowed.")
+end)
+
+Setonix.events.on("boards_spawn_request", function(event)
+  event:cancel()
+  Setonix.log("Spawning boards is not allowed.")
+end)
+
+Setonix.events.on("objects_moved", function(event)
+  local isFromDeck = event.table == DeckCell.table and event.from ~= nil and event.from:equals(DeckCell)
+  local isToStack = event.to ~= nil and event.to:equals(StackCell)
+  local isSingleTopCard = #event.objects == 1 and event.objects[1] == 0
+
+  if not isFromDeck or not isToStack or not isSingleTopCard then
+    Setonix.log("Invalid move attempted.")
+    event:cancel()
+    return
   end
+
+  if not claimTurn(event.source) then
+    event:cancel()
+    return
+  end
+
+  evaluateDraw(event.source, DeckCell:topObject())
+  event:schedule(Setonix.server.events.cellHideChanged(StackCell, false))
 end)
-Events.UserJoined.Connect(function(event, details)
-  Server:Send( {
-    type="ToolbarUpdated",
-    toolbar={
-      editable=false,
-      actions={
-        {
-          id="blackjack_stand",
-          label="Stand",
-          enabled=true,
-        }
-      }
-    }
-  }, details.source)
+
+Setonix.commands.register("stand", function(event)
+  if event.source == CurrentPlayer then
+    finishTurn()
+  else
+    notifyPlayer(event.source, "It's not your turn!")
+  end
+  event:cancel()
 end)
-Events.ToolbarActionRequest.Connect(function(event, details)
-  print("Toolbar action requested: "..event.actionId)
-  if event.actionId == "blackjack_hit" then
-    if details.source == CurrentPlayer then
-      OnNewCard()
-    else
-      print("It's not your turn!")
-    end
-    details.cancelled = true
-  elseif event.actionId == "blackjack_stand" then
-    if details.source == CurrentPlayer then
-      FinishTurn()
-    else
-      print("It's not your turn!")
-    end
-    details.cancelled = true
+
+Setonix.commands.register("stay", function(event)
+  if event.source == CurrentPlayer then
+    finishTurn()
+  else
+    notifyPlayer(event.source, "It's not your turn!")
+  end
+  event:cancel()
+end)
+
+Setonix.events.on("user_joined", function(event)
+  event.player:setToolbar(Toolbar)
+end)
+
+Setonix.events.action("blackjack_hit", function(event)
+  drawFromToolbar(event.source)
+end)
+
+Setonix.events.action("blackjack_stand", function(event)
+  if event.source == CurrentPlayer then
+    finishTurn()
+  else
+    notifyPlayer(event.source, "It's not your turn!")
   end
 end)
 
-Setup()
+resetRound()

@@ -15,6 +15,8 @@ pub mod event;
 pub mod server;
 pub mod state;
 
+const HIGH_LEVEL_API_PRELUDE: &str = include_str!("luau/prelude.luau");
+
 impl PluginCallback {
     fn construct_on_print(&self, engine: &Lua) -> LuaResult<LuaFunction> {
         let on_print = self.on_print.clone();
@@ -30,6 +32,30 @@ impl PluginCallback {
             .set("print", self.construct_on_print(engine)?)?;
         Ok(())
     }
+
+    fn construct_high_level_api(&self, engine: &Lua) -> LuaResult<()> {
+        engine.load(HIGH_LEVEL_API_PRELUDE).exec()
+    }
+}
+
+fn construct_raw_api(
+    engine: &Lua,
+    event_system: Arc<Mutex<LuauEventSystem>>,
+    callback: PluginCallback,
+) -> LuaResult<LuaTable> {
+    let raw_api = engine.create_table()?;
+
+    raw_api.set(
+        "Events",
+        LuauEventSystemUserData(Arc::clone(&event_system)),
+    )?;
+    raw_api.set("events", LuauEventSystemUserData(event_system))?;
+    raw_api.set("State", LuauStateUserData(callback.clone()))?;
+    raw_api.set("state", LuauStateUserData(callback.clone()))?;
+    raw_api.set("Server", LuauServerUserData(callback.clone()))?;
+    raw_api.set("server", LuauServerUserData(callback))?;
+
+    Ok(raw_api)
 }
 
 pub struct LuauPlugin {
@@ -134,18 +160,12 @@ impl LuauPlugin {
         callback.construct_globals(&engine).unwrap();
         let event_system = LuauEventSystem::default();
         let event_system = Arc::new(Mutex::new(event_system));
+        let raw_api = construct_raw_api(&engine, Arc::clone(&event_system), callback.clone()).unwrap();
         engine
             .globals()
-            .set("Events", LuauEventSystemUserData(Arc::clone(&event_system)))
+            .set("SetonixRaw", raw_api)
             .unwrap();
-        engine
-            .globals()
-            .set("State", LuauStateUserData(callback.clone()))
-            .unwrap();
-        engine
-            .globals()
-            .set("Server", LuauServerUserData(callback))
-            .unwrap();
+        callback.construct_high_level_api(&engine).unwrap();
 
         let engine = Arc::new(Mutex::new(engine));
         Self {

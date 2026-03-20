@@ -1,5 +1,6 @@
 * Add zoom gestures
 * Add create from template
+* Add high level scripting API for packs
 * Fix server builds not created for released versions
 * Improve server docs by ignoring generated files
 

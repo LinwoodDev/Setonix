@@ -1,0 +1,305 @@
+---
+title: Luau Scripting
+description: High-level Setonix Luau API for server-side game scripts.
+---
+
+Setonix Luau plugins now get a high-level `Setonix` runtime object that wraps the low-level bridge. The goal is to move everyday scripting away from raw JSON-shaped events and toward wrapped players, tables, cells, commands, and generic utility helpers.
+
+The raw bridge is published as `SetonixRaw` and is also available through `Setonix.raw` when you need direct access, but the old standalone `State`, `Events`, and `Server` globals are no longer part of the public scripting surface.
+
+## Quick Start
+
+```lua
+local deck = Setonix.cells.get(0, 0)
+local stack = Setonix.cells.get(0, 1)
+
+Setonix.events.on("player_join", function(event)
+  event.player:sendMessage("Welcome to " .. Setonix.namespace())
+  event:setToolbar({
+    editable = false,
+    actions = {
+      Setonix.server.toolbarAction("blackjack_hit", "Hit"),
+      Setonix.server.toolbarAction("blackjack_stand", "Stand"),
+    },
+  })
+end)
+
+Setonix.commands.register("stand", function(event)
+  event:reply("Standing with current hand.")
+  event:cancel()
+end)
+
+Setonix.events.action("blackjack_hit", function(event)
+  deck:moveTopTo(stack, 1)
+end)
+```
+
+## API Shape
+
+You can use either the flat helpers or the namespaced variants:
+
+- `Setonix.on(...)` or `Setonix.events.on(...)`
+- `Setonix.command(...)` or `Setonix.commands.register(...)`
+- `Setonix.player(id)` or `Setonix.players.get(id)`
+- `Setonix.players()` or `Setonix.players.all()`
+- `Setonix.currentTable()` or `Setonix.tables.current()`
+- `Setonix.getTable(name)` or `Setonix.tables.get(name)`
+- `Setonix.cell(...)` or `Setonix.cells.get(...)`
+- `Setonix.process(...)` or `Setonix.requests.*(...)`
+- `Setonix.send(...)` or `Setonix.server.*(...)`
+
+The top-level helpers are convenient for short scripts. The namespaced entry points are better once a script grows beyond a few callbacks.
+
+## Events
+
+### Register listeners
+
+```lua
+Setonix.events.on("message", function(event)
+  Setonix.log("chat from " .. tostring(event.source) .. ": " .. event.message)
+end)
+
+Setonix.events.action("blackjack_stand", function(event)
+  if event:isFrom(event.player) then
+    event:reply("You pressed stand.")
+  end
+end)
+```
+
+Supported aliases include:
+
+- `player_join`, `player_joined`, `user_join`, `user_joined`
+- `message`, `chat`
+- `toolbar_action`, `action`
+- `objects_moved`, `objects_spawned`, `objects_removed`
+- `cell_hide_changed`, `cell_hidden`
+- many direct snake_case aliases for client, hybrid, and server event names from the Setonix event model
+
+### Event wrapper
+
+Every high-level event includes:
+
+- `event.raw`: the original raw event table
+- `event.details`: the low-level event details userdata
+- `event.player`: wrapped player when available
+- `event.cell`, `event.from`, `event.to`: wrapped cells when present on the raw event
+- `event.tableRef`: wrapped table for table-bound events
+- `event.action`: convenience alias for `actionId`
+- `event.cancelled`: read/write cancellation state
+
+Methods:
+
+- `event:cancel()`
+- `event:isCancelled()`
+- `event:schedule(playableEvent, target)`
+- `event:reply(message, author)`
+- `event:broadcast(message, author)`
+- `event:setToolbar(toolbar)`
+- `event:getPlayer()`
+- `event:getCell()`
+- `event:isFrom(playerOrId)`
+- `event:table()`
+
+## Commands
+
+`Setonix.command(name, handler)` and `Setonix.commands.register(name, handler)` create simple chat commands for both `!name` and `/name` by default.
+
+```lua
+Setonix.commands.register("deal", function(event)
+  event:reply("Dealing a card...")
+  event:cancel()
+end)
+```
+
+Inside the handler:
+
+- `event.command` contains the matched command name
+- `event.arguments` contains whitespace-split arguments
+
+## Players
+
+```lua
+local player = Setonix.players.get(7)
+
+if player:isOnline() then
+  player:sendMessage("Your turn")
+end
+```
+
+Player fields and methods:
+
+- `player.id`
+- `player:sendMessage(message, author)`
+- `player:setToolbar(toolbar)`
+- `player:isOnline()`
+- `player:equals(playerOrId)`
+
+## Tables And Cells
+
+Tables and cells are live views into the current state. They read from the underlying world state whenever queried.
+
+```lua
+local tableRef = Setonix.tables.current()
+local discard = tableRef:cell(4, 0)
+
+if discard:hasObjects() then
+  discard:clear()
+end
+
+tableRef:spawnObject({ x = 0, y = 0 }, Setonix.namespace() .. ":cards", {
+  variation = "heart-ace",
+  hidden = true,
+})
+```
+
+Table methods:
+
+- `tableRef.name`
+- `tableRef:raw()`
+- `tableRef:cell(positionOrX, y)`
+- `tableRef:getCell(positionOrX, y)`
+- `tableRef:cells()`
+- `tableRef:position(x, y)`
+- `tableRef:spawn(positionOrX, y, objects, target)`
+- `tableRef:spawnObject(positionOrX, y, asset, options, target)`
+
+State helpers:
+
+- `Setonix.state.raw()`
+- `Setonix.state.tableName()`
+- `Setonix.state.tables()`
+- `Setonix.state.info()`
+- `Setonix.state.players()`
+- `Setonix.state.teamMembers()`
+- `Setonix.state.currentTable()`
+
+Cell methods:
+
+- `cell.table`, `cell.x`, `cell.y`
+- `cell:key()`
+- `cell:toGlobal()`
+- `cell:copy()`
+- `cell:withTable(name)`
+- `cell:equals(positionOrCell)`
+- `cell:raw()`
+- `cell:objects()`
+- `cell:tiles()`
+- `cell:isEmpty()`
+- `cell:topObject()`
+- `cell:object(index)`
+- `cell:topObjects(count)`
+- `cell:countObjects()`
+- `cell:hasObjects()`
+- `cell:spawn(objects, target)`
+- `cell:spawnObject(asset, options, target)`
+- `cell:remove(objects, target)`
+- `cell:clear(target)`
+- `cell:show(object, target)`
+- `cell:hide(object, target)`
+- `cell:moveTo(targetCell, objects, target)`
+- `cell:moveTopTo(targetCell, count, target)`
+- `cell:shuffle(force)`
+- `cell:roll(object, force)`
+
+## Collections And Scoring
+
+The `Setonix.collections` and `Setonix.scoring` namespaces are intentionally generic so game-mode scripts can build their own domain logic without the API assuming a particular pack structure.
+
+```lua
+local order = Setonix.collections.shuffle({ "a", "b", "c" })
+local total = Setonix.scoring.bestTotal(items, function(item)
+  return item.values
+end, 21)
+```
+
+Available helpers:
+
+- `Setonix.collections.copy(values)`
+- `Setonix.collections.shuffle(values)`
+- `Setonix.scoring.bestTotal(items, resolverOrMap, maxScore)`
+
+## Server Helpers
+
+The server namespace collects common outbound actions:
+
+```lua
+Setonix.server.broadcast("Round started")
+
+Setonix.server.setToolbar({
+  editable = false,
+  actions = {
+    Setonix.server.toolbarAction("draw", "Draw"),
+  },
+}, event.source)
+```
+
+Available helpers:
+
+- `Setonix.server.send(event, target)`
+- `Setonix.server.process(event, force)`
+- `Setonix.server.message(message, target, author)`
+- `Setonix.server.broadcast(message, author)`
+- `Setonix.server.setToolbar(toolbar, target)`
+- `Setonix.server.toolbarAction(id, label, enabled)`
+- `Setonix.server.events.*` builders for hybrid and server events such as `objectsMoved`, `objectsRemoved`, `cellHideChanged`, `message`, `toolbarUpdated`, `dialogsClosed`, and more
+
+The flat aliases `Setonix.send`, `Setonix.process`, `Setonix.message`, `Setonix.broadcast`, `Setonix.setToolbar`, and `Setonix.toolbarAction` remain available too.
+
+## Requests
+
+Client-style requests now have a high-level namespace too, so scripts no longer need to build request tables by hand.
+
+Examples:
+
+- `Setonix.requests.teamJoin(team, force)`
+- `Setonix.requests.teamLeave(team, force)`
+- `Setonix.requests.cellRoll(cell, object, force)`
+- `Setonix.requests.shuffleCell(cell, force)`
+- `Setonix.requests.packsChange(packs, force)`
+- `Setonix.requests.boardsSpawn(tableName, assets, force)`
+- `Setonix.requests.boardRemove(cell, index, force)`
+- `Setonix.requests.boardMove(tableName, fromCell, toCell, index, force)`
+- `Setonix.requests.dialogClose(id, value, force)`
+- `Setonix.requests.images(ids, force)`
+- `Setonix.requests.modeChange(location, force)`
+- `Setonix.requests.modePlain(force)`
+- `Setonix.requests.authenticate(signature, publicKey, force)`
+- `Setonix.requests.toolbarAction(actionId, force)`
+
+## Object Helpers
+
+```lua
+local hiddenAce = Setonix.object(Setonix.namespace() .. ":cards", {
+  variation = "spade-ace",
+  hidden = true,
+})
+```
+
+Use `Setonix.object(asset, options)` to create spawnable object payloads without manually building raw tables.
+
+## Raw Escape Hatch
+
+The low-level bridge is still available when needed:
+
+```lua
+SetonixRaw.Server:Send({
+  type = "MessageSent",
+  user = 0,
+  message = "raw access still works",
+}, nil)
+```
+
+Raw access points:
+
+- `SetonixRaw.Events`
+- `SetonixRaw.State`
+- `SetonixRaw.Server`
+- `SetonixRaw.events`
+- `SetonixRaw.state`
+- `SetonixRaw.server`
+- `Setonix.raw.Events`
+- `Setonix.raw.State`
+- `Setonix.raw.Server`
+- `Setonix.raw.events`
+- `Setonix.raw.state`
+- `Setonix.raw.server`
