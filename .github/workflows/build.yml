@@ -583,7 +583,7 @@ jobs:
       - name: Install tree
         if: ${{ matrix.os.name == 'macos-latest' }}
         run: brew install tree
-      - uses: subosito/flutter-action@v2.21.0
+      - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
           channel: "master"

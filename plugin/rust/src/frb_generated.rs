@@ -20,6 +20,7 @@
     clippy::deref_addrof,
     clippy::explicit_auto_deref,
     clippy::borrow_deref_ref,
+    clippy::uninlined_format_args,
     clippy::needless_borrow
 )]
 
@@ -618,7 +619,7 @@ impl SseDecode for Vec<i16> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut len_ = <i32>::sse_decode(deserializer);
-        let mut ans_ = vec![];
+        let mut ans_ = Vec::with_capacity(len_ as usize);
         for idx_ in 0..len_ {
             ans_.push(<i16>::sse_decode(deserializer));
         }
@@ -630,7 +631,7 @@ impl SseDecode for Vec<u8> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut len_ = <i32>::sse_decode(deserializer);
-        let mut ans_ = vec![];
+        let mut ans_ = Vec::with_capacity(len_ as usize);
         for idx_ in 0..len_ {
             ans_.push(<u8>::sse_decode(deserializer));
         }
@@ -642,7 +643,7 @@ impl SseDecode for Vec<(String, i16)> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut len_ = <i32>::sse_decode(deserializer);
-        let mut ans_ = vec![];
+        let mut ans_ = Vec::with_capacity(len_ as usize);
         for idx_ in 0..len_ {
             ans_.push(<(String, i16)>::sse_decode(deserializer));
         }

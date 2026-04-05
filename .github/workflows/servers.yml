@@ -32,7 +32,7 @@ jobs:
         run: pnpm build
       - name: Setup SSH Agent
         if: github.ref == 'refs/heads/develop'
-        uses: webfactory/ssh-agent@v0.9.1
+        uses: webfactory/ssh-agent@v0.10.0
         with:
           ssh-private-key: ${{ secrets.SFTP_KEY }}
       - name: Add SSH Known Hosts

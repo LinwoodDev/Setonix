@@ -10,13 +10,13 @@ part of 'meta.dart';
 
 /// @nodoc
 
-class FileTypeMapper extends EnumMapper<SetonixFileType> {
-  FileTypeMapper._();
+class SetonixFileTypeMapper extends EnumMapper<SetonixFileType> {
+  SetonixFileTypeMapper._();
 
-  static FileTypeMapper? _instance;
-  static FileTypeMapper ensureInitialized() {
+  static SetonixFileTypeMapper? _instance;
+  static SetonixFileTypeMapper ensureInitialized() {
     if (_instance == null) {
-      MapperContainer.globals.use(_instance = FileTypeMapper._());
+      MapperContainer.globals.use(_instance = SetonixFileTypeMapper._());
     }
     return _instance!;
   }
@@ -59,9 +59,9 @@ class FileTypeMapper extends EnumMapper<SetonixFileType> {
 
 /// @nodoc
 
-extension FileTypeMapperExtension on SetonixFileType {
+extension SetonixFileTypeMapperExtension on SetonixFileType {
   String toValue() {
-    FileTypeMapper.ensureInitialized();
+    SetonixFileTypeMapper.ensureInitialized();
     return MapperContainer.globals.toValue<SetonixFileType>(this) as String;
   }
 }
@@ -74,7 +74,7 @@ class FileMetadataMapper extends ClassMapperBase<FileMetadata> {
   static FileMetadataMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = FileMetadataMapper._());
-      FileTypeMapper.ensureInitialized();
+      SetonixFileTypeMapper.ensureInitialized();
     }
     return _instance!;
   }
