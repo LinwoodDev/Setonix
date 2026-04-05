@@ -20,14 +20,14 @@ jobs:
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v6
-      - name: Setup Rust
-        uses: actions-rust-lang/setup-rust-toolchain@v1
       - name: 🔧 Setup java
         uses: actions/setup-java@v5
         with:
           java-version: "17"
           distribution: "temurin"
-      - uses: subosito/flutter-action@v2.21.0
+      - name: 🦀 Setup Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+      - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
           cache: true
@@ -158,13 +158,13 @@ jobs:
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v6
-      - name: Setup Rust
-        uses: actions-rust-lang/setup-rust-toolchain@v1
       - name: Make yq tool available on Windows runners
         run: |
           choco install yq
           choco install innosetup
-      - uses: subosito/flutter-action@v2.21.0
+      - name: 🦀 Setup Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+      - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
           cache: true
@@ -185,12 +185,10 @@ jobs:
       - name: 🏭 Build nightly
         if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.release.prerelease) }}
         run: |
-          flutter doctor -v
           flutter build windows -v --release --dart-define=flavor=nightly
       - name: 🏭 Build production
         if: ${{ github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease) }}
         run: |
-          flutter doctor -v
           flutter build windows -v --release --dart-define=flavor=production
       - name: Build setup
         shell: pwsh
@@ -223,9 +221,9 @@ jobs:
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v6
-      - name: Setup Rust
+      - name: 🦀 Setup Rust
         uses: actions-rust-lang/setup-rust-toolchain@v1
-      - uses: subosito/flutter-action@v2.21.0
+      - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
           cache: true
@@ -233,6 +231,7 @@ jobs:
         run: |
           flutter clean
           flutter pub get
+          dart run pdfrx:remove_wasm_modules
           flutter doctor -v
       - name: Build nessesary files
         working-directory: ./
@@ -303,7 +302,9 @@ jobs:
             libsecret-1-dev \
             libjsoncpp-dev \
             rpm
-      - uses: subosito/flutter-action@v2.21.0
+      - name: 🦀 Setup Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+      - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
           channel: "master"
@@ -317,8 +318,8 @@ jobs:
       - name: 📦 Get dependencies
         run: |
           flutter clean
-          flutter doctor -v
           flutter pub get
+          flutter doctor -v
       - name: Build nessesary files
         working-directory: ./
         run: |
@@ -369,7 +370,11 @@ jobs:
           ln -s usr/bin/setonix AppDir/AppRun
           ln -s usr/share/icons/hicolor/256x256/apps/dev.linwood.setonix.png AppDir/dev.linwood.setonix.png
           # Build AppImage
-          ./appimagetool.AppImage AppDir linwood-setonix-linux-${{ matrix.arch.name }}.AppImage
+          UPDATE_INFO="gh-releases-zsync|LinwoodDev|setonix|stable|linwood-setonix-linux-${{ matrix.arch.name }}.AppImage.zsync"
+          if [[ "${{ github.ref }}" == "refs/tags/nightly" ]]; then
+            UPDATE_INFO="gh-releases-zsync|LinwoodDev|setonix|nightly|linwood-setonix-linux-${{ matrix.arch.name }}.AppImage.zsync"
+          fi
+          ./appimagetool.AppImage -u "$UPDATE_INFO" AppDir linwood-setonix-linux-${{ matrix.arch.name }}.AppImage
       - name: Copy nessessary files
         run: |
           cp assets/images/logo.svg build/linux/${{ matrix.arch.dir }}/release/bundle/dev.linwood.setonix.svg
@@ -403,6 +408,7 @@ jobs:
           name: linux-${{ matrix.arch.name }}-appimage
           path: |
             app/linwood-setonix-linux-${{ matrix.arch.name }}.AppImage
+            app/linwood-setonix-linux-${{ matrix.arch.name }}.AppImage.zsync
   build-snap:
     name: build-snap
     strategy:
@@ -447,9 +453,9 @@ jobs:
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v6
-      - name: Setup Rust
+      - name: 🦀 Setup Rust
         uses: actions-rust-lang/setup-rust-toolchain@v1
-      - uses: subosito/flutter-action@v2.21.0
+      - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
       - uses: actions/setup-python@v6
@@ -476,7 +482,7 @@ jobs:
         working-directory: app/build/macos/Build/Products/Release
         run: zip --symlinks -qr linwood-setonix-macos.zip setonix.app
       - name: Setup node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version: 24
       - name: Install appdmg
@@ -508,10 +514,12 @@ jobs:
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v6
-      - uses: subosito/flutter-action@v2.21.0
+      - name: 🦀 Setup Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+      - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
-          cache: true
+          #cache: true
       - name: 📦 Get dependencies
         run: |
           flutter clean
@@ -645,16 +653,16 @@ jobs:
   #     - name: Log Docker tag
   #       run: echo "Docker tag is ${{ env.tag }}"
   #     - name: Login to Docker Hub
-  #       uses: docker/login-action@v3
+  #       uses: docker/login-action@v4
   #       with:
   #         username: ${{ secrets.DOCKERHUB_USERNAME }}
   #         password: ${{ secrets.DOCKERHUB_TOKEN }}
   #     - name: Set up QEMU
-  #       uses: docker/setup-qemu-action@v3
+  #       uses: docker/setup-qemu-action@v4
   #     - name: Set up Docker Buildx
-  #       uses: docker/setup-buildx-action@v3
+  #       uses: docker/setup-buildx-action@v4
   #     - name: Build and push Docker image
-  #       uses: docker/build-push-action@v6
+  #       uses: docker/build-push-action@v7
   #       if: ${{ env.tag != 'unknown' }}
   #       with:
   #         context: .
@@ -857,18 +865,22 @@ jobs:
             linwood-setonix-linux-x86_64.deb
             linwood-setonix-linux-x86_64.rpm
             linwood-setonix-linux-x86_64.AppImage
+            linwood-setonix-linux-x86_64.AppImage.zsync
             linwood-setonix-linux-arm64.tar.gz
             linwood-setonix-linux-arm64.deb
             linwood-setonix-linux-arm64.rpm
             linwood-setonix-linux-arm64.AppImage
+            linwood-setonix-linux-arm64.AppImage.zsync
             linwood-setonix-linux-alternative-x86_64.tar.gz
             linwood-setonix-linux-alternative-x86_64.deb
             linwood-setonix-linux-alternative-x86_64.rpm
             linwood-setonix-linux-alternative-x86_64.AppImage
+            linwood-setonix-linux-alternative-x86_64.AppImage.zsync
             linwood-setonix-linux-alternative-arm64.tar.gz
             linwood-setonix-linux-alternative-arm64.deb
             linwood-setonix-linux-alternative-arm64.rpm
             linwood-setonix-linux-alternative-arm64.AppImage
+            linwood-setonix-linux-alternative-arm64.AppImage.zsync
             linwood-setonix-macos.zip
             linwood-setonix-macos.dmg
             linwood-setonix-android.apk
@@ -901,18 +913,22 @@ jobs:
             linwood-setonix-linux-x86_64.deb
             linwood-setonix-linux-x86_64.rpm
             linwood-setonix-linux-x86_64.AppImage
+            linwood-setonix-linux-x86_64.AppImage.zsync
             linwood-setonix-linux-arm64.tar.gz
             linwood-setonix-linux-arm64.deb
             linwood-setonix-linux-arm64.rpm
             linwood-setonix-linux-arm64.AppImage
+            linwood-setonix-linux-arm64.AppImage.zsync
             linwood-setonix-linux-alternative-x86_64.tar.gz
             linwood-setonix-linux-alternative-x86_64.deb
             linwood-setonix-linux-alternative-x86_64.rpm
             linwood-setonix-linux-alternative-x86_64.AppImage
+            linwood-setonix-linux-alternative-x86_64.AppImage.zsync
             linwood-setonix-linux-alternative-arm64.tar.gz
             linwood-setonix-linux-alternative-arm64.deb
             linwood-setonix-linux-alternative-arm64.rpm
             linwood-setonix-linux-alternative-arm64.AppImage
+            linwood-setonix-linux-alternative-arm64.AppImage.zsync
             linwood-setonix-macos.zip
             linwood-setonix-macos.dmg
             linwood-setonix-android.apk
@@ -943,18 +959,22 @@ jobs:
             linwood-setonix-linux-x86_64.deb
             linwood-setonix-linux-x86_64.rpm
             linwood-setonix-linux-x86_64.AppImage
+            linwood-setonix-linux-x86_64.AppImage.zsync
             linwood-setonix-linux-arm64.tar.gz
             linwood-setonix-linux-arm64.deb
             linwood-setonix-linux-arm64.rpm
             linwood-setonix-linux-arm64.AppImage
+            linwood-setonix-linux-arm64.AppImage.zsync
             linwood-setonix-linux-alternative-x86_64.tar.gz
             linwood-setonix-linux-alternative-x86_64.deb
             linwood-setonix-linux-alternative-x86_64.rpm
             linwood-setonix-linux-alternative-x86_64.AppImage
+            linwood-setonix-linux-alternative-x86_64.AppImage.zsync
             linwood-setonix-linux-alternative-arm64.tar.gz
             linwood-setonix-linux-alternative-arm64.deb
             linwood-setonix-linux-alternative-arm64.rpm
             linwood-setonix-linux-alternative-arm64.AppImage
+            linwood-setonix-linux-alternative-arm64.AppImage.zsync
             linwood-setonix-macos.zip
             linwood-setonix-macos.dmg
             linwood-setonix-android.apk
@@ -1006,7 +1026,7 @@ jobs:
         with:
           java-version: "17"
           distribution: "temurin"
-      - uses: subosito/flutter-action@v2.21.0
+      - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
           cache: true
@@ -1020,10 +1040,11 @@ jobs:
       - name: 📦 Get dependencies
         run: |
           flutter pub get
+          flutter doctor -v
       - name: Setup Fastlane
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.4.8"
+          ruby-version: "4.0.2"
           bundler-cache: true
           working-directory: app/android
       - name: 🚀 Deploy to Play Store

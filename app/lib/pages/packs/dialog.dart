@@ -1,4 +1,3 @@
-import 'package:file_selector/file_selector.dart' as fs;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';

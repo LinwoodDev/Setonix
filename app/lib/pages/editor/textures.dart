@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:file_selector/file_selector.dart' as fs;
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
@@ -8,7 +8,6 @@ import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:setonix/bloc/editor.dart';
 import 'package:setonix/helpers/vector.dart';
-import 'package:setonix/services/file_system.dart';
 import 'package:setonix_api/setonix_api.dart';
 
 class TexturesEditorPage extends StatelessWidget {
@@ -36,9 +35,13 @@ class TexturesEditorPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
-          final data = await fs.openFile(acceptedTypeGroups: [imageTypeGroup]);
+          final data = await FilePicker.pickFiles(
+            type: FileType.image,
+            withData: true,
+          ).then((result) => result?.files.firstOrNull);
           if (data == null) return;
-          final bytes = await data.readAsBytes();
+          final bytes = data.bytes;
+          if (bytes == null) return;
           if (!context.mounted) return;
           final name = await showDialog<String>(
             context: context,

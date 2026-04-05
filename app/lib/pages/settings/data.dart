@@ -1,5 +1,5 @@
 import 'package:archive/archive.dart';
-import 'package:file_selector/file_selector.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -70,7 +70,8 @@ class DataSettingsPage extends StatelessWidget {
                               : null,
                           onTap: () async {
                             try {
-                              final selectedDir = await getDirectoryPath();
+                              final selectedDir =
+                                  await FilePicker.getDirectoryPath();
                               if (selectedDir != null) {
                                 changePath(selectedDir);
                               }

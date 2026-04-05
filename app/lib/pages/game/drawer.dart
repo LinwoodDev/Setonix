@@ -504,7 +504,7 @@ class GameDrawer extends StatelessWidget {
                 data = data.setMetadata(
                   data.getMetadataOrDefault().copyWith(
                     name: name,
-                    type: FileType.template,
+                    type: SetonixFileType.template,
                   ),
                 );
                 state.fileSystem.templateSystem.createFile(name, data);

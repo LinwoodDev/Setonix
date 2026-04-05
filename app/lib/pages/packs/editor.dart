@@ -146,7 +146,7 @@ class _EditorPacksViewState extends State<_EditorPacksView> {
                     await _fileSystem.editorSystem.createFile(
                       name,
                       SetonixData.empty().setMetadata(
-                        FileMetadata(name: name, type: FileType.pack),
+                        FileMetadata(name: name, type: SetonixFileType.pack),
                       ),
                     );
                     _reloadPacks();
@@ -201,26 +201,11 @@ class _EditorPacksViewState extends State<_EditorPacksView> {
                   leading: const Icon(PhosphorIconsLight.arrowSquareIn),
                   onTap: () async {
                     Navigator.of(ctx).pop();
-                    final result = await fs.openFile(
-                      acceptedTypeGroups: [
-                        fs.XTypeGroup(
-                          label: AppLocalizations.of(context).packs,
-                          extensions: const ['stnx'],
-                          uniformTypeIdentifiers: const [
-                            'dev.linwood.setonix.pack',
-                          ],
-                          mimeTypes: const [
-                            'application/octet-stream',
-                            'application/zip',
-                          ],
-                        ),
-                      ],
-                    );
+                    final result = await openFile();
                     if (result == null) return;
-                    final bytes = await result.readAsBytes();
-                    final data = SetonixFile(bytes).load();
+                    final data = result.load();
                     final metadata = data.getMetadataOrDefault();
-                    if (metadata.type != FileType.pack) {
+                    if (metadata.type != SetonixFileType.pack) {
                       return;
                     }
                     await _fileSystem.editorSystem.createFile(

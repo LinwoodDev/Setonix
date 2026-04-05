@@ -10,7 +10,7 @@ part of 'meta.dart';
 
 /// @nodoc
 
-class FileTypeMapper extends EnumMapper<FileType> {
+class FileTypeMapper extends EnumMapper<SetonixFileType> {
   FileTypeMapper._();
 
   static FileTypeMapper? _instance;
@@ -21,37 +21,37 @@ class FileTypeMapper extends EnumMapper<FileType> {
     return _instance!;
   }
 
-  static FileType fromValue(dynamic value) {
+  static SetonixFileType fromValue(dynamic value) {
     ensureInitialized();
     return MapperContainer.globals.fromValue(value);
   }
 
   @override
-  FileType decode(dynamic value) {
+  SetonixFileType decode(dynamic value) {
     switch (value) {
       case r'pack':
-        return FileType.pack;
+        return SetonixFileType.pack;
       case r'game':
-        return FileType.game;
+        return SetonixFileType.game;
       case r'template':
-        return FileType.template;
+        return SetonixFileType.template;
       case r'accounts':
-        return FileType.accounts;
+        return SetonixFileType.accounts;
       default:
         throw MapperException.unknownEnumValue(value);
     }
   }
 
   @override
-  dynamic encode(FileType self) {
+  dynamic encode(SetonixFileType self) {
     switch (self) {
-      case FileType.pack:
+      case SetonixFileType.pack:
         return r'pack';
-      case FileType.game:
+      case SetonixFileType.game:
         return r'game';
-      case FileType.template:
+      case SetonixFileType.template:
         return r'template';
-      case FileType.accounts:
+      case SetonixFileType.accounts:
         return r'accounts';
     }
   }
@@ -59,10 +59,10 @@ class FileTypeMapper extends EnumMapper<FileType> {
 
 /// @nodoc
 
-extension FileTypeMapperExtension on FileType {
+extension FileTypeMapperExtension on SetonixFileType {
   String toValue() {
     FileTypeMapper.ensureInitialized();
-    return MapperContainer.globals.toValue<FileType>(this) as String;
+    return MapperContainer.globals.toValue<SetonixFileType>(this) as String;
   }
 }
 
@@ -82,12 +82,12 @@ class FileMetadataMapper extends ClassMapperBase<FileMetadata> {
   @override
   final String id = 'FileMetadata';
 
-  static FileType _$type(FileMetadata v) => v.type;
-  static const Field<FileMetadata, FileType> _f$type = Field(
+  static SetonixFileType _$type(FileMetadata v) => v.type;
+  static const Field<FileMetadata, SetonixFileType> _f$type = Field(
     'type',
     _$type,
     opt: true,
-    def: FileType.pack,
+    def: SetonixFileType.pack,
   );
   static String _$name(FileMetadata v) => v.name;
   static const Field<FileMetadata, String> _f$name = Field(
@@ -221,7 +221,7 @@ extension FileMetadataValueCopy<$R, $Out>
 abstract class FileMetadataCopyWith<$R, $In extends FileMetadata, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call({
-    FileType? type,
+    SetonixFileType? type,
     String? name,
     String? description,
     String? author,
@@ -243,7 +243,7 @@ class _FileMetadataCopyWithImpl<$R, $Out>
       FileMetadataMapper.ensureInitialized();
   @override
   $R call({
-    FileType? type,
+    SetonixFileType? type,
     String? name,
     String? description,
     String? author,

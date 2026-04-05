@@ -9,11 +9,11 @@ part 'meta.mapper.dart';
 const kFileVersion = 0;
 
 @MappableEnum()
-enum FileType { pack, game, template, accounts }
+enum SetonixFileType { pack, game, template, accounts }
 
 @MappableClass()
 final class FileMetadata with FileMetadataMappable {
-  final FileType type;
+  final SetonixFileType type;
   final String name;
   final String description;
   final String author;
@@ -22,7 +22,7 @@ final class FileMetadata with FileMetadataMappable {
   final int fileVersion;
 
   const FileMetadata({
-    this.type = FileType.pack,
+    this.type = SetonixFileType.pack,
     this.name = '',
     this.description = '',
     this.author = '',

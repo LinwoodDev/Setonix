@@ -381,7 +381,7 @@ class _CreateDialogState extends State<CreateDialog>
                 FileMetadata(
                   name: name,
                   description: description,
-                  type: FileType.game,
+                  type: SetonixFileType.game,
                 ),
               );
               await _worldSystem.createFile(name, template);

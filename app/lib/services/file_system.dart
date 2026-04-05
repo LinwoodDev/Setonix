@@ -3,20 +3,12 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:cryptography_plus/cryptography_plus.dart';
-import 'package:file_selector/file_selector.dart' as fs;
 import 'package:http/http.dart' as http;
 import 'package:idb_shim/idb.dart';
 import 'package:lw_file_system/lw_file_system.dart';
 import 'package:setonix/api/open.dart';
 import 'package:setonix/api/storage.dart';
 import 'package:setonix_api/setonix_api.dart';
-
-const imageTypeGroup = fs.XTypeGroup(
-  label: 'Images',
-  extensions: <String>['png', 'jpg', 'jpeg', 'gif'],
-  mimeTypes: <String>['image/png', 'image/jpeg', 'image/gif'],
-  uniformTypeIdentifiers: <String>['public.png', 'public.jpeg'],
-);
 
 enum PackDownloadResult {
   success,
@@ -289,7 +281,7 @@ class SetonixFileSystem {
     List<SetonixAccount>? accounts,
   ]) async {
     var data = SetonixData.empty().setMetadata(
-      FileMetadata(type: FileType.accounts),
+      FileMetadata(type: SetonixFileType.accounts),
     );
     final allAccounts = accounts ?? await getAccounts(names);
     for (final account in allAccounts) {

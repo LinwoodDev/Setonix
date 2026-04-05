@@ -1,5 +1,5 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:file_selector/file_selector.dart' as fs;
 import 'package:flutter/services.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -66,23 +66,26 @@ Future<bool> openHelp(List<String> pageLocation, [String? fragment]) {
   );
 }
 
+Future<SetonixFile?> openFile() async {
+  final result = await FilePicker.pickFiles(
+    allowedExtensions: ['stnx'],
+    withData: true,
+  );
+  if (result == null) return null;
+  final file = result.files.firstOrNull;
+  if (file == null) return null;
+  final bytes = file.bytes;
+  if (bytes == null) return null;
+  final data = SetonixFile(bytes, file.name);
+  return data;
+}
+
 Future<void> importFile(
   BuildContext context,
   SetonixFileSystem fileSystem,
 ) async {
-  final result = await fs.openFile(
-    acceptedTypeGroups: [
-      fs.XTypeGroup(
-        label: AppLocalizations.of(context).packs,
-        extensions: const ['stnx'],
-        uniformTypeIdentifiers: const ['dev.linwood.setonix.pack'],
-        mimeTypes: const ['application/octet-stream', 'application/zip'],
-      ),
-    ],
-  );
-  if (result == null) return;
-  final bytes = await result.readAsBytes();
-  final data = SetonixFile(bytes);
+  final data = await openFile();
+  if (data == null) return;
   if (context.mounted) return importFileData(context, fileSystem, data);
 }
 
@@ -104,16 +107,16 @@ Future<void> importFileData(
     context: context,
     builder: (context) => AlertDialog(
       title: Text(switch (type) {
-        FileType.pack => loc.importPack,
-        FileType.game => loc.importGame,
-        FileType.template => loc.importTemplate,
-        FileType.accounts => loc.importAccounts,
+        SetonixFileType.pack => loc.importPack,
+        SetonixFileType.game => loc.importGame,
+        SetonixFileType.template => loc.importTemplate,
+        SetonixFileType.accounts => loc.importAccounts,
       }),
       content: Text(switch (type) {
-        FileType.pack => loc.importPackDescription,
-        FileType.game => loc.importGameDescription,
-        FileType.template => loc.importTemplateDescription,
-        FileType.accounts => loc.importAccountsDescription,
+        SetonixFileType.pack => loc.importPackDescription,
+        SetonixFileType.game => loc.importGameDescription,
+        SetonixFileType.template => loc.importTemplateDescription,
+        SetonixFileType.accounts => loc.importAccountsDescription,
       }),
       actions: [
         TextButton.icon(
@@ -132,13 +135,13 @@ Future<void> importFileData(
   if (!(result ?? false)) return;
   final id = file.identifier;
   switch (type) {
-    case FileType.pack:
+    case SetonixFileType.pack:
       await fileSystem.packSystem.updateFile(id, file);
-    case FileType.template:
+    case SetonixFileType.template:
       await fileSystem.templateSystem.createFile(metadata.name, data);
-    case FileType.game:
+    case SetonixFileType.game:
       await fileSystem.worldSystem.createFile(metadata.name, data);
-    case FileType.accounts:
+    case SetonixFileType.accounts:
       await fileSystem.importAccountsFromData(data);
   }
 }
