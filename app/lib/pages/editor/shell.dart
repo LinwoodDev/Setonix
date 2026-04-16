@@ -12,6 +12,8 @@ import 'package:setonix/pages/editor/decks.dart';
 import 'package:setonix/pages/editor/figures.dart';
 import 'package:setonix/pages/editor/general.dart';
 import 'package:setonix/pages/editor/textures.dart';
+import 'package:setonix/pages/editor/scripts.dart';
+import 'package:setonix/pages/editor/modes.dart';
 import 'package:setonix/services/file_system.dart';
 import 'package:setonix_api/setonix_api.dart';
 
@@ -24,6 +26,8 @@ enum EditorPage {
   decks(PhosphorIcons.stack, '/decks'),
   backgrounds(PhosphorIcons.image, '/backgrounds'),
   textures(PhosphorIcons.paintBucket, '/textures'),
+  scripts(PhosphorIcons.scroll, '/scripts'),
+  modes(PhosphorIcons.gameController, '/modes'),
   translations(PhosphorIcons.translate, null);
 
   final IconGetter icon;
@@ -48,6 +52,8 @@ enum EditorPage {
       EditorPage.backgrounds => loc.backgrounds,
       EditorPage.translations => loc.translations,
       EditorPage.textures => loc.textures,
+      EditorPage.scripts => loc.scripts,
+      EditorPage.modes => loc.modes,
     };
   }
 
@@ -60,6 +66,8 @@ enum EditorPage {
       EditorPage.backgrounds => const BackgroundsEditorPage(),
       EditorPage.translations => const GeneralEditorPage(),
       EditorPage.textures => const TexturesEditorPage(),
+      EditorPage.scripts => const ScriptsEditorPage(),
+      EditorPage.modes => const ModesEditorPage(),
     };
   }
 }

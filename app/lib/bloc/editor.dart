@@ -65,4 +65,13 @@ class EditorCubit extends Cubit<SetonixData> {
 
   void setBoard(String id, BoardDefinition definition) =>
       emit(state.setBoard(id, definition));
+
+  void removeScript(String id) => emit(state.removeScript(id));
+
+  void setScript(String id, String content) =>
+      emit(state.setScript(id, content));
+
+  void removeMode(String id) => emit(state.removeMode(id));
+
+  void setMode(String id, GameMode mode) => emit(state.setMode(id, mode));
 }

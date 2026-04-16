@@ -185,7 +185,12 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
         final event = Event(
           serverEvent: value.main?.data,
           target: value.main?.channel ?? kAnyChannel,
-          clientEvent: data.data ?? UserJoined(channel: data.channel, info: const ConnectionInfoMapper().decode({})),
+          clientEvent:
+              data.data ??
+              UserJoined(
+                channel: data.channel,
+                info: const ConnectionInfoMapper().decode({}),
+              ),
           source: data.channel,
           needsUpdate: value.needsUpdate,
           worldName: state.world.name ?? '',

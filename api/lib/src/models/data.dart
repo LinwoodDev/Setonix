@@ -305,11 +305,18 @@ class SetonixData extends ArchiveData<SetonixData> {
   SetonixData removeTexture(String texture) =>
       removeAsset('$kPackTexturesPath/$texture');
 
+  Iterable<String> getScripts() => getAssets(kPackScriptsPath, false);
+
   String? getScript(String id) {
     final data = getAsset('$kPackScriptsPath/$id');
     if (data == null) return null;
     return utf8.decode(data);
   }
+
+  SetonixData setScript(String id, String content) =>
+      setAsset('$kPackScriptsPath/$id', utf8.encode(content));
+
+  SetonixData removeScript(String id) => removeAsset('$kPackScriptsPath/$id');
 
   Iterable<String> getModes() => getAssets(kPackModesPath, true);
 
@@ -339,6 +346,11 @@ class SetonixData extends ArchiveData<SetonixData> {
       return MapEntry(e, mode);
     }).nonNulls,
   );
+
+  SetonixData setMode(String id, GameMode mode) =>
+      setAsset('$kPackModesPath/$id.json', utf8.encode(mode.toJson()));
+
+  SetonixData removeMode(String id) => removeAsset('$kPackModesPath/$id.json');
 
   SetonixData addAccount(SetonixAccount setonixAccount) {
     final accountId = setonixAccount.name;
