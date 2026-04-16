@@ -24,7 +24,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
   final SetonixServer server;
   final String worldName;
   late final PluginSystem _pluginSystem;
-  late final SetonixPlugin _serverPlugin;
+  late SetonixPlugin _serverPlugin;
 
   PluginSystem get pluginSystem => _pluginSystem;
 
@@ -102,24 +102,12 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
     }
   }
 
-  Future<bool> _loadGameMode(ItemLocation location) async {
-    final mode = assetManager.getPack(location.namespace)?.getMode(location.id);
-    if (mode == null) return false;
-    final script = mode.script;
-    if (script == null) return false;
-    final scriptLocation = ItemLocation.fromString(script, location.namespace);
-    return await pluginSystem.loadLuaPluginFromLocation(
-          assetManager,
-          scriptLocation,
-        ) !=
-        null;
-  }
-
   Future<void> _loadScripts(ItemLocation? mode) async {
     pluginSystem.unregisterAll();
+    _serverPlugin = await _pluginSystem.registerPlugin('', SetonixPlugin.new);
     try {
       if (mode != null) {
-        if (!await _loadGameMode(mode)) {
+        if (await pluginSystem.loadGameMode(assetManager, mode) == null) {
           server.log(
             'Failed to load game mode script: $mode',
             level: LogLevel.warning,
@@ -159,7 +147,6 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
   }
 
   Future<void> init() async {
-    _serverPlugin = await _pluginSystem.registerPlugin('', SetonixPlugin.new);
     await _loadScripts(state.info.gameMode);
   }
 

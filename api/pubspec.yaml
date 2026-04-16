@@ -1,6 +1,6 @@
 name: setonix_api
 description: The Linwood Setonix API
-version: 0.6.1
+version: 0.7.0
 publish_to: none
 # repository: https://github.com/my_org/my_repo
 
@@ -34,5 +34,9 @@ dependencies:
 
 dev_dependencies:
   lints: ^6.0.0
-  dart_mappable_builder: ^4.2.3
+  dart_mappable_builder:
+    git:
+      url: https://github.com/CodeDoctorDE/dart_mappable
+      path: packages/dart_mappable_builder
+      ref: 5e8a23f1a50ca709fe1754a04137d91cd8538a22
   build_runner: ^2.4.12

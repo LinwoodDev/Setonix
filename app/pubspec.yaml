@@ -11,7 +11,7 @@ description: Play games without internet
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 0.6.1+11
+version: 0.7.0+11
 publish_to: none
 
 environment:
@@ -94,8 +94,8 @@ dependencies:
   markdown: ^7.2.2
   bloc_concurrency: ^0.3.0
   idb_shim: ^2.6.1+7
-  # rust_lib_setonix_plugin:
-  #   path: rust_builder
+  rust_lib_setonix_plugin:
+    path: rust_builder
   setonix_plugin:
     path: ../plugin
   cryptography_plus: ^3.0.0

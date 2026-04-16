@@ -1,7 +1,8 @@
 * Add zoom gestures
 * Add create from template
 * Add high level scripting API for packs
+* Add support for game modes and scripts in single-player
 * Fix server builds not created for released versions
 * Improve server docs by ignoring generated files
 
-Read more here: https://linwood.dev/setonix/0.6.1
+Read more here: https://linwood.dev/setonix/0.7.0

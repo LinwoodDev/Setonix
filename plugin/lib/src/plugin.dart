@@ -77,6 +77,21 @@ final class PluginSystem {
     return registerLuauPlugin(name, data);
   }
 
+  Future<SetonixPlugin?> loadGameMode(
+    AssetManager assetManager,
+    ItemLocation? location,
+  ) async {
+    if (location == null) return null;
+    final gameMode = assetManager
+        .getPack(location.namespace)
+        ?.getMode(location.id);
+    if (gameMode == null) return null;
+    final script = gameMode.script;
+    if (script == null || script.isEmpty) return null;
+    final scriptLocation = ItemLocation.fromString(script, location.namespace);
+    return loadLuaPluginFromLocation(assetManager, scriptLocation);
+  }
+
   bool get _nativeEnabled => RustLib.instance.initialized;
 
   Iterable<String> get plugins => _plugins.keys;

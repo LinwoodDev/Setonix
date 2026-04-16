@@ -19,6 +19,7 @@ import 'package:setonix/pages/home/page.dart';
 import 'package:setonix/services/file_system.dart';
 import 'package:setonix/services/network.dart';
 import 'package:setonix/theme.dart';
+import 'package:setonix_plugin/setonix_plugin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:window_manager/window_manager.dart';
@@ -48,7 +49,7 @@ Future<void> main(List<String> args) async {
 
   await setup(settingsCubit);
 
-  //await initPluginSystem();
+  await initPluginSystem();
   runApp(
     MultiBlocProvider(
       providers: [

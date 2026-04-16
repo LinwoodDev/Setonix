@@ -160,8 +160,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
       );
     });
     if (!state.multiplayer.isClient) {
-      final mode = state.world.info.gameMode;
-      if (mode != null) _loadGameMode(mode);
+      _loadGameMode(state.world.info.gameMode);
     }
   }
 
@@ -183,9 +182,30 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
     if (value == null) return;
     switch (value) {
       case UpdateServerResponse():
-        state.multiplayer.sendServerPackets(
-          value.buildPackets(state.world, state.multiplayer.clients),
+        final event = Event(
+          serverEvent: value.main?.data,
+          target: value.main?.channel ?? kAnyChannel,
+          clientEvent: data.data ?? UserJoined(channel: data.channel, info: const ConnectionInfoMapper().decode({})),
+          source: data.channel,
+          needsUpdate: value.needsUpdate,
+          worldName: state.world.name ?? '',
         );
+        await pluginSystem.fire(event);
+        if (event.cancelled) return;
+
+        final packets = <NetworkerPacket<ServerWorldEvent>>[];
+        final serverEvent = event.serverEvent;
+        if (serverEvent != null) {
+          packets.add(NetworkerPacket(serverEvent, event.target));
+        }
+        packets.addAll(
+          value.buildUpdatePacketsFor(
+            state.world,
+            state.multiplayer.clients,
+            event.needsUpdate,
+          ),
+        );
+        state.multiplayer.sendServerPackets(packets);
       case KickServerResponse():
       // Handle kick response
     }
@@ -208,19 +228,29 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
         if (multiplayer.isConnected) {
           multiplayer.send(e);
         } else {
-          final event = await processClientEvent(
+          final response = await processClientEvent(
             e,
             kAuthorityChannel,
             state.world,
             assetManager: state.assetManager,
             allowServerEvents: true,
           );
-          if (event is! UpdateServerResponse) break;
-          final result = event.main?.data;
+          if (response is! UpdateServerResponse) break;
+          final event = Event(
+            serverEvent: response.main?.data,
+            target: response.main?.channel ?? kAnyChannel,
+            clientEvent: e,
+            source: kAuthorityChannel,
+            needsUpdate: response.needsUpdate,
+            worldName: state.world.name ?? '',
+          );
+          await pluginSystem.fire(event);
+          if (event.cancelled) return;
+          final result = event.serverEvent;
           if (result != null) add(result);
-          final updatePacket = event.buildUpdatePackets(state.world, {
+          final updatePacket = response.buildUpdatePacketsFor(state.world, {
             kAuthorityChannel,
-          }).firstOrNull;
+          }, event.needsUpdate).firstOrNull;
           if (updatePacket != null) {
             add(updatePacket.data);
           }
@@ -231,19 +261,11 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
   }
 
   Future<void> _loadGameMode(ItemLocation? location) async {
+    pluginSystem.unregisterAll();
+    await pluginSystem.registerPlugin('', SetonixPlugin.new);
     try {
       if (location == null) return;
-      final gameMode = state.assetManager
-          .getPack(location.namespace)
-          ?.getMode(location.id);
-      if (gameMode == null) return;
-      final script = gameMode.script;
-      if (script != null && script.isNotEmpty) {
-        pluginSystem.loadLuaPluginFromLocation(
-          state.assetManager,
-          ItemLocation(location.namespace, script),
-        );
-      }
+      await pluginSystem.loadGameMode(state.assetManager, location);
       // ignore: empty_catches
     } catch (e) {}
   }

@@ -402,7 +402,7 @@ packages:
       path: "../api"
       relative: true
     source: path
-    version: "0.6.1"
+    version: "0.7.0"
   shelf:
     dependency: transitive
     description:
