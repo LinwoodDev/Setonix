@@ -576,7 +576,7 @@ jobs:
     runs-on: ${{ matrix.os.name }}
     steps:
       - name: ⬆️ Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Install yq
         if: ${{ matrix.os.name == 'windows-2025' }}
         run: choco install yq
@@ -853,7 +853,7 @@ jobs:
           echo "SHA256 hashes for files starting with 'linwood-setonix' saved to $output_file"
       - name: 🚀 Deploy stable
         if: ${{ github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease) }}
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         continue-on-error: true
         with:
           prerelease: true
@@ -901,7 +901,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: 🚀 Deploy nightly
         if: ${{ github.ref == 'refs/tags/nightly' }}
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         continue-on-error: true
         with:
           prerelease: true
@@ -948,7 +948,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         continue-on-error: true
         if: startsWith(github.ref, 'refs/tags/v')
         with:
@@ -1063,7 +1063,7 @@ jobs:
   #  needs: [deploy]
   #  runs-on: windows-latest
   #  steps:
-  #    - uses: actions/checkout@v4
+  #    - uses: actions/checkout@v6
   #      with:
   #        token: ${{ secrets.CI_PAT }}
   #    - if: ${{ github.ref == 'refs/tags/stable' }}
