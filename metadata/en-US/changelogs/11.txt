@@ -3,6 +3,8 @@
 * Add high level scripting API for packs
 * Add support for game modes and scripts in single-player
 * Add game mode and scripts to editor
+* Add localized names and descriptions for game modes
+* Fix server state dropping hidden card variations before script evaluation
 * Fix server builds not created for released versions
 * Improve server docs by ignoring generated files
 

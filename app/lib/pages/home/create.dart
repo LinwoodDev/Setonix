@@ -228,20 +228,31 @@ class _CreateDialogState extends State<CreateDialog>
                             }),
                             ...modes
                                 .sorted(
-                                  (a, b) => _formatModeTemplateLabel(
-                                    a,
-                                  ).compareTo(_formatModeTemplateLabel(b)),
+                                  (a, b) => _formatModeTemplateLabel(context, a)
+                                      .compareTo(
+                                        _formatModeTemplateLabel(context, b),
+                                      ),
                                 )
                                 .map((entry) {
+                                  final translations = entry.pack
+                                      .getTranslationsStore(
+                                        getLocale: () => Localizations.localeOf(
+                                          context,
+                                        ).languageCode,
+                                      );
+                                  final translation = translations
+                                      .getModeTranslation(entry.id);
+
                                   return ListTile(
                                     leading: const PhosphorIcon(
                                       PhosphorIconsLight.package,
                                     ),
                                     title: Text(
-                                      _formatModeTemplateLabel(entry),
+                                      _formatModeTemplateLabel(context, entry),
                                     ),
                                     subtitle: Text(
-                                      '${entry.namespace}/${entry.id}',
+                                      translation.description ??
+                                          '${entry.namespace}/${entry.id}',
                                     ),
                                     selected:
                                         _selectedModeTemplate?.location ==
@@ -438,12 +449,19 @@ class _CreateDialogState extends State<CreateDialog>
     );
   }
 
-  String _formatModeTemplateLabel(PackItem<GameMode> mode) {
+  String _formatModeTemplateLabel(
+    BuildContext context,
+    PackItem<GameMode> mode,
+  ) {
     final packName = mode.pack.getMetadata()?.name;
+    final translations = mode.pack.getTranslationsStore(
+      getLocale: () => Localizations.localeOf(context).languageCode,
+    );
+    final modeName = translations.getModeTranslation(mode.id).name;
     if (packName == null || packName.isEmpty) {
-      return mode.id;
+      return modeName;
     }
-    return '$packName / ${mode.id}';
+    return '$packName / $modeName';
   }
 
   Future<List<PackItem<GameMode>>> _loadGameModes() async {

@@ -95,6 +95,22 @@ class KickServerResponse extends ServerResponse {
   const KickServerResponse(this.message, {this.kicked = const {}});
 }
 
+HybridWorldEvent _hybridProtectPacket(HybridWorldEvent event) =>
+    switch (event) {
+      ObjectsSpawned() => event.copyWith(
+        objects: event.objects.map((cell, objects) {
+          final protectedObjects = objects
+              .map((e) => e.hidden ? e.copyWith(variation: null) : e)
+              .toList();
+          return MapEntry(cell, protectedObjects);
+        }),
+      ),
+      _ => event,
+    };
+
+ServerWorldEvent protectServerEvent(ServerWorldEvent event) =>
+    event is HybridWorldEvent ? _hybridProtectPacket(event) : event;
+
 class UpdateServerResponse extends ServerResponse {
   final NetworkerPacket<ServerWorldEvent>? main;
   final Set<Channel> needsUpdate;
@@ -150,19 +166,6 @@ Set<Channel> _hybridNeedsUpdate(
   _ => {},
 };
 
-HybridWorldEvent _hybridProtectPacket(HybridWorldEvent event) =>
-    switch (event) {
-      ObjectsSpawned() => event.copyWith(
-        objects: event.objects.map((cell, objects) {
-          final protectedObjects = objects
-              .map((e) => e.hidden ? e.copyWith(variation: null) : e)
-              .toList();
-          return MapEntry(cell, protectedObjects);
-        }),
-      ),
-      _ => event,
-    };
-
 Future<ServerResponse?> processClientEvent(
   WorldEvent? event,
   Channel channel,
@@ -200,7 +203,7 @@ Future<ServerResponse?> processClientEvent(
   switch (event) {
     case HybridWorldEvent():
       return UpdateServerResponse.builder(
-        _hybridProtectPacket(event),
+        event,
         kAnyChannel,
         _hybridNeedsUpdate(event, state, channel),
       );

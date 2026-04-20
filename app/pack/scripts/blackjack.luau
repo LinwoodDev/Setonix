@@ -119,7 +119,8 @@ local function calculateStack(optionalCard : any?) : number
   end
   return Setonix.scoring.bestTotal(getStackCards(optionalCard), function(card)
     local variation = card and card.variation
-    if variation == nil then
+    print("Calculating score for card with variation: " .. tostring(variation))
+    if type(variation) ~= "string" then
       return {0}
     end
     local parts = string.split(variation, "-")

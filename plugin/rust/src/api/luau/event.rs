@@ -36,7 +36,7 @@ impl LuaUserData for LuauEventSystemUserData {
             let connect_fn = {
                 let event_system_shared = Arc::clone(&event_system);
                 let event_name_shared = event_name.clone();
-                lua.create_async_function(move |lua_ctx, handler: LuaFunction| {
+                lua.create_async_function(move |lua_ctx, (_, handler): (mlua::Value, LuaFunction)| {
                     let event_system = Arc::clone(&event_system_shared);
                     let event_name = event_name_shared.clone();
                     async move {

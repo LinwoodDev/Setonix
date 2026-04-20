@@ -20,6 +20,7 @@ class PackTranslationMapper extends ClassMapperBase<PackTranslation> {
       FigureTranslationMapper.ensureInitialized();
       BackgroundTranslationMapper.ensureInitialized();
       BoardTranslationMapper.ensureInitialized();
+      ModeTranslationMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -46,6 +47,9 @@ class PackTranslationMapper extends ClassMapperBase<PackTranslation> {
   static Map<String, BoardTranslation> _$boards(PackTranslation v) => v.boards;
   static const Field<PackTranslation, Map<String, BoardTranslation>> _f$boards =
       Field('boards', _$boards, opt: true, def: const {});
+  static Map<String, ModeTranslation> _$modes(PackTranslation v) => v.modes;
+  static const Field<PackTranslation, Map<String, ModeTranslation>> _f$modes =
+      Field('modes', _$modes, opt: true, def: const {});
 
   @override
   final MappableFields<PackTranslation> fields = const {
@@ -53,6 +57,7 @@ class PackTranslationMapper extends ClassMapperBase<PackTranslation> {
     #figures: _f$figures,
     #backgrounds: _f$backgrounds,
     #boards: _f$boards,
+    #modes: _f$modes,
   };
 
   static PackTranslation _instantiate(DecodingData data) {
@@ -61,6 +66,7 @@ class PackTranslationMapper extends ClassMapperBase<PackTranslation> {
       figures: data.dec(_f$figures),
       backgrounds: data.dec(_f$backgrounds),
       boards: data.dec(_f$boards),
+      modes: data.dec(_f$modes),
     );
   }
 
@@ -161,11 +167,19 @@ abstract class PackTranslationCopyWith<$R, $In extends PackTranslation, $Out>
     BoardTranslationCopyWith<$R, BoardTranslation, BoardTranslation>
   >
   get boards;
+  MapCopyWith<
+    $R,
+    String,
+    ModeTranslation,
+    ModeTranslationCopyWith<$R, ModeTranslation, ModeTranslation>
+  >
+  get modes;
   $R call({
     Map<String, DeckTranslation>? decks,
     Map<String, FigureTranslation>? figures,
     Map<String, BackgroundTranslation>? backgrounds,
     Map<String, BoardTranslation>? boards,
+    Map<String, ModeTranslation>? modes,
   });
   PackTranslationCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
@@ -234,17 +248,31 @@ class _PackTranslationCopyWithImpl<$R, $Out>
     (v) => call(boards: v),
   );
   @override
+  MapCopyWith<
+    $R,
+    String,
+    ModeTranslation,
+    ModeTranslationCopyWith<$R, ModeTranslation, ModeTranslation>
+  >
+  get modes => MapCopyWith(
+    $value.modes,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(modes: v),
+  );
+  @override
   $R call({
     Map<String, DeckTranslation>? decks,
     Map<String, FigureTranslation>? figures,
     Map<String, BackgroundTranslation>? backgrounds,
     Map<String, BoardTranslation>? boards,
+    Map<String, ModeTranslation>? modes,
   }) => $apply(
     FieldCopyWithData({
       if (decks != null) #decks: decks,
       if (figures != null) #figures: figures,
       if (backgrounds != null) #backgrounds: backgrounds,
       if (boards != null) #boards: boards,
+      if (modes != null) #modes: modes,
     }),
   );
   @override
@@ -253,6 +281,7 @@ class _PackTranslationCopyWithImpl<$R, $Out>
     figures: data.get(#figures, or: $value.figures),
     backgrounds: data.get(#backgrounds, or: $value.backgrounds),
     boards: data.get(#boards, or: $value.boards),
+    modes: data.get(#modes, or: $value.modes),
   );
 
   @override
@@ -413,6 +442,7 @@ class DescriptiveTranslationMapper
       FigureVariationTranslationMapper.ensureInitialized();
       BackgroundTranslationMapper.ensureInitialized();
       BoardTranslationMapper.ensureInitialized();
+      ModeTranslationMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -1119,5 +1149,143 @@ class _BoardTranslationCopyWithImpl<$R, $Out>
   BoardTranslationCopyWith<$R2, BoardTranslation, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   ) => _BoardTranslationCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+/// @nodoc
+class ModeTranslationMapper extends ClassMapperBase<ModeTranslation> {
+  ModeTranslationMapper._();
+
+  static ModeTranslationMapper? _instance;
+  static ModeTranslationMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = ModeTranslationMapper._());
+      DescriptiveTranslationMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'ModeTranslation';
+
+  static String _$name(ModeTranslation v) => v.name;
+  static const Field<ModeTranslation, String> _f$name = Field('name', _$name);
+  static String? _$description(ModeTranslation v) => v.description;
+  static const Field<ModeTranslation, String> _f$description = Field(
+    'description',
+    _$description,
+    opt: true,
+  );
+
+  @override
+  final MappableFields<ModeTranslation> fields = const {
+    #name: _f$name,
+    #description: _f$description,
+  };
+
+  static ModeTranslation _instantiate(DecodingData data) {
+    return ModeTranslation(
+      name: data.dec(_f$name),
+      description: data.dec(_f$description),
+    );
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static ModeTranslation fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<ModeTranslation>(map);
+  }
+
+  static ModeTranslation fromJson(String json) {
+    return ensureInitialized().decodeJson<ModeTranslation>(json);
+  }
+}
+
+/// @nodoc
+mixin ModeTranslationMappable {
+  String toJson() {
+    return ModeTranslationMapper.ensureInitialized()
+        .encodeJson<ModeTranslation>(this as ModeTranslation);
+  }
+
+  Map<String, dynamic> toMap() {
+    return ModeTranslationMapper.ensureInitialized().encodeMap<ModeTranslation>(
+      this as ModeTranslation,
+    );
+  }
+
+  ModeTranslationCopyWith<ModeTranslation, ModeTranslation, ModeTranslation>
+  get copyWith =>
+      _ModeTranslationCopyWithImpl<ModeTranslation, ModeTranslation>(
+        this as ModeTranslation,
+        $identity,
+        $identity,
+      );
+  @override
+  String toString() {
+    return ModeTranslationMapper.ensureInitialized().stringifyValue(
+      this as ModeTranslation,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return ModeTranslationMapper.ensureInitialized().equalsValue(
+      this as ModeTranslation,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return ModeTranslationMapper.ensureInitialized().hashValue(
+      this as ModeTranslation,
+    );
+  }
+}
+
+/// @nodoc
+extension ModeTranslationValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, ModeTranslation, $Out> {
+  ModeTranslationCopyWith<$R, ModeTranslation, $Out> get $asModeTranslation =>
+      $base.as((v, t, t2) => _ModeTranslationCopyWithImpl<$R, $Out>(v, t, t2));
+}
+
+/// @nodoc
+abstract class ModeTranslationCopyWith<$R, $In extends ModeTranslation, $Out>
+    implements DescriptiveTranslationCopyWith<$R, $In, $Out> {
+  @override
+  $R call({String? name, String? description});
+  ModeTranslationCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+/// @nodoc
+class _ModeTranslationCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, ModeTranslation, $Out>
+    implements ModeTranslationCopyWith<$R, ModeTranslation, $Out> {
+  _ModeTranslationCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<ModeTranslation> $mapper =
+      ModeTranslationMapper.ensureInitialized();
+  @override
+  $R call({String? name, Object? description = $none}) => $apply(
+    FieldCopyWithData({
+      if (name != null) #name: name,
+      if (description != $none) #description: description,
+    }),
+  );
+  @override
+  ModeTranslation $make(CopyWithData data) => ModeTranslation(
+    name: data.get(#name, or: $value.name),
+    description: data.get(#description, or: $value.description),
+  );
+
+  @override
+  ModeTranslationCopyWith<$R2, ModeTranslation, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _ModeTranslationCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 

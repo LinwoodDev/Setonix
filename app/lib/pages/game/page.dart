@@ -73,6 +73,7 @@ class _GamePageState extends State<GamePage> {
       context.read<SettingsCubit>().addRecentGame(name, uri ?? Uri.file(name));
     }
     await world.state.assetManager.loadPacks();
+    await world.init();
     if (uri != null) {
       cubit.connect(buildServerAddress(uri, widget.secure));
     }

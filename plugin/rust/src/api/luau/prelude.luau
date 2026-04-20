@@ -1,7 +1,7 @@
 --!nolint UnknownGlobal
 --!nolint BuiltinGlobalWrite
 
-local runtime = _G.SetonixRaw
+local runtime = SetonixRaw
 local runtimeEvents = runtime.Events
 local runtimeServer = runtime.Server
 local runtimeState = runtime.State
@@ -43,6 +43,16 @@ end
 
 local function create_event(event_type, payload)
   return assign_fields({ type = event_type }, payload)
+end
+
+local function parse_vector_string(str)
+  if type(str) == "string" then
+    local x_str, y_str = string.match(str, "%((%-?%d+),%s*(%-?%d+)%)")
+    if x_str and y_str then
+      return tonumber(x_str), tonumber(y_str)
+    end
+  end
+  return nil, nil
 end
 
 local function normalize_toolbar(toolbar)
@@ -208,11 +218,23 @@ end
 
 normalize_position = function(position_or_x, y, table_name)
   if type(position_or_x) == "table" then
+    if position_or_x.position ~= nil then
+      local px, py = parse_vector_string(position_or_x.position)
+      if px and py then
+        return create_position(position_or_x.table or table_name, px, py)
+      end
+    end
     return create_position(
       position_or_x.table or table_name,
       position_or_x.x,
       position_or_x.y
     )
+  end
+  if type(position_or_x) == "string" then
+    local px, py = parse_vector_string(position_or_x)
+    if px and py then
+      return create_position(table_name, px, py)
+    end
   end
   return create_position(table_name, position_or_x, y)
 end
@@ -259,15 +281,28 @@ end
 
 local function wrap_position_field(raw_event, key)
   local value = raw_event[key]
-  if type(value) ~= "table" then
-    return value
+  
+  if key == "cell" or key == "from" or key == "to" then
+    local table_name = raw_event.table
+    if type(value) == "table" then
+      if value.table ~= nil then
+        table_name = value.table
+      end
+      if value.position ~= nil then
+        local px, py = parse_vector_string(value.position)
+        if px and py then
+          return create_cell_ref(table_name, px, py)
+        end
+      end
+      return create_cell_ref(table_name, value.x, value.y)
+    elseif type(value) == "string" then
+      local px, py = parse_vector_string(value)
+      if px and py then
+        return create_cell_ref(table_name, px, py)
+      end
+    end
   end
-  if key == "cell" then
-    return create_cell_ref(value.table, value.x, value.y)
-  end
-  if key == "from" or key == "to" then
-    return create_cell_ref(raw_event.table, value.x, value.y)
-  end
+
   return value
 end
 

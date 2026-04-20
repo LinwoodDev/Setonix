@@ -128,7 +128,7 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
   Future<MultiplayerConnectedState> _addNetworker(NetworkerBase base) async {
     final transformer = NetworkerPipeTransformer<String, WorldEvent>(
       WorldEventMapper.fromJson,
-      (e) => e.toJson(),
+      (e) => (e is ServerWorldEvent ? protectServerEvent(e) : e).toJson(),
     );
     final pipe = SimpleNetworkerPipe<WorldEvent>();
     final stringPlugin = StringNetworkerPlugin();

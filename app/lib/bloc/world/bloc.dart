@@ -34,7 +34,11 @@ class _WorldServerInterfaceImpl implements ServerInterface {
     PlayableWorldEvent event, {
     Channel target = kAnyChannel,
     required String plugin,
-  }) => bloc._processEvent(NetworkerPacket(event, target));
+  }) => bloc._processEvent(
+    NetworkerPacket(event, target),
+    allowServerEvents: true,
+    triggerPlugin: false,
+  );
 
   @override
   void print(String message, [String? plugin]) {
@@ -159,8 +163,11 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
         state.copyWith(showDuplicates: event.value ?? !state.showDuplicates),
       );
     });
+  }
+
+  Future<void> init() async {
     if (!state.multiplayer.isClient) {
-      _loadGameMode(state.world.info.gameMode);
+      await _loadGameMode(state.world.info.gameMode);
     }
   }
 
@@ -171,13 +178,18 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
     return state.fileSystem.worldSystem.updateFile(name, data);
   }
 
-  Future<void> _processEvent(NetworkerPacket<WorldEvent?> data) async {
+  Future<void> _processEvent(
+    NetworkerPacket<WorldEvent?> data, {
+    bool allowServerEvents = false,
+    bool triggerPlugin = true,
+  }) async {
     final value = await processClientEvent(
       data.data,
       data.channel,
       state.world,
       assetManager: state.assetManager,
       userManager: state.multiplayer.state.userManager,
+      allowServerEvents: allowServerEvents,
     );
     if (value == null) return;
     switch (value) {
@@ -195,8 +207,10 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
           needsUpdate: value.needsUpdate,
           worldName: state.world.name ?? '',
         );
-        await pluginSystem.fire(event);
-        if (event.cancelled) return;
+        if (triggerPlugin) {
+          await pluginSystem.fire(event);
+          if (event.cancelled) return;
+        }
 
         final packets = <NetworkerPacket<ServerWorldEvent>>[];
         final serverEvent = event.serverEvent;
@@ -211,6 +225,22 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
           ),
         );
         state.multiplayer.sendServerPackets(packets);
+        if (!state.multiplayer.isConnected) {
+          for (final packet in packets) {
+            if (packet.channel == kAnyChannel ||
+                packet.channel == kAuthorityChannel) {
+              add(packet.data);
+            }
+          }
+        }
+
+        for (final scheduled in event.scheduledEvents) {
+          _processEvent(
+            scheduled,
+            allowServerEvents: true,
+            triggerPlugin: false,
+          );
+        }
       case KickServerResponse():
       // Handle kick response
     }
@@ -259,6 +289,14 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
           if (updatePacket != null) {
             add(updatePacket.data);
           }
+
+          for (final scheduled in event.scheduledEvents) {
+            _processEvent(
+              scheduled,
+              allowServerEvents: true,
+              triggerPlugin: false,
+            );
+          }
         }
       case ServerWorldEvent e:
         add(e);
@@ -271,7 +309,10 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
     try {
       if (location == null) return;
       await pluginSystem.loadGameMode(state.assetManager, location);
-      // ignore: empty_catches
-    } catch (e) {}
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error loading game mode: $e');
+      }
+    }
   }
 }
