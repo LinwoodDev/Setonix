@@ -183,15 +183,15 @@ ServerProcessed processServerEvent(
     case ObjectsSpawned():
       return ServerProcessed(
         state.mapTableOrDefault(event.table, (table) {
-          var newTable = table;
+          final cells = Map<VectorDefinition, TableCell>.from(table.cells);
           for (final entry in event.objects.entries) {
-            final cell = newTable.cells[entry.key] ?? TableCell();
-            newTable = newTable.copyWith.cellsBox(
-              content: Map<VectorDefinition, TableCell>.from(newTable.cells)
-                ..[entry.key] = cell.copyWith(objects: entry.value),
-            );
+            cells[entry.key] = table
+                .getCell(entry.key)
+                .copyWith
+                .objects
+                .addAll(entry.value);
           }
-          return newTable;
+          return table.copyWith.cellsBox(content: cells);
         }),
       );
     case ObjectsMoved():

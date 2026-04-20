@@ -123,13 +123,15 @@ class GameHand extends CustomPainterComponent
         final offset = activeRelative <= -1 ? -activeItemWidth / 2 : 0;
         y = center.y + itemYOffset * activeRelative.abs();
         x = center.x + offset + activeRelative * itemWidth;
-        element.angle = activeRelative * itemAngle;
+        element.targetAngle = activeRelative * itemAngle;
+      } else {
+        element.targetAngle = 0;
       }
       element.updateWidth(width);
 
       element.changeLabelVisibility(activeRelative.abs() >= 1);
 
-      element.position = Vector2(x, y);
+      element.targetPosition = Vector2(x, y);
     });
   }
 
@@ -282,8 +284,7 @@ class GameHand extends CustomPainterComponent
     if (delta == 0) {
       delta = info.scrollDelta.global.y;
     }
-    delta /= 4;
-    scroll(delta > 0 ? -1 : 1);
+    scroll(-delta * 0.01);
     return true;
   }
 

@@ -100,6 +100,7 @@ abstract class HandItem<T> extends PositionComponent
         HandItemDropZone,
         DragCallbacks,
         TapCallbacks,
+        HoverCallbacks,
         LongDragCallbacks,
         DoubleTapCallbacks,
         SecondaryTapCallbacks,
@@ -108,6 +109,11 @@ abstract class HandItem<T> extends PositionComponent
   final T item;
   final SpriteComponent _sprite = SpriteComponent();
   late final TextComponent<TextPaint> _label;
+
+  Vector2? targetPosition;
+  double? targetAngle;
+  double? targetWidth;
+  bool _isHovered = false;
 
   HandItem({required this.item})
     : super(size: Vector2(100, 0), anchor: Anchor.bottomCenter);
@@ -173,10 +179,53 @@ abstract class HandItem<T> extends PositionComponent
     _updateSpriteSize();
   }
 
+  @override
+  void update(double dt) {
+    super.update(dt);
+    if (targetPosition != null) {
+      if (position.distanceToSquared(targetPosition!) > 0.5) {
+        position.lerp(targetPosition!, dt * 15);
+      } else {
+        position.setFrom(targetPosition!);
+      }
+    }
+    if (targetAngle != null) {
+      if ((angle - targetAngle!).abs() > 0.005) {
+        angle = angle + (targetAngle! - angle) * dt * 15;
+      } else {
+        angle = targetAngle!;
+      }
+    }
+    if (targetWidth != null) {
+      if ((width - targetWidth!).abs() > 0.5) {
+        width = width + (targetWidth! - width) * dt * 15;
+        _label.x = width / 2;
+        _updateSpriteSize();
+      } else {
+        width = targetWidth!;
+      }
+    }
+    
+    final targetScale = _isHovered ? 1.1 : 1.0;
+    if ((scale.x - targetScale).abs() > 0.005) {
+      scale.lerp(Vector2.all(targetScale), dt * 15);
+    } else {
+      scale.setValues(targetScale, targetScale);
+    }
+  }
+
+  @override
+  void onHoverEnter() {
+    _isHovered = true;
+  }
+
+  @override
+  void onHoverExit() {
+    _isHovered = false;
+  }
+
   void updateWidth(double width) {
-    this.width = width;
-    _label.x = width / 2;
-    _updateSpriteSize();
+    targetWidth = width;
   }
 
   void _updateSpriteSize() {
@@ -190,10 +239,10 @@ abstract class HandItem<T> extends PositionComponent
 
     final scaleX = availableWidth / spriteSize.x;
     final scaleY = availableHeight / spriteSize.y;
-    final scale = scaleX < scaleY ? scaleX : scaleY;
+    final spriteScale = scaleX < scaleY ? scaleX : scaleY;
 
-    final newWidth = spriteSize.x * scale;
-    final newHeight = spriteSize.y * scale;
+    final newWidth = spriteSize.x * spriteScale;
+    final newHeight = spriteSize.y * spriteScale;
 
     _sprite.size = Vector2(newWidth, newHeight);
     _sprite.position = Vector2(
@@ -212,7 +261,7 @@ abstract class HandItem<T> extends PositionComponent
     game.world.add(
       _cursorHitbox = HandItemDragCursorHitbox(
         item: this,
-        position: event.localPosition,
+        position: game.camera.globalToLocal(event.canvasPosition),
       ),
     );
     _last = event.canvasPosition;
@@ -247,7 +296,9 @@ abstract class HandItem<T> extends PositionComponent
               opacityTo: 0.5,
             ),
           );
-    add(sprite);
+    if (sprite.parent == null) {
+      add(sprite);
+    }
     sprite.position = event.localEndPosition;
     _last = event.canvasEndPosition;
     _cursorHitbox?.position = game.camera.globalToLocal(
