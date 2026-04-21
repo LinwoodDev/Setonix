@@ -10,5 +10,7 @@
 * Fix server state dropping hidden card variations before script evaluation
 * Fix server builds not created for released versions
 * Improve server docs by ignoring generated files
+* Improve hand view background design
+* Improve hand item name visibility with a pill background
 
 Read more here: https://linwood.dev/setonix/0.7.0

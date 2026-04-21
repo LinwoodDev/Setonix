@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:collection/collection.dart';
 import 'package:flame/collisions.dart';
@@ -28,11 +29,30 @@ class GameHandCustomPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     if (!showHand) return;
+
+    final rect = Rect.fromLTWH(0, 0, size.width, size.height);
+    final rrect = RRect.fromRectAndCorners(
+      rect,
+      topLeft: const Radius.circular(24),
+      topRight: const Radius.circular(24),
+    );
+
+    // Draw shadow
+    canvas.drawShadow(Path()..addRRect(rrect), Colors.black, 12.0, true);
+
     final paint = Paint()
       ..color = color
-      ..style = PaintingStyle.fill
-      ..strokeWidth = 2;
-    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), paint);
+      ..style = PaintingStyle.fill;
+
+    canvas.drawRRect(rrect, paint);
+
+    // Optional subtle top highlight/border
+    final borderPaint = Paint()
+      ..color = Colors.white.withOpacity(0.1)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.5;
+
+    canvas.drawRRect(rrect, borderPaint);
   }
 
   @override

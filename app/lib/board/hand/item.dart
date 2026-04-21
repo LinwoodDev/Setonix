@@ -9,7 +9,8 @@ import 'package:flutter/material.dart'
     show
         AdaptiveTextSelectionToolbar,
         ContextMenuButtonItem,
-        TextSelectionToolbarAnchors;
+        TextSelectionToolbarAnchors,
+        Colors;
 import 'package:flutter/widgets.dart';
 import 'package:setonix/bloc/world/bloc.dart';
 import 'package:setonix/bloc/world/state.dart';
@@ -93,6 +94,38 @@ mixin HandItemDropZone on PositionComponent, CollisionCallbacks {
 const priorityDragging = 10;
 const priorityNormal = 0;
 
+class HandItemLabel extends TextComponent<TextPaint> {
+  ClientWorldState state;
+
+  HandItemLabel({
+    required super.text,
+    required super.position,
+    required super.anchor,
+    required super.textRenderer,
+    required this.state,
+  });
+
+  @override
+  void render(Canvas canvas) {
+    final rect = Rect.fromLTWH(-12, -4, size.x + 24, size.y + 8);
+    final rrect = RRect.fromRectAndRadius(rect, const Radius.circular(12));
+
+    canvas.drawShadow(Path()..addRRect(rrect), Colors.black, 6.0, true);
+
+    canvas.drawRRect(rrect, Paint()..color = state.colorScheme.surface);
+
+    canvas.drawRRect(
+      rrect,
+      Paint()
+        ..color = state.colorScheme.onSurface.withOpacity(0.1)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1,
+    );
+
+    super.render(canvas);
+  }
+}
+
 abstract class HandItem<T> extends PositionComponent
     with
         HasGameReference<BoardGame>,
@@ -108,7 +141,7 @@ abstract class HandItem<T> extends PositionComponent
         FlameBlocListenable<WorldBloc, ClientWorldState> {
   final T item;
   final SpriteComponent _sprite = SpriteComponent();
-  late final TextComponent<TextPaint> _label;
+  late final HandItemLabel _label;
 
   Vector2? targetPosition;
   double? targetAngle;
@@ -152,12 +185,12 @@ abstract class HandItem<T> extends PositionComponent
   @override
   void onInitialState(ClientWorldState state) async {
     add(
-      _label = TextComponent(
+      _label = HandItemLabel(
         text: getLabel(state),
-        size: Vector2(0, labelHeight),
-        position: Vector2(50, 0),
+        position: Vector2(50, -4),
         anchor: Anchor.topCenter,
         textRenderer: _buildPaint(state),
+        state: state,
       ),
     );
     _sprite.sprite = await loadIcon(state) ?? game.blankSprite;
@@ -165,11 +198,16 @@ abstract class HandItem<T> extends PositionComponent
   }
 
   TextPaint _buildPaint(ClientWorldState state) => TextPaint(
-    style: TextStyle(fontSize: 14, color: state.colorScheme.onSurface),
+    style: TextStyle(
+      fontSize: 14,
+      color: state.colorScheme.onSurface,
+      fontWeight: FontWeight.w600,
+    ),
   );
 
   @override
   void onNewState(ClientWorldState state) {
+    _label.state = state;
     _label.textRenderer = _buildPaint(state);
   }
 
@@ -205,7 +243,7 @@ abstract class HandItem<T> extends PositionComponent
         width = targetWidth!;
       }
     }
-    
+
     final targetScale = _isHovered ? 1.1 : 1.0;
     if ((scale.x - targetScale).abs() > 0.005) {
       scale.lerp(Vector2.all(targetScale), dt * 15);
