@@ -87,15 +87,24 @@ class BoardGame extends FlameGame
 
   double _startZoom = 1.0;
   Vector2 _startPosition = Vector2.zero();
+  bool _scaleStartedOnHand = false;
 
   @override
   void onScaleStart(ScaleStartInfo info) {
     _startZoom = camera.viewfinder.zoom;
     _startPosition = info.eventPosition.global;
+    _scaleStartedOnHand =
+        _hand.isShowing && _hand.containsPoint(info.eventPosition.widget);
   }
 
   @override
   void onScaleUpdate(ScaleUpdateInfo info) {
+    if (_scaleStartedOnHand) {
+      if (info.pointerCount == 1) {
+        _hand.dragScroll(info.delta.global.x);
+      }
+      return;
+    }
     final zoom = camera.viewfinder.zoom;
     final delta = (info.delta.global..negate()) / zoom;
 
@@ -123,6 +132,7 @@ class BoardGame extends FlameGame
 
   @override
   void onScaleEnd(ScaleEndInfo info) {
+    _scaleStartedOnHand = false;
     settingsCubit.resetZoom(camera.viewfinder.zoom);
   }
 

@@ -5,6 +5,8 @@
 * Add game mode and scripts to editor
 * Add localized names and descriptions for game modes
 * Improve hand view UI animations and responsiveness
+* Improve mouse and long-press input feedback for hand items
+* Fix dragging on the hand view also moving the game world
 * Fix jittering when dragging items from hand
 * Fix spawning objects overwriting existing ones in a cell
 * Fix server state dropping hidden card variations before script evaluation

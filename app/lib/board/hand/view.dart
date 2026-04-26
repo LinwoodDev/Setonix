@@ -48,7 +48,7 @@ class GameHandCustomPainter extends CustomPainter {
 
     // Optional subtle top highlight/border
     final borderPaint = Paint()
-      ..color = Colors.white.withOpacity(0.1)
+      ..color = Colors.white.withValues(alpha: 0.1)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.5;
 

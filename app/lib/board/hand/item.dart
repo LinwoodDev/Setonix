@@ -117,7 +117,7 @@ class HandItemLabel extends TextComponent<TextPaint> {
     canvas.drawRRect(
       rrect,
       Paint()
-        ..color = state.colorScheme.onSurface.withOpacity(0.1)
+        ..color = state.colorScheme.onSurface.withValues(alpha: 0.1)
         ..style = PaintingStyle.stroke
         ..strokeWidth = 1,
     );
@@ -171,11 +171,19 @@ abstract class HandItem<T> extends PositionComponent
   }
 
   void _resetPosition() {
+    _isDraggingItem = false;
+    _isInputRecognized = false;
     priority = priorityNormal;
     if (!_label.isMounted) add(_label);
     final cursor = _cursorHitbox;
     if (cursor != null) cursor.removeFromParent();
     _cursorHitbox = null;
+    _dragIndicator?.removeFromParent();
+    _dragIndicator = null;
+    _dragIndicatorRing?.removeFromParent();
+    _dragIndicatorRing = null;
+    _dragSprite?.removeFromParent();
+    _dragSprite = null;
   }
 
   @override
@@ -244,7 +252,13 @@ abstract class HandItem<T> extends PositionComponent
       }
     }
 
-    final targetScale = _isHovered ? 1.1 : 1.0;
+    final targetScale = _isDraggingItem
+        ? 1.16
+        : _isInputRecognized
+        ? 1.08
+        : _isHovered
+        ? 1.1
+        : 1.0;
     if ((scale.x - targetScale).abs() > 0.005) {
       scale.lerp(Vector2.all(targetScale), dt * 15);
     } else {
@@ -291,7 +305,65 @@ abstract class HandItem<T> extends PositionComponent
 
   HandItemDragCursorHitbox? _cursorHitbox;
   SpriteComponent? _dragSprite;
+  CircleComponent? _dragIndicator, _dragIndicatorRing;
+  bool _isDraggingItem = false, _isInputRecognized = false;
   Vector2 _last = Vector2.zero();
+
+  bool get _shouldMoveWithoutLongPress => isMouseOrLongPressing == true;
+
+  bool get _isMovingItem => _shouldMoveWithoutLongPress || _isDraggingItem;
+
+  void _showInputIndicator(Vector2 position, {required bool active}) {
+    _isInputRecognized = true;
+    final color = bloc.state.colorScheme.primary;
+    final indicator = _dragIndicator ??= CircleComponent(
+      radius: 42,
+      anchor: Anchor.center,
+      priority: priorityDragging + 1,
+    );
+    indicator.paint
+      ..color = color.withValues(alpha: active ? 0.24 : 0.12)
+      ..style = PaintingStyle.fill;
+    final indicatorRing = _dragIndicatorRing ??= CircleComponent(
+      radius: 46,
+      anchor: Anchor.center,
+      priority: priorityDragging + 3,
+    );
+    indicatorRing.paint
+      ..color = color.withValues(alpha: active ? 1 : 0.5)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = active ? 4 : 2;
+    indicator.position = position;
+    indicatorRing.position = position;
+    if (indicator.parent == null) add(indicator);
+    if (indicatorRing.parent == null) add(indicatorRing);
+  }
+
+  void _hideInputIndicator() {
+    _isInputRecognized = false;
+    _dragIndicator?.removeFromParent();
+    _dragIndicator = null;
+    _dragIndicatorRing?.removeFromParent();
+    _dragIndicatorRing = null;
+  }
+
+  @override
+  void onTapDown(TapDownEvent event) {
+    super.onTapDown(event);
+    _showInputIndicator(event.localPosition, active: isPrecisePointer);
+  }
+
+  @override
+  void onTapUp(TapUpEvent event) {
+    super.onTapUp(event);
+    if (!_isDraggingItem) _hideInputIndicator();
+  }
+
+  @override
+  void onTapCancel(TapCancelEvent event) {
+    super.onTapCancel(event);
+    if (!_isDraggingItem) _hideInputIndicator();
+  }
 
   @override
   void onDragStart(DragStartEvent event) {
@@ -308,18 +380,27 @@ abstract class HandItem<T> extends PositionComponent
   @override
   void onDragUpdate(DragUpdateEvent event) {
     super.onDragUpdate(event);
-    if (!(isMouseOrLongPressing ?? false)) {
+    final cursorPosition = absoluteToLocal(event.canvasEndPosition);
+    if (!_shouldMoveWithoutLongPress) {
+      if (isLongPressCandidate) {
+        _showInputIndicator(cursorPosition, active: false);
+      } else {
+        _hideInputIndicator();
+      }
       hand.dragScroll(event.localDelta.x);
       return;
     }
+    _isDraggingItem = true;
     if (_label.parent != null) _label.removeFromParent();
     priority = priorityDragging;
     final effectController = EffectController(duration: 0.5);
+    _showInputIndicator(cursorPosition, active: true);
     final sprite = _dragSprite ??=
         SpriteComponent(
             sprite: _sprite.sprite,
             size: _sprite.size,
             anchor: Anchor.center,
+            priority: priorityDragging + 2,
           )
           ..add(
             ScaleEffect.by(
@@ -337,7 +418,7 @@ abstract class HandItem<T> extends PositionComponent
     if (sprite.parent == null) {
       add(sprite);
     }
-    sprite.position = event.localEndPosition;
+    sprite.position = cursorPosition;
     _last = event.canvasEndPosition;
     _cursorHitbox?.position = game.camera.globalToLocal(
       event.canvasEndPosition,
@@ -346,9 +427,7 @@ abstract class HandItem<T> extends PositionComponent
 
   @override
   void onDragEnd(DragEndEvent event) {
-    _dragSprite?.removeFromParent();
-    _dragSprite = null;
-    if (isMouseOrLongPressing ?? true) {
+    if (_isMovingItem) {
       final zone = game
           .componentsAtPoint(_last)
           .whereType<HandItemDropZone>()
