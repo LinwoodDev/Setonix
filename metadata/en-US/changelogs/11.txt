@@ -14,5 +14,6 @@
 * Improve server docs by ignoring generated files
 * Improve hand view background design
 * Improve hand item name visibility with a pill background
+* Upgrade to flutter 3.41
 
 Read more here: https://linwood.dev/setonix/0.7.0
