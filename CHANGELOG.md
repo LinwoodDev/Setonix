@@ -2,6 +2,28 @@
 
 <!--ENTER CHANGELOG HERE-->
 
+## 0.7.0 (2026-04-29)
+
+* Add zoom gestures
+* Add create from template
+* Add high level scripting API for packs
+* Add support for game modes and scripts in single-player
+* Add game mode and scripts to editor
+* Add localized names and descriptions for game modes
+* Improve hand view UI animations and responsiveness
+* Improve mouse and long-press input feedback for hand items
+* Fix dragging on the hand view also moving the game world
+* Fix jittering when dragging items from hand
+* Fix spawning objects overwriting existing ones in a cell
+* Fix server state dropping hidden card variations before script evaluation
+* Fix server builds not created for released versions
+* Improve server docs by ignoring generated files
+* Improve hand view background design
+* Improve hand item name visibility with a pill background
+* Upgrade to flutter 3.41
+
+Read more here: https://linwood.dev/setonix/0.7.0
+
 ## 0.6.0 (2026-01-28)
 
 * Add lua scripting support to server
