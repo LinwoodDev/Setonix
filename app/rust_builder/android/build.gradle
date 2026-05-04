@@ -52,5 +52,5 @@ android {
 apply from: "../cargokit/gradle/plugin.gradle"
 cargokit {
     manifestDir = "../../../plugin/rust"
-    libname = "rust_lib_setonix_plugin"
+    libname = "setonix_plugin"
 }

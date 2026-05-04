@@ -9,7 +9,7 @@ title: "Build your own"
 5. Use the flutter tool to compile the application in `app`
    * `flutter build apk`
    * `flutter build appbundle`
-   * `flutter build web`
+   * `dart run flutter_rust_bridge build-web --rust-root ../plugin/rust --output web --release` and then `flutter build web`
    * `flutter build linux`
    * `flutter build windows`
    * `flutter build ios --release --no-codesign`\

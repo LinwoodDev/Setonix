@@ -91,6 +91,14 @@ jobs:
           dart pub get
           cd ..
           dart run tools/generate.dart
+      - name: Install web plugin toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang
+          rustup toolchain install nightly
+          rustup +nightly component add rust-src
+          rustup +nightly target add wasm32-unknown-unknown
+          cargo install wasm-pack --locked
       - name: Set flavor
         if: github.ref != 'refs/heads/main'
         run: |
@@ -101,6 +109,8 @@ jobs:
         run: |
           echo "SETONIX_FLAVOR=stable" >> $GITHUB_ENV
           echo "WEB_DIR=web" >> $GITHUB_ENV
+      - name: Build plugin WASM bundle
+        run: dart run flutter_rust_bridge build-web --rust-root ../plugin/rust --output web --release
       - name: Build
         run: flutter build web --wasm --release --no-web-resources-cdn --dart-define=flavor=$SETONIX_FLAVOR
       - name: Deploy Flutter web via SFTP

@@ -484,7 +484,7 @@ packages:
       path: "../api"
       relative: true
     source: path
-    version: "0.8.0"
+    version: "0.7.1"
   setonix_plugin:
     dependency: "direct main"
     description:

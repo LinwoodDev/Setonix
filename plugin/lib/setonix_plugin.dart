@@ -11,9 +11,9 @@ bool _isInitialized = false;
 
 bool get isPluginSystemInitialized => _isInitialized;
 
-Future<void> initPluginSystem({ExternalLibrary? externalLibrary}) {
+Future<void> initPluginSystem({ExternalLibrary? externalLibrary}) async {
+  await RustLib.init(externalLibrary: externalLibrary);
   _isInitialized = true;
-  return RustLib.init(externalLibrary: externalLibrary);
 }
 
 void disposePluginSystem() {
