@@ -306,6 +306,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
   Future<void> _loadGameMode(ItemLocation? location) async {
     pluginSystem.unregisterAll();
     await pluginSystem.registerPlugin('', SetonixPlugin.new);
+    if (kIsWeb) return;
     try {
       if (location == null) return;
       await pluginSystem.loadGameMode(state.assetManager, location);

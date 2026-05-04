@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -278,7 +279,7 @@ class _GamePageState extends State<GamePage> {
                         previous.world.gameState != current.world.gameState,
                     builder: (context, state) {
                       final showPluginSystemNote =
-                          !isPluginSystemInitialized &&
+                          (kIsWeb || !isPluginSystemInitialized) &&
                           !state.multiplayer.isClient &&
                           state.world.info.gameMode != null;
                       return Center(
@@ -358,7 +359,9 @@ class _GamePageState extends State<GamePage> {
                                               const SizedBox(width: 8),
                                               Flexible(
                                                 child: Text(
-                                                  'Scripted game mode unavailable: plugin system failed to load.',
+                                                  kIsWeb
+                                                      ? 'Scripted game mode unavailable on web.'
+                                                      : 'Scripted game mode unavailable: plugin system failed to load.',
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .bodySmall
