@@ -32,7 +32,6 @@ import 'setup.dart'
     if (dart.library.io) 'setup_io.dart';
 
 String? dataPath;
-Object? pluginSystemInitializationError;
 
 Future<void> main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,7 +52,6 @@ Future<void> main(List<String> args) async {
   try {
     await initPluginSystem();
   } catch (e) {
-    pluginSystemInitializationError = e;
     if (kDebugMode) {
       print('Error initializing plugin system: $e');
     }
@@ -68,7 +66,7 @@ Future<void> main(List<String> args) async {
         RepositoryProvider.value(value: networkService),
         RepositoryProvider(create: (context) => SetonixFileSystem()),
       ],
-      child: SetonixApp(pluginSystemInitializationError),
+      child: SetonixApp(),
     ),
   );
 }
@@ -80,9 +78,7 @@ List<Locale> getLocales() => List<Locale>.from(
 ).where((l) => !kUnsupportedLanguages.contains(l.toString())).toList();
 
 class SetonixApp extends StatelessWidget {
-  final Object? pluginSystemError;
-
-  SetonixApp(this.pluginSystemError, {super.key});
+  SetonixApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -129,51 +125,7 @@ class SetonixApp extends StatelessWidget {
           if (!state.nativeTitleBar) {
             child = virtualWindowFrameBuilder(context, child);
           }
-          child ??= Container();
-          if (pluginSystemError == null) return child;
-          return Stack(
-            children: [
-              child,
-              Positioned(
-                left: 16,
-                right: 16,
-                bottom: 16,
-                child: SafeArea(
-                  child: Material(
-                    elevation: 6,
-                    borderRadius: BorderRadius.circular(8),
-                    color: Theme.of(context).colorScheme.errorContainer,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(
-                            Icons.extension_off_outlined,
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.onErrorContainer,
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              'The plugin system could not be loaded. Scripted game modes will be disabled.',
-                              style: Theme.of(context).textTheme.bodyMedium
-                                  ?.copyWith(
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.onErrorContainer,
-                                  ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          );
+          return child ?? Container();
         },
         supportedLocales: AppLocalizations.supportedLocales,
       ),

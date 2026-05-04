@@ -20,6 +20,7 @@ import 'package:setonix/pages/game/notes.dart';
 import 'package:setonix/services/file_system.dart';
 import 'package:setonix/services/network.dart';
 import 'package:setonix_api/setonix_api.dart';
+import 'package:setonix_plugin/setonix_plugin.dart';
 
 class GamePage extends StatefulWidget {
   final String? name;
@@ -276,6 +277,10 @@ class _GamePageState extends State<GamePage> {
                     buildWhen: (previous, current) =>
                         previous.world.gameState != current.world.gameState,
                     builder: (context, state) {
+                      final showPluginSystemNote =
+                          !isPluginSystemInitialized &&
+                          !state.multiplayer.isClient &&
+                          state.world.info.gameMode != null;
                       return Center(
                         child: Stack(
                           alignment: Alignment.center,
@@ -308,6 +313,69 @@ class _GamePageState extends State<GamePage> {
                                       GameDialogOverlay(),
                                   'filter': (context, game) => GameFilterView(),
                                 },
+                              ),
+                            if (showPluginSystemNote)
+                              Positioned(
+                                left: 16,
+                                right: 16,
+                                top: 16,
+                                child: SafeArea(
+                                  child: Align(
+                                    alignment: Alignment.topCenter,
+                                    child: ConstrainedBox(
+                                      constraints: const BoxConstraints(
+                                        maxWidth: 560,
+                                      ),
+                                      child: DecoratedBox(
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.surfaceContainerHigh,
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                          border: Border.all(
+                                            color: Theme.of(
+                                              context,
+                                            ).colorScheme.outlineVariant,
+                                          ),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 12,
+                                            vertical: 10,
+                                          ),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              PhosphorIcon(
+                                                PhosphorIconsLight.info,
+                                                size: 18,
+                                                color: Theme.of(
+                                                  context,
+                                                ).colorScheme.onSurfaceVariant,
+                                              ),
+                                              const SizedBox(width: 8),
+                                              Flexible(
+                                                child: Text(
+                                                  'Scripted game mode unavailable: plugin system failed to load.',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodySmall
+                                                      ?.copyWith(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .onSurfaceVariant,
+                                                      ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
                             AuthGameView(),
                           ],
