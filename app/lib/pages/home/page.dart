@@ -44,43 +44,48 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
-  List<(String, IconData, VoidCallback)> _getItems(BuildContext context) => [
-    (
-      AppLocalizations.of(context).singleplayer,
-      PhosphorIconsLight.gameController,
-      () => showDialog(
+  List<HomeAction> _getItems(BuildContext context) => [
+    HomeAction(
+      title: AppLocalizations.of(context).singleplayer,
+      subtitle: AppLocalizations.of(context).homeSingleplayerDescription,
+      icon: PhosphorIconsLight.gameController,
+      onTap: () => showDialog(
         context: context,
         builder: (context) => const PlayDialog(),
       ),
     ),
-    (
-      AppLocalizations.of(context).multiplayer,
-      PhosphorIconsLight.plugsConnected,
-      () => showDialog(
+    HomeAction(
+      title: AppLocalizations.of(context).multiplayer,
+      subtitle: AppLocalizations.of(context).homeMultiplayerDescription,
+      icon: PhosphorIconsLight.plugsConnected,
+      onTap: () => showDialog(
         context: context,
         builder: (context) => const ServersDialog(),
       ),
     ),
-    (
-      AppLocalizations.of(context).packs,
-      PhosphorIconsLight.package,
-      () => showDialog(
+    HomeAction(
+      title: AppLocalizations.of(context).packs,
+      subtitle: AppLocalizations.of(context).homePacksDescription,
+      icon: PhosphorIconsLight.package,
+      onTap: () => showDialog(
         context: context,
         builder: (context) => const PacksDialog(),
       ),
     ),
-    (
-      AppLocalizations.of(context).accounts,
-      PhosphorIconsLight.users,
-      () => showDialog(
+    HomeAction(
+      title: AppLocalizations.of(context).accounts,
+      subtitle: AppLocalizations.of(context).homeAccountsDescription,
+      icon: PhosphorIconsLight.users,
+      onTap: () => showDialog(
         context: context,
         builder: (context) => const AccountsDialog(),
       ),
     ),
-    (
-      AppLocalizations.of(context).settings,
-      PhosphorIconsLight.gear,
-      () => openSettings(context),
+    HomeAction(
+      title: AppLocalizations.of(context).settings,
+      subtitle: AppLocalizations.of(context).homeSettingsDescription,
+      icon: PhosphorIconsLight.gear,
+      onTap: () => openSettings(context),
     ),
   ];
 
@@ -95,15 +100,17 @@ class _HomePageState extends State<HomePage> {
       body: LayoutBuilder(
         builder: (context, constraints) {
           final controls = Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              ...items.map(
-                (item) => HomeListCard(
-                  icon: Icon(item.$2),
-                  title: Text(item.$1),
-                  onTap: item.$3,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Text(
+                  AppLocalizations.of(context).homeActionPrompt,
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
+              const SizedBox(height: 8),
+              ...items.map((item) => HomeListCard(action: item)),
             ],
           );
           final recently = RecentHomeView();
@@ -118,31 +125,36 @@ class _HomePageState extends State<HomePage> {
                       : 0,
                 ),
               ),
-              ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: LeapBreakpoints.expanded),
-                child: ListView(
-                  controller: _scrollController,
-                  children: [
-                    HeaderHomeView(),
-                    const SizedBox(height: 16),
-                    constraints.maxWidth >= LeapBreakpoints.medium
-                        ? Row(
-                            spacing: 12,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(flex: 1, child: controls),
-                              Expanded(flex: 2, child: recently),
-                            ],
-                          )
-                        : Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              controls,
-                              const SizedBox(height: 16),
-                              recently,
-                            ],
-                          ),
-                  ],
+              SafeArea(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    maxWidth: LeapBreakpoints.expanded,
+                  ),
+                  child: ListView(
+                    controller: _scrollController,
+                    padding: const EdgeInsets.fromLTRB(12, 0, 12, 32),
+                    children: [
+                      HeaderHomeView(),
+                      const SizedBox(height: 8),
+                      constraints.maxWidth >= LeapBreakpoints.medium
+                          ? Row(
+                              spacing: 12,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(flex: 1, child: controls),
+                                Expanded(flex: 2, child: recently),
+                              ],
+                            )
+                          : Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                controls,
+                                const SizedBox(height: 16),
+                                recently,
+                              ],
+                            ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -153,37 +165,53 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class HomeListCard extends StatelessWidget {
-  final Widget icon, title;
+class HomeAction {
+  final String title, subtitle;
+  final IconData icon;
   final VoidCallback onTap;
 
-  const HomeListCard({
-    super.key,
-    required this.icon,
+  const HomeAction({
     required this.title,
+    required this.subtitle,
+    required this.icon,
     required this.onTap,
   });
+}
+
+class HomeListCard extends StatelessWidget {
+  final HomeAction action;
+
+  const HomeListCard({super.key, required this.action});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: onTap,
+        onTap: action.onTap,
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              IconTheme(
-                data: Theme.of(context).iconTheme.copyWith(size: 32),
-                child: icon,
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: Icon(action.icon, size: 28),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 14),
               Expanded(
-                child: DefaultTextStyle(
-                  style: TextTheme.of(context).titleLarge ?? const TextStyle(),
-                  child: title,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      action.title,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      action.subtitle,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ],
                 ),
               ),
             ],

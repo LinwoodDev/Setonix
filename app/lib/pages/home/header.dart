@@ -36,10 +36,10 @@ class _HeaderHomeViewState extends State<HeaderHomeView> {
               future: _hasNewerVersionFuture,
               builder: (context, snapshot) {
                 final hasNewerVersion = snapshot.data ?? true;
-                final colorScheme = Theme.of(context).colorScheme;
-                final actions = Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                final actions = Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  alignment: WrapAlignment.center,
                   children: [
                     TextButton.icon(
                       onPressed: () => openHelp(['intro']),
@@ -48,46 +48,18 @@ class _HeaderHomeViewState extends State<HeaderHomeView> {
                     ),
                   ],
                 );
-                final style = FilledButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 32,
-                    vertical: 20,
-                  ),
-                  textStyle: const TextStyle(fontSize: 20),
-                );
                 void openNew() {
                   openReleaseNotes();
                   _settingsCubit.updateLastVersion();
                 }
 
-                final whatsNew = Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    hasNewerVersion
-                        ? FilledButton(
-                            onPressed: openNew,
-                            style: style,
-                            child: Text(AppLocalizations.of(context).whatsNew),
-                          )
-                        : ElevatedButton(
-                            onPressed: openNew,
-                            style: style,
-                            child: Text(AppLocalizations.of(context).whatsNew),
-                          ),
-                    if (hasNewerVersion)
-                      const SizedBox(
-                        height: 0,
-                        child: Stack(
-                          children: [
-                            Align(
-                              alignment: Alignment.bottomCenter,
-                              child: PhosphorIcon(PhosphorIconsLight.caretUp),
-                            ),
-                          ],
-                        ),
-                      ),
-                  ],
-                );
+                final whatsNew = hasNewerVersion
+                    ? FilledButton.icon(
+                        onPressed: openNew,
+                        icon: const Icon(PhosphorIconsLight.sparkle),
+                        label: Text(AppLocalizations.of(context).whatsNew),
+                      )
+                    : const SizedBox.shrink();
                 final logo = Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -100,16 +72,13 @@ class _HeaderHomeViewState extends State<HeaderHomeView> {
                         children: [
                           Text(
                             AppLocalizations.of(context).welcome,
-                            style: TextTheme.of(context).titleLarge?.copyWith(
-                              color: colorScheme.onSecondary,
-                            ),
+                            style: TextTheme.of(context).titleLarge,
                             overflow: TextOverflow.clip,
                           ),
+                          const SizedBox(height: 6),
                           Text(
-                            AppLocalizations.of(context).welcomeContent,
-                            style: TextTheme.of(context).bodySmall?.copyWith(
-                              color: colorScheme.onSecondary,
-                            ),
+                            AppLocalizations.of(context).homeWelcomeDescription,
+                            style: TextTheme.of(context).bodyMedium,
                           ),
                         ],
                       ),
@@ -122,29 +91,31 @@ class _HeaderHomeViewState extends State<HeaderHomeView> {
                         constraints.maxWidth < LeapBreakpoints.compact;
                     if (isMobile) {
                       return Column(
-                        children: [logo, const SizedBox(height: 16), whatsNew],
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          logo,
+                          if (hasNewerVersion) ...[
+                            const SizedBox(height: 18),
+                            whatsNew,
+                          ],
+                        ],
                       );
                     }
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [logo, whatsNew],
+                      children: [
+                        Expanded(child: logo),
+                        if (hasNewerVersion) ...[
+                          const SizedBox(width: 24),
+                          whatsNew,
+                        ],
+                      ],
                     );
                   },
                 );
-                final card = Material(
-                  elevation: 10,
-                  borderRadius: BorderRadius.circular(24),
-                  child: Container(
+                final card = Card(
+                  child: Padding(
                     padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(24),
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [colorScheme.secondary, colorScheme.primary],
-                        stops: const [0.2, 0.8],
-                      ),
-                    ),
                     child: innerCard,
                   ),
                 );
@@ -153,13 +124,13 @@ class _HeaderHomeViewState extends State<HeaderHomeView> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Expanded(child: card),
-                          const SizedBox(width: 32),
+                          const SizedBox(width: 24),
                           actions,
                         ],
                       )
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [card, const SizedBox(height: 32), actions],
+                        children: [card, const SizedBox(height: 20), actions],
                       );
                 return Column(
                   children: [

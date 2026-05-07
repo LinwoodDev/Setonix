@@ -16,10 +16,10 @@ class DotsBackground extends StatefulWidget {
 class _DotsBackgroundState extends State<DotsBackground>
     with TickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
-    duration: const Duration(seconds: 5),
+    duration: const Duration(seconds: 7),
     vsync: this,
   )..repeat(reverse: true);
-  late final Tween<double> _valueTween = Tween(begin: 0.1, end: 0.6);
+  late final Tween<double> _valueTween = Tween(begin: 0.05, end: 0.18);
   @override
   void didUpdateWidget(covariant DotsBackground oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -41,15 +41,39 @@ class _DotsBackgroundState extends State<DotsBackground>
     final colorScheme = Theme.of(context).colorScheme;
     return AnimatedBuilder(
       animation: _controller,
-      builder: (context, child) => CustomPaint(
-        painter: DotsPainter(
-          spacing: widget.spacing,
-          size: widget.size,
-          color: colorScheme.onSurface,
-          offset: widget.offset,
-          value: _valueTween.evaluate(_controller),
+      builder: (context, child) => DecoratedBox(
+        decoration: BoxDecoration(
+          gradient: RadialGradient(
+            center: const Alignment(-0.85, -0.9),
+            radius: 1.2,
+            colors: [
+              colorScheme.primaryContainer.withValues(alpha: 0.55),
+              colorScheme.surface.withValues(alpha: 0),
+            ],
+          ),
         ),
-        child: const SizedBox.expand(),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            gradient: RadialGradient(
+              center: const Alignment(1, 0.85),
+              radius: 1,
+              colors: [
+                colorScheme.secondaryContainer.withValues(alpha: 0.48),
+                colorScheme.surface.withValues(alpha: 0),
+              ],
+            ),
+          ),
+          child: CustomPaint(
+            painter: DotsPainter(
+              spacing: widget.spacing,
+              size: widget.size,
+              color: colorScheme.onSurface,
+              offset: widget.offset,
+              value: _valueTween.evaluate(_controller),
+            ),
+            child: const SizedBox.expand(),
+          ),
+        ),
       ),
     );
   }

@@ -1,3 +1,4 @@
+* Improve user interface on home page
 * Fix app not launching on ios, macos, android and web
 
 Read more here: https://linwood.dev/setonix/0.7.1

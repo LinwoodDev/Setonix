@@ -48,7 +48,19 @@ class ConnectEditDialog extends StatelessWidget {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(AppLocalizations.of(context).connectNote),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Icon(PhosphorIconsLight.shieldCheck),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  AppLocalizations.of(context).connectTrustDescription,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
+            ],
+          ),
           const SizedBox(height: 16),
           if (index != null) ...[
             TextFormField(
@@ -173,24 +185,37 @@ class _ServersDialogState extends State<ServersDialog> {
     bool secure,
     GameProperty property,
   ) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
       children: [
-        Icon(
-          secure
-              ? PhosphorIconsLight.shieldCheck
-              : PhosphorIconsLight.shieldSlash,
+        Chip(
+          avatar: Icon(
+            secure
+                ? PhosphorIconsLight.shieldCheck
+                : PhosphorIconsLight.shieldSlash,
+          ),
+          label: Text(secure ? 'Secure' : 'Not secure'),
         ),
-        const SizedBox(width: 8),
-        Text('${property.currentPlayers}/${property.maxPlayers ?? '?'}'),
+        Chip(
+          avatar: const Icon(PhosphorIconsLight.users),
+          label: Text(
+            '${property.currentPlayers}/${property.maxPlayers ?? '?'} players',
+          ),
+        ),
       ],
     );
   }
 
-  List<ListTile> _buildDetailsChildren(GameProperty server) => [
+  List<Widget> _buildDetailsChildren(GameProperty server) => [
     ListTile(
+      leading: const Icon(PhosphorIconsLight.textAlignLeft),
       title: Text(AppLocalizations.of(context).description),
-      subtitle: Text(server.description),
+      subtitle: Text(
+        server.description.isEmpty
+            ? AppLocalizations.of(context).noServerDescription
+            : server.description,
+      ),
     ),
   ];
   @override
@@ -237,8 +262,9 @@ class _ServersDialogState extends State<ServersDialog> {
             final allServers = snapshot.data!;
             final servers = allServers.entries
                 .where(
-                  (server) =>
-                      server.key.display.toLowerCase().contains(_search),
+                  (server) => server.key.display.toLowerCase().contains(
+                    _search.toLowerCase(),
+                  ),
                 )
                 .toList();
             final isMobile =
@@ -247,89 +273,98 @@ class _ServersDialogState extends State<ServersDialog> {
                 ? (allServers[_selected?.$1] ?? const GameProperty())
                 : null;
             final server = _selected?.$1 ?? ListGameServer(address: '');
-            final playButton = SizedBox(
-              height: 48,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Expanded(
-                    child: FilledButton.icon(
-                      icon: const Icon(PhosphorIconsLight.play),
-                      label: Text(AppLocalizations.of(context).play),
-                      onPressed: () =>
-                          _connect(context, server.address, server.secure),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Row(
-                    children: [
-                      IconButton.outlined(
-                        icon: const Icon(PhosphorIconsLight.pencil),
-                        tooltip: AppLocalizations.of(context).edit,
-                        onPressed: () {
-                          if (server is! ListGameServer) return;
-                          showDialog<bool>(
-                            context: context,
-                            builder: (context) => ConnectEditDialog(
-                              initialValue: server,
-                              index: _selected!.$2,
-                            ),
-                          );
-                        },
+            Widget buildPlayButton(GameServer target) {
+              return SizedBox(
+                height: 48,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      child: FilledButton.icon(
+                        icon: const Icon(PhosphorIconsLight.play),
+                        label: Text(AppLocalizations.of(context).play),
+                        onPressed: () =>
+                            _connect(context, target.address, target.secure),
                       ),
-                      const SizedBox(width: 8),
-                      IconButton.outlined(
-                        icon: const Icon(PhosphorIconsLight.trash),
-                        tooltip: AppLocalizations.of(context).delete,
-                        onPressed: () => showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: Text(
-                              AppLocalizations.of(context).deleteServer,
-                            ),
-                            content: Text(
-                              AppLocalizations.of(context).deleteServerMessage,
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.of(context).pop(),
-                                child: Text(
-                                  AppLocalizations.of(context).cancel,
-                                ),
+                    ),
+                    const SizedBox(width: 8),
+                    Row(
+                      children: [
+                        IconButton.outlined(
+                          icon: const Icon(PhosphorIconsLight.pencil),
+                          tooltip: AppLocalizations.of(context).edit,
+                          onPressed: () {
+                            if (target is! ListGameServer) return;
+                            showDialog<bool>(
+                              context: context,
+                              builder: (context) => ConnectEditDialog(
+                                initialValue: target,
+                                index: _selected!.$2,
                               ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  if (_selected != null) {
-                                    context.read<SettingsCubit>().removeServer(
-                                      _selected!.$2,
-                                    );
-                                  }
-                                  Navigator.of(context).pop();
-                                  if (_isMobileOpen) {
+                            );
+                          },
+                        ),
+                        const SizedBox(width: 8),
+                        IconButton.outlined(
+                          icon: const Icon(PhosphorIconsLight.trash),
+                          tooltip: AppLocalizations.of(context).delete,
+                          onPressed: () => showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text(
+                                AppLocalizations.of(context).deleteServer,
+                              ),
+                              content: Text(
+                                AppLocalizations.of(
+                                  context,
+                                ).deleteServerMessage,
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: Text(
+                                    AppLocalizations.of(context).cancel,
+                                  ),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    if (_selected != null) {
+                                      context
+                                          .read<SettingsCubit>()
+                                          .removeServer(_selected!.$2);
+                                    }
                                     Navigator.of(context).pop();
-                                  }
-                                  _selected = null;
-                                },
-                                child: Text(
-                                  AppLocalizations.of(context).delete,
+                                    if (_isMobileOpen) {
+                                      Navigator.of(context).pop();
+                                    }
+                                    _selected = null;
+                                  },
+                                  child: Text(
+                                    AppLocalizations.of(context).delete,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            );
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            }
+
             final listView = Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Flexible(
                   child: servers.isEmpty
-                      ? Center(
-                          child: Text(AppLocalizations.of(context).noServers),
+                      ? _FriendlyInfoState(
+                          icon: PhosphorIconsLight.plugsConnected,
+                          title: AppLocalizations.of(context).noServers,
+                          message: AppLocalizations.of(
+                            context,
+                          ).noServersDescription,
                         )
                       : ListView.builder(
                           itemCount: servers.length,
@@ -352,7 +387,16 @@ class _ServersDialogState extends State<ServersDialog> {
                                       : FontWeight.normal,
                                 ),
                               ),
-                              trailing: switch (current) {
+                              subtitle: Text(switch (current) {
+                                LanGameServer() => AppLocalizations.of(
+                                  context,
+                                ).lanServerDescription,
+                                BrowsedGameServer() => AppLocalizations.of(
+                                  context,
+                                ).browsedServerDescription,
+                                ListGameServer() => current.address,
+                              }),
+                              leading: switch (current) {
                                 LanGameServer() => const Icon(
                                   PhosphorIconsLight.mapPin,
                                 ),
@@ -388,18 +432,11 @@ class _ServersDialogState extends State<ServersDialog> {
                                     titleBuilder: (context) =>
                                         _buildTitle(context, current),
                                     actionsBuilder: (context) => [
-                                      if (property != null) ...[
-                                        DefaultTextStyle(
-                                          style:
-                                              Theme.of(
-                                                context,
-                                              ).textTheme.headlineSmall ??
-                                              const TextStyle(fontSize: 20),
-                                          child: _buildDetails(
-                                            context,
-                                            current.secure,
-                                            property,
-                                          ),
+                                      if (entry.value != null) ...[
+                                        _buildDetails(
+                                          context,
+                                          current.secure,
+                                          entry.value ?? const GameProperty(),
                                         ),
                                         const SizedBox(width: 8),
                                       ],
@@ -411,7 +448,7 @@ class _ServersDialogState extends State<ServersDialog> {
                                       const SizedBox(height: 16),
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: playButton,
+                                        child: buildPlayButton(current),
                                       ),
                                     ],
                                   ).then((_) {
@@ -478,10 +515,14 @@ class _ServersDialogState extends State<ServersDialog> {
                         const VerticalDivider(),
                         Expanded(
                           child: property == null
-                              ? Center(
-                                  child: Text(
-                                    AppLocalizations.of(context).selectServer,
-                                  ),
+                              ? _FriendlyInfoState(
+                                  icon: PhosphorIconsLight.handTap,
+                                  title: AppLocalizations.of(
+                                    context,
+                                  ).selectServer,
+                                  message: AppLocalizations.of(
+                                    context,
+                                  ).selectServerDescription,
                                 )
                               : Column(
                                   crossAxisAlignment:
@@ -523,7 +564,7 @@ class _ServersDialogState extends State<ServersDialog> {
                                       ),
                                     ),
                                     const SizedBox(height: 16),
-                                    playButton,
+                                    buildPlayButton(server),
                                   ],
                                 ),
                         ),
@@ -534,6 +575,44 @@ class _ServersDialogState extends State<ServersDialog> {
               ],
             );
           },
+        ),
+      ),
+    );
+  }
+}
+
+class _FriendlyInfoState extends StatelessWidget {
+  final IconData icon;
+  final String title, message;
+
+  const _FriendlyInfoState({
+    required this.icon,
+    required this.title,
+    required this.message,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 42),
+            const SizedBox(height: 18),
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ],
         ),
       ),
     );

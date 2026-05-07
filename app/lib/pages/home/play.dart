@@ -49,13 +49,18 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
     });
   }
 
-  List<Card> _buildDetailsChildren(FileMetadata metadata) => [
+  List<Widget> _buildDetailsChildren(FileMetadata metadata) => [
     if (metadata.description.isNotEmpty)
-      Card.filled(
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(metadata.description),
+      Padding(
+        padding: const EdgeInsets.all(16),
+        child: Text(metadata.description),
+      )
+    else
+      Padding(
+        padding: const EdgeInsets.all(16),
+        child: Text(
+          AppLocalizations.of(context).noGameDescription,
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
       ),
   ];
@@ -129,9 +134,17 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text(
-            metadata.name,
-            style: Theme.of(context).textTheme.titleLarge,
+          child: Row(
+            children: [
+              const Icon(PhosphorIconsLight.diceFive),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  metadata.name,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ),
+            ],
           ),
         ),
         Expanded(child: ListView(children: _buildDetailsChildren(metadata))),
@@ -157,8 +170,10 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
                 return const Center(child: CircularProgressIndicator());
               }
               if (games.isEmpty) {
-                return Center(
-                  child: Text(AppLocalizations.of(context).noGames),
+                return _FriendlyInfoState(
+                  icon: PhosphorIconsLight.cards,
+                  title: AppLocalizations.of(context).noGames,
+                  message: AppLocalizations.of(context).noGamesDescription,
                 );
               }
               return ListView.builder(
@@ -166,16 +181,18 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
                 itemBuilder: (context, index) {
                   final entry = games[index];
                   final name = entry.pathWithoutLeadingSlash;
+                  final metadata =
+                      entry.data?.getMetadata() ?? const FileMetadata();
                   return ListTile(
-                    title: Text(name),
+                    leading: const Icon(PhosphorIconsLight.diceFive),
+                    title: Text(metadata.name.isEmpty ? name : metadata.name),
+                    subtitle: Text(name),
                     onTap: () {
                       setState(() {
                         _selected = entry;
                         _isMobileOpen = isMobile;
                       });
                       if (isMobile) {
-                        final metadata =
-                            entry.data?.getMetadata() ?? const FileMetadata();
                         showLeapBottomSheet(
                           context: context,
                           titleBuilder: (context) => Text(metadata.name),
@@ -257,10 +274,12 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
                   const VerticalDivider(),
                   Expanded(
                     child: _selected == null
-                        ? Center(
-                            child: Text(
-                              AppLocalizations.of(context).selectGame,
-                            ),
+                        ? _FriendlyInfoState(
+                            icon: PhosphorIconsLight.handTap,
+                            title: AppLocalizations.of(context).selectGame,
+                            message: AppLocalizations.of(
+                              context,
+                            ).selectGameDescription,
                           )
                         : details,
                   ),
@@ -269,6 +288,44 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _FriendlyInfoState extends StatelessWidget {
+  final IconData icon;
+  final String title, message;
+
+  const _FriendlyInfoState({
+    required this.icon,
+    required this.title,
+    required this.message,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 42),
+            const SizedBox(height: 18),
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ],
+        ),
       ),
     );
   }
