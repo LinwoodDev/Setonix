@@ -2,9 +2,64 @@
 --!nolint BuiltinGlobalWrite
 
 local runtime = SetonixRaw
-local runtimeEvents = runtime.Events
-local runtimeServer = runtime.Server
-local runtimeState = runtime.State
+
+local function get_runtime()
+  local raw = SetonixRaw or runtime
+  if raw == nil then
+    error("Setonix raw API is not available while running this Luau script", 2)
+  end
+  return raw
+end
+
+local function get_runtime_events()
+  local events = get_runtime().Events
+  if events == nil then
+    error("Setonix event API is not available while running this Luau script", 2)
+  end
+  return events
+end
+
+local function get_runtime_server()
+  local server = get_runtime().Server
+  if server == nil then
+    error("Setonix server API is not available while running this Luau script", 2)
+  end
+  return server
+end
+
+local function get_runtime_state()
+  local state = get_runtime().State
+  if state == nil then
+    error("Setonix state API is not available while running this Luau script", 2)
+  end
+  return state
+end
+
+local runtimeEvents = setmetatable({}, {
+  __index = function(_, key)
+    return get_runtime_events()[key]
+  end,
+})
+
+local runtimeServer = {}
+
+function runtimeServer:Process(...)
+  return get_runtime_server():Process(...)
+end
+
+function runtimeServer:Send(...)
+  return get_runtime_server():Send(...)
+end
+
+local runtimeState = setmetatable({}, {
+  __index = function(_, key)
+    return get_runtime_state()[key]
+  end,
+})
+
+function runtimeState:GetTable(...)
+  return get_runtime_state():GetTable(...)
+end
 
 local PositionMethods = {}
 local TableMethods = {}

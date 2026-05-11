@@ -1,0 +1,5 @@
+* Migrate the native plugin build from cargokit to Flutter native assets
+* Fix loading the Blackjack game mode
+* Improve Luau script error messages with game mode and script context
+
+Read more here: https://linwood.dev/setonix/0.8.0

@@ -146,9 +146,12 @@ impl RustPlugin for LuauPlugin {
     async fn run(&self) -> Result<(), anyhow::Error> {
         let chunk =  {
             let engine = self.engine.lock().await;
-            engine.load(&self.code)
+            engine.load(&self.code).set_name("@setonix_plugin.luau")
         };
-        chunk.exec_async().await.map_err(anyhow::Error::from)
+        chunk
+            .exec_async()
+            .await
+            .map_err(|error| anyhow::anyhow!("Failed to run Luau script:\n{error}"))
     }
 }
 

@@ -74,7 +74,14 @@ final class PluginSystem {
         .getPack(location.namespace)
         ?.getScript(location.id);
     if (data == null) return null;
-    return registerLuauPlugin(name, data);
+    try {
+      return await registerLuauPlugin(name, data);
+    } catch (error, stackTrace) {
+      Error.throwWithStackTrace(
+        Exception('Error loading Luau script "$location": $error'),
+        stackTrace,
+      );
+    }
   }
 
   Future<SetonixPlugin?> loadGameMode(
@@ -89,7 +96,16 @@ final class PluginSystem {
     final script = gameMode.script;
     if (script == null || script.isEmpty) return null;
     final scriptLocation = ItemLocation.fromString(script, location.namespace);
-    return loadLuaPluginFromLocation(assetManager, scriptLocation);
+    try {
+      return await loadLuaPluginFromLocation(assetManager, scriptLocation);
+    } catch (error, stackTrace) {
+      Error.throwWithStackTrace(
+        Exception(
+          'Error loading game mode "$location" from script "$scriptLocation": $error',
+        ),
+        stackTrace,
+      );
+    }
   }
 
   bool get _nativeEnabled => RustLib.instance.initialized;
