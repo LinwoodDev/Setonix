@@ -2,6 +2,13 @@
 
 <!--ENTER CHANGELOG HERE-->
 
+## 0.7.1 (2026-05-11)
+
+* Improve user interface on home page
+* Fix app not launching on ios, macos, android and web
+
+Read more here: https://linwood.dev/setonix/0.7.1
+
 ## 0.7.0 (2026-04-29)
 
 * Add zoom gestures
