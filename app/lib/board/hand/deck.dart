@@ -15,8 +15,8 @@ class DeckDefinitionHandItem extends HandItem<PackItem<DeckDefinition>> {
   ).getTranslations(item.namespace).getDeckTranslation(item.id).name;
 
   bool matches(ClientWorldState state, String term) =>
-      item.location.toString().equalsIgnoreCase(term) ||
-      getLabel(state).equalsIgnoreCase(term);
+      item.location.toString().containsIgnoreCase(term) ||
+      getLabel(state).containsIgnoreCase(term);
 
   @override
   void onTapUp(event) {

@@ -1,5 +1,7 @@
 * Migrate the native plugin build from cargokit to Flutter native assets
 * Fix loading the Blackjack game mode
+* Prevent creating games without a name
+* Fix playing a game without a selection showing a missing route
 * Improve Luau script error messages with game mode and script context
 
 Read more here: https://linwood.dev/setonix/0.8.0

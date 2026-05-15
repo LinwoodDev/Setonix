@@ -24,8 +24,8 @@ class FigureDefinitionHandItem
   }
 
   bool matches(ClientWorldState state, String term) =>
-      item.$1.location.toString().equalsIgnoreCase(term) ||
-      getLabel(state).equalsIgnoreCase(term);
+      item.$1.location.toString().containsIgnoreCase(term) ||
+      getLabel(state).containsIgnoreCase(term);
 
   @override
   Future<Sprite?> loadIcon(ClientWorldState state) =>

@@ -67,7 +67,7 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.sizeOf(context).width < LeapBreakpoints.medium;
-    final playButton = SizedBox(
+    Widget buildPlayButton(FileSystemFile<SetonixData>? selected) => SizedBox(
       height: 48,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -76,13 +76,14 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
             child: FilledButton.icon(
               icon: const Icon(PhosphorIconsLight.play),
               label: Text(AppLocalizations.of(context).play),
-              onPressed: () => GoRouter.of(context).goNamed(
-                'game',
-                pathParameters: {
-                  if (_selected != null)
-                    'name': _selected!.pathWithoutLeadingSlash,
-                },
-              ),
+              onPressed: selected == null
+                  ? null
+                  : () => GoRouter.of(context).goNamed(
+                      'game',
+                      pathParameters: {
+                        'name': selected.pathWithoutLeadingSlash,
+                      },
+                    ),
             ),
           ),
           const SizedBox(width: 8),
@@ -90,38 +91,45 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
             children: [
               IconButton.outlined(
                 icon: const Icon(PhosphorIconsLight.export),
-                onPressed: () =>
-                    exportData(context, _selected!.data!, _selected!.fileName),
+                onPressed: selected == null
+                    ? null
+                    : () => exportData(
+                        context,
+                        selected.data!,
+                        selected.fileName,
+                      ),
               ),
               const SizedBox(width: 8),
               IconButton.outlined(
                 icon: const Icon(PhosphorIconsLight.trash),
                 tooltip: AppLocalizations.of(context).delete,
-                onPressed: () => showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text(AppLocalizations.of(context).deleteGame),
-                    content: Text(
-                      AppLocalizations.of(context).deleteGameMessage,
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: Text(AppLocalizations.of(context).cancel),
+                onPressed: selected == null
+                    ? null
+                    : () => showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text(AppLocalizations.of(context).deleteGame),
+                          content: Text(
+                            AppLocalizations.of(context).deleteGameMessage,
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: Text(AppLocalizations.of(context).cancel),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                _worldSystem.deleteFile(selected.path);
+                                Navigator.of(context).pop();
+                                if (_isMobileOpen) Navigator.of(context).pop();
+                                _selected = null;
+                                _reloadGames();
+                              },
+                              child: Text(AppLocalizations.of(context).delete),
+                            ),
+                          ],
+                        ),
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          _worldSystem.deleteFile(_selected!.path);
-                          Navigator.of(context).pop();
-                          if (_isMobileOpen) Navigator.of(context).pop();
-                          _selected = null;
-                          _reloadGames();
-                        },
-                        child: Text(AppLocalizations.of(context).delete),
-                      ),
-                    ],
-                  ),
-                ),
               ),
             ],
           ),
@@ -149,7 +157,7 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
         ),
         Expanded(child: ListView(children: _buildDetailsChildren(metadata))),
         const SizedBox(height: 16),
-        playButton,
+        buildPlayButton(_selected),
       ],
     );
     final listView = Column(
@@ -201,7 +209,7 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
                             const SizedBox(height: 16),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: playButton,
+                              child: buildPlayButton(entry),
                             ),
                           ],
                         ).then((_) {

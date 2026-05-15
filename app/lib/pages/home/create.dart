@@ -23,6 +23,7 @@ class _CreateDialogState extends State<CreateDialog>
   late final TabController _tabController, _customTabController;
   final PageController _pageController = PageController(keepPage: true);
   final GlobalKey _pageKey = GlobalKey();
+  final GlobalKey<FormState> _formKey = GlobalKey();
   final TextEditingController _nameController = TextEditingController(),
       _descriptionController = TextEditingController();
   late final TypedKeyFileSystem<SetonixData> _templateSystem, _worldSystem;
@@ -65,6 +66,8 @@ class _CreateDialogState extends State<CreateDialog>
     _tabController.dispose();
     _customTabController.dispose();
     _pageController.dispose();
+    _nameController.dispose();
+    _descriptionController.dispose();
     super.dispose();
   }
 
@@ -290,6 +293,13 @@ class _CreateDialogState extends State<CreateDialog>
             filled: true,
           ),
           controller: _nameController,
+          textInputAction: TextInputAction.next,
+          validator: (value) {
+            if (value?.trim().isEmpty ?? true) {
+              return LeapLocalizations.of(context).shouldNotEmpty;
+            }
+            return null;
+          },
         ),
         const SizedBox(height: 16),
         TextFormField(
@@ -310,26 +320,29 @@ class _CreateDialogState extends State<CreateDialog>
         maxWidth: LeapBreakpoints.expanded,
         maxHeight: 700,
       ),
-      content: IndexedStack(
-        index: isMobile ? 0 : 1,
-        key: _pageKey,
-        children: [
-          PageView(
-            controller: _pageController,
-            children: [selections, details],
-            onPageChanged: (value) =>
-                setState(() => _infoView = value.toInt() == 1),
-          ),
-          Row(
-            children: [
-              Expanded(child: selections),
-              const SizedBox(width: 16),
-              const VerticalDivider(),
-              const SizedBox(width: 16),
-              Expanded(child: details),
-            ],
-          ),
-        ],
+      content: Form(
+        key: _formKey,
+        child: IndexedStack(
+          index: isMobile ? 0 : 1,
+          key: _pageKey,
+          children: [
+            PageView(
+              controller: _pageController,
+              children: [selections, details],
+              onPageChanged: (value) =>
+                  setState(() => _infoView = value.toInt() == 1),
+            ),
+            Row(
+              children: [
+                Expanded(child: selections),
+                const SizedBox(width: 16),
+                const VerticalDivider(),
+                const SizedBox(width: 16),
+                Expanded(child: details),
+              ],
+            ),
+          ],
+        ),
       ),
       headerActions: [
         IconButton(
@@ -366,7 +379,8 @@ class _CreateDialogState extends State<CreateDialog>
             ),
           FilledButton.icon(
             onPressed: () async {
-              final name = _nameController.text;
+              if (!(_formKey.currentState?.validate() ?? false)) return;
+              final name = _nameController.text.trim();
               final description = _descriptionController.text;
               final packs =
                   _selectedPacks ??

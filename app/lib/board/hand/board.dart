@@ -15,8 +15,8 @@ class BoardDefinitionHandItem extends HandItem<PackItem<BoardDefinition>> {
   }
 
   bool matches(ClientWorldState state, String term) =>
-      item.location.toString().equalsIgnoreCase(term) ||
-      getLabel(state).equalsIgnoreCase(term);
+      item.location.toString().containsIgnoreCase(term) ||
+      getLabel(state).containsIgnoreCase(term);
 
   @override
   Future<Sprite?> loadIcon(ClientWorldState state) =>

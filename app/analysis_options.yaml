@@ -13,7 +13,7 @@ analyzer:
     - "**/*.g.dart"
     - "**/*.freezed.dart"
     - "**/*.mapper.dart"
-    - "build/**/*.dart"
+    - "build/**"
     - "lib/src/rust/*.dart"
     - "lib/src/rust/**/*.dart"
   errors:
