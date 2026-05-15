@@ -4,6 +4,15 @@ import 'package:dart_leap/dart_leap.dart';
 import 'package:networker/networker.dart';
 import 'package:setonix_api/setonix_api.dart';
 
+const _maxTextLength = 2000;
+const _maxIdentifierLength = 256;
+const _maxImagesPerRequest = 100;
+const _maxPacksPerRequest = 128;
+const _maxBoardsPerRequest = 256;
+
+bool _isReasonableIdentifier(String value) =>
+    value.isNotEmpty && value.length <= _maxIdentifierLength;
+
 bool isValidClientEvent(
   WorldEvent event,
   Channel channel,
@@ -11,8 +20,12 @@ bool isValidClientEvent(
   required AssetManager assetManager,
   ChallengeManager? challengeManager,
 }) => switch (event) {
-  TeamJoinRequest() => state.info.teams.containsKey(event.team),
-  TeamLeaveRequest() => state.info.teams.containsKey(event.team),
+  TeamJoinRequest() =>
+    _isReasonableIdentifier(event.team) &&
+        state.info.teams.containsKey(event.team),
+  TeamLeaveRequest() =>
+    _isReasonableIdentifier(event.team) &&
+        state.info.teams.containsKey(event.team),
   CellRollRequest() =>
     event.object?.inRange(
           0,
@@ -68,9 +81,19 @@ bool isValidClientEvent(
         1,
   ),
   TeamRemoved() => state.info.teams.containsKey(event.team),
-  PacksChangeRequest() => channel == kAuthorityChannel,
+  PacksChangeRequest() =>
+    channel == kAuthorityChannel &&
+        event.packs.length <= _maxPacksPerRequest &&
+        event.packs.every(_isReasonableIdentifier),
+  MessageRequest() =>
+    event.message.isNotEmpty && event.message.length <= _maxTextLength,
+  BoardsSpawnRequest() =>
+    _isReasonableIdentifier(event.table) &&
+        event.assets.length <= _maxBoardsPerRequest &&
+        event.assets.values.expand((e) => e).length <= _maxBoardsPerRequest,
   BoardMoveRequest() =>
-    event.from != event.to &&
+    _isReasonableIdentifier(event.table) &&
+        event.from != event.to &&
         event.index.inRange(
           0,
           state
@@ -81,6 +104,11 @@ bool isValidClientEvent(
               1,
         ),
   ModeChangeRequest() => channel == kAuthorityChannel,
+  DialogCloseRequest() => _isReasonableIdentifier(event.id),
+  ImagesRequest() =>
+    event.ids.length <= _maxImagesPerRequest &&
+        event.ids.every(_isReasonableIdentifier),
+  ToolbarActionRequest() => _isReasonableIdentifier(event.actionId),
   _ => true,
 };
 
@@ -228,7 +256,7 @@ Future<ServerResponse?> processClientEvent(
     case CellRollRequest():
       final table = state.getTableOrDefault(event.cell.table);
       var cell = table.getCell(event.cell.position);
-      final random = Random();
+      final random = Random.secure();
       GameObject roll(GameObject object) {
         final figure = assetManager.getFigure(object.asset);
         if (figure == null || !figure.rollable) return object;
@@ -255,7 +283,7 @@ Future<ServerResponse?> processClientEvent(
       final cell = table.cells[event.cell.position];
       if (cell == null) return null;
       final positions = List<int>.generate(cell.objects.length, (i) => i)
-        ..shuffle();
+        ..shuffle(Random.secure());
       return UpdateServerResponse.builder(
         CellShuffled(event.cell, positions),
         kAnyChannel,
@@ -393,11 +421,13 @@ Future<ServerResponse?> processClientEvent(
       if (challengeManager == null) return null;
       final verified = await event.verify(challenge);
       if (!verified) {
+        final newChallenge = challengeManager.generateNewChallenge(channel);
         return UpdateServerResponse.builder(
-          AuthenticatedRequested(challenge, isRequired: true),
+          AuthenticatedRequested(newChallenge, isRequired: true),
           channel,
         );
       }
+      challengeManager.removeChallenge(channel);
       SetonixUser? user;
       try {
         user = await userManager?.addUser(

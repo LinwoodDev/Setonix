@@ -76,8 +76,24 @@ Future<SetonixFile?> openFile() async {
   if (file == null) return null;
   final bytes = file.bytes;
   if (bytes == null) return null;
-  final data = SetonixFile(bytes, file.name);
+  final data = SetonixFile(bytes);
   return data;
+}
+
+String _sanitizeImportedName(String name, String fallback) {
+  var sanitized = name.trim();
+  if (sanitized.isEmpty) {
+    sanitized = fallback.trim();
+  }
+  sanitized = sanitized.split('/').last.split(r'\').last.trim();
+  const suffix = '.stnx';
+  if (sanitized.toLowerCase().endsWith(suffix)) {
+    sanitized = sanitized.substring(0, sanitized.length - suffix.length);
+  }
+  if (sanitized.isEmpty || sanitized == '.' || sanitized == '..') {
+    return DateTime.now().millisecondsSinceEpoch.toString();
+  }
+  return sanitized;
 }
 
 Future<void> importFile(
@@ -138,9 +154,15 @@ Future<void> importFileData(
     case SetonixFileType.pack:
       await fileSystem.packSystem.updateFile(id, file);
     case SetonixFileType.template:
-      await fileSystem.templateSystem.createFile(metadata.name, data);
+      await fileSystem.templateSystem.createFile(
+        _sanitizeImportedName(metadata.name, file.identifier),
+        data,
+      );
     case SetonixFileType.game:
-      await fileSystem.worldSystem.createFile(metadata.name, data);
+      await fileSystem.worldSystem.createFile(
+        _sanitizeImportedName(metadata.name, file.identifier),
+        data,
+      );
     case SetonixFileType.accounts:
       await fileSystem.importAccountsFromData(data);
   }

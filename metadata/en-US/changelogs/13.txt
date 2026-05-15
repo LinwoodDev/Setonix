@@ -2,6 +2,8 @@
 * Fix loading the Blackjack game mode
 * Prevent creating games without a name
 * Fix playing a game without a selection showing a missing route
+* Improve app and server security checks
+* Harden multiplayer authentication and imported file names
 * Improve Luau script error messages with game mode and script context
 
 Read more here: https://linwood.dev/setonix/0.8.0

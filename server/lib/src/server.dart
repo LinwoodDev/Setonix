@@ -31,6 +31,14 @@ String limitOutput(Object? value, [int limit = 500]) {
   return string;
 }
 
+bool _isSafeRemoteEndpoint(Uri uri) {
+  if (uri.isScheme('https')) return true;
+  if (!uri.isScheme('http')) return false;
+  return uri.host == 'localhost' ||
+      uri.host == '127.0.0.1' ||
+      uri.host == '::1';
+}
+
 final class SetonixServer {
   static const String worldDirectory = 'worlds';
   static const String worldSuffix = '.stnx';
@@ -123,7 +131,18 @@ final class SetonixServer {
     final apiEndpoint = configManager.apiEndpoint;
     UserService userService;
     if (apiEndpoint.isNotEmpty) {
-      userService = RemoteUserService(apiEndpoint: apiEndpoint);
+      final uri = Uri.tryParse(apiEndpoint);
+      if (uri == null || !_isSafeRemoteEndpoint(uri)) {
+        throw ArgumentError.value(
+          apiEndpoint,
+          'apiEndpoint',
+          'Remote user API endpoints must use HTTPS, except localhost HTTP.',
+        );
+      }
+      userService = RemoteUserService(
+        apiEndpoint: apiEndpoint,
+        endpointSecret: configManager.endpointSecret,
+      );
     } else {
       final fileService = FileUserService();
       await fileService.setup(rootPath: rootDirectory);
@@ -200,8 +219,9 @@ final class SetonixServer {
         level: LogLevel.warning,
       );
     }
+    final bindAddress = await _resolveBindAddress(configManager.host);
     final server = _server = NetworkerSocketServer(
-      InternetAddress.anyIPv4,
+      bindAddress,
       configManager.port,
       securityContext: securityContext,
       filterConnections: buildFilterConnections(
@@ -242,6 +262,13 @@ final class SetonixServer {
       null: UnknownProgram(),
     });
     await loadWorlds();
+  }
+
+  static Future<InternetAddress> _resolveBindAddress(String host) async {
+    final parsed = InternetAddress.tryParse(host);
+    if (parsed != null) return parsed;
+    final addresses = await InternetAddress.lookup(host);
+    return addresses.first;
   }
 
   void _onClientEvent(

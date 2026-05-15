@@ -20,6 +20,14 @@ enum PackDownloadResult {
   bool get isSuccess => this == success || this == alreadyExists;
 }
 
+bool _isSafeDownloadUri(Uri uri) {
+  if (uri.isScheme('https')) return true;
+  if (!uri.isScheme('http')) return false;
+  return uri.host == 'localhost' ||
+      uri.host == '127.0.0.1' ||
+      uri.host == '::1';
+}
+
 class SetonixFileSystem {
   SetonixFile? _corePack;
   final TypedKeyFileSystem<SetonixFile> packSystem;
@@ -180,9 +188,7 @@ class SetonixFileSystem {
     try {
       final uri = Uri.tryParse(url);
       if (uri == null) return PackDownloadResult.invalidUri;
-      if (!uri.isScheme('http') && !uri.isScheme('https')) {
-        return PackDownloadResult.invalidUri;
-      }
+      if (!_isSafeDownloadUri(uri)) return PackDownloadResult.invalidUri;
       if (!force && await packSystem.hasKey(expectedIdentifier)) {
         return PackDownloadResult.alreadyExists;
       }

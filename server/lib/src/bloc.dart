@@ -19,6 +19,14 @@ Future<ServerProcessed> _computeEvent(
 
 const scriptSuffix = '.lua';
 
+String _sanitizeWorldFileName(String worldName) {
+  final name = p.basename(worldName);
+  if (name.isEmpty || name == '.' || name == '..') {
+    return defaultWorldName;
+  }
+  return name;
+}
+
 class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
     with ServerInterface {
   final SetonixServer server;
@@ -156,8 +164,13 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
   }
 
   Future<void> save({bool force = false}) async {
+    final safeWorldName = _sanitizeWorldFileName(worldName);
     var file = File(
-      '${worldName == defaultWorldName ? defaultWorldName : '${SetonixServer.worldDirectory}/$worldName'}${SetonixServer.worldSuffix}',
+      p.join(
+        server.rootDirectory,
+        SetonixServer.worldDirectory,
+        '$safeWorldName${SetonixServer.worldSuffix}',
+      ),
     );
     if (!await file.exists()) {
       await file.create(recursive: true);
