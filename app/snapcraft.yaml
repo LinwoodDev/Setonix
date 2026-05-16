@@ -64,6 +64,7 @@ parts:
       - clang
       - ninja-build
       - pkg-config
+      - rustup
       - lld
       - llvm
     override-build: |
@@ -88,4 +89,3 @@ parts:
       - libsecret-1-0
       - libjsoncpp25
     parse-info: [ metainfo/dev.linwood.setonix.appdata.xml ]
-  

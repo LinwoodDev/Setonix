@@ -39,13 +39,6 @@ jobs:
         run: |
           flutter gen-l10n
           dart format lib/src/generated
-      - name: Install app specific dependencies
-        if: matrix.projects == 'app'
-        run: |
-          cd rust_builder
-          flutter pub get
-          cd cargokit/build_tool
-          flutter pub get
       # Uncomment this step to verify the use of 'dart format' on each commit.
       - name: Verify formatting
         run: dart format --output=none --set-exit-if-changed .
