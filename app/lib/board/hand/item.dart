@@ -96,6 +96,7 @@ const priorityNormal = 0;
 
 class HandItemLabel extends TextComponent<TextPaint> {
   ClientWorldState state;
+  double opacity = 0.0;
 
   HandItemLabel({
     required super.text,
@@ -107,6 +108,13 @@ class HandItemLabel extends TextComponent<TextPaint> {
 
   @override
   void render(Canvas canvas) {
+    if (opacity <= 0) return;
+
+    canvas.saveLayer(
+      null,
+      Paint()..color = Colors.white.withValues(alpha: opacity),
+    );
+
     final rect = Rect.fromLTWH(-12, -4, size.x + 24, size.y + 8);
     final rrect = RRect.fromRectAndRadius(rect, const Radius.circular(12));
 
@@ -123,6 +131,8 @@ class HandItemLabel extends TextComponent<TextPaint> {
     );
 
     super.render(canvas);
+
+    canvas.restore();
   }
 }
 
@@ -174,7 +184,7 @@ abstract class HandItem<T> extends PositionComponent
     _isDraggingItem = false;
     _isInputRecognized = false;
     priority = priorityNormal;
-    if (!_label.isMounted) add(_label);
+    if (_label.parent == null) add(_label);
     final cursor = _cursorHitbox;
     if (cursor != null) cursor.removeFromParent();
     _cursorHitbox = null;
@@ -225,6 +235,17 @@ abstract class HandItem<T> extends PositionComponent
     _updateSpriteSize();
   }
 
+  bool get _isTopmostHovered {
+    if (!_isHovered) return false;
+    final p = parent;
+    if (p == null) return true;
+    for (final child in p.children.toList().reversed) {
+      if (child == this) return true;
+      if (child is HandItem && child._isHovered) return false;
+    }
+    return true;
+  }
+
   @override
   void update(double dt) {
     super.update(dt);
@@ -256,13 +277,20 @@ abstract class HandItem<T> extends PositionComponent
         ? 1.16
         : _isInputRecognized
         ? 1.08
-        : _isHovered
+        : _isTopmostHovered
         ? 1.1
         : 1.0;
     if ((scale.x - targetScale).abs() > 0.005) {
       scale.lerp(Vector2.all(targetScale), dt * 15);
     } else {
       scale.setValues(targetScale, targetScale);
+    }
+
+    final targetOpacity = (_isTopmostHovered || !_isHiddenByLayout) ? 1.0 : 0.0;
+    if ((_label.opacity - targetOpacity).abs() > 0.005) {
+      _label.opacity += (targetOpacity - _label.opacity) * dt * 15;
+    } else {
+      _label.opacity = targetOpacity;
     }
   }
 
@@ -464,11 +492,9 @@ abstract class HandItem<T> extends PositionComponent
 
   void moveItem(HandItemDropZone zone) {}
 
-  void changeLabelVisibility(bool visible) {
-    if (visible) {
-      _label.removeFromParent();
-    } else if (_label.parent == null) {
-      add(_label);
-    }
+  bool _isHiddenByLayout = false;
+
+  void changeLabelVisibility(bool hidden) {
+    _isHiddenByLayout = hidden;
   }
 }

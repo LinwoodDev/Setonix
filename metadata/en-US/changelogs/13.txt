@@ -5,6 +5,7 @@
 * Improve app and server security checks
 * Harden multiplayer authentication and imported file names
 * Improve Luau script error messages with game mode and script context
+* Fix overlapping tooltips in stacked hand view layouts
 * Upgrade to flutter 3.44
 
 Read more here: https://linwood.dev/setonix/0.8.0

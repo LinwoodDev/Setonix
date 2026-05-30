@@ -149,7 +149,7 @@ class GameHand extends CustomPainterComponent
       }
       element.updateWidth(width);
 
-      element.changeLabelVisibility(activeRelative.abs() >= 1);
+      element.changeLabelVisibility(activeRelative.abs() > 0.5);
 
       element.targetPosition = Vector2(x, y);
     });
