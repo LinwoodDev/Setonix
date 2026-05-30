@@ -1,11 +1,12 @@
-* Migrate the native plugin build from cargokit to Flutter native assets
-* Fix loading the Blackjack game mode
-* Prevent creating games without a name
-* Fix playing a game without a selection showing a missing route
+* Improve game page title to show the opened game
+* Improve Luau script error messages with game mode and script context
 * Improve app and server security checks
 * Harden multiplayer authentication and imported file names
-* Improve Luau script error messages with game mode and script context
+* Prevent creating games without a name
+* Fix loading the Blackjack game mode
+* Fix playing a game without a selection showing a missing route
 * Fix overlapping tooltips in stacked hand view layouts
+* Migrate the native plugin build from cargokit to Flutter native assets
 * Upgrade to flutter 3.44
 
 Read more here: https://linwood.dev/setonix/0.8.0

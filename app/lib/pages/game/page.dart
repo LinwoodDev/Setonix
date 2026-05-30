@@ -48,6 +48,37 @@ class _GamePageState extends State<GamePage> {
   final ContextMenuController _contextMenuController = ContextMenuController();
   final FocusNode _focusNode = FocusNode();
 
+  String? _trimmedOrNull(String? value) {
+    final trimmed = value?.trim();
+    return trimmed == null || trimmed.isEmpty ? null : trimmed;
+  }
+
+  String _displayLabelFromPath(String value) {
+    final normalized = value.replaceAll('\\', '/');
+    final segments = normalized
+        .split('/')
+        .where((segment) => segment.isNotEmpty);
+    return segments.isEmpty ? value : segments.last;
+  }
+
+  String _resolvePageTitle(BuildContext context, ClientWorldState state) {
+    final metadataName = _trimmedOrNull(state.metadata.name);
+    if (metadataName != null) return metadataName;
+
+    final gameName = _trimmedOrNull(state.name);
+    if (gameName != null) return _displayLabelFromPath(gameName);
+
+    final address = _trimmedOrNull(widget.address);
+    if (address != null) {
+      final uri = Uri.tryParse(address);
+      final host = _trimmedOrNull(uri?.host);
+      if (host != null) return host;
+      return address;
+    }
+
+    return AppLocalizations.of(context).game;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -158,7 +189,13 @@ class _GamePageState extends State<GamePage> {
                 );
                 return Scaffold(
                   appBar: WindowTitleBar<SettingsCubit, SetonixSettings>(
-                    title: Text(AppLocalizations.of(context).game),
+                    title: BlocBuilder<WorldBloc, ClientWorldState>(
+                      buildWhen: (previous, current) =>
+                          previous.metadata.name != current.metadata.name ||
+                          previous.name != current.name,
+                      builder: (context, state) =>
+                          Text(_resolvePageTitle(context, state)),
+                    ),
                     height: 50,
                     actions: [
                       BlocBuilder<WorldBloc, ClientWorldState>(
