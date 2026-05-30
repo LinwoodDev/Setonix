@@ -559,10 +559,7 @@ class _CustomCreateView extends StatelessWidget {
                     ),
                   );
                 },
-                onReorder: (int oldIndex, int newIndex) {
-                  if (oldIndex < newIndex) {
-                    newIndex -= 1;
-                  }
+                onReorderItem: (int oldIndex, int newIndex) {
                   final newSelected = addedPacks
                       .map((e) => e.identifier)
                       .toList();

@@ -5,10 +5,13 @@
 #ifndef MyAppVersion
 #define MyAppVersion "1.0"
 #endif
+#ifndef MyAppArch
+#define MyAppArch "x64"
+#endif
 #define MyAppPublisher "Linwood"
 #define MyAppURL "https://www.linwood.dev"
 #define MyAppExeName "setonix.exe" 
-#define BaseDirRelease "build\windows\x64\runner\Release"
+#define BaseDirRelease "build\windows\" + MyAppArch + "\runner\Release"
 #define RunnerSourceDir "windows\runner"
 
 
@@ -30,12 +33,14 @@ LicenseFile=..\LICENSE
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
-OutputDir=build\windows\x64
+OutputDir=build\windows\{#MyAppArch}
 OutputBaseFilename=linwood-setonix-windows-setup
 SetupIconFile={#RunnerSourceDir}\resources\app_icon.ico
 UninstallDisplayIcon={app}\{#MyAppExeName}
 Compression=lzma
 SolidCompression=yes
+ArchitecturesAllowed={#MyAppArch}
+ArchitecturesInstallIn64BitMode={#MyAppArch}
 WizardStyle=modern
 Uninstallable=not WizardIsTaskSelected('portablemode')
 ChangesAssociations=yes
@@ -47,13 +52,13 @@ Name: "german"; MessagesFile: "compiler:Languages\German.isl"
 
 [Tasks]     
 Name: "desktopicon"; Description: "Create a Desktop shortcut"
-Name: "startmenu"; Description: "Create a Start Menu entry"         
+Name: "startmenu"; Description: "Create a Start Menu entry"
 
 
 [Files]
 Source: "{#BaseDirRelease}\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#BaseDirRelease}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-; NOTE: Don't use "Flags: ignoreversion" on any shared system filess
+; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
 Name: "{group}\Visit Website"; Filename: "https://www.linwood.dev/"

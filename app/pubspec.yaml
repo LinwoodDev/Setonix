@@ -99,6 +99,11 @@ dependencies:
   cryptography_plus: ^3.0.0
   cryptography_flutter_plus: ^3.0.0
   network_info_plus: ^8.1.0
+dependency_overrides:
+  phosphor_flutter:
+    git:
+      url: https://github.com/CodeDoctorDE/phosphor-flutter.git
+      ref: f7479596c67239e755ab1fe3bade84895bfd6222
 dev_dependencies:
   flutter_test:
     sdk: flutter

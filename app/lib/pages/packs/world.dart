@@ -44,10 +44,7 @@ class _WorldPacksView extends StatelessWidget {
               ),
             );
           },
-          onReorder: (int oldIndex, int newIndex) {
-            if (oldIndex < newIndex) {
-              newIndex -= 1;
-            }
+          onReorderItem: (int oldIndex, int newIndex) {
             final packs = List<String>.from(state.info.packs);
             final pack = packs.removeAt(oldIndex);
             packs.insert(newIndex, pack);
