@@ -11,12 +11,12 @@ description: Play games without internet
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 0.8.0+12
+version: 0.8.0+13
 publish_to: none
 
 environment:
   sdk: ">=3.8.0 <4.0.0"
-  flutter: 3.41.9
+  flutter: 3.44.0
 
 dependencies:
   flutter:
@@ -32,7 +32,7 @@ dependencies:
   material_leap:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 2be0e27cf8f9a2166b23dd5a723fc55a47e832a9
+      ref: fa022bf7691aee963486058a13c7027f301cc630
       path: packages/material_leap
   flex_color_scheme: ^8.1.0
   flutter_svg: ^2.2.0
@@ -55,35 +55,35 @@ dependencies:
   networker:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 54d35ef572172ac74d853d47af0140a89b36d714
+      ref: 4e2219e6b447edbd793a692116e41362ea0954c9
       path: packages/networker/networker
   networker_socket:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 1ab8146be49b208ba5890935561b93af71702858
+      ref: db4a5c69a6928031155add4b42374be584b8e24a
       path: packages/networker/networker_socket
   swamp_api:
     git:
       url: https://github.com/LinwoodDev/Swamp.git
-      ref: 88af0f2fe2a99e0cf121662f9fb87ed6deef7987
+      ref: 1fa4d5cdbe9dfe2145bf4f9052190a1f6c584e43
       path: api
   # System Information
   dynamic_color: ^1.7.0
-  device_info_plus: ^12.1.0
-  package_info_plus: ^9.0.0
+  device_info_plus: ^13.1.0
+  package_info_plus: ^10.1.0
   path_provider: ^2.1.4
   url_launcher: ^6.2.6
   flutter_secure_storage: ^10.0.0-beta.1
-  file_picker: ^11.0.1
+  file_picker: ^12.0.0-beta.4
   lw_file_system:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: fadf61fcea99010011551f43d8a92251fc8c91ee
+      ref: 687c9a21fbb45fe33aff6872838183af71e3c9c7
       path: packages/lw_file_system
   lw_sysapi:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 6c2947728afd3922de9386391c138e99ce05e26f
+      ref: 6d43be062401fafdd956448c59dea8c1df69198b
       path: packages/lw_sysapi
   setonix_api:
     path: ../api
@@ -98,7 +98,7 @@ dependencies:
     path: ../plugin
   cryptography_plus: ^3.0.0
   cryptography_flutter_plus: ^3.0.0
-  network_info_plus: ^7.0.0
+  network_info_plus: ^8.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
