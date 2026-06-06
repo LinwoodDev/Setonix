@@ -33,6 +33,13 @@ Future<void> main() async {
       print("TABLE ACCESS: ${p0}");
       return '{"key": "value"}';
     },
+    storageRead: () {
+      print("STORAGE READ");
+      return '{}';
+    },
+    storageWrite: (p0) {
+      print("STORAGE WRITE: ${p0}");
+    },
   );
   final plugin = LuauPlugin(code: LUA_SCRIPT, callback: callback);
   try {

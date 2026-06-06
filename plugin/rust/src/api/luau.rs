@@ -1,11 +1,12 @@
 use event::*;
-use tokio::sync::Mutex;
 use std::sync::Arc;
+use tokio::sync::Mutex;
 
 use flutter_rust_bridge::frb;
 use futures::executor::block_on;
 use mlua::prelude::*;
 use state::LuauStateUserData;
+use storage::LuauStorageUserData;
 
 use crate::api::luau::server::LuauServerUserData;
 
@@ -14,6 +15,7 @@ use super::plugin::*;
 pub mod event;
 pub mod server;
 pub mod state;
+pub mod storage;
 
 const HIGH_LEVEL_API_PRELUDE: &str = include_str!("luau/prelude.luau");
 
@@ -45,13 +47,12 @@ fn construct_raw_api(
 ) -> LuaResult<LuaTable> {
     let raw_api = engine.create_table()?;
 
-    raw_api.set(
-        "Events",
-        LuauEventSystemUserData(Arc::clone(&event_system)),
-    )?;
+    raw_api.set("Events", LuauEventSystemUserData(Arc::clone(&event_system)))?;
     raw_api.set("events", LuauEventSystemUserData(event_system))?;
     raw_api.set("State", LuauStateUserData(callback.clone()))?;
     raw_api.set("state", LuauStateUserData(callback.clone()))?;
+    raw_api.set("Storage", LuauStorageUserData(callback.clone()))?;
+    raw_api.set("storage", LuauStorageUserData(callback.clone()))?;
     raw_api.set("Server", LuauServerUserData(callback.clone()))?;
     raw_api.set("server", LuauServerUserData(callback))?;
 
@@ -71,42 +72,68 @@ struct LuaEventDetails(Arc<std::sync::Mutex<EventDetails>>);
 impl LuaUserData for LuaEventDetails {
     fn add_fields<F: LuaUserDataFields<Self>>(fields: &mut F) {
         fields.add_field_method_get("source", |_, this| {
-            let guard = this.0.lock().map_err(|_| mlua::Error::RuntimeError("Lock poisoned".to_string()))?;
+            let guard = this
+                .0
+                .lock()
+                .map_err(|_| mlua::Error::RuntimeError("Lock poisoned".to_string()))?;
             Ok(guard.source)
         });
         fields.add_field_method_get("target", |_, this| {
-            let guard = this.0.lock().map_err(|_| mlua::Error::RuntimeError("Lock poisoned".to_string()))?;
+            let guard = this
+                .0
+                .lock()
+                .map_err(|_| mlua::Error::RuntimeError("Lock poisoned".to_string()))?;
             Ok(guard.target)
         });
         fields.add_field_method_get("cancelled", |_, this| {
-            let guard = this.0.lock().map_err(|_| mlua::Error::RuntimeError("Lock poisoned".to_string()))?;
+            let guard = this
+                .0
+                .lock()
+                .map_err(|_| mlua::Error::RuntimeError("Lock poisoned".to_string()))?;
             Ok(guard.cancelled)
         });
         fields.add_field_method_get("server_event", |lua, this| {
-            let guard = this.0.lock().map_err(|_| mlua::Error::RuntimeError("Lock poisoned".to_string()))?;
-            let value = lua.to_value(&guard.server_event).map_err(mlua::Error::external)?;
+            let guard = this
+                .0
+                .lock()
+                .map_err(|_| mlua::Error::RuntimeError("Lock poisoned".to_string()))?;
+            let value = lua
+                .to_value(&guard.server_event)
+                .map_err(mlua::Error::external)?;
             Ok(value)
         });
         fields.add_field_method_set("cancelled", |_, this, val: bool| {
-            let mut guard = this.0.lock().map_err(|_| mlua::Error::RuntimeError("Lock poisoned".to_string()))?;
+            let mut guard = this
+                .0
+                .lock()
+                .map_err(|_| mlua::Error::RuntimeError("Lock poisoned".to_string()))?;
             guard.cancelled = val;
             Ok(())
         });
         fields.add_field_method_set("server_event", |lua, this, val: mlua::Value| {
-            let mut guard = this.0.lock().map_err(|_| mlua::Error::RuntimeError("Lock poisoned".to_string()))?;
+            let mut guard = this
+                .0
+                .lock()
+                .map_err(|_| mlua::Error::RuntimeError("Lock poisoned".to_string()))?;
             let value: serde_json::Value = lua.from_value(val).map_err(mlua::Error::external)?;
             guard.server_event = serde_json::from_value(value).map_err(mlua::Error::external)?;
             Ok(())
         });
     }
     fn add_methods<M: LuaUserDataMethods<Self>>(methods: &mut M) {
-        methods.add_method("ScheduleEvent", |lua, this, (event, channel): (mlua::Value, Option<Channel>)| {
-            let event: serde_json::Value = lua.from_value(event)?;
-            println!("Scheduling event from Lua: {:?}", event);
-            let event = event.to_string();
-            this.0.lock().map_err(|_| mlua::Error::RuntimeError("Lock poisoned".to_string()))?.schedule_event(event, channel);
-            Ok(())
-        });
+        methods.add_method(
+            "ScheduleEvent",
+            |lua, this, (event, channel): (mlua::Value, Option<Channel>)| {
+                let event: serde_json::Value = lua.from_value(event)?;
+                println!("Scheduling event from Lua: {:?}", event);
+                let event = event.to_string();
+                this.0
+                    .lock()
+                    .map_err(|_| mlua::Error::RuntimeError("Lock poisoned".to_string()))?
+                    .schedule_event(event, channel);
+                Ok(())
+            },
+        );
     }
 }
 
@@ -120,10 +147,11 @@ impl RustPlugin for LuauPlugin {
         cancelled: bool,
         target: Channel,
     ) -> EventResult {
-        let server_event: Option<JsonObject> = server_event.map(|e| serde_json::from_str(&e).unwrap());
+        let server_event: Option<JsonObject> =
+            server_event.map(|e| serde_json::from_str(&e).unwrap());
         let old = EventDetails::new(server_event, target, source, cancelled, None);
         let details = LuaEventDetails(Arc::new(std::sync::Mutex::new(old.clone())));
-        let event : JsonObject = serde_json::from_str(&event).unwrap();
+        let event: JsonObject = serde_json::from_str(&event).unwrap();
         let (event, lua_value) = {
             let details = details.clone();
             let engine = self.engine.lock().await;
@@ -133,7 +161,6 @@ impl RustPlugin for LuauPlugin {
             )
         };
         {
-            
             let engine = self.event_system.lock().await;
             engine
                 .run_event_handler(&event_type, (event, lua_value))
@@ -144,7 +171,7 @@ impl RustPlugin for LuauPlugin {
     }
 
     async fn run(&self) -> Result<(), anyhow::Error> {
-        let chunk =  {
+        let chunk = {
             let engine = self.engine.lock().await;
             engine.load(&self.code).set_name("@setonix_plugin.luau")
         };
@@ -163,11 +190,9 @@ impl LuauPlugin {
         callback.construct_globals(&engine).unwrap();
         let event_system = LuauEventSystem::default();
         let event_system = Arc::new(Mutex::new(event_system));
-        let raw_api = construct_raw_api(&engine, Arc::clone(&event_system), callback.clone()).unwrap();
-        engine
-            .globals()
-            .set("SetonixRaw", raw_api)
-            .unwrap();
+        let raw_api =
+            construct_raw_api(&engine, Arc::clone(&event_system), callback.clone()).unwrap();
+        engine.globals().set("SetonixRaw", raw_api).unwrap();
         callback.construct_high_level_api(&engine).unwrap();
 
         let engine = Arc::new(Mutex::new(engine));

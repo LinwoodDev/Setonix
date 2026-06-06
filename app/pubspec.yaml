@@ -16,7 +16,7 @@ publish_to: none
 
 environment:
   sdk: ">=3.8.0 <4.0.0"
-  flutter: 3.44.0
+  flutter: 3.44.1
 
 dependencies:
   flutter:
@@ -73,12 +73,12 @@ dependencies:
   package_info_plus: ^10.1.0
   path_provider: ^2.1.4
   url_launcher: ^6.2.6
-  flutter_secure_storage: ^10.0.0-beta.1
+  flutter_secure_storage: ^11.0.0-beta.1
   file_picker: ^12.0.0-beta.4
   lw_file_system:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 687c9a21fbb45fe33aff6872838183af71e3c9c7
+      ref: 4e752615dd91f264cca97bf6a5e95447d2bb3764
       path: packages/lw_file_system
   lw_sysapi:
     git:

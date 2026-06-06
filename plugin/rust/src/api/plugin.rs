@@ -1,10 +1,8 @@
-
 use std::{collections::HashSet, sync::Arc};
 
-use flutter_rust_bridge::{frb, DartFnFuture};
+use flutter_rust_bridge::{DartFnFuture, frb};
 use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value};
-
 
 pub type DartCallback<T> = Arc<dyn Fn(T) -> DartFnFuture<()> + Send + Sync>;
 // see https://github.com/rust-lang/lang-team/blob/master/src/design_notes/variadic_generics.md
@@ -30,16 +28,26 @@ pub struct PluginCallback {
     pub(crate) send_event: DartCallback2<String, Option<Channel>>,
     pub(crate) state_field_access: DartAccess<StateFieldAccess, String>,
     pub(crate) table_access: DartAccess<Option<String>, String>,
+    pub(crate) storage_read: Arc<dyn Fn() -> DartFnFuture<String> + Send + Sync>,
+    pub(crate) storage_write: DartCallback<String>,
 }
 
 impl PluginCallback {
     #[frb(sync)]
     pub fn new(
         on_print: impl Fn(String) -> DartFnFuture<()> + 'static + Send + Sync,
-        process_event: impl Fn(String, Option<bool>) -> DartFnFuture<anyhow::Result<()>> + 'static + Send + Sync,
-        send_event: impl Fn(String, Option<Channel>) -> DartFnFuture<anyhow::Result<()>> + 'static + Send + Sync,
+        process_event: impl Fn(String, Option<bool>) -> DartFnFuture<anyhow::Result<()>>
+        + 'static
+        + Send
+        + Sync,
+        send_event: impl Fn(String, Option<Channel>) -> DartFnFuture<anyhow::Result<()>>
+        + 'static
+        + Send
+        + Sync,
         state_field_access: impl Fn(StateFieldAccess) -> DartFnFuture<String> + 'static + Send + Sync,
         table_access: impl Fn(Option<String>) -> DartFnFuture<String> + 'static + Send + Sync,
+        storage_read: impl Fn() -> DartFnFuture<String> + 'static + Send + Sync,
+        storage_write: impl Fn(String) -> DartFnFuture<()> + 'static + Send + Sync,
     ) -> Self {
         Self {
             on_print: Arc::new(Box::new(on_print)),
@@ -47,6 +55,8 @@ impl PluginCallback {
             send_event: Arc::new(Box::new(send_event)),
             state_field_access: Arc::new(Box::new(state_field_access)),
             table_access: Arc::new(Box::new(table_access)),
+            storage_read: Arc::new(Box::new(storage_read)),
+            storage_write: Arc::new(Box::new(storage_write)),
         }
     }
 }
@@ -55,7 +65,15 @@ pub type Channel = i16;
 pub type JsonObject = Map<String, Value>;
 
 pub(crate) trait RustPlugin {
-    async fn run_event(&self, event_type: String, event: String, server_event: Option<String>, source: Channel, cancelled: bool, target: Channel) -> EventResult;
+    async fn run_event(
+        &self,
+        event_type: String,
+        event: String,
+        server_event: Option<String>,
+        source: Channel,
+        cancelled: bool,
+        target: Channel,
+    ) -> EventResult;
     async fn run(&self) -> Result<(), anyhow::Error>;
 }
 
@@ -103,11 +121,12 @@ pub struct EventResult {
 
 impl EventResult {
     pub(crate) fn build(details: EventDetails, previous: Option<EventDetails>) -> Self {
-        let server_event = if previous.map_or(false, |prev| prev.server_event != details.server_event) {
-            serde_json::to_string(&details.server_event).ok()
-        } else {
-            None
-        };
+        let server_event =
+            if previous.map_or(false, |prev| prev.server_event != details.server_event) {
+                serde_json::to_string(&details.server_event).ok()
+            } else {
+                None
+            };
         Self {
             target: details.target,
             server_event: server_event,

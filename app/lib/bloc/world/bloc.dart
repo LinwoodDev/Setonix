@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' show ColorScheme;
@@ -15,7 +17,8 @@ ServerProcessed _compute(
   (ServerWorldEvent, WorldState, List<SignatureMetadata>) m,
 ) => processServerEvent(m.$1, m.$2, signature: m.$3);
 
-SetonixData _saveState(WorldState state) => state.save();
+SetonixData _saveState((WorldState, Map<String, String>) data) =>
+    data.$1.save().setScriptStates(data.$2);
 
 class _WorldServerInterfaceImpl implements ServerInterface {
   final WorldBloc bloc;
@@ -50,10 +53,23 @@ class _WorldServerInterfaceImpl implements ServerInterface {
 
   @override
   List<int> get players => bloc.state.multiplayer.clients.toList();
+
+  @override
+  String getScriptState(String plugin) => bloc._scriptStates[plugin] ?? '{}';
+
+  @override
+  void setScriptState(String plugin, String state) {
+    bloc._scriptStates[plugin] = state;
+    if (!bloc._isSaving) {
+      unawaited(bloc.save(collectScriptState: false));
+    }
+  }
 }
 
 class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
   late final PluginSystem pluginSystem;
+  late final Map<String, String> _scriptStates;
+  bool _isSaving = false;
   bool _remoteEvent = false;
   WorldBloc({
     required MultiplayerCubit multiplayer,
@@ -78,6 +94,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
            ),
          ),
        ) {
+    _scriptStates = Map.from(state.world.data.getScriptStates());
     pluginSystem = PluginSystem(server: _WorldServerInterfaceImpl(this));
     state.multiplayer
       ..events.listen((event) {
@@ -171,11 +188,23 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
     }
   }
 
-  Future<void> save() async {
-    final data = await compute((state) => _saveState(state), state.world);
-    final name = state.world.name;
-    if (name == null) return;
-    return state.fileSystem.worldSystem.updateFile(name, data);
+  Future<void> save({bool collectScriptState = true}) async {
+    if (_isSaving) return;
+    _isSaving = true;
+    try {
+      if (collectScriptState) {
+        await pluginSystem.collectState();
+      }
+      final data = await compute(_saveState, (
+        state.world,
+        Map.of(_scriptStates),
+      ));
+      final name = state.world.name;
+      if (name == null) return;
+      return state.fileSystem.worldSystem.updateFile(name, data);
+    } finally {
+      _isSaving = false;
+    }
   }
 
   Future<void> _processEvent(
@@ -304,7 +333,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
   }
 
   Future<void> _loadGameMode(ItemLocation? location) async {
-    pluginSystem.unregisterAll();
+    await pluginSystem.closeAll();
     await pluginSystem.registerPlugin('', SetonixPlugin.new);
     if (kIsWeb) return;
     try {
@@ -315,5 +344,13 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
         print('Error loading game mode: $e');
       }
     }
+  }
+
+  @override
+  Future<void> close() async {
+    await save();
+    await pluginSystem.closeAll();
+    await save(collectScriptState: false);
+    return super.close();
   }
 }

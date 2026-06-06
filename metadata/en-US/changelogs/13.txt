@@ -1,3 +1,4 @@
+* Add state restoration to allow resuming games after app restarts
 * Improve game page title to show the opened game
 * Improve Luau script error messages with game mode and script context
 * Improve app and server security checks
@@ -8,5 +9,7 @@
 * Fix overlapping tooltips in stacked hand view layouts
 * Migrate the native plugin build from cargokit to Flutter native assets
 * Upgrade to flutter 3.44
+* Add world close event to allow cleaning up resources when a game is closed
+* Add save event to allow scripts to save game data when the game is saved
 
 Read more here: https://linwood.dev/setonix/0.8.0

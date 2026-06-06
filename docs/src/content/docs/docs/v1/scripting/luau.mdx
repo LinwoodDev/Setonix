@@ -47,6 +47,7 @@ You can use either the flat helpers or the namespaced variants:
 - `Setonix.cell(...)` or `Setonix.cells.get(...)`
 - `Setonix.process(...)` or `Setonix.requests.*(...)`
 - `Setonix.send(...)` or `Setonix.server.*(...)`
+- `Setonix.storage.get(...)`, `Setonix.storage.set(...)`, and `Setonix.storage.update(...)`
 
 The top-level helpers are convenient for short scripts. The namespaced entry points are better once a script grows beyond a few callbacks.
 
@@ -66,9 +67,30 @@ Setonix.events.action("blackjack_stand", function(event)
 end)
 ```
 
+`world_saving` runs before Setonix writes the world file. Setonix waits for the handler, so this is the best place to collect derived Lua state and flush it into `Setonix.storage`.
+
+```lua
+Setonix.events.on("world_saving", function()
+  Setonix.storage.set("round", {
+    currentPlayer = CurrentPlayer,
+    playerScores = PlayerScores,
+  })
+end)
+```
+
+`world_closing` runs when the world is being closed or scripts are being reloaded. Setonix waits for the handler before disposing the plugin, so this is the right place to clean up resources or write final state that only matters on shutdown.
+
+```lua
+Setonix.events.on("world_closing", function()
+  Setonix.storage.set("closedCleanly", true)
+end)
+```
+
 Supported aliases include:
 
 - `player_join`, `player_joined`, `user_join`, `user_joined`
+- `world_saving`, `saving`
+- `world_closing`, `closing`
 - `message`, `chat`
 - `toolbar_action`, `action`
 - `objects_moved`, `objects_spawned`, `objects_removed`
@@ -172,6 +194,29 @@ State helpers:
 - `Setonix.state.players()`
 - `Setonix.state.teamMembers()`
 - `Setonix.state.currentTable()`
+
+## Persistent Storage
+
+Each Luau plugin gets a private JSON-backed storage object saved with the world. Values must be JSON-compatible: strings, numbers, booleans, arrays, and plain tables.
+
+```lua
+local visits = Setonix.storage.update("visits", function(value)
+  return (value or 0) + 1
+end, 0)
+
+Setonix.log("This script has seen " .. tostring(visits) .. " loads.")
+```
+
+Storage helpers:
+
+- `Setonix.storage.get(key, default)`
+- `Setonix.storage.set(key, value)`
+- `Setonix.storage.update(key, updater, default)`
+- `Setonix.storage.remove(key)`
+- `Setonix.storage.clear()`
+- `Setonix.storage.all()`
+
+Use storage for Lua-local game progress that must survive closing and reopening a world, such as the current player, round phase, score tables, or shuffled order references. Board objects are saved with the world, but plain Lua variables are recreated when the script VM starts again.
 
 Cell methods:
 

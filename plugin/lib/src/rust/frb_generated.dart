@@ -101,6 +101,8 @@ abstract class RustLibApi extends BaseApi {
     required FutureOr<void> Function(String, int?) sendEvent,
     required FutureOr<String> Function(StateFieldAccess) stateFieldAccess,
     required FutureOr<String> Function(String?) tableAccess,
+    required FutureOr<String> Function() storageRead,
+    required FutureOr<void> Function(String) storageWrite,
   });
 
   Future<int> crateApiSimpleSimpleAdderTwinNormal({
@@ -269,6 +271,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     required FutureOr<void> Function(String, int?) sendEvent,
     required FutureOr<String> Function(StateFieldAccess) stateFieldAccess,
     required FutureOr<String> Function(String?) tableAccess,
+    required FutureOr<String> Function() storageRead,
+    required FutureOr<void> Function(String) storageWrite,
   }) {
     return handler.executeSync(
       SyncTask(
@@ -294,6 +298,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             tableAccess,
             serializer,
           );
+          sse_encode_DartFn_Inputs__Output_String_AnyhowException(
+            storageRead,
+            serializer,
+          );
+          sse_encode_DartFn_Inputs_String_Output_unit_AnyhowException(
+            storageWrite,
+            serializer,
+          );
           return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 4)!;
         },
         codec: SseCodec(
@@ -308,6 +320,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           sendEvent,
           stateFieldAccess,
           tableAccess,
+          storageRead,
+          storageWrite,
         ],
         apiImpl: this,
       ),
@@ -323,6 +337,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           "sendEvent",
           "stateFieldAccess",
           "tableAccess",
+          "storageRead",
+          "storageWrite",
         ],
       );
 
@@ -453,6 +469,39 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       if (rawOutput != null) {
         serializer.buffer.putUint8(0);
         sse_encode_unit(rawOutput.value, serializer);
+      } else {
+        serializer.buffer.putUint8(1);
+        sse_encode_AnyhowException(rawError!.value, serializer);
+      }
+      final output = serializer.intoRaw();
+
+      generalizedFrbRustBinding.dartFnDeliverOutput(
+        callId: callId,
+        ptr: output.ptr,
+        rustVecLen: output.rustVecLen,
+        dataLen: output.dataLen,
+      );
+    };
+  }
+
+  Future<void> Function(int)
+  encode_DartFn_Inputs__Output_String_AnyhowException(
+    FutureOr<String> Function() raw,
+  ) {
+    return (callId) async {
+      Box<String>? rawOutput;
+      Box<AnyhowException>? rawError;
+      try {
+        rawOutput = Box(await raw());
+      } catch (e, s) {
+        rawError = Box(AnyhowException("$e\n\n$s"));
+      }
+
+      final serializer = SseSerializer(generalizedFrbRustBinding);
+      assert((rawOutput != null) ^ (rawError != null));
+      if (rawOutput != null) {
+        serializer.buffer.putUint8(0);
+        sse_encode_String(rawOutput.value, serializer);
       } else {
         serializer.buffer.putUint8(1);
         sse_encode_AnyhowException(rawError!.value, serializer);
@@ -608,6 +657,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   dco_decode_DartFn_Inputs_String_opt_box_autoadd_i_16_Output_unit_AnyhowException(
     dynamic raw,
   ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    throw UnimplementedError('');
+  }
+
+  @protected
+  FutureOr<String> Function()
+  dco_decode_DartFn_Inputs__Output_String_AnyhowException(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     throw UnimplementedError('');
   }
@@ -1130,6 +1186,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       encode_DartFn_Inputs_String_opt_box_autoadd_i_16_Output_unit_AnyhowException(
         self,
       ),
+      serializer,
+    );
+  }
+
+  @protected
+  void sse_encode_DartFn_Inputs__Output_String_AnyhowException(
+    FutureOr<String> Function() self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_DartOpaque(
+      encode_DartFn_Inputs__Output_String_AnyhowException(self),
       serializer,
     );
   }

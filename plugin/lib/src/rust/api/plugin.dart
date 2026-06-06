@@ -18,12 +18,16 @@ abstract class PluginCallback implements RustOpaqueInterface {
     required FutureOr<void> Function(String, int?) sendEvent,
     required FutureOr<String> Function(StateFieldAccess) stateFieldAccess,
     required FutureOr<String> Function(String?) tableAccess,
+    required FutureOr<String> Function() storageRead,
+    required FutureOr<void> Function(String) storageWrite,
   }) => RustLib.instance.api.crateApiPluginPluginCallbackNew(
     onPrint: onPrint,
     processEvent: processEvent,
     sendEvent: sendEvent,
     stateFieldAccess: stateFieldAccess,
     tableAccess: tableAccess,
+    storageRead: storageRead,
+    storageWrite: storageWrite,
   );
 }
 

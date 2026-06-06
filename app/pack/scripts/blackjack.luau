@@ -5,6 +5,7 @@ local StackCell = Setonix.cells.get(0, 1)
 local MaxScore = 21
 local CurrentPlayer : number? = nil
 local PlayerScores : {[number]: number} = {}
+local StorageKey = "round"
 local Toolbar = {
   editable = false,
   actions = {
@@ -28,6 +29,50 @@ local CardScores : {[string]: {number}} = {
   king = {10},
   ace = {1, 11}
 }
+
+local function encodePlayerScores() : {{player: number, score: number}}
+  local scores = {}
+  for playerId, score in pairs(PlayerScores) do
+    table.insert(scores, {
+      player = playerId,
+      score = score,
+    })
+  end
+  return scores
+end
+
+local function decodePlayerScores(scores : any?) : {[number]: number}
+  local decoded = {}
+  if type(scores) ~= "table" then
+    return decoded
+  end
+  for _, entry in ipairs(scores) do
+    local playerId = entry and tonumber(entry.player)
+    local score = entry and tonumber(entry.score)
+    if playerId ~= nil and score ~= nil then
+      decoded[playerId] = score
+    end
+  end
+  return decoded
+end
+
+local function saveRoundState()
+  Setonix.storage.set(StorageKey, {
+    initialized = true,
+    currentPlayer = CurrentPlayer,
+    playerScores = encodePlayerScores(),
+  })
+end
+
+local function loadRoundState() : boolean
+  local state = Setonix.storage.get(StorageKey)
+  if type(state) ~= "table" or state.initialized ~= true then
+    return false
+  end
+  CurrentPlayer = tonumber(state.currentPlayer)
+  PlayerScores = decodePlayerScores(state.playerScores)
+  return true
+end
 
 local function getCardVariations() : {string}
   local suits = {
@@ -277,6 +322,10 @@ Setonix.events.on("user_joined", function(event)
   event.player:setToolbar(Toolbar)
 end)
 
+Setonix.events.on("world_saving", function()
+  saveRoundState()
+end)
+
 Setonix.events.action("blackjack_hit", function(event)
   drawFromToolbar(event.source)
 end)
@@ -289,4 +338,6 @@ Setonix.events.action("blackjack_stand", function(event)
   end
 end)
 
-resetRound()
+if not loadRoundState() then
+  resetRound()
+end

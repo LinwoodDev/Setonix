@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
 
@@ -33,6 +34,8 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
   final String worldName;
   late final PluginSystem _pluginSystem;
   late SetonixPlugin _serverPlugin;
+  late final Map<String, String> _scriptStates;
+  bool _isSaving = false;
 
   PluginSystem get pluginSystem => _pluginSystem;
 
@@ -51,6 +54,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
           info: data.getInfoOrDefault(),
         ),
       ) {
+    _scriptStates = Map.from(state.data.getScriptStates());
     _pluginSystem = PluginSystem(server: this);
     on<ServerWorldEvent>((event, emit) async {
       final signature = assetManager.createSignature();
@@ -111,7 +115,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
   }
 
   Future<void> _loadScripts(ItemLocation? mode) async {
-    pluginSystem.unregisterAll();
+    await pluginSystem.closeAll();
     _serverPlugin = await _pluginSystem.registerPlugin('', SetonixPlugin.new);
     try {
       if (mode != null) {
@@ -163,7 +167,10 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
     await stream.first;
   }
 
-  Future<void> save({bool force = false}) async {
+  Future<void> save({
+    bool force = false,
+    bool collectScriptState = true,
+  }) async {
     final safeWorldName = _sanitizeWorldFileName(worldName);
     var file = File(
       p.join(
@@ -175,9 +182,18 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
     if (!await file.exists()) {
       await file.create(recursive: true);
     }
-    if (!force && autosave) return;
-    final bytes = state.save().exportAsBytes();
-    await file.writeAsBytes(bytes);
+    if (!force && !autosave) return;
+    if (_isSaving) return;
+    _isSaving = true;
+    try {
+      if (collectScriptState) {
+        await pluginSystem.collectState();
+      }
+      final bytes = state.save().setScriptStates(_scriptStates).exportAsBytes();
+      await file.writeAsBytes(bytes);
+    } finally {
+      _isSaving = false;
+    }
   }
 
   Future<void> onClientEvent(
@@ -252,4 +268,23 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
 
   @override
   List<int> get players => server.players.keys.toList(growable: false);
+
+  @override
+  String getScriptState(String plugin) => _scriptStates[plugin] ?? '{}';
+
+  @override
+  void setScriptState(String plugin, String state) {
+    _scriptStates[plugin] = state;
+    if (!_isSaving) {
+      unawaited(save(force: true, collectScriptState: false));
+    }
+  }
+
+  @override
+  Future<void> close() async {
+    await save(force: true);
+    await pluginSystem.closeAll();
+    await save(force: true, collectScriptState: false);
+    return super.close();
+  }
 }

@@ -30,6 +30,8 @@ mixin ServerInterface {
 
   WorldState get state;
   List<int> get players;
+  String getScriptState(String plugin);
+  void setScriptState(String plugin, String state);
 }
 
 final class PluginSystem {
@@ -48,7 +50,11 @@ final class PluginSystem {
     return _plugins[name] = plugin;
   }
 
-  Future<SetonixPlugin> registerLuauPlugin(String name, String code) {
+  Future<SetonixPlugin> registerLuauPlugin(
+    String name,
+    String code, {
+    ItemLocation? location,
+  }) {
     if (!_nativeEnabled) throw Exception('Native not enabled');
     return registerPlugin(
       name,
@@ -56,13 +62,14 @@ final class PluginSystem {
         (c) => LuauPlugin(code: code, callback: c),
         pluginServer,
         onPrint: (e) => server.print(e, name),
-        location: ItemLocation.fromString(name),
+        location: location ?? ItemLocation.fromString(name),
+        storageKey: name,
       ),
     );
   }
 
   void unregisterPlugin(String name) {
-    _plugins.remove(name);
+    _plugins.remove(name)?.dispose();
   }
 
   Future<SetonixPlugin?> loadLuaPluginFromLocation(
@@ -75,7 +82,7 @@ final class PluginSystem {
         ?.getScript(location.id);
     if (data == null) return null;
     try {
-      return await registerLuauPlugin(name, data);
+      return await registerLuauPlugin(name, data, location: location);
     } catch (error, stackTrace) {
       Error.throwWithStackTrace(
         Exception('Error loading Luau script "$location": $error'),
@@ -117,6 +124,19 @@ final class PluginSystem {
     if (disposeNative) disposePluginSystem();
   }
 
+  Future<void> closeAll() async {
+    for (final plugin in _plugins.values.toList()) {
+      await plugin.close();
+    }
+    unregisterAll();
+  }
+
+  Future<void> collectState() async {
+    for (final plugin in _plugins.values.toList()) {
+      await plugin.collectState();
+    }
+  }
+
   void unregisterAll() {
     List<String>.from(_plugins.keys).forEach(unregisterPlugin);
   }
@@ -150,6 +170,8 @@ abstract class PluginServerInterface {
   });
   WorldState get state;
   List<int> get players;
+  String getScriptState(String plugin);
+  void setScriptState(String plugin, String state);
 }
 
 class _PluginServerInterfaceImpl implements PluginServerInterface {
@@ -173,6 +195,14 @@ class _PluginServerInterfaceImpl implements PluginServerInterface {
 
   @override
   List<int> get players => server.players;
+
+  @override
+  String getScriptState(String plugin) => server.getScriptState(plugin);
+
+  @override
+  void setScriptState(String plugin, String state) {
+    server.setScriptState(plugin, state);
+  }
 }
 
 final class ProcessMessage {
@@ -187,6 +217,10 @@ class SetonixPlugin {
   final EventSystem eventSystem = EventSystem();
 
   SetonixPlugin(this.server);
+
+  Future<void> collectState() async {}
+
+  Future<void> close() async {}
 
   void dispose() {
     eventSystem.dispose();
@@ -203,6 +237,7 @@ final class RustSetonixPlugin extends SetonixPlugin {
     PluginServerInterface server, {
     void Function(String)? onPrint,
     ItemLocation? location,
+    String storageKey = '',
   }) async {
     final callback = PluginCallback(
       onPrint: onPrint ?? (s) {},
@@ -247,6 +282,8 @@ final class RustSetonixPlugin extends SetonixPlugin {
         final table = server.state.data.getTable(tableName ?? '');
         return table?.toJson() ?? "{}";
       },
+      storageRead: () => server.getScriptState(storageKey),
+      storageWrite: (state) => server.setScriptState(storageKey, state),
     );
     final plugin = builder(callback);
     final instance = RustSetonixPlugin._(server, plugin);
@@ -277,6 +314,32 @@ final class RustSetonixPlugin extends SetonixPlugin {
     });
     await instance.plugin.run();
     return instance;
+  }
+
+  @override
+  Future<void> collectState() async {
+    await plugin.runEvent(
+      eventType: 'WorldSaving',
+      event: '{"type":"WorldSaving"}',
+      source: kAuthorityChannel,
+      target: kAnyChannel,
+      cancelled: false,
+    );
+  }
+
+  @override
+  Future<void> close() async {
+    try {
+      await plugin.runEvent(
+        eventType: 'WorldClosing',
+        event: '{"type":"WorldClosing"}',
+        source: kAuthorityChannel,
+        target: kAnyChannel,
+        cancelled: false,
+      );
+    } finally {
+      await super.close();
+    }
   }
 
   @override

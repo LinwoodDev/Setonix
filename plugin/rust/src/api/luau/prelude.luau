@@ -35,6 +35,14 @@ local function get_runtime_state()
   return state
 end
 
+local function get_runtime_storage()
+  local storage = get_runtime().Storage
+  if storage == nil then
+    error("Setonix storage API is not available while running this Luau script", 2)
+  end
+  return storage
+end
+
 local runtimeEvents = setmetatable({}, {
   __index = function(_, key)
     return get_runtime_events()[key]
@@ -61,6 +69,24 @@ function runtimeState:GetTable(...)
   return get_runtime_state():GetTable(...)
 end
 
+local runtimeStorage = {}
+
+function runtimeStorage:Get(...)
+  return get_runtime_storage():Get(...)
+end
+
+function runtimeStorage:Set(...)
+  return get_runtime_storage():Set(...)
+end
+
+function runtimeStorage:Remove(...)
+  return get_runtime_storage():Remove(...)
+end
+
+function runtimeStorage:Clear(...)
+  return get_runtime_storage():Clear(...)
+end
+
 local PositionMethods = {}
 local TableMethods = {}
 local CellMethods = {}
@@ -68,6 +94,7 @@ local PlayerMethods = {}
 local EventMethods = {}
 local WorldMethods = {}
 local StateMethods = {}
+local StorageMethods = {}
 local CollectionMethods = {}
 local ScoringMethods = {}
 
@@ -245,6 +272,10 @@ local EventAliases = {
   server_state_updated = "ServerStateUpdated",
   authenticated_requested = "AuthenticatedRequested",
   toolbar_updated = "ToolbarUpdated",
+  world_saving = "WorldSaving",
+  saving = "WorldSaving",
+  world_closing = "WorldClosing",
+  closing = "WorldClosing",
 }
 
 local function to_number_if_possible(value)
@@ -681,6 +712,39 @@ function StateMethods.currentTable()
   return Setonix.currentTable()
 end
 
+function StorageMethods.get(key, default)
+  local value = runtimeStorage:Get(key)
+  if value == nil then
+    return default
+  end
+  return value
+end
+
+function StorageMethods.set(key, value)
+  return runtimeStorage:Set(key, value)
+end
+
+function StorageMethods.remove(key)
+  return runtimeStorage:Remove(key)
+end
+
+function StorageMethods.clear()
+  return runtimeStorage:Clear()
+end
+
+function StorageMethods.all()
+  return runtimeStorage:Get()
+end
+
+function StorageMethods.update(key, updater, default)
+  if type(updater) ~= "function" then
+    error("storage update expects a function", 2)
+  end
+  local next_value = updater(StorageMethods.get(key, default))
+  StorageMethods.set(key, next_value)
+  return next_value
+end
+
 function CollectionMethods.copy(values)
   return copy_array(values)
 end
@@ -735,6 +799,7 @@ Setonix = {
   raw = runtime,
   world = create_namespace(WorldMethods),
   state = create_namespace(StateMethods),
+  storage = create_namespace(StorageMethods),
   collections = create_namespace(CollectionMethods),
   scoring = create_namespace(ScoringMethods),
 }

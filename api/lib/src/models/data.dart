@@ -28,6 +28,7 @@ const kPackAccountsPath = 'accounts';
 const kGameTablePath = 'tables';
 const kGameTeamPath = 'teams.json';
 const kGameNotesPath = 'notes';
+const kGameScriptStatePath = 'script_state';
 
 class SetonixData extends ArchiveData<SetonixData> {
   final String identifier;
@@ -88,6 +89,40 @@ class SetonixData extends ArchiveData<SetonixData> {
       removeAsset('$kGameNotesPath/$name.md');
 
   Iterable<String> getNotes() => getAssets(kGameNotesPath, true);
+
+  String _scriptStatePath(String plugin) =>
+      '$kGameScriptStatePath/${base64Url.encode(utf8.encode(plugin))}.json';
+
+  Map<String, String> getScriptStates() => Map.fromEntries(
+    getAssets(kGameScriptStatePath, true).map((encoded) {
+      try {
+        final plugin = utf8.decode(base64Url.decode(encoded));
+        return MapEntry(plugin, getScriptState(plugin));
+      } catch (_) {
+        return null;
+      }
+    }).nonNulls,
+  );
+
+  String getScriptState(String plugin) {
+    final data = getAsset(_scriptStatePath(plugin));
+    if (data == null) return '{}';
+    return utf8.decode(data);
+  }
+
+  SetonixData setScriptState(String plugin, String state) =>
+      setAsset(_scriptStatePath(plugin), utf8.encode(state));
+
+  SetonixData removeScriptState(String plugin) =>
+      removeAsset(_scriptStatePath(plugin));
+
+  SetonixData setScriptStates(Map<String, String> states) {
+    var data = this;
+    for (final entry in states.entries) {
+      data = data.setScriptState(entry.key, entry.value);
+    }
+    return data;
+  }
 
   FileMetadata? getMetadata() {
     final data = getAsset(kPackMetadataPath);

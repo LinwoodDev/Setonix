@@ -6,7 +6,6 @@ import 'package:setonix/board/game.dart';
 import 'package:setonix/pages/game/multiplayer/dialog.dart';
 import 'package:setonix/pages/game/waypoint.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
-import 'package:go_router/go_router.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:setonix/api/settings.dart';
@@ -23,8 +22,9 @@ import 'package:setonix_api/setonix_api.dart';
 
 class GameDrawer extends StatelessWidget {
   final BoardGame game;
+  final Future<void> Function() onHome;
 
-  const GameDrawer({super.key, required this.game});
+  const GameDrawer({super.key, required this.game, required this.onHome});
 
   @override
   Widget build(BuildContext context) {
@@ -518,7 +518,7 @@ class GameDrawer extends StatelessWidget {
             ListTile(
               leading: const Icon(PhosphorIconsLight.door),
               title: Text(AppLocalizations.of(context).home),
-              onTap: () => GoRouter.of(context).go('/'),
+              onTap: onHome,
             ),
           ],
         ),

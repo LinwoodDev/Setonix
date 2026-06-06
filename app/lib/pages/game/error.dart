@@ -2,7 +2,6 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
-import 'package:go_router/go_router.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:setonix/bloc/multiplayer.dart';
@@ -15,11 +14,13 @@ import 'package:url_launcher/url_launcher_string.dart';
 class GameErrorView extends StatelessWidget {
   final MultiplayerDisconnectedState state;
   final VoidCallback onReconnect;
+  final Future<void> Function() onHome;
 
   const GameErrorView({
     super.key,
     required this.state,
     required this.onReconnect,
+    required this.onHome,
   });
 
   @override
@@ -34,7 +35,11 @@ class GameErrorView extends StatelessWidget {
       };
       content = switch (error) {
         InvalidPacksError() => [
-          _PacksGameErrorView(error: error, onReconnect: onReconnect),
+          _PacksGameErrorView(
+            error: error,
+            onReconnect: onReconnect,
+            onHome: onHome,
+          ),
         ],
       };
     } else if (error is KickMessage) {
@@ -119,7 +124,7 @@ class GameErrorView extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         ElevatedButton(
-                          onPressed: () => GoRouter.of(context).go('/'),
+                          onPressed: onHome,
                           child: Text(AppLocalizations.of(context).home),
                         ),
                       ],
@@ -142,8 +147,13 @@ class GameErrorView extends StatelessWidget {
 class _PacksGameErrorView extends StatefulWidget {
   final InvalidPacksError error;
   final VoidCallback onReconnect;
+  final Future<void> Function() onHome;
 
-  const _PacksGameErrorView({required this.error, required this.onReconnect});
+  const _PacksGameErrorView({
+    required this.error,
+    required this.onReconnect,
+    required this.onHome,
+  });
 
   @override
   State<_PacksGameErrorView> createState() => _PacksGameErrorViewState();
@@ -280,9 +290,9 @@ class _PacksGameErrorViewState extends State<_PacksGameErrorView> {
               child: Text(AppLocalizations.of(context).reconnect),
             ),
             TextButton(
-              onPressed: () {
+              onPressed: () async {
                 Navigator.of(context).pop();
-                GoRouter.of(context).go('/');
+                await widget.onHome();
               },
               child: Text(AppLocalizations.of(context).home),
             ),
