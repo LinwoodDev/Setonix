@@ -386,7 +386,7 @@ class _CreateDialogState extends State<CreateDialog>
                   _selectedPacks ??
                   (await _packsFuture).map((e) => e.identifier).toList();
               var template =
-                  _selectedTemplate == null || _tabController.index == 0
+                  _selectedTemplate != null && _tabController.index == 0
                   ? await _templateSystem.getFile(_selectedTemplate!)
                   : null;
               template ??= _selectedModeTemplate == null

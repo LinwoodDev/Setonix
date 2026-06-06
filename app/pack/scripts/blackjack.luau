@@ -250,7 +250,8 @@ local function evaluateDraw(playerId : number, drawnCard : any?)
   end
 end
 
-local function drawFromToolbar(playerId : number)
+local function drawFromToolbar(event)
+  local playerId = event.source
   if not claimTurn(playerId) then
     return
   end
@@ -261,8 +262,8 @@ local function drawFromToolbar(playerId : number)
     return
   end
 
-  DeckCell:moveTopTo(StackCell, 1)
-  StackCell:show()
+  event:schedule(Setonix.server.events.objectsMoved(DeckCell, StackCell, { 0 }))
+  event:schedule(Setonix.server.events.cellHideChanged(StackCell, false))
   evaluateDraw(playerId, topCard)
 end
 
@@ -327,7 +328,7 @@ Setonix.events.on("world_saving", function()
 end)
 
 Setonix.events.action("blackjack_hit", function(event)
-  drawFromToolbar(event.source)
+  drawFromToolbar(event)
 end)
 
 Setonix.events.action("blackjack_stand", function(event)

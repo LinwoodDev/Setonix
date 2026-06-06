@@ -2,9 +2,11 @@
 * Improve game page title to show the opened game
 * Improve Luau script error messages with game mode and script context
 * Improve app and server security checks
+* Swap custom and template tabs in create dialog
 * Harden multiplayer authentication and imported file names
 * Prevent creating games without a name
 * Fix loading the Blackjack game mode
+* Fix Blackjack actions and card visibility
 * Fix playing a game without a selection showing a missing route
 * Fix overlapping tooltips in stacked hand view layouts
 * Migrate the native plugin build from cargokit to Flutter native assets

@@ -182,9 +182,12 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
     });
   }
 
-  Future<void> init() async {
+  Future<void> init({bool localPlayer = true}) async {
     if (!state.multiplayer.isClient) {
       await _loadGameMode(state.world.info.gameMode);
+      if (localPlayer) {
+        await _processEvent(NetworkerPacket(null, kAuthorityChannel));
+      }
     }
   }
 
@@ -212,6 +215,11 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
     bool allowServerEvents = false,
     bool triggerPlugin = true,
   }) async {
+    bool isLocalTarget(Channel channel) =>
+        channel == kAnyChannel ||
+        channel == kAuthorityChannel ||
+        channel == state.world.id;
+
     final value = await processClientEvent(
       data.data,
       data.channel,
@@ -256,15 +264,14 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
         state.multiplayer.sendServerPackets(packets);
         if (!state.multiplayer.isConnected) {
           for (final packet in packets) {
-            if (packet.channel == kAnyChannel ||
-                packet.channel == kAuthorityChannel) {
+            if (isLocalTarget(packet.channel)) {
               add(packet.data);
             }
           }
         }
 
         for (final scheduled in event.scheduledEvents) {
-          _processEvent(
+          await _processEvent(
             scheduled,
             allowServerEvents: true,
             triggerPlugin: false,
@@ -320,7 +327,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
           }
 
           for (final scheduled in event.scheduledEvents) {
-            _processEvent(
+            await _processEvent(
               scheduled,
               allowServerEvents: true,
               triggerPlugin: false,
