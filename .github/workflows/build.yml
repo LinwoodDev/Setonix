@@ -581,6 +581,10 @@ jobs:
             label: windows-x86_64
             dir: windows_x64
             rust: setonix_plugin.dll
+          - name: windows-11-arm
+            label: windows-arm64
+            dir: windows_arm64
+            rust: setonix_plugin.dll
           - name: macos-latest
             label: macos
             dir: macos_arm64
@@ -827,6 +831,10 @@ jobs:
           path: server-build-windows-x86_64/
       - uses: actions/download-artifact@v8
         with:
+          name: server-build-windows-arm64
+          path: server-build-windows-arm64/
+      - uses: actions/download-artifact@v8
+        with:
           name: server-build-macos
           path: server-build-macos/
       - name: 📦 Zip artifacts
@@ -844,6 +852,9 @@ jobs:
           tar -C server-build-linux-arm64 -czf linwood-setonix-server-linux-arm64.tar.gz .
           cd server-build-windows-x86_64
           zip -r ../linwood-setonix-server-windows-x86_64.zip *
+          cd ..
+          cd server-build-windows-arm64
+          zip -r ../linwood-setonix-server-windows-arm64.zip *
           cd ..
           cd server-build-macos
           zip -r ../linwood-setonix-server-macos.zip *
@@ -918,6 +929,7 @@ jobs:
             linwood-setonix-server-linux-x86_64.tar.gz
             linwood-setonix-server-linux-arm64.tar.gz
             linwood-setonix-server-windows-x86_64.zip
+            linwood-setonix-server-windows-arm64.zip
             linwood-setonix-server-macos.zip
             checksums.txt
         env:
@@ -968,6 +980,7 @@ jobs:
             linwood-setonix-server-linux-x86_64.tar.gz
             linwood-setonix-server-linux-arm64.tar.gz
             linwood-setonix-server-windows-x86_64.zip
+            linwood-setonix-server-windows-arm64.zip
             linwood-setonix-server-macos.zip
             checksums.txt
         env:
@@ -1016,6 +1029,7 @@ jobs:
             linwood-setonix-server-linux-x86_64.tar.gz
             linwood-setonix-server-linux-arm64.tar.gz
             linwood-setonix-server-windows-x86_64.zip
+            linwood-setonix-server-windows-arm64.zip
             linwood-setonix-server-macos.zip
             checksums.txt
         env:
@@ -1086,24 +1100,24 @@ jobs:
           PLAY_STORE_CREDENTIALS: ${{ secrets.PLAY_STORE_CREDENTIALS }}
         run: bundle exec fastlane beta
         working-directory: app/android
-  #publish-winget:
-  #  needs: [deploy]
-  #  runs-on: windows-latest
-  #  steps:
-  #    - uses: actions/checkout@v6
-  #      with:
-  #        token: ${{ secrets.CI_PAT }}
-  #    - if: ${{ github.ref == 'refs/tags/stable' }}
-  #      uses: vedantmgoyal2009/winget-releaser@v2
-  #      with:
-  #        identifier: LinwoodCloud.Setonix
-  #        version: ${{ needs.deploy.outputs.version }}
-  #        release-tag: v${{ needs.deploy.outputs.version }}
-  #        token: ${{ secrets.CI_PAT }}
-  #    - if: ${{ github.ref == 'refs/tags/nightly' }}
-  #      uses: vedantmgoyal2009/winget-releaser@v2
-  #      with:
-  #        identifier: LinwoodCloud.Setonix.Nightly
-  #        version: ${{ needs.deploy.outputs.version }}
-  #        release-tag: v${{ needs.deploy.outputs.version }}
-  #        token: ${{ secrets.CI_PAT }}
+  # publish-winget:
+  #   needs: [deploy]
+  #   runs-on: windows-latest
+  #   steps:
+  #     - uses: actions/checkout@v6
+  #       with:
+  #         token: ${{ secrets.CI_PAT }}
+  #     - if: ${{ github.ref == 'refs/tags/stable' }}
+  #       uses: vedantmgoyal2009/winget-releaser@v2
+  #       with:
+  #         identifier: LinwoodCloud.Setonix
+  #         version: ${{ needs.deploy.outputs.version }}
+  #         release-tag: v${{ needs.deploy.outputs.version }}
+  #         token: ${{ secrets.CI_PAT }}
+  #     - if: ${{ github.ref == 'refs/tags/nightly' }}
+  #       uses: vedantmgoyal2009/winget-releaser@v2
+  #       with:
+  #         identifier: LinwoodCloud.Setonix.Nightly
+  #         version: ${{ needs.deploy.outputs.version }}
+  #         release-tag: v${{ needs.deploy.outputs.version }}
+  #         token: ${{ secrets.CI_PAT }}
