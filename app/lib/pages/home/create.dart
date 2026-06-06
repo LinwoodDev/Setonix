@@ -82,12 +82,12 @@ class _CreateDialogState extends State<CreateDialog>
           indicatorSize: TabBarIndicatorSize.tab,
           tabs: [
             HorizontalTab(
-              icon: const PhosphorIcon(PhosphorIconsLight.globe),
-              label: Text(AppLocalizations.of(context).custom),
-            ),
-            HorizontalTab(
               icon: const PhosphorIcon(PhosphorIconsLight.folder),
               label: Text(AppLocalizations.of(context).templates),
+            ),
+            HorizontalTab(
+              icon: const PhosphorIcon(PhosphorIconsLight.globe),
+              label: Text(AppLocalizations.of(context).custom),
             ),
           ],
         ),
@@ -96,67 +96,6 @@ class _CreateDialogState extends State<CreateDialog>
           child: TabBarView(
             controller: _tabController,
             children: [
-              Column(
-                children: [
-                  TabBar.secondary(
-                    tabs: [
-                      HorizontalTab(
-                        label: Text(AppLocalizations.of(context).packs),
-                        icon: const Icon(PhosphorIconsLight.package),
-                      ),
-                      HorizontalTab(
-                        label: Text(AppLocalizations.of(context).configuration),
-                        icon: const Icon(PhosphorIconsLight.wrench),
-                      ),
-                    ],
-                    tabAlignment: TabAlignment.center,
-                    controller: _customTabController,
-                  ),
-                  const SizedBox(height: 8),
-                  Expanded(
-                    child: Material(
-                      type: MaterialType.transparency,
-                      child: TabBarView(
-                        controller: _customTabController,
-                        children: [
-                          _CustomCreateView(
-                            packsFuture: _packsFuture,
-                            selectedPacksId: _selectedPacks,
-                            onPacksSelected: (value) => setState(() {
-                              _selectedPacks = value;
-                              if (_background != null &&
-                                  !_selectedPacks!.contains(
-                                    _background!.namespace,
-                                  )) {
-                                _background = null;
-                              }
-                              if (_selectedModeTemplate != null &&
-                                  !_selectedPacks!.contains(
-                                    _selectedModeTemplate!.namespace,
-                                  )) {
-                                _selectedModeTemplate = null;
-                              }
-                            }),
-                          ),
-                          ListView(
-                            children: [
-                              ListTile(
-                                title: Text(
-                                  AppLocalizations.of(context).background,
-                                ),
-                                subtitle: _background == null
-                                    ? null
-                                    : Text(_background!.item.name),
-                                onTap: _showBackgroundPicker,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
               Material(
                 type: MaterialType.transparency,
                 child: StreamBuilder(
@@ -274,6 +213,67 @@ class _CreateDialogState extends State<CreateDialog>
                   },
                 ),
               ),
+              Column(
+                children: [
+                  TabBar.secondary(
+                    tabs: [
+                      HorizontalTab(
+                        label: Text(AppLocalizations.of(context).packs),
+                        icon: const Icon(PhosphorIconsLight.package),
+                      ),
+                      HorizontalTab(
+                        label: Text(AppLocalizations.of(context).configuration),
+                        icon: const Icon(PhosphorIconsLight.wrench),
+                      ),
+                    ],
+                    tabAlignment: TabAlignment.center,
+                    controller: _customTabController,
+                  ),
+                  const SizedBox(height: 8),
+                  Expanded(
+                    child: Material(
+                      type: MaterialType.transparency,
+                      child: TabBarView(
+                        controller: _customTabController,
+                        children: [
+                          _CustomCreateView(
+                            packsFuture: _packsFuture,
+                            selectedPacksId: _selectedPacks,
+                            onPacksSelected: (value) => setState(() {
+                              _selectedPacks = value;
+                              if (_background != null &&
+                                  !_selectedPacks!.contains(
+                                    _background!.namespace,
+                                  )) {
+                                _background = null;
+                              }
+                              if (_selectedModeTemplate != null &&
+                                  !_selectedPacks!.contains(
+                                    _selectedModeTemplate!.namespace,
+                                  )) {
+                                _selectedModeTemplate = null;
+                              }
+                            }),
+                          ),
+                          ListView(
+                            children: [
+                              ListTile(
+                                title: Text(
+                                  AppLocalizations.of(context).background,
+                                ),
+                                subtitle: _background == null
+                                    ? null
+                                    : Text(_background!.item.name),
+                                onTap: _showBackgroundPicker,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
@@ -387,8 +387,8 @@ class _CreateDialogState extends State<CreateDialog>
                   (await _packsFuture).map((e) => e.identifier).toList();
               var template =
                   _selectedTemplate == null || _tabController.index == 0
-                  ? null
-                  : await _templateSystem.getFile(_selectedTemplate!);
+                  ? await _templateSystem.getFile(_selectedTemplate!)
+                  : null;
               template ??= _selectedModeTemplate == null
                   ? SetonixData.empty().setInfo(GameInfo(packs: packs))
                   : SetonixData.fromMode(

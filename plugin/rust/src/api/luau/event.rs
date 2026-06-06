@@ -1,4 +1,4 @@
-use std::{collections::HashMap, sync::{Arc}};
+use std::{collections::HashMap, sync::Arc};
 
 use flutter_rust_bridge::frb;
 use mlua::prelude::*;
@@ -36,27 +36,29 @@ impl LuaUserData for LuauEventSystemUserData {
             let connect_fn = {
                 let event_system_shared = Arc::clone(&event_system);
                 let event_name_shared = event_name.clone();
-                lua.create_async_function(move |lua_ctx, (_, handler): (mlua::Value, LuaFunction)| {
-                    let event_system = Arc::clone(&event_system_shared);
-                    let event_name = event_name_shared.clone();
-                    async move {
-                        let mut system = event_system.lock().await;
-                        let handler_id = system.next_id;
-                        system.next_id += 1;
-                        system
-                            .event_handlers
-                            .entry(event_name.clone())
-                            .or_insert_with(Vec::new)
-                            .push((handler_id, handler.clone()));
+                lua.create_async_function(
+                    move |lua_ctx, (_, handler): (mlua::Value, LuaFunction)| {
+                        let event_system = Arc::clone(&event_system_shared);
+                        let event_name = event_name_shared.clone();
+                        async move {
+                            let mut system = event_system.lock().await;
+                            let handler_id = system.next_id;
+                            system.next_id += 1;
+                            system
+                                .event_handlers
+                                .entry(event_name.clone())
+                                .or_insert_with(Vec::new)
+                                .push((handler_id, handler.clone()));
 
-                        let connection = LuauEventConnection {
-                            event_system: Arc::clone(&event_system),
-                            event_name,
-                            handler_id,
-                        };
-                        lua_ctx.create_userdata(connection)
-                    }
-                })?
+                            let connection = LuauEventConnection {
+                                event_system: Arc::clone(&event_system),
+                                event_name,
+                                handler_id,
+                            };
+                            lua_ctx.create_userdata(connection)
+                        }
+                    },
+                )?
             };
             tbl.set("Connect", connect_fn)?;
 

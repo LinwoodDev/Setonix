@@ -54,6 +54,7 @@ final class PluginSystem {
     String name,
     String code, {
     ItemLocation? location,
+    String? storageKey,
   }) {
     if (!_nativeEnabled) throw Exception('Native not enabled');
     return registerPlugin(
@@ -63,7 +64,7 @@ final class PluginSystem {
         pluginServer,
         onPrint: (e) => server.print(e, name),
         location: location ?? ItemLocation.fromString(name),
-        storageKey: name,
+        storageKey: storageKey ?? name,
       ),
     );
   }
@@ -82,7 +83,12 @@ final class PluginSystem {
         ?.getScript(location.id);
     if (data == null) return null;
     try {
-      return await registerLuauPlugin(name, data, location: location);
+      return await registerLuauPlugin(
+        name,
+        data,
+        location: location,
+        storageKey: location.namespace,
+      );
     } catch (error, stackTrace) {
       Error.throwWithStackTrace(
         Exception('Error loading Luau script "$location": $error'),
@@ -270,7 +276,7 @@ final class RustSetonixPlugin extends SetonixPlugin {
           StateFieldAccess.tableName => jsonEncode(state.tableName),
           StateFieldAccess.players => jsonEncode(server.players),
           StateFieldAccess.teamMembers => jsonEncode(state.teamMembers),
-          StateFieldAccess.game => jsonEncode(location?.namespace ?? 'unknown'),
+          StateFieldAccess.game => jsonEncode(location?.id ?? 'unknown'),
           StateFieldAccess.namespace => jsonEncode(
             location?.namespace ?? 'unknown',
           ),

@@ -7,6 +7,13 @@ use crate::api::plugin::{PluginCallback, StateFieldAccess};
 
 pub(crate) struct LuauStateUserData(pub(crate) PluginCallback);
 
+fn parse_json_string(value: String) -> String {
+    match serde_json::from_str::<String>(&value) {
+        Ok(decoded) => decoded,
+        Err(_) => value,
+    }
+}
+
 impl LuaUserData for LuauStateUserData {
     fn add_fields<F: LuaUserDataFields<Self>>(fields: &mut F) {
         for field in StateFieldAccess::iter() {
@@ -21,21 +28,24 @@ impl LuaUserData for LuauStateUserData {
         }
         fields.add_field_method_get("PluginId", move |lua, this: &LuauStateUserData| {
             let callback = this.0.state_field_access.clone();
-            let namespace_fut = block_on(callback(StateFieldAccess::Namespace));
-            let game_fut = block_on(callback(StateFieldAccess::Game));
-            let plugin_id = format!("{}:{}", namespace_fut, game_fut);
+            let namespace = parse_json_string(block_on(callback(StateFieldAccess::Namespace)));
+            let game = parse_json_string(block_on(callback(StateFieldAccess::Game)));
+            let plugin_id = format!("{}:{}", namespace, game);
             let serialized = lua.to_value(&plugin_id).unwrap();
             Ok(serialized)
         });
     }
 
     fn add_methods<M: LuaUserDataMethods<Self>>(methods: &mut M) {
-        methods.add_method("GetTable", |lua, this: &LuauStateUserData, table_name: Option<String>| {
-            let callback = this.0.table_access.clone();
-            let result = block_on(callback(table_name));
-            let result = serde_json::from_str::<Value>(&result).unwrap();
-            let serialized = lua.to_value(&result).unwrap();
-            Ok(serialized)
-        });
+        methods.add_method(
+            "GetTable",
+            |lua, this: &LuauStateUserData, table_name: Option<String>| {
+                let callback = this.0.table_access.clone();
+                let result = block_on(callback(table_name));
+                let result = serde_json::from_str::<Value>(&result).unwrap();
+                let serialized = lua.to_value(&result).unwrap();
+                Ok(serialized)
+            },
+        );
     }
 }
