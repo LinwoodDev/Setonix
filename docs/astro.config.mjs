@@ -39,7 +39,7 @@ export default defineConfig({
         {
           icon: "github",
           label: "GitHub",
-          href: "https://github.com/LinwoodDev/Butterfly",
+          href: "https://github.com/LinwoodDev/Setonix",
         },
       ],
       components: {

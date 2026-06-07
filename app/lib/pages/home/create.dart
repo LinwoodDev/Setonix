@@ -12,7 +12,16 @@ import 'package:setonix_api/setonix_api.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CreateDialog extends StatefulWidget {
-  const CreateDialog({super.key});
+  final PackItem<GameMode>? initialModeTemplate;
+  final bool lockedModeSelection;
+  final bool customOnly;
+
+  const CreateDialog({
+    super.key,
+    this.initialModeTemplate,
+    this.lockedModeSelection = false,
+    this.customOnly = false,
+  });
 
   @override
   State<CreateDialog> createState() => _CreateDialogState();
@@ -46,7 +55,12 @@ class _CreateDialogState extends State<CreateDialog>
     _templateSystem = _fileSystem.templateSystem;
     _templatesStream = ValueConnectableStream(_loadTemplates()).autoConnect();
     _packsFuture = _fileSystem.getPacks();
-    _tabController = TabController(length: 2, vsync: this);
+    _selectedModeTemplate = widget.initialModeTemplate;
+    _tabController = TabController(
+      length: 2,
+      vsync: this,
+      initialIndex: widget.customOnly ? 1 : 0,
+    );
     _customTabController = TabController(length: 2, vsync: this);
   }
 
@@ -74,208 +88,114 @@ class _CreateDialogState extends State<CreateDialog>
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.sizeOf(context).width < LeapBreakpoints.medium;
+    final lockedMode =
+        widget.lockedModeSelection && _selectedModeTemplate != null;
+    final showSelectionPane = !lockedMode;
+    final customOnly = widget.customOnly;
+    final customSelection = Column(
+      children: [
+        TabBar.secondary(
+          tabs: [
+            HorizontalTab(
+              label: Text(AppLocalizations.of(context).packs),
+              icon: const Icon(PhosphorIconsLight.package),
+            ),
+            HorizontalTab(
+              label: Text(AppLocalizations.of(context).configuration),
+              icon: const Icon(PhosphorIconsLight.wrench),
+            ),
+          ],
+          tabAlignment: TabAlignment.center,
+          controller: _customTabController,
+        ),
+        const SizedBox(height: 8),
+        Expanded(
+          child: Material(
+            type: MaterialType.transparency,
+            child: TabBarView(
+              controller: _customTabController,
+              children: [
+                _CustomCreateView(
+                  packsFuture: _packsFuture,
+                  selectedPacksId: _selectedPacks,
+                  onPacksSelected: (value) => setState(() {
+                    _selectedPacks = value;
+                    if (_background != null &&
+                        !_selectedPacks!.contains(_background!.namespace)) {
+                      _background = null;
+                    }
+                    if (_selectedModeTemplate != null &&
+                        !_selectedPacks!.contains(
+                          _selectedModeTemplate!.namespace,
+                        )) {
+                      _selectedModeTemplate = null;
+                    }
+                  }),
+                ),
+                ListView(
+                  children: [
+                    ListTile(
+                      title: Text(AppLocalizations.of(context).background),
+                      subtitle: _background == null
+                          ? null
+                          : Text(_background!.item.name),
+                      onTap: _showBackgroundPicker,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
     final selections = Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        TabBar(
-          controller: _tabController,
-          indicatorSize: TabBarIndicatorSize.tab,
-          tabs: [
-            HorizontalTab(
-              icon: const PhosphorIcon(PhosphorIconsLight.folder),
-              label: Text(AppLocalizations.of(context).templates),
-            ),
-            HorizontalTab(
-              icon: const PhosphorIcon(PhosphorIconsLight.globe),
-              label: Text(AppLocalizations.of(context).custom),
-            ),
-          ],
-        ),
-        const SizedBox(height: 16),
-        Expanded(
-          child: TabBarView(
+        if (!lockedMode && !customOnly) ...[
+          TabBar(
             controller: _tabController,
-            children: [
-              Material(
-                type: MaterialType.transparency,
-                child: StreamBuilder(
-                  stream: _templatesStream,
-                  builder: (context, snapshot) {
-                    final templates = snapshot.data;
-                    if (templates == null) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                    return FutureBuilder(
-                      future: _loadGameModes(),
-                      builder: (context, modesSnapshot) {
-                        if (!modesSnapshot.hasData) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                        final modes = modesSnapshot.data!;
-                        if (templates.isEmpty && modes.isEmpty) {
-                          return Center(
-                            child: Text(
-                              AppLocalizations.of(context).noTemplates,
-                            ),
-                          );
-                        }
-                        return ListView(
-                          children: [
-                            ...templates.map((entry) {
-                              final name = entry.pathWithoutLeadingSlash;
-                              return ListTile(
-                                title: Text(name),
-                                trailing: MenuAnchor(
-                                  builder: defaultMenuButton(),
-                                  menuChildren: [
-                                    MenuItemButton(
-                                      leadingIcon: const Icon(
-                                        PhosphorIconsLight.export,
-                                      ),
-                                      child: Text(
-                                        AppLocalizations.of(context).export,
-                                      ),
-                                      onPressed: () => exportData(
-                                        context,
-                                        entry.data!,
-                                        entry.fileName,
-                                      ),
-                                    ),
-                                    MenuItemButton(
-                                      leadingIcon: const Icon(
-                                        PhosphorIconsLight.trash,
-                                      ),
-                                      child: Text(
-                                        AppLocalizations.of(context).delete,
-                                      ),
-                                      onPressed: () async {
-                                        await _templateSystem.deleteFile(
-                                          entry.path,
-                                        );
-                                        _reloadTemplates();
-                                      },
-                                    ),
-                                  ],
-                                ),
-                                selected:
-                                    _selectedTemplate == name &&
-                                    _selectedModeTemplate == null,
-                                onTap: () => setState(() {
-                                  _selectedTemplate = entry.fileName;
-                                  _selectedModeTemplate = null;
-                                }),
-                              );
-                            }),
-                            ...modes
-                                .sorted(
-                                  (a, b) => _formatModeTemplateLabel(context, a)
-                                      .compareTo(
-                                        _formatModeTemplateLabel(context, b),
-                                      ),
-                                )
-                                .map((entry) {
-                                  final translations = entry.pack
-                                      .getTranslationsStore(
-                                        getLocale: () => Localizations.localeOf(
-                                          context,
-                                        ).languageCode,
-                                      );
-                                  final translation = translations
-                                      .getModeTranslation(entry.id);
-
-                                  return ListTile(
-                                    leading: const PhosphorIcon(
-                                      PhosphorIconsLight.package,
-                                    ),
-                                    title: Text(
-                                      _formatModeTemplateLabel(context, entry),
-                                    ),
-                                    subtitle: Text(
-                                      translation.description ??
-                                          '${entry.namespace}/${entry.id}',
-                                    ),
-                                    selected:
-                                        _selectedModeTemplate?.location ==
-                                            entry.location &&
-                                        _selectedTemplate == null,
-                                    onTap: () => setState(() {
-                                      _selectedModeTemplate = entry;
-                                      _selectedTemplate = null;
-                                    }),
-                                  );
-                                }),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                ),
+            indicatorSize: TabBarIndicatorSize.tab,
+            tabs: [
+              HorizontalTab(
+                icon: const PhosphorIcon(PhosphorIconsLight.gameController),
+                label: Text(AppLocalizations.of(context).start),
               ),
-              Column(
-                children: [
-                  TabBar.secondary(
-                    tabs: [
-                      HorizontalTab(
-                        label: Text(AppLocalizations.of(context).packs),
-                        icon: const Icon(PhosphorIconsLight.package),
-                      ),
-                      HorizontalTab(
-                        label: Text(AppLocalizations.of(context).configuration),
-                        icon: const Icon(PhosphorIconsLight.wrench),
-                      ),
-                    ],
-                    tabAlignment: TabAlignment.center,
-                    controller: _customTabController,
-                  ),
-                  const SizedBox(height: 8),
-                  Expanded(
-                    child: Material(
-                      type: MaterialType.transparency,
-                      child: TabBarView(
-                        controller: _customTabController,
-                        children: [
-                          _CustomCreateView(
-                            packsFuture: _packsFuture,
-                            selectedPacksId: _selectedPacks,
-                            onPacksSelected: (value) => setState(() {
-                              _selectedPacks = value;
-                              if (_background != null &&
-                                  !_selectedPacks!.contains(
-                                    _background!.namespace,
-                                  )) {
-                                _background = null;
-                              }
-                              if (_selectedModeTemplate != null &&
-                                  !_selectedPacks!.contains(
-                                    _selectedModeTemplate!.namespace,
-                                  )) {
-                                _selectedModeTemplate = null;
-                              }
-                            }),
-                          ),
-                          ListView(
-                            children: [
-                              ListTile(
-                                title: Text(
-                                  AppLocalizations.of(context).background,
-                                ),
-                                subtitle: _background == null
-                                    ? null
-                                    : Text(_background!.item.name),
-                                onTap: _showBackgroundPicker,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+              HorizontalTab(
+                icon: const PhosphorIcon(PhosphorIconsLight.globe),
+                label: Text(AppLocalizations.of(context).custom),
               ),
             ],
           ),
+          const SizedBox(height: 16),
+        ],
+        Expanded(
+          child: customOnly
+              ? customSelection
+              : TabBarView(
+                  controller: _tabController,
+                  children: [
+                    _TemplateAndModeCreateView(
+                      templatesStream: _templatesStream,
+                      loadGameModes: _loadGameModes,
+                      selectedTemplate: _selectedTemplate,
+                      selectedModeTemplate: _selectedModeTemplate,
+                      onTemplateSelected: (entry) => setState(() {
+                        _selectedTemplate = entry.fileName;
+                        _selectedModeTemplate = null;
+                      }),
+                      onTemplateDeleted: (entry) async {
+                        await _templateSystem.deleteFile(entry.path);
+                        _reloadTemplates();
+                      },
+                      onModeSelected: (entry) => setState(() {
+                        _selectedModeTemplate = entry;
+                        _selectedTemplate = null;
+                      }),
+                    ),
+                    customSelection,
+                  ],
+                ),
         ),
       ],
     );
@@ -316,33 +236,37 @@ class _CreateDialogState extends State<CreateDialog>
     );
     return ResponsiveAlertDialog(
       title: Text(LeapLocalizations.of(context).create),
-      constraints: const BoxConstraints(
-        maxWidth: LeapBreakpoints.expanded,
+      constraints: BoxConstraints(
+        maxWidth: showSelectionPane
+            ? LeapBreakpoints.expanded
+            : LeapBreakpoints.medium,
         maxHeight: 700,
       ),
       content: Form(
         key: _formKey,
-        child: IndexedStack(
-          index: isMobile ? 0 : 1,
-          key: _pageKey,
-          children: [
-            PageView(
-              controller: _pageController,
-              children: [selections, details],
-              onPageChanged: (value) =>
-                  setState(() => _infoView = value.toInt() == 1),
-            ),
-            Row(
-              children: [
-                Expanded(child: selections),
-                const SizedBox(width: 16),
-                const VerticalDivider(),
-                const SizedBox(width: 16),
-                Expanded(child: details),
-              ],
-            ),
-          ],
-        ),
+        child: showSelectionPane
+            ? IndexedStack(
+                index: isMobile ? 0 : 1,
+                key: _pageKey,
+                children: [
+                  PageView(
+                    controller: _pageController,
+                    children: [selections, details],
+                    onPageChanged: (value) =>
+                        setState(() => _infoView = value.toInt() == 1),
+                  ),
+                  Row(
+                    children: [
+                      Expanded(child: selections),
+                      const SizedBox(width: 16),
+                      const VerticalDivider(),
+                      const SizedBox(width: 16),
+                      Expanded(child: details),
+                    ],
+                  ),
+                ],
+              )
+            : details,
       ),
       headerActions: [
         IconButton(
@@ -358,7 +282,7 @@ class _CreateDialogState extends State<CreateDialog>
           label: Text(AppLocalizations.of(context).cancel),
           icon: const Icon(PhosphorIconsLight.prohibit),
         ),
-        if (isMobile && !_infoView) ...[
+        if (showSelectionPane && isMobile && !_infoView) ...[
           FilledButton.icon(
             icon: const Icon(PhosphorIconsBold.arrowRight),
             label: Text(AppLocalizations.of(context).next),
@@ -368,7 +292,7 @@ class _CreateDialogState extends State<CreateDialog>
             ),
           ),
         ] else ...[
-          if (isMobile)
+          if (showSelectionPane && isMobile)
             ElevatedButton.icon(
               icon: const Icon(PhosphorIconsBold.arrowLeft),
               label: Text(AppLocalizations.of(context).back),
@@ -463,21 +387,6 @@ class _CreateDialogState extends State<CreateDialog>
     );
   }
 
-  String _formatModeTemplateLabel(
-    BuildContext context,
-    PackItem<GameMode> mode,
-  ) {
-    final packName = mode.pack.getMetadata()?.name;
-    final translations = mode.pack.getTranslationsStore(
-      getLocale: () => Localizations.localeOf(context).languageCode,
-    );
-    final modeName = translations.getModeTranslation(mode.id).name;
-    if (packName == null || packName.isEmpty) {
-      return modeName;
-    }
-    return '$packName / $modeName';
-  }
-
   Future<List<PackItem<GameMode>>> _loadGameModes() async {
     final modes = <PackItem<GameMode>>[];
     final packs =
@@ -492,6 +401,151 @@ class _CreateDialogState extends State<CreateDialog>
       );
     }
     return modes;
+  }
+}
+
+class _TemplateAndModeCreateView extends StatelessWidget {
+  final Stream<List<FileSystemFile<SetonixData>>> templatesStream;
+  final Future<List<PackItem<GameMode>>> Function() loadGameModes;
+  final String? selectedTemplate;
+  final PackItem<GameMode>? selectedModeTemplate;
+  final ValueChanged<FileSystemFile<SetonixData>> onTemplateSelected;
+  final Future<void> Function(FileSystemFile<SetonixData> entry)
+  onTemplateDeleted;
+  final ValueChanged<PackItem<GameMode>> onModeSelected;
+
+  const _TemplateAndModeCreateView({
+    required this.templatesStream,
+    required this.loadGameModes,
+    required this.selectedTemplate,
+    required this.selectedModeTemplate,
+    required this.onTemplateSelected,
+    required this.onTemplateDeleted,
+    required this.onModeSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    String modeName(PackItem<GameMode> mode) {
+      final translations = mode.pack.getTranslationsStore(
+        getLocale: () => Localizations.localeOf(context).languageCode,
+      );
+      return translations.getModeTranslation(mode.id).name;
+    }
+
+    String packName(PackItem<GameMode> mode) {
+      final metadata = mode.pack.getMetadata();
+      final name = metadata?.name ?? '';
+      return name.isNotEmpty ? name : mode.namespace;
+    }
+
+    return Material(
+      type: MaterialType.transparency,
+      child: StreamBuilder(
+        stream: templatesStream,
+        builder: (context, snapshot) {
+          final templates = snapshot.data;
+          if (templates == null) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          return FutureBuilder(
+            future: loadGameModes(),
+            builder: (context, modesSnapshot) {
+              if (!modesSnapshot.hasData) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              final modes = modesSnapshot.data!;
+              if (templates.isEmpty && modes.isEmpty) {
+                return Center(
+                  child: Text(AppLocalizations.of(context).noTemplates),
+                );
+              }
+              return ListView(
+                children: [
+                  if (modes.isNotEmpty) ...[
+                    ...modes
+                        .sorted((a, b) => modeName(a).compareTo(modeName(b)))
+                        .map((entry) {
+                          return ListTile(
+                            leading: const Icon(
+                              PhosphorIconsLight.gameController,
+                            ),
+                            title: Text(modeName(entry)),
+                            subtitle: Text(packName(entry)),
+                            selected:
+                                selectedModeTemplate?.location ==
+                                    entry.location &&
+                                selectedTemplate == null,
+                            onTap: () => onModeSelected(entry),
+                          );
+                        }),
+                  ],
+                  if (templates.isNotEmpty) ...[
+                    _CreateSectionHeader(
+                      icon: PhosphorIconsLight.folder,
+                      label: AppLocalizations.of(context).templates,
+                    ),
+                    ...templates.map((entry) {
+                      final name = entry.pathWithoutLeadingSlash;
+                      return ListTile(
+                        leading: const Icon(PhosphorIconsLight.file),
+                        title: Text(name),
+                        trailing: MenuAnchor(
+                          builder: defaultMenuButton(),
+                          menuChildren: [
+                            MenuItemButton(
+                              leadingIcon: const Icon(
+                                PhosphorIconsLight.export,
+                              ),
+                              child: Text(AppLocalizations.of(context).export),
+                              onPressed: () => exportData(
+                                context,
+                                entry.data!,
+                                entry.fileName,
+                              ),
+                            ),
+                            MenuItemButton(
+                              leadingIcon: const Icon(PhosphorIconsLight.trash),
+                              child: Text(AppLocalizations.of(context).delete),
+                              onPressed: () => onTemplateDeleted(entry),
+                            ),
+                          ],
+                        ),
+                        selected:
+                            selectedTemplate == name &&
+                            selectedModeTemplate == null,
+                        onTap: () => onTemplateSelected(entry),
+                      );
+                    }),
+                  ],
+                ],
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _CreateSectionHeader extends StatelessWidget {
+  final IconData icon;
+  final String label;
+
+  const _CreateSectionHeader({required this.icon, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsetsDirectional.fromSTEB(16, 18, 16, 6),
+      child: Row(
+        children: [
+          Icon(icon, size: 18),
+          const SizedBox(width: 8),
+          Text(label, style: Theme.of(context).textTheme.titleSmall),
+        ],
+      ),
+    );
   }
 }
 

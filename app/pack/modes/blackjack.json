@@ -1,3 +1,4 @@
 {
-  "script": "blackjack.luau"
+  "script": "blackjack.luau",
+  "preview": "textures/games/blackjack.png"
 }

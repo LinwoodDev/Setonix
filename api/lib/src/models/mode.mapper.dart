@@ -31,6 +31,12 @@ class GameModeMapper extends ClassMapperBase<GameMode> {
     _$script,
     opt: true,
   );
+  static String? _$preview(GameMode v) => v.preview;
+  static const Field<GameMode, String> _f$preview = Field(
+    'preview',
+    _$preview,
+    opt: true,
+  );
   static Map<String, GameTable> _$tables(GameMode v) => v.tables;
   static const Field<GameMode, Map<String, GameTable>> _f$tables = Field(
     'tables',
@@ -49,6 +55,7 @@ class GameModeMapper extends ClassMapperBase<GameMode> {
   @override
   final MappableFields<GameMode> fields = const {
     #script: _f$script,
+    #preview: _f$preview,
     #tables: _f$tables,
     #teams: _f$teams,
   };
@@ -56,6 +63,7 @@ class GameModeMapper extends ClassMapperBase<GameMode> {
   static GameMode _instantiate(DecodingData data) {
     return GameMode(
       script: data.dec(_f$script),
+      preview: data.dec(_f$preview),
       tables: data.dec(_f$tables),
       teams: data.dec(_f$teams),
     );
@@ -132,6 +140,7 @@ abstract class GameModeCopyWith<$R, $In extends GameMode, $Out>
   get teams;
   $R call({
     String? script,
+    String? preview,
     Map<String, GameTable>? tables,
     Map<String, GameTeam>? teams,
   });
@@ -169,11 +178,13 @@ class _GameModeCopyWithImpl<$R, $Out>
   @override
   $R call({
     Object? script = $none,
+    Object? preview = $none,
     Map<String, GameTable>? tables,
     Map<String, GameTeam>? teams,
   }) => $apply(
     FieldCopyWithData({
       if (script != $none) #script: script,
+      if (preview != $none) #preview: preview,
       if (tables != null) #tables: tables,
       if (teams != null) #teams: teams,
     }),
@@ -181,6 +192,7 @@ class _GameModeCopyWithImpl<$R, $Out>
   @override
   GameMode $make(CopyWithData data) => GameMode(
     script: data.get(#script, or: $value.script),
+    preview: data.get(#preview, or: $value.preview),
     tables: data.get(#tables, or: $value.tables),
     teams: data.get(#teams, or: $value.teams),
   );

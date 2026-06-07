@@ -996,5 +996,6 @@
         }
       }
     }
-  }
+  },
+  "preview": "textures/games/chess.png"
 }

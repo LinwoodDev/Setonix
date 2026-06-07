@@ -1,3 +1,4 @@
+* Redesign home page to be more user friendly and simplify navigating through the views
 * Add state restoration to allow resuming games after app restarts
 * Add game mode groups in play dialog
 * Improve game page title to show the opened game
