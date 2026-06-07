@@ -327,5 +327,13 @@
     "chess": {
       "name": "Chess Board"
     }
+  },
+  "modes": {
+    "chess": {
+      "name": "Chess"
+    },
+    "blackjack": {
+      "name": "Blackjack"
+    }
   }
 }

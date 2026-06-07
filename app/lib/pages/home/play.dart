@@ -25,6 +25,8 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
   late final SetonixFileSystem _fileSystem;
   late Stream<List<FileSystemFile<SetonixData>>> _gamesStream;
   FileSystemFile<SetonixData>? _selected;
+  Future<Map<String, String>>? _modeLabelsFuture;
+  String? _modeLabelsKey;
   bool _isMobileOpen = false;
 
   String _search = '';
@@ -64,6 +66,63 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
         ),
       ),
   ];
+
+  List<_GameModeGroup> _groupGamesByMode(
+    List<FileSystemFile<SetonixData>> games,
+  ) {
+    final groups = <String, _GameModeGroup>{};
+    for (final game in games) {
+      final mode = game.data?.getInfoOrDefault().gameMode;
+      final key = mode?.toString() ?? '';
+      groups
+          .putIfAbsent(key, () => _GameModeGroup(key: key, location: mode))
+          .games
+          .add(game);
+    }
+    return groups.values.toList();
+  }
+
+  Future<Map<String, String>> _loadModeLabels(
+    Iterable<_GameModeGroup> groups,
+    Locale locale,
+  ) async {
+    final labels = <String, String>{};
+    for (final group in groups) {
+      final location = group.location;
+      if (location == null) continue;
+      final pack = await _fileSystem.getPack(location.namespace);
+      final data = pack?.load();
+      final translations = data?.getTranslationsStore(
+        getLocale: () => locale.languageCode,
+      );
+      labels[group.key] =
+          translations?.getModeTranslation(location.id).name ??
+          location.toString();
+    }
+    return labels;
+  }
+
+  Future<Map<String, String>> _getModeLabelsFuture(
+    Iterable<_GameModeGroup> groups,
+    Locale locale,
+  ) {
+    final groupKeys = groups.map((group) => group.key).toList()..sort();
+    final key = '${locale.languageCode}:${groupKeys.join('|')}';
+    if (_modeLabelsKey != key) {
+      _modeLabelsKey = key;
+      _modeLabelsFuture = _loadModeLabels(groups, locale);
+    }
+    return _modeLabelsFuture!;
+  }
+
+  String _modeGroupLabel(
+    BuildContext context,
+    _GameModeGroup group,
+    Map<String, String> labels,
+  ) => group.location == null
+      ? AppLocalizations.of(context).custom
+      : labels[group.key] ?? group.location.toString();
+
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.sizeOf(context).width < LeapBreakpoints.medium;
@@ -184,42 +243,96 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
                   message: AppLocalizations.of(context).noGamesDescription,
                 );
               }
-              return ListView.builder(
-                itemCount: games.length,
-                itemBuilder: (context, index) {
-                  final entry = games[index];
-                  final name = entry.pathWithoutLeadingSlash;
-                  final metadata =
-                      entry.data?.getMetadata() ?? const FileMetadata();
-                  return ListTile(
-                    leading: const Icon(PhosphorIconsLight.diceFive),
-                    title: Text(metadata.name.isEmpty ? name : metadata.name),
-                    subtitle: Text(name),
-                    onTap: () {
-                      setState(() {
-                        _selected = entry;
-                        _isMobileOpen = isMobile;
-                      });
-                      if (isMobile) {
-                        showLeapBottomSheet(
-                          context: context,
-                          titleBuilder: (context) => Text(metadata.name),
-                          childrenBuilder: (context) => [
-                            ..._buildDetailsChildren(metadata),
-                            const SizedBox(height: 16),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: buildPlayButton(entry),
-                            ),
-                          ],
-                        ).then((_) {
-                          if (mounted) setState(() => _isMobileOpen = false);
+              final groups = _groupGamesByMode(games);
+              return FutureBuilder(
+                future: _getModeLabelsFuture(
+                  groups,
+                  Localizations.localeOf(context),
+                ),
+                builder: (context, labelSnapshot) {
+                  final labels = labelSnapshot.data ?? const <String, String>{};
+                  groups.sort((a, b) {
+                    if (a.location == null && b.location != null) return -1;
+                    if (a.location != null && b.location == null) return 1;
+                    return _modeGroupLabel(
+                      context,
+                      a,
+                      labels,
+                    ).compareTo(_modeGroupLabel(context, b, labels));
+                  });
+
+                  return ListView(
+                    children: groups.expand((group) {
+                      final entries = group.games.toList()
+                        ..sort((a, b) {
+                          final aMetadata =
+                              a.data?.getMetadata() ?? const FileMetadata();
+                          final bMetadata =
+                              b.data?.getMetadata() ?? const FileMetadata();
+                          final aName = aMetadata.name.isEmpty
+                              ? a.pathWithoutLeadingSlash
+                              : aMetadata.name;
+                          final bName = bMetadata.name.isEmpty
+                              ? b.pathWithoutLeadingSlash
+                              : bMetadata.name;
+                          return aName.compareTo(bName);
                         });
-                      }
-                    },
-                    selected:
-                        name == _selected?.pathWithoutLeadingSlash &&
-                        (!isMobile || _isMobileOpen),
+
+                      return [
+                        Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                            16,
+                            16,
+                            16,
+                            4,
+                          ),
+                          child: Text(
+                            _modeGroupLabel(context, group, labels),
+                            style: Theme.of(context).textTheme.titleSmall,
+                          ),
+                        ),
+                        ...entries.map((entry) {
+                          final name = entry.pathWithoutLeadingSlash;
+                          final metadata =
+                              entry.data?.getMetadata() ?? const FileMetadata();
+                          return ListTile(
+                            leading: const Icon(PhosphorIconsLight.diceFive),
+                            title: Text(
+                              metadata.name.isEmpty ? name : metadata.name,
+                            ),
+                            subtitle: Text(name),
+                            onTap: () {
+                              setState(() {
+                                _selected = entry;
+                                _isMobileOpen = isMobile;
+                              });
+                              if (isMobile) {
+                                showLeapBottomSheet(
+                                  context: context,
+                                  titleBuilder: (context) =>
+                                      Text(metadata.name),
+                                  childrenBuilder: (context) => [
+                                    ..._buildDetailsChildren(metadata),
+                                    const SizedBox(height: 16),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: buildPlayButton(entry),
+                                    ),
+                                  ],
+                                ).then((_) {
+                                  if (mounted) {
+                                    setState(() => _isMobileOpen = false);
+                                  }
+                                });
+                              }
+                            },
+                            selected:
+                                name == _selected?.pathWithoutLeadingSlash &&
+                                (!isMobile || _isMobileOpen),
+                          );
+                        }),
+                      ];
+                    }).toList(),
                   );
                 },
               );
@@ -299,6 +412,14 @@ class _PlayDialogState extends State<PlayDialog> with TickerProviderStateMixin {
       ),
     );
   }
+}
+
+class _GameModeGroup {
+  final String key;
+  final ItemLocation? location;
+  final List<FileSystemFile<SetonixData>> games = [];
+
+  _GameModeGroup({required this.key, required this.location});
 }
 
 class _FriendlyInfoState extends StatelessWidget {
