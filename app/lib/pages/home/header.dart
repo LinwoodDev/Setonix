@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -26,124 +27,90 @@ class _HeaderHomeViewState extends State<HeaderHomeView> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: LeapBreakpoints.expanded),
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final isDesktop = constraints.maxWidth >= LeapBreakpoints.medium;
-            return FutureBuilder(
-              future: _hasNewerVersionFuture,
-              builder: (context, snapshot) {
-                final hasNewerVersion = snapshot.data ?? true;
-                final actions = Wrap(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isMedium = constraints.maxWidth >= LeapBreakpoints.medium;
+        return FutureBuilder(
+          future: _hasNewerVersionFuture,
+          builder: (context, snapshot) {
+            final hasNewerVersion = snapshot.data ?? false;
+            void openNew() {
+              openReleaseNotes();
+              _settingsCubit.updateLastVersion();
+            }
+
+            final textColumn = Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: isMedium
+                  ? CrossAxisAlignment.start
+                  : CrossAxisAlignment.center,
+              children: [
+                Text(
+                  AppLocalizations.of(context).welcome,
+                  style: Theme.of(context).textTheme.displaySmall,
+                  textAlign: isMedium ? TextAlign.start : TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  AppLocalizations.of(context).homeWelcomeDescription,
+                  style: Theme.of(context).textTheme.titleMedium,
+                  textAlign: isMedium ? TextAlign.start : TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+                Wrap(
                   spacing: 8,
                   runSpacing: 8,
-                  alignment: WrapAlignment.center,
+                  alignment: isMedium
+                      ? WrapAlignment.start
+                      : WrapAlignment.center,
                   children: [
+                    FilledButton.icon(
+                      onPressed: () => context.go('/games'),
+                      icon: const PhosphorIcon(
+                        PhosphorIconsLight.gameController,
+                      ),
+                      label: Text(AppLocalizations.of(context).games),
+                    ),
+                    OutlinedButton.icon(
+                      onPressed: () => context.go('/servers'),
+                      icon: const PhosphorIcon(
+                        PhosphorIconsLight.plugsConnected,
+                      ),
+                      label: Text(AppLocalizations.of(context).servers),
+                    ),
+                    if (hasNewerVersion)
+                      TextButton.icon(
+                        onPressed: openNew,
+                        icon: const PhosphorIcon(PhosphorIconsLight.sparkle),
+                        label: Text(AppLocalizations.of(context).whatsNew),
+                      ),
                     TextButton.icon(
                       onPressed: () => openHelp(['intro']),
                       icon: const PhosphorIcon(PhosphorIconsLight.bookOpen),
                       label: Text(AppLocalizations.of(context).documentation),
                     ),
                   ],
-                );
-                void openNew() {
-                  openReleaseNotes();
-                  _settingsCubit.updateLastVersion();
-                }
-
-                final whatsNew = hasNewerVersion
-                    ? FilledButton.icon(
-                        onPressed: openNew,
-                        icon: const Icon(PhosphorIconsLight.sparkle),
-                        label: Text(AppLocalizations.of(context).whatsNew),
-                      )
-                    : const SizedBox.shrink();
-                final logo = Row(
-                  mainAxisSize: MainAxisSize.min,
+                ),
+              ],
+            );
+            return Card(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Flex(
+                  direction: isMedium ? Axis.horizontal : Axis.vertical,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset('images/logo.png', width: 64),
-                    const SizedBox(width: 16),
-                    Flexible(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            AppLocalizations.of(context).welcome,
-                            style: TextTheme.of(context).titleLarge,
-                            overflow: TextOverflow.clip,
-                          ),
-                          const SizedBox(height: 6),
-                          Text(
-                            AppLocalizations.of(context).homeWelcomeDescription,
-                            style: TextTheme.of(context).bodyMedium,
-                          ),
-                        ],
-                      ),
-                    ),
+                    Image.asset('images/logo.png', width: isMedium ? 132 : 96),
+                    if (isMedium) const SizedBox(width: 48),
+                    if (!isMedium) const SizedBox(height: 24),
+                    if (isMedium) Flexible(child: textColumn) else textColumn,
                   ],
-                );
-                final innerCard = LayoutBuilder(
-                  builder: (context, constraints) {
-                    final isMobile =
-                        constraints.maxWidth < LeapBreakpoints.compact;
-                    if (isMobile) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          logo,
-                          if (hasNewerVersion) ...[
-                            const SizedBox(height: 18),
-                            whatsNew,
-                          ],
-                        ],
-                      );
-                    }
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(child: logo),
-                        if (hasNewerVersion) ...[
-                          const SizedBox(width: 24),
-                          whatsNew,
-                        ],
-                      ],
-                    );
-                  },
-                );
-                final card = Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: innerCard,
-                  ),
-                );
-                final child = isDesktop
-                    ? Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(child: card),
-                          const SizedBox(width: 24),
-                          actions,
-                        ],
-                      )
-                    : Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [card, const SizedBox(height: 20), actions],
-                      );
-                return Column(
-                  children: [
-                    const SizedBox(height: 64),
-                    child,
-                    const SizedBox(height: 48),
-                  ],
-                );
-              },
+                ),
+              ),
             );
           },
-        ),
-      ),
+        );
+      },
     );
   }
 }

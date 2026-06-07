@@ -136,7 +136,7 @@ class SetonixApp extends StatelessWidget {
     routes: <RouteBase>[
       GoRoute(
         path: '/',
-        builder: (context, state) => HomePage(),
+        builder: (context, state) => const HomePage(),
         routes: [
           GoRoute(
             name: 'game',
@@ -204,6 +204,14 @@ class SetonixApp extends StatelessWidget {
           ),
         ],
       ),
+      ...HomeView.values
+          .where((view) => view != HomeView.home)
+          .map(
+            (view) => GoRoute(
+              path: view.location,
+              builder: (context, state) => HomePage(view: view),
+            ),
+          ),
     ],
   );
 }
