@@ -77,7 +77,7 @@ final class RecentGameEntry with RecentGameEntryMappable {
     required this.lastPlayed,
   });
 
-  bool get isMultiplayer => location.hasScheme;
+  bool get isMultiplayer => location.hasScheme && !location.isScheme('file');
 }
 
 const kRecentHistorySize = 10;

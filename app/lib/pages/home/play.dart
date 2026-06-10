@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -12,6 +10,7 @@ import 'package:setonix/api/save.dart';
 import 'package:setonix/pages/home/create.dart';
 import 'package:setonix/services/file_system.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
+import 'package:setonix/widgets/game_mode.dart';
 import 'package:setonix_api/setonix_api.dart';
 
 class PlayDialog extends StatelessWidget {
@@ -93,15 +92,6 @@ class _PlayViewState extends State<PlayView> {
       ? AppLocalizations.of(context).sandbox
       : _modeLabel(context, choice.mode!);
 
-  Uint8List? _modePreview(PackItem<GameMode> mode) {
-    final preview = mode.item.preview;
-    if (preview == null || preview.isEmpty) return null;
-    final path = preview.startsWith('$kPackTexturesPath/')
-        ? preview.substring(kPackTexturesPath.length + 1)
-        : preview;
-    return mode.pack.getTexture(path);
-  }
-
   bool _matchesMode(FileSystemFile<SetonixData> game) {
     final gameMode = game.data?.getInfoOrDefault().gameMode;
     return gameMode?.toString() == (_selectedMode?.key ?? '');
@@ -177,8 +167,6 @@ class _PlayViewState extends State<PlayView> {
                   key: const ValueKey('modes'),
                   choices: choices,
                   labelBuilder: (choice) => _choiceLabel(context, choice),
-                  previewBuilder: (choice) =>
-                      choice.mode == null ? null : _modePreview(choice.mode!),
                   onCreate: () => _createGame(full: true),
                   onSelected: (choice) => setState(() {
                     _selectedMode = choice;
@@ -210,7 +198,6 @@ class _PlayViewState extends State<PlayView> {
 class _ModePickerView extends StatelessWidget {
   final List<_GameModeChoice> choices;
   final String Function(_GameModeChoice choice) labelBuilder;
-  final Uint8List? Function(_GameModeChoice choice) previewBuilder;
   final VoidCallback onCreate;
   final ValueChanged<_GameModeChoice> onSelected;
 
@@ -218,7 +205,6 @@ class _ModePickerView extends StatelessWidget {
     super.key,
     required this.choices,
     required this.labelBuilder,
-    required this.previewBuilder,
     required this.onCreate,
     required this.onSelected,
   });
@@ -227,13 +213,6 @@ class _ModePickerView extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final columns = constraints.maxWidth < 500
-            ? 1
-            : constraints.maxWidth >= LeapBreakpoints.expanded
-            ? 4
-            : constraints.maxWidth >= LeapBreakpoints.medium
-            ? 3
-            : 2;
         return CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
@@ -256,18 +235,18 @@ class _ModePickerView extends StatelessWidget {
             ),
             SliverGrid.builder(
               itemCount: choices.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: columns,
-                crossAxisSpacing: 14,
-                mainAxisSpacing: 14,
-                childAspectRatio: 1.32,
+              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 300,
+                mainAxisSpacing: 4,
+                crossAxisSpacing: 4,
+                childAspectRatio: 9 / 8,
               ),
               itemBuilder: (context, index) {
                 final choice = choices[index];
-                return _ModeTile(
+                return GameModeTile(
                   sandbox: choice.mode == null,
                   label: labelBuilder(choice),
-                  preview: previewBuilder(choice),
+                  mode: choice.mode,
                   onTap: () => onSelected(choice),
                 );
               },
@@ -417,106 +396,6 @@ class _GamesHeader extends StatelessWidget {
         const SizedBox(width: 16),
         Wrap(spacing: 8, runSpacing: 8, children: actions),
       ],
-    );
-  }
-}
-
-class _ModeTile extends StatelessWidget {
-  final bool sandbox;
-  final String label;
-  final Uint8List? preview;
-  final VoidCallback onTap;
-
-  const _ModeTile({
-    this.sandbox = false,
-    required this.label,
-    required this.preview,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onTap,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            sandbox
-                ? const _SandboxCover()
-                : _PixelArtCover(
-                    bytes: preview,
-                    fallbackIcon: PhosphorIconsLight.paintBrushBroad,
-                  ),
-            Padding(
-              padding: const EdgeInsets.all(14),
-              child: Text(
-                label,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _SandboxCover extends StatelessWidget {
-  const _SandboxCover();
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = ColorScheme.of(context);
-    return AspectRatio(
-      aspectRatio: 16 / 9,
-      child: ColoredBox(
-        color: scheme.primaryContainer,
-        child: Center(
-          child: Container(
-            width: 72,
-            height: 72,
-            decoration: BoxDecoration(
-              color: scheme.primary,
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              PhosphorIconsFill.cubeTransparent,
-              size: 38,
-              color: scheme.onPrimary,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _PixelArtCover extends StatelessWidget {
-  final Uint8List? bytes;
-  final IconData fallbackIcon;
-
-  const _PixelArtCover({required this.bytes, required this.fallbackIcon});
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = ColorScheme.of(context);
-    return AspectRatio(
-      aspectRatio: 16 / 9,
-      child: ColoredBox(
-        color: scheme.surfaceContainerHighest,
-        child: bytes == null
-            ? Center(child: Icon(fallbackIcon, size: 44))
-            : Image.memory(
-                bytes!,
-                fit: BoxFit.contain,
-                filterQuality: FilterQuality.none,
-                isAntiAlias: false,
-              ),
-      ),
     );
   }
 }

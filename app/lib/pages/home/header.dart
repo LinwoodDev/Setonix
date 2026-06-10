@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:setonix/api/open.dart';
 import 'package:setonix/bloc/settings.dart';
+import 'package:setonix/pages/home/connect.dart';
+import 'package:setonix/pages/home/create.dart';
 
 class HeaderHomeView extends StatefulWidget {
   const HeaderHomeView({super.key});
@@ -39,6 +40,20 @@ class _HeaderHomeViewState extends State<HeaderHomeView> {
               _settingsCubit.updateLastVersion();
             }
 
+            void createGame() {
+              showDialog<bool>(
+                context: context,
+                builder: (context) => const CreateDialog(),
+              );
+            }
+
+            void joinGame() {
+              showDialog<void>(
+                context: context,
+                builder: (context) => const ServersDialog(),
+              );
+            }
+
             final textColumn = Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: isMedium
@@ -57,6 +72,12 @@ class _HeaderHomeViewState extends State<HeaderHomeView> {
                   textAlign: isMedium ? TextAlign.start : TextAlign.center,
                 ),
                 const SizedBox(height: 24),
+                Text(
+                  AppLocalizations.of(context).homeActionPrompt,
+                  style: Theme.of(context).textTheme.titleMedium,
+                  textAlign: isMedium ? TextAlign.start : TextAlign.center,
+                ),
+                const SizedBox(height: 12),
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
@@ -65,18 +86,16 @@ class _HeaderHomeViewState extends State<HeaderHomeView> {
                       : WrapAlignment.center,
                   children: [
                     FilledButton.icon(
-                      onPressed: () => context.go('/games'),
-                      icon: const PhosphorIcon(
-                        PhosphorIconsLight.gameController,
-                      ),
-                      label: Text(AppLocalizations.of(context).games),
+                      onPressed: createGame,
+                      icon: const PhosphorIcon(PhosphorIconsLight.plusCircle),
+                      label: Text(LeapLocalizations.of(context).create),
                     ),
                     OutlinedButton.icon(
-                      onPressed: () => context.go('/servers'),
+                      onPressed: joinGame,
                       icon: const PhosphorIcon(
                         PhosphorIconsLight.plugsConnected,
                       ),
-                      label: Text(AppLocalizations.of(context).servers),
+                      label: Text(AppLocalizations.of(context).multiplayer),
                     ),
                     if (hasNewerVersion)
                       TextButton.icon(
