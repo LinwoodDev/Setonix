@@ -1,7 +1,13 @@
 import { z } from 'astro/zod'
 
+const ThumbnailPath = z.union([
+  z.url(),
+  z.string().regex(/^\/thumbnails\/.+/, "Expected a /thumbnails/ asset path"),
+]);
+
 export const ServerObject = z.object({
-  address: z.string().url(),
+  address: z.url(),
+  thumbnail: ThumbnailPath.optional(),
   secure: z.boolean().optional(),
   highlighted: z.boolean().optional(),
   remote: z.boolean().optional(),

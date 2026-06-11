@@ -4,6 +4,8 @@
 * Add world close event to allow cleaning up resources when a game is closed
 * Add save event to allow scripts to save game data when the game is saved
 * Add server thumbnails to public and in-app server lists
+* Add optional server list thumbnail overrides
+* Add bundled server list thumbnail asset path
 * Improve game page title to show the opened game
 * Improve Luau script error messages with game mode and script context
 * Improve app and server security checks

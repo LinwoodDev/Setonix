@@ -144,6 +144,9 @@ class NetworkService {
   }
 
   Future<Uint8List?> fetchThumbnail(GameServer server) async {
+    if (server is ListGameServer && server.thumbnail.isNotEmpty) {
+      return fetchThumbnailUrl(Uri.parse(server.thumbnail));
+    }
     try {
       final client = http.Client();
       try {
@@ -155,6 +158,37 @@ class NetworkService {
             webSockets: false,
           ),
         )..headers['X-Setonix-Method'] = kThumbnailMethod;
+        final response = await client.send(request);
+        if (response.statusCode != HttpStatus.ok) return null;
+        final contentType = response.headers[HttpHeaders.contentTypeHeader]
+            ?.split(';')
+            .first;
+        if (!kAllowedThumbnailContentTypes.contains(contentType)) return null;
+        final contentLength = response.contentLength;
+        if (contentLength != null && contentLength > kMaxThumbnailSize) {
+          return null;
+        }
+        final builder = BytesBuilder(copy: false);
+        var length = 0;
+        await for (final chunk in response.stream) {
+          length += chunk.length;
+          if (length > kMaxThumbnailSize) return null;
+          builder.add(chunk);
+        }
+        return builder.takeBytes();
+      } finally {
+        client.close();
+      }
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<Uint8List?> fetchThumbnailUrl(Uri uri) async {
+    try {
+      final client = http.Client();
+      try {
+        final request = http.Request('GET', uri);
         final response = await client.send(request);
         if (response.statusCode != HttpStatus.ok) return null;
         final contentType = response.headers[HttpHeaders.contentTypeHeader]

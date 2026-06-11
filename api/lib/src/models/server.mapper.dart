@@ -238,6 +238,13 @@ class ListGameServerMapper extends ClassMapperBase<ListGameServer> {
     opt: true,
     def: '',
   );
+  static String _$thumbnail(ListGameServer v) => v.thumbnail;
+  static const Field<ListGameServer, String> _f$thumbnail = Field(
+    'thumbnail',
+    _$thumbnail,
+    opt: true,
+    def: '',
+  );
   static String _$address(ListGameServer v) => v.address;
   static const Field<ListGameServer, String> _f$address = Field(
     'address',
@@ -261,6 +268,7 @@ class ListGameServerMapper extends ClassMapperBase<ListGameServer> {
   @override
   final MappableFields<ListGameServer> fields = const {
     #name: _f$name,
+    #thumbnail: _f$thumbnail,
     #address: _f$address,
     #secure: _f$secure,
     #highlighted: _f$highlighted,
@@ -269,6 +277,7 @@ class ListGameServerMapper extends ClassMapperBase<ListGameServer> {
   static ListGameServer _instantiate(DecodingData data) {
     return ListGameServer(
       name: data.dec(_f$name),
+      thumbnail: data.dec(_f$thumbnail),
       address: data.dec(_f$address),
       secure: data.dec(_f$secure),
       highlighted: data.dec(_f$highlighted),
@@ -341,7 +350,13 @@ extension ListGameServerValueCopy<$R, $Out>
 abstract class ListGameServerCopyWith<$R, $In extends ListGameServer, $Out>
     implements GameServerCopyWith<$R, $In, $Out> {
   @override
-  $R call({String? name, String? address, bool? secure, bool? highlighted});
+  $R call({
+    String? name,
+    String? thumbnail,
+    String? address,
+    bool? secure,
+    bool? highlighted,
+  });
   ListGameServerCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -357,18 +372,25 @@ class _ListGameServerCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ListGameServer> $mapper =
       ListGameServerMapper.ensureInitialized();
   @override
-  $R call({String? name, String? address, bool? secure, bool? highlighted}) =>
-      $apply(
-        FieldCopyWithData({
-          if (name != null) #name: name,
-          if (address != null) #address: address,
-          if (secure != null) #secure: secure,
-          if (highlighted != null) #highlighted: highlighted,
-        }),
-      );
+  $R call({
+    String? name,
+    String? thumbnail,
+    String? address,
+    bool? secure,
+    bool? highlighted,
+  }) => $apply(
+    FieldCopyWithData({
+      if (name != null) #name: name,
+      if (thumbnail != null) #thumbnail: thumbnail,
+      if (address != null) #address: address,
+      if (secure != null) #secure: secure,
+      if (highlighted != null) #highlighted: highlighted,
+    }),
+  );
   @override
   ListGameServer $make(CopyWithData data) => ListGameServer(
     name: data.get(#name, or: $value.name),
+    thumbnail: data.get(#thumbnail, or: $value.thumbnail),
     address: data.get(#address, or: $value.address),
     secure: data.get(#secure, or: $value.secure),
     highlighted: data.get(#highlighted, or: $value.highlighted),
@@ -403,6 +425,13 @@ class BrowsedGameServerMapper extends ClassMapperBase<BrowsedGameServer> {
     opt: true,
     def: '',
   );
+  static String _$thumbnail(BrowsedGameServer v) => v.thumbnail;
+  static const Field<BrowsedGameServer, String> _f$thumbnail = Field(
+    'thumbnail',
+    _$thumbnail,
+    opt: true,
+    def: '',
+  );
   static String _$address(BrowsedGameServer v) => v.address;
   static const Field<BrowsedGameServer, String> _f$address = Field(
     'address',
@@ -426,6 +455,7 @@ class BrowsedGameServerMapper extends ClassMapperBase<BrowsedGameServer> {
   @override
   final MappableFields<BrowsedGameServer> fields = const {
     #name: _f$name,
+    #thumbnail: _f$thumbnail,
     #address: _f$address,
     #secure: _f$secure,
     #highlighted: _f$highlighted,
@@ -434,6 +464,7 @@ class BrowsedGameServerMapper extends ClassMapperBase<BrowsedGameServer> {
   static BrowsedGameServer _instantiate(DecodingData data) {
     return BrowsedGameServer(
       name: data.dec(_f$name),
+      thumbnail: data.dec(_f$thumbnail),
       address: data.dec(_f$address),
       secure: data.dec(_f$secure),
       highlighted: data.dec(_f$highlighted),
@@ -515,7 +546,13 @@ abstract class BrowsedGameServerCopyWith<
 >
     implements ListGameServerCopyWith<$R, $In, $Out> {
   @override
-  $R call({String? name, String? address, bool? secure, bool? highlighted});
+  $R call({
+    String? name,
+    String? thumbnail,
+    String? address,
+    bool? secure,
+    bool? highlighted,
+  });
   BrowsedGameServerCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -531,18 +568,25 @@ class _BrowsedGameServerCopyWithImpl<$R, $Out>
   late final ClassMapperBase<BrowsedGameServer> $mapper =
       BrowsedGameServerMapper.ensureInitialized();
   @override
-  $R call({String? name, String? address, bool? secure, bool? highlighted}) =>
-      $apply(
-        FieldCopyWithData({
-          if (name != null) #name: name,
-          if (address != null) #address: address,
-          if (secure != null) #secure: secure,
-          if (highlighted != null) #highlighted: highlighted,
-        }),
-      );
+  $R call({
+    String? name,
+    String? thumbnail,
+    String? address,
+    bool? secure,
+    bool? highlighted,
+  }) => $apply(
+    FieldCopyWithData({
+      if (name != null) #name: name,
+      if (thumbnail != null) #thumbnail: thumbnail,
+      if (address != null) #address: address,
+      if (secure != null) #secure: secure,
+      if (highlighted != null) #highlighted: highlighted,
+    }),
+  );
   @override
   BrowsedGameServer $make(CopyWithData data) => BrowsedGameServer(
     name: data.get(#name, or: $value.name),
+    thumbnail: data.get(#thumbnail, or: $value.thumbnail),
     address: data.get(#address, or: $value.address),
     secure: data.get(#secure, or: $value.secure),
     highlighted: data.get(#highlighted, or: $value.highlighted),

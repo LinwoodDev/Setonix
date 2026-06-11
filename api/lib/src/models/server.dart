@@ -24,10 +24,12 @@ final class LanGameServer extends GameServer with LanGameServerMappable {
 @MappableClass()
 final class ListGameServer extends GameServer with ListGameServerMappable {
   final String name;
+  final String thumbnail;
   final bool highlighted;
 
   ListGameServer({
     this.name = '',
+    this.thumbnail = '',
     required super.address,
     super.secure = true,
     this.highlighted = false,
@@ -45,6 +47,7 @@ final class BrowsedGameServer extends ListGameServer
     with BrowsedGameServerMappable {
   BrowsedGameServer({
     super.name = '',
+    super.thumbnail = '',
     required super.address,
     super.secure = true,
     super.highlighted = false,

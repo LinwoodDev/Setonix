@@ -218,7 +218,7 @@ class _ServersViewState extends State<ServersView> {
       dimension: size,
       child: const Icon(PhosphorIconsLight.puzzlePiece),
     );
-    if (property?.hasThumbnail != true) return fallback();
+    if (!_hasThumbnail(server, property)) return fallback();
     final thumbnail = _thumbnails.putIfAbsent(
       server,
       () => context.read<NetworkService>().fetchThumbnail(server),
@@ -242,13 +242,17 @@ class _ServersViewState extends State<ServersView> {
     );
   }
 
+  bool _hasThumbnail(GameServer server, GameProperty? property) =>
+      server is ListGameServer && server.thumbnail.isNotEmpty ||
+      property?.hasThumbnail == true;
+
   Widget _buildLeading(
     BuildContext context,
     GameServer server,
     GameProperty? property,
     bool highlighted,
   ) {
-    if (property?.hasThumbnail == true) {
+    if (_hasThumbnail(server, property)) {
       return _buildThumbnail(server, property);
     }
     final primaryColor = ColorScheme.of(context).primary;
@@ -495,8 +499,10 @@ class _ServersViewState extends State<ServersView> {
                                       titleBuilder: (context) =>
                                           _buildTitle(context, current),
                                       actionsBuilder: (context) => [
-                                        if (entry.value?.hasThumbnail ==
-                                            true) ...[
+                                        if (_hasThumbnail(
+                                          current,
+                                          entry.value,
+                                        )) ...[
                                           _buildThumbnail(
                                             current,
                                             entry.value,
@@ -614,7 +620,10 @@ class _ServersViewState extends State<ServersView> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              if (property.hasThumbnail) ...[
+                                              if (_hasThumbnail(
+                                                server,
+                                                property,
+                                              )) ...[
                                                 _buildThumbnail(
                                                   server,
                                                   property,

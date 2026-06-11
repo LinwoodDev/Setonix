@@ -31,9 +31,11 @@ const playerText = serverStatus
   ? serverStatus.currentPlayers +
     (serverStatus.maxPlayers == null ? "" : `/${serverStatus.maxPlayers}`)
   : undefined;
-const thumbnail = serverStatus?.hasThumbnail
-  ? `/thumbnail?address=${encodeURIComponent(server.address)}&secure=${encodeURIComponent(isSecure)}`
-  : undefined;
+const thumbnail =
+  server.thumbnail ||
+  (serverStatus?.hasThumbnail
+    ? `/thumbnail?address=${encodeURIComponent(server.address)}&secure=${encodeURIComponent(isSecure)}`
+    : undefined);
 ---
 
 <li role="listitem">
