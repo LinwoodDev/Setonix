@@ -1,4 +1,4 @@
-import { z } from "astro:content";
+import { z } from 'astro/zod'
 
 export const ServerObject = z.object({
   address: z.string().url(),
@@ -10,7 +10,8 @@ export const ServerObject = z.object({
 export type Server = z.infer<typeof ServerObject>;
 
 export function buildServerURL(server: Server, webSocket?: boolean): string {
-  const protocol = (webSocket ? "ws": "http") + (server.secure ? "s" : "");
+  const isSecure = server.secure !== false;
+  const protocol = (webSocket ? "ws": "http") + (isSecure ? "s" : "");
   const [hostPort, ...segments] = server.address.split("/");
   const path = segments.length ? `/${segments.join("/")}` : "";
   const hostWithPort = hostPort.includes(":") ? hostPort : `${hostPort}:28006`;

@@ -82,7 +82,7 @@ class _PlayViewState extends State<PlayView> {
   }
 
   String _choiceLabel(BuildContext context, _GameModeChoice choice) =>
-      getGameModeOrSandboxLabel(context, choice.mode);
+      getGameModeLabel(context, choice.mode);
 
   bool _matchesMode(FileSystemFile<SetonixData> game) {
     final gameMode = game.data?.getInfoOrDefault().gameMode;

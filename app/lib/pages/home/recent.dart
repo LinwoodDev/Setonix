@@ -163,7 +163,7 @@ class _RecentHomeViewState extends State<RecentHomeView> {
                               label: details[index].entry.name,
                               subtitle: details[index].entry.isMultiplayer
                                   ? AppLocalizations.of(context).multiplayer
-                                  : getGameModeOrSandboxLabel(
+                                  : getGameModeLabel(
                                       context,
                                       details[index].mode,
                                     ),

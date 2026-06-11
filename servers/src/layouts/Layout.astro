@@ -1,24 +1,32 @@
 ---
 import '@linwooddev/style/css/main.css';
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const {
+	title = "Setonix Servers",
+	description = "Find public Setonix servers, inspect their status, and jump straight into a multiplayer table.",
+} = Astro.props;
 ---
+
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="description" content={description} />
+		<meta name="theme-color" content="#151b2d" />
+		<meta name="generator" content={Astro.generator} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:type" content="website" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<title>Setonix Serverlist</title>
+		<title>{title}</title>
 	</head>
 	<body>
 		<slot />
 	</body>
 </html>
-
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>

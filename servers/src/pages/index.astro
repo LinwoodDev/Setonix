@@ -1,7 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { loadServersFromConfig } from "../scripts/servers/list";
-import ServerEntry from "../components/ServerEntry.astro";
 import LoadingServerEntry from "../components/LoadingServerEntry.astro";
 
 const servers = await loadServersFromConfig();
@@ -9,27 +8,56 @@ const servers = await loadServersFromConfig();
 
 <Layout>
   <header class="navbar-lg sticky">
-    <span class="navbar-title">Setonix Servers</span>
-    <nav class="navbar-items">
-      <a class="btn secondary" href="https://setonix.linwood.dev">Docs</a>
+    <a class="navbar-title no-decoration" href="/" data-astro-prefetch>
+      <span>Setonix Servers</span>
+    </a>
+    <nav class="navbar-items gap-xs" aria-label="Primary navigation">
+      <a class="btn secondary" href="/data.json" data-astro-prefetch="tap">JSON</a>
       <div class="h-divider"></div>
-      <a class="btn secondary" href="https://github.com/LinwoodDev/Setonix"
-        >GitHub</a
-      >
+      <a class="btn secondary" href="https://setonix.linwood.dev">Docs</a>
+      <a class="btn secondary" href="https://github.com/LinwoodDev/Setonix">
+        GitHub
+      </a>
     </nav>
   </header>
-  <div class="container-lg">
-    <div class="big-section">
-      <h2>Server List</h2>
-    </div>
-    <div class="big-section">
-      <ul class="col justify-center wrap gap-sm">
+
+  <main>
+    <section class="hero container-lg" aria-labelledby="hero-title">
+      <h1 id="hero-title" class="hero-title">Setonix Servers</h1>
+      <p class="hero-description">
+        Find a Setonix table that is ready to play.
+      </p>
+      <div class="row wrap gap-sm">
+        <a class="btn primary" href="#servers">Browse servers</a>
+        <a class="btn secondary" href="https://setonix.linwood.dev/docs/v1/server">
+          Host your own
+        </a>
+      </div>
+    </section>
+
+    <section class="container-lg" id="servers" aria-labelledby="servers-title">
+      <div class="big-section">
+        <h2 id="servers-title">Server List</h2>
+      </div>
+
+      <div class="big-section">
         {
-          servers.map((e) => (
-            <LoadingServerEntry server={e} />
-          ))
+          servers.length === 0 ? (
+            <div class="card fill">
+              <h3>No servers configured</h3>
+              <p>Add entries to <code>src/data/servers.json</code> or configure remote URLs.</p>
+            </div>
+          ) : (
+            <ul class="col justify-center wrap gap-sm" aria-label="Available Setonix servers">
+              {
+                servers.map((server) => (
+                  <LoadingServerEntry server={server} />
+                ))
+              }
+            </ul>
+          )
         }
-      </ul>
-    </div>
-  </div>
+      </div>
+    </section>
+  </main>
 </Layout>

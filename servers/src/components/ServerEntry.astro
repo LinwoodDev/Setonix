@@ -14,14 +14,20 @@ if (Astro.props.serverStatus) {
 }
 
 function buildJoinURL(): string {
-  return `https://launch.setonix.linwood.dev/connect?address=${encodeURIComponent(server.address)}&secure=${encodeURIComponent(server.secure ?? 'true')}`;
+  return `https://launch.setonix.linwood.dev/connect?address=${encodeURIComponent(server.address)}&secure=${encodeURIComponent(server.secure !== false)}`;
 }
 
-const secureLabel = server.secure ? "Secure server" : "Unsecure server";
-const playerText = serverStatus == null
-  ? "Offline"
-  : serverStatus.currentPlayers +
-    (serverStatus.maxPlayers == null ? "" : `/${serverStatus.maxPlayers}`);
+const isSecure = server.secure !== false;
+const secureLabel = isSecure ? "Secure server" : "Unsecure server";
+const statusLabel = serverStatus === undefined
+  ? "Checking"
+  : serverStatus === null
+    ? "Offline"
+    : "Online";
+const playerText = serverStatus
+  ? serverStatus.currentPlayers +
+    (serverStatus.maxPlayers == null ? "" : `/${serverStatus.maxPlayers}`)
+  : undefined;
 ---
 
 <li role="listitem">
@@ -34,12 +40,15 @@ const playerText = serverStatus == null
     href={buildJoinURL()}
     target="_blank"
     rel="noopener"
-    aria-label={`Connect to ${server.address} (${secureLabel})`}
+    aria-label={`Connect to ${server.address}. ${statusLabel}. ${secureLabel}.`}
   >
     <div class="row gap-xs justify-between align-start">
       <p class="h3">{server.address}</p>
-      <div class="row gap-xs align-center" aria-live="polite">
-        {serverStatus !== undefined && (
+      <div class="row gap-xs align-center wrap justify-end" aria-live="polite">
+        <p class:list={["bold", "m-none", serverStatus ? "primary" : "text"]}>
+          {statusLabel}
+        </p>
+        {playerText && (
           <p class="bold m-none">
             {playerText}
           </p>
@@ -49,7 +58,7 @@ const playerText = serverStatus == null
           aria-label={secureLabel}
           title={secureLabel}
         >
-          {server.secure ? "🔒" : "🔓"}
+          {isSecure ? "🔒" : "🔓"}
         </span>
       </div>
     </div>
@@ -59,5 +68,9 @@ const playerText = serverStatus == null
         ? "Loading…"
         : serverStatus?.description || "No description available."}
     </p>
+    <div class="row gap-xs wrap">
+      {server.highlighted && <span class="highlight">Highlighted</span>}
+      {server.remote && <span class="text">Remote source</span>}
+    </div>
   </a>
 </li>
