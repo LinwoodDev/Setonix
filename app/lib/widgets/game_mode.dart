@@ -120,6 +120,7 @@ class _MultiplayerThumbnail extends StatelessWidget {
 class GameModeTile extends StatelessWidget {
   final bool sandbox, multiplayer;
   final String label;
+  final String? subtitle;
   final PackItem<GameMode>? mode;
   final VoidCallback onTap;
 
@@ -128,6 +129,7 @@ class GameModeTile extends StatelessWidget {
     this.sandbox = false,
     this.multiplayer = false,
     required this.label,
+    this.subtitle,
     required this.mode,
     required this.onTap,
   });
@@ -144,11 +146,26 @@ class GameModeTile extends StatelessWidget {
             GameModeThumbnail(mode: mode, sandbox: sandbox),
             Padding(
               padding: const EdgeInsets.all(14),
-              child: Text(
-                label,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.titleMedium,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                spacing: 2,
+                children: [
+                  Text(
+                    label,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextTheme.of(context).titleMedium,
+                  ),
+                  if (subtitle != null) ...[
+                    Text(
+                      subtitle!,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextTheme.of(context).bodySmall,
+                    ),
+                  ],
+                ],
               ),
             ),
           ],

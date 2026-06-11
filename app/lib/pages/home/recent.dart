@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lw_file_system/lw_file_system.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:setonix/bloc/settings.dart';
+import 'package:setonix/helpers/game_mode.dart';
 import 'package:setonix/services/file_system.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:setonix/widgets/game_mode.dart';
@@ -160,6 +161,12 @@ class _RecentHomeViewState extends State<RecentHomeView> {
                                 ),
                             itemBuilder: (context, index) => GameModeTile(
                               label: details[index].entry.name,
+                              subtitle: details[index].entry.isMultiplayer
+                                  ? AppLocalizations.of(context).multiplayer
+                                  : getGameModeOrSandboxLabel(
+                                      context,
+                                      details[index].mode,
+                                    ),
                               mode: details[index].mode,
                               multiplayer: details[index].entry.isMultiplayer,
                               sandbox: details[index].mode == null,

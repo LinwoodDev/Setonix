@@ -7,6 +7,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:setonix/api/open.dart';
 import 'package:setonix/api/save.dart';
+import 'package:setonix/helpers/game_mode.dart';
 import 'package:setonix/pages/home/create.dart';
 import 'package:setonix/services/file_system.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
@@ -80,17 +81,8 @@ class _PlayViewState extends State<PlayView> {
     return modes;
   }
 
-  String _modeLabel(BuildContext context, PackItem<GameMode> mode) {
-    final translations = mode.pack.getTranslationsStore(
-      getLocale: () => Localizations.localeOf(context).languageCode,
-    );
-    return translations.getModeTranslation(mode.id).name;
-  }
-
   String _choiceLabel(BuildContext context, _GameModeChoice choice) =>
-      choice.mode == null
-      ? AppLocalizations.of(context).sandbox
-      : _modeLabel(context, choice.mode!);
+      getGameModeOrSandboxLabel(context, choice.mode);
 
   bool _matchesMode(FileSystemFile<SetonixData> game) {
     final gameMode = game.data?.getInfoOrDefault().gameMode;

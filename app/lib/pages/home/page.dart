@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:collection/collection.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -31,6 +32,10 @@ enum HomeView {
 
   const HomeView(this.icon, this.location);
 
+  static HomeView fromLocation(String location) =>
+      HomeView.values.firstWhereOrNull((view) => view.location == location) ??
+      HomeView.home;
+
   String getLabel(BuildContext context) => switch (this) {
     HomeView.home => AppLocalizations.of(context).home,
     HomeView.games => AppLocalizations.of(context).games,
@@ -41,8 +46,9 @@ enum HomeView {
 
 class HomePage extends StatefulWidget {
   final HomeView view;
+  final Widget child;
 
-  const HomePage({super.key, this.view = HomeView.home});
+  const HomePage({super.key, required this.view, required this.child});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -62,29 +68,6 @@ class _HomePageState extends State<HomePage> {
       showDialog(context: context, builder: (context) => IntroDialog());
     }
   }
-
-  Widget _buildBody(HomeView view) => Align(
-    alignment: Alignment.topCenter,
-    child: Container(
-      constraints: const BoxConstraints(maxWidth: 1200),
-      padding: const EdgeInsets.all(16),
-      child: switch (view) {
-        HomeView.home => const SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              HeaderHomeView(),
-              SizedBox(height: 16),
-              RecentHomeView(),
-            ],
-          ),
-        ),
-        HomeView.games => const PlayView(),
-        HomeView.servers => const ServersView(),
-        HomeView.library => const PacksView(),
-      },
-    ),
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                   )
                 : null,
           ),
-          body: _buildBody(selected),
+          body: widget.child,
         );
         if (!isMobile) {
           return Material(
@@ -142,11 +125,41 @@ class _HomePageState extends State<HomePage> {
           drawer: SafeArea(
             child: Drawer(width: _drawerWidth, child: drawer),
           ),
-          body: _buildBody(selected),
+          body: widget.child,
         );
       },
     );
   }
+}
+
+class HomeViewPage extends StatelessWidget {
+  final HomeView view;
+
+  const HomeViewPage({super.key, required this.view});
+
+  @override
+  Widget build(BuildContext context) => Align(
+    alignment: Alignment.topCenter,
+    child: Container(
+      constraints: const BoxConstraints(maxWidth: 1200),
+      padding: const EdgeInsets.all(16),
+      child: switch (view) {
+        HomeView.home => const SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              HeaderHomeView(),
+              SizedBox(height: 16),
+              RecentHomeView(),
+            ],
+          ),
+        ),
+        HomeView.games => const PlayView(),
+        HomeView.servers => const ServersView(),
+        HomeView.library => const PacksView(),
+      },
+    ),
+  );
 }
 
 class _HomeSidebar extends StatelessWidget {

@@ -134,84 +134,79 @@ class SetonixApp extends StatelessWidget {
 
   final GoRouter _router = GoRouter(
     routes: <RouteBase>[
+      ShellRoute(
+        builder: (context, state, child) =>
+            HomePage(view: HomeView.fromLocation(state.uri.path), child: child),
+        routes: [
+          for (final view in HomeView.values)
+            GoRoute(
+              path: view.location,
+              builder: (context, state) => HomeViewPage(view: view),
+            ),
+        ],
+      ),
       GoRoute(
-        path: '/',
-        builder: (context, state) => const HomePage(),
+        name: 'game',
+        path: '/game/:name',
+        builder: (context, state) =>
+            GamePage(name: state.pathParameters['name']),
+      ),
+      ShellRoute(
+        builder: (context, state, child) => EditorShell(
+          state: state,
+          name: state.pathParameters['name']!,
+          child: child,
+        ),
+        routes: EditorPage.values
+            .where((e) => e.location != null)
+            .map(
+              (e) => GoRoute(
+                path: e.fullLocation!,
+                name: e.route,
+                builder: (context, state) => e.getPage(),
+              ),
+            )
+            .toList(),
+      ),
+      GoRoute(
+        name: 'connect',
+        path: '/connect',
+        builder: (context, state) => GamePage(
+          address: state.uri.queryParameters['address'],
+          secure:
+              bool.tryParse(state.uri.queryParameters['secure'] ?? '') ?? true,
+        ),
+      ),
+      GoRoute(
+        path: '/settings',
+        builder: (context, state) => const SettingsPage(),
         routes: [
           GoRoute(
-            name: 'game',
-            path: 'game/:name',
-            builder: (context, state) =>
-                GamePage(name: state.pathParameters['name']),
-          ),
-          ShellRoute(
-            builder: (context, state, child) => EditorShell(
-              state: state,
-              name: state.pathParameters['name']!,
-              child: child,
-            ),
-            routes: EditorPage.values
-                .where((e) => e.location != null)
-                .map(
-                  (e) => GoRoute(
-                    path: e.fullLocation!,
-                    name: e.route,
-                    builder: (context, state) => e.getPage(),
-                  ),
-                )
-                .toList(),
+            path: 'general',
+            builder: (context, state) => const GeneralSettingsPage(),
           ),
           GoRoute(
-            name: 'connect',
-            path: 'connect',
-            builder: (context, state) => GamePage(
-              address: state.uri.queryParameters['address'],
-              secure:
-                  bool.tryParse(state.uri.queryParameters['secure'] ?? '') ??
-                  true,
-            ),
+            path: 'data',
+            builder: (context, state) => const DataSettingsPage(),
           ),
           GoRoute(
-            path: 'settings',
-            builder: (context, state) => const SettingsPage(),
-            routes: [
-              GoRoute(
-                path: 'general',
-                builder: (context, state) => const GeneralSettingsPage(),
-              ),
-              GoRoute(
-                path: 'data',
-                builder: (context, state) => const DataSettingsPage(),
-              ),
-              GoRoute(
-                path: 'personalization',
-                builder: (context, state) =>
-                    const PersonalizationSettingsPage(),
-              ),
-              GoRoute(
-                path: 'inputs',
-                builder: (context, state) => const InputsSettingsPage(),
-              ),
-              GoRoute(
-                path: 'accounts',
-                builder: (context, state) => const AccountsDialog(),
-              ),
-              GoRoute(
-                path: 'servers',
-                builder: (context, state) => const ServersSettingsPage(),
-              ),
-            ],
+            path: 'personalization',
+            builder: (context, state) => const PersonalizationSettingsPage(),
+          ),
+          GoRoute(
+            path: 'inputs',
+            builder: (context, state) => const InputsSettingsPage(),
+          ),
+          GoRoute(
+            path: 'accounts',
+            builder: (context, state) => const AccountsDialog(),
+          ),
+          GoRoute(
+            path: 'servers',
+            builder: (context, state) => const ServersSettingsPage(),
           ),
         ],
       ),
-      ...HomeView.values
-          .where((view) => view != HomeView.home)
-          .map(
-            (view) => GoRoute(
-              path: view.location,
-              builder: (context, state) => HomePage(view: view),
-            ),
-          ),
     ],
   );
 }
