@@ -1,5 +1,8 @@
 ---
-import { fetchServerStatus, type ServerStatus } from "../scripts/servers/info";
+import {
+  fetchServerStatus,
+  type ServerStatus,
+} from "../scripts/servers/info";
 import type { Server } from "../scripts/servers/utils";
 
 interface Props {
@@ -28,6 +31,9 @@ const playerText = serverStatus
   ? serverStatus.currentPlayers +
     (serverStatus.maxPlayers == null ? "" : `/${serverStatus.maxPlayers}`)
   : undefined;
+const thumbnail = serverStatus?.hasThumbnail
+  ? `/thumbnail?address=${encodeURIComponent(server.address)}&secure=${encodeURIComponent(isSecure)}`
+  : undefined;
 ---
 
 <li role="listitem">
@@ -42,6 +48,15 @@ const playerText = serverStatus
     rel="noopener"
     aria-label={`Connect to ${server.address}. ${statusLabel}. ${secureLabel}.`}
   >
+    {thumbnail && (
+      <img
+        class="server-thumbnail"
+        src={thumbnail}
+        alt=""
+        loading="lazy"
+        decoding="async"
+      />
+    )}
     <div class="row gap-xs justify-between align-start">
       <p class="h3">{server.address}</p>
       <div class="row gap-xs align-center wrap justify-end" aria-live="polite">
@@ -74,3 +89,13 @@ const playerText = serverStatus
     </div>
   </a>
 </li>
+
+<style>
+  .server-thumbnail {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    background: var(--ls-background-secondary);
+  }
+</style>

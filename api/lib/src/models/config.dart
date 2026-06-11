@@ -26,6 +26,9 @@ final class SetonixConfig with SetonixConfigMappable {
   final String? description;
   static const String defaultDescription = 'A server for Setonix.';
   static const String envDescription = 'SETONIX_DESCRIPTION';
+  final String? thumbnail;
+  static const String defaultThumbnail = '';
+  static const String envThumbnail = 'SETONIX_THUMBNAIL';
   final String? guestPrefix;
   static const String defaultGuestPrefix = 'Guest ';
   static const String envGuestPrefix = 'SETONIX_GUEST_PREFIX';
@@ -53,6 +56,7 @@ final class SetonixConfig with SetonixConfigMappable {
     this.multiWorld,
     this.maxPlayers,
     this.description,
+    this.thumbnail,
     this.guestPrefix,
     this.whitelistEnabled,
     this.accountRequired,
@@ -69,6 +73,7 @@ final class SetonixConfig with SetonixConfigMappable {
     multiWorld: defaultMultiWorld,
     maxPlayers: defaultMaxPlayers,
     description: defaultDescription,
+    thumbnail: defaultThumbnail,
     guestPrefix: defaultGuestPrefix,
     whitelistEnabled: defaultWhitelistEnabled,
     accountRequired: defaultAccountRequired,
@@ -102,6 +107,9 @@ final class SetonixConfig with SetonixConfigMappable {
               envDescription,
               defaultValue: defaultDescription,
             )
+          : null,
+      thumbnail: bool.hasEnvironment(envThumbnail)
+          ? String.fromEnvironment(envThumbnail, defaultValue: defaultThumbnail)
           : null,
       guestPrefix: bool.hasEnvironment(envGuestPrefix)
           ? String.fromEnvironment(
@@ -147,6 +155,7 @@ final class SetonixConfig with SetonixConfigMappable {
     multiWorld: other.multiWorld ?? multiWorld,
     maxPlayers: other.maxPlayers ?? maxPlayers,
     description: other.description ?? description,
+    thumbnail: other.thumbnail ?? thumbnail,
     guestPrefix: other.guestPrefix ?? guestPrefix,
     accountRequired: other.accountRequired ?? accountRequired,
     whitelistEnabled: other.whitelistEnabled ?? whitelistEnabled,

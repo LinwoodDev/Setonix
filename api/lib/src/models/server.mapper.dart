@@ -579,6 +579,13 @@ class GamePropertyMapper extends ClassMapperBase<GameProperty> {
     opt: true,
     def: '',
   );
+  static bool _$hasThumbnail(GameProperty v) => v.hasThumbnail;
+  static const Field<GameProperty, bool> _f$hasThumbnail = Field(
+    'hasThumbnail',
+    _$hasThumbnail,
+    opt: true,
+    def: false,
+  );
   static int? _$maxPlayers(GameProperty v) => v.maxPlayers;
   static const Field<GameProperty, int> _f$maxPlayers = Field(
     'maxPlayers',
@@ -605,6 +612,7 @@ class GamePropertyMapper extends ClassMapperBase<GameProperty> {
   @override
   final MappableFields<GameProperty> fields = const {
     #description: _f$description,
+    #hasThumbnail: _f$hasThumbnail,
     #maxPlayers: _f$maxPlayers,
     #currentPlayers: _f$currentPlayers,
     #packsSignature: _f$packsSignature,
@@ -613,6 +621,7 @@ class GamePropertyMapper extends ClassMapperBase<GameProperty> {
   static GameProperty _instantiate(DecodingData data) {
     return GameProperty(
       description: data.dec(_f$description),
+      hasThumbnail: data.dec(_f$hasThumbnail),
       maxPlayers: data.dec(_f$maxPlayers),
       currentPlayers: data.dec(_f$currentPlayers),
       packsSignature: data.dec(_f$packsSignature),
@@ -693,6 +702,7 @@ abstract class GamePropertyCopyWith<$R, $In extends GameProperty, $Out>
   get packsSignature;
   $R call({
     String? description,
+    bool? hasThumbnail,
     int? maxPlayers,
     int? currentPlayers,
     Map<String, SignatureMetadata>? packsSignature,
@@ -724,12 +734,14 @@ class _GamePropertyCopyWithImpl<$R, $Out>
   @override
   $R call({
     String? description,
+    bool? hasThumbnail,
     Object? maxPlayers = $none,
     int? currentPlayers,
     Map<String, SignatureMetadata>? packsSignature,
   }) => $apply(
     FieldCopyWithData({
       if (description != null) #description: description,
+      if (hasThumbnail != null) #hasThumbnail: hasThumbnail,
       if (maxPlayers != $none) #maxPlayers: maxPlayers,
       if (currentPlayers != null) #currentPlayers: currentPlayers,
       if (packsSignature != null) #packsSignature: packsSignature,
@@ -738,6 +750,7 @@ class _GamePropertyCopyWithImpl<$R, $Out>
   @override
   GameProperty $make(CopyWithData data) => GameProperty(
     description: data.get(#description, or: $value.description),
+    hasThumbnail: data.get(#hasThumbnail, or: $value.hasThumbnail),
     maxPlayers: data.get(#maxPlayers, or: $value.maxPlayers),
     currentPlayers: data.get(#currentPlayers, or: $value.currentPlayers),
     packsSignature: data.get(#packsSignature, or: $value.packsSignature),
@@ -793,6 +806,13 @@ class LanPropertyMapper extends ClassMapperBase<LanProperty> {
     opt: true,
     def: '',
   );
+  static bool _$hasThumbnail(LanProperty v) => v.hasThumbnail;
+  static const Field<LanProperty, bool> _f$hasThumbnail = Field(
+    'hasThumbnail',
+    _$hasThumbnail,
+    opt: true,
+    def: false,
+  );
   static Map<String, SignatureMetadata> _$packsSignature(LanProperty v) =>
       v.packsSignature;
   static const Field<LanProperty, Map<String, SignatureMetadata>>
@@ -809,6 +829,7 @@ class LanPropertyMapper extends ClassMapperBase<LanProperty> {
     #currentPlayers: _f$currentPlayers,
     #maxPlayers: _f$maxPlayers,
     #description: _f$description,
+    #hasThumbnail: _f$hasThumbnail,
     #packsSignature: _f$packsSignature,
   };
 
@@ -818,6 +839,7 @@ class LanPropertyMapper extends ClassMapperBase<LanProperty> {
       currentPlayers: data.dec(_f$currentPlayers),
       maxPlayers: data.dec(_f$maxPlayers),
       description: data.dec(_f$description),
+      hasThumbnail: data.dec(_f$hasThumbnail),
       packsSignature: data.dec(_f$packsSignature),
     );
   }
@@ -899,6 +921,7 @@ abstract class LanPropertyCopyWith<$R, $In extends LanProperty, $Out>
     int? currentPlayers,
     int? maxPlayers,
     String? description,
+    bool? hasThumbnail,
     Map<String, SignatureMetadata>? packsSignature,
   });
   LanPropertyCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -931,6 +954,7 @@ class _LanPropertyCopyWithImpl<$R, $Out>
     int? currentPlayers,
     Object? maxPlayers = $none,
     String? description,
+    bool? hasThumbnail,
     Map<String, SignatureMetadata>? packsSignature,
   }) => $apply(
     FieldCopyWithData({
@@ -938,6 +962,7 @@ class _LanPropertyCopyWithImpl<$R, $Out>
       if (currentPlayers != null) #currentPlayers: currentPlayers,
       if (maxPlayers != $none) #maxPlayers: maxPlayers,
       if (description != null) #description: description,
+      if (hasThumbnail != null) #hasThumbnail: hasThumbnail,
       if (packsSignature != null) #packsSignature: packsSignature,
     }),
   );
@@ -947,6 +972,7 @@ class _LanPropertyCopyWithImpl<$R, $Out>
     currentPlayers: data.get(#currentPlayers, or: $value.currentPlayers),
     maxPlayers: data.get(#maxPlayers, or: $value.maxPlayers),
     description: data.get(#description, or: $value.description),
+    hasThumbnail: data.get(#hasThumbnail, or: $value.hasThumbnail),
     packsSignature: data.get(#packsSignature, or: $value.packsSignature),
   );
 
@@ -995,6 +1021,13 @@ class ListPropertyMapper extends ClassMapperBase<ListProperty> {
     opt: true,
     def: '',
   );
+  static bool _$hasThumbnail(ListProperty v) => v.hasThumbnail;
+  static const Field<ListProperty, bool> _f$hasThumbnail = Field(
+    'hasThumbnail',
+    _$hasThumbnail,
+    opt: true,
+    def: false,
+  );
   static Map<String, SignatureMetadata> _$packsSignature(ListProperty v) =>
       v.packsSignature;
   static const Field<ListProperty, Map<String, SignatureMetadata>>
@@ -1011,6 +1044,7 @@ class ListPropertyMapper extends ClassMapperBase<ListProperty> {
     #currentPlayers: _f$currentPlayers,
     #maxPlayers: _f$maxPlayers,
     #description: _f$description,
+    #hasThumbnail: _f$hasThumbnail,
     #packsSignature: _f$packsSignature,
   };
 
@@ -1020,6 +1054,7 @@ class ListPropertyMapper extends ClassMapperBase<ListProperty> {
       currentPlayers: data.dec(_f$currentPlayers),
       maxPlayers: data.dec(_f$maxPlayers),
       description: data.dec(_f$description),
+      hasThumbnail: data.dec(_f$hasThumbnail),
       packsSignature: data.dec(_f$packsSignature),
     );
   }
@@ -1103,6 +1138,7 @@ abstract class ListPropertyCopyWith<$R, $In extends ListProperty, $Out>
     int? currentPlayers,
     int? maxPlayers,
     String? description,
+    bool? hasThumbnail,
     Map<String, SignatureMetadata>? packsSignature,
   });
   ListPropertyCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -1135,6 +1171,7 @@ class _ListPropertyCopyWithImpl<$R, $Out>
     int? currentPlayers,
     Object? maxPlayers = $none,
     String? description,
+    bool? hasThumbnail,
     Map<String, SignatureMetadata>? packsSignature,
   }) => $apply(
     FieldCopyWithData({
@@ -1142,6 +1179,7 @@ class _ListPropertyCopyWithImpl<$R, $Out>
       if (currentPlayers != null) #currentPlayers: currentPlayers,
       if (maxPlayers != $none) #maxPlayers: maxPlayers,
       if (description != null) #description: description,
+      if (hasThumbnail != null) #hasThumbnail: hasThumbnail,
       if (packsSignature != null) #packsSignature: packsSignature,
     }),
   );
@@ -1151,6 +1189,7 @@ class _ListPropertyCopyWithImpl<$R, $Out>
     currentPlayers: data.get(#currentPlayers, or: $value.currentPlayers),
     maxPlayers: data.get(#maxPlayers, or: $value.maxPlayers),
     description: data.get(#description, or: $value.description),
+    hasThumbnail: data.get(#hasThumbnail, or: $value.hasThumbnail),
     packsSignature: data.get(#packsSignature, or: $value.packsSignature),
   );
 

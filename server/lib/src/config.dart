@@ -47,6 +47,9 @@ class ConfigManager {
   String get description =>
       _mergedConfig.description ?? SetonixConfig.defaultDescription;
 
+  String get thumbnail =>
+      _mergedConfig.thumbnail ?? SetonixConfig.defaultThumbnail;
+
   int get maxPlayers =>
       _mergedConfig.maxPlayers ?? SetonixConfig.defaultMaxPlayers;
 

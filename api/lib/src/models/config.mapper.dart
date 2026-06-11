@@ -65,6 +65,12 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
     _$description,
     opt: true,
   );
+  static String? _$thumbnail(SetonixConfig v) => v.thumbnail;
+  static const Field<SetonixConfig, String> _f$thumbnail = Field(
+    'thumbnail',
+    _$thumbnail,
+    opt: true,
+  );
   static String? _$guestPrefix(SetonixConfig v) => v.guestPrefix;
   static const Field<SetonixConfig, String> _f$guestPrefix = Field(
     'guestPrefix',
@@ -111,6 +117,7 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
     #multiWorld: _f$multiWorld,
     #maxPlayers: _f$maxPlayers,
     #description: _f$description,
+    #thumbnail: _f$thumbnail,
     #guestPrefix: _f$guestPrefix,
     #whitelistEnabled: _f$whitelistEnabled,
     #accountRequired: _f$accountRequired,
@@ -128,6 +135,7 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
       multiWorld: data.dec(_f$multiWorld),
       maxPlayers: data.dec(_f$maxPlayers),
       description: data.dec(_f$description),
+      thumbnail: data.dec(_f$thumbnail),
       guestPrefix: data.dec(_f$guestPrefix),
       whitelistEnabled: data.dec(_f$whitelistEnabled),
       accountRequired: data.dec(_f$accountRequired),
@@ -210,6 +218,7 @@ abstract class SetonixConfigCopyWith<$R, $In extends SetonixConfig, $Out>
     bool? multiWorld,
     int? maxPlayers,
     String? description,
+    String? thumbnail,
     String? guestPrefix,
     bool? whitelistEnabled,
     bool? accountRequired,
@@ -238,6 +247,7 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
     Object? multiWorld = $none,
     Object? maxPlayers = $none,
     Object? description = $none,
+    Object? thumbnail = $none,
     Object? guestPrefix = $none,
     Object? whitelistEnabled = $none,
     Object? accountRequired = $none,
@@ -253,6 +263,7 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
       if (multiWorld != $none) #multiWorld: multiWorld,
       if (maxPlayers != $none) #maxPlayers: maxPlayers,
       if (description != $none) #description: description,
+      if (thumbnail != $none) #thumbnail: thumbnail,
       if (guestPrefix != $none) #guestPrefix: guestPrefix,
       if (whitelistEnabled != $none) #whitelistEnabled: whitelistEnabled,
       if (accountRequired != $none) #accountRequired: accountRequired,
@@ -270,6 +281,7 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
     multiWorld: data.get(#multiWorld, or: $value.multiWorld),
     maxPlayers: data.get(#maxPlayers, or: $value.maxPlayers),
     description: data.get(#description, or: $value.description),
+    thumbnail: data.get(#thumbnail, or: $value.thumbnail),
     guestPrefix: data.get(#guestPrefix, or: $value.guestPrefix),
     whitelistEnabled: data.get(#whitelistEnabled, or: $value.whitelistEnabled),
     accountRequired: data.get(#accountRequired, or: $value.accountRequired),

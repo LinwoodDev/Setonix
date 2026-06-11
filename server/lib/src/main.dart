@@ -44,6 +44,12 @@ ArgParser buildParser() {
           'A description of the server. Will be displayed in the server list.',
     )
     ..addOption(
+      'thumbnail',
+      abbr: 't',
+      help:
+          'Path to an image file for the server thumbnail. Will be displayed in the server list.',
+    )
+    ..addOption(
       'autosave',
       abbr: 'a',
       help: "Disable saving of the world automatically",
@@ -115,6 +121,10 @@ Future<void> runServer(List<String> arguments, [ServerLoader? onLoad]) async {
     if (results.wasParsed('description')) {
       description = results['description'];
     }
+    String? thumbnail;
+    if (results.wasParsed('thumbnail')) {
+      thumbnail = results['thumbnail'];
+    }
     String? host;
     if (results.wasParsed('host')) {
       host = results['host'];
@@ -128,6 +138,7 @@ Future<void> runServer(List<String> arguments, [ServerLoader? onLoad]) async {
         port: int.tryParse(results['port'] ?? ''),
         autosave: autosave,
         description: description,
+        thumbnail: thumbnail,
         maxPlayers: maxPlayers,
         multiWorld: multiWorld,
         gameMode: gameMode,

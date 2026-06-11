@@ -31,6 +31,14 @@ String limitOutput(Object? value, [int limit = 500]) {
   return string;
 }
 
+String? _thumbnailContentType(String path) =>
+    switch (p.extension(path).toLowerCase()) {
+      '.png' => 'image/png',
+      '.jpg' || '.jpeg' => 'image/jpeg',
+      '.webp' => 'image/webp',
+      _ => null,
+    };
+
 bool _isSafeRemoteEndpoint(Uri uri) {
   if (uri.isScheme('https')) return true;
   if (!uri.isScheme('http')) return false;
@@ -175,6 +183,37 @@ final class SetonixServer {
     ),
   );
 
+  File? get thumbnailFile {
+    final thumbnail = configManager.thumbnail;
+    if (thumbnail.isEmpty) return null;
+    final path = p.isAbsolute(thumbnail)
+        ? thumbnail
+        : p.join(rootDirectory, thumbnail);
+    return File(path);
+  }
+
+  Future<bool> hasThumbnail() async {
+    final file = thumbnailFile;
+    if (file == null || !await file.exists()) return false;
+    final contentType = _thumbnailContentType(file.path);
+    if (contentType == null) return false;
+    final length = await file.length();
+    return length <= kMaxThumbnailSize;
+  }
+
+  Future<ServerThumbnail?> loadThumbnail() async {
+    final file = thumbnailFile;
+    if (file == null || !await file.exists()) return null;
+    final contentType = _thumbnailContentType(file.path);
+    if (contentType == null) return null;
+    final length = await file.length();
+    if (length > kMaxThumbnailSize) return null;
+    return ServerThumbnail(
+      bytes: await file.readAsBytes(),
+      contentType: contentType,
+    );
+  }
+
   Future<void> init({bool verbose = false}) async {
     if (verbose) {
       consoler.minLogLevel = LogLevel.verbose;
@@ -225,16 +264,18 @@ final class SetonixServer {
       configManager.port,
       securityContext: securityContext,
       filterConnections: buildFilterConnections(
-        loadProperty: (request) =>
+        loadProperty: (request) async =>
             (getWorld(request.uri.path) ?? defaultWorld).eventSystem.runPing(
               request,
               GameProperty.defaultProperty.copyWith(
                 description: configManager.description,
+                hasThumbnail: await hasThumbnail(),
                 maxPlayers: configManager.maxPlayers,
                 currentPlayers: _server?.clientConnections.length,
                 packsSignature: assetManager.createSignature(),
               ),
             ),
+        loadThumbnail: (_) => loadThumbnail(),
       ),
     );
 
@@ -292,7 +333,7 @@ final class SetonixServer {
   Future<void> run() async {
     consoler.run();
     log('Server running on ${_server?.address}', level: LogLevel.info);
-    await _server?.onClosed.first;
+    await _server?.onClosed.isEmpty;
   }
 
   Future<void> sendEvent(

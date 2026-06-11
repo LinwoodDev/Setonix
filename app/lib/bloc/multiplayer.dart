@@ -278,7 +278,11 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
       final state = await _addNetworker(server);
       await server.init();
       networkService.sendServerInfo(
-        LanProperty(description: prop.description, port: port),
+        LanProperty(
+          description: prop.description,
+          hasThumbnail: prop.hasThumbnail,
+          port: port,
+        ),
       );
       emit(state);
     } catch (e) {

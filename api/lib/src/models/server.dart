@@ -69,12 +69,14 @@ Uri buildServerAddress(Uri uri, bool secure, {bool webSockets = true}) {
 @MappableClass()
 class GameProperty with GamePropertyMappable {
   final String description;
+  final bool hasThumbnail;
   final int? maxPlayers;
   final int currentPlayers;
   final Map<String, SignatureMetadata> packsSignature;
 
   const GameProperty({
     this.description = '',
+    this.hasThumbnail = false,
     this.maxPlayers,
     this.currentPlayers = 0,
     this.packsSignature = const {},
@@ -94,6 +96,7 @@ class LanProperty extends GameProperty with LanPropertyMappable {
     super.currentPlayers,
     super.maxPlayers,
     super.description,
+    super.hasThumbnail,
     super.packsSignature,
   });
 }
@@ -107,6 +110,7 @@ class ListProperty extends GameProperty with ListPropertyMappable {
     super.currentPlayers,
     super.maxPlayers,
     super.description,
+    super.hasThumbnail,
     super.packsSignature,
   });
 }

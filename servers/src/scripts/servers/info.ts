@@ -4,13 +4,26 @@ import { getRemoteServerStatus } from "./list";
 import { USE_REMOTE_URLS_STATUS } from "astro:env/server";
 
 const cache = new NodeCache({ stdTTL: 60 * 10 });
+const thumbnailCache = new NodeCache<ServerThumbnail>({ stdTTL: 60 * 10 });
 const failedTTL = 60 * 5; // 5 minutes for failed requests
+const maxThumbnailSize = 512 * 1024;
+const allowedThumbnailContentTypes = new Set([
+  "image/png",
+  "image/jpeg",
+  "image/webp",
+]);
 
 export type ServerStatus = {
   description: string;
+  hasThumbnail?: boolean;
   maxPlayers?: number;
   currentPlayers: number;
   packsSignature: Record<string, unknown>;
+};
+
+export type ServerThumbnail = {
+  body: Buffer;
+  contentType: string;
 };
 
 export async function fetchServerStatus(
@@ -53,4 +66,37 @@ export async function fetchServerStatus(
     return null;
   }
   return response;
+}
+
+export async function fetchServerThumbnail(
+  server: Server,
+): Promise<ServerThumbnail | null> {
+  const cacheKey = `server-thumbnail:${server.address}`;
+  const cached = thumbnailCache.get(cacheKey);
+  if (cached) return cached;
+  const url = buildServerURL(server);
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "X-Setonix-Method": "thumbnail",
+    },
+  }).catch((error) => {
+    console.error(
+      `Error fetching thumbnail for server ${server.address}:`,
+      error,
+    );
+    return null;
+  });
+  if (!response || !response.ok) return null;
+  const contentType = response.headers.get("Content-Type")?.split(";")[0];
+  if (!contentType || !allowedThumbnailContentTypes.has(contentType)) {
+    return null;
+  }
+  const contentLength = Number(response.headers.get("Content-Length") || 0);
+  if (contentLength > maxThumbnailSize) return null;
+  const buffer = Buffer.from(await response.arrayBuffer());
+  if (buffer.length > maxThumbnailSize) return null;
+  const thumbnail = { body: buffer, contentType };
+  thumbnailCache.set(cacheKey, thumbnail);
+  return thumbnail;
 }

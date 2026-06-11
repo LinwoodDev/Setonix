@@ -12,5 +12,6 @@ config.json
 # Build files
 build/
 server-build/
+thumbnail.png
 
 *.so

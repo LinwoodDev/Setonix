@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
@@ -131,12 +132,50 @@ class NetworkService {
         address,
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
-          'X-Setonix-Method': 'info',
+          'X-Setonix-Method': kInfoMethod,
         },
       );
       if (response.statusCode != HttpStatus.ok) return null;
 
       return GamePropertyMapper.fromJson(response.body);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<Uint8List?> fetchThumbnail(GameServer server) async {
+    try {
+      final client = http.Client();
+      try {
+        final request = http.Request(
+          'GET',
+          buildServerAddress(
+            Uri.parse(server.address),
+            server.secure,
+            webSockets: false,
+          ),
+        )..headers['X-Setonix-Method'] = kThumbnailMethod;
+        final response = await client.send(request);
+        if (response.statusCode != HttpStatus.ok) return null;
+        final contentType = response.headers[HttpHeaders.contentTypeHeader]
+            ?.split(';')
+            .first;
+        if (!kAllowedThumbnailContentTypes.contains(contentType)) return null;
+        final contentLength = response.contentLength;
+        if (contentLength != null && contentLength > kMaxThumbnailSize) {
+          return null;
+        }
+        final builder = BytesBuilder(copy: false);
+        var length = 0;
+        await for (final chunk in response.stream) {
+          length += chunk.length;
+          if (length > kMaxThumbnailSize) return null;
+          builder.add(chunk);
+        }
+        return builder.takeBytes();
+      } finally {
+        client.close();
+      }
     } catch (_) {
       return null;
     }
@@ -151,7 +190,10 @@ class NetworkService {
     return cached[server] ??
         switch (server) {
           LanGameServer() => Future.value(
-            GameProperty(description: property.description),
+            GameProperty(
+              description: property.description,
+              hasThumbnail: property.hasThumbnail,
+            ),
           ),
           ListGameServer() => cached[server] = fetchInfo(
             server.buildAddress(webSockets: false),

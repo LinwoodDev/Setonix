@@ -168,6 +168,7 @@ class ServersView extends StatefulWidget {
 
 class _ServersViewState extends State<ServersView> {
   Stream<Map<GameServer, GameProperty?>>? _servers;
+  final Map<GameServer, Future<Uint8List?>> _thumbnails = {};
 
   bool _isMobileOpen = false;
   (GameServer, int)? _selected;
@@ -191,6 +192,7 @@ class _ServersViewState extends State<ServersView> {
 
   void _refreshServers(SetonixSettings settings) {
     setState(() {
+      _thumbnails.clear();
       _buildServersStream(settings);
     });
   }
@@ -205,6 +207,67 @@ class _ServersViewState extends State<ServersView> {
           Text(server.address, style: Theme.of(context).textTheme.titleMedium),
       ],
     );
+  }
+
+  Widget _buildThumbnail(
+    GameServer server,
+    GameProperty? property, {
+    double size = 48,
+  }) {
+    Widget fallback() => SizedBox.square(
+      dimension: size,
+      child: const Icon(PhosphorIconsLight.puzzlePiece),
+    );
+    if (property?.hasThumbnail != true) return fallback();
+    final thumbnail = _thumbnails.putIfAbsent(
+      server,
+      () => context.read<NetworkService>().fetchThumbnail(server),
+    );
+    return FutureBuilder(
+      future: thumbnail,
+      builder: (context, snapshot) {
+        final data = snapshot.data;
+        if (data == null) return fallback();
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Image.memory(
+            data,
+            width: size,
+            height: size,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) => fallback(),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildLeading(
+    BuildContext context,
+    GameServer server,
+    GameProperty? property,
+    bool highlighted,
+  ) {
+    if (property?.hasThumbnail == true) {
+      return _buildThumbnail(server, property);
+    }
+    final primaryColor = ColorScheme.of(context).primary;
+    final defaultColor = IconTheme.of(context).color;
+    return switch (server) {
+      LanGameServer() => const Icon(PhosphorIconsLight.mapPin),
+      BrowsedGameServer() => Icon(
+        PhosphorIcons.globe(
+          highlighted ? PhosphorIconsStyle.fill : PhosphorIconsStyle.light,
+        ),
+        color: highlighted ? primaryColor : defaultColor,
+      ),
+      ListGameServer() => Icon(
+        PhosphorIcons.puzzlePiece(
+          highlighted ? PhosphorIconsStyle.fill : PhosphorIconsStyle.light,
+        ),
+        color: highlighted ? primaryColor : defaultColor,
+      ),
+    };
   }
 
   Widget _buildDetails(
@@ -394,10 +457,6 @@ class _ServersViewState extends State<ServersView> {
                             itemBuilder: (context, index) {
                               final entry = servers[index];
                               final current = entry.key;
-                              final primaryColor = ColorScheme.of(
-                                context,
-                              ).primary;
-                              final defaultColor = IconTheme.of(context).color;
                               final highlighted =
                                   current is ListGameServer &&
                                   current.highlighted;
@@ -419,31 +478,12 @@ class _ServersViewState extends State<ServersView> {
                                   ).browsedServerDescription,
                                   ListGameServer() => current.address,
                                 }),
-                                leading: switch (current) {
-                                  LanGameServer() => const Icon(
-                                    PhosphorIconsLight.mapPin,
-                                  ),
-                                  BrowsedGameServer() => Icon(
-                                    PhosphorIcons.globe(
-                                      highlighted
-                                          ? PhosphorIconsStyle.fill
-                                          : PhosphorIconsStyle.light,
-                                    ),
-                                    color: highlighted
-                                        ? primaryColor
-                                        : defaultColor,
-                                  ),
-                                  ListGameServer() => Icon(
-                                    PhosphorIcons.puzzlePiece(
-                                      highlighted
-                                          ? PhosphorIconsStyle.fill
-                                          : PhosphorIconsStyle.light,
-                                    ),
-                                    color: highlighted
-                                        ? primaryColor
-                                        : defaultColor,
-                                  ),
-                                },
+                                leading: _buildLeading(
+                                  context,
+                                  current,
+                                  entry.value,
+                                  highlighted,
+                                ),
                                 onTap: () {
                                   setState(() {
                                     _selected = (current, index);
@@ -455,6 +495,15 @@ class _ServersViewState extends State<ServersView> {
                                       titleBuilder: (context) =>
                                           _buildTitle(context, current),
                                       actionsBuilder: (context) => [
+                                        if (entry.value?.hasThumbnail ==
+                                            true) ...[
+                                          _buildThumbnail(
+                                            current,
+                                            entry.value,
+                                            size: 64,
+                                          ),
+                                          const SizedBox(width: 8),
+                                        ],
                                         if (entry.value != null) ...[
                                           _buildDetails(
                                             context,
@@ -565,6 +614,14 @@ class _ServersViewState extends State<ServersView> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
+                                              if (property.hasThumbnail) ...[
+                                                _buildThumbnail(
+                                                  server,
+                                                  property,
+                                                  size: 72,
+                                                ),
+                                                const SizedBox(width: 12),
+                                              ],
                                               Expanded(
                                                 child: _buildTitle(
                                                   context,
