@@ -145,7 +145,12 @@ class GameModeTile extends StatelessWidget {
           children: [
             GameModeThumbnail(mode: mode, sandbox: sandbox),
             Padding(
-              padding: const EdgeInsets.all(14),
+              padding: const EdgeInsets.only(
+                left: 12,
+                right: 12,
+                top: 8,
+                bottom: 0,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,

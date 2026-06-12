@@ -154,7 +154,7 @@ class _RecentHomeViewState extends State<RecentHomeView> {
                             physics: const NeverScrollableScrollPhysics(),
                             gridDelegate:
                                 SliverGridDelegateWithMaxCrossAxisExtent(
-                                  maxCrossAxisExtent: 300,
+                                  maxCrossAxisExtent: 350,
                                   mainAxisSpacing: 4,
                                   crossAxisSpacing: 4,
                                   childAspectRatio: 9 / 8,
