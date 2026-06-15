@@ -2,6 +2,33 @@
 
 <!--ENTER CHANGELOG HERE-->
 
+## 0.8.0 (2026-06-15)
+
+* Redesign home page to be more user friendly and simplify navigating through the views
+* Add state restoration to allow resuming games after app restarts
+* Add game mode groups in play dialog
+* Add world close event to allow cleaning up resources when a game is closed
+* Add save event to allow scripts to save game data when the game is saved
+* Add server thumbnails to public and in-app server lists
+* Add optional server list thumbnail overrides
+* Add bundled server list thumbnail asset path
+* Improve game page title to show the opened game
+* Improve Luau script error messages with game mode and script context
+* Improve app and server security checks
+* Swap custom and template tabs in create dialog
+* Harden multiplayer authentication and imported file names
+* Prevent creating games without a name
+* Fix loading the Blackjack game mode
+* Fix Chess and Blackjack names in singleplayer game mode groups
+* Fix Blackjack actions and card visibility
+* Fix playing a game without a selection showing a missing route
+* Fix overlapping tooltips in stacked hand view layouts
+* Fix stopping the server from the command prompt throwing an exception
+* Migrate the native plugin build from cargokit to Flutter native assets
+* Upgrade to flutter 3.44
+
+Read more here: https://linwood.dev/setonix/0.8.0
+
 ## 0.7.1 (2026-05-11)
 
 * Improve user interface on home page

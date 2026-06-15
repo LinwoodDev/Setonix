@@ -41,6 +41,7 @@
 	</description>
 	<launchable type="desktop-id">dev.linwood.setonix.desktop</launchable>
 	<releases>
+		<release version="0.8.0" date="2026-06-15" />
 		<release version="0.7.1" date="2026-05-11" />
 		<release version="0.7.0" date="2026-04-29" />
 		<release version="0.6.0" date="2026-01-28" />
