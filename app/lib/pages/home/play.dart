@@ -86,7 +86,9 @@ class _PlayViewState extends State<PlayView> {
 
   bool _matchesMode(FileSystemFile<SetonixData> game) {
     final gameMode = game.data?.getInfoOrDefault().gameMode;
-    return gameMode?.toString() == (_selectedMode?.key ?? '');
+    final selectedMode = _selectedMode?.mode;
+    if (selectedMode == null) return gameMode == null;
+    return gameMode?.toString() == selectedMode.location.toString();
   }
 
   void _play(FileSystemFile<SetonixData> game) {
@@ -371,23 +373,51 @@ class _GamesHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Row(
-      children: [
-        if (leading != null) ...[leading!, const SizedBox(width: 12)],
-        if (icon != null) ...[Icon(icon, size: 36), const SizedBox(width: 14)],
-        Expanded(
-          child: Column(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final compact = constraints.maxWidth < 560;
+        final titleBlock = Row(
+          children: [
+            if (leading != null) ...[leading!, const SizedBox(width: 12)],
+            if (icon != null) ...[
+              Icon(icon, size: 36),
+              const SizedBox(width: 14),
+            ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title, style: theme.textTheme.headlineSmall),
+                  const SizedBox(height: 4),
+                  Text(subtitle, style: theme.textTheme.bodyMedium),
+                ],
+              ),
+            ),
+          ],
+        );
+        final actionsBlock = Wrap(spacing: 8, runSpacing: 8, children: actions);
+        if (compact) {
+          return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title, style: theme.textTheme.headlineSmall),
-              const SizedBox(height: 4),
-              Text(subtitle, style: theme.textTheme.bodyMedium),
+              titleBlock,
+              if (actions.isNotEmpty) ...[
+                const SizedBox(height: 12),
+                actionsBlock,
+              ],
             ],
-          ),
-        ),
-        const SizedBox(width: 16),
-        Wrap(spacing: 8, runSpacing: 8, children: actions),
-      ],
+          );
+        }
+        return Row(
+          children: [
+            Expanded(child: titleBlock),
+            if (actions.isNotEmpty) ...[
+              const SizedBox(width: 16),
+              actionsBlock,
+            ],
+          ],
+        );
+      },
     );
   }
 }

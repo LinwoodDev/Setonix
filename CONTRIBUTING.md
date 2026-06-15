@@ -70,3 +70,43 @@ flutter run
 All subdirectories are documented in the `app/README.md` file.
 
 Fork the project and create a pull request to add your code to the `develop` branch.
+
+## Windows development
+
+This repository contains symbolic links, including the Rust toolchain file used by the Setonix plugin. On Windows, Git may check out symbolic links as plain text files when symbolic link support is disabled. This can cause the Flutter Windows build to fail because `plugin/rust/rust-toolchain.toml` is read as link text instead of as a real symbolic link.
+
+Before cloning the repository on Windows, enable symbolic link support in Git:
+
+```powershell
+git config --global core.symlinks true
+```
+
+Then clone the repository again:
+
+```powershell
+git clone <repository-url>
+```
+
+If the repository was already cloned, enable symbolic links locally and restore the symlink:
+
+```powershell
+git config core.symlinks true
+git restore --source=HEAD --staged --worktree plugin/rust/rust-toolchain.toml
+```
+
+If the file is still restored as plain text, remove it and check it out again:
+
+```powershell
+Remove-Item plugin\rust\rust-toolchain.toml
+git checkout -f HEAD -- plugin/rust/rust-toolchain.toml
+```
+
+You can verify that Git created a real symbolic link with:
+
+```powershell
+Get-Item plugin\rust\rust-toolchain.toml | Format-List LinkType,Target,FullName
+```
+
+The `LinkType` should be `SymbolicLink`.
+
+If Windows does not allow creating symbolic links, enable Developer Mode in Windows settings or run the terminal as Administrator.

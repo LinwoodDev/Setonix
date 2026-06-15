@@ -73,7 +73,7 @@ dependencies:
   package_info_plus: ^10.1.0
   path_provider: ^2.1.4
   url_launcher: ^6.2.6
-  flutter_secure_storage: ^11.0.0-beta.1
+  flutter_secure_storage: ^10.0.0-beta.1
   file_picker: ^12.0.0-beta.4
   lw_file_system:
     git:
