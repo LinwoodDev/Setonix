@@ -55,8 +55,12 @@ jobs:
         if: matrix.projects == 'api' || matrix.projects == 'app'
         run: dart run build_runner build --delete-conflicting-outputs
       - name: Run format for generated files
-        if: matrix.projects == 'api' || matrix.projects == 'app'
         run: dart format .
+      - name: Run cargo fmt for Rust code
+        if: matrix.projects == 'plugin'
+        run: |
+          cd rust
+          cargo fmt --all
       - name: Test for git changes
         run: git diff --exit-code
       # Your project will need to have tests in test/ and a dependency on
