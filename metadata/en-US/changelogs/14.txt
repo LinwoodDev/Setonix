@@ -1,0 +1,4 @@
+* Fix game modes not working on android
+* Fix sometimes table state being replaced with pre-script snapshot
+
+Read more here: https://linwood.dev/setonix/0.8.1

@@ -265,7 +265,20 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
         if (!state.multiplayer.isConnected) {
           for (final packet in packets) {
             if (isLocalTarget(packet.channel)) {
-              add(packet.data);
+              final event = packet.data;
+              add(
+                data.data == null &&
+                        data.channel == kAuthorityChannel &&
+                        event is WorldInitialized
+                    ? WorldInitialized(
+                        info: event.info,
+                        teamMembers: event.teamMembers,
+                        id: event.id,
+                        packsSignature: event.packsSignature,
+                        clearUserInterface: event.clearUserInterface,
+                      )
+                    : event,
+              );
             }
           }
         }
