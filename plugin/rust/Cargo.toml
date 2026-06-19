@@ -20,5 +20,9 @@ mlua = { version = "0.11", features = ["luau", "send", "async", "anyhow", "seria
 
 [features]
 
+[profile.release]
+# Native output can otherwise depend on how many CPU cores Cargo uses.
+codegen-units = 1
+
 [lints.rust]
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(frb_expand)'] }

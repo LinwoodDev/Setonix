@@ -15,6 +15,13 @@ val androidLibcxxAbis = mapOf(
     "x86_64" to "x86_64-linux-android",
 )
 
+val llvmObjcopy = providers.provider {
+    android.ndkDirectory.resolve(
+        "toolchains/llvm/prebuilt/$androidHostTag/bin/llvm-objcopy" +
+            if (androidHostTag.startsWith("windows")) ".exe" else "",
+    )
+}
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -140,5 +147,29 @@ val copyAndroidLibcxxShared by tasks.registering(Copy::class) {
 tasks.configureEach {
     if (name.startsWith("merge") && name.endsWith("JniLibFolders")) {
         dependsOn(copyAndroidLibcxxShared)
+    }
+
+    if (name.startsWith("merge") && name.endsWith("NativeLibs")) {
+        doLast {
+            val objcopy = llvmObjcopy.get()
+            check(objcopy.isFile) {
+                "Could not find llvm-objcopy in the configured Android NDK: $objcopy"
+            }
+
+            outputs.files.asFileTree
+                .matching { include("**/*.so") }
+                .files
+                .sortedBy { it.path }
+                .forEach { library ->
+                    exec {
+                        commandLine(
+                            objcopy,
+                            "--remove-section=.comment",
+                            "--remove-section=.note.gnu.build-id",
+                            library,
+                        )
+                    }
+                }
+        }
     }
 }
