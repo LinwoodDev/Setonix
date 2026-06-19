@@ -32,7 +32,7 @@ dependencies:
   material_leap:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: fa022bf7691aee963486058a13c7027f301cc630
+      ref: 064aed61c361194bf0eb3cb599e62bdd3c111d7c
       path: packages/material_leap
   flex_color_scheme: ^8.1.0
   flutter_svg: ^2.2.0
@@ -78,12 +78,12 @@ dependencies:
   lw_file_system:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 4e752615dd91f264cca97bf6a5e95447d2bb3764
+      ref: 064aed61c361194bf0eb3cb599e62bdd3c111d7c
       path: packages/lw_file_system
   lw_sysapi:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 6d43be062401fafdd956448c59dea8c1df69198b
+      ref: f245398f838660b34737d229be94ff35918d5b4f
       path: packages/lw_sysapi
   setonix_api:
     path: ../api
@@ -93,7 +93,7 @@ dependencies:
   markdown_widget: ^2.3.2+8
   markdown: ^7.2.2
   bloc_concurrency: ^0.3.0
-  hooks: ^1.0.3
+  hooks: ^2.0.2
   idb_shim: ^2.6.1+7
   setonix_plugin:
     path: ../plugin
