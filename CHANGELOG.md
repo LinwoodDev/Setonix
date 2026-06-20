@@ -2,6 +2,14 @@
 
 <!--ENTER CHANGELOG HERE-->
 
+## 0.8.1 (2026-06-20)
+
+* Fix game modes not working on android
+* Fix sometimes table state being replaced with pre-script snapshot
+* Fix reproducible builds
+
+Read more here: https://linwood.dev/setonix/0.8.1
+
 ## 0.8.0 (2026-06-15)
 
 * Redesign home page to be more user friendly and simplify navigating through the views
