@@ -13,12 +13,11 @@ import 'package:setonix/bloc/world/local.dart';
 import 'package:setonix/bloc/world/state.dart';
 import 'package:setonix/board/grid.dart';
 import 'package:setonix/board/hand/view.dart';
-import 'package:setonix/helpers/scroll.dart';
 import 'package:setonix/helpers/vector.dart';
 import 'package:setonix_api/setonix_api.dart';
 
 class BoardGame extends FlameGame
-    with ScrollDetector, KeyboardEvents, HasCollisionDetection, ScaleDetector {
+    with ScrollCallbacks, KeyboardEvents, HasCollisionDetection, ScaleDetector {
   final VoidCallback onEscape;
   final ContextMenuController contextMenuController;
   late final Sprite selectionSprite, blankSprite;
@@ -137,13 +136,8 @@ class BoardGame extends FlameGame
   }
 
   @override
-  void onScroll(PointerScrollInfo info) {
-    final handled = componentsAtPoint(
-      info.eventPosition.widget,
-    ).whereType<ScrollCallbacks>().any((element) => element.onScroll(info));
-    if (handled) return;
-    camera.viewfinder.zoom +=
-        info.scrollDelta.global.y.sign * zoomPerScrollUnit;
+  void onScroll(ScrollEvent event) {
+    camera.viewfinder.zoom += event.scrollDelta.y.sign * zoomPerScrollUnit;
   }
 
   Vector2 _currentCameraVelocity = Vector2.zero();

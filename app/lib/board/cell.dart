@@ -20,7 +20,6 @@ import 'package:setonix/board/background.dart';
 import 'package:setonix/board/game.dart';
 import 'package:setonix/board/grid.dart';
 import 'package:setonix/board/hand/item.dart';
-import 'package:setonix/helpers/scroll.dart';
 import 'package:setonix/helpers/secondary.dart';
 import 'package:setonix/helpers/vector.dart';
 import 'package:setonix/helpers/visualizer.dart';
@@ -700,13 +699,12 @@ class GameCell extends PositionComponent
   }
 
   @override
-  bool onScroll(PointerScrollInfo info) {
-    var delta = info.scrollDelta.global.clone()..divide(Vector2.all(4));
+  void onScroll(ScrollEvent event) {
+    var delta = event.scrollDelta.clone()..divide(Vector2.all(4));
     if (game.isShifting) {
       delta = Vector2(delta.y, delta.x);
     }
     game.camera.moveBy(delta / game.settingsCubit.state.scrollSensitivity);
-    return false;
   }
 }
 

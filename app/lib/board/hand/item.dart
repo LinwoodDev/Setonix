@@ -96,7 +96,7 @@ const priorityNormal = 0;
 
 class HandItemLabel extends TextComponent<TextPaint> {
   ClientWorldState state;
-  double opacity = 0.0;
+  double displayOpacity = 0;
 
   HandItemLabel({
     required super.text,
@@ -108,11 +108,11 @@ class HandItemLabel extends TextComponent<TextPaint> {
 
   @override
   void render(Canvas canvas) {
-    if (opacity <= 0) return;
+    if (displayOpacity <= 0) return;
 
     canvas.saveLayer(
       null,
-      Paint()..color = Colors.white.withValues(alpha: opacity),
+      Paint()..color = Colors.white.withValues(alpha: displayOpacity),
     );
 
     final rect = Rect.fromLTWH(-12, -4, size.x + 24, size.y + 8);
@@ -287,10 +287,11 @@ abstract class HandItem<T> extends PositionComponent
     }
 
     final targetOpacity = (_isTopmostHovered || !_isHiddenByLayout) ? 1.0 : 0.0;
-    if ((_label.opacity - targetOpacity).abs() > 0.005) {
-      _label.opacity += (targetOpacity - _label.opacity) * dt * 15;
+    if ((_label.displayOpacity - targetOpacity).abs() > 0.005) {
+      _label.displayOpacity +=
+          (targetOpacity - _label.displayOpacity) * dt * 15;
     } else {
-      _label.opacity = targetOpacity;
+      _label.displayOpacity = targetOpacity;
     }
   }
 

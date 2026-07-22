@@ -16,7 +16,7 @@ strum = { version = "0.28", features = ["derive"] }
 tokio = "1"
 
 [target.'cfg(not(target_family = "wasm"))'.dependencies]
-mlua = { version = "0.11", features = ["luau", "send", "async", "anyhow", "serialize", "userdata-wrappers"] }
+mlua = { version = "0.12", features = ["luau", "send", "async", "anyhow", "serialize", "userdata-wrappers"] }
 
 [features]
 

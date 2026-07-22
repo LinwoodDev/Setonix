@@ -17,7 +17,6 @@ import 'package:setonix/board/hand/figure.dart';
 import 'package:setonix/board/hand/item.dart';
 import 'package:setonix/board/hand/object.dart';
 import 'package:setonix/board/hand/tile.dart';
-import 'package:setonix/helpers/scroll.dart';
 import 'package:setonix_api/setonix_api.dart';
 
 class GameHandCustomPainter extends CustomPainter {
@@ -274,6 +273,20 @@ class GameHand extends CustomPainterComponent
   bool get isShowing => bloc.state.showHand;
 
   @override
+  void onTapDown(TapDownEvent event) {
+    if (!isShowing) {
+      event.continuePropagation = true;
+      return;
+    }
+    final isOverItem = componentsAtPoint(
+      event.localPosition,
+    ).whereType<HandItem>().isNotEmpty;
+    if (isOverItem) {
+      event.continuePropagation = true;
+    }
+  }
+
+  @override
   void onDragStart(DragStartEvent event) {
     if (!isShowing) {
       event
@@ -296,16 +309,16 @@ class GameHand extends CustomPainterComponent
   }
 
   @override
-  bool onScroll(PointerScrollInfo info) {
+  void onScroll(ScrollEvent event) {
     if (!isShowing) {
-      return false;
+      event.continuePropagation = true;
+      return;
     }
-    var delta = info.scrollDelta.global.x;
+    var delta = event.scrollDelta.x;
     if (delta == 0) {
-      delta = info.scrollDelta.global.y;
+      delta = event.scrollDelta.y;
     }
     scroll(-delta * 0.01);
-    return true;
   }
 
   @override
@@ -323,7 +336,10 @@ class GameHand extends CustomPainterComponent
 
   void scroll(double delta) {
     if (!isShowing) return;
-    _currentScroll = (_currentScroll - delta).clamp(0, children.length - 1);
+    _currentScroll = (_currentScroll - delta).clamp(
+      0,
+      max(0, children.length - 1),
+    );
     _needsLayout = true;
   }
 

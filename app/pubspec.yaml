@@ -16,7 +16,7 @@ publish_to: none
 
 environment:
   sdk: ">=3.8.0 <4.0.0"
-  flutter: 3.44.2
+  flutter: 3.44.7
 
 dependencies:
   flutter:
@@ -32,7 +32,7 @@ dependencies:
   material_leap:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 064aed61c361194bf0eb3cb599e62bdd3c111d7c
+      ref: 606c5977e7d7d0197fdec2d15dbc951afe330b43
       path: packages/material_leap
   flex_color_scheme: ^8.1.0
   flutter_svg: ^2.2.0
@@ -47,8 +47,7 @@ dependencies:
   rxdart: ^0.28.0
   collection: ^1.18.0
   flame_bloc: ^1.12.14
-  flame: ">=1.37.0 <1.38.0"
-  flame_tiled: ^3.0.4
+  flame: ">=1.38.0 <1.39.0"
   # Networking
   http: ^1.2.1
   web_socket_channel: ^3.0.0
@@ -83,7 +82,7 @@ dependencies:
   lw_sysapi:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: f245398f838660b34737d229be94ff35918d5b4f
+      ref: 6d43be062401fafdd956448c59dea8c1df69198b
       path: packages/lw_sysapi
   setonix_api:
     path: ../api
