@@ -221,7 +221,11 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
   Future<void> connectSocket(Uri address) async {
     try {
       emit(MultiplayerConnectingState());
-      final client = NetworkerSocketClient(address);
+      final property = await networkService.fetchRequiredInfo(address);
+      final protocolVersion = property.requireProtocol();
+      final client = NetworkerSocketClient(
+        addSetonixProtocolVersion(address, version: protocolVersion),
+      );
       final state = await _addNetworker(client);
       client.onClosed.listen((_) {
         if (isClosed) return;
@@ -259,7 +263,10 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
   Future<void> createSocket({GameProperty? property, int? port}) async {
     try {
       port ??= kDefaultPort;
-      final prop = property ?? GameProperty.defaultProperty;
+      final prop = (property ?? GameProperty.defaultProperty).copyWith(
+        protocolVersions: kSetonixServerProtocolVersions,
+        protocolCapabilities: kSetonixProtocolCapabilities,
+      );
       final server = NetworkerSocketServer(
         InternetAddress.loopbackIPv4,
         port,
@@ -282,6 +289,8 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
           description: prop.description,
           hasThumbnail: prop.hasThumbnail,
           port: port,
+          protocolVersions: prop.protocolVersions,
+          protocolCapabilities: prop.protocolCapabilities,
         ),
       );
       emit(state);

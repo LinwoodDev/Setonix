@@ -6,6 +6,41 @@ import 'meta.dart';
 
 part 'server.mapper.dart';
 
+const kSetonixProtocolVersion = 1;
+const kSupportedSetonixProtocolVersions = <int>[kSetonixProtocolVersion];
+const kSetonixServerProtocolVersions = <int>[kSetonixProtocolVersion];
+const kSetonixProtocolQueryParameter = 'setonixProtocol';
+const kSetonixProtocolCapabilities = <String>['handshake-v1'];
+
+Uri addSetonixProtocolVersion(
+  Uri uri, {
+  int version = kSetonixProtocolVersion,
+}) => uri.replace(
+  queryParameters: {
+    ...uri.queryParameters,
+    kSetonixProtocolQueryParameter: version.toString(),
+  },
+);
+
+int? readSetonixProtocolVersion(Uri uri) =>
+    int.tryParse(uri.queryParameters[kSetonixProtocolQueryParameter] ?? '');
+
+final class IncompatibleProtocolException implements Exception {
+  final List<int> clientVersions;
+  final List<int> serverVersions;
+
+  const IncompatibleProtocolException({
+    this.clientVersions = kSupportedSetonixProtocolVersions,
+    required this.serverVersions,
+  });
+
+  @override
+  String toString() => serverVersions.isEmpty
+      ? 'The server does not advertise a Setonix protocol version.'
+      : 'Setonix protocol mismatch: client supports $clientVersions, '
+            'server supports $serverVersions.';
+}
+
 @MappableClass()
 sealed class GameServer with GameServerMappable {
   final String address;
@@ -76,6 +111,8 @@ class GameProperty with GamePropertyMappable {
   final int? maxPlayers;
   final int currentPlayers;
   final Map<String, SignatureMetadata> packsSignature;
+  final List<int> protocolVersions;
+  final List<String> protocolCapabilities;
 
   const GameProperty({
     this.description = '',
@@ -83,7 +120,39 @@ class GameProperty with GamePropertyMappable {
     this.maxPlayers,
     this.currentPlayers = 0,
     this.packsSignature = const {},
+    this.protocolVersions = const [],
+    this.protocolCapabilities = const [],
   });
+
+  int? negotiateProtocol([
+    Iterable<int> supportedVersions = kSupportedSetonixProtocolVersions,
+  ]) {
+    int? selected;
+    for (final version in protocolVersions) {
+      if (supportedVersions.contains(version) &&
+          (selected == null || version > selected)) {
+        selected = version;
+      }
+    }
+    return selected;
+  }
+
+  bool supportsProtocol([
+    Iterable<int> supportedVersions = kSupportedSetonixProtocolVersions,
+  ]) => negotiateProtocol(supportedVersions) != null;
+
+  int requireProtocol([
+    List<int> supportedVersions = kSupportedSetonixProtocolVersions,
+  ]) {
+    final selected = negotiateProtocol(supportedVersions);
+    if (selected == null) {
+      throw IncompatibleProtocolException(
+        clientVersions: supportedVersions,
+        serverVersions: protocolVersions,
+      );
+    }
+    return selected;
+  }
 
   static const defaultProperty = GameProperty(
     description: 'A server for Setonix.',
@@ -101,6 +170,8 @@ class LanProperty extends GameProperty with LanPropertyMappable {
     super.description,
     super.hasThumbnail,
     super.packsSignature,
+    super.protocolVersions,
+    super.protocolCapabilities,
   });
 }
 
@@ -115,6 +186,8 @@ class ListProperty extends GameProperty with ListPropertyMappable {
     super.description,
     super.hasThumbnail,
     super.packsSignature,
+    super.protocolVersions,
+    super.protocolCapabilities,
   });
 }
 

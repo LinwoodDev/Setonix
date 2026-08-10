@@ -120,6 +120,14 @@
   "browse": "Browse",
   "disconnected": "Disconnected",
   "disconnectedMessage": "You have been disconnected from the server. Please check your connection and try again.",
+  "serverProtocolUnavailable": "This server does not advertise a compatible protocol version. Update the server, then try again.",
+  "protocolMismatchMessage": "This client supports protocols {clientVersions}, but the server supports protocols {serverVersions}. Update Setonix on the client or server, then try again.",
+  "@protocolMismatchMessage": {
+    "placeholders": {
+      "clientVersions": {"type": "String"},
+      "serverVersions": {"type": "String"}
+    }
+  },
   "successfullyConnected": "You are successfully connected to the server",
   "reconnect": "Reconnect",
   "teams": "Teams",

@@ -273,6 +273,8 @@ final class SetonixServer {
                 maxPlayers: configManager.maxPlayers,
                 currentPlayers: _server?.clientConnections.length,
                 packsSignature: assetManager.createSignature(),
+                protocolVersions: kSetonixServerProtocolVersions,
+                protocolCapabilities: kSetonixProtocolCapabilities,
               ),
             ),
         loadThumbnail: (_) => loadThumbnail(),

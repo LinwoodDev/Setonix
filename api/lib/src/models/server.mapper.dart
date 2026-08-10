@@ -652,6 +652,22 @@ class GamePropertyMapper extends ClassMapperBase<GameProperty> {
     opt: true,
     def: const {},
   );
+  static List<int> _$protocolVersions(GameProperty v) => v.protocolVersions;
+  static const Field<GameProperty, List<int>> _f$protocolVersions = Field(
+    'protocolVersions',
+    _$protocolVersions,
+    opt: true,
+    def: const [],
+  );
+  static List<String> _$protocolCapabilities(GameProperty v) =>
+      v.protocolCapabilities;
+  static const Field<GameProperty, List<String>> _f$protocolCapabilities =
+      Field(
+        'protocolCapabilities',
+        _$protocolCapabilities,
+        opt: true,
+        def: const [],
+      );
 
   @override
   final MappableFields<GameProperty> fields = const {
@@ -660,6 +676,8 @@ class GamePropertyMapper extends ClassMapperBase<GameProperty> {
     #maxPlayers: _f$maxPlayers,
     #currentPlayers: _f$currentPlayers,
     #packsSignature: _f$packsSignature,
+    #protocolVersions: _f$protocolVersions,
+    #protocolCapabilities: _f$protocolCapabilities,
   };
 
   static GameProperty _instantiate(DecodingData data) {
@@ -669,6 +687,8 @@ class GamePropertyMapper extends ClassMapperBase<GameProperty> {
       maxPlayers: data.dec(_f$maxPlayers),
       currentPlayers: data.dec(_f$currentPlayers),
       packsSignature: data.dec(_f$packsSignature),
+      protocolVersions: data.dec(_f$protocolVersions),
+      protocolCapabilities: data.dec(_f$protocolCapabilities),
     );
   }
 
@@ -744,12 +764,17 @@ abstract class GamePropertyCopyWith<$R, $In extends GameProperty, $Out>
     SignatureMetadataCopyWith<$R, SignatureMetadata, SignatureMetadata>
   >
   get packsSignature;
+  ListCopyWith<$R, int, ObjectCopyWith<$R, int, int>> get protocolVersions;
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
+  get protocolCapabilities;
   $R call({
     String? description,
     bool? hasThumbnail,
     int? maxPlayers,
     int? currentPlayers,
     Map<String, SignatureMetadata>? packsSignature,
+    List<int>? protocolVersions,
+    List<String>? protocolCapabilities,
   });
   GamePropertyCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -776,12 +801,28 @@ class _GamePropertyCopyWithImpl<$R, $Out>
     (v) => call(packsSignature: v),
   );
   @override
+  ListCopyWith<$R, int, ObjectCopyWith<$R, int, int>> get protocolVersions =>
+      ListCopyWith(
+        $value.protocolVersions,
+        (v, t) => ObjectCopyWith(v, $identity, t),
+        (v) => call(protocolVersions: v),
+      );
+  @override
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
+  get protocolCapabilities => ListCopyWith(
+    $value.protocolCapabilities,
+    (v, t) => ObjectCopyWith(v, $identity, t),
+    (v) => call(protocolCapabilities: v),
+  );
+  @override
   $R call({
     String? description,
     bool? hasThumbnail,
     Object? maxPlayers = $none,
     int? currentPlayers,
     Map<String, SignatureMetadata>? packsSignature,
+    List<int>? protocolVersions,
+    List<String>? protocolCapabilities,
   }) => $apply(
     FieldCopyWithData({
       if (description != null) #description: description,
@@ -789,6 +830,9 @@ class _GamePropertyCopyWithImpl<$R, $Out>
       if (maxPlayers != $none) #maxPlayers: maxPlayers,
       if (currentPlayers != null) #currentPlayers: currentPlayers,
       if (packsSignature != null) #packsSignature: packsSignature,
+      if (protocolVersions != null) #protocolVersions: protocolVersions,
+      if (protocolCapabilities != null)
+        #protocolCapabilities: protocolCapabilities,
     }),
   );
   @override
@@ -798,6 +842,11 @@ class _GamePropertyCopyWithImpl<$R, $Out>
     maxPlayers: data.get(#maxPlayers, or: $value.maxPlayers),
     currentPlayers: data.get(#currentPlayers, or: $value.currentPlayers),
     packsSignature: data.get(#packsSignature, or: $value.packsSignature),
+    protocolVersions: data.get(#protocolVersions, or: $value.protocolVersions),
+    protocolCapabilities: data.get(
+      #protocolCapabilities,
+      or: $value.protocolCapabilities,
+    ),
   );
 
   @override
@@ -866,6 +915,21 @@ class LanPropertyMapper extends ClassMapperBase<LanProperty> {
     opt: true,
     def: const {},
   );
+  static List<int> _$protocolVersions(LanProperty v) => v.protocolVersions;
+  static const Field<LanProperty, List<int>> _f$protocolVersions = Field(
+    'protocolVersions',
+    _$protocolVersions,
+    opt: true,
+    def: const [],
+  );
+  static List<String> _$protocolCapabilities(LanProperty v) =>
+      v.protocolCapabilities;
+  static const Field<LanProperty, List<String>> _f$protocolCapabilities = Field(
+    'protocolCapabilities',
+    _$protocolCapabilities,
+    opt: true,
+    def: const [],
+  );
 
   @override
   final MappableFields<LanProperty> fields = const {
@@ -875,6 +939,8 @@ class LanPropertyMapper extends ClassMapperBase<LanProperty> {
     #description: _f$description,
     #hasThumbnail: _f$hasThumbnail,
     #packsSignature: _f$packsSignature,
+    #protocolVersions: _f$protocolVersions,
+    #protocolCapabilities: _f$protocolCapabilities,
   };
 
   static LanProperty _instantiate(DecodingData data) {
@@ -885,6 +951,8 @@ class LanPropertyMapper extends ClassMapperBase<LanProperty> {
       description: data.dec(_f$description),
       hasThumbnail: data.dec(_f$hasThumbnail),
       packsSignature: data.dec(_f$packsSignature),
+      protocolVersions: data.dec(_f$protocolVersions),
+      protocolCapabilities: data.dec(_f$protocolCapabilities),
     );
   }
 
@@ -960,6 +1028,11 @@ abstract class LanPropertyCopyWith<$R, $In extends LanProperty, $Out>
   >
   get packsSignature;
   @override
+  ListCopyWith<$R, int, ObjectCopyWith<$R, int, int>> get protocolVersions;
+  @override
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
+  get protocolCapabilities;
+  @override
   $R call({
     int? port,
     int? currentPlayers,
@@ -967,6 +1040,8 @@ abstract class LanPropertyCopyWith<$R, $In extends LanProperty, $Out>
     String? description,
     bool? hasThumbnail,
     Map<String, SignatureMetadata>? packsSignature,
+    List<int>? protocolVersions,
+    List<String>? protocolCapabilities,
   });
   LanPropertyCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -993,6 +1068,20 @@ class _LanPropertyCopyWithImpl<$R, $Out>
     (v) => call(packsSignature: v),
   );
   @override
+  ListCopyWith<$R, int, ObjectCopyWith<$R, int, int>> get protocolVersions =>
+      ListCopyWith(
+        $value.protocolVersions,
+        (v, t) => ObjectCopyWith(v, $identity, t),
+        (v) => call(protocolVersions: v),
+      );
+  @override
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
+  get protocolCapabilities => ListCopyWith(
+    $value.protocolCapabilities,
+    (v, t) => ObjectCopyWith(v, $identity, t),
+    (v) => call(protocolCapabilities: v),
+  );
+  @override
   $R call({
     int? port,
     int? currentPlayers,
@@ -1000,6 +1089,8 @@ class _LanPropertyCopyWithImpl<$R, $Out>
     String? description,
     bool? hasThumbnail,
     Map<String, SignatureMetadata>? packsSignature,
+    List<int>? protocolVersions,
+    List<String>? protocolCapabilities,
   }) => $apply(
     FieldCopyWithData({
       if (port != null) #port: port,
@@ -1008,6 +1099,9 @@ class _LanPropertyCopyWithImpl<$R, $Out>
       if (description != null) #description: description,
       if (hasThumbnail != null) #hasThumbnail: hasThumbnail,
       if (packsSignature != null) #packsSignature: packsSignature,
+      if (protocolVersions != null) #protocolVersions: protocolVersions,
+      if (protocolCapabilities != null)
+        #protocolCapabilities: protocolCapabilities,
     }),
   );
   @override
@@ -1018,6 +1112,11 @@ class _LanPropertyCopyWithImpl<$R, $Out>
     description: data.get(#description, or: $value.description),
     hasThumbnail: data.get(#hasThumbnail, or: $value.hasThumbnail),
     packsSignature: data.get(#packsSignature, or: $value.packsSignature),
+    protocolVersions: data.get(#protocolVersions, or: $value.protocolVersions),
+    protocolCapabilities: data.get(
+      #protocolCapabilities,
+      or: $value.protocolCapabilities,
+    ),
   );
 
   @override
@@ -1081,6 +1180,22 @@ class ListPropertyMapper extends ClassMapperBase<ListProperty> {
     opt: true,
     def: const {},
   );
+  static List<int> _$protocolVersions(ListProperty v) => v.protocolVersions;
+  static const Field<ListProperty, List<int>> _f$protocolVersions = Field(
+    'protocolVersions',
+    _$protocolVersions,
+    opt: true,
+    def: const [],
+  );
+  static List<String> _$protocolCapabilities(ListProperty v) =>
+      v.protocolCapabilities;
+  static const Field<ListProperty, List<String>> _f$protocolCapabilities =
+      Field(
+        'protocolCapabilities',
+        _$protocolCapabilities,
+        opt: true,
+        def: const [],
+      );
 
   @override
   final MappableFields<ListProperty> fields = const {
@@ -1090,6 +1205,8 @@ class ListPropertyMapper extends ClassMapperBase<ListProperty> {
     #description: _f$description,
     #hasThumbnail: _f$hasThumbnail,
     #packsSignature: _f$packsSignature,
+    #protocolVersions: _f$protocolVersions,
+    #protocolCapabilities: _f$protocolCapabilities,
   };
 
   static ListProperty _instantiate(DecodingData data) {
@@ -1100,6 +1217,8 @@ class ListPropertyMapper extends ClassMapperBase<ListProperty> {
       description: data.dec(_f$description),
       hasThumbnail: data.dec(_f$hasThumbnail),
       packsSignature: data.dec(_f$packsSignature),
+      protocolVersions: data.dec(_f$protocolVersions),
+      protocolCapabilities: data.dec(_f$protocolCapabilities),
     );
   }
 
@@ -1177,6 +1296,11 @@ abstract class ListPropertyCopyWith<$R, $In extends ListProperty, $Out>
   >
   get packsSignature;
   @override
+  ListCopyWith<$R, int, ObjectCopyWith<$R, int, int>> get protocolVersions;
+  @override
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
+  get protocolCapabilities;
+  @override
   $R call({
     int? index,
     int? currentPlayers,
@@ -1184,6 +1308,8 @@ abstract class ListPropertyCopyWith<$R, $In extends ListProperty, $Out>
     String? description,
     bool? hasThumbnail,
     Map<String, SignatureMetadata>? packsSignature,
+    List<int>? protocolVersions,
+    List<String>? protocolCapabilities,
   });
   ListPropertyCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -1210,6 +1336,20 @@ class _ListPropertyCopyWithImpl<$R, $Out>
     (v) => call(packsSignature: v),
   );
   @override
+  ListCopyWith<$R, int, ObjectCopyWith<$R, int, int>> get protocolVersions =>
+      ListCopyWith(
+        $value.protocolVersions,
+        (v, t) => ObjectCopyWith(v, $identity, t),
+        (v) => call(protocolVersions: v),
+      );
+  @override
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
+  get protocolCapabilities => ListCopyWith(
+    $value.protocolCapabilities,
+    (v, t) => ObjectCopyWith(v, $identity, t),
+    (v) => call(protocolCapabilities: v),
+  );
+  @override
   $R call({
     int? index,
     int? currentPlayers,
@@ -1217,6 +1357,8 @@ class _ListPropertyCopyWithImpl<$R, $Out>
     String? description,
     bool? hasThumbnail,
     Map<String, SignatureMetadata>? packsSignature,
+    List<int>? protocolVersions,
+    List<String>? protocolCapabilities,
   }) => $apply(
     FieldCopyWithData({
       if (index != null) #index: index,
@@ -1225,6 +1367,9 @@ class _ListPropertyCopyWithImpl<$R, $Out>
       if (description != null) #description: description,
       if (hasThumbnail != null) #hasThumbnail: hasThumbnail,
       if (packsSignature != null) #packsSignature: packsSignature,
+      if (protocolVersions != null) #protocolVersions: protocolVersions,
+      if (protocolCapabilities != null)
+        #protocolCapabilities: protocolCapabilities,
     }),
   );
   @override
@@ -1235,6 +1380,11 @@ class _ListPropertyCopyWithImpl<$R, $Out>
     description: data.get(#description, or: $value.description),
     hasThumbnail: data.get(#hasThumbnail, or: $value.hasThumbnail),
     packsSignature: data.get(#packsSignature, or: $value.packsSignature),
+    protocolVersions: data.get(#protocolVersions, or: $value.protocolVersions),
+    protocolCapabilities: data.get(
+      #protocolCapabilities,
+      or: $value.protocolCapabilities,
+    ),
   );
 
   @override

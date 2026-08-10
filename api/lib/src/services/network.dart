@@ -19,6 +19,7 @@ final class ServerThumbnail {
 Future<bool> Function(HttpRequest request) buildFilterConnections({
   FutureOr<GameProperty> Function(HttpRequest request)? loadProperty,
   FutureOr<ServerThumbnail?> Function(HttpRequest request)? loadThumbnail,
+  List<int> supportedProtocolVersions = kSetonixServerProtocolVersions,
 }) => (request) async {
   final response = request.response;
   response.headers.add("Access-Control-Allow-Origin", "*");
@@ -61,6 +62,25 @@ Future<bool> Function(HttpRequest request) buildFilterConnections({
   if (sendMessage != null) {
     response.statusCode = HttpStatus.ok;
     response.write(sendMessage);
+    response.close();
+    return false;
+  }
+  final clientProtocolVersion = readSetonixProtocolVersion(request.uri);
+  if (clientProtocolVersion == null ||
+      !supportedProtocolVersions.contains(clientProtocolVersion)) {
+    response.statusCode = HttpStatus.upgradeRequired;
+    response.headers.set(
+      'X-Setonix-Protocol-Versions',
+      supportedProtocolVersions.join(','),
+    );
+    response.write(
+      KickMessage(
+        message:
+            'Incompatible Setonix protocol. Expected one of '
+            '${supportedProtocolVersions.join(', ')}, '
+            'received ${clientProtocolVersion ?? 'none'}.',
+      ).toJson(),
+    );
     response.close();
     return false;
   }

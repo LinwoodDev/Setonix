@@ -126,18 +126,34 @@ class NetworkService {
     _broadcast = null;
   }
 
+  Uri _httpAddress(Uri address) => switch (address.scheme) {
+    'ws' => address.replace(scheme: 'http'),
+    'wss' => address.replace(scheme: 'https'),
+    _ => address,
+  };
+
+  Future<GameProperty> fetchRequiredInfo(Uri address) async {
+    address = _httpAddress(address);
+    final response = await http.get(
+      address,
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        'X-Setonix-Method': kInfoMethod,
+      },
+    );
+    if (response.statusCode != HttpStatus.ok) {
+      throw HttpException(
+        'Server information request failed with status '
+        '${response.statusCode}.',
+        uri: address,
+      );
+    }
+    return GamePropertyMapper.fromJson(response.body);
+  }
+
   Future<GameProperty?> fetchInfo(Uri address) async {
     try {
-      final response = await http.get(
-        address,
-        headers: {
-          HttpHeaders.contentTypeHeader: 'application/json',
-          'X-Setonix-Method': kInfoMethod,
-        },
-      );
-      if (response.statusCode != HttpStatus.ok) return null;
-
-      return GamePropertyMapper.fromJson(response.body);
+      return await fetchRequiredInfo(address);
     } catch (_) {
       return null;
     }

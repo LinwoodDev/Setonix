@@ -42,6 +42,13 @@ class GameErrorView extends StatelessWidget {
           ),
         ],
       };
+    } else if (error is IncompatibleProtocolException) {
+      message = error.serverVersions.isEmpty
+          ? AppLocalizations.of(context).serverProtocolUnavailable
+          : AppLocalizations.of(context).protocolMismatchMessage(
+              error.clientVersions.join(', '),
+              error.serverVersions.join(', '),
+            );
     } else if (error is KickMessage) {
       final link = error.link;
       var respponse = error.message;
