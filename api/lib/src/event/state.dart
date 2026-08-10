@@ -31,6 +31,7 @@ final class WorldState with WorldStateMappable {
   final String? name;
   final Channel id;
   final Map<String, Set<Channel>> teamMembers;
+  final Map<String, Set<Channel>> gameRoleMembers;
   final FileMetadata metadata;
   final SetonixData data;
   final List<ChatMessage> messages;
@@ -49,6 +50,7 @@ final class WorldState with WorldStateMappable {
     this.info = const GameInfo(),
     this.metadata = const FileMetadata(),
     this.teamMembers = const {},
+    this.gameRoleMembers = const {},
     this.messages = const [],
     this.id = kAuthorityChannel,
     this.dialogs = const [],
@@ -79,6 +81,11 @@ final class WorldState with WorldStateMappable {
   }
 
   Set<String> getTeams([Channel? id]) => teamMembers.entries
+      .where((entry) => entry.value.contains(id ?? this.id))
+      .map((entry) => entry.key)
+      .toSet();
+
+  Set<String> getGameRoles([Channel? id]) => gameRoleMembers.entries
       .where((entry) => entry.value.contains(id ?? this.id))
       .map((entry) => entry.key)
       .toSet();

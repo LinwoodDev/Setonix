@@ -276,6 +276,7 @@ final class RustSetonixPlugin extends SetonixPlugin {
           StateFieldAccess.tableName => jsonEncode(state.tableName),
           StateFieldAccess.players => jsonEncode(server.players),
           StateFieldAccess.teamMembers => jsonEncode(state.teamMembers),
+          StateFieldAccess.gameRoles => jsonEncode(state.gameRoleMembers),
           StateFieldAccess.game => jsonEncode(location?.id ?? 'unknown'),
           StateFieldAccess.namespace => jsonEncode(
             location?.namespace ?? 'unknown',

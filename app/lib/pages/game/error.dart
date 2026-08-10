@@ -51,8 +51,8 @@ class GameErrorView extends StatelessWidget {
             );
     } else if (error is KickMessage) {
       final link = error.link;
-      var respponse = error.message;
-      if (respponse?.isEmpty ?? true) {
+      var response = error.message;
+      if (response?.isEmpty ?? true) {
         message = switch (error.reason) {
           KickReason.kick => AppLocalizations.of(context).kicked,
           KickReason.ban => AppLocalizations.of(context).banned,
@@ -67,6 +67,8 @@ class GameErrorView extends StatelessWidget {
           ).challengeFailed,
           _ => AppLocalizations.of(context).disconnectedMessage,
         };
+      } else {
+        message = response!;
       }
       content = [
         if (link != null)

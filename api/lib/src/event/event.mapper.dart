@@ -148,6 +148,7 @@ class ServerWorldEventMapper extends SubClassMapperBase<ServerWorldEvent> {
       MapperContainer.globals.use(_instance = ServerWorldEventMapper._());
       PlayableWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
       WorldInitializedMapper.ensureInitialized();
+      GameRolesChangedMapper.ensureInitialized();
       TeamJoinedMapper.ensureInitialized();
       TeamLeftMapper.ensureInitialized();
       ObjectsChangedMapper.ensureInitialized();
@@ -253,6 +254,10 @@ class WorldInitializedMapper extends SubClassMapperBase<WorldInitialized> {
       v.teamMembers;
   static const Field<WorldInitialized, Map<String, Set<int>>> _f$teamMembers =
       Field('teamMembers', _$teamMembers, opt: true);
+  static Map<String, Set<int>>? _$gameRoleMembers(WorldInitialized v) =>
+      v.gameRoleMembers;
+  static const Field<WorldInitialized, Map<String, Set<int>>>
+  _f$gameRoleMembers = Field('gameRoleMembers', _$gameRoleMembers, opt: true);
   static int? _$id(WorldInitialized v) => v.id;
   static const Field<WorldInitialized, int> _f$id = Field(
     'id',
@@ -276,6 +281,7 @@ class WorldInitializedMapper extends SubClassMapperBase<WorldInitialized> {
     #table: _f$table,
     #info: _f$info,
     #teamMembers: _f$teamMembers,
+    #gameRoleMembers: _f$gameRoleMembers,
     #id: _f$id,
     #packsSignature: _f$packsSignature,
     #clearUserInterface: _f$clearUserInterface,
@@ -294,6 +300,7 @@ class WorldInitializedMapper extends SubClassMapperBase<WorldInitialized> {
       table: data.dec(_f$table),
       info: data.dec(_f$info),
       teamMembers: data.dec(_f$teamMembers),
+      gameRoleMembers: data.dec(_f$gameRoleMembers),
       id: data.dec(_f$id),
       packsSignature: data.dec(_f$packsSignature),
       clearUserInterface: data.dec(_f$clearUserInterface),
@@ -369,6 +376,8 @@ abstract class WorldInitializedCopyWith<$R, $In extends WorldInitialized, $Out>
   GameInfoCopyWith<$R, GameInfo, GameInfo>? get info;
   MapCopyWith<$R, String, Set<int>, ObjectCopyWith<$R, Set<int>, Set<int>>>?
   get teamMembers;
+  MapCopyWith<$R, String, Set<int>, ObjectCopyWith<$R, Set<int>, Set<int>>>?
+  get gameRoleMembers;
   ListCopyWith<
     $R,
     SignatureMetadata,
@@ -380,6 +389,7 @@ abstract class WorldInitializedCopyWith<$R, $In extends WorldInitialized, $Out>
     GameTable? table,
     GameInfo? info,
     Map<String, Set<int>>? teamMembers,
+    Map<String, Set<int>>? gameRoleMembers,
     int? id,
     List<SignatureMetadata>? packsSignature,
     bool? clearUserInterface,
@@ -414,6 +424,15 @@ class _WorldInitializedCopyWithImpl<$R, $Out>
         )
       : null;
   @override
+  MapCopyWith<$R, String, Set<int>, ObjectCopyWith<$R, Set<int>, Set<int>>>?
+  get gameRoleMembers => $value.gameRoleMembers != null
+      ? MapCopyWith(
+          $value.gameRoleMembers!,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(gameRoleMembers: v),
+        )
+      : null;
+  @override
   ListCopyWith<
     $R,
     SignatureMetadata,
@@ -431,6 +450,7 @@ class _WorldInitializedCopyWithImpl<$R, $Out>
     Object? table = $none,
     Object? info = $none,
     Object? teamMembers = $none,
+    Object? gameRoleMembers = $none,
     Object? id = $none,
     Object? packsSignature = $none,
     bool? clearUserInterface,
@@ -439,6 +459,7 @@ class _WorldInitializedCopyWithImpl<$R, $Out>
       if (table != $none) #table: table,
       if (info != $none) #info: info,
       if (teamMembers != $none) #teamMembers: teamMembers,
+      if (gameRoleMembers != $none) #gameRoleMembers: gameRoleMembers,
       if (id != $none) #id: id,
       if (packsSignature != $none) #packsSignature: packsSignature,
       if (clearUserInterface != null) #clearUserInterface: clearUserInterface,
@@ -449,6 +470,7 @@ class _WorldInitializedCopyWithImpl<$R, $Out>
     table: data.get(#table, or: $value.table),
     info: data.get(#info, or: $value.info),
     teamMembers: data.get(#teamMembers, or: $value.teamMembers),
+    gameRoleMembers: data.get(#gameRoleMembers, or: $value.gameRoleMembers),
     id: data.get(#id, or: $value.id),
     packsSignature: data.get(#packsSignature, or: $value.packsSignature),
     clearUserInterface: data.get(
@@ -461,6 +483,150 @@ class _WorldInitializedCopyWithImpl<$R, $Out>
   WorldInitializedCopyWith<$R2, WorldInitialized, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   ) => _WorldInitializedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+/// @nodoc
+class GameRolesChangedMapper extends SubClassMapperBase<GameRolesChanged> {
+  GameRolesChangedMapper._();
+
+  static GameRolesChangedMapper? _instance;
+  static GameRolesChangedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = GameRolesChangedMapper._());
+      ServerWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'GameRolesChanged';
+
+  static int _$user(GameRolesChanged v) => v.user;
+  static const Field<GameRolesChanged, int> _f$user = Field('user', _$user);
+  static Set<String> _$roles(GameRolesChanged v) => v.roles;
+  static const Field<GameRolesChanged, Set<String>> _f$roles = Field(
+    'roles',
+    _$roles,
+    opt: true,
+    def: const {},
+  );
+
+  @override
+  final MappableFields<GameRolesChanged> fields = const {
+    #user: _f$user,
+    #roles: _f$roles,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'GameRolesChanged';
+  @override
+  late final ClassMapperBase superMapper =
+      ServerWorldEventMapper.ensureInitialized();
+
+  static GameRolesChanged _instantiate(DecodingData data) {
+    return GameRolesChanged(data.dec(_f$user), data.dec(_f$roles));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static GameRolesChanged fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<GameRolesChanged>(map);
+  }
+
+  static GameRolesChanged fromJson(String json) {
+    return ensureInitialized().decodeJson<GameRolesChanged>(json);
+  }
+}
+
+/// @nodoc
+mixin GameRolesChangedMappable {
+  String toJson() {
+    return GameRolesChangedMapper.ensureInitialized()
+        .encodeJson<GameRolesChanged>(this as GameRolesChanged);
+  }
+
+  Map<String, dynamic> toMap() {
+    return GameRolesChangedMapper.ensureInitialized()
+        .encodeMap<GameRolesChanged>(this as GameRolesChanged);
+  }
+
+  GameRolesChangedCopyWith<GameRolesChanged, GameRolesChanged, GameRolesChanged>
+  get copyWith =>
+      _GameRolesChangedCopyWithImpl<GameRolesChanged, GameRolesChanged>(
+        this as GameRolesChanged,
+        $identity,
+        $identity,
+      );
+  @override
+  String toString() {
+    return GameRolesChangedMapper.ensureInitialized().stringifyValue(
+      this as GameRolesChanged,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return GameRolesChangedMapper.ensureInitialized().equalsValue(
+      this as GameRolesChanged,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return GameRolesChangedMapper.ensureInitialized().hashValue(
+      this as GameRolesChanged,
+    );
+  }
+}
+
+/// @nodoc
+extension GameRolesChangedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, GameRolesChanged, $Out> {
+  GameRolesChangedCopyWith<$R, GameRolesChanged, $Out>
+  get $asGameRolesChanged =>
+      $base.as((v, t, t2) => _GameRolesChangedCopyWithImpl<$R, $Out>(v, t, t2));
+}
+
+/// @nodoc
+abstract class GameRolesChangedCopyWith<$R, $In extends GameRolesChanged, $Out>
+    implements ServerWorldEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({int? user, Set<String>? roles});
+  GameRolesChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+/// @nodoc
+class _GameRolesChangedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, GameRolesChanged, $Out>
+    implements GameRolesChangedCopyWith<$R, GameRolesChanged, $Out> {
+  _GameRolesChangedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<GameRolesChanged> $mapper =
+      GameRolesChangedMapper.ensureInitialized();
+  @override
+  $R call({int? user, Set<String>? roles}) => $apply(
+    FieldCopyWithData({
+      if (user != null) #user: user,
+      if (roles != null) #roles: roles,
+    }),
+  );
+  @override
+  GameRolesChanged $make(CopyWithData data) => GameRolesChanged(
+    data.get(#user, or: $value.user),
+    data.get(#roles, or: $value.roles),
+  );
+
+  @override
+  GameRolesChangedCopyWith<$R2, GameRolesChanged, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _GameRolesChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 /// @nodoc
@@ -2449,6 +2615,10 @@ class ClientWorldEventMapper extends SubClassMapperBase<ClientWorldEvent> {
       ModeChangeRequestMapper.ensureInitialized();
       AuthenticateRequestMapper.ensureInitialized();
       ToolbarActionRequestMapper.ensureInitialized();
+      KickPlayerRequestMapper.ensureInitialized();
+      BanPlayerRequestMapper.ensureInitialized();
+      ServerRoleChangeRequestMapper.ensureInitialized();
+      GameRolesChangeRequestMapper.ensureInitialized();
       HybridWorldEventMapper.ensureInitialized();
     }
     return _instance!;
@@ -4611,6 +4781,635 @@ class _ToolbarActionRequestCopyWithImpl<$R, $Out>
   ToolbarActionRequestCopyWith<$R2, ToolbarActionRequest, $Out2>
   $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _ToolbarActionRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+/// @nodoc
+class KickPlayerRequestMapper extends SubClassMapperBase<KickPlayerRequest> {
+  KickPlayerRequestMapper._();
+
+  static KickPlayerRequestMapper? _instance;
+  static KickPlayerRequestMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = KickPlayerRequestMapper._());
+      ClientWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'KickPlayerRequest';
+
+  static int _$player(KickPlayerRequest v) => v.player;
+  static const Field<KickPlayerRequest, int> _f$player = Field(
+    'player',
+    _$player,
+  );
+  static String? _$reason(KickPlayerRequest v) => v.reason;
+  static const Field<KickPlayerRequest, String> _f$reason = Field(
+    'reason',
+    _$reason,
+    opt: true,
+  );
+
+  @override
+  final MappableFields<KickPlayerRequest> fields = const {
+    #player: _f$player,
+    #reason: _f$reason,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'KickPlayerRequest';
+  @override
+  late final ClassMapperBase superMapper =
+      ClientWorldEventMapper.ensureInitialized();
+
+  static KickPlayerRequest _instantiate(DecodingData data) {
+    return KickPlayerRequest(data.dec(_f$player), reason: data.dec(_f$reason));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static KickPlayerRequest fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<KickPlayerRequest>(map);
+  }
+
+  static KickPlayerRequest fromJson(String json) {
+    return ensureInitialized().decodeJson<KickPlayerRequest>(json);
+  }
+}
+
+/// @nodoc
+mixin KickPlayerRequestMappable {
+  String toJson() {
+    return KickPlayerRequestMapper.ensureInitialized()
+        .encodeJson<KickPlayerRequest>(this as KickPlayerRequest);
+  }
+
+  Map<String, dynamic> toMap() {
+    return KickPlayerRequestMapper.ensureInitialized()
+        .encodeMap<KickPlayerRequest>(this as KickPlayerRequest);
+  }
+
+  KickPlayerRequestCopyWith<
+    KickPlayerRequest,
+    KickPlayerRequest,
+    KickPlayerRequest
+  >
+  get copyWith =>
+      _KickPlayerRequestCopyWithImpl<KickPlayerRequest, KickPlayerRequest>(
+        this as KickPlayerRequest,
+        $identity,
+        $identity,
+      );
+  @override
+  String toString() {
+    return KickPlayerRequestMapper.ensureInitialized().stringifyValue(
+      this as KickPlayerRequest,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return KickPlayerRequestMapper.ensureInitialized().equalsValue(
+      this as KickPlayerRequest,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return KickPlayerRequestMapper.ensureInitialized().hashValue(
+      this as KickPlayerRequest,
+    );
+  }
+}
+
+/// @nodoc
+extension KickPlayerRequestValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, KickPlayerRequest, $Out> {
+  KickPlayerRequestCopyWith<$R, KickPlayerRequest, $Out>
+  get $asKickPlayerRequest => $base.as(
+    (v, t, t2) => _KickPlayerRequestCopyWithImpl<$R, $Out>(v, t, t2),
+  );
+}
+
+/// @nodoc
+abstract class KickPlayerRequestCopyWith<
+  $R,
+  $In extends KickPlayerRequest,
+  $Out
+>
+    implements ClientWorldEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({int? player, String? reason});
+  KickPlayerRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+/// @nodoc
+class _KickPlayerRequestCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, KickPlayerRequest, $Out>
+    implements KickPlayerRequestCopyWith<$R, KickPlayerRequest, $Out> {
+  _KickPlayerRequestCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<KickPlayerRequest> $mapper =
+      KickPlayerRequestMapper.ensureInitialized();
+  @override
+  $R call({int? player, Object? reason = $none}) => $apply(
+    FieldCopyWithData({
+      if (player != null) #player: player,
+      if (reason != $none) #reason: reason,
+    }),
+  );
+  @override
+  KickPlayerRequest $make(CopyWithData data) => KickPlayerRequest(
+    data.get(#player, or: $value.player),
+    reason: data.get(#reason, or: $value.reason),
+  );
+
+  @override
+  KickPlayerRequestCopyWith<$R2, KickPlayerRequest, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _KickPlayerRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+/// @nodoc
+class BanPlayerRequestMapper extends SubClassMapperBase<BanPlayerRequest> {
+  BanPlayerRequestMapper._();
+
+  static BanPlayerRequestMapper? _instance;
+  static BanPlayerRequestMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = BanPlayerRequestMapper._());
+      ClientWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'BanPlayerRequest';
+
+  static int _$player(BanPlayerRequest v) => v.player;
+  static const Field<BanPlayerRequest, int> _f$player = Field(
+    'player',
+    _$player,
+  );
+  static String? _$reason(BanPlayerRequest v) => v.reason;
+  static const Field<BanPlayerRequest, String> _f$reason = Field(
+    'reason',
+    _$reason,
+    opt: true,
+  );
+  static DateTime? _$expiresAt(BanPlayerRequest v) => v.expiresAt;
+  static const Field<BanPlayerRequest, DateTime> _f$expiresAt = Field(
+    'expiresAt',
+    _$expiresAt,
+    opt: true,
+  );
+
+  @override
+  final MappableFields<BanPlayerRequest> fields = const {
+    #player: _f$player,
+    #reason: _f$reason,
+    #expiresAt: _f$expiresAt,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'BanPlayerRequest';
+  @override
+  late final ClassMapperBase superMapper =
+      ClientWorldEventMapper.ensureInitialized();
+
+  static BanPlayerRequest _instantiate(DecodingData data) {
+    return BanPlayerRequest(
+      data.dec(_f$player),
+      reason: data.dec(_f$reason),
+      expiresAt: data.dec(_f$expiresAt),
+    );
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static BanPlayerRequest fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<BanPlayerRequest>(map);
+  }
+
+  static BanPlayerRequest fromJson(String json) {
+    return ensureInitialized().decodeJson<BanPlayerRequest>(json);
+  }
+}
+
+/// @nodoc
+mixin BanPlayerRequestMappable {
+  String toJson() {
+    return BanPlayerRequestMapper.ensureInitialized()
+        .encodeJson<BanPlayerRequest>(this as BanPlayerRequest);
+  }
+
+  Map<String, dynamic> toMap() {
+    return BanPlayerRequestMapper.ensureInitialized()
+        .encodeMap<BanPlayerRequest>(this as BanPlayerRequest);
+  }
+
+  BanPlayerRequestCopyWith<BanPlayerRequest, BanPlayerRequest, BanPlayerRequest>
+  get copyWith =>
+      _BanPlayerRequestCopyWithImpl<BanPlayerRequest, BanPlayerRequest>(
+        this as BanPlayerRequest,
+        $identity,
+        $identity,
+      );
+  @override
+  String toString() {
+    return BanPlayerRequestMapper.ensureInitialized().stringifyValue(
+      this as BanPlayerRequest,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return BanPlayerRequestMapper.ensureInitialized().equalsValue(
+      this as BanPlayerRequest,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return BanPlayerRequestMapper.ensureInitialized().hashValue(
+      this as BanPlayerRequest,
+    );
+  }
+}
+
+/// @nodoc
+extension BanPlayerRequestValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, BanPlayerRequest, $Out> {
+  BanPlayerRequestCopyWith<$R, BanPlayerRequest, $Out>
+  get $asBanPlayerRequest =>
+      $base.as((v, t, t2) => _BanPlayerRequestCopyWithImpl<$R, $Out>(v, t, t2));
+}
+
+/// @nodoc
+abstract class BanPlayerRequestCopyWith<$R, $In extends BanPlayerRequest, $Out>
+    implements ClientWorldEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({int? player, String? reason, DateTime? expiresAt});
+  BanPlayerRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+/// @nodoc
+class _BanPlayerRequestCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, BanPlayerRequest, $Out>
+    implements BanPlayerRequestCopyWith<$R, BanPlayerRequest, $Out> {
+  _BanPlayerRequestCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<BanPlayerRequest> $mapper =
+      BanPlayerRequestMapper.ensureInitialized();
+  @override
+  $R call({int? player, Object? reason = $none, Object? expiresAt = $none}) =>
+      $apply(
+        FieldCopyWithData({
+          if (player != null) #player: player,
+          if (reason != $none) #reason: reason,
+          if (expiresAt != $none) #expiresAt: expiresAt,
+        }),
+      );
+  @override
+  BanPlayerRequest $make(CopyWithData data) => BanPlayerRequest(
+    data.get(#player, or: $value.player),
+    reason: data.get(#reason, or: $value.reason),
+    expiresAt: data.get(#expiresAt, or: $value.expiresAt),
+  );
+
+  @override
+  BanPlayerRequestCopyWith<$R2, BanPlayerRequest, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _BanPlayerRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+/// @nodoc
+class ServerRoleChangeRequestMapper
+    extends SubClassMapperBase<ServerRoleChangeRequest> {
+  ServerRoleChangeRequestMapper._();
+
+  static ServerRoleChangeRequestMapper? _instance;
+  static ServerRoleChangeRequestMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(
+        _instance = ServerRoleChangeRequestMapper._(),
+      );
+      ClientWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'ServerRoleChangeRequest';
+
+  static int _$player(ServerRoleChangeRequest v) => v.player;
+  static const Field<ServerRoleChangeRequest, int> _f$player = Field(
+    'player',
+    _$player,
+  );
+  static String _$role(ServerRoleChangeRequest v) => v.role;
+  static const Field<ServerRoleChangeRequest, String> _f$role = Field(
+    'role',
+    _$role,
+  );
+
+  @override
+  final MappableFields<ServerRoleChangeRequest> fields = const {
+    #player: _f$player,
+    #role: _f$role,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'ServerRoleChangeRequest';
+  @override
+  late final ClassMapperBase superMapper =
+      ClientWorldEventMapper.ensureInitialized();
+
+  static ServerRoleChangeRequest _instantiate(DecodingData data) {
+    return ServerRoleChangeRequest(data.dec(_f$player), data.dec(_f$role));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static ServerRoleChangeRequest fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<ServerRoleChangeRequest>(map);
+  }
+
+  static ServerRoleChangeRequest fromJson(String json) {
+    return ensureInitialized().decodeJson<ServerRoleChangeRequest>(json);
+  }
+}
+
+/// @nodoc
+mixin ServerRoleChangeRequestMappable {
+  String toJson() {
+    return ServerRoleChangeRequestMapper.ensureInitialized()
+        .encodeJson<ServerRoleChangeRequest>(this as ServerRoleChangeRequest);
+  }
+
+  Map<String, dynamic> toMap() {
+    return ServerRoleChangeRequestMapper.ensureInitialized()
+        .encodeMap<ServerRoleChangeRequest>(this as ServerRoleChangeRequest);
+  }
+
+  ServerRoleChangeRequestCopyWith<
+    ServerRoleChangeRequest,
+    ServerRoleChangeRequest,
+    ServerRoleChangeRequest
+  >
+  get copyWith =>
+      _ServerRoleChangeRequestCopyWithImpl<
+        ServerRoleChangeRequest,
+        ServerRoleChangeRequest
+      >(this as ServerRoleChangeRequest, $identity, $identity);
+  @override
+  String toString() {
+    return ServerRoleChangeRequestMapper.ensureInitialized().stringifyValue(
+      this as ServerRoleChangeRequest,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return ServerRoleChangeRequestMapper.ensureInitialized().equalsValue(
+      this as ServerRoleChangeRequest,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return ServerRoleChangeRequestMapper.ensureInitialized().hashValue(
+      this as ServerRoleChangeRequest,
+    );
+  }
+}
+
+/// @nodoc
+extension ServerRoleChangeRequestValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, ServerRoleChangeRequest, $Out> {
+  ServerRoleChangeRequestCopyWith<$R, ServerRoleChangeRequest, $Out>
+  get $asServerRoleChangeRequest => $base.as(
+    (v, t, t2) => _ServerRoleChangeRequestCopyWithImpl<$R, $Out>(v, t, t2),
+  );
+}
+
+/// @nodoc
+abstract class ServerRoleChangeRequestCopyWith<
+  $R,
+  $In extends ServerRoleChangeRequest,
+  $Out
+>
+    implements ClientWorldEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({int? player, String? role});
+  ServerRoleChangeRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+/// @nodoc
+class _ServerRoleChangeRequestCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, ServerRoleChangeRequest, $Out>
+    implements
+        ServerRoleChangeRequestCopyWith<$R, ServerRoleChangeRequest, $Out> {
+  _ServerRoleChangeRequestCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<ServerRoleChangeRequest> $mapper =
+      ServerRoleChangeRequestMapper.ensureInitialized();
+  @override
+  $R call({int? player, String? role}) => $apply(
+    FieldCopyWithData({
+      if (player != null) #player: player,
+      if (role != null) #role: role,
+    }),
+  );
+  @override
+  ServerRoleChangeRequest $make(CopyWithData data) => ServerRoleChangeRequest(
+    data.get(#player, or: $value.player),
+    data.get(#role, or: $value.role),
+  );
+
+  @override
+  ServerRoleChangeRequestCopyWith<$R2, ServerRoleChangeRequest, $Out2>
+  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _ServerRoleChangeRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+/// @nodoc
+class GameRolesChangeRequestMapper
+    extends SubClassMapperBase<GameRolesChangeRequest> {
+  GameRolesChangeRequestMapper._();
+
+  static GameRolesChangeRequestMapper? _instance;
+  static GameRolesChangeRequestMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = GameRolesChangeRequestMapper._());
+      ClientWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'GameRolesChangeRequest';
+
+  static int _$player(GameRolesChangeRequest v) => v.player;
+  static const Field<GameRolesChangeRequest, int> _f$player = Field(
+    'player',
+    _$player,
+  );
+  static Set<String> _$roles(GameRolesChangeRequest v) => v.roles;
+  static const Field<GameRolesChangeRequest, Set<String>> _f$roles = Field(
+    'roles',
+    _$roles,
+    opt: true,
+    def: const {},
+  );
+
+  @override
+  final MappableFields<GameRolesChangeRequest> fields = const {
+    #player: _f$player,
+    #roles: _f$roles,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'GameRolesChangeRequest';
+  @override
+  late final ClassMapperBase superMapper =
+      ClientWorldEventMapper.ensureInitialized();
+
+  static GameRolesChangeRequest _instantiate(DecodingData data) {
+    return GameRolesChangeRequest(data.dec(_f$player), data.dec(_f$roles));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static GameRolesChangeRequest fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<GameRolesChangeRequest>(map);
+  }
+
+  static GameRolesChangeRequest fromJson(String json) {
+    return ensureInitialized().decodeJson<GameRolesChangeRequest>(json);
+  }
+}
+
+/// @nodoc
+mixin GameRolesChangeRequestMappable {
+  String toJson() {
+    return GameRolesChangeRequestMapper.ensureInitialized()
+        .encodeJson<GameRolesChangeRequest>(this as GameRolesChangeRequest);
+  }
+
+  Map<String, dynamic> toMap() {
+    return GameRolesChangeRequestMapper.ensureInitialized()
+        .encodeMap<GameRolesChangeRequest>(this as GameRolesChangeRequest);
+  }
+
+  GameRolesChangeRequestCopyWith<
+    GameRolesChangeRequest,
+    GameRolesChangeRequest,
+    GameRolesChangeRequest
+  >
+  get copyWith =>
+      _GameRolesChangeRequestCopyWithImpl<
+        GameRolesChangeRequest,
+        GameRolesChangeRequest
+      >(this as GameRolesChangeRequest, $identity, $identity);
+  @override
+  String toString() {
+    return GameRolesChangeRequestMapper.ensureInitialized().stringifyValue(
+      this as GameRolesChangeRequest,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return GameRolesChangeRequestMapper.ensureInitialized().equalsValue(
+      this as GameRolesChangeRequest,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return GameRolesChangeRequestMapper.ensureInitialized().hashValue(
+      this as GameRolesChangeRequest,
+    );
+  }
+}
+
+/// @nodoc
+extension GameRolesChangeRequestValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, GameRolesChangeRequest, $Out> {
+  GameRolesChangeRequestCopyWith<$R, GameRolesChangeRequest, $Out>
+  get $asGameRolesChangeRequest => $base.as(
+    (v, t, t2) => _GameRolesChangeRequestCopyWithImpl<$R, $Out>(v, t, t2),
+  );
+}
+
+/// @nodoc
+abstract class GameRolesChangeRequestCopyWith<
+  $R,
+  $In extends GameRolesChangeRequest,
+  $Out
+>
+    implements ClientWorldEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({int? player, Set<String>? roles});
+  GameRolesChangeRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+/// @nodoc
+class _GameRolesChangeRequestCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, GameRolesChangeRequest, $Out>
+    implements
+        GameRolesChangeRequestCopyWith<$R, GameRolesChangeRequest, $Out> {
+  _GameRolesChangeRequestCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<GameRolesChangeRequest> $mapper =
+      GameRolesChangeRequestMapper.ensureInitialized();
+  @override
+  $R call({int? player, Set<String>? roles}) => $apply(
+    FieldCopyWithData({
+      if (player != null) #player: player,
+      if (roles != null) #roles: roles,
+    }),
+  );
+  @override
+  GameRolesChangeRequest $make(CopyWithData data) => GameRolesChangeRequest(
+    data.get(#player, or: $value.player),
+    data.get(#roles, or: $value.roles),
+  );
+
+  @override
+  GameRolesChangeRequestCopyWith<$R2, GameRolesChangeRequest, $Out2>
+  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _GameRolesChangeRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 /// @nodoc

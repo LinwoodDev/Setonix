@@ -1416,12 +1416,54 @@ class PlayerInfoMapper extends ClassMapperBase<PlayerInfo> {
     _$name,
     opt: true,
   );
+  static String _$serverRole(PlayerInfo v) => v.serverRole;
+  static const Field<PlayerInfo, String> _f$serverRole = Field(
+    'serverRole',
+    _$serverRole,
+    opt: true,
+    def: kDefaultServerRole,
+  );
+  static Set<String> _$gameRoles(PlayerInfo v) => v.gameRoles;
+  static const Field<PlayerInfo, Set<String>> _f$gameRoles = Field(
+    'gameRoles',
+    _$gameRoles,
+    opt: true,
+    def: const {},
+  );
+  static bool _$registered(PlayerInfo v) => v.registered;
+  static const Field<PlayerInfo, bool> _f$registered = Field(
+    'registered',
+    _$registered,
+    opt: true,
+    def: false,
+  );
+  static bool _$manageable(PlayerInfo v) => v.manageable;
+  static const Field<PlayerInfo, bool> _f$manageable = Field(
+    'manageable',
+    _$manageable,
+    opt: true,
+    def: false,
+  );
 
   @override
-  final MappableFields<PlayerInfo> fields = const {#id: _f$id, #name: _f$name};
+  final MappableFields<PlayerInfo> fields = const {
+    #id: _f$id,
+    #name: _f$name,
+    #serverRole: _f$serverRole,
+    #gameRoles: _f$gameRoles,
+    #registered: _f$registered,
+    #manageable: _f$manageable,
+  };
 
   static PlayerInfo _instantiate(DecodingData data) {
-    return PlayerInfo(id: data.dec(_f$id), name: data.dec(_f$name));
+    return PlayerInfo(
+      id: data.dec(_f$id),
+      name: data.dec(_f$name),
+      serverRole: data.dec(_f$serverRole),
+      gameRoles: data.dec(_f$gameRoles),
+      registered: data.dec(_f$registered),
+      manageable: data.dec(_f$manageable),
+    );
   }
 
   @override
@@ -1487,7 +1529,14 @@ extension PlayerInfoValueCopy<$R, $Out>
 /// @nodoc
 abstract class PlayerInfoCopyWith<$R, $In extends PlayerInfo, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call({int? id, String? name});
+  $R call({
+    int? id,
+    String? name,
+    String? serverRole,
+    Set<String>? gameRoles,
+    bool? registered,
+    bool? manageable,
+  });
   PlayerInfoCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -1501,16 +1550,31 @@ class _PlayerInfoCopyWithImpl<$R, $Out>
   late final ClassMapperBase<PlayerInfo> $mapper =
       PlayerInfoMapper.ensureInitialized();
   @override
-  $R call({int? id, Object? name = $none}) => $apply(
+  $R call({
+    int? id,
+    Object? name = $none,
+    String? serverRole,
+    Set<String>? gameRoles,
+    bool? registered,
+    bool? manageable,
+  }) => $apply(
     FieldCopyWithData({
       if (id != null) #id: id,
       if (name != $none) #name: name,
+      if (serverRole != null) #serverRole: serverRole,
+      if (gameRoles != null) #gameRoles: gameRoles,
+      if (registered != null) #registered: registered,
+      if (manageable != null) #manageable: manageable,
     }),
   );
   @override
   PlayerInfo $make(CopyWithData data) => PlayerInfo(
     id: data.get(#id, or: $value.id),
     name: data.get(#name, or: $value.name),
+    serverRole: data.get(#serverRole, or: $value.serverRole),
+    gameRoles: data.get(#gameRoles, or: $value.gameRoles),
+    registered: data.get(#registered, or: $value.registered),
+    manageable: data.get(#manageable, or: $value.manageable),
   );
 
   @override
@@ -1528,6 +1592,7 @@ class ServerStateMapper extends ClassMapperBase<ServerState> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ServerStateMapper._());
       PlayerInfoMapper.ensureInitialized();
+      ServerRoleDefinitionMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -1548,15 +1613,48 @@ class ServerStateMapper extends ClassMapperBase<ServerState> {
     opt: true,
     def: const [],
   );
+  static Map<String, ServerRoleDefinition> _$serverRoles(ServerState v) =>
+      v.serverRoles;
+  static const Field<ServerState, Map<String, ServerRoleDefinition>>
+  _f$serverRoles = Field(
+    'serverRoles',
+    _$serverRoles,
+    opt: true,
+    def: const {},
+  );
+  static Set<String> _$permissions(ServerState v) => v.permissions;
+  static const Field<ServerState, Set<String>> _f$permissions = Field(
+    'permissions',
+    _$permissions,
+    opt: true,
+    def: const {},
+  );
+  static Set<String> _$assignableServerRoles(ServerState v) =>
+      v.assignableServerRoles;
+  static const Field<ServerState, Set<String>> _f$assignableServerRoles = Field(
+    'assignableServerRoles',
+    _$assignableServerRoles,
+    opt: true,
+    def: const {},
+  );
 
   @override
   final MappableFields<ServerState> fields = const {
     #link: _f$link,
     #players: _f$players,
+    #serverRoles: _f$serverRoles,
+    #permissions: _f$permissions,
+    #assignableServerRoles: _f$assignableServerRoles,
   };
 
   static ServerState _instantiate(DecodingData data) {
-    return ServerState(link: data.dec(_f$link), players: data.dec(_f$players));
+    return ServerState(
+      link: data.dec(_f$link),
+      players: data.dec(_f$players),
+      serverRoles: data.dec(_f$serverRoles),
+      permissions: data.dec(_f$permissions),
+      assignableServerRoles: data.dec(_f$assignableServerRoles),
+    );
   }
 
   @override
@@ -1624,7 +1722,20 @@ abstract class ServerStateCopyWith<$R, $In extends ServerState, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, PlayerInfo, PlayerInfoCopyWith<$R, PlayerInfo, PlayerInfo>>
   get players;
-  $R call({String? link, List<PlayerInfo>? players});
+  MapCopyWith<
+    $R,
+    String,
+    ServerRoleDefinition,
+    ServerRoleDefinitionCopyWith<$R, ServerRoleDefinition, ServerRoleDefinition>
+  >
+  get serverRoles;
+  $R call({
+    String? link,
+    List<PlayerInfo>? players,
+    Map<String, ServerRoleDefinition>? serverRoles,
+    Set<String>? permissions,
+    Set<String>? assignableServerRoles,
+  });
   ServerStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -1645,16 +1756,44 @@ class _ServerStateCopyWithImpl<$R, $Out>
     (v) => call(players: v),
   );
   @override
-  $R call({Object? link = $none, List<PlayerInfo>? players}) => $apply(
+  MapCopyWith<
+    $R,
+    String,
+    ServerRoleDefinition,
+    ServerRoleDefinitionCopyWith<$R, ServerRoleDefinition, ServerRoleDefinition>
+  >
+  get serverRoles => MapCopyWith(
+    $value.serverRoles,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(serverRoles: v),
+  );
+  @override
+  $R call({
+    Object? link = $none,
+    List<PlayerInfo>? players,
+    Map<String, ServerRoleDefinition>? serverRoles,
+    Set<String>? permissions,
+    Set<String>? assignableServerRoles,
+  }) => $apply(
     FieldCopyWithData({
       if (link != $none) #link: link,
       if (players != null) #players: players,
+      if (serverRoles != null) #serverRoles: serverRoles,
+      if (permissions != null) #permissions: permissions,
+      if (assignableServerRoles != null)
+        #assignableServerRoles: assignableServerRoles,
     }),
   );
   @override
   ServerState $make(CopyWithData data) => ServerState(
     link: data.get(#link, or: $value.link),
     players: data.get(#players, or: $value.players),
+    serverRoles: data.get(#serverRoles, or: $value.serverRoles),
+    permissions: data.get(#permissions, or: $value.permissions),
+    assignableServerRoles: data.get(
+      #assignableServerRoles,
+      or: $value.assignableServerRoles,
+    ),
   );
 
   @override

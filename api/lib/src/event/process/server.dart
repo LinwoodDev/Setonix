@@ -13,6 +13,7 @@ bool isValidServerEvent(ServerWorldEvent event, WorldState state) =>
                 true),
       TeamJoined() => state.info.teams.containsKey(event.team),
       TeamLeft() => state.info.teams.containsKey(event.team),
+      GameRolesChanged() => event.roles.every((role) => role.isNotEmpty),
       CellShuffled() => event.positions.every(
         (e) => e.inRange(
           0,
@@ -118,6 +119,7 @@ ServerProcessed processServerEvent(
           table: event.table ?? state.table,
           id: event.id ?? state.id,
           teamMembers: event.teamMembers ?? state.teamMembers,
+          gameRoleMembers: event.gameRoleMembers ?? state.gameRoleMembers,
           info: event.info ?? state.info,
           dialogs: event.clearUserInterface ? [] : state.dialogs,
           images: event.clearUserInterface ? {} : state.images,
@@ -144,6 +146,16 @@ ServerProcessed processServerEvent(
         allMembers[event.team] = members;
       }
       return ServerProcessed(state.copyWith(teamMembers: allMembers));
+    case GameRolesChanged():
+      final members = <String, Set<Channel>>{
+        for (final entry in state.gameRoleMembers.entries)
+          if (entry.value.any((member) => member != event.user))
+            entry.key: {...entry.value}..remove(event.user),
+      };
+      for (final role in event.roles) {
+        members.putIfAbsent(role, () => {}).add(event.user);
+      }
+      return ServerProcessed(state.copyWith(gameRoleMembers: members));
     case ObjectsChanged():
       return ServerProcessed(
         state.mapTableOrDefault(event.cell.table, (table) {

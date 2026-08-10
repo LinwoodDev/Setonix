@@ -7,12 +7,15 @@ import 'package:networker_socket/server.dart';
 import 'package:setonix_api/setonix_api.dart';
 import 'package:setonix_plugin/native.dart';
 import 'package:setonix_server/src/asset.dart';
+import 'package:setonix_server/src/authorization.dart';
 import 'package:setonix_server/src/bloc.dart';
 import 'package:setonix_server/src/config.dart';
 import 'package:setonix_server/src/programs/kick.dart';
+import 'package:setonix_server/src/programs/ban.dart';
 import 'package:setonix_server/src/programs/packs.dart';
 import 'package:setonix_server/src/programs/players.dart';
 import 'package:setonix_server/src/programs/reset.dart';
+import 'package:setonix_server/src/programs/role.dart';
 import 'package:setonix_server/src/programs/save.dart';
 import 'package:setonix_server/src/programs/say.dart';
 import 'package:setonix_server/src/programs/scripts.dart';
@@ -102,6 +105,57 @@ final class SetonixServer {
 
   WorldState? getUserWorldState(Channel channel) =>
       getUserWorld(channel)?.state;
+
+  ServerState buildServerState(Channel viewer, WorldBloc world) {
+    final viewerRole = userManager.getUser(viewer)?.role ?? '';
+    return ServerState(
+      players: userManager
+          .getUsers()
+          .where((entry) => getUserWorld(entry.key) == world)
+          .map(
+            (entry) => PlayerInfo(
+              id: entry.key,
+              name: entry.value.name,
+              serverRole: entry.value.role,
+              gameRoles: world.state.getGameRoles(entry.key),
+              registered: entry.value.fingerprint != null,
+              manageable: canManageServerRole(
+                viewerRole,
+                entry.value.role,
+                configManager.serverRoles,
+              ),
+            ),
+          )
+          .toList(growable: false),
+      serverRoles: configManager.serverRoles,
+      permissions: permissionsForRole(viewerRole, configManager.serverRoles),
+      assignableServerRoles: configManager.serverRoles.keys
+          .where(
+            (role) => canAssignServerRole(
+              viewerRole,
+              role,
+              configManager.serverRoles,
+            ),
+          )
+          .toSet(),
+    );
+  }
+
+  Future<void> broadcastServerState(WorldBloc world) async {
+    await Future.wait(
+      world.players.map(
+        (channel) => sendEvent(
+          ServerStateUpdated(buildServerState(channel, world)),
+          target: channel,
+          worldName: world.worldName,
+        ),
+      ),
+    );
+  }
+
+  Future<void> broadcastAllServerStates() async {
+    await Future.wait(_worlds.values.map(broadcastServerState));
+  }
 
   SetonixServer._(
     this.consoler,
@@ -299,7 +353,10 @@ final class SetonixServer {
       'players': PlayersProgram(this),
       'say': SayProgram(this),
       'reset': ResetProgram(this),
+      'role': RoleProgram(this),
       'kick': KickProgram(this),
+      'ban': BanProgram(this, banned: true),
+      'unban': BanProgram(this, banned: false),
       'whitelist': WhitelistProgram(this),
       'scripts': ScriptsProgram(this),
       null: UnknownProgram(),
@@ -378,11 +435,16 @@ final class SetonixServer {
   void _onLeave((Channel, ConnectionInfo) event) {
     final (user, info) = event;
     log('${info.address} ($user) left the game', level: LogLevel.info);
-    getUserWorld(user)?.eventSystem.runLeaveCallback(event.$1, event.$2);
+    final world = getUserWorld(user);
+    world?.eventSystem.runLeaveCallback(event.$1, event.$2);
+    if (world != null && world.state.getGameRoles(user).isNotEmpty) {
+      unawaited(sendEvent(GameRolesChanged(user), worldName: world.worldName));
+    }
 
     _userWorlds.remove(user);
     userManager.removeUser(user);
     challengeManager?.removeChallenge(user);
+    unawaited(broadcastAllServerStates());
   }
 
   Future<void> loadWorlds() async {
@@ -444,6 +506,7 @@ final class SetonixServer {
     }
     log('Closing...', level: LogLevel.info);
     _server?.close();
+    await userManager.service?.close();
     consoler.dispose();
   }
 

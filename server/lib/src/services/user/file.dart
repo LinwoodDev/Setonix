@@ -33,6 +33,14 @@ final class FileUserService extends UserService {
       fingerprint: row['fingerprint'] as String?,
       name: row['name'] as String,
       onWhitelist: row['on_whitelist'] == 1,
+      role: (row['role'] as String?)?.isNotEmpty == true
+          ? row['role'] as String
+          : kDefaultServerRole,
+      banned: row['banned'] == 1,
+      bannedUntil: row['banned_until'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(row['banned_until'] as int)
+          : null,
+      banReason: row['ban_reason'] as String?,
       createdAt: row['created_at'] != null
           ? DateTime.fromMillisecondsSinceEpoch(row['created_at'] as int)
           : null,
@@ -62,6 +70,10 @@ final class FileUserService extends UserService {
     String fingerprint, {
     String? name,
     bool? onWhitelist,
+    String? role,
+    bool? banned,
+    DateTime? bannedUntil,
+    String? banReason,
     DateTime? lastLogin,
     bool createIfNotExists = false,
   }) {
@@ -75,6 +87,18 @@ final class FileUserService extends UserService {
     if (onWhitelist != null) {
       updates.add('on_whitelist = ?');
       values.add(onWhitelist ? 1 : 0);
+    }
+    if (role != null) {
+      updates.add('role = ?');
+      values.add(role);
+    }
+    if (banned != null) {
+      updates.addAll(['banned = ?', 'banned_until = ?', 'ban_reason = ?']);
+      values.addAll([
+        banned ? 1 : 0,
+        bannedUntil?.millisecondsSinceEpoch,
+        banReason,
+      ]);
     }
     if (lastLogin != null) {
       updates.add('last_login = ?');
@@ -103,6 +127,18 @@ final class FileUserService extends UserService {
       insertCols.add('on_whitelist');
       insertVals.add(onWhitelist ? 1 : 0);
     }
+    if (role != null) {
+      insertCols.add('role');
+      insertVals.add(role);
+    }
+    if (banned != null) {
+      insertCols.addAll(['banned', 'banned_until', 'ban_reason']);
+      insertVals.addAll([
+        banned ? 1 : 0,
+        bannedUntil?.millisecondsSinceEpoch,
+        banReason,
+      ]);
+    }
     if (lastLogin != null) {
       insertCols.add('last_login');
       insertVals.add(lastLogin.millisecondsSinceEpoch);
@@ -126,5 +162,11 @@ final class FileUserService extends UserService {
       );
     }
     return true;
+  }
+
+  @override
+  void close() {
+    _database?.close();
+    _database = null;
   }
 }

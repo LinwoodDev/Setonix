@@ -85,6 +85,7 @@ enum StateFieldAccess {
   info,
   players,
   teamMembers,
+  gameRoles,
   namespace,
   game,
 }

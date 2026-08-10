@@ -201,6 +201,25 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
     bool force = false,
   }) async {
     final data = packet.data;
+    if (!packet.isServer &&
+        data is ClientWorldEvent &&
+        data is! AuthenticateRequest) {
+      final user = server.userManager.getUser(packet.channel);
+      if (user == null ||
+          !canProcessClientEvent(
+            user.role,
+            data,
+            server.configManager.serverRoles,
+          )) {
+        server.log(
+          'Rejected ${data.runtimeType} from channel ${packet.channel}: '
+          '${user == null ? 'unauthenticated' : 'role ${user.role}'}',
+          level: LogLevel.warning,
+        );
+        return;
+      }
+      if (await _handleManagementEvent(data, packet.channel)) return;
+    }
     ServerResponse? process;
     try {
       process = await processClientEvent(
@@ -253,6 +272,77 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
       case KickServerResponse():
         server.kick(packet.channel, process.message);
     }
+    if (data is UserJoined || data is AuthenticateRequest) {
+      await server.broadcastServerState(this);
+    }
+  }
+
+  Future<bool> _handleManagementEvent(
+    ClientWorldEvent event,
+    Channel actorId,
+  ) async {
+    final actor = server.userManager.getUser(actorId);
+    final targetId = switch (event) {
+      KickPlayerRequest() => event.player,
+      BanPlayerRequest() => event.player,
+      ServerRoleChangeRequest() => event.player,
+      GameRolesChangeRequest() => event.player,
+      _ => null,
+    };
+    final target = targetId == null
+        ? null
+        : server.userManager.getUser(targetId);
+    final targetIsInWorld =
+        targetId != null &&
+        target != null &&
+        server.getUserWorld(targetId) == this;
+    final roles = server.configManager.serverRoles;
+    switch (event) {
+      case KickPlayerRequest():
+        if (actor == null ||
+            !targetIsInWorld ||
+            !canManageServerRole(actor.role, target.role, roles)) {
+          return true;
+        }
+        server.kick(
+          event.player,
+          KickMessage(reason: KickReason.kick, message: event.reason),
+        );
+      case BanPlayerRequest():
+        if (actor == null ||
+            !targetIsInWorld ||
+            !canManageServerRole(actor.role, target.role, roles)) {
+          return true;
+        }
+        final changed = await server.userManager.changeBan(
+          '#${event.player}',
+          banned: true,
+          until: event.expiresAt,
+          reason: event.reason,
+        );
+        if (changed) {
+          server.kick(
+            event.player,
+            KickMessage(reason: KickReason.ban, message: event.reason),
+          );
+        }
+      case ServerRoleChangeRequest():
+        if (actor == null ||
+            !targetIsInWorld ||
+            !roles.containsKey(event.role) ||
+            !canManageServerRole(actor.role, target.role, roles) ||
+            !canAssignServerRole(actor.role, event.role, roles)) {
+          return true;
+        }
+        await server.userManager.changeRole('#${event.player}', event.role);
+        await server.broadcastServerState(this);
+      case GameRolesChangeRequest():
+        if (!targetIsInWorld) return true;
+        await sendEvent(GameRolesChanged(event.player, event.roles));
+      default:
+        return false;
+    }
+    return true;
   }
 
   @override
@@ -267,7 +357,9 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
   }) => server.sendEvent(event, target: target, worldName: worldName);
 
   @override
-  List<int> get players => server.players.keys.toList(growable: false);
+  List<int> get players => server.players.keys
+      .where((channel) => server.getUserWorldName(channel) == worldName)
+      .toList(growable: false);
 
   @override
   String getScriptState(String plugin) => _scriptStates[plugin] ?? '{}';

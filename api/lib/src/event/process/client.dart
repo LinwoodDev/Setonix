@@ -212,6 +212,7 @@ Future<ServerResponse?> processClientEvent(
         .values
         .toList(),
     teamMembers: state.teamMembers,
+    gameRoleMembers: state.gameRoleMembers,
   );
 
   if (event == null) {
@@ -452,6 +453,10 @@ Future<ServerResponse?> processClientEvent(
       }
       return UpdateServerResponse.builder(buildInitialize(), channel);
     case ToolbarActionRequest():
+    case KickPlayerRequest():
+    case BanPlayerRequest():
+    case ServerRoleChangeRequest():
+    case GameRolesChangeRequest():
       return UpdateServerResponse.builder(null);
   }
 }

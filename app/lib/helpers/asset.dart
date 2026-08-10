@@ -118,6 +118,23 @@ class GameAssetManager extends AssetManager {
       _loadedTranslations[key] ??
       TranslationsStore(getLocale: () => currentLocale);
 
+  RoleTranslation getRoleTranslation(String key, {String? fallback}) {
+    final location = ItemLocation.fromString(key);
+    return getTranslations(
+      location.namespace,
+    ).getRoleTranslation(location.id, fallback: fallback);
+  }
+
+  PermissionTranslation getPermissionTranslation(
+    String permission, {
+    String? fallback,
+  }) {
+    final location = ItemLocation.fromString(permission);
+    return getTranslations(
+      location.namespace,
+    ).getPermissionTranslation(location.id, fallback: fallback);
+  }
+
   void unloadPacks(Iterable<String> keys) {
     _loadedTranslations.removeWhere((e, _) => keys.contains(e));
     for (final key in keys) {

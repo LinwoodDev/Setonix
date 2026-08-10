@@ -74,6 +74,9 @@ class ConfigManager {
   String get endpointSecret =>
       _mergedConfig.endpointSecret ?? SetonixConfig.defaultEndpointSecret;
 
+  Map<String, ServerRoleDefinition> get serverRoles =>
+      _mergedConfig.serverRoles ?? kDefaultServerRoles;
+
   ItemLocation? get gameMode {
     final data = _mergedConfig.gameMode ?? SetonixConfig.defaultGameMode;
     if (data.isEmpty) return null;

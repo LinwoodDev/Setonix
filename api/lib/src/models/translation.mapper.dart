@@ -21,6 +21,8 @@ class PackTranslationMapper extends ClassMapperBase<PackTranslation> {
       BackgroundTranslationMapper.ensureInitialized();
       BoardTranslationMapper.ensureInitialized();
       ModeTranslationMapper.ensureInitialized();
+      RoleTranslationMapper.ensureInitialized();
+      PermissionTranslationMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -50,6 +52,18 @@ class PackTranslationMapper extends ClassMapperBase<PackTranslation> {
   static Map<String, ModeTranslation> _$modes(PackTranslation v) => v.modes;
   static const Field<PackTranslation, Map<String, ModeTranslation>> _f$modes =
       Field('modes', _$modes, opt: true, def: const {});
+  static Map<String, RoleTranslation> _$roles(PackTranslation v) => v.roles;
+  static const Field<PackTranslation, Map<String, RoleTranslation>> _f$roles =
+      Field('roles', _$roles, opt: true, def: const {});
+  static Map<String, PermissionTranslation> _$permissions(PackTranslation v) =>
+      v.permissions;
+  static const Field<PackTranslation, Map<String, PermissionTranslation>>
+  _f$permissions = Field(
+    'permissions',
+    _$permissions,
+    opt: true,
+    def: const {},
+  );
 
   @override
   final MappableFields<PackTranslation> fields = const {
@@ -58,6 +72,8 @@ class PackTranslationMapper extends ClassMapperBase<PackTranslation> {
     #backgrounds: _f$backgrounds,
     #boards: _f$boards,
     #modes: _f$modes,
+    #roles: _f$roles,
+    #permissions: _f$permissions,
   };
 
   static PackTranslation _instantiate(DecodingData data) {
@@ -67,6 +83,8 @@ class PackTranslationMapper extends ClassMapperBase<PackTranslation> {
       backgrounds: data.dec(_f$backgrounds),
       boards: data.dec(_f$boards),
       modes: data.dec(_f$modes),
+      roles: data.dec(_f$roles),
+      permissions: data.dec(_f$permissions),
     );
   }
 
@@ -174,12 +192,32 @@ abstract class PackTranslationCopyWith<$R, $In extends PackTranslation, $Out>
     ModeTranslationCopyWith<$R, ModeTranslation, ModeTranslation>
   >
   get modes;
+  MapCopyWith<
+    $R,
+    String,
+    RoleTranslation,
+    RoleTranslationCopyWith<$R, RoleTranslation, RoleTranslation>
+  >
+  get roles;
+  MapCopyWith<
+    $R,
+    String,
+    PermissionTranslation,
+    PermissionTranslationCopyWith<
+      $R,
+      PermissionTranslation,
+      PermissionTranslation
+    >
+  >
+  get permissions;
   $R call({
     Map<String, DeckTranslation>? decks,
     Map<String, FigureTranslation>? figures,
     Map<String, BackgroundTranslation>? backgrounds,
     Map<String, BoardTranslation>? boards,
     Map<String, ModeTranslation>? modes,
+    Map<String, RoleTranslation>? roles,
+    Map<String, PermissionTranslation>? permissions,
   });
   PackTranslationCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
@@ -260,12 +298,42 @@ class _PackTranslationCopyWithImpl<$R, $Out>
     (v) => call(modes: v),
   );
   @override
+  MapCopyWith<
+    $R,
+    String,
+    RoleTranslation,
+    RoleTranslationCopyWith<$R, RoleTranslation, RoleTranslation>
+  >
+  get roles => MapCopyWith(
+    $value.roles,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(roles: v),
+  );
+  @override
+  MapCopyWith<
+    $R,
+    String,
+    PermissionTranslation,
+    PermissionTranslationCopyWith<
+      $R,
+      PermissionTranslation,
+      PermissionTranslation
+    >
+  >
+  get permissions => MapCopyWith(
+    $value.permissions,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(permissions: v),
+  );
+  @override
   $R call({
     Map<String, DeckTranslation>? decks,
     Map<String, FigureTranslation>? figures,
     Map<String, BackgroundTranslation>? backgrounds,
     Map<String, BoardTranslation>? boards,
     Map<String, ModeTranslation>? modes,
+    Map<String, RoleTranslation>? roles,
+    Map<String, PermissionTranslation>? permissions,
   }) => $apply(
     FieldCopyWithData({
       if (decks != null) #decks: decks,
@@ -273,6 +341,8 @@ class _PackTranslationCopyWithImpl<$R, $Out>
       if (backgrounds != null) #backgrounds: backgrounds,
       if (boards != null) #boards: boards,
       if (modes != null) #modes: modes,
+      if (roles != null) #roles: roles,
+      if (permissions != null) #permissions: permissions,
     }),
   );
   @override
@@ -282,6 +352,8 @@ class _PackTranslationCopyWithImpl<$R, $Out>
     backgrounds: data.get(#backgrounds, or: $value.backgrounds),
     boards: data.get(#boards, or: $value.boards),
     modes: data.get(#modes, or: $value.modes),
+    roles: data.get(#roles, or: $value.roles),
+    permissions: data.get(#permissions, or: $value.permissions),
   );
 
   @override
@@ -443,6 +515,8 @@ class DescriptiveTranslationMapper
       BackgroundTranslationMapper.ensureInitialized();
       BoardTranslationMapper.ensureInitialized();
       ModeTranslationMapper.ensureInitialized();
+      RoleTranslationMapper.ensureInitialized();
+      PermissionTranslationMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -1287,5 +1361,293 @@ class _ModeTranslationCopyWithImpl<$R, $Out>
   ModeTranslationCopyWith<$R2, ModeTranslation, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   ) => _ModeTranslationCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+/// @nodoc
+class RoleTranslationMapper extends ClassMapperBase<RoleTranslation> {
+  RoleTranslationMapper._();
+
+  static RoleTranslationMapper? _instance;
+  static RoleTranslationMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = RoleTranslationMapper._());
+      DescriptiveTranslationMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'RoleTranslation';
+
+  static String _$name(RoleTranslation v) => v.name;
+  static const Field<RoleTranslation, String> _f$name = Field('name', _$name);
+  static String? _$description(RoleTranslation v) => v.description;
+  static const Field<RoleTranslation, String> _f$description = Field(
+    'description',
+    _$description,
+    opt: true,
+  );
+
+  @override
+  final MappableFields<RoleTranslation> fields = const {
+    #name: _f$name,
+    #description: _f$description,
+  };
+
+  static RoleTranslation _instantiate(DecodingData data) {
+    return RoleTranslation(
+      name: data.dec(_f$name),
+      description: data.dec(_f$description),
+    );
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static RoleTranslation fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<RoleTranslation>(map);
+  }
+
+  static RoleTranslation fromJson(String json) {
+    return ensureInitialized().decodeJson<RoleTranslation>(json);
+  }
+}
+
+/// @nodoc
+mixin RoleTranslationMappable {
+  String toJson() {
+    return RoleTranslationMapper.ensureInitialized()
+        .encodeJson<RoleTranslation>(this as RoleTranslation);
+  }
+
+  Map<String, dynamic> toMap() {
+    return RoleTranslationMapper.ensureInitialized().encodeMap<RoleTranslation>(
+      this as RoleTranslation,
+    );
+  }
+
+  RoleTranslationCopyWith<RoleTranslation, RoleTranslation, RoleTranslation>
+  get copyWith =>
+      _RoleTranslationCopyWithImpl<RoleTranslation, RoleTranslation>(
+        this as RoleTranslation,
+        $identity,
+        $identity,
+      );
+  @override
+  String toString() {
+    return RoleTranslationMapper.ensureInitialized().stringifyValue(
+      this as RoleTranslation,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return RoleTranslationMapper.ensureInitialized().equalsValue(
+      this as RoleTranslation,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return RoleTranslationMapper.ensureInitialized().hashValue(
+      this as RoleTranslation,
+    );
+  }
+}
+
+/// @nodoc
+extension RoleTranslationValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, RoleTranslation, $Out> {
+  RoleTranslationCopyWith<$R, RoleTranslation, $Out> get $asRoleTranslation =>
+      $base.as((v, t, t2) => _RoleTranslationCopyWithImpl<$R, $Out>(v, t, t2));
+}
+
+/// @nodoc
+abstract class RoleTranslationCopyWith<$R, $In extends RoleTranslation, $Out>
+    implements DescriptiveTranslationCopyWith<$R, $In, $Out> {
+  @override
+  $R call({String? name, String? description});
+  RoleTranslationCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+/// @nodoc
+class _RoleTranslationCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, RoleTranslation, $Out>
+    implements RoleTranslationCopyWith<$R, RoleTranslation, $Out> {
+  _RoleTranslationCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<RoleTranslation> $mapper =
+      RoleTranslationMapper.ensureInitialized();
+  @override
+  $R call({String? name, Object? description = $none}) => $apply(
+    FieldCopyWithData({
+      if (name != null) #name: name,
+      if (description != $none) #description: description,
+    }),
+  );
+  @override
+  RoleTranslation $make(CopyWithData data) => RoleTranslation(
+    name: data.get(#name, or: $value.name),
+    description: data.get(#description, or: $value.description),
+  );
+
+  @override
+  RoleTranslationCopyWith<$R2, RoleTranslation, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _RoleTranslationCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+/// @nodoc
+class PermissionTranslationMapper
+    extends ClassMapperBase<PermissionTranslation> {
+  PermissionTranslationMapper._();
+
+  static PermissionTranslationMapper? _instance;
+  static PermissionTranslationMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = PermissionTranslationMapper._());
+      DescriptiveTranslationMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'PermissionTranslation';
+
+  static String _$name(PermissionTranslation v) => v.name;
+  static const Field<PermissionTranslation, String> _f$name = Field(
+    'name',
+    _$name,
+  );
+  static String? _$description(PermissionTranslation v) => v.description;
+  static const Field<PermissionTranslation, String> _f$description = Field(
+    'description',
+    _$description,
+    opt: true,
+  );
+
+  @override
+  final MappableFields<PermissionTranslation> fields = const {
+    #name: _f$name,
+    #description: _f$description,
+  };
+
+  static PermissionTranslation _instantiate(DecodingData data) {
+    return PermissionTranslation(
+      name: data.dec(_f$name),
+      description: data.dec(_f$description),
+    );
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static PermissionTranslation fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<PermissionTranslation>(map);
+  }
+
+  static PermissionTranslation fromJson(String json) {
+    return ensureInitialized().decodeJson<PermissionTranslation>(json);
+  }
+}
+
+/// @nodoc
+mixin PermissionTranslationMappable {
+  String toJson() {
+    return PermissionTranslationMapper.ensureInitialized()
+        .encodeJson<PermissionTranslation>(this as PermissionTranslation);
+  }
+
+  Map<String, dynamic> toMap() {
+    return PermissionTranslationMapper.ensureInitialized()
+        .encodeMap<PermissionTranslation>(this as PermissionTranslation);
+  }
+
+  PermissionTranslationCopyWith<
+    PermissionTranslation,
+    PermissionTranslation,
+    PermissionTranslation
+  >
+  get copyWith =>
+      _PermissionTranslationCopyWithImpl<
+        PermissionTranslation,
+        PermissionTranslation
+      >(this as PermissionTranslation, $identity, $identity);
+  @override
+  String toString() {
+    return PermissionTranslationMapper.ensureInitialized().stringifyValue(
+      this as PermissionTranslation,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return PermissionTranslationMapper.ensureInitialized().equalsValue(
+      this as PermissionTranslation,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return PermissionTranslationMapper.ensureInitialized().hashValue(
+      this as PermissionTranslation,
+    );
+  }
+}
+
+/// @nodoc
+extension PermissionTranslationValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, PermissionTranslation, $Out> {
+  PermissionTranslationCopyWith<$R, PermissionTranslation, $Out>
+  get $asPermissionTranslation => $base.as(
+    (v, t, t2) => _PermissionTranslationCopyWithImpl<$R, $Out>(v, t, t2),
+  );
+}
+
+/// @nodoc
+abstract class PermissionTranslationCopyWith<
+  $R,
+  $In extends PermissionTranslation,
+  $Out
+>
+    implements DescriptiveTranslationCopyWith<$R, $In, $Out> {
+  @override
+  $R call({String? name, String? description});
+  PermissionTranslationCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+/// @nodoc
+class _PermissionTranslationCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, PermissionTranslation, $Out>
+    implements PermissionTranslationCopyWith<$R, PermissionTranslation, $Out> {
+  _PermissionTranslationCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<PermissionTranslation> $mapper =
+      PermissionTranslationMapper.ensureInitialized();
+  @override
+  $R call({String? name, Object? description = $none}) => $apply(
+    FieldCopyWithData({
+      if (name != null) #name: name,
+      if (description != $none) #description: description,
+    }),
+  );
+  @override
+  PermissionTranslation $make(CopyWithData data) => PermissionTranslation(
+    name: data.get(#name, or: $value.name),
+    description: data.get(#description, or: $value.description),
+  );
+
+  @override
+  PermissionTranslationCopyWith<$R2, PermissionTranslation, $Out2>
+  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _PermissionTranslationCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 

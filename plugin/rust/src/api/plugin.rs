@@ -17,6 +17,7 @@ pub enum StateFieldAccess {
     Info,
     Players,
     TeamMembers,
+    GameRoles,
     Namespace,
     Game,
 }

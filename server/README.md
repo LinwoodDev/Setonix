@@ -64,3 +64,39 @@ Future<void> onLoad(SetonixServer server) async {
   });
 }
 ```
+
+### Custom roles and permissions
+
+Role and permission identifiers are open strings. Use `namespace:key` for
+values owned by a custom server or pack. Built-in identifiers remain
+unqualified for compatibility and resolve against the `core` pack.
+
+```json
+{
+  "serverRoles": {
+    "blackjack:dealer": {
+      "name": "Dealer",
+      "priority": 25,
+      "permissions": ["play", "blackjack:deal", "blackjack:shuffle"]
+    }
+  }
+}
+```
+
+Custom server code can check a permission with
+`roleAllowsPermission(role, 'blackjack:deal', roles)`.
+
+Role and permission labels use the regular pack translation files. For the
+example above, add this to `translations/en.json` in the `blackjack` pack:
+
+```json
+{
+  "roles": {
+    "dealer": { "name": "Dealer" }
+  },
+  "permissions": {
+    "deal": { "name": "Deal cards" },
+    "shuffle": { "name": "Shuffle cards" }
+  }
+}
+```

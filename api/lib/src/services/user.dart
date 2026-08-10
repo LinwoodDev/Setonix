@@ -12,16 +12,27 @@ final class SetonixUser with SetonixUserMappable {
   final String? fingerprint;
   final String name;
   final bool onWhitelist;
+  final String role;
+  final bool banned;
+  final DateTime? bannedUntil;
+  final String? banReason;
   final DateTime? createdAt, updatedAt, lastLogin;
 
   const SetonixUser({
     this.fingerprint,
     required this.name,
     this.onWhitelist = false,
+    this.role = kDefaultServerRole,
+    this.banned = false,
+    this.bannedUntil,
+    this.banReason,
     this.createdAt,
     this.updatedAt,
     this.lastLogin,
   });
+
+  bool get isBanned =>
+      banned && (bannedUntil == null || bannedUntil!.isAfter(DateTime.now()));
 }
 
 abstract class UserService {
@@ -31,9 +42,15 @@ abstract class UserService {
     String fingerprint, {
     String? name,
     bool? onWhitelist,
+    String? role,
+    bool? banned,
+    DateTime? bannedUntil,
+    String? banReason,
     DateTime? lastLogin,
     bool createIfNotExists = false,
   });
+
+  FutureOr<void> close() {}
 }
 
 const kUserReferenceID = '#';
@@ -95,7 +112,13 @@ final class UserManager {
           throw KickMessage(reason: KickReason.notWhitelisted);
         }
       } else {
+        if (user.role.isEmpty) {
+          user = user.copyWith(role: kDefaultServerRole);
+        }
         name = user.name;
+        if (user.isBanned) {
+          throw KickMessage(reason: KickReason.ban, message: user.banReason);
+        }
         if (whitelistEnabled && !user.onWhitelist) {
           throw KickMessage(reason: KickReason.notWhitelisted);
         }
@@ -135,6 +158,53 @@ final class UserManager {
     if (result == false) return false;
     final updatedUser = user.copyWith(name: newName);
     _users[channel] = updatedUser;
+    return true;
+  }
+
+  Future<bool> changeRole(String reference, String role) async {
+    final user = await getUserByReference(reference);
+    if (user == null) return false;
+    final fingerprint = user.fingerprint;
+    if (fingerprint != null) {
+      final result = await service?.updateUser(fingerprint, role: role);
+      if (result == false) return false;
+    }
+    final entry = _users.entries.firstWhereOrNull(
+      (entry) =>
+          entry.value == user ||
+          (fingerprint != null && entry.value.fingerprint == fingerprint),
+    );
+    if (entry == null) return fingerprint != null;
+    _users[entry.key] = entry.value.copyWith(role: role);
+    return true;
+  }
+
+  Future<bool> changeBan(
+    String reference, {
+    required bool banned,
+    DateTime? until,
+    String? reason,
+  }) async {
+    final user = await getUserByReference(reference);
+    final fingerprint = user?.fingerprint;
+    if (user == null || fingerprint == null) return false;
+    final result = await service?.updateUser(
+      fingerprint,
+      banned: banned,
+      bannedUntil: banned ? until : null,
+      banReason: banned ? reason : null,
+    );
+    if (result == false) return false;
+    final entry = _users.entries
+        .where((entry) => entry.value.fingerprint == fingerprint)
+        .firstOrNull;
+    if (entry != null) {
+      _users[entry.key] = entry.value.copyWith(
+        banned: banned,
+        bannedUntil: banned ? until : null,
+        banReason: banned ? reason : null,
+      );
+    }
     return true;
   }
 

@@ -2,6 +2,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:networker/networker.dart';
 
 import '../event/event.dart';
+import 'authorization.dart';
 import 'meta.dart';
 
 part 'server.mapper.dart';
@@ -195,16 +196,36 @@ class ListProperty extends GameProperty with ListPropertyMappable {
 final class PlayerInfo with PlayerInfoMappable {
   final Channel id;
   final String? name;
+  final String serverRole;
+  final Set<String> gameRoles;
+  final bool registered;
+  final bool manageable;
 
-  const PlayerInfo({required this.id, this.name});
+  const PlayerInfo({
+    required this.id,
+    this.name,
+    this.serverRole = kDefaultServerRole,
+    this.gameRoles = const {},
+    this.registered = false,
+    this.manageable = false,
+  });
 }
 
 @MappableClass()
 final class ServerState with ServerStateMappable {
   final String? link;
   final List<PlayerInfo> players;
+  final Map<String, ServerRoleDefinition> serverRoles;
+  final Set<String> permissions;
+  final Set<String> assignableServerRoles;
 
-  const ServerState({this.link, this.players = const []});
+  const ServerState({
+    this.link,
+    this.players = const [],
+    this.serverRoles = const {},
+    this.permissions = const {},
+    this.assignableServerRoles = const {},
+  });
 }
 
 @MappableClass()
