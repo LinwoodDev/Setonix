@@ -236,14 +236,16 @@ class ViewMultiplayerDialog extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final player = players[index];
                   final gameRoles = worldState.world.getGameRoles(player.id);
-                  final roleDefinition =
-                      serverState.serverRoles[player.serverRole];
-                  final roleName = worldState.assetManager
-                      .getRoleTranslation(
-                        player.serverRole,
-                        fallback: roleDefinition?.name,
+                  final roleNames = player.serverRoles
+                      .map(
+                        (role) => worldState.assetManager
+                            .getRoleTranslation(
+                              role,
+                              fallback: serverState.serverRoles[role]?.name,
+                            )
+                            .name,
                       )
-                      .name;
+                      .toList(growable: false);
                   final gameRoleNames = gameRoles
                       .map(
                         (role) => worldState.assetManager
@@ -281,7 +283,7 @@ class ViewMultiplayerDialog extends StatelessWidget {
                     ),
                     subtitle: Text(
                       [
-                        roleName,
+                        roleNames.join(', '),
                         if (gameRoleNames.isNotEmpty) gameRoleNames.join(', '),
                       ].join(' · '),
                     ),
@@ -295,11 +297,21 @@ class ViewMultiplayerDialog extends StatelessWidget {
                               } else if (value == 'gameRoles') {
                                 _changeGameRoles(context, player, gameRoles);
                               } else if (value.startsWith('role:')) {
+                                final role = value.substring(5);
+                                final updatedRoles = Set<String>.from(
+                                  player.serverRoles,
+                                );
+                                if (updatedRoles.contains(role) &&
+                                    role != kDefaultServerRole) {
+                                  updatedRoles.remove(role);
+                                } else {
+                                  updatedRoles.add(role);
+                                }
                                 unawaited(
                                   context.read<WorldBloc>().process(
                                     ServerRoleChangeRequest(
                                       player.id,
-                                      value.substring(5),
+                                      roles: updatedRoles,
                                     ),
                                   ),
                                 );
@@ -352,16 +364,17 @@ class ViewMultiplayerDialog extends StatelessWidget {
                                                 .name,
                                           )
                                           .join(', ');
-                                      return PopupMenuItem(
+                                      return CheckedPopupMenuItem(
                                         value: 'role:${entry.key}',
+                                        checked: player.serverRoles.contains(
+                                          entry.key,
+                                        ),
+                                        enabled:
+                                            entry.key != kDefaultServerRole,
                                         child: ListTile(
                                           contentPadding: EdgeInsets.zero,
                                           dense: true,
-                                          title: Text(
-                                            AppLocalizations.of(
-                                              context,
-                                            ).setServerRole(translatedRole),
-                                          ),
+                                          title: Text(translatedRole),
                                           subtitle:
                                               translatedPermissions.isEmpty
                                               ? null

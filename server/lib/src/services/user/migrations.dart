@@ -16,4 +16,8 @@ ALTER TABLE users ADD COLUMN banned INTEGER NOT NULL DEFAULT 0;
 ALTER TABLE users ADD COLUMN banned_until INTEGER;
 ALTER TABLE users ADD COLUMN ban_reason TEXT;
 ''',
+  3: '''
+ALTER TABLE users ADD COLUMN roles TEXT;
+UPDATE users SET roles = role;
+''',
 };

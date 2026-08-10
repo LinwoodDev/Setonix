@@ -8,12 +8,12 @@ void main() {
   group('server authorization', () {
     test('spectators can observe and chat but cannot mutate the world', () {
       expect(
-        canProcessClientEvent('spectator', MessageRequest('hello'), roles),
+        canProcessClientEvent({'spectator'}, MessageRequest('hello'), roles),
         isTrue,
       );
       expect(
         canProcessClientEvent(
-          'spectator',
+          {'spectator'},
           CellRollRequest(GlobalVectorDefinition('', 0, 0)),
           roles,
         ),
@@ -23,15 +23,15 @@ void main() {
 
     test('players can play but cannot change world configuration', () {
       expect(
-        canProcessClientEvent('player', TeamJoinRequest('players'), roles),
+        canProcessClientEvent({'player'}, TeamJoinRequest('players'), roles),
         isTrue,
       );
       expect(
-        canProcessClientEvent('player', PacksChangeRequest(const []), roles),
+        canProcessClientEvent({'player'}, PacksChangeRequest(const []), roles),
         isFalse,
       );
       expect(
-        canProcessClientEvent('player', ModeChangeRequest(null), roles),
+        canProcessClientEvent({'player'}, ModeChangeRequest(null), roles),
         isFalse,
       );
     });
@@ -39,16 +39,16 @@ void main() {
     test('moderators and owners can manage world configuration', () {
       final event = PacksChangeRequest(const []);
 
-      expect(canProcessClientEvent('moderator', event, roles), isTrue);
-      expect(canProcessClientEvent('owner', event, roles), isTrue);
+      expect(canProcessClientEvent({'moderator'}, event, roles), isTrue);
+      expect(canProcessClientEvent({'owner'}, event, roles), isTrue);
     });
 
     test('new unclassified client events default to play permission', () {
       final event = ToolbarActionRequest('test');
 
       expect(requiredPermission(event), ServerPermission.play);
-      expect(canProcessClientEvent('spectator', event, roles), isFalse);
-      expect(canProcessClientEvent('player', event, roles), isTrue);
+      expect(canProcessClientEvent({'spectator'}, event, roles), isFalse);
+      expect(canProcessClientEvent({'player'}, event, roles), isTrue);
     });
 
     test('custom server roles are capability-driven', () {
@@ -66,14 +66,14 @@ void main() {
 
       expect(
         canProcessClientEvent(
-          'dealer',
+          {'dealer'},
           PacksChangeRequest(const []),
           customRoles,
         ),
         isTrue,
       );
       expect(
-        canProcessClientEvent('dealer', KickPlayerRequest(2), customRoles),
+        canProcessClientEvent({'dealer'}, KickPlayerRequest(2), customRoles),
         isFalse,
       );
       expect(roleAllowsPermission('dealer', deal, customRoles), isTrue);
@@ -84,16 +84,42 @@ void main() {
     });
 
     test('role hierarchy prevents managing peers and higher roles', () {
-      expect(canManageServerRole('moderator', 'player', roles), isTrue);
-      expect(canManageServerRole('moderator', 'moderator', roles), isFalse);
-      expect(canManageServerRole('moderator', 'owner', roles), isFalse);
-      expect(canManageServerRole('owner', 'moderator', roles), isTrue);
+      expect(
+        canManageServerRoles({'player', 'moderator'}, {'player'}, roles),
+        isTrue,
+      );
+      expect(
+        canManageServerRoles({'moderator'}, {'moderator'}, roles),
+        isFalse,
+      );
+      expect(
+        canManageServerRoles({'moderator'}, {'player', 'owner'}, roles),
+        isFalse,
+      );
+      expect(
+        canManageServerRoles({'player', 'owner'}, {'moderator'}, roles),
+        isTrue,
+      );
     });
 
     test('roles can only assign roles at or below their priority', () {
-      expect(canAssignServerRole('moderator', 'moderator', roles), isTrue);
-      expect(canAssignServerRole('moderator', 'owner', roles), isFalse);
-      expect(canAssignServerRole('owner', 'owner', roles), isTrue);
+      expect(
+        canAssignServerRole({'player', 'moderator'}, 'moderator', roles),
+        isTrue,
+      );
+      expect(canAssignServerRole({'moderator'}, 'owner', roles), isFalse);
+      expect(canAssignServerRole({'player', 'owner'}, 'owner', roles), isTrue);
+    });
+
+    test('multiple roles union their permissions', () {
+      expect(
+        permissionsForRoles({'spectator', 'moderator'}, roles),
+        containsAll({
+          ServerPermission.play,
+          ServerPermission.manageWorld,
+          ServerPermission.kickPlayers,
+        }),
+      );
     });
 
     test('custom roles survive server configuration serialization', () {

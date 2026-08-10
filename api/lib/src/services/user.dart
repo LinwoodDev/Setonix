@@ -12,7 +12,7 @@ final class SetonixUser with SetonixUserMappable {
   final String? fingerprint;
   final String name;
   final bool onWhitelist;
-  final String role;
+  final Set<String> roles;
   final bool banned;
   final DateTime? bannedUntil;
   final String? banReason;
@@ -22,7 +22,7 @@ final class SetonixUser with SetonixUserMappable {
     this.fingerprint,
     required this.name,
     this.onWhitelist = false,
-    this.role = kDefaultServerRole,
+    this.roles = const {kDefaultServerRole},
     this.banned = false,
     this.bannedUntil,
     this.banReason,
@@ -42,13 +42,15 @@ abstract class UserService {
     String fingerprint, {
     String? name,
     bool? onWhitelist,
-    String? role,
+    Set<String>? roles,
     bool? banned,
     DateTime? bannedUntil,
     String? banReason,
     DateTime? lastLogin,
     bool createIfNotExists = false,
   });
+
+  FutureOr<bool> replaceRole(String role, String replacement) => false;
 
   FutureOr<void> close() {}
 }
@@ -112,8 +114,8 @@ final class UserManager {
           throw KickMessage(reason: KickReason.notWhitelisted);
         }
       } else {
-        if (user.role.isEmpty) {
-          user = user.copyWith(role: kDefaultServerRole);
+        if (!user.roles.contains(kDefaultServerRole)) {
+          user = user.copyWith(roles: {kDefaultServerRole, ...user.roles});
         }
         name = user.name;
         if (user.isBanned) {
@@ -161,12 +163,13 @@ final class UserManager {
     return true;
   }
 
-  Future<bool> changeRole(String reference, String role) async {
+  Future<bool> changeRoles(String reference, Set<String> roles) async {
+    roles = {...roles, kDefaultServerRole};
     final user = await getUserByReference(reference);
     if (user == null) return false;
     final fingerprint = user.fingerprint;
     if (fingerprint != null) {
-      final result = await service?.updateUser(fingerprint, role: role);
+      final result = await service?.updateUser(fingerprint, roles: roles);
       if (result == false) return false;
     }
     final entry = _users.entries.firstWhereOrNull(
@@ -175,8 +178,39 @@ final class UserManager {
           (fingerprint != null && entry.value.fingerprint == fingerprint),
     );
     if (entry == null) return fingerprint != null;
-    _users[entry.key] = entry.value.copyWith(role: role);
+    _users[entry.key] = entry.value.copyWith(roles: roles);
     return true;
+  }
+
+  Future<bool> addRole(String reference, String role) async {
+    final user = await getUserByReference(reference);
+    if (user == null) return false;
+    return changeRoles(reference, {...user.roles, role});
+  }
+
+  Future<bool> removeRole(String reference, String role) async {
+    if (role == kDefaultServerRole) return false;
+    final user = await getUserByReference(reference);
+    if (user == null || !user.roles.contains(role)) return false;
+    return changeRoles(reference, {...user.roles}..remove(role));
+  }
+
+  Future<int> replaceRole(String role, String replacement) async {
+    final replacedPersistently = await service?.replaceRole(role, replacement);
+    final entries = _users.entries
+        .where((entry) => entry.value.roles.contains(role))
+        .toList(growable: false);
+    for (final entry in entries) {
+      final fingerprint = entry.value.fingerprint;
+      if (replacedPersistently != true && fingerprint != null) {
+        final updatedRoles = {...entry.value.roles, replacement}..remove(role);
+        await service?.updateUser(fingerprint, roles: updatedRoles);
+      }
+      _users[entry.key] = entry.value.copyWith(
+        roles: {...entry.value.roles, replacement}..remove(role),
+      );
+    }
+    return entries.length;
   }
 
   Future<bool> changeBan(

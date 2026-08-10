@@ -11,6 +11,8 @@ export 'src/server.dart';
 export 'src/programs/kick.dart';
 export 'src/programs/packs.dart';
 export 'src/programs/players.dart';
+export 'src/programs/role.dart';
+export 'src/programs/roles.dart';
 export 'src/programs/reset.dart';
 export 'src/programs/save.dart';
 export 'src/programs/say.dart';

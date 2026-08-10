@@ -17,6 +17,25 @@ final class RemoteUserService extends UserService {
       ? {'Authorization': 'Bearer $endpointSecret'}
       : {};
 
+  SetonixUser _decodeUser(String body) {
+    final data = jsonDecode(body) as Map<String, dynamic>;
+    final legacyRole = data['role'];
+    if (data['roles'] == null &&
+        legacyRole is String &&
+        legacyRole.isNotEmpty) {
+      data['roles'] = [kDefaultServerRole, legacyRole];
+    }
+    return SetonixUserMapper.fromMap(data);
+  }
+
+  String? _legacyRole(Set<String>? roles) {
+    if (roles == null) return null;
+    return roles.firstWhere(
+      (role) => role != kDefaultServerRole,
+      orElse: () => kDefaultServerRole,
+    );
+  }
+
   @override
   Future<SetonixUser?> getUser(String fingerprint) async {
     final response = await http
@@ -27,7 +46,7 @@ final class RemoteUserService extends UserService {
         .timeout(requestTimeout);
     if (response.statusCode >= 200 && response.statusCode < 300) {
       if (response.body.isEmpty) return null; // No user found
-      return SetonixUserMapper.fromJson(response.body);
+      return _decodeUser(response.body);
     }
     throw KickMessage.fromString(response.body);
   }
@@ -41,7 +60,7 @@ final class RemoteUserService extends UserService {
         )
         .timeout(requestTimeout);
     if (response.statusCode == 200) {
-      return SetonixUserMapper.fromJson(response.body);
+      return _decodeUser(response.body);
     }
     return null;
   }
@@ -51,7 +70,7 @@ final class RemoteUserService extends UserService {
     String fingerprint, {
     String? name,
     bool? onWhitelist,
-    String? role,
+    Set<String>? roles,
     bool? banned,
     DateTime? bannedUntil,
     String? banReason,
@@ -61,7 +80,8 @@ final class RemoteUserService extends UserService {
     final body = jsonEncode({
       'name': name,
       'onWhitelist': onWhitelist,
-      'role': role,
+      'role': _legacyRole(roles),
+      'roles': roles?.toList(growable: false),
       'banned': banned,
       'bannedUntil': bannedUntil?.millisecondsSinceEpoch,
       'banReason': banReason,
@@ -83,7 +103,8 @@ final class RemoteUserService extends UserService {
           'fingerprint': fingerprint,
           'name': name,
           'onWhitelist': onWhitelist,
-          'role': role,
+          'role': _legacyRole(roles),
+          'roles': roles?.toList(growable: false),
           'banned': banned,
           'bannedUntil': bannedUntil?.millisecondsSinceEpoch,
           'banReason': banReason,

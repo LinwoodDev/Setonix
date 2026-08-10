@@ -196,7 +196,7 @@ class ListProperty extends GameProperty with ListPropertyMappable {
 final class PlayerInfo with PlayerInfoMappable {
   final Channel id;
   final String? name;
-  final String serverRole;
+  final Set<String> serverRoles;
   final Set<String> gameRoles;
   final bool registered;
   final bool manageable;
@@ -204,7 +204,7 @@ final class PlayerInfo with PlayerInfoMappable {
   const PlayerInfo({
     required this.id,
     this.name,
-    this.serverRole = kDefaultServerRole,
+    this.serverRoles = const {kDefaultServerRole},
     this.gameRoles = const {},
     this.registered = false,
     this.manageable = false,

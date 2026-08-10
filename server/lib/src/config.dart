@@ -6,6 +6,8 @@ import 'package:setonix_server/setonix_server.dart';
 
 class ConfigManager {
   SetonixConfig _config = SetonixConfig();
+  Map<String, ServerRoleDefinition>? _runtimeServerRoles;
+  File? _configFile;
   final SetonixConfig _envConfig;
   late SetonixConfig _mergedConfig = _mergeConfig();
   SetonixConfig _argsConfig = SetonixConfig();
@@ -26,6 +28,7 @@ class ConfigManager {
 
   Future<void> loadConfig({String rootPath = '.'}) async {
     final file = File(p.join(rootPath, 'config.json'));
+    _configFile = file;
     if (await file.exists()) {
       final content = await file.readAsString();
       _config = SetonixConfigMapper.fromJson(content);
@@ -75,7 +78,20 @@ class ConfigManager {
       _mergedConfig.endpointSecret ?? SetonixConfig.defaultEndpointSecret;
 
   Map<String, ServerRoleDefinition> get serverRoles =>
-      _mergedConfig.serverRoles ?? kDefaultServerRoles;
+      _runtimeServerRoles ?? _mergedConfig.serverRoles ?? kDefaultServerRoles;
+
+  Future<void> setServerRoles(Map<String, ServerRoleDefinition> roles) async {
+    final updated = Map<String, ServerRoleDefinition>.unmodifiable(roles);
+    _runtimeServerRoles = updated;
+    _config = _config.copyWith(serverRoles: updated);
+    _mergedConfig = _mergeConfig();
+    final file = _configFile;
+    if (file != null) {
+      await file.writeAsString(
+        JsonEncoder.withIndent('  ').convert(_config.toMap()),
+      );
+    }
+  }
 
   ItemLocation? get gameMode {
     final data = _mergedConfig.gameMode ?? SetonixConfig.defaultGameMode;

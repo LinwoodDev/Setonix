@@ -83,8 +83,37 @@ unqualified for compatibility and resolve against the `core` pack.
 }
 ```
 
-Custom server code can check a permission with
-`roleAllowsPermission(role, 'blackjack:deal', roles)`.
+Custom server code can check effective user permissions with
+`rolesAllowPermission(user.roles, 'blackjack:deal', roles)`.
+
+Users may have multiple roles. Their effective permissions are the union of
+all assigned roles, and their highest role priority is used for moderation
+hierarchy checks. The `player` role is always retained.
+
+Role assignments can be managed from the server console:
+
+```text
+role list <user>
+role add <user> <role>
+role remove <user> <role>
+role set <user> <role...>
+```
+
+Role definitions are managed persistently with `roles`:
+
+```text
+roles list
+roles show <role>
+roles create <role> <priority> <display name...>
+roles delete <role> [replacement]
+roles rename <role> <display name...>
+roles priority <role> <priority>
+roles permission add <role> <namespace:key>
+roles permission remove <role> <namespace:key>
+```
+
+Deleting a role replaces it with `player` unless another replacement is
+provided. The default `player` role cannot be deleted.
 
 Role and permission labels use the regular pack translation files. For the
 example above, add this to `translations/en.json` in the `blackjack` pack:

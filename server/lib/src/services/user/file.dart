@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:path/path.dart' as p;
 import 'package:setonix_api/setonix_api.dart';
@@ -7,6 +8,20 @@ import 'package:sqlite3/sqlite3.dart';
 
 final class FileUserService extends UserService {
   Database? _database;
+
+  Set<String> _decodeRoles(Object? value) {
+    if (value is! String || value.isEmpty) return const {kDefaultServerRole};
+    try {
+      final decoded = jsonDecode(value);
+      if (decoded is List) {
+        final roles = decoded.whereType<String>().where((e) => e.isNotEmpty);
+        if (roles.isNotEmpty) return {...roles, kDefaultServerRole};
+      }
+    } catch (_) {
+      return {kDefaultServerRole, value};
+    }
+    return const {kDefaultServerRole};
+  }
 
   Future<void> setup({String rootPath = '.'}) async {
     final database = sqlite3.open(p.join(rootPath, 'setonix.db'));
@@ -33,9 +48,7 @@ final class FileUserService extends UserService {
       fingerprint: row['fingerprint'] as String?,
       name: row['name'] as String,
       onWhitelist: row['on_whitelist'] == 1,
-      role: (row['role'] as String?)?.isNotEmpty == true
-          ? row['role'] as String
-          : kDefaultServerRole,
+      roles: _decodeRoles(row['roles']),
       banned: row['banned'] == 1,
       bannedUntil: row['banned_until'] != null
           ? DateTime.fromMillisecondsSinceEpoch(row['banned_until'] as int)
@@ -70,7 +83,7 @@ final class FileUserService extends UserService {
     String fingerprint, {
     String? name,
     bool? onWhitelist,
-    String? role,
+    Set<String>? roles,
     bool? banned,
     DateTime? bannedUntil,
     String? banReason,
@@ -88,9 +101,9 @@ final class FileUserService extends UserService {
       updates.add('on_whitelist = ?');
       values.add(onWhitelist ? 1 : 0);
     }
-    if (role != null) {
-      updates.add('role = ?');
-      values.add(role);
+    if (roles != null) {
+      updates.add('roles = ?');
+      values.add(jsonEncode(roles.toList(growable: false)));
     }
     if (banned != null) {
       updates.addAll(['banned = ?', 'banned_until = ?', 'ban_reason = ?']);
@@ -127,9 +140,9 @@ final class FileUserService extends UserService {
       insertCols.add('on_whitelist');
       insertVals.add(onWhitelist ? 1 : 0);
     }
-    if (role != null) {
-      insertCols.add('role');
-      insertVals.add(role);
+    if (roles != null) {
+      insertCols.add('roles');
+      insertVals.add(jsonEncode(roles.toList(growable: false)));
     }
     if (banned != null) {
       insertCols.addAll(['banned', 'banned_until', 'ban_reason']);
@@ -160,6 +173,23 @@ final class FileUserService extends UserService {
         ''',
         [...insertVals, ...values],
       );
+    }
+    return true;
+  }
+
+  @override
+  bool replaceRole(String role, String replacement) {
+    final database = _database;
+    if (database == null) return false;
+    final users = database.select('SELECT fingerprint, roles FROM users');
+    for (final user in users) {
+      final roles = _decodeRoles(user['roles']);
+      if (!roles.remove(role)) continue;
+      roles.add(replacement);
+      database.execute('UPDATE users SET roles = ? WHERE fingerprint = ?', [
+        jsonEncode(roles.toList(growable: false)),
+        user['fingerprint'],
+      ]);
     }
     return true;
   }

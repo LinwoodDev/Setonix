@@ -39,12 +39,12 @@ class SetonixUserMapper extends ClassMapperBase<SetonixUser> {
     opt: true,
     def: false,
   );
-  static String _$role(SetonixUser v) => v.role;
-  static const Field<SetonixUser, String> _f$role = Field(
-    'role',
-    _$role,
+  static Set<String> _$roles(SetonixUser v) => v.roles;
+  static const Field<SetonixUser, Set<String>> _f$roles = Field(
+    'roles',
+    _$roles,
     opt: true,
-    def: kDefaultServerRole,
+    def: const {kDefaultServerRole},
   );
   static bool _$banned(SetonixUser v) => v.banned;
   static const Field<SetonixUser, bool> _f$banned = Field(
@@ -89,7 +89,7 @@ class SetonixUserMapper extends ClassMapperBase<SetonixUser> {
     #fingerprint: _f$fingerprint,
     #name: _f$name,
     #onWhitelist: _f$onWhitelist,
-    #role: _f$role,
+    #roles: _f$roles,
     #banned: _f$banned,
     #bannedUntil: _f$bannedUntil,
     #banReason: _f$banReason,
@@ -103,7 +103,7 @@ class SetonixUserMapper extends ClassMapperBase<SetonixUser> {
       fingerprint: data.dec(_f$fingerprint),
       name: data.dec(_f$name),
       onWhitelist: data.dec(_f$onWhitelist),
-      role: data.dec(_f$role),
+      roles: data.dec(_f$roles),
       banned: data.dec(_f$banned),
       bannedUntil: data.dec(_f$bannedUntil),
       banReason: data.dec(_f$banReason),
@@ -180,7 +180,7 @@ abstract class SetonixUserCopyWith<$R, $In extends SetonixUser, $Out>
     String? fingerprint,
     String? name,
     bool? onWhitelist,
-    String? role,
+    Set<String>? roles,
     bool? banned,
     DateTime? bannedUntil,
     String? banReason,
@@ -205,7 +205,7 @@ class _SetonixUserCopyWithImpl<$R, $Out>
     Object? fingerprint = $none,
     String? name,
     bool? onWhitelist,
-    String? role,
+    Set<String>? roles,
     bool? banned,
     Object? bannedUntil = $none,
     Object? banReason = $none,
@@ -217,7 +217,7 @@ class _SetonixUserCopyWithImpl<$R, $Out>
       if (fingerprint != $none) #fingerprint: fingerprint,
       if (name != null) #name: name,
       if (onWhitelist != null) #onWhitelist: onWhitelist,
-      if (role != null) #role: role,
+      if (roles != null) #roles: roles,
       if (banned != null) #banned: banned,
       if (bannedUntil != $none) #bannedUntil: bannedUntil,
       if (banReason != $none) #banReason: banReason,
@@ -231,7 +231,7 @@ class _SetonixUserCopyWithImpl<$R, $Out>
     fingerprint: data.get(#fingerprint, or: $value.fingerprint),
     name: data.get(#name, or: $value.name),
     onWhitelist: data.get(#onWhitelist, or: $value.onWhitelist),
-    role: data.get(#role, or: $value.role),
+    roles: data.get(#roles, or: $value.roles),
     banned: data.get(#banned, or: $value.banned),
     bannedUntil: data.get(#bannedUntil, or: $value.bannedUntil),
     banReason: data.get(#banReason, or: $value.banReason),

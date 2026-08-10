@@ -207,13 +207,13 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
       final user = server.userManager.getUser(packet.channel);
       if (user == null ||
           !canProcessClientEvent(
-            user.role,
+            user.roles,
             data,
             server.configManager.serverRoles,
           )) {
         server.log(
           'Rejected ${data.runtimeType} from channel ${packet.channel}: '
-          '${user == null ? 'unauthenticated' : 'role ${user.role}'}',
+          '${user == null ? 'unauthenticated' : 'roles ${user.roles.join(', ')}'}',
           level: LogLevel.warning,
         );
         return;
@@ -272,6 +272,22 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
       case KickServerResponse():
         server.kick(packet.channel, process.message);
     }
+    if (data is AuthenticateRequest) {
+      final user = server.userManager.getUser(packet.channel);
+      if (user != null) {
+        final validRoles = {
+          kDefaultServerRole,
+          ...user.roles.where(server.configManager.serverRoles.containsKey),
+        };
+        if (validRoles.length != user.roles.length ||
+            !validRoles.containsAll(user.roles)) {
+          await server.userManager.changeRoles(
+            '#${packet.channel}',
+            validRoles,
+          );
+        }
+      }
+    }
     if (data is UserJoined || data is AuthenticateRequest) {
       await server.broadcastServerState(this);
     }
@@ -301,7 +317,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
       case KickPlayerRequest():
         if (actor == null ||
             !targetIsInWorld ||
-            !canManageServerRole(actor.role, target.role, roles)) {
+            !canManageServerRoles(actor.roles, target.roles, roles)) {
           return true;
         }
         server.kick(
@@ -311,7 +327,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
       case BanPlayerRequest():
         if (actor == null ||
             !targetIsInWorld ||
-            !canManageServerRole(actor.role, target.role, roles)) {
+            !canManageServerRoles(actor.roles, target.roles, roles)) {
           return true;
         }
         final changed = await server.userManager.changeBan(
@@ -327,14 +343,20 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
           );
         }
       case ServerRoleChangeRequest():
+        final requestedRoles = event.effectiveRoles;
         if (actor == null ||
             !targetIsInWorld ||
-            !roles.containsKey(event.role) ||
-            !canManageServerRole(actor.role, target.role, roles) ||
-            !canAssignServerRole(actor.role, event.role, roles)) {
+            requestedRoles.any((role) => !roles.containsKey(role)) ||
+            !canManageServerRoles(actor.roles, target.roles, roles) ||
+            requestedRoles.any(
+              (role) => !canAssignServerRole(actor.roles, role, roles),
+            )) {
           return true;
         }
-        await server.userManager.changeRole('#${event.player}', event.role);
+        await server.userManager.changeRoles(
+          '#${event.player}',
+          requestedRoles,
+        );
         await server.broadcastServerState(this);
       case GameRolesChangeRequest():
         if (!targetIsInWorld) return true;

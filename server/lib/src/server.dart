@@ -16,6 +16,7 @@ import 'package:setonix_server/src/programs/packs.dart';
 import 'package:setonix_server/src/programs/players.dart';
 import 'package:setonix_server/src/programs/reset.dart';
 import 'package:setonix_server/src/programs/role.dart';
+import 'package:setonix_server/src/programs/roles.dart';
 import 'package:setonix_server/src/programs/save.dart';
 import 'package:setonix_server/src/programs/say.dart';
 import 'package:setonix_server/src/programs/scripts.dart';
@@ -107,7 +108,7 @@ final class SetonixServer {
       getUserWorld(channel)?.state;
 
   ServerState buildServerState(Channel viewer, WorldBloc world) {
-    final viewerRole = userManager.getUser(viewer)?.role ?? '';
+    final viewerRoles = userManager.getUser(viewer)?.roles ?? const <String>{};
     return ServerState(
       players: userManager
           .getUsers()
@@ -116,23 +117,23 @@ final class SetonixServer {
             (entry) => PlayerInfo(
               id: entry.key,
               name: entry.value.name,
-              serverRole: entry.value.role,
+              serverRoles: entry.value.roles,
               gameRoles: world.state.getGameRoles(entry.key),
               registered: entry.value.fingerprint != null,
-              manageable: canManageServerRole(
-                viewerRole,
-                entry.value.role,
+              manageable: canManageServerRoles(
+                viewerRoles,
+                entry.value.roles,
                 configManager.serverRoles,
               ),
             ),
           )
           .toList(growable: false),
       serverRoles: configManager.serverRoles,
-      permissions: permissionsForRole(viewerRole, configManager.serverRoles),
+      permissions: permissionsForRoles(viewerRoles, configManager.serverRoles),
       assignableServerRoles: configManager.serverRoles.keys
           .where(
             (role) => canAssignServerRole(
-              viewerRole,
+              viewerRoles,
               role,
               configManager.serverRoles,
             ),
@@ -354,6 +355,7 @@ final class SetonixServer {
       'say': SayProgram(this),
       'reset': ResetProgram(this),
       'role': RoleProgram(this),
+      'roles': RolesProgram(this),
       'kick': KickProgram(this),
       'ban': BanProgram(this, banned: true),
       'unban': BanProgram(this, banned: false),

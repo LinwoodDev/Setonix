@@ -1416,12 +1416,12 @@ class PlayerInfoMapper extends ClassMapperBase<PlayerInfo> {
     _$name,
     opt: true,
   );
-  static String _$serverRole(PlayerInfo v) => v.serverRole;
-  static const Field<PlayerInfo, String> _f$serverRole = Field(
-    'serverRole',
-    _$serverRole,
+  static Set<String> _$serverRoles(PlayerInfo v) => v.serverRoles;
+  static const Field<PlayerInfo, Set<String>> _f$serverRoles = Field(
+    'serverRoles',
+    _$serverRoles,
     opt: true,
-    def: kDefaultServerRole,
+    def: const {kDefaultServerRole},
   );
   static Set<String> _$gameRoles(PlayerInfo v) => v.gameRoles;
   static const Field<PlayerInfo, Set<String>> _f$gameRoles = Field(
@@ -1449,7 +1449,7 @@ class PlayerInfoMapper extends ClassMapperBase<PlayerInfo> {
   final MappableFields<PlayerInfo> fields = const {
     #id: _f$id,
     #name: _f$name,
-    #serverRole: _f$serverRole,
+    #serverRoles: _f$serverRoles,
     #gameRoles: _f$gameRoles,
     #registered: _f$registered,
     #manageable: _f$manageable,
@@ -1459,7 +1459,7 @@ class PlayerInfoMapper extends ClassMapperBase<PlayerInfo> {
     return PlayerInfo(
       id: data.dec(_f$id),
       name: data.dec(_f$name),
-      serverRole: data.dec(_f$serverRole),
+      serverRoles: data.dec(_f$serverRoles),
       gameRoles: data.dec(_f$gameRoles),
       registered: data.dec(_f$registered),
       manageable: data.dec(_f$manageable),
@@ -1532,7 +1532,7 @@ abstract class PlayerInfoCopyWith<$R, $In extends PlayerInfo, $Out>
   $R call({
     int? id,
     String? name,
-    String? serverRole,
+    Set<String>? serverRoles,
     Set<String>? gameRoles,
     bool? registered,
     bool? manageable,
@@ -1553,7 +1553,7 @@ class _PlayerInfoCopyWithImpl<$R, $Out>
   $R call({
     int? id,
     Object? name = $none,
-    String? serverRole,
+    Set<String>? serverRoles,
     Set<String>? gameRoles,
     bool? registered,
     bool? manageable,
@@ -1561,7 +1561,7 @@ class _PlayerInfoCopyWithImpl<$R, $Out>
     FieldCopyWithData({
       if (id != null) #id: id,
       if (name != $none) #name: name,
-      if (serverRole != null) #serverRole: serverRole,
+      if (serverRoles != null) #serverRoles: serverRoles,
       if (gameRoles != null) #gameRoles: gameRoles,
       if (registered != null) #registered: registered,
       if (manageable != null) #manageable: manageable,
@@ -1571,7 +1571,7 @@ class _PlayerInfoCopyWithImpl<$R, $Out>
   PlayerInfo $make(CopyWithData data) => PlayerInfo(
     id: data.get(#id, or: $value.id),
     name: data.get(#name, or: $value.name),
-    serverRole: data.get(#serverRole, or: $value.serverRole),
+    serverRoles: data.get(#serverRoles, or: $value.serverRoles),
     gameRoles: data.get(#gameRoles, or: $value.gameRoles),
     registered: data.get(#registered, or: $value.registered),
     manageable: data.get(#manageable, or: $value.manageable),

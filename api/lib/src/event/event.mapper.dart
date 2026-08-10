@@ -5122,15 +5122,24 @@ class ServerRoleChangeRequestMapper
     'player',
     _$player,
   );
-  static String _$role(ServerRoleChangeRequest v) => v.role;
+  static Set<String> _$roles(ServerRoleChangeRequest v) => v.roles;
+  static const Field<ServerRoleChangeRequest, Set<String>> _f$roles = Field(
+    'roles',
+    _$roles,
+    opt: true,
+    def: const {},
+  );
+  static String? _$role(ServerRoleChangeRequest v) => v.role;
   static const Field<ServerRoleChangeRequest, String> _f$role = Field(
     'role',
     _$role,
+    opt: true,
   );
 
   @override
   final MappableFields<ServerRoleChangeRequest> fields = const {
     #player: _f$player,
+    #roles: _f$roles,
     #role: _f$role,
   };
 
@@ -5143,7 +5152,11 @@ class ServerRoleChangeRequestMapper
       ClientWorldEventMapper.ensureInitialized();
 
   static ServerRoleChangeRequest _instantiate(DecodingData data) {
-    return ServerRoleChangeRequest(data.dec(_f$player), data.dec(_f$role));
+    return ServerRoleChangeRequest(
+      data.dec(_f$player),
+      roles: data.dec(_f$roles),
+      role: data.dec(_f$role),
+    );
   }
 
   @override
@@ -5220,7 +5233,7 @@ abstract class ServerRoleChangeRequestCopyWith<
 >
     implements ClientWorldEventCopyWith<$R, $In, $Out> {
   @override
-  $R call({int? player, String? role});
+  $R call({int? player, Set<String>? roles, String? role});
   ServerRoleChangeRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -5237,16 +5250,18 @@ class _ServerRoleChangeRequestCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ServerRoleChangeRequest> $mapper =
       ServerRoleChangeRequestMapper.ensureInitialized();
   @override
-  $R call({int? player, String? role}) => $apply(
+  $R call({int? player, Set<String>? roles, Object? role = $none}) => $apply(
     FieldCopyWithData({
       if (player != null) #player: player,
-      if (role != null) #role: role,
+      if (roles != null) #roles: roles,
+      if (role != $none) #role: role,
     }),
   );
   @override
   ServerRoleChangeRequest $make(CopyWithData data) => ServerRoleChangeRequest(
     data.get(#player, or: $value.player),
-    data.get(#role, or: $value.role),
+    roles: data.get(#roles, or: $value.roles),
+    role: data.get(#role, or: $value.role),
   );
 
   @override

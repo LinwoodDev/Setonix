@@ -25,26 +25,55 @@ Set<String> permissionsForRole(
   Map<String, ServerRoleDefinition> roles,
 ) => roles[role]?.permissions ?? const {};
 
+Set<String> permissionsForRoles(
+  Iterable<String> assignedRoles,
+  Map<String, ServerRoleDefinition> roles,
+) => assignedRoles.expand((role) => permissionsForRole(role, roles)).toSet();
+
 bool roleAllowsPermission(
   String role,
   String? permission,
   Map<String, ServerRoleDefinition> roles,
 ) => permission == null || permissionsForRole(role, roles).contains(permission);
 
+bool rolesAllowPermission(
+  Iterable<String> assignedRoles,
+  String? permission,
+  Map<String, ServerRoleDefinition> roles,
+) =>
+    permission == null ||
+    permissionsForRoles(assignedRoles, roles).contains(permission);
+
 bool canProcessClientEvent(
-  String role,
+  Iterable<String> assignedRoles,
   WorldEvent event,
   Map<String, ServerRoleDefinition> roles,
-) => roleAllowsPermission(role, requiredPermission(event), roles);
+) => rolesAllowPermission(assignedRoles, requiredPermission(event), roles);
 
-bool canManageServerRole(
-  String actorRole,
-  String targetRole,
+int highestRolePriority(
+  Iterable<String> assignedRoles,
   Map<String, ServerRoleDefinition> roles,
-) => (roles[actorRole]?.priority ?? 0) > (roles[targetRole]?.priority ?? 0);
+) {
+  int? highest;
+  for (final role in assignedRoles) {
+    final priority = roles[role]?.priority;
+    if (priority != null && (highest == null || priority > highest)) {
+      highest = priority;
+    }
+  }
+  return highest ?? 0;
+}
+
+bool canManageServerRoles(
+  Iterable<String> actorRoles,
+  Iterable<String> targetRoles,
+  Map<String, ServerRoleDefinition> roles,
+) =>
+    highestRolePriority(actorRoles, roles) >
+    highestRolePriority(targetRoles, roles);
 
 bool canAssignServerRole(
-  String actorRole,
+  Iterable<String> actorRoles,
   String newRole,
   Map<String, ServerRoleDefinition> roles,
-) => (roles[actorRole]?.priority ?? 0) >= (roles[newRole]?.priority ?? 0);
+) => highestRolePriority(actorRoles, roles) >= (roles[newRole]?.priority ?? 0);

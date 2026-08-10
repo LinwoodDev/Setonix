@@ -17,7 +17,7 @@ class PlayersProgram extends ConsoleProgram {
     for (final player in players) {
       final connectionInfo = server.players[player.key];
       print(
-        "${connectionInfo?.address} | #${player.key}) | @${player.value.name} | ${player.value.role} | *${player.value.fingerprint ?? 'No Fingerprint'}",
+        "${connectionInfo?.address} | #${player.key}) | @${player.value.name} | ${player.value.roles.join(', ')} | *${player.value.fingerprint ?? 'No Fingerprint'}",
       );
     }
     print("-----");

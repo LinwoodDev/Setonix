@@ -223,9 +223,16 @@ final class BanPlayerRequest extends ClientWorldEvent
 final class ServerRoleChangeRequest extends ClientWorldEvent
     with ServerRoleChangeRequestMappable {
   final Channel player;
-  final String role;
+  final Set<String> roles;
+  final String? role;
 
-  ServerRoleChangeRequest(this.player, this.role);
+  ServerRoleChangeRequest(this.player, {this.roles = const {}, this.role});
+
+  Set<String> get effectiveRoles => {
+    kDefaultServerRole,
+    ...roles,
+    if (role?.isNotEmpty == true) role!,
+  };
 }
 
 @MappableClass()
