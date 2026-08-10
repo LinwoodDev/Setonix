@@ -2,26 +2,6 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 import java.io.FileInputStream
 
-val androidHostTag = when {
-    System.getProperty("os.name").startsWith("Windows", ignoreCase = true) -> "windows-x86_64"
-    System.getProperty("os.name").startsWith("Mac", ignoreCase = true) -> "darwin-x86_64"
-    else -> "linux-x86_64"
-}
-
-val androidLibcxxAbis = mapOf(
-    "arm64-v8a" to "aarch64-linux-android",
-    "armeabi-v7a" to "arm-linux-androideabi",
-    "x86" to "i686-linux-android",
-    "x86_64" to "x86_64-linux-android",
-)
-
-val llvmObjcopy = providers.provider {
-    android.ndkDirectory.resolve(
-        "toolchains/llvm/prebuilt/$androidHostTag/bin/llvm-objcopy" +
-            if (androidHostTag.startsWith("windows")) ".exe" else "",
-    )
-}
-
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -74,9 +54,6 @@ android {
     }
 
     sourceSets {
-        getByName("main") {
-            jniLibs.srcDir(layout.buildDirectory.dir("generated/libcxxShared"))
-        }
         getByName("nightly") {
             setRoot("src/development")
         }
@@ -127,49 +104,4 @@ kotlin {
 
 flutter {
     source = "../.."
-}
-
-val copyAndroidLibcxxShared by tasks.registering(Copy::class) {
-    val ndkSysrootLib = providers.provider {
-        android.ndkDirectory.resolve(
-            "toolchains/llvm/prebuilt/$androidHostTag/sysroot/usr/lib",
-        )
-    }
-
-    for ((abi, triple) in androidLibcxxAbis) {
-        from(ndkSysrootLib.map { it.resolve("$triple/libc++_shared.so") }) {
-            into(abi)
-        }
-    }
-    into(layout.buildDirectory.dir("generated/libcxxShared"))
-}
-
-tasks.configureEach {
-    if (name.startsWith("merge") && name.endsWith("JniLibFolders")) {
-        dependsOn(copyAndroidLibcxxShared)
-    }
-
-    if (name.startsWith("merge") && name.endsWith("NativeLibs")) {
-        doLast {
-            val objcopy = llvmObjcopy.get()
-            check(objcopy.isFile) {
-                "Could not find llvm-objcopy in the configured Android NDK: $objcopy"
-            }
-
-            outputs.files.asFileTree
-                .matching { include("**/*.so") }
-                .files
-                .sortedBy { it.path }
-                .forEach { library ->
-                    exec {
-                        commandLine(
-                            objcopy,
-                            "--remove-section=.comment",
-                            "--remove-section=.note.gnu.build-id",
-                            library,
-                        )
-                    }
-                }
-        }
-    }
 }

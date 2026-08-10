@@ -16,7 +16,7 @@ publish_to: none
 
 environment:
   sdk: ">=3.8.0 <4.0.0"
-  flutter: 3.44.7
+  flutter: 3.44.9
 
 dependencies:
   flutter:
@@ -28,11 +28,14 @@ dependencies:
   intl: any
   flutter_localized_locales: ^2.0.5
   # UI
-  phosphor_flutter: ^2.1.0
+  phosphor_flutter:
+    git:
+      url: https://github.com/CodeDoctorDE/phosphor-flutter.git
+      ref: f7479596c67239e755ab1fe3bade84895bfd6222
   material_leap:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 606c5977e7d7d0197fdec2d15dbc951afe330b43
+      ref: 2195d9d509f5ba2c5c823491d93cac4d6136b597
       path: packages/material_leap
   flex_color_scheme: ^8.1.0
   flutter_svg: ^2.2.0
@@ -77,12 +80,12 @@ dependencies:
   lw_file_system:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 064aed61c361194bf0eb3cb599e62bdd3c111d7c
+      ref: 8ac9aadd48989d56e7177c3575dd340bebd83c67
       path: packages/lw_file_system
   lw_sysapi:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 6d43be062401fafdd956448c59dea8c1df69198b
+      ref: d7d00d81291d6a2716da40b9f1d004ac4973771d
       path: packages/lw_sysapi
   setonix_api:
     path: ../api
@@ -99,11 +102,6 @@ dependencies:
   cryptography_plus: ^3.0.0
   cryptography_flutter_plus: ^3.0.0
   network_info_plus: ^8.1.0
-dependency_overrides:
-  phosphor_flutter:
-    git:
-      url: https://github.com/CodeDoctorDE/phosphor-flutter.git
-      ref: f7479596c67239e755ab1fe3bade84895bfd6222
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -23,7 +23,7 @@ jobs:
       - name: 🔧 Setup java
         uses: actions/setup-java@v5
         with:
-          java-version: "17"
+          java-version: "21"
           distribution: "temurin"
       - name: 🦀 Setup Rust
         uses: actions-rust-lang/setup-rust-toolchain@v1
@@ -470,7 +470,7 @@ jobs:
       - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.13"
       - name: ✅ Enable platforms
@@ -494,7 +494,7 @@ jobs:
         working-directory: app/build/macos/Build/Products/Release
         run: zip --symlinks -qr linwood-setonix-macos.zip setonix.app
       - name: Setup node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: 26
       - name: Install appdmg
@@ -1065,7 +1065,7 @@ jobs:
       - name: 🔧 Setup java
         uses: actions/setup-java@v5
         with:
-          java-version: "17"
+          java-version: "21"
           distribution: "temurin"
       - uses: subosito/flutter-action@v2.23.0
         with:

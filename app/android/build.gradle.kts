@@ -14,26 +14,17 @@ subprojects {
 }
 
 subprojects {
-    afterEvaluate {
-        if (project.extensions.findByName("android") != null) {
-            project.extensions.configure<com.android.build.gradle.BaseExtension>("android") {
-                if (compileSdkVersion == "android-31" || compileSdkVersion == "android-33" || compileSdkVersion == "android-34") {
-                    val appProject = rootProject.project(":app")
-                    val appAndroid = appProject.extensions.findByType(com.android.build.gradle.BaseExtension::class.java)
-                    if (appAndroid != null && appAndroid.compileSdkVersion != null) {
-                        println("Setting compileSdkVersion to ${appAndroid.compileSdkVersion} for ${project.name}")
-                        compileSdkVersion = appAndroid.compileSdkVersion
-                    } else {
-                        println("Could not find compileSdkVersion from app project for ${project.name}")
-                    }
-                }
-            }
-        }
-    }
+    project.evaluationDependsOn(":app")
 }
 
 subprojects {
-    project.evaluationDependsOn(":app")
+    // Some plugins skip their Kotlin plugin on AGP 9 even when the Flutter
+    // project has explicitly opted into the legacy Kotlin plugin.
+    if (name in setOf("cryptography_flutter_plus")) {
+        pluginManager.withPlugin("com.android.library") {
+            pluginManager.apply("org.jetbrains.kotlin.android")
+        }
+    }
 }
 
 tasks.register<Delete>("clean") {
