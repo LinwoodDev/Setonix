@@ -36,4 +36,23 @@ void main() {
       'blackjack:deal',
     });
   });
+
+  test('partial custom role configuration retains the default player role', () {
+    final manager = ConfigManager(
+      envConfig: const SetonixConfig(
+        serverRoles: {
+          'blackjack:dealer': ServerRoleDefinition(
+            name: 'Dealer',
+            permissions: {'blackjack:deal'},
+          ),
+        },
+      ),
+      argsConfig: const SetonixConfig(),
+    );
+
+    expect(
+      manager.serverRoles[kDefaultServerRole]?.permissions,
+      contains(ServerPermission.play),
+    );
+  });
 }

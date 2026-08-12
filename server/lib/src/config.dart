@@ -77,8 +77,15 @@ class ConfigManager {
   String get endpointSecret =>
       _mergedConfig.endpointSecret ?? SetonixConfig.defaultEndpointSecret;
 
-  Map<String, ServerRoleDefinition> get serverRoles =>
-      _runtimeServerRoles ?? _mergedConfig.serverRoles ?? kDefaultServerRoles;
+  Map<String, ServerRoleDefinition> get serverRoles {
+    final configured =
+        _runtimeServerRoles ?? _mergedConfig.serverRoles ?? kDefaultServerRoles;
+    if (configured.containsKey(kDefaultServerRole)) return configured;
+    return Map.unmodifiable({
+      kDefaultServerRole: kDefaultServerRoles[kDefaultServerRole]!,
+      ...configured,
+    });
+  }
 
   Future<void> setServerRoles(Map<String, ServerRoleDefinition> roles) async {
     final updated = Map<String, ServerRoleDefinition>.unmodifiable(roles);

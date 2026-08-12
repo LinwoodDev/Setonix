@@ -228,6 +228,9 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
         state,
         assetManager: assetManager,
         allowServerEvents: packet.isServer,
+        // The dedicated server has already applied role authorization above.
+        // Peer-hosted games retain the shared API's authority-only default.
+        allowManagementRequests: true,
         challengeManager: server.challengeManager,
         userManager: server.userManager,
       );

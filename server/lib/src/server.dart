@@ -144,13 +144,15 @@ final class SetonixServer {
 
   Future<void> broadcastServerState(WorldBloc world) async {
     await Future.wait(
-      world.players.map(
-        (channel) => sendEvent(
-          ServerStateUpdated(buildServerState(channel, world)),
-          target: channel,
-          worldName: world.worldName,
-        ),
-      ),
+      world.players
+          .where((channel) => userManager.getUser(channel) != null)
+          .map(
+            (channel) => sendEvent(
+              ServerStateUpdated(buildServerState(channel, world)),
+              target: channel,
+              worldName: world.worldName,
+            ),
+          ),
     );
   }
 

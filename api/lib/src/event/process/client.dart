@@ -19,6 +19,7 @@ bool isValidClientEvent(
   WorldState state, {
   required AssetManager assetManager,
   ChallengeManager? challengeManager,
+  bool allowManagementRequests = false,
 }) => switch (event) {
   TeamJoinRequest() =>
     _isReasonableIdentifier(event.team) &&
@@ -82,7 +83,7 @@ bool isValidClientEvent(
   ),
   TeamRemoved() => state.info.teams.containsKey(event.team),
   PacksChangeRequest() =>
-    channel == kAuthorityChannel &&
+    (channel == kAuthorityChannel || allowManagementRequests) &&
         event.packs.length <= _maxPacksPerRequest &&
         event.packs.every(_isReasonableIdentifier),
   MessageRequest() =>
@@ -103,7 +104,8 @@ bool isValidClientEvent(
                   .length -
               1,
         ),
-  ModeChangeRequest() => channel == kAuthorityChannel,
+  ModeChangeRequest() =>
+    channel == kAuthorityChannel || allowManagementRequests,
   DialogCloseRequest() => _isReasonableIdentifier(event.id),
   ImagesRequest() =>
     event.ids.length <= _maxImagesPerRequest &&
@@ -200,6 +202,7 @@ Future<ServerResponse?> processClientEvent(
   WorldState state, {
   required AssetManager assetManager,
   bool allowServerEvents = false,
+  bool allowManagementRequests = false,
   ChallengeManager? challengeManager,
   UserManager? userManager,
 }) async {
@@ -226,7 +229,13 @@ Future<ServerResponse?> processClientEvent(
     await userManager?.addUser(channel);
     return UpdateServerResponse.builder(buildInitialize(), channel);
   }
-  if (!isValidClientEvent(event, channel, state, assetManager: assetManager)) {
+  if (!isValidClientEvent(
+    event,
+    channel,
+    state,
+    assetManager: assetManager,
+    allowManagementRequests: allowManagementRequests,
+  )) {
     return null;
   }
   switch (event) {
@@ -414,7 +423,7 @@ Future<ServerResponse?> processClientEvent(
       final mode = location == null ? null : assetManager.getModeItem(location);
       return UpdateServerResponse.builder(
         WorldInitialized.fromMode(mode, state),
-        channel,
+        kAnyChannel,
       );
     case AuthenticateRequest():
       final challenge = challengeManager?.getChallenge(channel);

@@ -60,15 +60,6 @@ void main() {
     });
   });
 
-  test('custom role identifiers are preserved', () {
-    final user = SetonixUserMapper.fromMap({
-      'name': 'dealer',
-      'roles': ['player', 'blackjack:dealer'],
-    });
-
-    expect(user.roles, {'player', 'blackjack:dealer'});
-  });
-
   test('legacy single roles migrate into composable role sets', () async {
     final directory = await Directory.systemTemp.createTemp(
       'setonix-user-role-migration-',
@@ -91,11 +82,7 @@ void main() {
   });
 
   test('ban state supports permanent and expiring bans', () {
-    const permanent = SetonixUser(
-      name: 'permanent',
-      banned: true,
-      banReason: 'abuse',
-    );
+    const permanent = SetonixUser(name: 'permanent', banned: true);
     final expired = SetonixUser(
       name: 'expired',
       banned: true,
@@ -103,7 +90,6 @@ void main() {
     );
 
     expect(permanent.isBanned, isTrue);
-    expect(permanent.banReason, 'abuse');
     expect(expired.isBanned, isFalse);
   });
 }

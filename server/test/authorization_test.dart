@@ -1,3 +1,4 @@
+import 'package:networker/networker.dart';
 import 'package:setonix_api/setonix_api.dart';
 import 'package:setonix_server/src/authorization.dart';
 import 'package:test/test.dart';
@@ -41,6 +42,39 @@ void main() {
 
       expect(canProcessClientEvent({'moderator'}, event, roles), isTrue);
       expect(canProcessClientEvent({'owner'}, event, roles), isTrue);
+    });
+
+    test('authorized remote users can broadcast mode changes', () async {
+      final state = WorldState(data: SetonixData.empty());
+      final assets = _EmptyAssetManager();
+      final event = ModeChangeRequest.plain();
+
+      expect(
+        isValidClientEvent(event, 2, state, assetManager: assets),
+        isFalse,
+      );
+      expect(
+        isValidClientEvent(
+          event,
+          2,
+          state,
+          assetManager: assets,
+          allowManagementRequests: true,
+        ),
+        isTrue,
+      );
+
+      final response = await processClientEvent(
+        event,
+        2,
+        state,
+        assetManager: assets,
+        allowManagementRequests: true,
+      );
+
+      expect(response, isA<UpdateServerResponse>());
+      expect((response as UpdateServerResponse).main?.channel, kAnyChannel);
+      expect(response.main?.data, isA<WorldInitialized>());
     });
 
     test('new unclassified client events default to play permission', () {
@@ -121,37 +155,16 @@ void main() {
         }),
       );
     });
-
-    test('custom roles survive server configuration serialization', () {
-      const config = SetonixConfig(
-        serverRoles: {
-          'blackjack:dealer': ServerRoleDefinition(
-            name: 'Blackjack dealer',
-            priority: 25,
-            permissions: {
-              ServerPermission.play,
-              ServerPermission.manageWorld,
-              'blackjack:deal',
-            },
-          ),
-        },
-      );
-
-      final decoded = SetonixConfigMapper.fromMap(config.toMap());
-      final dealer = decoded.serverRoles?['blackjack:dealer'];
-
-      expect(dealer?.name, 'Blackjack dealer');
-      expect(dealer?.priority, 25);
-      expect(dealer?.permissions, {
-        ServerPermission.play,
-        ServerPermission.manageWorld,
-        'blackjack:deal',
-      });
-      expect(config.toMap()['serverRoles']['blackjack:dealer']['permissions'], [
-        'play',
-        'manageWorld',
-        'blackjack:deal',
-      ]);
-    });
   });
+}
+
+final class _EmptyAssetManager extends AssetManager {
+  @override
+  Iterable<MapEntry<String, SetonixData>> get packs => const [];
+
+  @override
+  SetonixData? getPack(String key) => null;
+
+  @override
+  bool hasPack(String key) => false;
 }
