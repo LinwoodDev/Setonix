@@ -65,9 +65,9 @@ class _CreateDialogState extends State<CreateDialog>
   }
 
   void _reloadTemplates() => setState(
-    () => _templatesStream = ValueConnectableStream(
-      _loadTemplates(),
-    ).autoConnect(),
+    () =>
+        _templatesStream = ValueConnectableStream(_loadTemplates())
+            .autoConnect(),
   );
 
   Stream<List<FileSystemFile<SetonixData>>> _loadTemplates() async* {

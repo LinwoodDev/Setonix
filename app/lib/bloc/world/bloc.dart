@@ -130,7 +130,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
         processed.responses.forEach(process);
         if (newWorld == null) return;
         emit(state.copyWith(world: newWorld));
-        return save();
+        return await save();
       } on FatalServerEventError catch (e) {
         state.multiplayer.raiseError(e);
       }
@@ -204,7 +204,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
       ));
       final name = state.world.name;
       if (name == null) return;
-      return state.fileSystem.worldSystem.updateFile(name, data);
+      return await state.fileSystem.worldSystem.updateFile(name, data);
     } finally {
       _isSaving = false;
     }

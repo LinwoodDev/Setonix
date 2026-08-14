@@ -404,9 +404,8 @@ class _ServersViewState extends State<ServersView> {
                                   AppLocalizations.of(context).deleteServer,
                                 ),
                                 content: Text(
-                                  AppLocalizations.of(
-                                    context,
-                                  ).deleteServerMessage,
+                                  AppLocalizations.of(context)
+                                      .deleteServerMessage,
                                 ),
                                 actions: [
                                   TextButton(
@@ -452,9 +451,8 @@ class _ServersViewState extends State<ServersView> {
                         ? _FriendlyInfoState(
                             icon: PhosphorIconsLight.plugsConnected,
                             title: AppLocalizations.of(context).noServers,
-                            message: AppLocalizations.of(
-                              context,
-                            ).noServersDescription,
+                            message: AppLocalizations.of(context)
+                                .noServersDescription,
                           )
                         : ListView.builder(
                             itemCount: servers.length,
@@ -597,12 +595,10 @@ class _ServersViewState extends State<ServersView> {
                             child: property == null
                                 ? _FriendlyInfoState(
                                     icon: PhosphorIconsLight.handTap,
-                                    title: AppLocalizations.of(
-                                      context,
-                                    ).selectServer,
-                                    message: AppLocalizations.of(
-                                      context,
-                                    ).selectServerDescription,
+                                    title: AppLocalizations.of(context)
+                                        .selectServer,
+                                    message: AppLocalizations.of(context)
+                                        .selectServerDescription,
                                   )
                                 : Column(
                                     crossAxisAlignment:
@@ -612,9 +608,9 @@ class _ServersViewState extends State<ServersView> {
                                         padding: const EdgeInsets.all(8.0),
                                         child: DefaultTextStyle(
                                           style:
-                                              Theme.of(
-                                                context,
-                                              ).textTheme.titleLarge ??
+                                              Theme.of(context)
+                                                  .textTheme
+                                                  .titleLarge ??
                                               const TextStyle(),
                                           child: Row(
                                             crossAxisAlignment:

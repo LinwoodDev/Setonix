@@ -1,11 +1,9 @@
 import 'package:consoler/consoler.dart';
 import 'package:setonix_api/event.dart';
-import 'package:setonix_server/src/server.dart';
+import 'package:setonix_server/src/programs/async.dart';
 
-class KickProgram extends ConsoleProgram {
-  final SetonixServer server;
-
-  KickProgram(this.server);
+class KickProgram extends AsyncServerProgram {
+  KickProgram(super.server);
 
   @override
   String getDescription() => "Kick a player";
@@ -14,9 +12,10 @@ class KickProgram extends ConsoleProgram {
   String getUsage() => '<User> [<Reason>] [<Link>]';
 
   @override
-  Future<void> run(String label, List<String> args) async {
+  Future<void> runAsync(String label, List<String> args) async {
     if (args.isEmpty || args.length > 3) {
       server.log("Wrong usage, use ${getUsage()}", level: LogLevel.error);
+      return;
     }
     final arg = await server.userManager.getUserIdByReference(args[0]);
     if (arg == null) {

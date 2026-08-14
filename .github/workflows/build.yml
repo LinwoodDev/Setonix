@@ -617,7 +617,7 @@ jobs:
           cargo build --release
       - name: Compile
         run: |
-          dart build cli bin/setonix_server.dart
+          dart build cli --target=bin/setonix_server.dart
       - name: Create directory
         run: |
           mkdir -p server-build

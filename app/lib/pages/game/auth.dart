@@ -93,9 +93,8 @@ class _AuthGameViewState extends State<AuthGameView> {
                         if (authRequest.isRequired)
                           Text(
                             AppLocalizations.of(context).authenticateRequired,
-                            style: Theme.of(
-                              context,
-                            ).textTheme.bodyMedium?.copyWith(color: Colors.red),
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(color: Colors.red),
                           ),
                         const SizedBox(height: 16.0),
                         Flexible(

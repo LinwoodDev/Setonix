@@ -14,6 +14,7 @@ final class WorldInitialized extends ServerWorldEvent
   final GameTable? table;
   final GameInfo? info;
   final Map<String, Set<Channel>>? teamMembers;
+  final Map<String, Set<Channel>>? gameRoleMembers;
   final Channel? id;
   final List<SignatureMetadata>? packsSignature;
   final bool clearUserInterface;
@@ -22,6 +23,7 @@ final class WorldInitialized extends ServerWorldEvent
     this.table,
     this.info,
     this.teamMembers,
+    this.gameRoleMembers,
     this.id,
     this.packsSignature,
     this.clearUserInterface = false,
@@ -38,7 +40,17 @@ final class WorldInitialized extends ServerWorldEvent
     ),
     table: mode?.item.tables[state.tableName] ?? GameTable(),
     teamMembers: const {},
+    gameRoleMembers: const {},
   );
+}
+
+@MappableClass()
+final class GameRolesChanged extends ServerWorldEvent
+    with GameRolesChangedMappable {
+  final Channel user;
+  final Set<String> roles;
+
+  const GameRolesChanged(this.user, [this.roles = const {}]);
 }
 
 @MappableClass()

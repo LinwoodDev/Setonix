@@ -49,13 +49,12 @@ class PacksView extends StatefulWidget {
   State<PacksView> createState() => _PacksViewState();
 }
 
-typedef SelectFunction =
-    Future<void> Function(
-      Widget title,
-      List<Widget> details,
-      List<Widget> actions,
-      String id,
-    );
+typedef SelectFunction = Future<void> Function(
+  Widget title,
+  List<Widget> details,
+  List<Widget> actions,
+  String id,
+);
 
 class _PacksViewState extends State<PacksView> with TickerProviderStateMixin {
   // It needs to be here to be able to reload it when clicking on import

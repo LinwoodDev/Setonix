@@ -8,7 +8,7 @@ import Foundation
 import cryptography_flutter_plus
 import device_info_plus
 import dynamic_color
-import file_picker
+import file_picker_darwin
 import flutter_secure_storage_darwin
 import lw_sysapi
 import network_info_plus

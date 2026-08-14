@@ -16,9 +16,8 @@ class GameObjectHandItem extends HandItem<(VectorDefinition, int, GameObject)> {
   @override
   String getLabel(ClientWorldState state) {
     final object = item.$3;
-    final translation = getAssetManager(
-      state,
-    ).getTranslations(object.asset.namespace);
+    final translation = getAssetManager(state)
+        .getTranslations(object.asset.namespace);
     final variation = object.variation;
     if (variation != null &&
         !item.$3.hidden &&

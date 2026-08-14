@@ -91,9 +91,8 @@ class _EditorPacksViewState extends State<_EditorPacksView> {
                               AppLocalizations.of(context).removePack,
                             ),
                             content: Text(
-                              AppLocalizations.of(
-                                context,
-                              ).removePackMessage(file.identifier),
+                              AppLocalizations.of(context)
+                                  .removePackMessage(file.identifier),
                             ),
                             actions: [
                               TextButton(

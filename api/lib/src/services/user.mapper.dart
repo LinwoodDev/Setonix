@@ -39,6 +39,32 @@ class SetonixUserMapper extends ClassMapperBase<SetonixUser> {
     opt: true,
     def: false,
   );
+  static Set<String> _$roles(SetonixUser v) => v.roles;
+  static const Field<SetonixUser, Set<String>> _f$roles = Field(
+    'roles',
+    _$roles,
+    opt: true,
+    def: const {kDefaultServerRole},
+  );
+  static bool _$banned(SetonixUser v) => v.banned;
+  static const Field<SetonixUser, bool> _f$banned = Field(
+    'banned',
+    _$banned,
+    opt: true,
+    def: false,
+  );
+  static DateTime? _$bannedUntil(SetonixUser v) => v.bannedUntil;
+  static const Field<SetonixUser, DateTime> _f$bannedUntil = Field(
+    'bannedUntil',
+    _$bannedUntil,
+    opt: true,
+  );
+  static String? _$banReason(SetonixUser v) => v.banReason;
+  static const Field<SetonixUser, String> _f$banReason = Field(
+    'banReason',
+    _$banReason,
+    opt: true,
+  );
   static DateTime? _$createdAt(SetonixUser v) => v.createdAt;
   static const Field<SetonixUser, DateTime> _f$createdAt = Field(
     'createdAt',
@@ -63,6 +89,10 @@ class SetonixUserMapper extends ClassMapperBase<SetonixUser> {
     #fingerprint: _f$fingerprint,
     #name: _f$name,
     #onWhitelist: _f$onWhitelist,
+    #roles: _f$roles,
+    #banned: _f$banned,
+    #bannedUntil: _f$bannedUntil,
+    #banReason: _f$banReason,
     #createdAt: _f$createdAt,
     #updatedAt: _f$updatedAt,
     #lastLogin: _f$lastLogin,
@@ -73,6 +103,10 @@ class SetonixUserMapper extends ClassMapperBase<SetonixUser> {
       fingerprint: data.dec(_f$fingerprint),
       name: data.dec(_f$name),
       onWhitelist: data.dec(_f$onWhitelist),
+      roles: data.dec(_f$roles),
+      banned: data.dec(_f$banned),
+      bannedUntil: data.dec(_f$bannedUntil),
+      banReason: data.dec(_f$banReason),
       createdAt: data.dec(_f$createdAt),
       updatedAt: data.dec(_f$updatedAt),
       lastLogin: data.dec(_f$lastLogin),
@@ -146,6 +180,10 @@ abstract class SetonixUserCopyWith<$R, $In extends SetonixUser, $Out>
     String? fingerprint,
     String? name,
     bool? onWhitelist,
+    Set<String>? roles,
+    bool? banned,
+    DateTime? bannedUntil,
+    String? banReason,
     DateTime? createdAt,
     DateTime? updatedAt,
     DateTime? lastLogin,
@@ -167,6 +205,10 @@ class _SetonixUserCopyWithImpl<$R, $Out>
     Object? fingerprint = $none,
     String? name,
     bool? onWhitelist,
+    Set<String>? roles,
+    bool? banned,
+    Object? bannedUntil = $none,
+    Object? banReason = $none,
     Object? createdAt = $none,
     Object? updatedAt = $none,
     Object? lastLogin = $none,
@@ -175,6 +217,10 @@ class _SetonixUserCopyWithImpl<$R, $Out>
       if (fingerprint != $none) #fingerprint: fingerprint,
       if (name != null) #name: name,
       if (onWhitelist != null) #onWhitelist: onWhitelist,
+      if (roles != null) #roles: roles,
+      if (banned != null) #banned: banned,
+      if (bannedUntil != $none) #bannedUntil: bannedUntil,
+      if (banReason != $none) #banReason: banReason,
       if (createdAt != $none) #createdAt: createdAt,
       if (updatedAt != $none) #updatedAt: updatedAt,
       if (lastLogin != $none) #lastLogin: lastLogin,
@@ -185,6 +231,10 @@ class _SetonixUserCopyWithImpl<$R, $Out>
     fingerprint: data.get(#fingerprint, or: $value.fingerprint),
     name: data.get(#name, or: $value.name),
     onWhitelist: data.get(#onWhitelist, or: $value.onWhitelist),
+    roles: data.get(#roles, or: $value.roles),
+    banned: data.get(#banned, or: $value.banned),
+    bannedUntil: data.get(#bannedUntil, or: $value.bannedUntil),
+    banReason: data.get(#banReason, or: $value.banReason),
     createdAt: data.get(#createdAt, or: $value.createdAt),
     updatedAt: data.get(#updatedAt, or: $value.updatedAt),
     lastLogin: data.get(#lastLogin, or: $value.lastLogin),

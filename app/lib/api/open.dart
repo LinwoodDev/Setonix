@@ -68,8 +68,7 @@ Future<bool> openHelp(List<String> pageLocation, [String? fragment]) {
 
 Future<SetonixFile?> openFile() async {
   final result = await FilePicker.pickFiles(allowedExtensions: ['stnx']);
-  if (result == null) return null;
-  final file = result.files.firstOrNull;
+  final file = result.firstOrNull;
   if (file == null) return null;
   final bytes = await file.readAsBytes();
   final data = SetonixFile(bytes);

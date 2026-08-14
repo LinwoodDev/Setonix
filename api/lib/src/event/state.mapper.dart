@@ -180,6 +180,10 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
     opt: true,
     def: const {},
   );
+  static Map<String, Set<int>> _$gameRoleMembers(WorldState v) =>
+      v.gameRoleMembers;
+  static const Field<WorldState, Map<String, Set<int>>> _f$gameRoleMembers =
+      Field('gameRoleMembers', _$gameRoleMembers, opt: true, def: const {});
   static List<ChatMessage> _$messages(WorldState v) => v.messages;
   static const Field<WorldState, List<ChatMessage>> _f$messages = Field(
     'messages',
@@ -240,6 +244,7 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
     #info: _f$info,
     #metadata: _f$metadata,
     #teamMembers: _f$teamMembers,
+    #gameRoleMembers: _f$gameRoleMembers,
     #messages: _f$messages,
     #id: _f$id,
     #dialogs: _f$dialogs,
@@ -259,6 +264,7 @@ class WorldStateMapper extends ClassMapperBase<WorldState> {
       info: data.dec(_f$info),
       metadata: data.dec(_f$metadata),
       teamMembers: data.dec(_f$teamMembers),
+      gameRoleMembers: data.dec(_f$gameRoleMembers),
       messages: data.dec(_f$messages),
       id: data.dec(_f$id),
       dialogs: data.dec(_f$dialogs),
@@ -338,6 +344,8 @@ abstract class WorldStateCopyWith<$R, $In extends WorldState, $Out>
   FileMetadataCopyWith<$R, FileMetadata, FileMetadata> get metadata;
   MapCopyWith<$R, String, Set<int>, ObjectCopyWith<$R, Set<int>, Set<int>>>
   get teamMembers;
+  MapCopyWith<$R, String, Set<int>, ObjectCopyWith<$R, Set<int>, Set<int>>>
+  get gameRoleMembers;
   ListCopyWith<
     $R,
     ChatMessage,
@@ -364,6 +372,7 @@ abstract class WorldStateCopyWith<$R, $In extends WorldState, $Out>
     GameInfo? info,
     FileMetadata? metadata,
     Map<String, Set<int>>? teamMembers,
+    Map<String, Set<int>>? gameRoleMembers,
     List<ChatMessage>? messages,
     int? id,
     List<GameDialog>? dialogs,
@@ -400,6 +409,13 @@ class _WorldStateCopyWithImpl<$R, $Out>
     $value.teamMembers,
     (v, t) => ObjectCopyWith(v, $identity, t),
     (v) => call(teamMembers: v),
+  );
+  @override
+  MapCopyWith<$R, String, Set<int>, ObjectCopyWith<$R, Set<int>, Set<int>>>
+  get gameRoleMembers => MapCopyWith(
+    $value.gameRoleMembers,
+    (v, t) => ObjectCopyWith(v, $identity, t),
+    (v) => call(gameRoleMembers: v),
   );
   @override
   ListCopyWith<
@@ -449,6 +465,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
     GameInfo? info,
     FileMetadata? metadata,
     Map<String, Set<int>>? teamMembers,
+    Map<String, Set<int>>? gameRoleMembers,
     List<ChatMessage>? messages,
     int? id,
     List<GameDialog>? dialogs,
@@ -466,6 +483,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
       if (info != null) #info: info,
       if (metadata != null) #metadata: metadata,
       if (teamMembers != null) #teamMembers: teamMembers,
+      if (gameRoleMembers != null) #gameRoleMembers: gameRoleMembers,
       if (messages != null) #messages: messages,
       if (id != null) #id: id,
       if (dialogs != null) #dialogs: dialogs,
@@ -485,6 +503,7 @@ class _WorldStateCopyWithImpl<$R, $Out>
     info: data.get(#info, or: $value.info),
     metadata: data.get(#metadata, or: $value.metadata),
     teamMembers: data.get(#teamMembers, or: $value.teamMembers),
+    gameRoleMembers: data.get(#gameRoleMembers, or: $value.gameRoleMembers),
     messages: data.get(#messages, or: $value.messages),
     id: data.get(#id, or: $value.id),
     dialogs: data.get(#dialogs, or: $value.dialogs),

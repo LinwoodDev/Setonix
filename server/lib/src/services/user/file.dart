@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:path/path.dart' as p;
 import 'package:setonix_api/setonix_api.dart';
@@ -7,6 +8,20 @@ import 'package:sqlite3/sqlite3.dart';
 
 final class FileUserService extends UserService {
   Database? _database;
+
+  Set<String> _decodeRoles(Object? value) {
+    if (value is! String || value.isEmpty) return const {kDefaultServerRole};
+    try {
+      final decoded = jsonDecode(value);
+      if (decoded is List) {
+        final roles = decoded.whereType<String>().where((e) => e.isNotEmpty);
+        if (roles.isNotEmpty) return {...roles, kDefaultServerRole};
+      }
+    } catch (_) {
+      return {kDefaultServerRole, value};
+    }
+    return const {kDefaultServerRole};
+  }
 
   Future<void> setup({String rootPath = '.'}) async {
     final database = sqlite3.open(p.join(rootPath, 'setonix.db'));
@@ -33,6 +48,12 @@ final class FileUserService extends UserService {
       fingerprint: row['fingerprint'] as String?,
       name: row['name'] as String,
       onWhitelist: row['on_whitelist'] == 1,
+      roles: _decodeRoles(row['roles']),
+      banned: row['banned'] == 1,
+      bannedUntil: row['banned_until'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(row['banned_until'] as int)
+          : null,
+      banReason: row['ban_reason'] as String?,
       createdAt: row['created_at'] != null
           ? DateTime.fromMillisecondsSinceEpoch(row['created_at'] as int)
           : null,
@@ -58,10 +79,23 @@ final class FileUserService extends UserService {
       .firstOrNull;
 
   @override
+  List<SetonixUser> getBannedUsers() =>
+      _database
+          ?.select('SELECT * FROM users WHERE banned = 1 ORDER BY name')
+          .map(_fromRow)
+          .where((user) => user.isBanned)
+          .toList(growable: false) ??
+      const [];
+
+  @override
   bool updateUser(
     String fingerprint, {
     String? name,
     bool? onWhitelist,
+    Set<String>? roles,
+    bool? banned,
+    DateTime? bannedUntil,
+    String? banReason,
     DateTime? lastLogin,
     bool createIfNotExists = false,
   }) {
@@ -75,6 +109,18 @@ final class FileUserService extends UserService {
     if (onWhitelist != null) {
       updates.add('on_whitelist = ?');
       values.add(onWhitelist ? 1 : 0);
+    }
+    if (roles != null) {
+      updates.add('roles = ?');
+      values.add(jsonEncode(roles.toList(growable: false)));
+    }
+    if (banned != null) {
+      updates.addAll(['banned = ?', 'banned_until = ?', 'ban_reason = ?']);
+      values.addAll([
+        banned ? 1 : 0,
+        bannedUntil?.millisecondsSinceEpoch,
+        banReason,
+      ]);
     }
     if (lastLogin != null) {
       updates.add('last_login = ?');
@@ -103,6 +149,18 @@ final class FileUserService extends UserService {
       insertCols.add('on_whitelist');
       insertVals.add(onWhitelist ? 1 : 0);
     }
+    if (roles != null) {
+      insertCols.add('roles');
+      insertVals.add(jsonEncode(roles.toList(growable: false)));
+    }
+    if (banned != null) {
+      insertCols.addAll(['banned', 'banned_until', 'ban_reason']);
+      insertVals.addAll([
+        banned ? 1 : 0,
+        bannedUntil?.millisecondsSinceEpoch,
+        banReason,
+      ]);
+    }
     if (lastLogin != null) {
       insertCols.add('last_login');
       insertVals.add(lastLogin.millisecondsSinceEpoch);
@@ -126,5 +184,28 @@ final class FileUserService extends UserService {
       );
     }
     return true;
+  }
+
+  @override
+  bool replaceRole(String role, String replacement) {
+    final database = _database;
+    if (database == null) return false;
+    final users = database.select('SELECT fingerprint, roles FROM users');
+    for (final user in users) {
+      final roles = _decodeRoles(user['roles']);
+      if (!roles.remove(role)) continue;
+      roles.add(replacement);
+      database.execute('UPDATE users SET roles = ? WHERE fingerprint = ?', [
+        jsonEncode(roles.toList(growable: false)),
+        user['fingerprint'],
+      ]);
+    }
+    return true;
+  }
+
+  @override
+  void close() {
+    _database?.close();
+    _database = null;
   }
 }

@@ -6,8 +6,9 @@ import 'package:setonix_api/setonix_api.dart';
 import 'package:setonix_plugin/events.dart';
 import 'package:setonix_plugin/src/events/model.dart';
 
-typedef EventHandler<T extends WorldEvent> =
-    Future<void> Function(Event<T> event);
+typedef EventHandler<T extends WorldEvent> = Future<void> Function(
+  Event<T> event,
+);
 
 final class EventSubscription<T extends WorldEvent> {
   final EventHandler<T> _handler;
@@ -79,18 +80,20 @@ final class EventSystem extends EventBus {
   Stream<UserLeaveCallback> get leave => _leaveController.stream;
 
   GameProperty runPing(HttpRequest request, GameProperty property) {
+    if (_pingController.isClosed) return property;
     final ping = ServerPing(request: request, response: property);
     _pingController.add(ping);
     return ping.response;
   }
 
   void runLeaveCallback(Channel channel, ConnectionInfo info) {
+    if (_leaveController.isClosed) return;
     final callback = UserLeaveCallback(channel: channel, info: info);
     _leaveController.add(callback);
   }
 
   void dispose() {
-    _pingController.close();
-    _leaveController.close();
+    if (!_pingController.isClosed) _pingController.close();
+    if (!_leaveController.isClosed) _leaveController.close();
   }
 }

@@ -46,8 +46,7 @@ ArgParser buildParser() {
     ..addOption(
       'thumbnail',
       abbr: 't',
-      help:
-          'Path to an image file for the server thumbnail. Will be displayed in the server list.',
+      help: 'Path to an image file for the server thumbnail. Will be displayed in the server list.',
     )
     ..addOption(
       'autosave',

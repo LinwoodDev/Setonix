@@ -3,16 +3,26 @@ library;
 
 export 'package:setonix_api/setonix_api.dart';
 export 'package:setonix_plugin/setonix_plugin.dart';
+
 export 'src/asset.dart';
+export 'src/authorization.dart';
 export 'src/bloc.dart';
 export 'src/main.dart';
 export 'src/server.dart';
 export 'src/programs/kick.dart';
+export 'src/programs/ban.dart';
+export 'src/programs/bans.dart';
+export 'src/programs/modes.dart';
+export 'src/programs/name.dart';
 export 'src/programs/packs.dart';
 export 'src/programs/players.dart';
+export 'src/programs/role.dart';
+export 'src/programs/roles.dart';
 export 'src/programs/reset.dart';
 export 'src/programs/save.dart';
 export 'src/programs/say.dart';
 export 'src/programs/stop.dart';
 export 'src/programs/whitelist.dart';
+export 'src/programs/worlds.dart';
+
 export 'package:networker/networker.dart';

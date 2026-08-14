@@ -350,18 +350,17 @@ class _GamePageState extends State<GamePage>
                           SnackBar(
                             width: 300,
                             behavior: SnackBarBehavior.floating,
-                            backgroundColor: Theme.of(
-                              context,
-                            ).colorScheme.surfaceContainer,
+                            backgroundColor: Theme.of(context)
+                                .colorScheme
+                                .surfaceContainer,
                             content: Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   AppLocalizations.of(context).newMessage(
-                                    AppLocalizations.of(
-                                      context,
-                                    ).defaultPlayerName(message.author),
+                                    AppLocalizations.of(context)
+                                        .defaultPlayerName(message.author),
                                   ),
                                   style: Theme.of(context).textTheme.bodyMedium,
                                 ),
@@ -401,12 +400,11 @@ class _GamePageState extends State<GamePage>
                                     CircularProgressIndicator(),
                                     const SizedBox(height: 16),
                                     Text(
-                                      AppLocalizations.of(
-                                        context,
-                                      ).configuringGame,
-                                      style: Theme.of(
-                                        context,
-                                      ).textTheme.bodyMedium,
+                                      AppLocalizations.of(context)
+                                          .configuringGame,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
                                     ),
                                   ],
                                 )
@@ -436,16 +434,16 @@ class _GamePageState extends State<GamePage>
                                         ),
                                         child: DecoratedBox(
                                           decoration: BoxDecoration(
-                                            color: Theme.of(
-                                              context,
-                                            ).colorScheme.surfaceContainerHigh,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .surfaceContainerHigh,
                                             borderRadius: BorderRadius.circular(
                                               8,
                                             ),
                                             border: Border.all(
-                                              color: Theme.of(
-                                                context,
-                                              ).colorScheme.outlineVariant,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .outlineVariant,
                                             ),
                                           ),
                                           child: Padding(

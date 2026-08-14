@@ -17,8 +17,13 @@ class ScriptsProgram extends ConsoleProgram {
     String world = defaultWorldName;
     if (args.length > 1) return print("Usage: $label [world]");
     if (args.length == 1) world = args[0];
+    final loadedWorld = server.getWorld(world);
+    if (loadedWorld == null) {
+      server.log('Unknown world: $world', level: LogLevel.error);
+      return;
+    }
     print("-----");
-    final scripts = server.getWorld(world)?.pluginSystem.plugins.toList() ?? [];
+    final scripts = loadedWorld.pluginSystem.plugins.toList();
     print("Loaded ${scripts.length} script(s).");
     for (final script in scripts) {
       print("> $script");

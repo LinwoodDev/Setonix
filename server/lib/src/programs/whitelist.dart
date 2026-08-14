@@ -1,10 +1,8 @@
 import 'package:consoler/consoler.dart';
-import 'package:setonix_server/src/server.dart';
+import 'package:setonix_server/src/programs/async.dart';
 
-class WhitelistProgram extends ConsoleProgram {
-  final SetonixServer server;
-
-  WhitelistProgram(this.server);
+class WhitelistProgram extends AsyncServerProgram {
+  WhitelistProgram(super.server);
 
   @override
   String getUsage() => '<add/remove> <User>';
@@ -15,7 +13,7 @@ class WhitelistProgram extends ConsoleProgram {
       "Use 'add <User>' to add a user and 'remove <User>' to remove a user.";
 
   @override
-  Future<void> run(String label, List<String> args) async {
+  Future<void> runAsync(String label, List<String> args) async {
     if (args.length != 2) {
       server.log("Wrong usage, use ${getUsage()}", level: LogLevel.error);
       return;

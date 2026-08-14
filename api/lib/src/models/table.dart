@@ -1,4 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
+
 import '../helpers/equality.dart';
 import 'cell.dart';
 import 'vector.dart';

@@ -50,9 +50,8 @@ class SetonixFileSystem {
 
   static const kDatabaseVersion = 3;
 
-  SetonixFileSystem({SetonixFile? corePack})
-    : _corePack = corePack,
-      packSystem = TypedKeyFileSystem.build(
+  SetonixFileSystem({this._corePack})
+    : packSystem = TypedKeyFileSystem.build(
         FileSystemConfig(
           passwordStorage: SecureStoragePasswordStorage(),
           storeName: 'packs',
@@ -277,9 +276,8 @@ class SetonixFileSystem {
   Future<List<SetonixAccount>> getAccounts([List<String>? names]) async {
     await privateKeySystem.initialize();
     names ??= await privateKeySystem.getKeys();
-    return Future.wait(
-      names.map((name) => getAccount(name)),
-    ).then((accounts) => accounts.nonNulls.toList());
+    return Future.wait(names.map((name) => getAccount(name)))
+        .then((accounts) => accounts.nonNulls.toList());
   }
 
   Future<SetonixData> exportAccounts([

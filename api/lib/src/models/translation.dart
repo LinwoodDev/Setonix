@@ -16,15 +16,18 @@ class TranslationsStore {
   }) : translations = Map.fromEntries(translations);
 
   PackTranslation getTranslation([String? locale]) =>
-      (locale == null ? translations[kFallbackLocale] : translations[locale]) ??
-      translations[getLocale()] ??
+      translations[locale ?? getLocale()] ??
+      translations[kFallbackLocale] ??
       PackTranslation();
 
   T findTranslation<T>(
     T? Function(PackTranslation) finder,
     T fallback, [
     String? locale,
-  ]) => finder(getTranslation(locale)) ?? finder(getTranslation()) ?? fallback;
+  ]) =>
+      finder(getTranslation(locale)) ??
+      finder(getTranslation(kFallbackLocale)) ??
+      fallback;
 
   DeckTranslation getDeckTranslation(String key, [String? locale]) =>
       findTranslation((t) => t.decks[key], DeckTranslation(name: key), locale);
@@ -64,6 +67,26 @@ class TranslationsStore {
 
   ModeTranslation getModeTranslation(String key, [String? locale]) =>
       findTranslation((t) => t.modes[key], ModeTranslation(name: key), locale);
+
+  RoleTranslation getRoleTranslation(
+    String key, {
+    String? locale,
+    String? fallback,
+  }) => findTranslation(
+    (t) => t.roles[key],
+    RoleTranslation(name: fallback ?? key),
+    locale,
+  );
+
+  PermissionTranslation getPermissionTranslation(
+    String key, {
+    String? locale,
+    String? fallback,
+  }) => findTranslation(
+    (t) => t.permissions[key],
+    PermissionTranslation(name: fallback ?? key),
+    locale,
+  );
 }
 
 @MappableClass()
@@ -73,6 +96,8 @@ class PackTranslation with PackTranslationMappable {
   final Map<String, FigureTranslation> figures;
   final Map<String, BoardTranslation> boards;
   final Map<String, ModeTranslation> modes;
+  final Map<String, RoleTranslation> roles;
+  final Map<String, PermissionTranslation> permissions;
 
   PackTranslation({
     this.decks = const {},
@@ -80,6 +105,8 @@ class PackTranslation with PackTranslationMappable {
     this.backgrounds = const {},
     this.boards = const {},
     this.modes = const {},
+    this.roles = const {},
+    this.permissions = const {},
   });
 }
 
@@ -131,4 +158,16 @@ class BoardTranslation extends DescriptiveTranslation
 class ModeTranslation extends DescriptiveTranslation
     with ModeTranslationMappable {
   ModeTranslation({required super.name, super.description});
+}
+
+@MappableClass()
+class RoleTranslation extends DescriptiveTranslation
+    with RoleTranslationMappable {
+  RoleTranslation({required super.name, super.description});
+}
+
+@MappableClass()
+class PermissionTranslation extends DescriptiveTranslation
+    with PermissionTranslationMappable {
+  PermissionTranslation({required super.name, super.description});
 }

@@ -12,6 +12,10 @@ class PacksProgram extends ConsoleProgram {
 
   @override
   void run(String label, List<String> args) {
+    if (args.isNotEmpty) {
+      server.log('Wrong usage, use packs', level: LogLevel.error);
+      return;
+    }
     print("-----");
     final packs = server.assetManager.packs.toList();
     print("Loaded ${packs.length} pack(s).");

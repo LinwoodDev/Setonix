@@ -10,9 +10,11 @@ class DeckDefinitionHandItem extends HandItem<PackItem<DeckDefinition>> {
   DeckDefinitionHandItem({required super.item});
 
   @override
-  String getLabel(ClientWorldState state) => getAssetManager(
-    state,
-  ).getTranslations(item.namespace).getDeckTranslation(item.id).name;
+  String getLabel(ClientWorldState state) =>
+      getAssetManager(state)
+          .getTranslations(item.namespace)
+          .getDeckTranslation(item.id)
+          .name;
 
   bool matches(ClientWorldState state, String term) =>
       item.location.toString().containsIgnoreCase(term) ||

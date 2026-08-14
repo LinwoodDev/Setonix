@@ -9,9 +9,17 @@ const _maxIdentifierLength = 256;
 const _maxImagesPerRequest = 100;
 const _maxPacksPerRequest = 128;
 const _maxBoardsPerRequest = 256;
+const _maxRolesPerRequest = 32;
+const _maxBanDuration = Duration(days: 3650);
 
 bool _isReasonableIdentifier(String value) =>
     value.isNotEmpty && value.length <= _maxIdentifierLength;
+
+bool _isPlausibleBanExpiry(DateTime? expiresAt) {
+  if (expiresAt == null) return true;
+  final now = DateTime.now();
+  return expiresAt.isAfter(now) && !expiresAt.isAfter(now.add(_maxBanDuration));
+}
 
 bool isValidClientEvent(
   WorldEvent event,
@@ -19,6 +27,7 @@ bool isValidClientEvent(
   WorldState state, {
   required AssetManager assetManager,
   ChallengeManager? challengeManager,
+  bool allowManagementRequests = false,
 }) => switch (event) {
   TeamJoinRequest() =>
     _isReasonableIdentifier(event.team) &&
@@ -82,11 +91,35 @@ bool isValidClientEvent(
   ),
   TeamRemoved() => state.info.teams.containsKey(event.team),
   PacksChangeRequest() =>
-    channel == kAuthorityChannel &&
+    (channel == kAuthorityChannel || allowManagementRequests) &&
         event.packs.length <= _maxPacksPerRequest &&
         event.packs.every(_isReasonableIdentifier),
   MessageRequest() =>
     event.message.isNotEmpty && event.message.length <= _maxTextLength,
+  KickPlayerRequest() =>
+    (channel == kAuthorityChannel || allowManagementRequests) &&
+        (event.reason?.length ?? 0) <= _maxTextLength,
+  BanPlayerRequest() =>
+    (channel == kAuthorityChannel || allowManagementRequests) &&
+        (event.reason?.length ?? 0) <= _maxTextLength &&
+        _isPlausibleBanExpiry(event.expiresAt),
+  UnbanPlayerRequest() =>
+    (channel == kAuthorityChannel || allowManagementRequests) &&
+        _isReasonableIdentifier(event.userId),
+  PlayerNameChangeRequest() =>
+    (event.player == channel ||
+            channel == kAuthorityChannel ||
+            allowManagementRequests) &&
+        event.name == event.name.trim() &&
+        _isReasonableIdentifier(event.name),
+  ServerRoleChangeRequest() =>
+    (channel == kAuthorityChannel || allowManagementRequests) &&
+        event.roles.length <= _maxRolesPerRequest &&
+        event.roles.every(_isReasonableIdentifier),
+  GameRolesChangeRequest() =>
+    (channel == kAuthorityChannel || allowManagementRequests) &&
+        event.roles.length <= _maxRolesPerRequest &&
+        event.roles.every(_isReasonableIdentifier),
   BoardsSpawnRequest() =>
     _isReasonableIdentifier(event.table) &&
         event.assets.length <= _maxBoardsPerRequest &&
@@ -103,7 +136,8 @@ bool isValidClientEvent(
                   .length -
               1,
         ),
-  ModeChangeRequest() => channel == kAuthorityChannel,
+  ModeChangeRequest() =>
+    channel == kAuthorityChannel || allowManagementRequests,
   DialogCloseRequest() => _isReasonableIdentifier(event.id),
   ImagesRequest() =>
     event.ids.length <= _maxImagesPerRequest &&
@@ -200,6 +234,7 @@ Future<ServerResponse?> processClientEvent(
   WorldState state, {
   required AssetManager assetManager,
   bool allowServerEvents = false,
+  bool allowManagementRequests = false,
   ChallengeManager? challengeManager,
   UserManager? userManager,
 }) async {
@@ -212,6 +247,7 @@ Future<ServerResponse?> processClientEvent(
         .values
         .toList(),
     teamMembers: state.teamMembers,
+    gameRoleMembers: state.gameRoleMembers,
   );
 
   if (event == null) {
@@ -225,7 +261,13 @@ Future<ServerResponse?> processClientEvent(
     await userManager?.addUser(channel);
     return UpdateServerResponse.builder(buildInitialize(), channel);
   }
-  if (!isValidClientEvent(event, channel, state, assetManager: assetManager)) {
+  if (!isValidClientEvent(
+    event,
+    channel,
+    state,
+    assetManager: assetManager,
+    allowManagementRequests: allowManagementRequests,
+  )) {
     return null;
   }
   switch (event) {
@@ -413,7 +455,7 @@ Future<ServerResponse?> processClientEvent(
       final mode = location == null ? null : assetManager.getModeItem(location);
       return UpdateServerResponse.builder(
         WorldInitialized.fromMode(mode, state),
-        channel,
+        kAnyChannel,
       );
     case AuthenticateRequest():
       final challenge = challengeManager?.getChallenge(channel);
@@ -451,7 +493,17 @@ Future<ServerResponse?> processClientEvent(
         );
       }
       return UpdateServerResponse.builder(buildInitialize(), channel);
+    case PlayerNameChangeRequest(:final player, :final name):
+      if (userManager != null) {
+        await userManager.changeName(player, name);
+      }
+      return UpdateServerResponse.builder(null);
     case ToolbarActionRequest():
+    case KickPlayerRequest():
+    case BanPlayerRequest():
+    case UnbanPlayerRequest():
+    case ServerRoleChangeRequest():
+    case GameRolesChangeRequest():
       return UpdateServerResponse.builder(null);
   }
 }

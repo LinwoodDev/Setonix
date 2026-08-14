@@ -7,18 +7,26 @@ import 'package:networker_socket/server.dart';
 import 'package:setonix_api/setonix_api.dart';
 import 'package:setonix_plugin/native.dart';
 import 'package:setonix_server/src/asset.dart';
+import 'package:setonix_server/src/authorization.dart';
 import 'package:setonix_server/src/bloc.dart';
 import 'package:setonix_server/src/config.dart';
 import 'package:setonix_server/src/programs/kick.dart';
+import 'package:setonix_server/src/programs/ban.dart';
+import 'package:setonix_server/src/programs/bans.dart';
+import 'package:setonix_server/src/programs/modes.dart';
+import 'package:setonix_server/src/programs/name.dart';
 import 'package:setonix_server/src/programs/packs.dart';
 import 'package:setonix_server/src/programs/players.dart';
 import 'package:setonix_server/src/programs/reset.dart';
+import 'package:setonix_server/src/programs/role.dart';
+import 'package:setonix_server/src/programs/roles.dart';
 import 'package:setonix_server/src/programs/save.dart';
 import 'package:setonix_server/src/programs/say.dart';
 import 'package:setonix_server/src/programs/scripts.dart';
 import 'package:setonix_server/src/programs/stop.dart';
 import 'package:setonix_plugin/setonix_plugin.dart';
 import 'package:setonix_server/src/programs/whitelist.dart';
+import 'package:setonix_server/src/programs/worlds.dart';
 import 'package:setonix_server/src/services/user/file.dart';
 import 'package:setonix_server/src/services/user/remote.dart';
 import 'package:path/path.dart' as p;
@@ -62,8 +70,14 @@ final class SetonixServer {
 
   NetworkerSocketServer? _server;
   NetworkerPipe<dynamic, WorldEvent>? _pipe;
+  Future<void>? _closeFuture;
+  bool _closing = false;
+
+  bool get isClosing => _closing;
 
   Set<Channel> get channels => _server?.clientConnections ?? {};
+
+  Uri? get address => _server?.address;
 
   WorldBloc get defaultWorld =>
       _worlds[defaultWorldName] ??
@@ -94,6 +108,8 @@ final class SetonixServer {
 
   WorldBloc? getWorld(String name) => _worlds[name];
 
+  Iterable<String> get worldNames => _worlds.keys;
+
   String getUserWorldName(Channel channel) =>
       _userWorlds[channel] ?? defaultWorldName;
 
@@ -102,6 +118,95 @@ final class SetonixServer {
 
   WorldState? getUserWorldState(Channel channel) =>
       getUserWorld(channel)?.state;
+
+  ServerState buildServerState(
+    Channel viewer,
+    WorldBloc world, {
+    Iterable<SetonixUser> bannedUsers = const [],
+  }) {
+    final viewerRoles = userManager.getUser(viewer)?.roles ?? const <String>{};
+    final permissions = permissionsForRoles(
+      viewerRoles,
+      configManager.serverRoles,
+    );
+    return ServerState(
+      players: userManager
+          .getUsers()
+          .where((entry) => getUserWorld(entry.key) == world)
+          .map(
+            (entry) => PlayerInfo(
+              id: entry.key,
+              name: entry.value.name,
+              serverRoles: entry.value.roles,
+              gameRoles: world.state.getGameRoles(entry.key),
+              registered: entry.value.fingerprint != null,
+              manageable: canManageServerRoles(
+                viewerRoles,
+                entry.value.roles,
+                configManager.serverRoles,
+              ),
+            ),
+          )
+          .toList(growable: false),
+      bannedUsers: permissions.contains(ServerPermission.banPlayers)
+          ? bannedUsers
+                .where((user) => user.fingerprint != null && user.isBanned)
+                .map(
+                  (user) => BannedUserInfo(
+                    id: user.fingerprint!,
+                    name: user.name,
+                    expiresAt: user.bannedUntil,
+                    reason: user.banReason,
+                  ),
+                )
+                .toList(growable: false)
+          : const [],
+      serverRoles: configManager.serverRoles,
+      permissions: permissions,
+      assignableServerRoles: configManager.serverRoles.keys
+          .where(
+            (role) => canAssignServerRole(
+              viewerRoles,
+              role,
+              configManager.serverRoles,
+            ),
+          )
+          .toSet(),
+    );
+  }
+
+  Future<void> broadcastServerState(WorldBloc world) async {
+    if (_closing) return;
+    final viewers = world.players
+        .where((channel) => userManager.getUser(channel) != null)
+        .toList(growable: false);
+    final needsBannedUsers = viewers.any(
+      (channel) => rolesAllowPermission(
+        userManager.getUser(channel)!.roles,
+        ServerPermission.banPlayers,
+        configManager.serverRoles,
+      ),
+    );
+    final bannedUsers = needsBannedUsers
+        ? await userManager.getBannedUsers()
+        : const <SetonixUser>[];
+    await Future.wait(
+      viewers.map(
+        (channel) => sendEvent(
+          ServerStateUpdated(
+            buildServerState(channel, world, bannedUsers: bannedUsers),
+          ),
+          target: channel,
+          worldName: world.worldName,
+        ),
+      ),
+    );
+  }
+
+  Future<void> broadcastAllServerStates() async {
+    if (_closing) return;
+    await Future.wait(_worlds.values.map(broadcastServerState));
+  }
 
   SetonixServer._(
     this.consoler,
@@ -115,9 +220,10 @@ final class SetonixServer {
   static Future<SetonixServer> load({
     String? worldFile,
     SetonixConfig argsConfig = const SetonixConfig(),
+    String? rootPath,
   }) async {
-    String rootDirectory = Directory.current.path;
-    if (Platform.script.scheme == 'file') {
+    String rootDirectory = rootPath ?? Directory.current.path;
+    if (rootPath == null && Platform.script.scheme == 'file') {
       final scriptDir = p.dirname(Platform.script.toFilePath());
       if (p.basename(scriptDir) == 'bin') {
         rootDirectory = p.dirname(scriptDir);
@@ -236,12 +342,10 @@ final class SetonixServer {
     }
     SecurityContext? securityContext;
     try {
-      final privateKey = await File(
-        p.join(rootDirectory, 'certs/server.key'),
-      ).readAsBytes();
-      final certificate = await File(
-        p.join(rootDirectory, 'certs/server.crt'),
-      ).readAsBytes();
+      final privateKey = await File(p.join(rootDirectory, 'certs/server.key'))
+          .readAsBytes();
+      final certificate = await File(p.join(rootDirectory, 'certs/server.crt'))
+          .readAsBytes();
       securityContext = SecurityContext()
         ..usePrivateKeyBytes(privateKey)
         ..useCertificateChainBytes(certificate);
@@ -299,8 +403,16 @@ final class SetonixServer {
       'players': PlayersProgram(this),
       'say': SayProgram(this),
       'reset': ResetProgram(this),
+      'role': RoleProgram(this),
+      'roles': RolesProgram(this),
       'kick': KickProgram(this),
+      'ban': BanProgram(this, banned: true),
+      'unban': BanProgram(this, banned: false),
+      'bans': BansProgram(this),
       'whitelist': WhitelistProgram(this),
+      'worlds': WorldsProgram(this),
+      'modes': ModesProgram(this),
+      'name': NameProgram(this),
       'scripts': ScriptsProgram(this),
       null: UnknownProgram(),
     });
@@ -318,9 +430,11 @@ final class SetonixServer {
     NetworkerPacket<WorldEvent> packet, {
     bool force = false,
     String? worldName,
-  }) => getWorld(
-    worldName ?? defaultWorldName,
-  )?.onClientEvent(packet, force: force);
+  }) {
+    if (_closing) return;
+    getWorld(worldName ?? defaultWorldName)
+        ?.onClientEvent(packet, force: force);
+  }
 
   static R _runStaticLogZone<R>(Consoler consoler, R Function() body) =>
       runZoned(
@@ -360,6 +474,10 @@ final class SetonixServer {
 
   void _onJoin((Channel, ConnectionInfo) event) {
     final (user, info) = event;
+    if (_closing) {
+      info.close();
+      return;
+    }
     final maxPlayers = configManager.maxPlayers;
     if (maxPlayers >= 0 && players.length > maxPlayers) {
       log(
@@ -378,11 +496,20 @@ final class SetonixServer {
   void _onLeave((Channel, ConnectionInfo) event) {
     final (user, info) = event;
     log('${info.address} ($user) left the game', level: LogLevel.info);
-    getUserWorld(user)?.eventSystem.runLeaveCallback(event.$1, event.$2);
+    final world = getUserWorld(user);
+    if (!_closing) {
+      world?.eventSystem.runLeaveCallback(event.$1, event.$2);
+      if (world != null && world.state.getGameRoles(user).isNotEmpty) {
+        unawaited(
+          sendEvent(GameRolesChanged(user), worldName: world.worldName),
+        );
+      }
+    }
 
     _userWorlds.remove(user);
     userManager.removeUser(user);
     challengeManager?.removeChallenge(user);
+    if (!_closing) unawaited(broadcastAllServerStates());
   }
 
   Future<void> loadWorlds() async {
@@ -438,12 +565,33 @@ final class SetonixServer {
     await Future.wait(_worlds.values.map((e) => e.save(force: force)));
   }
 
-  Future<void> close() async {
+  Future<void> close() => _closeFuture ??= _close();
+
+  Future<void> _close() async {
+    _closing = true;
+    log('Closing...', level: LogLevel.info);
+    final networkServer = _server;
+    _server = null;
+    final connections = networkServer?.clientConnections
+        .map(networkServer.getConnectionInfo)
+        .nonNulls
+        .toList(growable: false);
+    if (connections != null && connections.isNotEmpty) {
+      await Future.wait(
+        connections.map(
+          (info) => info.socket.close(
+            WebSocketStatus.goingAway,
+            'Server is shutting down.',
+          ),
+        ),
+      ).timeout(const Duration(seconds: 2), onTimeout: () => const []);
+    }
+    await networkServer?.server?.close(force: true);
+    await networkServer?.close();
     for (final world in _worlds.values) {
       await world.close();
     }
-    log('Closing...', level: LogLevel.info);
-    _server?.close();
+    await userManager.service?.close();
     consoler.dispose();
   }
 

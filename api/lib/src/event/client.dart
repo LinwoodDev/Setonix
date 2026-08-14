@@ -199,3 +199,59 @@ final class ToolbarActionRequest extends ClientWorldEvent
 
   ToolbarActionRequest(this.actionId);
 }
+
+@MappableClass()
+final class KickPlayerRequest extends ClientWorldEvent
+    with KickPlayerRequestMappable {
+  final Channel player;
+  final String? reason;
+
+  KickPlayerRequest(this.player, {this.reason});
+}
+
+@MappableClass()
+final class BanPlayerRequest extends ClientWorldEvent
+    with BanPlayerRequestMappable {
+  final Channel player;
+  final String? reason;
+  final DateTime? expiresAt;
+
+  BanPlayerRequest(this.player, {this.reason, this.expiresAt});
+}
+
+@MappableClass()
+final class UnbanPlayerRequest extends ClientWorldEvent
+    with UnbanPlayerRequestMappable {
+  final String userId;
+
+  UnbanPlayerRequest(this.userId);
+}
+
+@MappableClass()
+final class PlayerNameChangeRequest extends ClientWorldEvent
+    with PlayerNameChangeRequestMappable {
+  final Channel player;
+  final String name;
+
+  PlayerNameChangeRequest(this.player, this.name);
+}
+
+@MappableClass()
+final class ServerRoleChangeRequest extends ClientWorldEvent
+    with ServerRoleChangeRequestMappable {
+  final Channel player;
+  final Set<String> roles;
+
+  ServerRoleChangeRequest(this.player, {this.roles = const {}});
+
+  Set<String> get effectiveRoles => {kDefaultServerRole, ...roles};
+}
+
+@MappableClass()
+final class GameRolesChangeRequest extends ClientWorldEvent
+    with GameRolesChangeRequestMappable {
+  final Channel player;
+  final Set<String> roles;
+
+  GameRolesChangeRequest(this.player, [this.roles = const {}]);
+}

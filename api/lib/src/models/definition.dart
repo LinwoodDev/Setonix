@@ -1,4 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
+
 import 'vector.dart';
 import 'visual.dart';
 

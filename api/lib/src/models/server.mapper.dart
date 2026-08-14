@@ -1416,12 +1416,54 @@ class PlayerInfoMapper extends ClassMapperBase<PlayerInfo> {
     _$name,
     opt: true,
   );
+  static Set<String> _$serverRoles(PlayerInfo v) => v.serverRoles;
+  static const Field<PlayerInfo, Set<String>> _f$serverRoles = Field(
+    'serverRoles',
+    _$serverRoles,
+    opt: true,
+    def: const {kDefaultServerRole},
+  );
+  static Set<String> _$gameRoles(PlayerInfo v) => v.gameRoles;
+  static const Field<PlayerInfo, Set<String>> _f$gameRoles = Field(
+    'gameRoles',
+    _$gameRoles,
+    opt: true,
+    def: const {},
+  );
+  static bool _$registered(PlayerInfo v) => v.registered;
+  static const Field<PlayerInfo, bool> _f$registered = Field(
+    'registered',
+    _$registered,
+    opt: true,
+    def: false,
+  );
+  static bool _$manageable(PlayerInfo v) => v.manageable;
+  static const Field<PlayerInfo, bool> _f$manageable = Field(
+    'manageable',
+    _$manageable,
+    opt: true,
+    def: false,
+  );
 
   @override
-  final MappableFields<PlayerInfo> fields = const {#id: _f$id, #name: _f$name};
+  final MappableFields<PlayerInfo> fields = const {
+    #id: _f$id,
+    #name: _f$name,
+    #serverRoles: _f$serverRoles,
+    #gameRoles: _f$gameRoles,
+    #registered: _f$registered,
+    #manageable: _f$manageable,
+  };
 
   static PlayerInfo _instantiate(DecodingData data) {
-    return PlayerInfo(id: data.dec(_f$id), name: data.dec(_f$name));
+    return PlayerInfo(
+      id: data.dec(_f$id),
+      name: data.dec(_f$name),
+      serverRoles: data.dec(_f$serverRoles),
+      gameRoles: data.dec(_f$gameRoles),
+      registered: data.dec(_f$registered),
+      manageable: data.dec(_f$manageable),
+    );
   }
 
   @override
@@ -1487,7 +1529,14 @@ extension PlayerInfoValueCopy<$R, $Out>
 /// @nodoc
 abstract class PlayerInfoCopyWith<$R, $In extends PlayerInfo, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call({int? id, String? name});
+  $R call({
+    int? id,
+    String? name,
+    Set<String>? serverRoles,
+    Set<String>? gameRoles,
+    bool? registered,
+    bool? manageable,
+  });
   PlayerInfoCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -1501,22 +1550,194 @@ class _PlayerInfoCopyWithImpl<$R, $Out>
   late final ClassMapperBase<PlayerInfo> $mapper =
       PlayerInfoMapper.ensureInitialized();
   @override
-  $R call({int? id, Object? name = $none}) => $apply(
+  $R call({
+    int? id,
+    Object? name = $none,
+    Set<String>? serverRoles,
+    Set<String>? gameRoles,
+    bool? registered,
+    bool? manageable,
+  }) => $apply(
     FieldCopyWithData({
       if (id != null) #id: id,
       if (name != $none) #name: name,
+      if (serverRoles != null) #serverRoles: serverRoles,
+      if (gameRoles != null) #gameRoles: gameRoles,
+      if (registered != null) #registered: registered,
+      if (manageable != null) #manageable: manageable,
     }),
   );
   @override
   PlayerInfo $make(CopyWithData data) => PlayerInfo(
     id: data.get(#id, or: $value.id),
     name: data.get(#name, or: $value.name),
+    serverRoles: data.get(#serverRoles, or: $value.serverRoles),
+    gameRoles: data.get(#gameRoles, or: $value.gameRoles),
+    registered: data.get(#registered, or: $value.registered),
+    manageable: data.get(#manageable, or: $value.manageable),
   );
 
   @override
   PlayerInfoCopyWith<$R2, PlayerInfo, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   ) => _PlayerInfoCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+/// @nodoc
+class BannedUserInfoMapper extends ClassMapperBase<BannedUserInfo> {
+  BannedUserInfoMapper._();
+
+  static BannedUserInfoMapper? _instance;
+  static BannedUserInfoMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = BannedUserInfoMapper._());
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'BannedUserInfo';
+
+  static String _$id(BannedUserInfo v) => v.id;
+  static const Field<BannedUserInfo, String> _f$id = Field('id', _$id);
+  static String _$name(BannedUserInfo v) => v.name;
+  static const Field<BannedUserInfo, String> _f$name = Field('name', _$name);
+  static DateTime? _$expiresAt(BannedUserInfo v) => v.expiresAt;
+  static const Field<BannedUserInfo, DateTime> _f$expiresAt = Field(
+    'expiresAt',
+    _$expiresAt,
+    opt: true,
+  );
+  static String? _$reason(BannedUserInfo v) => v.reason;
+  static const Field<BannedUserInfo, String> _f$reason = Field(
+    'reason',
+    _$reason,
+    opt: true,
+  );
+
+  @override
+  final MappableFields<BannedUserInfo> fields = const {
+    #id: _f$id,
+    #name: _f$name,
+    #expiresAt: _f$expiresAt,
+    #reason: _f$reason,
+  };
+
+  static BannedUserInfo _instantiate(DecodingData data) {
+    return BannedUserInfo(
+      id: data.dec(_f$id),
+      name: data.dec(_f$name),
+      expiresAt: data.dec(_f$expiresAt),
+      reason: data.dec(_f$reason),
+    );
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static BannedUserInfo fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<BannedUserInfo>(map);
+  }
+
+  static BannedUserInfo fromJson(String json) {
+    return ensureInitialized().decodeJson<BannedUserInfo>(json);
+  }
+}
+
+/// @nodoc
+mixin BannedUserInfoMappable {
+  String toJson() {
+    return BannedUserInfoMapper.ensureInitialized().encodeJson<BannedUserInfo>(
+      this as BannedUserInfo,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return BannedUserInfoMapper.ensureInitialized().encodeMap<BannedUserInfo>(
+      this as BannedUserInfo,
+    );
+  }
+
+  BannedUserInfoCopyWith<BannedUserInfo, BannedUserInfo, BannedUserInfo>
+  get copyWith => _BannedUserInfoCopyWithImpl<BannedUserInfo, BannedUserInfo>(
+    this as BannedUserInfo,
+    $identity,
+    $identity,
+  );
+  @override
+  String toString() {
+    return BannedUserInfoMapper.ensureInitialized().stringifyValue(
+      this as BannedUserInfo,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return BannedUserInfoMapper.ensureInitialized().equalsValue(
+      this as BannedUserInfo,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return BannedUserInfoMapper.ensureInitialized().hashValue(
+      this as BannedUserInfo,
+    );
+  }
+}
+
+/// @nodoc
+extension BannedUserInfoValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, BannedUserInfo, $Out> {
+  BannedUserInfoCopyWith<$R, BannedUserInfo, $Out> get $asBannedUserInfo =>
+      $base.as((v, t, t2) => _BannedUserInfoCopyWithImpl<$R, $Out>(v, t, t2));
+}
+
+/// @nodoc
+abstract class BannedUserInfoCopyWith<$R, $In extends BannedUserInfo, $Out>
+    implements ClassCopyWith<$R, $In, $Out> {
+  $R call({String? id, String? name, DateTime? expiresAt, String? reason});
+  BannedUserInfoCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+/// @nodoc
+class _BannedUserInfoCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, BannedUserInfo, $Out>
+    implements BannedUserInfoCopyWith<$R, BannedUserInfo, $Out> {
+  _BannedUserInfoCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<BannedUserInfo> $mapper =
+      BannedUserInfoMapper.ensureInitialized();
+  @override
+  $R call({
+    String? id,
+    String? name,
+    Object? expiresAt = $none,
+    Object? reason = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (id != null) #id: id,
+      if (name != null) #name: name,
+      if (expiresAt != $none) #expiresAt: expiresAt,
+      if (reason != $none) #reason: reason,
+    }),
+  );
+  @override
+  BannedUserInfo $make(CopyWithData data) => BannedUserInfo(
+    id: data.get(#id, or: $value.id),
+    name: data.get(#name, or: $value.name),
+    expiresAt: data.get(#expiresAt, or: $value.expiresAt),
+    reason: data.get(#reason, or: $value.reason),
+  );
+
+  @override
+  BannedUserInfoCopyWith<$R2, BannedUserInfo, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _BannedUserInfoCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 /// @nodoc
@@ -1528,6 +1749,8 @@ class ServerStateMapper extends ClassMapperBase<ServerState> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ServerStateMapper._());
       PlayerInfoMapper.ensureInitialized();
+      BannedUserInfoMapper.ensureInitialized();
+      ServerRoleDefinitionMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -1548,15 +1771,57 @@ class ServerStateMapper extends ClassMapperBase<ServerState> {
     opt: true,
     def: const [],
   );
+  static List<BannedUserInfo> _$bannedUsers(ServerState v) => v.bannedUsers;
+  static const Field<ServerState, List<BannedUserInfo>> _f$bannedUsers = Field(
+    'bannedUsers',
+    _$bannedUsers,
+    opt: true,
+    def: const [],
+  );
+  static Map<String, ServerRoleDefinition> _$serverRoles(ServerState v) =>
+      v.serverRoles;
+  static const Field<ServerState, Map<String, ServerRoleDefinition>>
+  _f$serverRoles = Field(
+    'serverRoles',
+    _$serverRoles,
+    opt: true,
+    def: const {},
+  );
+  static Set<String> _$permissions(ServerState v) => v.permissions;
+  static const Field<ServerState, Set<String>> _f$permissions = Field(
+    'permissions',
+    _$permissions,
+    opt: true,
+    def: const {},
+  );
+  static Set<String> _$assignableServerRoles(ServerState v) =>
+      v.assignableServerRoles;
+  static const Field<ServerState, Set<String>> _f$assignableServerRoles = Field(
+    'assignableServerRoles',
+    _$assignableServerRoles,
+    opt: true,
+    def: const {},
+  );
 
   @override
   final MappableFields<ServerState> fields = const {
     #link: _f$link,
     #players: _f$players,
+    #bannedUsers: _f$bannedUsers,
+    #serverRoles: _f$serverRoles,
+    #permissions: _f$permissions,
+    #assignableServerRoles: _f$assignableServerRoles,
   };
 
   static ServerState _instantiate(DecodingData data) {
-    return ServerState(link: data.dec(_f$link), players: data.dec(_f$players));
+    return ServerState(
+      link: data.dec(_f$link),
+      players: data.dec(_f$players),
+      bannedUsers: data.dec(_f$bannedUsers),
+      serverRoles: data.dec(_f$serverRoles),
+      permissions: data.dec(_f$permissions),
+      assignableServerRoles: data.dec(_f$assignableServerRoles),
+    );
   }
 
   @override
@@ -1624,7 +1889,27 @@ abstract class ServerStateCopyWith<$R, $In extends ServerState, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, PlayerInfo, PlayerInfoCopyWith<$R, PlayerInfo, PlayerInfo>>
   get players;
-  $R call({String? link, List<PlayerInfo>? players});
+  ListCopyWith<
+    $R,
+    BannedUserInfo,
+    BannedUserInfoCopyWith<$R, BannedUserInfo, BannedUserInfo>
+  >
+  get bannedUsers;
+  MapCopyWith<
+    $R,
+    String,
+    ServerRoleDefinition,
+    ServerRoleDefinitionCopyWith<$R, ServerRoleDefinition, ServerRoleDefinition>
+  >
+  get serverRoles;
+  $R call({
+    String? link,
+    List<PlayerInfo>? players,
+    List<BannedUserInfo>? bannedUsers,
+    Map<String, ServerRoleDefinition>? serverRoles,
+    Set<String>? permissions,
+    Set<String>? assignableServerRoles,
+  });
   ServerStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -1645,16 +1930,58 @@ class _ServerStateCopyWithImpl<$R, $Out>
     (v) => call(players: v),
   );
   @override
-  $R call({Object? link = $none, List<PlayerInfo>? players}) => $apply(
+  ListCopyWith<
+    $R,
+    BannedUserInfo,
+    BannedUserInfoCopyWith<$R, BannedUserInfo, BannedUserInfo>
+  >
+  get bannedUsers => ListCopyWith(
+    $value.bannedUsers,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(bannedUsers: v),
+  );
+  @override
+  MapCopyWith<
+    $R,
+    String,
+    ServerRoleDefinition,
+    ServerRoleDefinitionCopyWith<$R, ServerRoleDefinition, ServerRoleDefinition>
+  >
+  get serverRoles => MapCopyWith(
+    $value.serverRoles,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(serverRoles: v),
+  );
+  @override
+  $R call({
+    Object? link = $none,
+    List<PlayerInfo>? players,
+    List<BannedUserInfo>? bannedUsers,
+    Map<String, ServerRoleDefinition>? serverRoles,
+    Set<String>? permissions,
+    Set<String>? assignableServerRoles,
+  }) => $apply(
     FieldCopyWithData({
       if (link != $none) #link: link,
       if (players != null) #players: players,
+      if (bannedUsers != null) #bannedUsers: bannedUsers,
+      if (serverRoles != null) #serverRoles: serverRoles,
+      if (permissions != null) #permissions: permissions,
+      if (assignableServerRoles != null)
+        #assignableServerRoles: assignableServerRoles,
     }),
   );
   @override
   ServerState $make(CopyWithData data) => ServerState(
     link: data.get(#link, or: $value.link),
     players: data.get(#players, or: $value.players),
+    bannedUsers: data.get(#bannedUsers, or: $value.bannedUsers),
+    serverRoles: data.get(#serverRoles, or: $value.serverRoles),
+    permissions: data.get(#permissions, or: $value.permissions),
+    assignableServerRoles: data.get(
+      #assignableServerRoles,
+      or: $value.assignableServerRoles,
+    ),
   );
 
   @override

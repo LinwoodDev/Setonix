@@ -437,10 +437,14 @@ class GameDrawer extends StatelessWidget {
               onTap: () {
                 Scaffold.of(context).closeDrawer();
                 final multiplayer = context.read<MultiplayerCubit>();
+                final world = context.read<WorldBloc>();
                 showDialog(
                   context: context,
-                  builder: (context) => BlocProvider.value(
-                    value: multiplayer,
+                  builder: (context) => MultiBlocProvider(
+                    providers: [
+                      BlocProvider.value(value: multiplayer),
+                      BlocProvider.value(value: world),
+                    ],
                     child: const MultiplayerDialog(),
                   ),
                 );
@@ -610,12 +614,10 @@ class GameDrawer extends StatelessWidget {
                                 ),
                                 content: TextFormField(
                                   decoration: InputDecoration(
-                                    labelText: AppLocalizations.of(
-                                      context,
-                                    ).name,
-                                    hintText: AppLocalizations.of(
-                                      context,
-                                    ).enterName,
+                                    labelText: AppLocalizations.of(context)
+                                        .name,
+                                    hintText: AppLocalizations.of(context)
+                                        .enterName,
                                     filled: true,
                                   ),
                                   initialValue: name,

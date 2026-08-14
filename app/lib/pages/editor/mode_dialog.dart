@@ -74,25 +74,23 @@ class _ModeEditorDialogState extends State<ModeEditorDialog> {
                       BlocBuilder<EditorCubit, SetonixData>(
                         builder: (context, state) {
                           final scripts = state.getScripts().toList();
-                          return DropdownButtonFormField<String?>(
-                            decoration: InputDecoration(
-                              labelText: AppLocalizations.of(context).scripts,
-                              filled: true,
-                            ),
-                            initialValue: value.script,
-                            items: [
-                              DropdownMenuItem(
+                          return DropdownMenu<String?>(
+                            expandedInsets: EdgeInsets.zero,
+                            label: Text(AppLocalizations.of(context).scripts),
+                            initialSelection: value.script,
+                            dropdownMenuEntries: [
+                              DropdownMenuEntry(
                                 value: null,
-                                child: Text(AppLocalizations.of(context).none),
+                                label: AppLocalizations.of(context).none,
                               ),
                               ...scripts.map(
-                                (script) => DropdownMenuItem(
+                                (script) => DropdownMenuEntry(
                                   value: script,
-                                  child: Text(script),
+                                  label: script,
                                 ),
                               ),
                             ],
-                            onChanged: (newScript) {
+                            onSelected: (newScript) {
                               setState(() {
                                 _value = value.copyWith(script: newScript);
                               });
@@ -335,23 +333,21 @@ class _ModeTeamEditorDialogState extends State<_ModeTeamEditorDialog> {
                 setState(() => _team = _team.copyWith(description: val)),
           ),
           const SizedBox(height: 8),
-          DropdownButtonFormField<TeamColor?>(
-            decoration: InputDecoration(
-              labelText: AppLocalizations.of(context).color,
-              filled: true,
-            ),
-            initialValue: _team.color,
-            items: [
-              DropdownMenuItem(
+          DropdownMenu<TeamColor?>(
+            expandedInsets: EdgeInsets.zero,
+            label: Text(AppLocalizations.of(context).color),
+            initialSelection: _team.color,
+            dropdownMenuEntries: [
+              DropdownMenuEntry(
                 value: null,
-                child: Text(AppLocalizations.of(context).none),
+                label: AppLocalizations.of(context).none,
               ),
               ...TeamColor.values.map(
-                (c) => DropdownMenuItem(value: c, child: Text(c.name)),
+                (color) => DropdownMenuEntry(value: color, label: color.name),
               ),
             ],
-            onChanged: (val) =>
-                setState(() => _team = _team.copyWith(color: val)),
+            onSelected: (color) =>
+                setState(() => _team = _team.copyWith(color: color)),
           ),
         ],
       ),
@@ -418,28 +414,27 @@ class _ModeTableEditorDialogState extends State<_ModeTableEditorDialog> {
             builder: (context, state) {
               final backgrounds = state.getBackgrounds().toList();
               final currentBg = _table.background?.toString();
-              return DropdownButtonFormField<String?>(
-                decoration: InputDecoration(
-                  labelText: AppLocalizations.of(context).backgrounds,
-                  filled: true,
-                ),
-                initialValue: backgrounds.contains(currentBg)
+              return DropdownMenu<String?>(
+                expandedInsets: EdgeInsets.zero,
+                label: Text(AppLocalizations.of(context).backgrounds),
+                initialSelection: backgrounds.contains(currentBg)
                     ? currentBg
                     : null,
-                items: [
-                  DropdownMenuItem(
+                dropdownMenuEntries: [
+                  DropdownMenuEntry(
                     value: null,
-                    child: Text(AppLocalizations.of(context).none),
+                    label: AppLocalizations.of(context).none,
                   ),
                   ...backgrounds.map(
-                    (bg) => DropdownMenuItem(value: bg, child: Text(bg)),
+                    (background) =>
+                        DropdownMenuEntry(value: background, label: background),
                   ),
                 ],
-                onChanged: (val) => setState(() {
+                onSelected: (background) => setState(() {
                   _table = _table.copyWith(
-                    background: val == null
+                    background: background == null
                         ? null
-                        : ItemLocation.fromString(val),
+                        : ItemLocation.fromString(background),
                   );
                 }),
               );

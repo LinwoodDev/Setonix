@@ -91,9 +91,8 @@ class _HomePageState extends State<HomePage> {
             title: Text(title),
             leading: isMobile
                 ? IconButton(
-                    tooltip: MaterialLocalizations.of(
-                      context,
-                    ).openAppDrawerTooltip,
+                    tooltip: MaterialLocalizations.of(context)
+                        .openAppDrawerTooltip,
                     icon: const PhosphorIcon(PhosphorIconsLight.list),
                     onPressed: () => _scaffoldKey.currentState?.openDrawer(),
                   )

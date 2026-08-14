@@ -51,12 +51,20 @@ final class RemoteUserService extends UserService {
     String fingerprint, {
     String? name,
     bool? onWhitelist,
+    Set<String>? roles,
+    bool? banned,
+    DateTime? bannedUntil,
+    String? banReason,
     DateTime? lastLogin,
     bool createIfNotExists = false,
   }) async {
     final body = jsonEncode({
       'name': name,
       'onWhitelist': onWhitelist,
+      'roles': roles?.toList(growable: false),
+      'banned': banned,
+      'bannedUntil': bannedUntil?.millisecondsSinceEpoch,
+      'banReason': banReason,
       'lastLogin': lastLogin?.millisecondsSinceEpoch,
     });
     final response = await http
@@ -75,6 +83,10 @@ final class RemoteUserService extends UserService {
           'fingerprint': fingerprint,
           'name': name,
           'onWhitelist': onWhitelist,
+          'roles': roles?.toList(growable: false),
+          'banned': banned,
+          'bannedUntil': bannedUntil?.millisecondsSinceEpoch,
+          'banReason': banReason,
           'lastLogin': lastLogin?.millisecondsSinceEpoch,
         });
         final createResponse = await http

@@ -16,6 +16,7 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
   static SetonixConfigMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = SetonixConfigMapper._());
+      ServerRoleDefinitionMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -107,6 +108,10 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
     _$gameMode,
     opt: true,
   );
+  static Map<String, ServerRoleDefinition>? _$serverRoles(SetonixConfig v) =>
+      v.serverRoles;
+  static const Field<SetonixConfig, Map<String, ServerRoleDefinition>>
+  _f$serverRoles = Field('serverRoles', _$serverRoles, opt: true);
 
   @override
   final MappableFields<SetonixConfig> fields = const {
@@ -124,6 +129,7 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
     #apiEndpoint: _f$apiEndpoint,
     #endpointSecret: _f$endpointSecret,
     #gameMode: _f$gameMode,
+    #serverRoles: _f$serverRoles,
   };
 
   static SetonixConfig _instantiate(DecodingData data) {
@@ -142,6 +148,7 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
       apiEndpoint: data.dec(_f$apiEndpoint),
       endpointSecret: data.dec(_f$endpointSecret),
       gameMode: data.dec(_f$gameMode),
+      serverRoles: data.dec(_f$serverRoles),
     );
   }
 
@@ -210,6 +217,13 @@ extension SetonixConfigValueCopy<$R, $Out>
 /// @nodoc
 abstract class SetonixConfigCopyWith<$R, $In extends SetonixConfig, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
+  MapCopyWith<
+    $R,
+    String,
+    ServerRoleDefinition,
+    ServerRoleDefinitionCopyWith<$R, ServerRoleDefinition, ServerRoleDefinition>
+  >?
+  get serverRoles;
   $R call({
     String? host,
     int? port,
@@ -225,6 +239,7 @@ abstract class SetonixConfigCopyWith<$R, $In extends SetonixConfig, $Out>
     String? apiEndpoint,
     String? endpointSecret,
     String? gameMode,
+    Map<String, ServerRoleDefinition>? serverRoles,
   });
   SetonixConfigCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -238,6 +253,20 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
   @override
   late final ClassMapperBase<SetonixConfig> $mapper =
       SetonixConfigMapper.ensureInitialized();
+  @override
+  MapCopyWith<
+    $R,
+    String,
+    ServerRoleDefinition,
+    ServerRoleDefinitionCopyWith<$R, ServerRoleDefinition, ServerRoleDefinition>
+  >?
+  get serverRoles => $value.serverRoles != null
+      ? MapCopyWith(
+          $value.serverRoles!,
+          (v, t) => v.copyWith.$chain(t),
+          (v) => call(serverRoles: v),
+        )
+      : null;
   @override
   $R call({
     Object? host = $none,
@@ -254,6 +283,7 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
     Object? apiEndpoint = $none,
     Object? endpointSecret = $none,
     Object? gameMode = $none,
+    Object? serverRoles = $none,
   }) => $apply(
     FieldCopyWithData({
       if (host != $none) #host: host,
@@ -270,6 +300,7 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
       if (apiEndpoint != $none) #apiEndpoint: apiEndpoint,
       if (endpointSecret != $none) #endpointSecret: endpointSecret,
       if (gameMode != $none) #gameMode: gameMode,
+      if (serverRoles != $none) #serverRoles: serverRoles,
     }),
   );
   @override
@@ -288,6 +319,7 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
     apiEndpoint: data.get(#apiEndpoint, or: $value.apiEndpoint),
     endpointSecret: data.get(#endpointSecret, or: $value.endpointSecret),
     gameMode: data.get(#gameMode, or: $value.gameMode),
+    serverRoles: data.get(#serverRoles, or: $value.serverRoles),
   );
 
   @override

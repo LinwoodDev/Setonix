@@ -1,4 +1,35 @@
 {
+  "roles": {
+    "spectator": {
+      "name": "Spectator"
+    },
+    "player": {
+      "name": "Player"
+    },
+    "moderator": {
+      "name": "Moderator"
+    },
+    "owner": {
+      "name": "Owner"
+    }
+  },
+  "permissions": {
+    "play": {
+      "name": "Play"
+    },
+    "manageWorld": {
+      "name": "Manage world"
+    },
+    "kickPlayers": {
+      "name": "Kick players"
+    },
+    "banPlayers": {
+      "name": "Ban players"
+    },
+    "manageRoles": {
+      "name": "Manage roles"
+    }
+  },
   "decks": {
     "doko": {
       "name": "Dummkopf",

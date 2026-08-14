@@ -15,8 +15,8 @@ version: 0.8.2+15
 publish_to: none
 
 environment:
-  sdk: ">=3.8.0 <4.0.0"
-  flutter: 3.44.9
+  sdk: ">=3.13.0 <4.0.0"
+  flutter: 3.47.0
 
 dependencies:
   flutter:
@@ -85,7 +85,7 @@ dependencies:
   lw_sysapi:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: d7d00d81291d6a2716da40b9f1d004ac4973771d
+      ref: 4504590d871958c48a93969461193691ea88cb18
       path: packages/lw_sysapi
   setonix_api:
     path: ../api

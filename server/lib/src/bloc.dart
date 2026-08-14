@@ -201,6 +201,39 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
     bool force = false,
   }) async {
     final data = packet.data;
+    if (!packet.isServer &&
+        data is ClientWorldEvent &&
+        data is! AuthenticateRequest) {
+      final user = server.userManager.getUser(packet.channel);
+      if (user == null ||
+          !canProcessClientEvent(
+            user.roles,
+            data,
+            server.configManager.serverRoles,
+          )) {
+        server.log(
+          'Rejected ${data.runtimeType} from channel ${packet.channel}: '
+          '${user == null ? 'unauthenticated' : 'roles ${user.roles.join(', ')}'}',
+          level: LogLevel.warning,
+        );
+        return;
+      }
+      if (!isValidClientEvent(
+        data,
+        packet.channel,
+        state,
+        assetManager: assetManager,
+        allowManagementRequests: true,
+      )) {
+        server.log(
+          'Rejected invalid ${data.runtimeType} payload from channel '
+          '${packet.channel}.',
+          level: LogLevel.warning,
+        );
+        return;
+      }
+      if (await _handleManagementEvent(data, packet.channel)) return;
+    }
     ServerResponse? process;
     try {
       process = await processClientEvent(
@@ -209,6 +242,9 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
         state,
         assetManager: assetManager,
         allowServerEvents: packet.isServer,
+        // The dedicated server has already applied role authorization above.
+        // Peer-hosted games retain the shared API's authority-only default.
+        allowManagementRequests: true,
         challengeManager: server.challengeManager,
         userManager: server.userManager,
       );
@@ -253,6 +289,117 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
       case KickServerResponse():
         server.kick(packet.channel, process.message);
     }
+    if (data is AuthenticateRequest) {
+      final user = server.userManager.getUser(packet.channel);
+      if (user != null) {
+        final validRoles = {
+          kDefaultServerRole,
+          ...user.roles.where(server.configManager.serverRoles.containsKey),
+        };
+        if (validRoles.length != user.roles.length ||
+            !validRoles.containsAll(user.roles)) {
+          await server.userManager.changeRoles(
+            '#${packet.channel}',
+            validRoles,
+          );
+        }
+      }
+    }
+    if (data is UserJoined || data is AuthenticateRequest) {
+      await server.broadcastServerState(this);
+    }
+  }
+
+  Future<bool> _handleManagementEvent(
+    ClientWorldEvent event,
+    Channel actorId,
+  ) async {
+    final actor = server.userManager.getUser(actorId);
+    if (event case UnbanPlayerRequest()) {
+      if (actor == null) return true;
+      if (await server.userManager.unban(event.userId)) {
+        await server.broadcastAllServerStates();
+      }
+      return true;
+    }
+    final targetId = switch (event) {
+      KickPlayerRequest() => event.player,
+      BanPlayerRequest() => event.player,
+      PlayerNameChangeRequest() => event.player,
+      ServerRoleChangeRequest() => event.player,
+      GameRolesChangeRequest() => event.player,
+      _ => null,
+    };
+    final target = targetId == null
+        ? null
+        : server.userManager.getUser(targetId);
+    final targetIsInWorld =
+        targetId != null &&
+        target != null &&
+        server.getUserWorld(targetId) == this;
+    final roles = server.configManager.serverRoles;
+    switch (event) {
+      case KickPlayerRequest():
+        if (actor == null ||
+            !targetIsInWorld ||
+            !canManageServerRoles(actor.roles, target.roles, roles)) {
+          return true;
+        }
+        server.kick(
+          event.player,
+          KickMessage(reason: KickReason.kick, message: event.reason),
+        );
+      case BanPlayerRequest():
+        if (actor == null ||
+            !targetIsInWorld ||
+            !canManageServerRoles(actor.roles, target.roles, roles)) {
+          return true;
+        }
+        final changed = await server.userManager.changeBan(
+          '#${event.player}',
+          banned: true,
+          until: event.expiresAt,
+          reason: event.reason,
+        );
+        if (changed) {
+          server.kick(
+            event.player,
+            KickMessage(reason: KickReason.ban, message: event.reason),
+          );
+        }
+      case PlayerNameChangeRequest():
+        if (actor == null ||
+            !targetIsInWorld ||
+            (actorId != event.player &&
+                !canManageServerRoles(actor.roles, target.roles, roles))) {
+          return true;
+        }
+        if (await server.userManager.changeName(event.player, event.name)) {
+          await server.broadcastAllServerStates();
+        }
+      case ServerRoleChangeRequest():
+        final requestedRoles = event.effectiveRoles;
+        if (actor == null ||
+            !targetIsInWorld ||
+            requestedRoles.any((role) => !roles.containsKey(role)) ||
+            !canManageServerRoles(actor.roles, target.roles, roles) ||
+            requestedRoles.any(
+              (role) => !canAssignServerRole(actor.roles, role, roles),
+            )) {
+          return true;
+        }
+        await server.userManager.changeRoles(
+          '#${event.player}',
+          requestedRoles,
+        );
+        await server.broadcastServerState(this);
+      case GameRolesChangeRequest():
+        if (!targetIsInWorld) return true;
+        await sendEvent(GameRolesChanged(event.player, event.roles));
+      default:
+        return false;
+    }
+    return true;
   }
 
   @override
@@ -267,7 +414,9 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
   }) => server.sendEvent(event, target: target, worldName: worldName);
 
   @override
-  List<int> get players => server.players.keys.toList(growable: false);
+  List<int> get players => server.players.keys
+      .where((channel) => server.getUserWorldName(channel) == worldName)
+      .toList(growable: false);
 
   @override
   String getScriptState(String plugin) => _scriptStates[plugin] ?? '{}';

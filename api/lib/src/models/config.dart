@@ -47,6 +47,7 @@ final class SetonixConfig with SetonixConfigMappable {
   final String? gameMode;
   static const String defaultGameMode = '';
   static const String envGameMode = 'SETONIX_GAME_MODE';
+  final Map<String, ServerRoleDefinition>? serverRoles;
 
   const SetonixConfig({
     this.host,
@@ -63,6 +64,7 @@ final class SetonixConfig with SetonixConfigMappable {
     this.apiEndpoint,
     this.endpointSecret,
     this.gameMode,
+    this.serverRoles,
   });
 
   static const defaultConfig = SetonixConfig(
@@ -80,6 +82,7 @@ final class SetonixConfig with SetonixConfigMappable {
     apiEndpoint: defaultApiEndpoint,
     endpointSecret: defaultEndpointSecret,
     gameMode: defaultGameMode,
+    serverRoles: kDefaultServerRoles,
   );
 
   static SetonixConfig fromEnvironment() {
@@ -144,6 +147,7 @@ final class SetonixConfig with SetonixConfigMappable {
       gameMode: bool.hasEnvironment(envGameMode)
           ? String.fromEnvironment(envGameMode, defaultValue: defaultGameMode)
           : null,
+      serverRoles: null,
     );
   }
 
@@ -162,5 +166,6 @@ final class SetonixConfig with SetonixConfigMappable {
     apiEndpoint: other.apiEndpoint ?? apiEndpoint,
     endpointSecret: other.endpointSecret ?? endpointSecret,
     gameMode: other.gameMode ?? gameMode,
+    serverRoles: other.serverRoles ?? serverRoles,
   );
 }
