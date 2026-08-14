@@ -103,6 +103,9 @@ bool isValidClientEvent(
     (channel == kAuthorityChannel || allowManagementRequests) &&
         (event.reason?.length ?? 0) <= _maxTextLength &&
         _isPlausibleBanExpiry(event.expiresAt),
+  UnbanPlayerRequest() =>
+    (channel == kAuthorityChannel || allowManagementRequests) &&
+        _isReasonableIdentifier(event.userId),
   ServerRoleChangeRequest() =>
     (channel == kAuthorityChannel || allowManagementRequests) &&
         event.roles.length <= _maxRolesPerRequest &&
@@ -487,6 +490,7 @@ Future<ServerResponse?> processClientEvent(
     case ToolbarActionRequest():
     case KickPlayerRequest():
     case BanPlayerRequest():
+    case UnbanPlayerRequest():
     case ServerRoleChangeRequest():
     case GameRolesChangeRequest():
       return UpdateServerResponse.builder(null);

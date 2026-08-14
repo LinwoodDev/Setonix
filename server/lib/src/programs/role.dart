@@ -1,11 +1,9 @@
 import 'package:consoler/consoler.dart';
 import 'package:setonix_api/setonix_api.dart';
-import 'package:setonix_server/src/server.dart';
+import 'package:setonix_server/src/programs/async.dart';
 
-class RoleProgram extends ConsoleProgram {
-  final SetonixServer server;
-
-  RoleProgram(this.server);
+class RoleProgram extends AsyncServerProgram {
+  RoleProgram(super.server);
 
   @override
   String getUsage() =>
@@ -15,7 +13,7 @@ class RoleProgram extends ConsoleProgram {
   String getDescription() => 'List, add, remove, or set user roles.';
 
   @override
-  Future<void> run(String label, List<String> args) async {
+  Future<void> runAsync(String label, List<String> args) async {
     if (args.length < 2) {
       server.log('Wrong usage, use ${getUsage()}', level: LogLevel.error);
       return;

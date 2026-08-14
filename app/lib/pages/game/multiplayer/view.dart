@@ -37,30 +37,29 @@ class ViewMultiplayerDialog extends StatelessWidget {
               ),
               if (ban) ...[
                 const SizedBox(height: 12),
-                DropdownButtonFormField<Duration?>(
-                  initialValue: duration,
-                  decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context).banDuration,
-                  ),
-                  items: [
-                    DropdownMenuItem(
+                DropdownMenu<Duration?>(
+                  initialSelection: duration,
+                  expandedInsets: EdgeInsets.zero,
+                  label: Text(AppLocalizations.of(context).banDuration),
+                  dropdownMenuEntries: [
+                    DropdownMenuEntry(
                       value: null,
-                      child: Text(AppLocalizations.of(context).permanent),
+                      label: AppLocalizations.of(context).permanent,
                     ),
-                    DropdownMenuItem(
+                    DropdownMenuEntry(
                       value: const Duration(hours: 1),
-                      child: Text(AppLocalizations.of(context).oneHour),
+                      label: AppLocalizations.of(context).oneHour,
                     ),
-                    DropdownMenuItem(
+                    DropdownMenuEntry(
                       value: const Duration(days: 1),
-                      child: Text(AppLocalizations.of(context).oneDay),
+                      label: AppLocalizations.of(context).oneDay,
                     ),
-                    DropdownMenuItem(
+                    DropdownMenuEntry(
                       value: const Duration(days: 7),
-                      child: Text(AppLocalizations.of(context).sevenDays),
+                      label: AppLocalizations.of(context).sevenDays,
                     ),
                   ],
-                  onChanged: (value) => setState(() => duration = value),
+                  onSelected: (value) => setState(() => duration = value),
                 ),
               ],
             ],
@@ -145,6 +144,51 @@ class ViewMultiplayerDialog extends StatelessWidget {
     );
   }
 
+  void _toggleServerRole(BuildContext context, PlayerInfo player, String role) {
+    final updatedRoles = Set<String>.from(player.serverRoles);
+    if (updatedRoles.contains(role)) {
+      updatedRoles.remove(role);
+    } else {
+      updatedRoles.add(role);
+    }
+    unawaited(
+      context.read<WorldBloc>().process(
+        ServerRoleChangeRequest(player.id, roles: updatedRoles),
+      ),
+    );
+  }
+
+  Future<void> _unbanUser(BuildContext context, BannedUserInfo user) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(AppLocalizations.of(context).unban),
+        content: Text(user.name),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(AppLocalizations.of(context).unban),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !context.mounted) return;
+    unawaited(context.read<WorldBloc>().process(UnbanPlayerRequest(user.id)));
+  }
+
+  String _formatBanExpiration(BuildContext context, DateTime expiresAt) {
+    final local = expiresAt.toLocal();
+    final material = MaterialLocalizations.of(context);
+    final formatted =
+        '${material.formatMediumDate(local)} '
+        '${material.formatTimeOfDay(TimeOfDay.fromDateTime(local))}';
+    return AppLocalizations.of(context).banExpiresAt(formatted);
+  }
+
   @override
   Widget build(BuildContext context) {
     final info = FutureBuilder<Uri>(
@@ -223,170 +267,261 @@ class ViewMultiplayerDialog extends StatelessWidget {
                         )
                         .toList(growable: false)
                   : const <PlayerInfo>[];
-              if (players.isEmpty) {
-                return Text(
-                  AppLocalizations.of(context).noConnections,
-                  textAlign: TextAlign.center,
-                );
-              }
-              return ListView.builder(
-                itemCount: players.length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  final player = players[index];
-                  final gameRoles = worldState.world.getGameRoles(player.id);
-                  final roleNames = player.serverRoles
-                      .map(
-                        (role) => worldState.assetManager
-                            .getRoleTranslation(
-                              role,
-                              fallback: serverState.serverRoles[role]?.name,
+              final canViewBans = serverState.permissions.contains(
+                ServerPermission.banPlayers,
+              );
+              final playerList = players.isEmpty
+                  ? Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Text(
+                        AppLocalizations.of(context).noConnections,
+                        textAlign: TextAlign.center,
+                      ),
+                    )
+                  : ListView.builder(
+                      itemCount: players.length,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        final player = players[index];
+                        final gameRoles = worldState.world.getGameRoles(
+                          player.id,
+                        );
+                        final roleNames = player.serverRoles
+                            .map(
+                              (role) => worldState.assetManager
+                                  .getRoleTranslation(
+                                    role,
+                                    fallback:
+                                        serverState.serverRoles[role]?.name,
+                                  )
+                                  .name,
                             )
-                            .name,
-                      )
-                      .toList(growable: false);
-                  final gameRoleNames = gameRoles
-                      .map(
-                        (role) => worldState.assetManager
-                            .getRoleTranslation(role)
-                            .name,
-                      )
-                      .toList(growable: false);
-                  final canKick =
-                      player.manageable &&
-                      serverState.permissions.contains(
-                        ServerPermission.kickPlayers,
-                      );
-                  final canBan =
-                      player.registered &&
-                      player.manageable &&
-                      serverState.permissions.contains(
-                        ServerPermission.banPlayers,
-                      );
-                  final canManageRoles =
-                      player.manageable &&
-                      serverState.permissions.contains(
-                        ServerPermission.manageRoles,
-                      );
-                  final canManageGameRoles = serverState.permissions.contains(
-                    ServerPermission.manageWorld,
-                  );
-                  final canManage =
-                      canKick || canBan || canManageRoles || canManageGameRoles;
-                  return ListTile(
-                    title: Text(
-                      player.name ??
-                          AppLocalizations.of(
-                            context,
-                          ).defaultUserName(player.id),
-                    ),
-                    subtitle: Text(
-                      [
-                        roleNames.join(', '),
-                        if (gameRoleNames.isNotEmpty) gameRoleNames.join(', '),
-                      ].join(' · '),
-                    ),
-                    trailing: canManage
-                        ? PopupMenuButton<String>(
-                            onSelected: (value) {
-                              if (value == 'kick') {
-                                _moderatePlayer(context, player, ban: false);
-                              } else if (value == 'ban') {
-                                _moderatePlayer(context, player, ban: true);
-                              } else if (value == 'gameRoles') {
-                                _changeGameRoles(context, player, gameRoles);
-                              } else if (value.startsWith('role:')) {
-                                final role = value.substring(5);
-                                final updatedRoles = Set<String>.from(
-                                  player.serverRoles,
-                                );
-                                if (updatedRoles.contains(role) &&
-                                    role != kDefaultServerRole) {
-                                  updatedRoles.remove(role);
-                                } else {
-                                  updatedRoles.add(role);
-                                }
-                                unawaited(
-                                  context.read<WorldBloc>().process(
-                                    ServerRoleChangeRequest(
-                                      player.id,
-                                      roles: updatedRoles,
+                            .toList(growable: false);
+                        final gameRoleNames = gameRoles
+                            .map(
+                              (role) => worldState.assetManager
+                                  .getRoleTranslation(role)
+                                  .name,
+                            )
+                            .toList(growable: false);
+                        final canKick =
+                            player.manageable &&
+                            serverState.permissions.contains(
+                              ServerPermission.kickPlayers,
+                            );
+                        final canBan =
+                            player.registered &&
+                            player.manageable &&
+                            serverState.permissions.contains(
+                              ServerPermission.banPlayers,
+                            );
+                        final canManageRoles =
+                            player.manageable &&
+                            serverState.permissions.contains(
+                              ServerPermission.manageRoles,
+                            );
+                        final canManageGameRoles = serverState.permissions
+                            .contains(ServerPermission.manageWorld);
+                        final canManage =
+                            canKick ||
+                            canBan ||
+                            canManageRoles ||
+                            canManageGameRoles;
+                        return ListTile(
+                          title: Text(
+                            player.name ??
+                                AppLocalizations.of(
+                                  context,
+                                ).defaultUserName(player.id),
+                          ),
+                          subtitle: Text(
+                            [
+                              roleNames.join(', '),
+                              if (gameRoleNames.isNotEmpty)
+                                gameRoleNames.join(', '),
+                            ].join(' · '),
+                          ),
+                          trailing: canManage
+                              ? MenuAnchor(
+                                  builder: defaultMenuButton(
+                                    tooltip: MaterialLocalizations.of(
+                                      context,
+                                    ).showMenuTooltip,
+                                  ),
+                                  menuChildren: [
+                                    if (canKick)
+                                      MenuItemButton(
+                                        leadingIcon: const PhosphorIcon(
+                                          PhosphorIconsLight.userMinus,
+                                        ),
+                                        onPressed: () => _moderatePlayer(
+                                          context,
+                                          player,
+                                          ban: false,
+                                        ),
+                                        child: Text(
+                                          AppLocalizations.of(context).kick,
+                                        ),
+                                      ),
+                                    if (canBan)
+                                      MenuItemButton(
+                                        leadingIcon: const PhosphorIcon(
+                                          PhosphorIconsLight.gavel,
+                                        ),
+                                        onPressed: () => _moderatePlayer(
+                                          context,
+                                          player,
+                                          ban: true,
+                                        ),
+                                        child: Text(
+                                          AppLocalizations.of(context).ban,
+                                        ),
+                                      ),
+                                    if (canManageGameRoles)
+                                      MenuItemButton(
+                                        leadingIcon: const PhosphorIcon(
+                                          PhosphorIconsLight.gameController,
+                                        ),
+                                        onPressed: () => _changeGameRoles(
+                                          context,
+                                          player,
+                                          gameRoles,
+                                        ),
+                                        child: Text(
+                                          AppLocalizations.of(
+                                            context,
+                                          ).gameRoles,
+                                        ),
+                                      ),
+                                    if (canManageRoles)
+                                      SubmenuButton(
+                                        leadingIcon: const PhosphorIcon(
+                                          PhosphorIconsLight
+                                              .identificationBadge,
+                                        ),
+                                        menuChildren: serverState
+                                            .serverRoles
+                                            .entries
+                                            .where(
+                                              (entry) => serverState
+                                                  .assignableServerRoles
+                                                  .contains(entry.key),
+                                            )
+                                            .map((entry) {
+                                              final translatedRole = worldState
+                                                  .assetManager
+                                                  .getRoleTranslation(
+                                                    entry.key,
+                                                    fallback: entry.value.name,
+                                                  )
+                                                  .name;
+                                              final translatedPermissions = entry
+                                                  .value
+                                                  .permissions
+                                                  .map(
+                                                    (permission) => worldState
+                                                        .assetManager
+                                                        .getPermissionTranslation(
+                                                          permission,
+                                                        )
+                                                        .name,
+                                                  )
+                                                  .join(', ');
+                                              return CheckboxMenuButton(
+                                                value: player.serverRoles
+                                                    .contains(entry.key),
+                                                closeOnActivate: false,
+                                                onChanged:
+                                                    entry.key ==
+                                                        kDefaultServerRole
+                                                    ? null
+                                                    : (_) => _toggleServerRole(
+                                                        context,
+                                                        player,
+                                                        entry.key,
+                                                      ),
+                                                child: ListTile(
+                                                  contentPadding:
+                                                      EdgeInsets.zero,
+                                                  dense: true,
+                                                  title: Text(translatedRole),
+                                                  subtitle:
+                                                      translatedPermissions
+                                                          .isEmpty
+                                                      ? null
+                                                      : Text(
+                                                          translatedPermissions,
+                                                        ),
+                                                ),
+                                              );
+                                            })
+                                            .toList(growable: false),
+                                        child: Text(
+                                          AppLocalizations.of(
+                                            context,
+                                          ).serverRoles,
+                                        ),
+                                      ),
+                                  ],
+                                )
+                              : null,
+                        );
+                      },
+                    );
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  playerList,
+                  if (canViewBans) ...[
+                    const Divider(),
+                    ExpansionTile(
+                      leading: const PhosphorIcon(PhosphorIconsLight.gavel),
+                      title: Text(AppLocalizations.of(context).bannedUsers),
+                      initiallyExpanded: serverState.bannedUsers.isNotEmpty,
+                      children: serverState.bannedUsers.isEmpty
+                          ? [
+                              ListTile(
+                                title: Text(
+                                  AppLocalizations.of(context).noBannedUsers,
+                                ),
+                              ),
+                            ]
+                          : serverState.bannedUsers
+                                .map(
+                                  (user) => ListTile(
+                                    title: Text(user.name),
+                                    subtitle: Text(
+                                      [
+                                        ?user.reason,
+                                        if (user.expiresAt
+                                            case final expiresAt?)
+                                          _formatBanExpiration(
+                                            context,
+                                            expiresAt,
+                                          )
+                                        else
+                                          AppLocalizations.of(
+                                            context,
+                                          ).permanent,
+                                      ].join('\n'),
+                                    ),
+                                    trailing: IconButton.filledTonal(
+                                      icon: const PhosphorIcon(
+                                        PhosphorIconsLight.lockOpen,
+                                      ),
+                                      tooltip: AppLocalizations.of(
+                                        context,
+                                      ).unban,
+                                      onPressed: () =>
+                                          _unbanUser(context, user),
                                     ),
                                   ),
-                                );
-                              }
-                            },
-                            itemBuilder: (context) => [
-                              if (canKick)
-                                PopupMenuItem(
-                                  value: 'kick',
-                                  child: Text(
-                                    AppLocalizations.of(context).kick,
-                                  ),
-                                ),
-                              if (canBan)
-                                PopupMenuItem(
-                                  value: 'ban',
-                                  child: Text(AppLocalizations.of(context).ban),
-                                ),
-                              if (canManageGameRoles)
-                                PopupMenuItem(
-                                  value: 'gameRoles',
-                                  child: Text(
-                                    AppLocalizations.of(context).gameRoles,
-                                  ),
-                                ),
-                              if (canManageRoles)
-                                ...serverState.serverRoles.entries
-                                    .where(
-                                      (entry) => serverState
-                                          .assignableServerRoles
-                                          .contains(entry.key),
-                                    )
-                                    .map((entry) {
-                                      final translatedRole = worldState
-                                          .assetManager
-                                          .getRoleTranslation(
-                                            entry.key,
-                                            fallback: entry.value.name,
-                                          )
-                                          .name;
-                                      final translatedPermissions = entry
-                                          .value
-                                          .permissions
-                                          .map(
-                                            (permission) => worldState
-                                                .assetManager
-                                                .getPermissionTranslation(
-                                                  permission,
-                                                )
-                                                .name,
-                                          )
-                                          .join(', ');
-                                      return CheckedPopupMenuItem(
-                                        value: 'role:${entry.key}',
-                                        checked: player.serverRoles.contains(
-                                          entry.key,
-                                        ),
-                                        enabled:
-                                            entry.key != kDefaultServerRole,
-                                        child: ListTile(
-                                          contentPadding: EdgeInsets.zero,
-                                          dense: true,
-                                          title: Text(translatedRole),
-                                          subtitle:
-                                              translatedPermissions.isEmpty
-                                              ? null
-                                              : Text(translatedPermissions),
-                                        ),
-                                      );
-                                    }),
-                            ],
-                          )
-                        : null,
-                  );
-                },
+                                )
+                                .toList(growable: false),
+                    ),
+                  ],
+                ],
               );
             },
           ),

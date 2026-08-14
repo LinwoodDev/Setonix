@@ -110,6 +110,9 @@ void main() {
         isFalse,
       );
       expect(valid(BanPlayerRequest(3)), isTrue);
+      expect(valid(UnbanPlayerRequest('fingerprint')), isTrue);
+      expect(valid(UnbanPlayerRequest('')), isFalse);
+      expect(valid(UnbanPlayerRequest(text(257))), isFalse);
       expect(
         valid(
           BanPlayerRequest(
@@ -178,6 +181,13 @@ void main() {
         roleAllowsPermission('dealer', 'blackjack:shuffle', customRoles),
         isFalse,
       );
+    });
+
+    test('unbanning requires the ban permission', () {
+      final event = UnbanPlayerRequest('fingerprint');
+
+      expect(canProcessClientEvent({'moderator'}, event, roles), isTrue);
+      expect(canProcessClientEvent({'spectator'}, event, roles), isFalse);
     });
 
     test('role hierarchy prevents managing peers and higher roles', () {

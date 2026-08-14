@@ -1,12 +1,11 @@
 import 'package:consoler/consoler.dart';
 import 'package:setonix_api/setonix_api.dart';
-import 'package:setonix_server/src/server.dart';
+import 'package:setonix_server/src/programs/async.dart';
 
-class BanProgram extends ConsoleProgram {
-  final SetonixServer server;
+class BanProgram extends AsyncServerProgram {
   final bool banned;
 
-  BanProgram(this.server, {required this.banned});
+  BanProgram(super.server, {required this.banned});
 
   @override
   String getUsage() => banned ? '<User> [Minutes] [Reason...]' : '<User>';
@@ -17,7 +16,7 @@ class BanProgram extends ConsoleProgram {
       : 'Remove a persistent user ban.';
 
   @override
-  Future<void> run(String label, List<String> args) async {
+  Future<void> runAsync(String label, List<String> args) async {
     if (args.isEmpty || (!banned && args.length != 1)) {
       server.log('Wrong usage, use ${getUsage()}', level: LogLevel.error);
       return;
@@ -50,6 +49,7 @@ class BanProgram extends ConsoleProgram {
         KickMessage(reason: KickReason.ban, message: reason),
       );
     }
+    await server.broadcastAllServerStates();
     server.log(
       '${banned ? 'Banned' : 'Unbanned'} ${args.first}',
       level: LogLevel.info,

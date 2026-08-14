@@ -14,7 +14,7 @@ String? requiredPermission(WorldEvent event) => switch (event) {
   TableRenamed() ||
   TableRemoved() => ServerPermission.manageWorld,
   KickPlayerRequest() => ServerPermission.kickPlayers,
-  BanPlayerRequest() => ServerPermission.banPlayers,
+  BanPlayerRequest() || UnbanPlayerRequest() => ServerPermission.banPlayers,
   ServerRoleChangeRequest() => ServerPermission.manageRoles,
   GameRolesChangeRequest() => ServerPermission.manageWorld,
   _ => ServerPermission.play,

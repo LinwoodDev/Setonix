@@ -1584,6 +1584,163 @@ class _PlayerInfoCopyWithImpl<$R, $Out>
 }
 
 /// @nodoc
+class BannedUserInfoMapper extends ClassMapperBase<BannedUserInfo> {
+  BannedUserInfoMapper._();
+
+  static BannedUserInfoMapper? _instance;
+  static BannedUserInfoMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = BannedUserInfoMapper._());
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'BannedUserInfo';
+
+  static String _$id(BannedUserInfo v) => v.id;
+  static const Field<BannedUserInfo, String> _f$id = Field('id', _$id);
+  static String _$name(BannedUserInfo v) => v.name;
+  static const Field<BannedUserInfo, String> _f$name = Field('name', _$name);
+  static DateTime? _$expiresAt(BannedUserInfo v) => v.expiresAt;
+  static const Field<BannedUserInfo, DateTime> _f$expiresAt = Field(
+    'expiresAt',
+    _$expiresAt,
+    opt: true,
+  );
+  static String? _$reason(BannedUserInfo v) => v.reason;
+  static const Field<BannedUserInfo, String> _f$reason = Field(
+    'reason',
+    _$reason,
+    opt: true,
+  );
+
+  @override
+  final MappableFields<BannedUserInfo> fields = const {
+    #id: _f$id,
+    #name: _f$name,
+    #expiresAt: _f$expiresAt,
+    #reason: _f$reason,
+  };
+
+  static BannedUserInfo _instantiate(DecodingData data) {
+    return BannedUserInfo(
+      id: data.dec(_f$id),
+      name: data.dec(_f$name),
+      expiresAt: data.dec(_f$expiresAt),
+      reason: data.dec(_f$reason),
+    );
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static BannedUserInfo fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<BannedUserInfo>(map);
+  }
+
+  static BannedUserInfo fromJson(String json) {
+    return ensureInitialized().decodeJson<BannedUserInfo>(json);
+  }
+}
+
+/// @nodoc
+mixin BannedUserInfoMappable {
+  String toJson() {
+    return BannedUserInfoMapper.ensureInitialized().encodeJson<BannedUserInfo>(
+      this as BannedUserInfo,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return BannedUserInfoMapper.ensureInitialized().encodeMap<BannedUserInfo>(
+      this as BannedUserInfo,
+    );
+  }
+
+  BannedUserInfoCopyWith<BannedUserInfo, BannedUserInfo, BannedUserInfo>
+  get copyWith => _BannedUserInfoCopyWithImpl<BannedUserInfo, BannedUserInfo>(
+    this as BannedUserInfo,
+    $identity,
+    $identity,
+  );
+  @override
+  String toString() {
+    return BannedUserInfoMapper.ensureInitialized().stringifyValue(
+      this as BannedUserInfo,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return BannedUserInfoMapper.ensureInitialized().equalsValue(
+      this as BannedUserInfo,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return BannedUserInfoMapper.ensureInitialized().hashValue(
+      this as BannedUserInfo,
+    );
+  }
+}
+
+/// @nodoc
+extension BannedUserInfoValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, BannedUserInfo, $Out> {
+  BannedUserInfoCopyWith<$R, BannedUserInfo, $Out> get $asBannedUserInfo =>
+      $base.as((v, t, t2) => _BannedUserInfoCopyWithImpl<$R, $Out>(v, t, t2));
+}
+
+/// @nodoc
+abstract class BannedUserInfoCopyWith<$R, $In extends BannedUserInfo, $Out>
+    implements ClassCopyWith<$R, $In, $Out> {
+  $R call({String? id, String? name, DateTime? expiresAt, String? reason});
+  BannedUserInfoCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+/// @nodoc
+class _BannedUserInfoCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, BannedUserInfo, $Out>
+    implements BannedUserInfoCopyWith<$R, BannedUserInfo, $Out> {
+  _BannedUserInfoCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<BannedUserInfo> $mapper =
+      BannedUserInfoMapper.ensureInitialized();
+  @override
+  $R call({
+    String? id,
+    String? name,
+    Object? expiresAt = $none,
+    Object? reason = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (id != null) #id: id,
+      if (name != null) #name: name,
+      if (expiresAt != $none) #expiresAt: expiresAt,
+      if (reason != $none) #reason: reason,
+    }),
+  );
+  @override
+  BannedUserInfo $make(CopyWithData data) => BannedUserInfo(
+    id: data.get(#id, or: $value.id),
+    name: data.get(#name, or: $value.name),
+    expiresAt: data.get(#expiresAt, or: $value.expiresAt),
+    reason: data.get(#reason, or: $value.reason),
+  );
+
+  @override
+  BannedUserInfoCopyWith<$R2, BannedUserInfo, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _BannedUserInfoCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+/// @nodoc
 class ServerStateMapper extends ClassMapperBase<ServerState> {
   ServerStateMapper._();
 
@@ -1592,6 +1749,7 @@ class ServerStateMapper extends ClassMapperBase<ServerState> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ServerStateMapper._());
       PlayerInfoMapper.ensureInitialized();
+      BannedUserInfoMapper.ensureInitialized();
       ServerRoleDefinitionMapper.ensureInitialized();
     }
     return _instance!;
@@ -1610,6 +1768,13 @@ class ServerStateMapper extends ClassMapperBase<ServerState> {
   static const Field<ServerState, List<PlayerInfo>> _f$players = Field(
     'players',
     _$players,
+    opt: true,
+    def: const [],
+  );
+  static List<BannedUserInfo> _$bannedUsers(ServerState v) => v.bannedUsers;
+  static const Field<ServerState, List<BannedUserInfo>> _f$bannedUsers = Field(
+    'bannedUsers',
+    _$bannedUsers,
     opt: true,
     def: const [],
   );
@@ -1642,6 +1807,7 @@ class ServerStateMapper extends ClassMapperBase<ServerState> {
   final MappableFields<ServerState> fields = const {
     #link: _f$link,
     #players: _f$players,
+    #bannedUsers: _f$bannedUsers,
     #serverRoles: _f$serverRoles,
     #permissions: _f$permissions,
     #assignableServerRoles: _f$assignableServerRoles,
@@ -1651,6 +1817,7 @@ class ServerStateMapper extends ClassMapperBase<ServerState> {
     return ServerState(
       link: data.dec(_f$link),
       players: data.dec(_f$players),
+      bannedUsers: data.dec(_f$bannedUsers),
       serverRoles: data.dec(_f$serverRoles),
       permissions: data.dec(_f$permissions),
       assignableServerRoles: data.dec(_f$assignableServerRoles),
@@ -1722,6 +1889,12 @@ abstract class ServerStateCopyWith<$R, $In extends ServerState, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, PlayerInfo, PlayerInfoCopyWith<$R, PlayerInfo, PlayerInfo>>
   get players;
+  ListCopyWith<
+    $R,
+    BannedUserInfo,
+    BannedUserInfoCopyWith<$R, BannedUserInfo, BannedUserInfo>
+  >
+  get bannedUsers;
   MapCopyWith<
     $R,
     String,
@@ -1732,6 +1905,7 @@ abstract class ServerStateCopyWith<$R, $In extends ServerState, $Out>
   $R call({
     String? link,
     List<PlayerInfo>? players,
+    List<BannedUserInfo>? bannedUsers,
     Map<String, ServerRoleDefinition>? serverRoles,
     Set<String>? permissions,
     Set<String>? assignableServerRoles,
@@ -1756,6 +1930,17 @@ class _ServerStateCopyWithImpl<$R, $Out>
     (v) => call(players: v),
   );
   @override
+  ListCopyWith<
+    $R,
+    BannedUserInfo,
+    BannedUserInfoCopyWith<$R, BannedUserInfo, BannedUserInfo>
+  >
+  get bannedUsers => ListCopyWith(
+    $value.bannedUsers,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(bannedUsers: v),
+  );
+  @override
   MapCopyWith<
     $R,
     String,
@@ -1771,6 +1956,7 @@ class _ServerStateCopyWithImpl<$R, $Out>
   $R call({
     Object? link = $none,
     List<PlayerInfo>? players,
+    List<BannedUserInfo>? bannedUsers,
     Map<String, ServerRoleDefinition>? serverRoles,
     Set<String>? permissions,
     Set<String>? assignableServerRoles,
@@ -1778,6 +1964,7 @@ class _ServerStateCopyWithImpl<$R, $Out>
     FieldCopyWithData({
       if (link != $none) #link: link,
       if (players != null) #players: players,
+      if (bannedUsers != null) #bannedUsers: bannedUsers,
       if (serverRoles != null) #serverRoles: serverRoles,
       if (permissions != null) #permissions: permissions,
       if (assignableServerRoles != null)
@@ -1788,6 +1975,7 @@ class _ServerStateCopyWithImpl<$R, $Out>
   ServerState $make(CopyWithData data) => ServerState(
     link: data.get(#link, or: $value.link),
     players: data.get(#players, or: $value.players),
+    bannedUsers: data.get(#bannedUsers, or: $value.bannedUsers),
     serverRoles: data.get(#serverRoles, or: $value.serverRoles),
     permissions: data.get(#permissions, or: $value.permissions),
     assignableServerRoles: data.get(

@@ -212,9 +212,25 @@ final class PlayerInfo with PlayerInfoMappable {
 }
 
 @MappableClass()
+final class BannedUserInfo with BannedUserInfoMappable {
+  final String id;
+  final String name;
+  final DateTime? expiresAt;
+  final String? reason;
+
+  const BannedUserInfo({
+    required this.id,
+    required this.name,
+    this.expiresAt,
+    this.reason,
+  });
+}
+
+@MappableClass()
 final class ServerState with ServerStateMappable {
   final String? link;
   final List<PlayerInfo> players;
+  final List<BannedUserInfo> bannedUsers;
   final Map<String, ServerRoleDefinition> serverRoles;
   final Set<String> permissions;
   final Set<String> assignableServerRoles;
@@ -222,6 +238,7 @@ final class ServerState with ServerStateMappable {
   const ServerState({
     this.link,
     this.players = const [],
+    this.bannedUsers = const [],
     this.serverRoles = const {},
     this.permissions = const {},
     this.assignableServerRoles = const {},

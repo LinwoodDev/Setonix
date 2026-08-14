@@ -92,4 +92,41 @@ void main() {
     expect(permanent.isBanned, isTrue);
     expect(expired.isBanned, isFalse);
   });
+
+  test('file user service lists active bans and supports unbanning', () async {
+    final directory = await Directory.systemTemp.createTemp(
+      'setonix-user-bans-',
+    );
+    final service = FileUserService();
+    addTearDown(() async {
+      service.close();
+      await directory.delete(recursive: true);
+    });
+    await service.setup(rootPath: directory.path);
+    service.updateUser(
+      'permanent',
+      name: 'Permanent',
+      banned: true,
+      banReason: 'Reason',
+      createIfNotExists: true,
+    );
+    service.updateUser(
+      'expired',
+      name: 'Expired',
+      banned: true,
+      bannedUntil: DateTime.now().subtract(const Duration(minutes: 1)),
+      createIfNotExists: true,
+    );
+
+    expect(service.getBannedUsers().map((user) => user.fingerprint), [
+      'permanent',
+    ]);
+
+    final manager = UserManager(service: service);
+    expect(await manager.unban('permanent'), isTrue);
+    expect(service.getUser('permanent')?.banned, isFalse);
+    expect(service.getUser('permanent')?.bannedUntil, isNull);
+    expect(service.getUser('permanent')?.banReason, isNull);
+    expect(service.getBannedUsers(), isEmpty);
+  });
 }

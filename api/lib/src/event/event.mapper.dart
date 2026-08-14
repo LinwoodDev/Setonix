@@ -2617,6 +2617,7 @@ class ClientWorldEventMapper extends SubClassMapperBase<ClientWorldEvent> {
       ToolbarActionRequestMapper.ensureInitialized();
       KickPlayerRequestMapper.ensureInitialized();
       BanPlayerRequestMapper.ensureInitialized();
+      UnbanPlayerRequestMapper.ensureInitialized();
       ServerRoleChangeRequestMapper.ensureInitialized();
       GameRolesChangeRequestMapper.ensureInitialized();
       HybridWorldEventMapper.ensureInitialized();
@@ -5096,6 +5097,146 @@ class _BanPlayerRequestCopyWithImpl<$R, $Out>
   BanPlayerRequestCopyWith<$R2, BanPlayerRequest, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   ) => _BanPlayerRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+/// @nodoc
+class UnbanPlayerRequestMapper extends SubClassMapperBase<UnbanPlayerRequest> {
+  UnbanPlayerRequestMapper._();
+
+  static UnbanPlayerRequestMapper? _instance;
+  static UnbanPlayerRequestMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = UnbanPlayerRequestMapper._());
+      ClientWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'UnbanPlayerRequest';
+
+  static String _$userId(UnbanPlayerRequest v) => v.userId;
+  static const Field<UnbanPlayerRequest, String> _f$userId = Field(
+    'userId',
+    _$userId,
+  );
+
+  @override
+  final MappableFields<UnbanPlayerRequest> fields = const {#userId: _f$userId};
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'UnbanPlayerRequest';
+  @override
+  late final ClassMapperBase superMapper =
+      ClientWorldEventMapper.ensureInitialized();
+
+  static UnbanPlayerRequest _instantiate(DecodingData data) {
+    return UnbanPlayerRequest(data.dec(_f$userId));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static UnbanPlayerRequest fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<UnbanPlayerRequest>(map);
+  }
+
+  static UnbanPlayerRequest fromJson(String json) {
+    return ensureInitialized().decodeJson<UnbanPlayerRequest>(json);
+  }
+}
+
+/// @nodoc
+mixin UnbanPlayerRequestMappable {
+  String toJson() {
+    return UnbanPlayerRequestMapper.ensureInitialized()
+        .encodeJson<UnbanPlayerRequest>(this as UnbanPlayerRequest);
+  }
+
+  Map<String, dynamic> toMap() {
+    return UnbanPlayerRequestMapper.ensureInitialized()
+        .encodeMap<UnbanPlayerRequest>(this as UnbanPlayerRequest);
+  }
+
+  UnbanPlayerRequestCopyWith<
+    UnbanPlayerRequest,
+    UnbanPlayerRequest,
+    UnbanPlayerRequest
+  >
+  get copyWith =>
+      _UnbanPlayerRequestCopyWithImpl<UnbanPlayerRequest, UnbanPlayerRequest>(
+        this as UnbanPlayerRequest,
+        $identity,
+        $identity,
+      );
+  @override
+  String toString() {
+    return UnbanPlayerRequestMapper.ensureInitialized().stringifyValue(
+      this as UnbanPlayerRequest,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return UnbanPlayerRequestMapper.ensureInitialized().equalsValue(
+      this as UnbanPlayerRequest,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return UnbanPlayerRequestMapper.ensureInitialized().hashValue(
+      this as UnbanPlayerRequest,
+    );
+  }
+}
+
+/// @nodoc
+extension UnbanPlayerRequestValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, UnbanPlayerRequest, $Out> {
+  UnbanPlayerRequestCopyWith<$R, UnbanPlayerRequest, $Out>
+  get $asUnbanPlayerRequest => $base.as(
+    (v, t, t2) => _UnbanPlayerRequestCopyWithImpl<$R, $Out>(v, t, t2),
+  );
+}
+
+/// @nodoc
+abstract class UnbanPlayerRequestCopyWith<
+  $R,
+  $In extends UnbanPlayerRequest,
+  $Out
+>
+    implements ClientWorldEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({String? userId});
+  UnbanPlayerRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+/// @nodoc
+class _UnbanPlayerRequestCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, UnbanPlayerRequest, $Out>
+    implements UnbanPlayerRequestCopyWith<$R, UnbanPlayerRequest, $Out> {
+  _UnbanPlayerRequestCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<UnbanPlayerRequest> $mapper =
+      UnbanPlayerRequestMapper.ensureInitialized();
+  @override
+  $R call({String? userId}) =>
+      $apply(FieldCopyWithData({if (userId != null) #userId: userId}));
+  @override
+  UnbanPlayerRequest $make(CopyWithData data) =>
+      UnbanPlayerRequest(data.get(#userId, or: $value.userId));
+
+  @override
+  UnbanPlayerRequestCopyWith<$R2, UnbanPlayerRequest, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _UnbanPlayerRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 /// @nodoc

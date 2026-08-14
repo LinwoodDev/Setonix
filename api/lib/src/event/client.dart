@@ -220,6 +220,14 @@ final class BanPlayerRequest extends ClientWorldEvent
 }
 
 @MappableClass()
+final class UnbanPlayerRequest extends ClientWorldEvent
+    with UnbanPlayerRequestMappable {
+  final String userId;
+
+  UnbanPlayerRequest(this.userId);
+}
+
+@MappableClass()
 final class ServerRoleChangeRequest extends ClientWorldEvent
     with ServerRoleChangeRequestMappable {
   final Channel player;

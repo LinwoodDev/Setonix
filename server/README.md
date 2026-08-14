@@ -129,3 +129,29 @@ example above, add this to `translations/en.json` in the `blackjack` pack:
   }
 }
 ```
+
+## Console commands
+
+The server console exposes the following runtime management commands:
+
+```text
+players [world]
+bans
+ban <user> [minutes] [reason...]
+unban <user>
+kick <user> [reason] [link]
+worlds
+modes
+reset [world] [game-mode|sandbox]
+save [world]
+scripts [world]
+packs
+say <message...>
+whitelist <add|remove> <user>
+role <list|add|remove|set> <user> [roles...]
+roles <list|show|create|delete|rename|priority|permission> ...
+stop
+```
+
+User references may use a channel (`#2`), name (`@Player`), fingerprint
+(`*fingerprint`), or the unprefixed forms accepted by the individual command.

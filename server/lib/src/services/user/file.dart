@@ -79,6 +79,15 @@ final class FileUserService extends UserService {
       .firstOrNull;
 
   @override
+  List<SetonixUser> getBannedUsers() =>
+      _database
+          ?.select('SELECT * FROM users WHERE banned = 1 ORDER BY name')
+          .map(_fromRow)
+          .where((user) => user.isBanned)
+          .toList(growable: false) ??
+      const [];
+
+  @override
   bool updateUser(
     String fingerprint, {
     String? name,

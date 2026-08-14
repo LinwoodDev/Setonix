@@ -38,6 +38,7 @@ final class SetonixUser with SetonixUserMappable {
 abstract class UserService {
   FutureOr<SetonixUser?> getUser(String fingerprint);
   FutureOr<SetonixUser?> getUserFromName(String name);
+  FutureOr<List<SetonixUser>> getBannedUsers() => const [];
   FutureOr<bool> updateUser(
     String fingerprint, {
     String? name,
@@ -240,6 +241,26 @@ final class UserManager {
       );
     }
     return true;
+  }
+
+  Future<List<SetonixUser>> getBannedUsers() async {
+    final users = (await service?.getBannedUsers() ?? const [])
+        .where((user) => user.fingerprint != null && user.isBanned)
+        .toList();
+    users.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+    return users;
+  }
+
+  Future<bool> unban(String fingerprint) async {
+    final user = await service?.getUser(fingerprint);
+    if (user == null || !user.isBanned) return false;
+    return await service?.updateUser(
+          fingerprint,
+          banned: false,
+          bannedUntil: null,
+          banReason: null,
+        ) ??
+        false;
   }
 
   Future<SetonixUser?> getUserByReference(String reference) async {

@@ -315,6 +315,13 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
     Channel actorId,
   ) async {
     final actor = server.userManager.getUser(actorId);
+    if (event case UnbanPlayerRequest()) {
+      if (actor == null) return true;
+      if (await server.userManager.unban(event.userId)) {
+        await server.broadcastAllServerStates();
+      }
+      return true;
+    }
     final targetId = switch (event) {
       KickPlayerRequest() => event.player,
       BanPlayerRequest() => event.player,

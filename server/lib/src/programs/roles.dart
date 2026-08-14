@@ -1,11 +1,9 @@
 import 'package:consoler/consoler.dart';
 import 'package:setonix_api/setonix_api.dart';
-import 'package:setonix_server/src/server.dart';
+import 'package:setonix_server/src/programs/async.dart';
 
-class RolesProgram extends ConsoleProgram {
-  final SetonixServer server;
-
-  RolesProgram(this.server);
+class RolesProgram extends AsyncServerProgram {
+  RolesProgram(super.server);
 
   @override
   String getUsage() =>
@@ -33,7 +31,7 @@ roles permission <add|remove> <Role> <Permission>''', level: LogLevel.info);
   }
 
   @override
-  Future<void> run(String label, List<String> args) async {
+  Future<void> runAsync(String label, List<String> args) async {
     final action = args.firstOrNull?.toLowerCase() ?? 'list';
     final roles = Map<String, ServerRoleDefinition>.from(
       server.configManager.serverRoles,
