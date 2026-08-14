@@ -218,6 +218,20 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
         );
         return;
       }
+      if (!isValidClientEvent(
+        data,
+        packet.channel,
+        state,
+        assetManager: assetManager,
+        allowManagementRequests: true,
+      )) {
+        server.log(
+          'Rejected invalid ${data.runtimeType} payload from channel '
+          '${packet.channel}.',
+          level: LogLevel.warning,
+        );
+        return;
+      }
       if (await _handleManagementEvent(data, packet.channel)) return;
     }
     ServerResponse? process;

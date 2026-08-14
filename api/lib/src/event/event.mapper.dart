@@ -5129,18 +5129,11 @@ class ServerRoleChangeRequestMapper
     opt: true,
     def: const {},
   );
-  static String? _$role(ServerRoleChangeRequest v) => v.role;
-  static const Field<ServerRoleChangeRequest, String> _f$role = Field(
-    'role',
-    _$role,
-    opt: true,
-  );
 
   @override
   final MappableFields<ServerRoleChangeRequest> fields = const {
     #player: _f$player,
     #roles: _f$roles,
-    #role: _f$role,
   };
 
   @override
@@ -5155,7 +5148,6 @@ class ServerRoleChangeRequestMapper
     return ServerRoleChangeRequest(
       data.dec(_f$player),
       roles: data.dec(_f$roles),
-      role: data.dec(_f$role),
     );
   }
 
@@ -5233,7 +5225,7 @@ abstract class ServerRoleChangeRequestCopyWith<
 >
     implements ClientWorldEventCopyWith<$R, $In, $Out> {
   @override
-  $R call({int? player, Set<String>? roles, String? role});
+  $R call({int? player, Set<String>? roles});
   ServerRoleChangeRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -5250,18 +5242,16 @@ class _ServerRoleChangeRequestCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ServerRoleChangeRequest> $mapper =
       ServerRoleChangeRequestMapper.ensureInitialized();
   @override
-  $R call({int? player, Set<String>? roles, Object? role = $none}) => $apply(
+  $R call({int? player, Set<String>? roles}) => $apply(
     FieldCopyWithData({
       if (player != null) #player: player,
       if (roles != null) #roles: roles,
-      if (role != $none) #role: role,
     }),
   );
   @override
   ServerRoleChangeRequest $make(CopyWithData data) => ServerRoleChangeRequest(
     data.get(#player, or: $value.player),
     roles: data.get(#roles, or: $value.roles),
-    role: data.get(#role, or: $value.role),
   );
 
   @override

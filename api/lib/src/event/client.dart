@@ -224,15 +224,10 @@ final class ServerRoleChangeRequest extends ClientWorldEvent
     with ServerRoleChangeRequestMappable {
   final Channel player;
   final Set<String> roles;
-  final String? role;
 
-  ServerRoleChangeRequest(this.player, {this.roles = const {}, this.role});
+  ServerRoleChangeRequest(this.player, {this.roles = const {}});
 
-  Set<String> get effectiveRoles => {
-    kDefaultServerRole,
-    ...roles,
-    if (role?.isNotEmpty == true) role!,
-  };
+  Set<String> get effectiveRoles => {kDefaultServerRole, ...roles};
 }
 
 @MappableClass()

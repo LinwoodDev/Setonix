@@ -77,6 +77,69 @@ void main() {
       expect(response.main?.data, isA<WorldInitialized>());
     });
 
+    test('management payloads enforce text, role, and expiry limits', () {
+      final state = WorldState(data: SetonixData.empty());
+      final assets = _EmptyAssetManager();
+      bool valid(ClientWorldEvent event) => isValidClientEvent(
+        event,
+        2,
+        state,
+        assetManager: assets,
+        allowManagementRequests: true,
+      );
+      String text(int length) => List.filled(length, 'a').join();
+
+      expect(valid(KickPlayerRequest(3, reason: text(2000))), isTrue);
+      expect(valid(KickPlayerRequest(3, reason: text(2001))), isFalse);
+      expect(
+        valid(
+          BanPlayerRequest(
+            3,
+            expiresAt: DateTime.now().add(const Duration(days: 30)),
+          ),
+        ),
+        isTrue,
+      );
+      expect(
+        valid(
+          BanPlayerRequest(
+            3,
+            expiresAt: DateTime.now().subtract(const Duration(minutes: 1)),
+          ),
+        ),
+        isFalse,
+      );
+      expect(valid(BanPlayerRequest(3)), isTrue);
+      expect(
+        valid(
+          BanPlayerRequest(
+            3,
+            expiresAt: DateTime.now().add(const Duration(days: 3651)),
+          ),
+        ),
+        isFalse,
+      );
+      expect(
+        valid(
+          ServerRoleChangeRequest(
+            3,
+            roles: {for (var i = 0; i < 33; i++) 'test:role$i'},
+          ),
+        ),
+        isFalse,
+      );
+      expect(valid(GameRolesChangeRequest(3, {text(257)})), isFalse);
+      expect(
+        isValidClientEvent(
+          ServerRoleChangeRequest(3, roles: {'moderator'}),
+          2,
+          state,
+          assetManager: assets,
+        ),
+        isFalse,
+      );
+    });
+
     test('new unclassified client events default to play permission', () {
       final event = ToolbarActionRequest('test');
 

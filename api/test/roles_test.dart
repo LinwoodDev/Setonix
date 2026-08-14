@@ -13,17 +13,9 @@ void main() {
     expect(decoded.roles, {'player', 'moderator', 'blackjack:dealer'});
   });
 
-  test(
-    'role change requests retain player and accept legacy role payloads',
-    () {
-      final current = ServerRoleChangeRequest(2, roles: {'moderator'});
-      final legacy = ServerRoleChangeRequestMapper.fromMap({
-        'player': 2,
-        'role': 'moderator',
-      });
+  test('role change requests retain the player role', () {
+    final request = ServerRoleChangeRequest(2, roles: {'moderator'});
 
-      expect(current.effectiveRoles, {'player', 'moderator'});
-      expect(legacy.effectiveRoles, {'player', 'moderator'});
-    },
-  );
+    expect(request.effectiveRoles, {'player', 'moderator'});
+  });
 }
