@@ -16,6 +16,12 @@ analyzer:
     - "build/**"
     - "lib/src/rust/*.dart"
     - "lib/src/rust/**/*.dart"
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
   errors:
     invalid_annotation_target: ignore
 linter:

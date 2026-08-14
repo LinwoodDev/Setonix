@@ -37,7 +37,7 @@ class TexturesEditorPage extends StatelessWidget {
         onPressed: () async {
           final data = await FilePicker.pickFiles(
             type: FileType.image,
-          ).then((result) => result?.files.firstOrNull);
+          ).then((result) => result.firstOrNull);
           if (data == null) return;
           final bytes = await data.readAsBytes();
           if (!context.mounted) return;

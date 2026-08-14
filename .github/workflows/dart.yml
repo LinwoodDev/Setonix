@@ -49,7 +49,7 @@ jobs:
       - name: Build flutter_rust_bridge bindings
         if: matrix.projects == 'plugin'
         run: |
-          cargo install flutter_rust_bridge_codegen@2.12.0 --locked
+          cargo install flutter_rust_bridge_codegen@2.13.0-beta.6 --locked
           flutter_rust_bridge_codegen generate
       - name: Run build_runner
         if: matrix.projects == 'api' || matrix.projects == 'app'
