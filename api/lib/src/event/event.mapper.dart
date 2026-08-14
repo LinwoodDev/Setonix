@@ -2618,6 +2618,7 @@ class ClientWorldEventMapper extends SubClassMapperBase<ClientWorldEvent> {
       KickPlayerRequestMapper.ensureInitialized();
       BanPlayerRequestMapper.ensureInitialized();
       UnbanPlayerRequestMapper.ensureInitialized();
+      PlayerNameChangeRequestMapper.ensureInitialized();
       ServerRoleChangeRequestMapper.ensureInitialized();
       GameRolesChangeRequestMapper.ensureInitialized();
       HybridWorldEventMapper.ensureInitialized();
@@ -5237,6 +5238,163 @@ class _UnbanPlayerRequestCopyWithImpl<$R, $Out>
   UnbanPlayerRequestCopyWith<$R2, UnbanPlayerRequest, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   ) => _UnbanPlayerRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+/// @nodoc
+class PlayerNameChangeRequestMapper
+    extends SubClassMapperBase<PlayerNameChangeRequest> {
+  PlayerNameChangeRequestMapper._();
+
+  static PlayerNameChangeRequestMapper? _instance;
+  static PlayerNameChangeRequestMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(
+        _instance = PlayerNameChangeRequestMapper._(),
+      );
+      ClientWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'PlayerNameChangeRequest';
+
+  static int _$player(PlayerNameChangeRequest v) => v.player;
+  static const Field<PlayerNameChangeRequest, int> _f$player = Field(
+    'player',
+    _$player,
+  );
+  static String _$name(PlayerNameChangeRequest v) => v.name;
+  static const Field<PlayerNameChangeRequest, String> _f$name = Field(
+    'name',
+    _$name,
+  );
+
+  @override
+  final MappableFields<PlayerNameChangeRequest> fields = const {
+    #player: _f$player,
+    #name: _f$name,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'PlayerNameChangeRequest';
+  @override
+  late final ClassMapperBase superMapper =
+      ClientWorldEventMapper.ensureInitialized();
+
+  static PlayerNameChangeRequest _instantiate(DecodingData data) {
+    return PlayerNameChangeRequest(data.dec(_f$player), data.dec(_f$name));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static PlayerNameChangeRequest fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<PlayerNameChangeRequest>(map);
+  }
+
+  static PlayerNameChangeRequest fromJson(String json) {
+    return ensureInitialized().decodeJson<PlayerNameChangeRequest>(json);
+  }
+}
+
+/// @nodoc
+mixin PlayerNameChangeRequestMappable {
+  String toJson() {
+    return PlayerNameChangeRequestMapper.ensureInitialized()
+        .encodeJson<PlayerNameChangeRequest>(this as PlayerNameChangeRequest);
+  }
+
+  Map<String, dynamic> toMap() {
+    return PlayerNameChangeRequestMapper.ensureInitialized()
+        .encodeMap<PlayerNameChangeRequest>(this as PlayerNameChangeRequest);
+  }
+
+  PlayerNameChangeRequestCopyWith<
+    PlayerNameChangeRequest,
+    PlayerNameChangeRequest,
+    PlayerNameChangeRequest
+  >
+  get copyWith =>
+      _PlayerNameChangeRequestCopyWithImpl<
+        PlayerNameChangeRequest,
+        PlayerNameChangeRequest
+      >(this as PlayerNameChangeRequest, $identity, $identity);
+  @override
+  String toString() {
+    return PlayerNameChangeRequestMapper.ensureInitialized().stringifyValue(
+      this as PlayerNameChangeRequest,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return PlayerNameChangeRequestMapper.ensureInitialized().equalsValue(
+      this as PlayerNameChangeRequest,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return PlayerNameChangeRequestMapper.ensureInitialized().hashValue(
+      this as PlayerNameChangeRequest,
+    );
+  }
+}
+
+/// @nodoc
+extension PlayerNameChangeRequestValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, PlayerNameChangeRequest, $Out> {
+  PlayerNameChangeRequestCopyWith<$R, PlayerNameChangeRequest, $Out>
+  get $asPlayerNameChangeRequest => $base.as(
+    (v, t, t2) => _PlayerNameChangeRequestCopyWithImpl<$R, $Out>(v, t, t2),
+  );
+}
+
+/// @nodoc
+abstract class PlayerNameChangeRequestCopyWith<
+  $R,
+  $In extends PlayerNameChangeRequest,
+  $Out
+>
+    implements ClientWorldEventCopyWith<$R, $In, $Out> {
+  @override
+  $R call({int? player, String? name});
+  PlayerNameChangeRequestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+/// @nodoc
+class _PlayerNameChangeRequestCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, PlayerNameChangeRequest, $Out>
+    implements
+        PlayerNameChangeRequestCopyWith<$R, PlayerNameChangeRequest, $Out> {
+  _PlayerNameChangeRequestCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<PlayerNameChangeRequest> $mapper =
+      PlayerNameChangeRequestMapper.ensureInitialized();
+  @override
+  $R call({int? player, String? name}) => $apply(
+    FieldCopyWithData({
+      if (player != null) #player: player,
+      if (name != null) #name: name,
+    }),
+  );
+  @override
+  PlayerNameChangeRequest $make(CopyWithData data) => PlayerNameChangeRequest(
+    data.get(#player, or: $value.player),
+    data.get(#name, or: $value.name),
+  );
+
+  @override
+  PlayerNameChangeRequestCopyWith<$R2, PlayerNameChangeRequest, $Out2>
+  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _PlayerNameChangeRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 /// @nodoc

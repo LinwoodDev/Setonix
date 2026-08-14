@@ -77,6 +77,49 @@ void main() {
       expect(response.main?.data, isA<WorldInitialized>());
     });
 
+    test('peer-host authority can rename connected players', () async {
+      final state = WorldState(data: SetonixData.empty());
+      final users = UserManager();
+      await users.addUser(2, null, 'Guest 1');
+
+      await processClientEvent(
+        PlayerNameChangeRequest(2, 'Alex'),
+        kAuthorityChannel,
+        state,
+        assetManager: _EmptyAssetManager(),
+        userManager: users,
+      );
+
+      expect(users.getUser(2)?.name, 'Alex');
+    });
+
+    test('players can rename themselves but not another player', () async {
+      final state = WorldState(data: SetonixData.empty());
+      final users = UserManager();
+      await users.addUser(2, null, 'Guest 1');
+      await users.addUser(3, null, 'Guest 2');
+
+      final selfResponse = await processClientEvent(
+        PlayerNameChangeRequest(2, 'Alex'),
+        2,
+        state,
+        assetManager: _EmptyAssetManager(),
+        userManager: users,
+      );
+      final otherResponse = await processClientEvent(
+        PlayerNameChangeRequest(3, 'Mallory'),
+        2,
+        state,
+        assetManager: _EmptyAssetManager(),
+        userManager: users,
+      );
+
+      expect(selfResponse, isA<UpdateServerResponse>());
+      expect(otherResponse, isNull);
+      expect(users.getUser(2)?.name, 'Alex');
+      expect(users.getUser(3)?.name, 'Guest 2');
+    });
+
     test('management payloads enforce text, role, and expiry limits', () {
       final state = WorldState(data: SetonixData.empty());
       final assets = _EmptyAssetManager();
@@ -113,6 +156,10 @@ void main() {
       expect(valid(UnbanPlayerRequest('fingerprint')), isTrue);
       expect(valid(UnbanPlayerRequest('')), isFalse);
       expect(valid(UnbanPlayerRequest(text(257))), isFalse);
+      expect(valid(PlayerNameChangeRequest(3, 'Named player')), isTrue);
+      expect(valid(PlayerNameChangeRequest(3, '')), isFalse);
+      expect(valid(PlayerNameChangeRequest(3, ' padded ')), isFalse);
+      expect(valid(PlayerNameChangeRequest(3, text(257))), isFalse);
       expect(
         valid(
           BanPlayerRequest(
@@ -188,6 +235,14 @@ void main() {
 
       expect(canProcessClientEvent({'moderator'}, event, roles), isTrue);
       expect(canProcessClientEvent({'spectator'}, event, roles), isFalse);
+    });
+
+    test('renaming yourself does not require a management permission', () {
+      final event = PlayerNameChangeRequest(2, 'Alex');
+
+      expect(canProcessClientEvent({'moderator'}, event, roles), isTrue);
+      expect(canProcessClientEvent({'owner'}, event, roles), isTrue);
+      expect(canProcessClientEvent({'player'}, event, roles), isTrue);
     });
 
     test('role hierarchy prevents managing peers and higher roles', () {

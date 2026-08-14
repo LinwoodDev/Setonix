@@ -16,6 +16,7 @@ import 'package:setonix/bloc/world/state.dart';
 import 'package:setonix/bloc/settings.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:setonix_api/setonix_api.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'start.dart';
 part 'view.dart';

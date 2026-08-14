@@ -14,6 +14,7 @@ import 'package:setonix_server/src/programs/kick.dart';
 import 'package:setonix_server/src/programs/ban.dart';
 import 'package:setonix_server/src/programs/bans.dart';
 import 'package:setonix_server/src/programs/modes.dart';
+import 'package:setonix_server/src/programs/name.dart';
 import 'package:setonix_server/src/programs/packs.dart';
 import 'package:setonix_server/src/programs/players.dart';
 import 'package:setonix_server/src/programs/reset.dart';
@@ -413,6 +414,7 @@ final class SetonixServer {
       'whitelist': WhitelistProgram(this),
       'worlds': WorldsProgram(this),
       'modes': ModesProgram(this),
+      'name': NameProgram(this),
       'scripts': ScriptsProgram(this),
       null: UnknownProgram(),
     });

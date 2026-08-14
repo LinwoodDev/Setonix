@@ -325,6 +325,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
     final targetId = switch (event) {
       KickPlayerRequest() => event.player,
       BanPlayerRequest() => event.player,
+      PlayerNameChangeRequest() => event.player,
       ServerRoleChangeRequest() => event.player,
       GameRolesChangeRequest() => event.player,
       _ => null,
@@ -365,6 +366,16 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
             event.player,
             KickMessage(reason: KickReason.ban, message: event.reason),
           );
+        }
+      case PlayerNameChangeRequest():
+        if (actor == null ||
+            !targetIsInWorld ||
+            (actorId != event.player &&
+                !canManageServerRoles(actor.roles, target.roles, roles))) {
+          return true;
+        }
+        if (await server.userManager.changeName(event.player, event.name)) {
+          await server.broadcastAllServerStates();
         }
       case ServerRoleChangeRequest():
         final requestedRoles = event.effectiveRoles;

@@ -4,7 +4,8 @@ String? requiredPermission(WorldEvent event) => switch (event) {
   AuthenticateRequest() ||
   MessageRequest() ||
   ImagesRequest() ||
-  DialogCloseRequest() => null,
+  DialogCloseRequest() ||
+  PlayerNameChangeRequest() => null,
   PacksChangeRequest() ||
   ModeChangeRequest() ||
   MetadataChanged() ||

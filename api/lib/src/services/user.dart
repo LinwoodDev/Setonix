@@ -62,6 +62,7 @@ const kUserReferenceFingerprint = '*';
 
 final class UserManager {
   final Map<Channel, SetonixUser> _users = {};
+  final StreamController<void> _changeController = StreamController.broadcast();
   final String guestPrefix;
   final UserService? service;
   final bool whitelistEnabled;
@@ -76,8 +77,12 @@ final class UserManager {
   bool containsUserName(String name) =>
       _users.values.any((u) => u.name == name);
 
+  Stream<void> get changes => _changeController.stream;
+
+  void _notifyChanged() => _changeController.add(null);
+
   void removeUser(Channel channel) {
-    _users.remove(channel);
+    if (_users.remove(channel) != null) _notifyChanged();
   }
 
   /// Retrieves the user associated with the channel.
@@ -143,17 +148,17 @@ final class UserManager {
       }
     }
     _users[channel] = user;
+    _notifyChanged();
     return user;
   }
 
   Future<bool> changeName(Channel channel, String newName) async {
-    if (containsUserName(newName)) {
-      return false;
-    }
     final user = _users[channel];
     if (user == null) {
       return false;
     }
+    if (user.name == newName) return true;
+    if (containsUserName(newName)) return false;
     final fingerprint = user.fingerprint;
     final result = fingerprint == null
         ? null
@@ -161,6 +166,7 @@ final class UserManager {
     if (result == false) return false;
     final updatedUser = user.copyWith(name: newName);
     _users[channel] = updatedUser;
+    _notifyChanged();
     return true;
   }
 
@@ -180,6 +186,7 @@ final class UserManager {
     );
     if (entry == null) return fingerprint != null;
     _users[entry.key] = entry.value.copyWith(roles: roles);
+    _notifyChanged();
     return true;
   }
 

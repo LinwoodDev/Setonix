@@ -106,6 +106,12 @@ bool isValidClientEvent(
   UnbanPlayerRequest() =>
     (channel == kAuthorityChannel || allowManagementRequests) &&
         _isReasonableIdentifier(event.userId),
+  PlayerNameChangeRequest() =>
+    (event.player == channel ||
+            channel == kAuthorityChannel ||
+            allowManagementRequests) &&
+        event.name == event.name.trim() &&
+        _isReasonableIdentifier(event.name),
   ServerRoleChangeRequest() =>
     (channel == kAuthorityChannel || allowManagementRequests) &&
         event.roles.length <= _maxRolesPerRequest &&
@@ -487,6 +493,11 @@ Future<ServerResponse?> processClientEvent(
         );
       }
       return UpdateServerResponse.builder(buildInitialize(), channel);
+    case PlayerNameChangeRequest(:final player, :final name):
+      if (userManager != null) {
+        await userManager.changeName(player, name);
+      }
+      return UpdateServerResponse.builder(null);
     case ToolbarActionRequest():
     case KickPlayerRequest():
     case BanPlayerRequest():
