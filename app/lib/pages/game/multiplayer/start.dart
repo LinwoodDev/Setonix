@@ -110,15 +110,13 @@ class _StartMultiplayerDialogState extends State<StartMultiplayerDialog>
                                 keyboardType: TextInputType.number,
                                 validator: (value) {
                                   if (value?.isEmpty ?? true) {
-                                    return LeapLocalizations.of(
-                                      context,
-                                    ).shouldNotEmpty;
+                                    return LeapLocalizations.of(context)
+                                        .shouldNotEmpty;
                                   }
                                   final number = int.tryParse(value!);
                                   if (number == null) {
-                                    return AppLocalizations.of(
-                                      context,
-                                    ).shouldANumber;
+                                    return AppLocalizations.of(context)
+                                        .shouldANumber;
                                   }
                                   return null;
                                 },

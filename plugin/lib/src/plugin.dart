@@ -8,11 +8,10 @@ import 'package:setonix_plugin/setonix_plugin.dart';
 import 'package:setonix_plugin/src/rust/frb_generated.dart';
 
 typedef PluginProcessCallback = void Function(String, WorldEvent, [bool force]);
-typedef PluginSendEventCallback =
-    void Function(
-      NetworkerPacket<PlayableWorldEvent> packet,
-      String? worldName,
-    );
+typedef PluginSendEventCallback = void Function(
+  NetworkerPacket<PlayableWorldEvent> packet,
+  String? worldName,
+);
 
 mixin ServerInterface {
   Future<void> process(

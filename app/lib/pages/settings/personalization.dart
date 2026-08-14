@@ -83,9 +83,7 @@ class PersonalizationSettingsPage extends StatelessWidget {
                         ),
                         title: Text(AppLocalizations.of(context).locale),
                         subtitle: Text(
-                          AppLocalizations.of(
-                            context,
-                          ).comingSoon /*_getLocaleName(context, state.localeTag)*/,
+                          AppLocalizations.of(context).comingSoon /*_getLocaleName(context, state.localeTag)*/,
                         ),
                         onTap: null /*() => _openLocaleModal(context)*/,
                       ),

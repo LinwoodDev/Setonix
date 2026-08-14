@@ -11,9 +11,8 @@ class FigureDefinitionHandItem
 
   @override
   String getLabel(ClientWorldState state) {
-    final translation = getAssetManager(
-      state,
-    ).getTranslations(item.$1.namespace);
+    final translation = getAssetManager(state)
+        .getTranslations(item.$1.namespace);
     final variation = item.$2;
     if (variation != null) {
       return translation

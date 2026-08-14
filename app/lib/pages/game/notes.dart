@@ -71,9 +71,8 @@ class _GameNotesDrawerState extends State<GameNotesDrawer> {
                                 AppLocalizations.of(context).deleteNote,
                               ),
                               content: Text(
-                                AppLocalizations.of(
-                                  context,
-                                ).deleteNoteMessage(note),
+                                AppLocalizations.of(context)
+                                    .deleteNoteMessage(note),
                               ),
                               actions: [
                                 TextButton(

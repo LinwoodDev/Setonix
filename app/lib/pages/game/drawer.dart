@@ -614,12 +614,10 @@ class GameDrawer extends StatelessWidget {
                                 ),
                                 content: TextFormField(
                                   decoration: InputDecoration(
-                                    labelText: AppLocalizations.of(
-                                      context,
-                                    ).name,
-                                    hintText: AppLocalizations.of(
-                                      context,
-                                    ).enterName,
+                                    labelText: AppLocalizations.of(context)
+                                        .name,
+                                    hintText: AppLocalizations.of(context)
+                                        .enterName,
                                     filled: true,
                                   ),
                                   initialValue: name,

@@ -108,9 +108,8 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
                                   AppLocalizations.of(context).checkForUpdates,
                                 ),
                                 subtitle: Text(
-                                  AppLocalizations.of(
-                                    context,
-                                  ).checkForUpdatesWarning,
+                                  AppLocalizations.of(context)
+                                      .checkForUpdatesWarning,
                                 ),
                                 onTap: loadMeta,
                               );
@@ -155,9 +154,8 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
                                 if (isStable) ...[
                                   ListTile(
                                     title: Text(
-                                      AppLocalizations.of(
-                                        context,
-                                      ).usingLatestStable,
+                                      AppLocalizations.of(context)
+                                          .usingLatestStable,
                                     ),
                                   ),
                                 ] else if (isNightly ||
@@ -165,9 +163,8 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
                                     isMain) ...[
                                   ListTile(
                                     title: Text(
-                                      AppLocalizations.of(
-                                        context,
-                                      ).usingLatestNightly,
+                                      AppLocalizations.of(context)
+                                          .usingLatestNightly,
                                     ),
                                   ),
                                 ] else if (isError) ...[
@@ -179,9 +176,8 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
                                 ] else if (isUpdateAvailable)
                                   ListTile(
                                     title: Text(
-                                      AppLocalizations.of(
-                                        context,
-                                      ).updateAvailable,
+                                      AppLocalizations.of(context)
+                                          .updateAvailable,
                                     ),
                                     subtitle: Text(
                                       AppLocalizations.of(context).updateNow,

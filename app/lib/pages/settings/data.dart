@@ -62,9 +62,8 @@ class DataSettingsPage extends StatelessWidget {
                                   icon: const PhosphorIcon(
                                     PhosphorIconsLight.clockClockwise,
                                   ),
-                                  tooltip: AppLocalizations.of(
-                                    context,
-                                  ).defaultPath,
+                                  tooltip: AppLocalizations.of(context)
+                                      .defaultPath,
                                   onPressed: () => changePath(''),
                                 )
                               : null,

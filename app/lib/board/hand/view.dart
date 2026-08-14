@@ -278,9 +278,9 @@ class GameHand extends CustomPainterComponent
       event.continuePropagation = true;
       return;
     }
-    final isOverItem = componentsAtPoint(
-      event.localPosition,
-    ).whereType<HandItem>().isNotEmpty;
+    final isOverItem = componentsAtPoint(event.localPosition)
+        .whereType<HandItem>()
+        .isNotEmpty;
     if (isOverItem) {
       event.continuePropagation = true;
     }

@@ -6,8 +6,9 @@ import 'package:setonix_api/setonix_api.dart';
 import 'package:setonix_plugin/events.dart';
 import 'package:setonix_plugin/src/events/model.dart';
 
-typedef EventHandler<T extends WorldEvent> =
-    Future<void> Function(Event<T> event);
+typedef EventHandler<T extends WorldEvent> = Future<void> Function(
+  Event<T> event,
+);
 
 final class EventSubscription<T extends WorldEvent> {
   final EventHandler<T> _handler;

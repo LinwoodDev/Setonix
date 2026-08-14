@@ -77,9 +77,8 @@ class BoardGame extends FlameGame
   void _updateLocale() {
     final context = buildContext;
     if (context == null) return;
-    bloc.state.assetManager.currentLocale = Localizations.localeOf(
-      context,
-    ).languageCode;
+    bloc.state.assetManager.currentLocale = Localizations.localeOf(context)
+        .languageCode;
   }
 
   static const zoomPerScrollUnit = 0.02;

@@ -35,9 +35,8 @@ class TexturesEditorPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
-          final data = await FilePicker.pickFiles(
-            type: FileType.image,
-          ).then((result) => result.firstOrNull);
+          final data = await FilePicker.pickFiles(type: FileType.image)
+              .then((result) => result.firstOrNull);
           if (data == null) return;
           final bytes = await data.readAsBytes();
           if (!context.mounted) return;

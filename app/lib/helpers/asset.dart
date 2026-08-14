@@ -120,9 +120,8 @@ class GameAssetManager extends AssetManager {
 
   RoleTranslation getRoleTranslation(String key, {String? fallback}) {
     final location = ItemLocation.fromString(key);
-    return getTranslations(
-      location.namespace,
-    ).getRoleTranslation(location.id, fallback: fallback);
+    return getTranslations(location.namespace)
+        .getRoleTranslation(location.id, fallback: fallback);
   }
 
   PermissionTranslation getPermissionTranslation(
@@ -130,9 +129,8 @@ class GameAssetManager extends AssetManager {
     String? fallback,
   }) {
     final location = ItemLocation.fromString(permission);
-    return getTranslations(
-      location.namespace,
-    ).getPermissionTranslation(location.id, fallback: fallback);
+    return getTranslations(location.namespace)
+        .getPermissionTranslation(location.id, fallback: fallback);
   }
 
   void unloadPacks(Iterable<String> keys) {

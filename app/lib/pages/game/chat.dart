@@ -79,16 +79,14 @@ class _GameChatDrawerState extends State<GameChatDrawer> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  AppLocalizations.of(
-                                    context,
-                                  ).defaultPlayerName(message.author),
+                                  AppLocalizations.of(context)
+                                      .defaultPlayerName(message.author),
                                   style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                                 Text(
                                   DateFormat.Hms(
-                                    Localizations.localeOf(
-                                      context,
-                                    ).languageCode,
+                                    Localizations.localeOf(context)
+                                        .languageCode,
                                   ).format(message.timestamp),
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),

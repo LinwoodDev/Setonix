@@ -378,9 +378,8 @@ class ViewMultiplayerDialog extends StatelessWidget {
                     return ListTile(
                       title: Text(
                         player.name ??
-                            AppLocalizations.of(
-                              context,
-                            ).defaultUserName(player.id),
+                            AppLocalizations.of(context)
+                                .defaultUserName(player.id),
                       ),
                       subtitle: Text(
                         [
@@ -396,9 +395,8 @@ class ViewMultiplayerDialog extends StatelessWidget {
                               children: [
                                 if (canRename)
                                   IconButton(
-                                    tooltip: AppLocalizations.of(
-                                      context,
-                                    ).rename,
+                                    tooltip: AppLocalizations.of(context)
+                                        .rename,
                                     icon: const PhosphorIcon(
                                       PhosphorIconsLight.pencilSimple,
                                     ),
@@ -408,9 +406,8 @@ class ViewMultiplayerDialog extends StatelessWidget {
                                 if (hasModerationActions)
                                   MenuAnchor(
                                     builder: defaultMenuButton(
-                                      tooltip: MaterialLocalizations.of(
-                                        context,
-                                      ).showMenuTooltip,
+                                      tooltip: MaterialLocalizations.of(context)
+                                          .showMenuTooltip,
                                     ),
                                     menuChildren: [
                                       if (canKick)
@@ -452,9 +449,8 @@ class ViewMultiplayerDialog extends StatelessWidget {
                                             gameRoles,
                                           ),
                                           child: Text(
-                                            AppLocalizations.of(
-                                              context,
-                                            ).gameRoles,
+                                            AppLocalizations.of(context)
+                                                .gameRoles,
                                           ),
                                         ),
                                       if (canManageRoles)
@@ -523,9 +519,8 @@ class ViewMultiplayerDialog extends StatelessWidget {
                                               })
                                               .toList(growable: false),
                                           child: Text(
-                                            AppLocalizations.of(
-                                              context,
-                                            ).serverRoles,
+                                            AppLocalizations.of(context)
+                                                .serverRoles,
                                           ),
                                         ),
                                     ],

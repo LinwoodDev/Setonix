@@ -3,6 +3,7 @@ library;
 
 export 'package:setonix_api/setonix_api.dart';
 export 'package:setonix_plugin/setonix_plugin.dart';
+
 export 'src/asset.dart';
 export 'src/authorization.dart';
 export 'src/bloc.dart';
@@ -23,4 +24,5 @@ export 'src/programs/say.dart';
 export 'src/programs/stop.dart';
 export 'src/programs/whitelist.dart';
 export 'src/programs/worlds.dart';
+
 export 'package:networker/networker.dart';

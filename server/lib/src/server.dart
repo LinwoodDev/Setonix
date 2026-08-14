@@ -342,12 +342,10 @@ final class SetonixServer {
     }
     SecurityContext? securityContext;
     try {
-      final privateKey = await File(
-        p.join(rootDirectory, 'certs/server.key'),
-      ).readAsBytes();
-      final certificate = await File(
-        p.join(rootDirectory, 'certs/server.crt'),
-      ).readAsBytes();
+      final privateKey = await File(p.join(rootDirectory, 'certs/server.key'))
+          .readAsBytes();
+      final certificate = await File(p.join(rootDirectory, 'certs/server.crt'))
+          .readAsBytes();
       securityContext = SecurityContext()
         ..usePrivateKeyBytes(privateKey)
         ..useCertificateChainBytes(certificate);
@@ -434,9 +432,8 @@ final class SetonixServer {
     String? worldName,
   }) {
     if (_closing) return;
-    getWorld(
-      worldName ?? defaultWorldName,
-    )?.onClientEvent(packet, force: force);
+    getWorld(worldName ?? defaultWorldName)
+        ?.onClientEvent(packet, force: force);
   }
 
   static R _runStaticLogZone<R>(Consoler consoler, R Function() body) =>

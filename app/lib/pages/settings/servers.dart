@@ -31,9 +31,8 @@ class ServersSettingsPage extends StatelessWidget {
                     AppLocalizations.of(context).loadDefaultServerList,
                   ),
                   content: Text(
-                    AppLocalizations.of(
-                      context,
-                    ).loadDefaultServerListDescription,
+                    AppLocalizations.of(context)
+                        .loadDefaultServerListDescription,
                   ),
                   actions: [
                     TextButton(

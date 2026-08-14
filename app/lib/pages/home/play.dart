@@ -214,9 +214,8 @@ class _ModePickerView extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(4, 4, 4, 20),
                 child: _GamesHeader(
                   title: AppLocalizations.of(context).games,
-                  subtitle: AppLocalizations.of(
-                    context,
-                  ).homeSingleplayerDescription,
+                  subtitle: AppLocalizations.of(context)
+                      .homeSingleplayerDescription,
                   actions: [
                     OutlinedButton.icon(
                       onPressed: onCreate,

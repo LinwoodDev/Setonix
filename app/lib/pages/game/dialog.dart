@@ -157,12 +157,11 @@ class _GameDialogContentState extends State<_GameDialogContent> {
                                   const SizedBox(width: 12),
                                   Expanded(
                                     child: Text(
-                                      AppLocalizations.of(
-                                        context,
-                                      ).thirdPartyContent,
-                                      style: Theme.of(
-                                        context,
-                                      ).textTheme.bodyMedium,
+                                      AppLocalizations.of(context)
+                                          .thirdPartyContent,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
                                     ),
                                   ),
                                 ],
