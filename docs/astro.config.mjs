@@ -1,5 +1,6 @@
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
+import linwoodStarlight from "@linwooddev/starlight-style";
 import react from "@astrojs/react";
 import remarkHeadingID from "remark-heading-id";
 import remarkGemoji from "remark-gemoji";
@@ -14,9 +15,9 @@ export default defineConfig({
   },
   integrations: [
     starlight({
+      plugins: [linwoodStarlight()],
       title: "Linwood Setonix",
       customCss: [
-        "./src/styles/linwood-style.scss",
         "./src/styles/custom.scss",
       ],
       social: [
@@ -44,9 +45,7 @@ export default defineConfig({
       ],
       components: {
         Head: "./src/components/Head.astro",
-        Search: "./src/components/Search.astro",
         Footer: "./src/components/Footer.astro",
-        ContentPanel: "./src/components/ContentPanel.astro",
       },
       logo: {
         src: "./public/img/logo.svg",
