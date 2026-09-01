@@ -220,17 +220,43 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
         channel == kAuthorityChannel ||
         channel == state.world.id;
 
+    final multiplayer = state.multiplayer;
+    final rawMultiplayerState = multiplayer.state;
+    final multiplayerState = rawMultiplayerState is MultiplayerConnectedState
+        ? rawMultiplayerState
+        : null;
+    final challengeManager = multiplayerState?.challengeManager;
+    final inputEvent = data.data;
+    if (multiplayer.isServer &&
+        data.channel != kAuthorityChannel &&
+        inputEvent is AuthenticateRequest &&
+        !multiplayer.allowAuthenticationAttempt(data.channel)) {
+      multiplayer.kick(data.channel);
+      return;
+    }
+    if (multiplayer.isServer &&
+        challengeManager != null &&
+        inputEvent is ClientWorldEvent &&
+        inputEvent is! AuthenticateRequest &&
+        multiplayerState?.userManager.getUser(data.channel) == null) {
+      return;
+    }
     final value = await processClientEvent(
-      data.data,
+      inputEvent,
       data.channel,
       state.world,
       assetManager: state.assetManager,
       userManager: state.multiplayer.state.userManager,
+      challengeManager: challengeManager,
       allowServerEvents: allowServerEvents,
     );
     if (value == null) return;
     switch (value) {
       case UpdateServerResponse():
+        if (inputEvent is AuthenticateRequest &&
+            multiplayerState?.userManager.getUser(data.channel) != null) {
+          multiplayer.completeAuthentication(data.channel);
+        }
         final event = Event(
           serverEvent: value.main?.data,
           target: value.main?.channel ?? kAnyChannel,
@@ -291,7 +317,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
           );
         }
       case KickServerResponse():
-      // Handle kick response
+        multiplayer.kick(data.channel);
     }
   }
 

@@ -5,6 +5,11 @@
 * Add player name functionality
 * Improve server commands
 * Fix role-authorized world management
+* Secure public-key authentication with expiring, connection-bound challenges
+* Require TLS for public-key authentication outside local development
+* Add authentication attempt limits and unauthenticated connection timeouts
+* Encrypt account backups with a passphrase and validate imported key pairs
+* Reject oversized network events before decoding
 * Upgrade to agb 9
 * Upgrade to flutter 3.47
 

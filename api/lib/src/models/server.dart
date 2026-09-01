@@ -11,7 +11,10 @@ const kSetonixProtocolVersion = 1;
 const kSupportedSetonixProtocolVersions = <int>[kSetonixProtocolVersion];
 const kSetonixServerProtocolVersions = <int>[kSetonixProtocolVersion];
 const kSetonixProtocolQueryParameter = 'setonixProtocol';
-const kSetonixProtocolCapabilities = <String>['handshake-v1'];
+const kSetonixProtocolCapabilities = <String>[
+  'handshake-v1',
+  'public-key-auth',
+];
 
 Uri addSetonixProtocolVersion(
   Uri uri, {

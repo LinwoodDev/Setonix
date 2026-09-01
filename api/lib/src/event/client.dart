@@ -173,18 +173,49 @@ final class AuthenticateRequest extends ClientWorldEvent
   static Future<AuthenticateRequest> build(
     AuthenticatedRequested request,
     SetonixAccount account,
+    Channel expectedChannel,
   ) async {
-    final challenge = request.challenge;
+    final now = DateTime.now().toUtc();
+    if (request.version != kAuthenticationProtocolVersion ||
+        request.challenge.length != kAuthenticationChallengeLength ||
+        request.channel != expectedChannel ||
+        request.serverId.isEmpty ||
+        request.serverId.length > 256 ||
+        request.issuedAt.isAfter(request.expiresAt) ||
+        !request.expiresAt.toUtc().isAfter(now)) {
+      throw const FormatException('Invalid authentication challenge.');
+    }
     final keyPair = account.keyPair;
-    final signature = await _generator.sign(challenge, keyPair: keyPair);
+    final signature = await _generator.sign(
+      buildAuthenticationTranscript(
+        version: request.version,
+        serverId: request.serverId,
+        channel: request.channel,
+        issuedAt: request.issuedAt,
+        expiresAt: request.expiresAt,
+        challenge: request.challenge,
+      ),
+      keyPair: keyPair,
+    );
     return AuthenticateRequest(
       Uint8List.fromList(signature.bytes),
       account.publicKey,
     );
   }
 
-  Future<bool> verify(Uint8List challenge) => _generator.verify(
-    challenge,
+  bool get hasValidLengths =>
+      signature.length == kEd25519SignatureLength &&
+      publicKey.length == kEd25519PublicKeyLength;
+
+  Future<bool> verify(AuthenticationChallenge challenge) => _generator.verify(
+    buildAuthenticationTranscript(
+      version: kAuthenticationProtocolVersion,
+      serverId: challenge.serverId,
+      channel: challenge.channel,
+      issuedAt: challenge.issuedAt,
+      expiresAt: challenge.expiresAt,
+      challenge: challenge.nonce,
+    ),
     signature: Signature(
       signature,
       publicKey: SimplePublicKey(publicKey, type: KeyPairType.ed25519),

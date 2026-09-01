@@ -71,6 +71,10 @@ class ConfigManager {
   bool get accountRequired =>
       _mergedConfig.accountRequired ?? SetonixConfig.defaultAccountRequired;
 
+  bool get allowInsecureAuthentication =>
+      _mergedConfig.allowInsecureAuthentication ??
+      SetonixConfig.defaultAllowInsecureAuthentication;
+
   String get apiEndpoint =>
       _mergedConfig.apiEndpoint ?? SetonixConfig.defaultApiEndpoint;
 

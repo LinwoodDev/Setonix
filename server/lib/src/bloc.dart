@@ -202,6 +202,19 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
   }) async {
     final data = packet.data;
     if (!packet.isServer &&
+        data is AuthenticateRequest &&
+        !server.allowAuthenticationAttempt(packet.channel)) {
+      server.log(
+        'Authentication rate limit exceeded for channel ${packet.channel}.',
+        level: LogLevel.warning,
+      );
+      server.kick(
+        packet.channel,
+        const KickMessage(reason: KickReason.challengeFailed),
+      );
+      return;
+    }
+    if (!packet.isServer &&
         data is ClientWorldEvent &&
         data is! AuthenticateRequest) {
       final user = server.userManager.getUser(packet.channel);
@@ -292,6 +305,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
     if (data is AuthenticateRequest) {
       final user = server.userManager.getUser(packet.channel);
       if (user != null) {
+        server.completeAuthentication(packet.channel);
         final validRoles = {
           kDefaultServerRole,
           ...user.roles.where(server.configManager.serverRoles.containsKey),

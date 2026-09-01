@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:consoler/consoler.dart';
 import 'package:networker/networker.dart';
@@ -55,6 +56,11 @@ bool _isSafeRemoteEndpoint(Uri uri) {
       uri.host == '::1';
 }
 
+bool canUseInsecureAuthentication(
+  InternetAddress bindAddress,
+  bool explicitlyAllowed,
+) => bindAddress.isLoopback || explicitlyAllowed;
+
 final class SetonixServer {
   static const String worldDirectory = 'worlds';
   static const String worldSuffix = '.stnx';
@@ -67,6 +73,9 @@ final class SetonixServer {
   final String rootDirectory;
   final Map<String, WorldBloc> _worlds = {};
   final Map<Channel, String> _userWorlds = {};
+  final Map<Channel, Timer> _authenticationTimers = {};
+  final AuthenticationRateLimiter _authenticationRateLimiter =
+      AuthenticationRateLimiter();
 
   NetworkerSocketServer? _server;
   NetworkerPipe<dynamic, WorldEvent>? _pipe;
@@ -268,7 +277,7 @@ final class SetonixServer {
       whitelistEnabled: configManager.whitelistEnabled,
     );
     final challengeManager = configManager.accountRequired
-        ? ChallengeManager()
+        ? ChallengeManager(serverId: generateFingerprint(generateChallenge()))
         : null;
     return SetonixServer._(
       consoler,
@@ -341,11 +350,13 @@ final class SetonixServer {
       );
     }
     SecurityContext? securityContext;
+    List<int>? certificateBytes;
     try {
       final privateKey = await File(p.join(rootDirectory, 'certs/server.key'))
           .readAsBytes();
       final certificate = await File(p.join(rootDirectory, 'certs/server.crt'))
           .readAsBytes();
+      certificateBytes = certificate;
       securityContext = SecurityContext()
         ..usePrivateKeyBytes(privateKey)
         ..useCertificateChainBytes(certificate);
@@ -363,6 +374,31 @@ final class SetonixServer {
       );
     }
     final bindAddress = await _resolveBindAddress(configManager.host);
+    final authenticationChallenges = challengeManager;
+    if (authenticationChallenges != null) {
+      if (certificateBytes != null) {
+        authenticationChallenges.serverId = generateFingerprint(
+          certificateBytes is Uint8List
+              ? certificateBytes
+              : Uint8List.fromList(certificateBytes),
+        );
+      } else if (!canUseInsecureAuthentication(
+        bindAddress,
+        configManager.allowInsecureAuthentication,
+      )) {
+        throw StateError(
+          'Account authentication requires TLS when listening outside '
+          'loopback. Install certs/server.crt and certs/server.key, or use '
+          '--allow-insecure-authentication only for isolated development.',
+        );
+      } else {
+        log(
+          'DANGER: public-key authentication is running without TLS. '
+          'Active attackers can relay authentication challenges.',
+          level: LogLevel.warning,
+        );
+      }
+    }
     final server = _server = NetworkerSocketServer(
       bindAddress,
       configManager.port,
@@ -393,7 +429,11 @@ final class SetonixServer {
     server
       ..clientConnect.listen(_onJoin)
       ..clientDisconnect.listen(_onLeave)
-      ..connect(StringNetworkerPlugin()..connect(transformer));
+      ..connect(
+        FilteredNetworkerPipe<Uint8List>(
+          filterDecoded: (data, _) => data.length <= kMaxNetworkEventBytes,
+        )..connect(StringNetworkerPlugin()..connect(transformer)),
+      );
     await _server?.init();
 
     consoler.registerPrograms({
@@ -488,6 +528,18 @@ final class SetonixServer {
       return;
     }
     log('${info.address} ($user) joined the game', level: LogLevel.info);
+    if (challengeManager != null) {
+      _authenticationTimers.remove(user)?.cancel();
+      _authenticationTimers[user] = Timer(challengeManager!.ttl, () {
+        if (userManager.getUser(user) != null) return;
+        log(
+          'Closing unauthenticated channel $user after the authentication deadline.',
+          level: LogLevel.warning,
+        );
+        challengeManager?.removeChallenge(user);
+        _server?.closeConnection(user);
+      });
+    }
     _onClientEvent(
       NetworkerPacket(UserJoined(channel: event.$1, info: event.$2), event.$1),
     );
@@ -507,9 +559,19 @@ final class SetonixServer {
     }
 
     _userWorlds.remove(user);
+    _authenticationTimers.remove(user)?.cancel();
     userManager.removeUser(user);
     challengeManager?.removeChallenge(user);
     if (!_closing) unawaited(broadcastAllServerStates());
+  }
+
+  void completeAuthentication(Channel channel) {
+    _authenticationTimers.remove(channel)?.cancel();
+  }
+
+  bool allowAuthenticationAttempt(Channel channel) {
+    final source = _server?.getConnectionInfo(channel)?.address.host;
+    return source != null && _authenticationRateLimiter.allow(source);
   }
 
   Future<void> loadWorlds() async {
@@ -569,6 +631,11 @@ final class SetonixServer {
 
   Future<void> _close() async {
     _closing = true;
+    for (final timer in _authenticationTimers.values) {
+      timer.cancel();
+    }
+    _authenticationTimers.clear();
+    _authenticationRateLimiter.clear();
     log('Closing...', level: LogLevel.info);
     final networkServer = _server;
     _server = null;

@@ -4,6 +4,8 @@ import 'package:cryptography_plus/cryptography_plus.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:networker/networker.dart';
 import 'package:setonix_api/event.dart';
+import 'package:setonix_api/src/helpers/crypto.dart';
+import 'package:setonix_api/src/services/challenge.dart';
 
 import 'dart:typed_data';
 
@@ -16,6 +18,7 @@ part 'local.dart';
 
 const kDefaultPort = 28006;
 const kBroadcastPort = 28007;
+const kMaxNetworkEventBytes = 256 * 1024;
 
 @MappableClass(discriminatorKey: 'type')
 sealed class WorldEvent with WorldEventMappable {

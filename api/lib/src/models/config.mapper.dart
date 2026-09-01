@@ -90,6 +90,14 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
     _$accountRequired,
     opt: true,
   );
+  static bool? _$allowInsecureAuthentication(SetonixConfig v) =>
+      v.allowInsecureAuthentication;
+  static const Field<SetonixConfig, bool> _f$allowInsecureAuthentication =
+      Field(
+        'allowInsecureAuthentication',
+        _$allowInsecureAuthentication,
+        opt: true,
+      );
   static String? _$apiEndpoint(SetonixConfig v) => v.apiEndpoint;
   static const Field<SetonixConfig, String> _f$apiEndpoint = Field(
     'apiEndpoint',
@@ -126,6 +134,7 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
     #guestPrefix: _f$guestPrefix,
     #whitelistEnabled: _f$whitelistEnabled,
     #accountRequired: _f$accountRequired,
+    #allowInsecureAuthentication: _f$allowInsecureAuthentication,
     #apiEndpoint: _f$apiEndpoint,
     #endpointSecret: _f$endpointSecret,
     #gameMode: _f$gameMode,
@@ -145,6 +154,7 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
       guestPrefix: data.dec(_f$guestPrefix),
       whitelistEnabled: data.dec(_f$whitelistEnabled),
       accountRequired: data.dec(_f$accountRequired),
+      allowInsecureAuthentication: data.dec(_f$allowInsecureAuthentication),
       apiEndpoint: data.dec(_f$apiEndpoint),
       endpointSecret: data.dec(_f$endpointSecret),
       gameMode: data.dec(_f$gameMode),
@@ -236,6 +246,7 @@ abstract class SetonixConfigCopyWith<$R, $In extends SetonixConfig, $Out>
     String? guestPrefix,
     bool? whitelistEnabled,
     bool? accountRequired,
+    bool? allowInsecureAuthentication,
     String? apiEndpoint,
     String? endpointSecret,
     String? gameMode,
@@ -280,6 +291,7 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
     Object? guestPrefix = $none,
     Object? whitelistEnabled = $none,
     Object? accountRequired = $none,
+    Object? allowInsecureAuthentication = $none,
     Object? apiEndpoint = $none,
     Object? endpointSecret = $none,
     Object? gameMode = $none,
@@ -297,6 +309,8 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
       if (guestPrefix != $none) #guestPrefix: guestPrefix,
       if (whitelistEnabled != $none) #whitelistEnabled: whitelistEnabled,
       if (accountRequired != $none) #accountRequired: accountRequired,
+      if (allowInsecureAuthentication != $none)
+        #allowInsecureAuthentication: allowInsecureAuthentication,
       if (apiEndpoint != $none) #apiEndpoint: apiEndpoint,
       if (endpointSecret != $none) #endpointSecret: endpointSecret,
       if (gameMode != $none) #gameMode: gameMode,
@@ -316,6 +330,10 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
     guestPrefix: data.get(#guestPrefix, or: $value.guestPrefix),
     whitelistEnabled: data.get(#whitelistEnabled, or: $value.whitelistEnabled),
     accountRequired: data.get(#accountRequired, or: $value.accountRequired),
+    allowInsecureAuthentication: data.get(
+      #allowInsecureAuthentication,
+      or: $value.allowInsecureAuthentication,
+    ),
     apiEndpoint: data.get(#apiEndpoint, or: $value.apiEndpoint),
     endpointSecret: data.get(#endpointSecret, or: $value.endpointSecret),
     gameMode: data.get(#gameMode, or: $value.gameMode),

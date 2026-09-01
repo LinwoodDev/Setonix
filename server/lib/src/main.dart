@@ -66,6 +66,12 @@ ArgParser buildParser() {
       help: "Enable multi-world support",
       defaultsTo: false,
     )
+    ..addFlag(
+      'allow-insecure-authentication',
+      negatable: false,
+      help: 'Allow public-key authentication without TLS. Unsafe outside isolated development environments.',
+      defaultsTo: false,
+    )
     ..addOption(
       'game-mode',
       abbr: 'g',
@@ -140,6 +146,8 @@ Future<void> runServer(List<String> arguments, [ServerLoader? onLoad]) async {
         thumbnail: thumbnail,
         maxPlayers: maxPlayers,
         multiWorld: multiWorld,
+        allowInsecureAuthentication:
+            results['allow-insecure-authentication'] as bool,
         gameMode: gameMode,
       ),
     );

@@ -10,6 +10,71 @@ import 'package:url_launcher/url_launcher.dart';
 
 const kLaunchHost = 'launch.setonix.linwood.dev';
 
+Future<String?> requestAccountBackupPassphrase(
+  BuildContext context, {
+  required bool confirm,
+}) async {
+  final passphraseController = TextEditingController();
+  final confirmationController = TextEditingController();
+  String? error;
+  final result = await showDialog<String>(
+    context: context,
+    builder: (context) => StatefulBuilder(
+      builder: (context, setState) {
+        final loc = AppLocalizations.of(context);
+        return AlertDialog(
+          title: Text(loc.accountBackupPassphrase),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(loc.accountBackupPassphraseDescription),
+              const SizedBox(height: 16),
+              TextField(
+                controller: passphraseController,
+                obscureText: true,
+                autofocus: true,
+                decoration: InputDecoration(
+                  labelText: loc.accountBackupPassphrase,
+                ),
+              ),
+              if (confirm)
+                TextField(
+                  controller: confirmationController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: loc.accountBackupConfirmPassphrase,
+                    errorText: error,
+                  ),
+                ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(loc.cancel),
+            ),
+            FilledButton(
+              onPressed: () {
+                final passphrase = passphraseController.text;
+                if (passphrase.isEmpty) return;
+                if (confirm && passphrase != confirmationController.text) {
+                  setState(() => error = loc.accountBackupPassphraseMismatch);
+                  return;
+                }
+                Navigator.pop(context, passphrase);
+              },
+              child: Text(loc.confirm),
+            ),
+          ],
+        );
+      },
+    ),
+  );
+  passphraseController.dispose();
+  confirmationController.dispose();
+  return result;
+}
+
 Uri getLaunchUri({
   String? path,
   List<String>? pathSegments,
@@ -159,6 +224,29 @@ Future<void> importFileData(
         data,
       );
     case SetonixFileType.accounts:
-      await fileSystem.importAccountsFromData(data);
+      if (!context.mounted) return;
+      final passphrase = await requestAccountBackupPassphrase(
+        context,
+        confirm: false,
+      );
+      if (passphrase == null) return;
+      try {
+        await fileSystem.importAccountsFromData(data, passphrase);
+      } catch (error) {
+        if (!context.mounted) return;
+        await showDialog<void>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text(AppLocalizations.of(context).error),
+            content: Text(error.toString()),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text(AppLocalizations.of(context).close),
+              ),
+            ],
+          ),
+        );
+      }
   }
 }

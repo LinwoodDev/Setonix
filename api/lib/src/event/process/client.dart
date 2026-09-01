@@ -238,6 +238,29 @@ Future<ServerResponse?> processClientEvent(
   ChallengeManager? challengeManager,
   UserManager? userManager,
 }) async {
+  AuthenticatedRequested authenticationRequest(
+    AuthenticationChallenge challenge,
+  ) => AuthenticatedRequested(
+    challenge: challenge.nonce,
+    serverId: challenge.serverId,
+    channel: challenge.channel,
+    issuedAt: challenge.issuedAt,
+    expiresAt: challenge.expiresAt,
+  );
+
+  ServerResponse authenticationFailed() {
+    final challenge = challengeManager?.registerFailedAttempt(channel);
+    if (challenge == null) {
+      return const KickServerResponse(
+        KickMessage(reason: KickReason.challengeFailed),
+      );
+    }
+    return UpdateServerResponse.builder(
+      authenticationRequest(challenge),
+      channel,
+    );
+  }
+
   buildInitialize() => WorldInitialized(
     table: state.protectTable(channel),
     info: state.info,
@@ -254,7 +277,7 @@ Future<ServerResponse?> processClientEvent(
     if (challengeManager != null) {
       final challenge = challengeManager.generateNewChallenge(channel);
       return UpdateServerResponse.builder(
-        AuthenticatedRequested(challenge, isRequired: true),
+        authenticationRequest(challenge),
         channel,
       );
     }
@@ -459,15 +482,20 @@ Future<ServerResponse?> processClientEvent(
       );
     case AuthenticateRequest():
       final challenge = challengeManager?.getChallenge(channel);
-      if (challenge == null) return null;
-      if (challengeManager == null) return null;
-      final verified = await event.verify(challenge);
-      if (!verified) {
-        final newChallenge = challengeManager.generateNewChallenge(channel);
-        return UpdateServerResponse.builder(
-          AuthenticatedRequested(newChallenge, isRequired: true),
-          channel,
+      if (challenge == null || challengeManager == null) {
+        return const KickServerResponse(
+          KickMessage(reason: KickReason.challengeFailed),
         );
+      }
+      if (!event.hasValidLengths) return authenticationFailed();
+      bool verified;
+      try {
+        verified = await event.verify(challenge);
+      } catch (_) {
+        verified = false;
+      }
+      if (!verified) {
+        return authenticationFailed();
       }
       challengeManager.removeChallenge(channel);
       SetonixUser? user;
@@ -488,7 +516,7 @@ Future<ServerResponse?> processClientEvent(
       if (user == null) {
         final newChallenge = challengeManager.generateNewChallenge(channel);
         return UpdateServerResponse.builder(
-          AuthenticatedRequested(newChallenge, isRequired: true),
+          authenticationRequest(newChallenge),
           channel,
         );
       }

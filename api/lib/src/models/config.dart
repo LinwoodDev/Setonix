@@ -38,6 +38,10 @@ final class SetonixConfig with SetonixConfigMappable {
   final bool? accountRequired;
   static const bool defaultAccountRequired = true;
   static const String envAccountRequired = 'SETONIX_ACCOUNT_REQUIRED';
+  final bool? allowInsecureAuthentication;
+  static const bool defaultAllowInsecureAuthentication = false;
+  static const String envAllowInsecureAuthentication =
+      'SETONIX_ALLOW_INSECURE_AUTHENTICATION';
   final String? apiEndpoint;
   static const String defaultApiEndpoint = "";
   static const String envApiEndpoint = 'SETONIX_API_ENDPOINT';
@@ -61,6 +65,7 @@ final class SetonixConfig with SetonixConfigMappable {
     this.guestPrefix,
     this.whitelistEnabled,
     this.accountRequired,
+    this.allowInsecureAuthentication,
     this.apiEndpoint,
     this.endpointSecret,
     this.gameMode,
@@ -79,6 +84,7 @@ final class SetonixConfig with SetonixConfigMappable {
     guestPrefix: defaultGuestPrefix,
     whitelistEnabled: defaultWhitelistEnabled,
     accountRequired: defaultAccountRequired,
+    allowInsecureAuthentication: defaultAllowInsecureAuthentication,
     apiEndpoint: defaultApiEndpoint,
     endpointSecret: defaultEndpointSecret,
     gameMode: defaultGameMode,
@@ -132,6 +138,13 @@ final class SetonixConfig with SetonixConfigMappable {
               defaultValue: defaultAccountRequired,
             )
           : null,
+      allowInsecureAuthentication:
+          bool.hasEnvironment(envAllowInsecureAuthentication)
+          ? bool.fromEnvironment(
+              envAllowInsecureAuthentication,
+              defaultValue: defaultAllowInsecureAuthentication,
+            )
+          : null,
       apiEndpoint: bool.hasEnvironment(envApiEndpoint)
           ? String.fromEnvironment(
               envApiEndpoint,
@@ -162,6 +175,8 @@ final class SetonixConfig with SetonixConfigMappable {
     thumbnail: other.thumbnail ?? thumbnail,
     guestPrefix: other.guestPrefix ?? guestPrefix,
     accountRequired: other.accountRequired ?? accountRequired,
+    allowInsecureAuthentication:
+        other.allowInsecureAuthentication ?? allowInsecureAuthentication,
     whitelistEnabled: other.whitelistEnabled ?? whitelistEnabled,
     apiEndpoint: other.apiEndpoint ?? apiEndpoint,
     endpointSecret: other.endpointSecret ?? endpointSecret,

@@ -279,9 +279,20 @@ final class ServerStateUpdated extends ServerWorldEvent
 final class AuthenticatedRequested extends ServerWorldEvent
     with AuthenticatedRequestedMappable {
   final Uint8List challenge;
-  final bool isRequired;
+  final int version;
+  final String serverId;
+  final Channel channel;
+  final DateTime issuedAt;
+  final DateTime expiresAt;
 
-  const AuthenticatedRequested(this.challenge, {this.isRequired = true});
+  const AuthenticatedRequested({
+    required this.challenge,
+    required this.serverId,
+    required this.channel,
+    required this.issuedAt,
+    required this.expiresAt,
+    this.version = kAuthenticationProtocolVersion,
+  });
 }
 
 @MappableClass()

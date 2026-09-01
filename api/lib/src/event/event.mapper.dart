@@ -2318,18 +2318,42 @@ class AuthenticatedRequestedMapper
     'challenge',
     _$challenge,
   );
-  static bool _$isRequired(AuthenticatedRequested v) => v.isRequired;
-  static const Field<AuthenticatedRequested, bool> _f$isRequired = Field(
-    'isRequired',
-    _$isRequired,
+  static String _$serverId(AuthenticatedRequested v) => v.serverId;
+  static const Field<AuthenticatedRequested, String> _f$serverId = Field(
+    'serverId',
+    _$serverId,
+  );
+  static int _$channel(AuthenticatedRequested v) => v.channel;
+  static const Field<AuthenticatedRequested, int> _f$channel = Field(
+    'channel',
+    _$channel,
+  );
+  static DateTime _$issuedAt(AuthenticatedRequested v) => v.issuedAt;
+  static const Field<AuthenticatedRequested, DateTime> _f$issuedAt = Field(
+    'issuedAt',
+    _$issuedAt,
+  );
+  static DateTime _$expiresAt(AuthenticatedRequested v) => v.expiresAt;
+  static const Field<AuthenticatedRequested, DateTime> _f$expiresAt = Field(
+    'expiresAt',
+    _$expiresAt,
+  );
+  static int _$version(AuthenticatedRequested v) => v.version;
+  static const Field<AuthenticatedRequested, int> _f$version = Field(
+    'version',
+    _$version,
     opt: true,
-    def: true,
+    def: kAuthenticationProtocolVersion,
   );
 
   @override
   final MappableFields<AuthenticatedRequested> fields = const {
     #challenge: _f$challenge,
-    #isRequired: _f$isRequired,
+    #serverId: _f$serverId,
+    #channel: _f$channel,
+    #issuedAt: _f$issuedAt,
+    #expiresAt: _f$expiresAt,
+    #version: _f$version,
   };
 
   @override
@@ -2342,8 +2366,12 @@ class AuthenticatedRequestedMapper
 
   static AuthenticatedRequested _instantiate(DecodingData data) {
     return AuthenticatedRequested(
-      data.dec(_f$challenge),
-      isRequired: data.dec(_f$isRequired),
+      challenge: data.dec(_f$challenge),
+      serverId: data.dec(_f$serverId),
+      channel: data.dec(_f$channel),
+      issuedAt: data.dec(_f$issuedAt),
+      expiresAt: data.dec(_f$expiresAt),
+      version: data.dec(_f$version),
     );
   }
 
@@ -2421,7 +2449,14 @@ abstract class AuthenticatedRequestedCopyWith<
 >
     implements ServerWorldEventCopyWith<$R, $In, $Out> {
   @override
-  $R call({Uint8List? challenge, bool? isRequired});
+  $R call({
+    Uint8List? challenge,
+    String? serverId,
+    int? channel,
+    DateTime? issuedAt,
+    DateTime? expiresAt,
+    int? version,
+  });
   AuthenticatedRequestedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -2438,16 +2473,31 @@ class _AuthenticatedRequestedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<AuthenticatedRequested> $mapper =
       AuthenticatedRequestedMapper.ensureInitialized();
   @override
-  $R call({Uint8List? challenge, bool? isRequired}) => $apply(
+  $R call({
+    Uint8List? challenge,
+    String? serverId,
+    int? channel,
+    DateTime? issuedAt,
+    DateTime? expiresAt,
+    int? version,
+  }) => $apply(
     FieldCopyWithData({
       if (challenge != null) #challenge: challenge,
-      if (isRequired != null) #isRequired: isRequired,
+      if (serverId != null) #serverId: serverId,
+      if (channel != null) #channel: channel,
+      if (issuedAt != null) #issuedAt: issuedAt,
+      if (expiresAt != null) #expiresAt: expiresAt,
+      if (version != null) #version: version,
     }),
   );
   @override
   AuthenticatedRequested $make(CopyWithData data) => AuthenticatedRequested(
-    data.get(#challenge, or: $value.challenge),
-    isRequired: data.get(#isRequired, or: $value.isRequired),
+    challenge: data.get(#challenge, or: $value.challenge),
+    serverId: data.get(#serverId, or: $value.serverId),
+    channel: data.get(#channel, or: $value.channel),
+    issuedAt: data.get(#issuedAt, or: $value.issuedAt),
+    expiresAt: data.get(#expiresAt, or: $value.expiresAt),
+    version: data.get(#version, or: $value.version),
   );
 
   @override

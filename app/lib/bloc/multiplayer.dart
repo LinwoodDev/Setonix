@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:cryptography_plus/cryptography_plus.dart';
 import 'package:dart_mappable/dart_mappable.dart';
@@ -63,8 +64,17 @@ final class MultiplayerConnectedState extends MultiplayerState
   final SimpleNetworkerPipe<WorldEvent> pipe;
   @override
   final UserManager userManager = UserManager();
+  final ChallengeManager? challengeManager;
 
-  MultiplayerConnectedState(this.networker, this.pipe);
+  MultiplayerConnectedState(
+    this.networker,
+    this.pipe, {
+    bool authenticatePeers = false,
+  }) : challengeManager = authenticatePeers
+           ? ChallengeManager(
+               serverId: generateFingerprint(generateChallenge()),
+             )
+           : null;
 
   @override
   bool get isClient => networker is NetworkerClient;
@@ -110,6 +120,9 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
   Stream<(Channel, ConnectionInfo)> get inits => _initController.stream;
 
   FatalServerEventError? _fatalError;
+  final Map<Channel, Timer> _authenticationTimers = {};
+  final AuthenticationRateLimiter _authenticationRateLimiter =
+      AuthenticationRateLimiter();
 
   MultiplayerCubit(this.networkService) : super(MultiplayerDisabledState());
 
@@ -125,20 +138,32 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
     return networker.clientConnections;
   }
 
-  Future<MultiplayerConnectedState> _addNetworker(NetworkerBase base) async {
+  Future<MultiplayerConnectedState> _addNetworker(
+    NetworkerBase base, {
+    bool authenticatePeers = false,
+  }) async {
     final transformer = NetworkerPipeTransformer<String, WorldEvent>(
       WorldEventMapper.fromJson,
       (e) => (e is ServerWorldEvent ? protectServerEvent(e) : e).toJson(),
     );
     final pipe = SimpleNetworkerPipe<WorldEvent>();
+    final connectedState = MultiplayerConnectedState(
+      base,
+      pipe,
+      authenticatePeers: authenticatePeers,
+    );
     final stringPlugin = StringNetworkerPlugin();
     transformer.read.listen(_onServerEvent);
-    base.connect(stringPlugin..connect(transformer));
+    base.connect(
+      FilteredNetworkerPipe<Uint8List>(
+        filterDecoded: (data, _) => data.length <= kMaxNetworkEventBytes,
+      )..connect(stringPlugin..connect(transformer)),
+    );
     if (base is NetworkerClient) {
       transformer.connect(pipe);
     } else if (base is NetworkerServer) {
-      base.clientConnect.listen(_onJoin);
-      base.clientDisconnect.listen(_onLeft);
+      base.clientConnect.listen((event) => _onJoin(event, connectedState));
+      base.clientDisconnect.listen((event) => _onLeft(event, connectedState));
       transformer.connect(
         SimpleNetworkerPipe()
           ..read.listen(_onClientEvent)
@@ -146,7 +171,7 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
           ..connect(pipe),
       );
     }
-    return MultiplayerConnectedState(base, pipe);
+    return connectedState;
   }
 
   void _onClientEvent(NetworkerPacket<WorldEvent> event, [bool local = false]) {
@@ -178,6 +203,11 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
   Future<void> disconnect([bool emit = true]) async {
     final state = this.state;
     if (state is! MultiplayerConnectedState) return;
+    for (final timer in _authenticationTimers.values) {
+      timer.cancel();
+    }
+    _authenticationTimers.clear();
+    _authenticationRateLimiter.clear();
     await state.networker.close();
     networkService.cancelServerInfo();
     if (emit && state.isServer) {
@@ -252,7 +282,7 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
   Future<void> createSwamp(Uri uri) async {
     try {
       final server = await _createSwamp(uri);
-      final state = await _addNetworker(server);
+      final state = await _addNetworker(server, authenticatePeers: true);
       await server.init();
       emit(state);
     } catch (e) {
@@ -340,12 +370,56 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
     disconnect();
   }
 
-  void _onLeft((Channel, ConnectionInfo) event) {
-    state.userManager?.removeUser(event.$1);
+  void _onLeft(
+    (Channel, ConnectionInfo) event,
+    MultiplayerConnectedState connectedState,
+  ) {
+    _authenticationTimers.remove(event.$1)?.cancel();
+    connectedState.challengeManager?.removeChallenge(event.$1);
+    connectedState.userManager.removeUser(event.$1);
   }
 
-  void _onJoin((Channel, ConnectionInfo) event) {
+  void _onJoin(
+    (Channel, ConnectionInfo) event,
+    MultiplayerConnectedState connectedState,
+  ) {
     _initController.add(event);
-    state.userManager?.addUser(event.$1);
+    final challengeManager = connectedState.challengeManager;
+    if (challengeManager == null) {
+      connectedState.userManager.addUser(event.$1);
+      return;
+    }
+    _authenticationTimers[event.$1] = Timer(challengeManager.ttl, () {
+      if (connectedState.userManager.getUser(event.$1) != null) {
+        return;
+      }
+      challengeManager.removeChallenge(event.$1);
+      final networker = connectedState.networker;
+      if (networker is NetworkerServer) {
+        networker.closeConnection(event.$1);
+      }
+    });
+  }
+
+  void completeAuthentication(Channel channel) {
+    _authenticationTimers.remove(channel)?.cancel();
+  }
+
+  bool allowAuthenticationAttempt(Channel channel) {
+    final current = state;
+    final networker = current is MultiplayerConnectedState
+        ? current.networker
+        : null;
+    if (networker is! NetworkerServer) return false;
+    final source = networker.getConnectionInfo(channel)?.address.host;
+    return source != null && _authenticationRateLimiter.allow(source);
+  }
+
+  void kick(Channel channel) {
+    final current = state;
+    final networker = current is MultiplayerConnectedState
+        ? current.networker
+        : null;
+    if (networker is NetworkerServer) networker.closeConnection(channel);
   }
 }

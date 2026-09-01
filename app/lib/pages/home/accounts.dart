@@ -62,7 +62,12 @@ class _AccountsDialogState extends State<AccountsDialog> {
           icon: const PhosphorIcon(PhosphorIconsLight.export),
           tooltip: AppLocalizations.of(context).backupAllKeys,
           onPressed: () async {
-            final data = await _fileSystem.exportAccounts();
+            final passphrase = await requestAccountBackupPassphrase(
+              context,
+              confirm: true,
+            );
+            if (passphrase == null) return;
+            final data = await _fileSystem.exportAccounts(passphrase);
             if (!context.mounted) return;
             exportData(context, data, 'accounts');
           },
@@ -127,9 +132,16 @@ class _AccountsDialogState extends State<AccountsDialog> {
                             PhosphorIconsLight.export,
                           ),
                           onPressed: () async {
-                            final data = await _fileSystem.exportAccounts([
-                              key,
-                            ]);
+                            final passphrase =
+                                await requestAccountBackupPassphrase(
+                                  context,
+                                  confirm: true,
+                                );
+                            if (passphrase == null) return;
+                            final data = await _fileSystem.exportAccounts(
+                              passphrase,
+                              [key],
+                            );
                             if (!context.mounted) return;
                             exportData(context, data, key);
                           },

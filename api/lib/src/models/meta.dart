@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:cryptography_plus/cryptography_plus.dart';
+import 'package:collection/collection.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:setonix_api/src/helpers/crypto.dart';
 
@@ -85,4 +86,18 @@ final class SetonixAccount {
 
   String getFingerprint({bool short = false, bool pretty = false}) =>
       generateFingerprint(publicKey, short: short, pretty: pretty);
+
+  Future<bool> hasValidKeyPair() async {
+    if (privateKey.length != 32 || publicKey.length != 32) return false;
+    try {
+      final keyPair = await Ed25519().newKeyPairFromSeed(privateKey);
+      final derivedPublicKey = await keyPair.extractPublicKey();
+      return const ListEquality<int>().equals(
+        derivedPublicKey.bytes,
+        publicKey,
+      );
+    } catch (_) {
+      return false;
+    }
+  }
 }

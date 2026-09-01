@@ -90,12 +90,16 @@ class _AuthGameViewState extends State<AuthGameView> {
                         Text(
                           AppLocalizations.of(context).authenticateDescription,
                         ),
-                        if (authRequest.isRequired)
-                          Text(
-                            AppLocalizations.of(context).authenticateRequired,
-                            style: Theme.of(context).textTheme.bodyMedium
-                                ?.copyWith(color: Colors.red),
-                          ),
+                        Text(
+                          AppLocalizations.of(context).authenticateRequired,
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(color: Colors.red),
+                        ),
+                        const SizedBox(height: 8),
+                        SelectableText(
+                          '${AppLocalizations.of(context).authenticationServerIdentity}: ${authRequest.serverId}',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
                         const SizedBox(height: 16.0),
                         Flexible(
                           child: FutureBuilder<List<SetonixAccount>>(
@@ -143,6 +147,7 @@ class _AuthGameViewState extends State<AuthGameView> {
                                             await AuthenticateRequest.build(
                                               authRequest,
                                               account,
+                                              state.world.id,
                                             );
                                         bloc.process(event);
                                         setState(() {

@@ -11,7 +11,9 @@ When starting the server, it will create a directory called `packs` in the curre
 There should be a core pack already installed in the directory. This pack contains all the default cards, boards, and dice.
 Put your custom packs in this directory to load them into the server.
 
-By default, the server will use an unsecure websocket connection using http. To use a secure connection with https, you need to provide a certificate and key file. This can be done by creating a directory called `certs` in the current working directory and putting the certificate (with name `server.crt`) and key file (with name `server.key`) in there.
+Account authentication requires a secure WebSocket connection when the server listens outside loopback. Create a `certs` directory in the current working directory and provide the certificate as `server.crt` and its private key as `server.key`. The server refuses to start public-key authentication on a non-loopback plaintext listener. For isolated development only, `--allow-insecure-authentication` (or `SETONIX_ALLOW_INSECURE_AUTHENTICATION=true`) overrides this protection and prints a prominent relay-attack warning.
+
+Authentication uses a short-lived, connection-bound Ed25519 transcript containing the server certificate fingerprint, protocol version, timestamps, channel, and random nonce. Unauthenticated connections time out after 45 seconds, and three failed attempts close the connection.
 
 The world will be saved in the current working directory in a file called `world.stnx`. This file will contain all the data of the world, including the packs that are loaded into the server. This file is compatible with the single player world file.
 
