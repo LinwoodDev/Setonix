@@ -2,6 +2,26 @@
 
 <!--ENTER CHANGELOG HERE-->
 
+## 0.9.0 (2026-09-01)
+
+* Add protocol versions
+* Add role and permission system
+* Add support for multiple roles
+* Add ban list and unban functionality
+* Add player name functionality
+* Improve server commands
+* Fix role-authorized world management
+* Add phishing-resistant public-key authentication with expiring, origin-bound challenges
+* Add secure local defaults and simple public server address configuration
+* Require TLS for public-key authentication outside local development
+* Add authentication attempt limits and unauthenticated connection timeouts
+* Encrypt account backups with a passphrase and validate imported key pairs
+* Reject oversized network events before decoding
+* Upgrade to agb 9
+* Upgrade to flutter 3.47
+
+Read more here: https://linwood.dev/setonix/0.9.0
+
 ## 0.8.1 (2026-06-20)
 
 * Fix game modes not working on android
