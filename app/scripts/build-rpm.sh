@@ -4,14 +4,16 @@
 DIRECTORY_ARCH="x64"  # Default directory name
 BINARY_ARCH="x86_64"  # Default binary name
 RPM_ARCH="x86_64"     # Default RPM architecture
+BUILD_FLAVOR="production"
 
 # Parse command-line arguments
-while getopts "d:b:" opt; do
+while getopts "d:b:f:" opt; do
   case $opt in
     d) DIRECTORY_ARCH="$OPTARG" ;;  # Set the directory architecture
     b) BINARY_ARCH="$OPTARG" ;;    # Set the binary architecture
+    f) BUILD_FLAVOR="$OPTARG" ;;   # Set the Flutter build flavor
     *) 
-      echo "Usage: $0 [-d directory_arch] [-b binary_arch]"
+      echo "Usage: $0 [-d directory_arch] [-b binary_arch] [-f build_flavor]"
       exit 1
       ;;
   esac
@@ -40,13 +42,13 @@ mkdir -p build/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
 
 # Copy files
 cp linux/rpm/linwood-setonix.spec build/SPECS/linwood-setonix.spec
-cp -r build/linux/${DIRECTORY_ARCH}/release/bundle build/SOURCES/linwood-setonix-$RPM_VERSION
+cp -r build/linux/${DIRECTORY_ARCH}/${BUILD_FLAVOR}/release/bundle build/SOURCES/linwood-setonix-$RPM_VERSION
 chmod 755 build/SOURCES/linwood-setonix-$RPM_VERSION/setonix
 mv build/SOURCES/linwood-setonix-$RPM_VERSION/setonix build/SOURCES/linwood-setonix-$RPM_VERSION/linwood-setonix
 cp linux/rpm/linwood-setonix.desktop build/SOURCES/linwood-setonix-$RPM_VERSION/linwood-setonix.desktop
 
-# Update .spec file with the correct version
-sed -i "2s/.*/Version: $RPM_VERSION/" build/SPECS/linwood-setonix.spec
+# Update the .spec file with the correct version without relying on line numbers.
+sed -i "s/^Version:.*/Version:        $RPM_VERSION/" build/SPECS/linwood-setonix.spec
 
 # Create tarball
 cd build/SOURCES/

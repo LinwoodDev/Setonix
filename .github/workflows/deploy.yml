@@ -1,32 +1,37 @@
 name: Deploy documentation
 
 on:
-  # Trigger the workflow every time you push to the `main` branch
-  # Using a different branch name? Replace `main` with your branch’s name
   push:
-  # Allows you to run this workflow manually from the Actions tab on GitHub.
+    branches:
+      - develop
+      - main
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  build-docs:
+  build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     defaults:
       run:
         working-directory: docs
     steps:
       - uses: actions/checkout@v7
-      - name: Install pnpm
-        uses: pnpm/action-setup@v6
         with:
-          package_json_file: docs/package.json
-      - name: Use Node.js
-        uses: actions/setup-node@v7
+          persist-credentials: false
+      - name: Set up pnpm and Node.js
+        uses: pnpm/setup@v2.1.0
         with:
-          node-version: 26
-          cache: "pnpm"
-          cache-dependency-path: docs/pnpm-lock.yaml
-      - name: Install dependencies
-        run: pnpm install
+          working-directory: docs
+          runtime: node@26
+          cache: true
+          require-lockfile: true
       - name: Build
         run: pnpm build
       - name: Deploy to SFTP
@@ -35,13 +40,13 @@ jobs:
           SFTP_HOST: ${{ secrets.SFTP_HOST }}
           SFTP_USERNAME: ${{ secrets.SFTP_USERNAME }}
           SFTP_KEY: ${{ secrets.SFTP_KEY }}
-          SFTP_KNOWN_HOSTS: ${{ secrets.SFTP_KNOWN_HOSTS }}
+          SFTP_KNOWN_HOSTS: ${{secrets.SFTP_KNOWN_HOSTS}}
         run: |
           echo "$SFTP_KEY" > sftp_key
           chmod 600 sftp_key
           echo "$SFTP_KNOWN_HOSTS" > known_hosts
           chmod 600 known_hosts
-          rsync -avz --delete -e "ssh -i sftp_key -o UserKnownHostsFile=known_hosts" dist/ $SFTP_USERNAME@$SFTP_HOST:/var/www/www.setonix
+          rsync -avz --delete -e "ssh -i sftp_key -o UserKnownHostsFile=known_hosts" dist/ $SFTP_USERNAME@$SFTP_HOST:/var/www/butterfly.linwood
   build-doc-api:
     runs-on: ubuntu-24.04
     defaults:
@@ -71,20 +76,24 @@ jobs:
           echo "$SFTP_KNOWN_HOSTS" > known_hosts
           chmod 600 known_hosts
           rsync -avz --delete -e "ssh -i sftp_key -o UserKnownHostsFile=known_hosts" doc/api/ $SFTP_USERNAME@$SFTP_HOST:/var/www/api.setonix
-  build-web:
-    runs-on: ubuntu-24.04
+  web:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 60
     defaults:
       run:
         working-directory: app
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
           cache: true
       - name: Install dependencies
-        run: flutter pub get
+        run: |
+          flutter pub get
       - name: Generate code
         run: |
           cd ../tools
@@ -99,6 +108,8 @@ jobs:
           rustup +nightly component add rust-src
           rustup +nightly target add wasm32-unknown-unknown
           cargo install wasm-pack --locked
+      - name: Get Git Commit Hash
+        run: echo "GIT_HASH=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
       - name: Set flavor
         if: github.ref != 'refs/heads/main'
         run: |
@@ -112,18 +123,18 @@ jobs:
       - name: Build plugin WASM bundle
         run: dart run flutter_rust_bridge build-web --rust-root ../plugin/rust --output web --release
       - name: Build
-        run: flutter build web --wasm --release --no-web-resources-cdn --dart-define=flavor=$SETONIX_FLAVOR
+        run: flutter build web --wasm --release --no-web-resources-cdn --dart-define=flavor=$SETONIX_FLAVOR --dart-define=version=$GIT_HASH
       - name: Copy plugin WASM bundle
         run: |
           mkdir -p build/web/pkg
           cp -R ../plugin/rust/web/pkg/* build/web/pkg/
-      - name: Deploy Flutter web via SFTP
+      - name: Deploy to SFTP
         if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main'
         env:
           SFTP_HOST: ${{ secrets.SFTP_HOST }}
           SFTP_USERNAME: ${{ secrets.SFTP_USERNAME }}
           SFTP_KEY: ${{ secrets.SFTP_KEY }}
-          SFTP_KNOWN_HOSTS: ${{ secrets.SFTP_KNOWN_HOSTS }}
+          SFTP_KNOWN_HOSTS: ${{secrets.SFTP_KNOWN_HOSTS}}
         run: |
           echo "$SFTP_KEY" > sftp_key
           chmod 600 sftp_key

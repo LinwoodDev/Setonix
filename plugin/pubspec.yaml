@@ -5,7 +5,7 @@ publish_to: none
 environment:
   sdk: '>=3.13.0 <4.0.0'
 dependencies:
-  flutter_rust_bridge: 2.13.0-beta.6
+  flutter_rust_bridge: 2.13.0
   collection: ^1.16.0
   setonix_api:
     path: ../api

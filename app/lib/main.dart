@@ -2,6 +2,7 @@ import 'package:args/args.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:setonix/pages/home/accounts.dart';
@@ -212,7 +213,7 @@ class SetonixApp extends StatelessWidget {
   );
 }
 
-const flavor = String.fromEnvironment('flavor');
+const flavor = appFlavor ?? String.fromEnvironment('flavor');
 const isNightly =
     flavor == 'nightly' || flavor == 'dev' || flavor == 'development';
 const shortApplicationName = isNightly ? 'Setonix Nightly' : 'Setonix';

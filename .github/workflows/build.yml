@@ -3,20 +3,28 @@ name: Flutter build
 on:
   push:
     branches:
-      - "*"
+      - main
+      - develop
     tags:
       - stable
       - nightly
   release:
     types: [published]
   pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-apk:
-    concurrency: ci-${{ github.ref }}
     defaults:
       run:
         working-directory: app
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v7
@@ -33,9 +41,7 @@ jobs:
           cache: true
       - name: 📦 Get dependencies
         run: |
-          flutter clean
           flutter pub get
-          flutter doctor -v
       - name: Build nessesary files
         working-directory: ./
         run: |
@@ -44,7 +50,6 @@ jobs:
           cd ..
           dart run tools/generate.dart
       - name: Import files
-        if: ${{ github.event_name != 'pull_request' }}
         env:
           KEY_JKS: ${{ secrets.KEY_JKS }}
           KEY_PROPERTIES: ${{ secrets.KEY_PROPERTIES }}
@@ -56,12 +61,12 @@ jobs:
       - name: 🏭 Build nightly
         if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.release.prerelease) }}
         run: |
-          flutter build apk -v --release --flavor nightly --dart-define=flavor=nightly
+          flutter build apk -v --release --flavor nightly
           cp build/app/outputs/flutter-apk/app-nightly-release.apk linwood-setonix-android.apk
       - name: 🏭 Build nightly (legacy packaging)
         if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.release.prerelease) }}
         run: |
-          USE_LEGACY_PACKAGING=true flutter build apk -v --release --flavor nightly --dart-define=flavor=nightly
+          USE_LEGACY_PACKAGING=true flutter build apk -v --release --flavor nightly
           cp build/app/outputs/flutter-apk/app-nightly-release.apk linwood-setonix-android-legacy.apk
       - name: 🏭 Build production
         if: ${{ github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease) }}
@@ -86,14 +91,14 @@ jobs:
       - name: 🏭 Build architecture nightly
         if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.release.prerelease) }}
         run: |
-          flutter build apk -v --release --target-platform android-arm,android-arm64,android-x64 --split-per-abi --flavor nightly --dart-define=flavor=nightly
+          flutter build apk -v --release --target-platform android-arm,android-arm64,android-x64 --split-per-abi --flavor nightly
           cp build/app/outputs/flutter-apk/app-armeabi-v7a-nightly-release.apk linwood-setonix-android-arm.apk
           cp build/app/outputs/flutter-apk/app-arm64-v8a-nightly-release.apk linwood-setonix-android-arm64.apk
           cp build/app/outputs/flutter-apk/app-x86_64-nightly-release.apk linwood-setonix-android-x86_64.apk
       - name: 🏭 Build architecture nightly (legacy packaging)
         if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.release.prerelease) }}
         run: |
-          USE_LEGACY_PACKAGING=true flutter build apk -v --release --target-platform android-arm,android-arm64,android-x64 --split-per-abi --flavor nightly --dart-define=flavor=nightly
+          USE_LEGACY_PACKAGING=true flutter build apk -v --release --target-platform android-arm,android-arm64,android-x64 --split-per-abi --flavor nightly
           cp build/app/outputs/flutter-apk/app-armeabi-v7a-nightly-release.apk linwood-setonix-android-arm-legacy.apk
           cp build/app/outputs/flutter-apk/app-arm64-v8a-nightly-release.apk linwood-setonix-android-arm64-legacy.apk
           cp build/app/outputs/flutter-apk/app-x86_64-nightly-release.apk linwood-setonix-android-x86_64-legacy.apk
@@ -111,6 +116,22 @@ jobs:
           cp build/app/outputs/flutter-apk/app-armeabi-v7a-production-release.apk linwood-setonix-android-arm-legacy.apk
           cp build/app/outputs/flutter-apk/app-arm64-v8a-production-release.apk linwood-setonix-android-arm64-legacy.apk
           cp build/app/outputs/flutter-apk/app-x86_64-production-release.apk linwood-setonix-android-x86_64-legacy.apk
+      - name: 📊 Analyze nightly Android arm64 size
+        if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.release.prerelease) }}
+        run: |
+          flutter build apk -v --release --flavor nightly --target-platform android-arm64 --split-per-abi --analyze-size --code-size-directory=build/size-analysis/android-arm64-nightly
+          cp "$HOME"/.flutter-devtools/apk-code-size-analysis_*.json build/size-analysis/android-arm64-nightly/
+      - name: 📊 Analyze production Android arm64 size
+        if: ${{ github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease) }}
+        run: |
+          flutter build apk -v --release --flavor production --target-platform android-arm64 --split-per-abi --analyze-size --code-size-directory=build/size-analysis/android-arm64-production
+          cp "$HOME"/.flutter-devtools/apk-code-size-analysis_*.json build/size-analysis/android-arm64-production/
+      - name: Archive size analysis
+        uses: actions/upload-artifact@v7
+        with:
+          name: android-size-analysis
+          path: app/build/size-analysis/
+          if-no-files-found: error
       - name: Archive
         uses: actions/upload-artifact@v7
         with:
@@ -165,6 +186,8 @@ jobs:
     defaults:
       run:
         working-directory: app
+    env:
+      BUILD_FLAVOR: ${{ (github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease)) && 'production' || 'nightly' }}
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v7
@@ -185,9 +208,7 @@ jobs:
         run: flutter config --enable-windows-desktop
       - name: 📦 Get dependencies
         run: |
-          flutter clean
           flutter pub get
-          flutter doctor -v
       - name: Build nessesary files
         working-directory: ./
         run: |
@@ -198,38 +219,53 @@ jobs:
       - name: 🏭 Build nightly
         if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.release.prerelease) }}
         run: |
-          flutter build windows -v --release --dart-define=flavor=nightly
+          flutter build windows -v --release --flavor nightly
       - name: 🏭 Build production
         if: ${{ github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease) }}
         run: |
-          flutter build windows -v --release --dart-define=flavor=production
+          flutter build windows -v --release --flavor production
+      - name: 📊 Analyze Windows x86_64 size
+        if: ${{ matrix.arch.name == 'x86_64' }}
+        run: |
+          flutter build windows -v --release --flavor ${{ env.BUILD_FLAVOR }} --analyze-size --code-size-directory=build/size-analysis/windows-x86_64
+          New-Item -ItemType Directory -Force build/size-analysis/windows-x86_64 | Out-Null
+          Copy-Item "$env:USERPROFILE/.flutter-devtools/*-code-size-analysis_*.json" build/size-analysis/windows-x86_64/
       - name: Build setup
         shell: pwsh
         run: |
           Get-Content pubspec.yaml | Select-String -Pattern 'version:\s(.+)\+'  | % {Set-Item -Path Env:SETONIX_VERSION -Value "$($_.matches.groups[1])"}
-          & 'C:/Program Files (x86)/Inno Setup 6/ISCC.exe' /DMyAppVersion=$Env:SETONIX_VERSION /DMyAppArch=${{ matrix.arch.dir }} SetonixSetup.iss
+          & 'C:/Program Files (x86)/Inno Setup 6/ISCC.exe' /DMyAppVersion=$Env:SETONIX_VERSION /DMyAppArch=${{ matrix.arch.dir }} /DMyAppFlavor=${{ env.BUILD_FLAVOR }} SetonixSetup.iss
       - name: Copy portable start script
         run: |
-          cp scripts/start.bat build/windows/${{ matrix.arch.dir }}/runner/Release/
+          cp scripts/start.bat build/windows/${{ matrix.arch.dir }}/${{ env.BUILD_FLAVOR }}/runner/Release/
           cp build/windows/${{ matrix.arch.dir }}/linwood-setonix-windows-setup.exe linwood-setonix-windows-setup-${{ matrix.arch.name }}.exe
       - name: Archive
         uses: actions/upload-artifact@v7
         with:
           name: windows-${{ matrix.arch.name }}-build
           path: |
-            app/build/windows/${{ matrix.arch.dir }}/runner/Release/**
+            app/build/windows/${{ matrix.arch.dir }}/${{ env.BUILD_FLAVOR }}/runner/Release/**
       - name: Archive
         uses: actions/upload-artifact@v7
         with:
           name: windows-${{ matrix.arch.name }}-setup
           path: |
             app/linwood-setonix-windows-setup-${{ matrix.arch.name }}.exe
+      - name: Archive size analysis
+        if: ${{ matrix.arch.name == 'x86_64' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: windows-x86_64-size-analysis
+          path: app/build/size-analysis/windows-x86_64/
+          if-no-files-found: error
   build-msix:
     name: build-msix
     runs-on: windows-2025
     defaults:
       run:
         working-directory: app
+    env:
+      BUILD_FLAVOR: ${{ (github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease)) && 'production' || 'nightly' }}
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v7
@@ -241,9 +277,7 @@ jobs:
           cache: true
       - name: 📦 Get dependencies
         run: |
-          flutter clean
           flutter pub get
-          flutter doctor -v
       - name: Build nessesary files
         working-directory: ./
         run: |
@@ -252,8 +286,12 @@ jobs:
           cd ..
           dart run tools/generate.dart
       - name: 🏭 Build MSIX
+        shell: pwsh
         run: |
-          dart run msix:create
+          flutter build windows --release --flavor ${{ env.BUILD_FLAVOR }}
+          New-Item -ItemType Directory -Force build/windows/x64/runner | Out-Null
+          Copy-Item -Recurse -Force build/windows/x64/${{ env.BUILD_FLAVOR }}/runner/Release build/windows/x64/runner/
+          dart run msix:create --build-windows=false
       - name: Archive
         uses: actions/upload-artifact@v7
         with:
@@ -268,22 +306,18 @@ jobs:
             name: x86_64
             dir: x64
             appimage: x86_64
+            gdk_pixbuf_dev: libgdk-pixbuf2.0-dev
           - image: ubuntu-24.04-arm
             name: arm64
             dir: arm64
             appimage: aarch64
-          - image: ubuntu-22.04
-            name: alternative-x86_64
-            dir: x64
-            appimage: x86_64
-          - image: ubuntu-22.04-arm
-            name: alternative-arm64
-            dir: arm64
-            appimage: aarch64
+            gdk_pixbuf_dev: libgdk-pixbuf2.0-dev
     runs-on: ${{ matrix.arch.image }}
     defaults:
       run:
         working-directory: app
+    env:
+      BUILD_FLAVOR: ${{ (github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease)) && 'production' || 'nightly' }}
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v7
@@ -295,7 +329,7 @@ jobs:
           sudo apt-get install -y python3-pip \
             python3-setuptools \
             desktop-file-utils \
-            libgdk-pixbuf2.0-dev \
+            ${{ matrix.arch.gdk_pixbuf_dev }} \
             fakeroot \
             strace \
             fuse \
@@ -328,9 +362,7 @@ jobs:
           flutter config --enable-linux-desktop
       - name: 📦 Get dependencies
         run: |
-          flutter clean
           flutter pub get
-          flutter doctor -v
       - name: Build nessesary files
         working-directory: ./
         run: |
@@ -341,28 +373,31 @@ jobs:
       - name: 🏭 Build nightly
         if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.release.prerelease) }}
         run: |
-          flutter doctor -v
-          flutter build linux -v --release --dart-define=flavor=nightly
+          flutter build linux -v --release --flavor nightly
       - name: 🏭 Build production
         if: ${{ github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease) }}
         run: |
-          flutter doctor -v
-          flutter build linux -v --release --dart-define=flavor=production
+          flutter build linux -v --release --flavor production
+      - name: 📊 Analyze Linux x86_64 size
+        if: ${{ matrix.arch.name == 'x86_64' }}
+        run: |
+          flutter build linux -v --release --flavor ${{ env.BUILD_FLAVOR }} --analyze-size --code-size-directory=build/size-analysis/linux-x86_64
+          cp "$HOME"/.flutter-devtools/*-code-size-analysis_*.json build/size-analysis/linux-x86_64/
       - name: 🏭 Make binary executable
         run: |
-          chmod +x build/linux/${{ matrix.arch.dir }}/release/bundle/setonix
+          chmod +x build/linux/${{ matrix.arch.dir }}/${{ env.BUILD_FLAVOR }}/release/bundle/setonix
       - name: Update files to arm64
         if: ${{ matrix.arch.dir == 'arm64' }}
         run: |
           sed -i 's/^Architecture: amd64/Architecture: arm64/' linux/debian/DEBIAN/control
       - name: Build .deb executable
         run: |
-          cp -fr build/linux/${{ matrix.arch.dir }}/release/bundle linux/debian/usr/bin
+          cp -fr build/linux/${{ matrix.arch.dir }}/${{ env.BUILD_FLAVOR }}/release/bundle linux/debian/usr/bin
           dpkg-deb --build --root-owner-group linux/debian
           cp linux/*.deb linwood-setonix-linux-${{ matrix.arch.name }}.deb
       - name: Build .rpm executable
         run: |
-          bash scripts/build-rpm.sh -d ${{ matrix.arch.dir }} -b ${{ matrix.arch.name }}
+          bash scripts/build-rpm.sh -d ${{ matrix.arch.dir }} -b ${{ matrix.arch.name }} -f ${{ env.BUILD_FLAVOR }}
       - name: Build .AppImage executable
         run: |
           wget -O appimagetool.AppImage https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-${{ matrix.arch.appimage }}.AppImage
@@ -370,7 +405,7 @@ jobs:
           # Build AppDir
           mkdir -p AppDir/usr/bin
           # move bundle folder to AppDir
-          cp build/linux/${{ matrix.arch.dir }}/release/bundle/* AppDir/usr/bin/ -r
+          cp build/linux/${{ matrix.arch.dir }}/${{ env.BUILD_FLAVOR }}/release/bundle/* AppDir/usr/bin/ -r
           mkdir -p AppDir/usr/share/icons/hicolor
           cp linux/debian/usr/share/icons/hicolor AppDir/usr/share/icons/ -r
           mkdir -p AppDir/usr/share/metainfo/
@@ -388,19 +423,20 @@ jobs:
           ./appimagetool.AppImage -u "$UPDATE_INFO" AppDir linwood-setonix-linux-${{ matrix.arch.name }}.AppImage
       - name: Copy nessessary files
         run: |
-          cp images/logo.svg build/linux/${{ matrix.arch.dir }}/release/bundle/dev.linwood.setonix.svg
-          mkdir -p build/linux/${{ matrix.arch.dir }}/release/bundle/usr/share
-          cp -r linux/debian/usr/share build/linux/${{ matrix.arch.dir }}/release/bundle/usr
+          BRANDING_LOGO=images/logo.svg
+          cp "$BRANDING_LOGO" build/linux/${{ matrix.arch.dir }}/${{ env.BUILD_FLAVOR }}/release/bundle/dev.linwood.setonix.svg
+          mkdir -p build/linux/${{ matrix.arch.dir }}/${{ env.BUILD_FLAVOR }}/release/bundle/usr/share
+          cp -r linux/debian/usr/share build/linux/${{ matrix.arch.dir }}/${{ env.BUILD_FLAVOR }}/release/bundle/usr
       - name: Copy portable start script
         run: |
           chmod +x scripts/start.sh
-          cp scripts/start.sh build/linux/${{ matrix.arch.dir }}/release/bundle
+          cp scripts/start.sh build/linux/${{ matrix.arch.dir }}/${{ env.BUILD_FLAVOR }}/release/bundle
       - name: Archive
         uses: actions/upload-artifact@v7
         with:
           name: linux-${{ matrix.arch.name }}-build
           path: |
-            app/build/linux/${{ matrix.arch.dir }}/release/bundle/**
+            app/build/linux/${{ matrix.arch.dir }}/${{ env.BUILD_FLAVOR }}/release/bundle/**
       - name: Archive .deb
         uses: actions/upload-artifact@v7
         with:
@@ -420,6 +456,13 @@ jobs:
           path: |
             app/linwood-setonix-linux-${{ matrix.arch.name }}.AppImage
             app/linwood-setonix-linux-${{ matrix.arch.name }}.AppImage.zsync
+      - name: Archive size analysis
+        if: ${{ matrix.arch.name == 'x86_64' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: linux-x86_64-size-analysis
+          path: app/build/size-analysis/linux-x86_64/
+          if-no-files-found: error
   build-snap:
     name: build-snap
     strategy:
@@ -435,6 +478,8 @@ jobs:
             dir: arm64
             appimage: aarch64
     runs-on: ${{ matrix.arch.image }}
+    env:
+      BUILD_FLAVOR: ${{ (github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease)) && 'production' || 'nightly' }}
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v7
@@ -462,6 +507,8 @@ jobs:
     defaults:
       run:
         working-directory: app
+    env:
+      BUILD_FLAVOR: ${{ (github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease)) && 'production' || 'nightly' }}
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v7
@@ -470,6 +517,7 @@ jobs:
       - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
+          cache: true
       - uses: actions/setup-python@v7
         with:
           python-version: "3.13"
@@ -477,9 +525,7 @@ jobs:
         run: flutter config --enable-macos-desktop
       - name: 📦 Get dependencies
         run: |
-          flutter clean
           flutter pub get
-          flutter doctor -v
       - name: Build nessesary files
         working-directory: ./
         run: |
@@ -489,7 +535,7 @@ jobs:
           dart run tools/generate.dart
       - name: 🏭 Build
         run: |
-          flutter build macos -v --release
+          flutter build macos -v --release --dart-define=flavor=${{ env.BUILD_FLAVOR }}
       - name: Zip file
         working-directory: app/build/macos/Build/Products/Release
         run: zip --symlinks -qr linwood-setonix-macos.zip setonix.app
@@ -523,6 +569,8 @@ jobs:
     defaults:
       run:
         working-directory: app
+    env:
+      BUILD_FLAVOR: ${{ (github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease)) && 'production' || 'nightly' }}
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v7
@@ -531,12 +579,10 @@ jobs:
       - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
-          #cache: true
+          cache: true
       - name: 📦 Get dependencies
         run: |
-          flutter clean
           flutter pub get
-          flutter doctor -v
       - name: Build nessesary files
         working-directory: ./
         run: |
@@ -546,7 +592,7 @@ jobs:
           dart run tools/generate.dart
       - name: 🏭 Build
         run: |
-          flutter build ios --release --no-codesign -v
+          flutter build ios --release --no-codesign -v --dart-define=flavor=${{ env.BUILD_FLAVOR }}
       - name: Packing IPA
         run: |
           cd build/ios/iphoneos/
@@ -594,7 +640,7 @@ jobs:
       - name: ⬆️ Checkout
         uses: actions/checkout@v7
       - name: Install yq
-        if: ${{ matrix.os.name == 'windows-2025' }}
+        if: ${{ matrix.os.name == 'windows-2025' || matrix.os.name == 'windows-11-arm' }}
         run: choco install yq
       - name: Install tree
         if: ${{ matrix.os.name == 'macos-latest' }}
@@ -686,8 +732,10 @@ jobs:
   #         push: true
   #         tags: linwooddev/setonix:${{ env.tag }}
   deploy:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     if: github.event_name != 'pull_request'
+    permissions:
+      contents: write
     outputs:
       version: ${{ steps.setup.outputs.SETONIX_VERSION }}
       build_number: ${{ steps.setup.outputs.SETONIX_BUILD_NUMBER }}
@@ -720,6 +768,9 @@ jobs:
           git config --global user.name "Linwood CI"
       - uses: actions/download-artifact@v8
         with:
+          name: apk-build-legacy
+      - uses: actions/download-artifact@v8
+        with:
           name: apk-build
       - uses: actions/download-artifact@v8
         with:
@@ -730,9 +781,6 @@ jobs:
       - uses: actions/download-artifact@v8
         with:
           name: apk-x86_64-build
-      - uses: actions/download-artifact@v8
-        with:
-          name: apk-build-legacy
       - uses: actions/download-artifact@v8
         with:
           name: apk-arm-build-legacy
@@ -778,32 +826,6 @@ jobs:
           name: linux-arm64-appimage
       - uses: actions/download-artifact@v8
         with:
-          name: linux-alternative-x86_64-build
-          path: linux-alternative-x86_64-build/
-      - uses: actions/download-artifact@v8
-        with:
-          name: linux-alternative-x86_64-deb
-      - uses: actions/download-artifact@v8
-        with:
-          name: linux-alternative-x86_64-rpm
-      - uses: actions/download-artifact@v8
-        with:
-          name: linux-alternative-x86_64-appimage
-      - uses: actions/download-artifact@v8
-        with:
-          name: linux-alternative-arm64-build
-          path: linux-alternative-arm64-build/
-      - uses: actions/download-artifact@v8
-        with:
-          name: linux-alternative-arm64-deb
-      - uses: actions/download-artifact@v8
-        with:
-          name: linux-alternative-arm64-rpm
-      - uses: actions/download-artifact@v8
-        with:
-          name: linux-alternative-arm64-appimage
-      - uses: actions/download-artifact@v8
-        with:
           name: windows-x86_64-setup
       - uses: actions/download-artifact@v8
         with:
@@ -846,8 +868,6 @@ jobs:
           cd ..
           tar -C linux-x86_64-build -czf linwood-setonix-linux-x86_64.tar.gz .
           tar -C linux-arm64-build -czf linwood-setonix-linux-arm64.tar.gz .
-          tar -C linux-alternative-x86_64-build -czf linwood-setonix-linux-alternative-x86_64.tar.gz .
-          tar -C linux-alternative-arm64-build -czf linwood-setonix-linux-alternative-arm64.tar.gz .
           tar -C server-build-linux-x86_64 -czf linwood-setonix-server-linux-x86_64.tar.gz .
           tar -C server-build-linux-arm64 -czf linwood-setonix-server-linux-arm64.tar.gz .
           cd server-build-windows-x86_64
@@ -905,16 +925,6 @@ jobs:
             linwood-setonix-linux-arm64.rpm
             linwood-setonix-linux-arm64.AppImage
             linwood-setonix-linux-arm64.AppImage.zsync
-            linwood-setonix-linux-alternative-x86_64.tar.gz
-            linwood-setonix-linux-alternative-x86_64.deb
-            linwood-setonix-linux-alternative-x86_64.rpm
-            linwood-setonix-linux-alternative-x86_64.AppImage
-            linwood-setonix-linux-alternative-x86_64.AppImage.zsync
-            linwood-setonix-linux-alternative-arm64.tar.gz
-            linwood-setonix-linux-alternative-arm64.deb
-            linwood-setonix-linux-alternative-arm64.rpm
-            linwood-setonix-linux-alternative-arm64.AppImage
-            linwood-setonix-linux-alternative-arm64.AppImage.zsync
             linwood-setonix-macos.zip
             linwood-setonix-macos.dmg
             linwood-setonix-android.apk
@@ -956,16 +966,6 @@ jobs:
             linwood-setonix-linux-arm64.rpm
             linwood-setonix-linux-arm64.AppImage
             linwood-setonix-linux-arm64.AppImage.zsync
-            linwood-setonix-linux-alternative-x86_64.tar.gz
-            linwood-setonix-linux-alternative-x86_64.deb
-            linwood-setonix-linux-alternative-x86_64.rpm
-            linwood-setonix-linux-alternative-x86_64.AppImage
-            linwood-setonix-linux-alternative-x86_64.AppImage.zsync
-            linwood-setonix-linux-alternative-arm64.tar.gz
-            linwood-setonix-linux-alternative-arm64.deb
-            linwood-setonix-linux-alternative-arm64.rpm
-            linwood-setonix-linux-alternative-arm64.AppImage
-            linwood-setonix-linux-alternative-arm64.AppImage.zsync
             linwood-setonix-macos.zip
             linwood-setonix-macos.dmg
             linwood-setonix-android.apk
@@ -1005,16 +1005,6 @@ jobs:
             linwood-setonix-linux-arm64.rpm
             linwood-setonix-linux-arm64.AppImage
             linwood-setonix-linux-arm64.AppImage.zsync
-            linwood-setonix-linux-alternative-x86_64.tar.gz
-            linwood-setonix-linux-alternative-x86_64.deb
-            linwood-setonix-linux-alternative-x86_64.rpm
-            linwood-setonix-linux-alternative-x86_64.AppImage
-            linwood-setonix-linux-alternative-x86_64.AppImage.zsync
-            linwood-setonix-linux-alternative-arm64.tar.gz
-            linwood-setonix-linux-alternative-arm64.deb
-            linwood-setonix-linux-alternative-arm64.rpm
-            linwood-setonix-linux-alternative-arm64.AppImage
-            linwood-setonix-linux-alternative-arm64.AppImage.zsync
             linwood-setonix-macos.zip
             linwood-setonix-macos.dmg
             linwood-setonix-android.apk
@@ -1035,7 +1025,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   deploy-to-play-store:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     if: ${{ startsWith(github.ref, 'refs/tags/') }}
     defaults:
       run:
