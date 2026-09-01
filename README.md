@@ -49,7 +49,7 @@ Setonix is a table sandbox game where you can decide how to play. Spawn cards ev
 * **🎨 Customizable:** Create custom cards, board and dices
 * **➕ Extensible:** Develop your custom rules with lua (Currently server side) or use the server as library
 * **🔒 Authentication:** Decentralized client based authentication
-* ~~✅ **Verified player names:** Decentralized verification of player names~~ (Will be added in 0.9)
+* **✅ Verified player names:** Decentralized verification of player names
 * **📂 Share your packs:** Pack them all into a package and share it with your friends
 * **⚙️ Universal packs:** Load the rules in the server and the client
 * **📱 Works on every device:** The app is available for android, windows, linux, and in the web. You can use it on your phone, tablet, or computer.

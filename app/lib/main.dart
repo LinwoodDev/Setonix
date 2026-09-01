@@ -218,4 +218,4 @@ const isNightly =
     flavor == 'nightly' || flavor == 'dev' || flavor == 'development';
 const shortApplicationName = isNightly ? 'Setonix Nightly' : 'Setonix';
 const applicationName = 'Linwood $shortApplicationName';
-const applicationMinorVersion = '0.8.0';
+const applicationMinorVersion = '0.9.0';
