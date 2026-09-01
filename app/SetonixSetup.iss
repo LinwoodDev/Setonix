@@ -2,6 +2,9 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Setonix"
+#ifndef MyAppFlavor
+#define MyAppFlavor "production"
+#endif
 #ifndef MyAppVersion
 #define MyAppVersion "1.0"
 #endif
@@ -11,7 +14,7 @@
 #define MyAppPublisher "Linwood"
 #define MyAppURL "https://www.linwood.dev"
 #define MyAppExeName "setonix.exe" 
-#define BaseDirRelease "build\windows\" + MyAppArch + "\runner\Release"
+#define BaseDirRelease "build\windows\" + MyAppArch + "\" + MyAppFlavor + "\runner\Release"
 #define RunnerSourceDir "windows\runner"
 
 
