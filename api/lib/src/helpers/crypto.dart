@@ -6,6 +6,40 @@ import 'package:crypto/crypto.dart';
 
 const _authenticationDomain = 'setonix-auth';
 
+String canonicalAuthenticationOrigin(Uri address) {
+  final scheme = switch (address.scheme.toLowerCase()) {
+    'https' => 'wss',
+    'http' => 'ws',
+    'wss' => 'wss',
+    'ws' => 'ws',
+    _ => throw ArgumentError.value(
+      address,
+      'address',
+      'Authentication origins must use WS or WSS.',
+    ),
+  };
+  var host = address.host.toLowerCase();
+  if (host.endsWith('.')) host = host.substring(0, host.length - 1);
+  if (host.isEmpty) {
+    throw ArgumentError.value(address, 'address', 'Host cannot be empty.');
+  }
+  final port = address.hasPort ? address.port : (scheme == 'wss' ? 443 : 80);
+  return Uri(scheme: scheme, host: host, port: port).toString();
+}
+
+String? trustedAuthenticationOrigin(Uri address) {
+  if (address.scheme.toLowerCase() == 'wss') {
+    return canonicalAuthenticationOrigin(address);
+  }
+  var host = address.host.toLowerCase();
+  if (host.endsWith('.')) host = host.substring(0, host.length - 1);
+  if (address.scheme.toLowerCase() == 'ws' &&
+      (host == 'localhost' || host == '127.0.0.1' || host == '::1')) {
+    return canonicalAuthenticationOrigin(address);
+  }
+  return null;
+}
+
 Uint8List buildAuthenticationTranscript({
   required int version,
   required String serverId,

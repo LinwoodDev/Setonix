@@ -5,6 +5,31 @@ import 'package:setonix_api/setonix_api.dart';
 import 'package:test/test.dart';
 
 void main() {
+  test('canonicalizes authentication origins', () {
+    expect(
+      canonicalAuthenticationOrigin(
+        Uri.parse('https://Example.COM/game?ignored=true'),
+      ),
+      'wss://example.com:443',
+    );
+    expect(
+      canonicalAuthenticationOrigin(Uri.parse('wss://example.com:28006/world')),
+      'wss://example.com:28006',
+    );
+    expect(
+      trustedAuthenticationOrigin(Uri.parse('wss://example.com')),
+      'wss://example.com:443',
+    );
+    expect(
+      trustedAuthenticationOrigin(Uri.parse('ws://127.0.0.1:28006')),
+      'ws://127.0.0.1:28006',
+    );
+    expect(
+      trustedAuthenticationOrigin(Uri.parse('ws://192.168.1.10:28006')),
+      isNull,
+    );
+  });
+
   group('authentication protocol', () {
     late SimpleKeyPair keyPair;
     late SetonixAccount account;
@@ -31,7 +56,12 @@ void main() {
         expiresAt: challenge.expiresAt,
       );
 
-      final response = await AuthenticateRequest.build(request, account, 7);
+      final response = await AuthenticateRequest.build(
+        request,
+        account,
+        7,
+        challenge.serverId,
+      );
 
       expect(response.hasValidLengths, isTrue);
       expect(await response.verify(challenge), isTrue);
@@ -58,7 +88,7 @@ void main() {
         expiresAt: DateTime.now().toUtc().subtract(const Duration(minutes: 1)),
       );
       await expectLater(
-        AuthenticateRequest.build(expired, account, 7),
+        AuthenticateRequest.build(expired, account, 7, 'server'),
         throwsFormatException,
       );
 
@@ -72,8 +102,24 @@ void main() {
         expiresAt: challenge.expiresAt,
       );
       await expectLater(
-        AuthenticateRequest.build(wrongChannel, account, 8),
+        AuthenticateRequest.build(wrongChannel, account, 8, 'server'),
         throwsFormatException,
+      );
+      await expectLater(
+        AuthenticateRequest.build(
+          wrongChannel,
+          account,
+          wrongChannel.channel,
+          'wss://relay.example:443',
+        ),
+        throwsFormatException,
+      );
+      expect(
+        () => requireAuthenticationOrigin(
+          wrongChannel,
+          'wss://relay.example:443',
+        ),
+        throwsA(isA<AuthenticationOriginError>()),
       );
     });
 
@@ -151,7 +197,12 @@ void main() {
       final request =
           (initial as UpdateServerResponse).main!.data
               as AuthenticatedRequested;
-      final proof = await AuthenticateRequest.build(request, account, 7);
+      final proof = await AuthenticateRequest.build(
+        request,
+        account,
+        7,
+        request.serverId,
+      );
 
       final accepted = await processClientEvent(
         proof,

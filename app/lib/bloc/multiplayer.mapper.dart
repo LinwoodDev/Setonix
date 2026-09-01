@@ -515,20 +515,48 @@ class MultiplayerConnectedStateMapper
       v.pipe;
   static const Field<MultiplayerConnectedState, SimpleNetworkerPipe<WorldEvent>>
   _f$pipe = Field('pipe', _$pipe);
+  static const Field<MultiplayerConnectedState, bool> _f$authenticatePeers =
+      Field(
+        'authenticatePeers',
+        null,
+        mode: FieldMode.param,
+        opt: true,
+        def: false,
+      );
+  static String? _$serverIdentity(MultiplayerConnectedState v) =>
+      v.serverIdentity;
+  static const Field<MultiplayerConnectedState, String> _f$serverIdentity =
+      Field('serverIdentity', _$serverIdentity, opt: true);
   static UserManager _$userManager(MultiplayerConnectedState v) =>
       v.userManager;
   static const Field<MultiplayerConnectedState, UserManager> _f$userManager =
       Field('userManager', _$userManager, mode: FieldMode.member);
+  static ChallengeManager? _$challengeManager(MultiplayerConnectedState v) =>
+      v.challengeManager;
+  static const Field<MultiplayerConnectedState, ChallengeManager>
+  _f$challengeManager = Field(
+    'challengeManager',
+    _$challengeManager,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<MultiplayerConnectedState> fields = const {
     #networker: _f$networker,
     #pipe: _f$pipe,
+    #authenticatePeers: _f$authenticatePeers,
+    #serverIdentity: _f$serverIdentity,
     #userManager: _f$userManager,
+    #challengeManager: _f$challengeManager,
   };
 
   static MultiplayerConnectedState _instantiate(DecodingData data) {
-    return MultiplayerConnectedState(data.dec(_f$networker), data.dec(_f$pipe));
+    return MultiplayerConnectedState(
+      data.dec(_f$networker),
+      data.dec(_f$pipe),
+      authenticatePeers: data.dec(_f$authenticatePeers),
+      serverIdentity: data.dec(_f$serverIdentity),
+    );
   }
 
   @override
@@ -609,6 +637,8 @@ abstract class MultiplayerConnectedStateCopyWith<
   $R call({
     NetworkerBase<dynamic>? networker,
     SimpleNetworkerPipe<WorldEvent>? pipe,
+    required bool authenticatePeers,
+    String? serverIdentity,
   });
   MultiplayerConnectedStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
@@ -628,10 +658,14 @@ class _MultiplayerConnectedStateCopyWithImpl<$R, $Out>
   $R call({
     NetworkerBase<dynamic>? networker,
     SimpleNetworkerPipe<WorldEvent>? pipe,
+    required bool authenticatePeers,
+    Object? serverIdentity = $none,
   }) => $apply(
     FieldCopyWithData({
       if (networker != null) #networker: networker,
       if (pipe != null) #pipe: pipe,
+      #authenticatePeers: authenticatePeers,
+      if (serverIdentity != $none) #serverIdentity: serverIdentity,
     }),
   );
   @override
@@ -639,6 +673,8 @@ class _MultiplayerConnectedStateCopyWithImpl<$R, $Out>
       MultiplayerConnectedState(
         data.get(#networker, or: $value.networker),
         data.get(#pipe, or: $value.pipe),
+        authenticatePeers: data.get(#authenticatePeers),
+        serverIdentity: data.get(#serverIdentity, or: $value.serverIdentity),
       );
 
   @override

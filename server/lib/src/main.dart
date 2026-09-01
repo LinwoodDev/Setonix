@@ -66,11 +66,11 @@ ArgParser buildParser() {
       help: "Enable multi-world support",
       defaultsTo: false,
     )
-    ..addFlag(
-      'allow-insecure-authentication',
-      negatable: false,
-      help: 'Allow public-key authentication without TLS. Unsafe outside isolated development environments.',
-      defaultsTo: false,
+    ..addOption(
+      'public-address',
+      help:
+          'Address players use, for example wss://play.example.com:28006. '
+          'Needed only for wildcard binds or reverse proxies.',
     )
     ..addOption(
       'game-mode',
@@ -146,8 +146,7 @@ Future<void> runServer(List<String> arguments, [ServerLoader? onLoad]) async {
         thumbnail: thumbnail,
         maxPlayers: maxPlayers,
         multiWorld: multiWorld,
-        allowInsecureAuthentication:
-            results['allow-insecure-authentication'] as bool,
+        publicAddress: results['public-address'] as String?,
         gameMode: gameMode,
       ),
     );

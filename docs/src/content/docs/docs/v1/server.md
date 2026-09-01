@@ -2,7 +2,7 @@
 title: Server
 ---
 
-Servers can easily be started by running the executable in the console. The server will start on 28006 by default.
+Servers can easily be started by running the executable in the console. The server listens only on `127.0.0.1:28006` by default, which is suitable for secure local testing.
 You can find all available options by running the executable with the `--help` flag.
 
 ## Directory
@@ -11,9 +11,29 @@ When starting the server, it will create a directory called `packs` in the curre
 There should be a core pack already installed in the directory. This pack contains all the default cards, boards, and dice.
 Put your custom packs in this directory to load them into the server.
 
-Account authentication requires a secure WebSocket connection when the server listens outside loopback. Create a `certs` directory in the current working directory and provide the certificate as `server.crt` and its private key as `server.key`. The server refuses to start public-key authentication on a non-loopback plaintext listener. For isolated development only, `--allow-insecure-authentication` (or `SETONIX_ALLOW_INSECURE_AUTHENTICATION=true`) overrides this protection and prints a prominent relay-attack warning.
+## Secure server setup
 
-Authentication uses a short-lived, connection-bound Ed25519 transcript containing the server certificate fingerprint, protocol version, timestamps, channel, and random nonce. Unauthenticated connections time out after 45 seconds, and three failed attempts close the connection.
+For local play, start the server without additional options and connect to `ws://127.0.0.1:28006`. Account authentication over plaintext WebSockets is accepted only on loopback.
+
+For a directly exposed public server, create a `certs` directory in the current working directory and provide the certificate as `server.crt` and its private key as `server.key`. If `--host` is the exact address players use, it automatically becomes the authentication identity:
+
+```bash
+server --host play.example.com
+```
+
+For Docker, wildcard binds, NAT, or a reverse proxy, specify the public address once:
+
+```bash
+server --host 0.0.0.0 --public-address wss://play.example.com:28006
+```
+
+The same value can be stored as `publicAddress` in `config.json` or provided as `SETONIX_PUBLIC_ADDRESS`. When no certificate is installed locally, a `wss://` public address means TLS must terminate at a trusted reverse proxy. Protect the connection between that proxy and the Setonix server.
+
+The server refuses public plaintext account authentication. Use loopback for local development.
+
+Authentication uses a short-lived, connection-bound Ed25519 transcript containing the canonical server origin, protocol version, timestamps, channel, and random nonce. Unauthenticated connections time out after 45 seconds, and three failed attempts close the connection.
+
+Clients only sign authentication challenges over WSS, local loopback, or secure end-to-end encrypted Swamp rooms. The signed challenge is bound to the fixed public server address, similar to a passkey RP ID, so a challenge relayed through another domain is rejected before signing. The certificate remains responsible for normal TLS hostname validation; Setonix does not parse or duplicate its hostname rules.
 
 The world will be saved in the current working directory in a file called `world.stnx`. This file will contain all the data of the world, including the packs that are loaded into the server. This file is compatible with the single player world file.
 

@@ -5,7 +5,8 @@
 * Add player name functionality
 * Improve server commands
 * Fix role-authorized world management
-* Secure public-key authentication with expiring, connection-bound challenges
+* Add phishing-resistant public-key authentication with expiring, origin-bound challenges
+* Add secure local defaults and simple public server address configuration
 * Require TLS for public-key authentication outside local development
 * Add authentication attempt limits and unauthenticated connection timeouts
 * Encrypt account backups with a passphrase and validate imported key pairs

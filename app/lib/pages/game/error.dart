@@ -32,6 +32,9 @@ class GameErrorView extends StatelessWidget {
     if (error is FatalServerEventError) {
       message = switch (error) {
         InvalidPacksError() => AppLocalizations.of(context).invalidPacks,
+        AuthenticationOriginError() => AppLocalizations.of(
+          context,
+        ).authenticationOriginMismatch,
       };
       content = switch (error) {
         InvalidPacksError() => [
@@ -41,6 +44,7 @@ class GameErrorView extends StatelessWidget {
             onHome: onHome,
           ),
         ],
+        AuthenticationOriginError() => const [],
       };
     } else if (error is IncompatibleProtocolException) {
       message = error.serverVersions.isEmpty

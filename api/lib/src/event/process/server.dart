@@ -76,6 +76,29 @@ final class InvalidPacksError extends FatalServerEventError {
       'Server requested packs, that are not available on the client (or is empty): $signature, expected: $expected';
 }
 
+final class AuthenticationOriginError extends FatalServerEventError {
+  final String? expected;
+  final String received;
+
+  AuthenticationOriginError({required this.expected, required this.received});
+
+  @override
+  String toString() =>
+      'Authentication origin mismatch: expected $expected, received $received';
+}
+
+void requireAuthenticationOrigin(
+  AuthenticatedRequested request,
+  String? expected,
+) {
+  if (expected == null || request.serverId != expected) {
+    throw AuthenticationOriginError(
+      expected: expected,
+      received: request.serverId,
+    );
+  }
+}
+
 bool isServerSupported(
   List<SignatureMetadata> mySignature,
   List<SignatureMetadata> serverSignature,

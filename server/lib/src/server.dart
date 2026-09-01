@@ -56,10 +56,33 @@ bool _isSafeRemoteEndpoint(Uri uri) {
       uri.host == '::1';
 }
 
-bool canUseInsecureAuthentication(
-  InternetAddress bindAddress,
-  bool explicitlyAllowed,
-) => bindAddress.isLoopback || explicitlyAllowed;
+bool _isWildcardHost(String host) =>
+    host == InternetAddress.anyIPv4.address ||
+    host == InternetAddress.anyIPv6.address;
+
+String resolveAuthenticationOrigin({
+  required String publicAddress,
+  required String host,
+  required int port,
+  required bool tlsEnabled,
+}) {
+  if (publicAddress.isEmpty && _isWildcardHost(host)) {
+    throw StateError(
+      'A public authentication origin is required when binding to $host. '
+      'Set publicAddress to the address players use, for example '
+      'wss://play.example.com:$port.',
+    );
+  }
+  final origin = publicAddress.isNotEmpty
+      ? canonicalAuthenticationOrigin(Uri.parse(publicAddress))
+      : canonicalAuthenticationOrigin(
+          Uri(scheme: tlsEnabled ? 'wss' : 'ws', host: host, port: port),
+        );
+  if (tlsEnabled && !origin.startsWith('wss://')) {
+    throw StateError('The authentication origin must use WSS with TLS.');
+  }
+  return origin;
+}
 
 final class SetonixServer {
   static const String worldDirectory = 'worlds';
@@ -349,22 +372,23 @@ final class SetonixServer {
         level: LogLevel.warning,
       );
     }
+    final bindAddress = await _resolveBindAddress(configManager.host);
     SecurityContext? securityContext;
-    List<int>? certificateBytes;
     try {
       final privateKey = await File(p.join(rootDirectory, 'certs/server.key'))
           .readAsBytes();
       final certificate = await File(p.join(rootDirectory, 'certs/server.crt'))
           .readAsBytes();
-      certificateBytes = certificate;
       securityContext = SecurityContext()
         ..usePrivateKeyBytes(privateKey)
         ..useCertificateChainBytes(certificate);
       log('Certificates found, using secure connection', level: LogLevel.info);
     } on PathNotFoundException catch (_) {
       log(
-        'No certificates found, using insecure connection',
-        level: LogLevel.warning,
+        bindAddress.isLoopback
+            ? 'No certificates found; using a local-only connection.'
+            : 'No certificates found; the listener itself is not encrypted.',
+        level: bindAddress.isLoopback ? LogLevel.info : LogLevel.warning,
       );
     }
     if (configManager.whitelistEnabled && !configManager.accountRequired) {
@@ -373,29 +397,31 @@ final class SetonixServer {
         level: LogLevel.warning,
       );
     }
-    final bindAddress = await _resolveBindAddress(configManager.host);
     final authenticationChallenges = challengeManager;
     if (authenticationChallenges != null) {
-      if (certificateBytes != null) {
-        authenticationChallenges.serverId = generateFingerprint(
-          certificateBytes is Uint8List
-              ? certificateBytes
-              : Uint8List.fromList(certificateBytes),
-        );
-      } else if (!canUseInsecureAuthentication(
-        bindAddress,
-        configManager.allowInsecureAuthentication,
-      )) {
-        throw StateError(
-          'Account authentication requires TLS when listening outside '
-          'loopback. Install certs/server.crt and certs/server.key, or use '
-          '--allow-insecure-authentication only for isolated development.',
-        );
-      } else {
+      final origin = resolveAuthenticationOrigin(
+        publicAddress: configManager.publicAddress,
+        host: configManager.host,
+        port: configManager.port,
+        tlsEnabled: securityContext != null,
+      );
+      authenticationChallenges.serverId = origin;
+      if (securityContext == null && origin.startsWith('wss://')) {
         log(
-          'DANGER: public-key authentication is running without TLS. '
-          'Active attackers can relay authentication challenges.',
-          level: LogLevel.warning,
+          'Using the public WSS origin $origin. TLS must terminate at a '
+          'trusted reverse proxy in front of this server.',
+          level: LogLevel.info,
+        );
+      } else if (securityContext == null && bindAddress.isLoopback) {
+        log(
+          'Authentication is restricted to the local machine without TLS.',
+          level: LogLevel.info,
+        );
+      } else if (securityContext == null) {
+        throw StateError(
+          'Account authentication requires TLS outside the local machine. '
+          'Install certs/server.crt and certs/server.key, configure '
+          'publicAddress with a WSS URL for a reverse proxy.',
         );
       }
     }

@@ -27,6 +27,17 @@ enum ConnectionTechnology {
   }
 }
 
+Future<String> _swampAuthenticationOrigin(SwampConnection connection) async {
+  final e2ee = connection.e2eePipe;
+  if (e2ee == null) {
+    throw const FormatException(
+      'Authenticated Swamp connections require end-to-end encryption.',
+    );
+  }
+  final key = await e2ee.secretKey.extractBytes();
+  return generateFingerprint(Uint8List.fromList(key));
+}
+
 @MappableClass()
 sealed class MultiplayerState with MultiplayerStateMappable {
   const MultiplayerState();
@@ -65,16 +76,24 @@ final class MultiplayerConnectedState extends MultiplayerState
   @override
   final UserManager userManager = UserManager();
   final ChallengeManager? challengeManager;
+  final String? serverIdentity;
 
   MultiplayerConnectedState(
     this.networker,
     this.pipe, {
     bool authenticatePeers = false,
+    this.serverIdentity,
   }) : challengeManager = authenticatePeers
            ? ChallengeManager(
-               serverId: generateFingerprint(generateChallenge()),
+               serverId:
+                   serverIdentity ??
+                   (throw ArgumentError(
+                     'Authenticated hosting requires a secure origin.',
+                   )),
              )
            : null;
+
+  bool get hasSecureAuthenticationTransport => serverIdentity != null;
 
   @override
   bool get isClient => networker is NetworkerClient;
@@ -141,6 +160,7 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
   Future<MultiplayerConnectedState> _addNetworker(
     NetworkerBase base, {
     bool authenticatePeers = false,
+    String? serverIdentity,
   }) async {
     final transformer = NetworkerPipeTransformer<String, WorldEvent>(
       WorldEventMapper.fromJson,
@@ -151,6 +171,7 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
       base,
       pipe,
       authenticatePeers: authenticatePeers,
+      serverIdentity: serverIdentity,
     );
     final stringPlugin = StringNetworkerPlugin();
     transformer.read.listen(_onServerEvent);
@@ -235,7 +256,11 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
     try {
       emit(MultiplayerConnectingState());
       final connection = await _createSwamp(address);
-      final state = await _addNetworker(connection);
+      final serverIdentity = await _swampAuthenticationOrigin(connection);
+      final state = await _addNetworker(
+        connection,
+        serverIdentity: serverIdentity,
+      );
       connection.onClosed.listen((_) {
         if (isClosed) return;
         emit(MultiplayerDisconnectedState(oldState: state, error: _fatalError));
@@ -253,10 +278,13 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
       emit(MultiplayerConnectingState());
       final property = await networkService.fetchRequiredInfo(address);
       final protocolVersion = property.requireProtocol();
-      final client = NetworkerSocketClient(
-        addSetonixProtocolVersion(address, version: protocolVersion),
+      final versionedAddress = addSetonixProtocolVersion(
+        address,
+        version: protocolVersion,
       );
-      final state = await _addNetworker(client);
+      final client = NetworkerSocketClient(versionedAddress);
+      final serverIdentity = trustedAuthenticationOrigin(versionedAddress);
+      final state = await _addNetworker(client, serverIdentity: serverIdentity);
       client.onClosed.listen((_) {
         if (isClosed) return;
         final closeReason = client.closeReason;
@@ -282,7 +310,12 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
   Future<void> createSwamp(Uri uri) async {
     try {
       final server = await _createSwamp(uri);
-      final state = await _addNetworker(server, authenticatePeers: true);
+      final serverIdentity = await _swampAuthenticationOrigin(server);
+      final state = await _addNetworker(
+        server,
+        authenticatePeers: true,
+        serverIdentity: serverIdentity,
+      );
       await server.init();
       emit(state);
     } catch (e) {

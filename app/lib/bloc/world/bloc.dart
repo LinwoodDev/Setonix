@@ -119,6 +119,13 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
     });
     on<ServerWorldEvent>((event, emit) async {
       try {
+        if (event is AuthenticatedRequested) {
+          final multiplayerState = state.multiplayer.state;
+          final expected = multiplayerState is MultiplayerConnectedState
+              ? multiplayerState.serverIdentity
+              : null;
+          requireAuthenticationOrigin(event, expected);
+        }
         final signature = state.assetManager.createSignature();
         final world = state.world;
         final processed =

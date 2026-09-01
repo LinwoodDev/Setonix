@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:setonix/bloc/multiplayer.dart';
 import 'package:setonix/bloc/world/bloc.dart';
 import 'package:setonix/bloc/world/state.dart';
 import 'package:setonix/pages/home/accounts.dart';
@@ -95,11 +96,6 @@ class _AuthGameViewState extends State<AuthGameView> {
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(color: Colors.red),
                         ),
-                        const SizedBox(height: 8),
-                        SelectableText(
-                          '${AppLocalizations.of(context).authenticationServerIdentity}: ${authRequest.serverId}',
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
                         const SizedBox(height: 16.0),
                         Flexible(
                           child: FutureBuilder<List<SetonixAccount>>(
@@ -143,11 +139,22 @@ class _AuthGameViewState extends State<AuthGameView> {
                                       ),
                                       onTap: () async {
                                         final bloc = context.read<WorldBloc>();
+                                        final multiplayerState =
+                                            state.multiplayer.state;
+                                        if (multiplayerState
+                                                is! MultiplayerConnectedState ||
+                                            !multiplayerState
+                                                .hasSecureAuthenticationTransport) {
+                                          return;
+                                        }
+                                        final expectedServerId =
+                                            multiplayerState.serverIdentity!;
                                         final event =
                                             await AuthenticateRequest.build(
                                               authRequest,
                                               account,
                                               state.world.id,
+                                              expectedServerId,
                                             );
                                         bloc.process(event);
                                         setState(() {

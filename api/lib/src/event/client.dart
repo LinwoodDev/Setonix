@@ -174,11 +174,13 @@ final class AuthenticateRequest extends ClientWorldEvent
     AuthenticatedRequested request,
     SetonixAccount account,
     Channel expectedChannel,
+    String expectedServerId,
   ) async {
     final now = DateTime.now().toUtc();
     if (request.version != kAuthenticationProtocolVersion ||
         request.challenge.length != kAuthenticationChallengeLength ||
         request.channel != expectedChannel ||
+        request.serverId != expectedServerId ||
         request.serverId.isEmpty ||
         request.serverId.length > 256 ||
         request.issuedAt.isAfter(request.expiresAt) ||

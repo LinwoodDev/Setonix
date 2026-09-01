@@ -6,7 +6,7 @@ part 'config.mapper.dart';
 @MappableClass()
 final class SetonixConfig with SetonixConfigMappable {
   final String? host;
-  static const String defaultHost = '0.0.0.0';
+  static const String defaultHost = '127.0.0.1';
   static const String envHost = 'SETONIX_HOST';
   final int? port;
   static const int defaultPort = kDefaultPort;
@@ -38,10 +38,9 @@ final class SetonixConfig with SetonixConfigMappable {
   final bool? accountRequired;
   static const bool defaultAccountRequired = true;
   static const String envAccountRequired = 'SETONIX_ACCOUNT_REQUIRED';
-  final bool? allowInsecureAuthentication;
-  static const bool defaultAllowInsecureAuthentication = false;
-  static const String envAllowInsecureAuthentication =
-      'SETONIX_ALLOW_INSECURE_AUTHENTICATION';
+  final String? publicAddress;
+  static const String defaultPublicAddress = '';
+  static const String envPublicAddress = 'SETONIX_PUBLIC_ADDRESS';
   final String? apiEndpoint;
   static const String defaultApiEndpoint = "";
   static const String envApiEndpoint = 'SETONIX_API_ENDPOINT';
@@ -65,7 +64,7 @@ final class SetonixConfig with SetonixConfigMappable {
     this.guestPrefix,
     this.whitelistEnabled,
     this.accountRequired,
-    this.allowInsecureAuthentication,
+    this.publicAddress,
     this.apiEndpoint,
     this.endpointSecret,
     this.gameMode,
@@ -84,7 +83,7 @@ final class SetonixConfig with SetonixConfigMappable {
     guestPrefix: defaultGuestPrefix,
     whitelistEnabled: defaultWhitelistEnabled,
     accountRequired: defaultAccountRequired,
-    allowInsecureAuthentication: defaultAllowInsecureAuthentication,
+    publicAddress: defaultPublicAddress,
     apiEndpoint: defaultApiEndpoint,
     endpointSecret: defaultEndpointSecret,
     gameMode: defaultGameMode,
@@ -138,11 +137,10 @@ final class SetonixConfig with SetonixConfigMappable {
               defaultValue: defaultAccountRequired,
             )
           : null,
-      allowInsecureAuthentication:
-          bool.hasEnvironment(envAllowInsecureAuthentication)
-          ? bool.fromEnvironment(
-              envAllowInsecureAuthentication,
-              defaultValue: defaultAllowInsecureAuthentication,
+      publicAddress: bool.hasEnvironment(envPublicAddress)
+          ? String.fromEnvironment(
+              envPublicAddress,
+              defaultValue: defaultPublicAddress,
             )
           : null,
       apiEndpoint: bool.hasEnvironment(envApiEndpoint)
@@ -175,8 +173,7 @@ final class SetonixConfig with SetonixConfigMappable {
     thumbnail: other.thumbnail ?? thumbnail,
     guestPrefix: other.guestPrefix ?? guestPrefix,
     accountRequired: other.accountRequired ?? accountRequired,
-    allowInsecureAuthentication:
-        other.allowInsecureAuthentication ?? allowInsecureAuthentication,
+    publicAddress: other.publicAddress ?? publicAddress,
     whitelistEnabled: other.whitelistEnabled ?? whitelistEnabled,
     apiEndpoint: other.apiEndpoint ?? apiEndpoint,
     endpointSecret: other.endpointSecret ?? endpointSecret,

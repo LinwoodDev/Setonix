@@ -313,7 +313,7 @@
   "accountBackupConfirmPassphrase": "Confirm passphrase",
   "accountBackupPassphraseMismatch": "The passphrases do not match.",
   "accountBackupPassphraseDescription": "Account backups contain private keys and are encrypted. Store this passphrase safely; it cannot be recovered.",
-  "authenticationServerIdentity": "Server identity",
+  "authenticationOriginMismatch": "The server identity does not match this address. The connection was stopped to protect your account.",
   "noAccount": "There are no accounts available",
   "authenticateRequired": "Authentication is required to connect to the server",
   "authenticateLoading": "Authenticating...",
