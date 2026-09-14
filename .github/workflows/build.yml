@@ -34,7 +34,7 @@ jobs:
           java-version: "21"
           distribution: "temurin"
       - name: 🦀 Setup Rust
-        uses: actions-rust-lang/setup-rust-toolchain@v1
+        uses: actions-rust-lang/setup-rust-toolchain@v2
       - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
@@ -196,7 +196,7 @@ jobs:
           choco install yq
           choco install innosetup
       - name: 🦀 Setup Rust
-        uses: actions-rust-lang/setup-rust-toolchain@v1
+        uses: actions-rust-lang/setup-rust-toolchain@v2
       - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
@@ -270,7 +270,7 @@ jobs:
       - name: ⬆️ Checkout
         uses: actions/checkout@v7
       - name: 🦀 Setup Rust
-        uses: actions-rust-lang/setup-rust-toolchain@v1
+        uses: actions-rust-lang/setup-rust-toolchain@v2
       - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
@@ -322,7 +322,7 @@ jobs:
       - name: ⬆️ Checkout
         uses: actions/checkout@v7
       - name: Setup Rust
-        uses: actions-rust-lang/setup-rust-toolchain@v1
+        uses: actions-rust-lang/setup-rust-toolchain@v2
       - name: Get dependencies
         run: |
           sudo apt-get update
@@ -348,7 +348,7 @@ jobs:
             libjsoncpp-dev \
             rpm
       - name: 🦀 Setup Rust
-        uses: actions-rust-lang/setup-rust-toolchain@v1
+        uses: actions-rust-lang/setup-rust-toolchain@v2
       - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
@@ -513,7 +513,7 @@ jobs:
       - name: ⬆️ Checkout
         uses: actions/checkout@v7
       - name: 🦀 Setup Rust
-        uses: actions-rust-lang/setup-rust-toolchain@v1
+        uses: actions-rust-lang/setup-rust-toolchain@v2
       - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
@@ -575,7 +575,7 @@ jobs:
       - name: ⬆️ Checkout
         uses: actions/checkout@v7
       - name: 🦀 Setup Rust
-        uses: actions-rust-lang/setup-rust-toolchain@v1
+        uses: actions-rust-lang/setup-rust-toolchain@v2
       - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
