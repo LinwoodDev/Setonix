@@ -6,7 +6,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame_bloc/flame_bloc.dart';
-import 'package:flutter/material.dart'
+import 'package:material_ui/material_ui.dart'
     show Canvas, Color, Colors, CustomPainter, Paint, PaintingStyle, Rect, Size;
 import 'package:setonix/bloc/world/bloc.dart';
 import 'package:setonix/bloc/world/state.dart';

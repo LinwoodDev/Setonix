@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:setonix/pages/settings/input.dart';
 import 'package:setonix/pages/settings/servers.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
@@ -30,11 +30,26 @@ enum SettingsView {
   };
 
   IconGetter get icon => switch (this) {
-    SettingsView.general => PhosphorIcons.gear,
-    SettingsView.data => PhosphorIcons.database,
-    SettingsView.personalization => PhosphorIcons.monitor,
-    SettingsView.inputs => PhosphorIcons.keyboard,
-    SettingsView.servers => PhosphorIcons.list,
+    SettingsView.general => IconGetter(
+      PhosphorIconsLight.gear,
+      PhosphorIconsFill.gear,
+    ),
+    SettingsView.data => IconGetter(
+      PhosphorIconsLight.database,
+      PhosphorIconsFill.database,
+    ),
+    SettingsView.personalization => IconGetter(
+      PhosphorIconsLight.monitor,
+      PhosphorIconsFill.monitor,
+    ),
+    SettingsView.inputs => IconGetter(
+      PhosphorIconsLight.keyboard,
+      PhosphorIconsFill.keyboard,
+    ),
+    SettingsView.servers => IconGetter(
+      PhosphorIconsLight.list,
+      PhosphorIconsFill.list,
+    ),
   };
   String get path => '/settings/$name';
 
@@ -120,11 +135,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
                           return ListTile(
                             leading: PhosphorIcon(
-                              view.icon(
-                                selected
-                                    ? PhosphorIconsStyle.fill
-                                    : PhosphorIconsStyle.light,
-                              ),
+                              selected ? view.icon.fill : view.icon.light,
                             ),
                             title: Text(view.getLocalizedName(context)),
                             onTap: navigateTo,

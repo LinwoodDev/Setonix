@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -20,15 +20,42 @@ import 'package:setonix_api/setonix_api.dart';
 const kEditorPath = '/editor/:name';
 
 enum EditorPage {
-  general(PhosphorIcons.house, ''),
-  figures(PhosphorIcons.cube, '/figures'),
-  boards(PhosphorIcons.mapTrifold, '/boards'),
-  decks(PhosphorIcons.stack, '/decks'),
-  backgrounds(PhosphorIcons.image, '/backgrounds'),
-  textures(PhosphorIcons.paintBucket, '/textures'),
-  scripts(PhosphorIcons.scroll, '/scripts'),
-  modes(PhosphorIcons.gameController, '/modes'),
-  translations(PhosphorIcons.translate, null);
+  general(IconGetter(PhosphorIconsLight.house, PhosphorIconsFill.house), ''),
+  figures(
+    IconGetter(PhosphorIconsLight.cube, PhosphorIconsFill.cube),
+    '/figures',
+  ),
+  boards(
+    IconGetter(PhosphorIconsLight.mapTrifold, PhosphorIconsFill.mapTrifold),
+    '/boards',
+  ),
+  decks(
+    IconGetter(PhosphorIconsLight.stack, PhosphorIconsFill.stack),
+    '/decks',
+  ),
+  backgrounds(
+    IconGetter(PhosphorIconsLight.image, PhosphorIconsFill.image),
+    '/backgrounds',
+  ),
+  textures(
+    IconGetter(PhosphorIconsLight.paintBucket, PhosphorIconsFill.paintBucket),
+    '/textures',
+  ),
+  scripts(
+    IconGetter(PhosphorIconsLight.scroll, PhosphorIconsFill.scroll),
+    '/scripts',
+  ),
+  modes(
+    IconGetter(
+      PhosphorIconsLight.gameController,
+      PhosphorIconsFill.gameController,
+    ),
+    '/modes',
+  ),
+  translations(
+    IconGetter(PhosphorIconsLight.translate, PhosphorIconsFill.translate),
+    null,
+  );
 
   final IconGetter icon;
   final String? location;
@@ -113,9 +140,9 @@ class EditorNavigatorView extends StatelessWidget {
         ],
         ...EditorPage.values.map(
           (e) => NavigationDrawerDestination(
-            icon: Icon(e.icon(PhosphorIconsStyle.light)),
+            icon: Icon(e.icon.light),
             label: Text(e.getLocalizedName(context)),
-            selectedIcon: Icon(e.icon(PhosphorIconsStyle.fill)),
+            selectedIcon: Icon(e.icon.fill),
             enabled: e.location != null,
           ),
         ),

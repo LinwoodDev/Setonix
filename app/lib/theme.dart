@@ -1,5 +1,5 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 const kClassicThemePrimary = Color(0xFFFBAC11);
 const kClassicThemeSecondary = Color(0xFF35EF53);

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:setonix_api/setonix_api.dart';
 
 extension TeamColorVisualizer on TeamColor {

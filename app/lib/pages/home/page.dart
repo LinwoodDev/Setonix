@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:go_router/go_router.dart';
@@ -22,10 +22,25 @@ const _drawerWidth = 250.0;
 const _mobileNavigationBreakpoint = 820.0;
 
 enum HomeView {
-  home(PhosphorIcons.house, '/'),
-  games(PhosphorIcons.gameController, '/games'),
-  servers(PhosphorIcons.plugsConnected, '/servers'),
-  library(PhosphorIcons.package, '/library');
+  home(IconGetter(PhosphorIconsLight.house, PhosphorIconsFill.house), '/'),
+  games(
+    IconGetter(
+      PhosphorIconsLight.gameController,
+      PhosphorIconsFill.gameController,
+    ),
+    '/games',
+  ),
+  servers(
+    IconGetter(
+      PhosphorIconsLight.plugsConnected,
+      PhosphorIconsFill.plugsConnected,
+    ),
+    '/servers',
+  ),
+  library(
+    IconGetter(PhosphorIconsLight.package, PhosphorIconsFill.package),
+    '/library',
+  );
 
   final IconGetter icon;
   final String location;
@@ -214,7 +229,7 @@ class _HomeSidebar extends StatelessWidget {
             const SizedBox(height: 8),
             const _AccountSelector(),
             _SidebarButton(
-              icon: PhosphorIcons.gear,
+              icon: IconGetter(PhosphorIconsLight.gear, PhosphorIconsFill.gear),
               label: AppLocalizations.of(context).settings,
               selected: false,
               onTap: () => openSettings(context),
@@ -245,9 +260,7 @@ class _SidebarButton extends StatelessWidget {
     return ListTile(
       style: ListTileStyle.drawer,
       title: Text(label),
-      leading: Icon(
-        icon(selected ? PhosphorIconsStyle.fill : PhosphorIconsStyle.light),
-      ),
+      leading: Icon(selected ? icon.fill : icon.light),
       onTap: onTap,
       selected: selected,
       selectedColor: scheme.onSurface,

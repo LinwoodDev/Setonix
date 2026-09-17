@@ -1,5 +1,5 @@
 import 'package:flame/sprite.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:setonix/bloc/world/state.dart';
 import 'package:setonix/board/cell.dart';

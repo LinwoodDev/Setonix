@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart' show ColorScheme;
+import 'package:material_ui/material_ui.dart' show ColorScheme;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:networker/networker.dart';
 import 'package:setonix/bloc/world/local.dart';

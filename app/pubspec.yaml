@@ -16,7 +16,7 @@ publish_to: none
 
 environment:
   sdk: ">=3.13.0 <4.0.0"
-  flutter: 3.47.3
+  flutter: 3.47.4
 
 dependencies:
   flutter:
@@ -31,16 +31,16 @@ dependencies:
   phosphor_flutter:
     git:
       url: https://github.com/CodeDoctorDE/phosphor-flutter.git
-      ref: f7479596c67239e755ab1fe3bade84895bfd6222
+      ref: 571650ac818f95a6c1f48f1bf3d33a010505d2c9
   material_leap:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 2195d9d509f5ba2c5c823491d93cac4d6136b597
+      ref: af154328e0c246a4f155a4dfe50958ae5e5ab106
       path: packages/material_leap
-  flex_color_scheme: ^8.1.0
+  flex_color_scheme: ^9.0.0
   flutter_svg: ^2.2.0
   window_manager: ^0.5.0
-  go_router: ^17.0.0
+  go_router: ^18.0.1
   # Database
   shared_preferences: ^2.3.1
   # Generation
@@ -70,13 +70,13 @@ dependencies:
       ref: 1fa4d5cdbe9dfe2145bf4f9052190a1f6c584e43
       path: api
   # System Information
-  dynamic_color: ^1.7.0
+  dynamic_color: ^2.1.0
   device_info_plus: ^13.1.0
   package_info_plus: ^10.1.0
   path_provider: ^2.1.4
   url_launcher: ^6.2.6
-  flutter_secure_storage: ^10.0.0-beta.1
-  file_picker: ^12.0.0-beta.4
+  flutter_secure_storage: ^11.2.0
+  file_picker: ^13.0.0
   lw_file_system:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
@@ -85,7 +85,7 @@ dependencies:
   lw_sysapi:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 4504590d871958c48a93969461193691ea88cb18
+      ref: cbf5d0ceea356d657457147912fe4c79280f7cd2
       path: packages/lw_sysapi
   setonix_api:
     path: ../api
@@ -102,6 +102,7 @@ dependencies:
   cryptography_plus: ^3.0.0
   cryptography_flutter_plus: ^3.0.0
   network_info_plus: ^8.1.0
+  material_ui: ^1.3.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

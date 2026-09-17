@@ -1,5 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:flutter/material.dart' show ColorScheme;
+import 'package:material_ui/material_ui.dart' show ColorScheme;
 import 'package:networker/networker.dart';
 import 'package:setonix/helpers/asset.dart';
 import 'package:setonix/services/file_system.dart';
