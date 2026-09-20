@@ -1,0 +1,6 @@
+* Rework game view
+  * Show game actions as button row
+  * Change game drawer to a dialog
+  * Change chat screen to an overlay
+  * Move notes and multiplayer options to scaffold actions
+  * Move advanced game options to edit dialog

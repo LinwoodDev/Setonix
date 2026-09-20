@@ -8,14 +8,14 @@ import 'package:setonix/bloc/world/state.dart';
 import 'package:setonix/pages/game/note.dart';
 import 'package:setonix_api/setonix_api.dart';
 
-class GameNotesDrawer extends StatefulWidget {
-  const GameNotesDrawer({super.key});
+class GameNotesDialog extends StatefulWidget {
+  const GameNotesDialog({super.key});
 
   @override
-  State<GameNotesDrawer> createState() => _GameNotesDrawerState();
+  State<GameNotesDialog> createState() => _GameNotesDialogState();
 }
 
-class _GameNotesDrawerState extends State<GameNotesDrawer> {
+class _GameNotesDialogState extends State<GameNotesDialog> {
   @override
   void initState() {
     super.initState();
@@ -28,99 +28,107 @@ class _GameNotesDrawerState extends State<GameNotesDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Header(
-            leading: IconButton.outlined(
-              icon: const Icon(PhosphorIconsLight.x),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            title: Text(AppLocalizations.of(context).notes),
+    final content = Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Header(
+          leading: IconButton.outlined(
+            icon: const Icon(PhosphorIconsLight.x),
+            onPressed: () => Navigator.of(context).pop(),
           ),
-          Flexible(
-            child: BlocBuilder<WorldBloc, ClientWorldState>(
-              buildWhen: (previous, current) => previous.data != current.data,
-              builder: (context, state) {
-                final notes = state.data.getNotes().toList();
-                return ListView.builder(
-                  itemCount: notes.length,
-                  itemBuilder: (context, index) {
-                    final note = notes[index];
-                    return ListTile(
-                      title: Text(note),
-                      onTap: () {
+          title: Text(AppLocalizations.of(context).notes),
+        ),
+        Flexible(
+          child: BlocBuilder<WorldBloc, ClientWorldState>(
+            buildWhen: (previous, current) => previous.data != current.data,
+            builder: (context, state) {
+              final notes = state.data.getNotes().toList();
+              return ListView.builder(
+                itemCount: notes.length,
+                itemBuilder: (context, index) {
+                  final note = notes[index];
+                  return ListTile(
+                    title: Text(note),
+                    onTap: () {
+                      final bloc = context.read<WorldBloc>();
+                      showDialog(
+                        context: context,
+                        builder: (context) => BlocProvider.value(
+                          value: bloc,
+                          child: GameNoteDialog(note: note),
+                        ),
+                      );
+                    },
+                    trailing: IconButton(
+                      icon: const Icon(PhosphorIconsLight.trash),
+                      onPressed: () async {
                         final bloc = context.read<WorldBloc>();
-                        showDialog(
+                        final result = await showDialog<bool>(
                           context: context,
-                          builder: (context) => BlocProvider.value(
-                            value: bloc,
-                            child: GameNoteDialog(note: note),
+                          builder: (context) => AlertDialog(
+                            title: Text(
+                              AppLocalizations.of(context).deleteNote,
+                            ),
+                            content: Text(
+                              AppLocalizations.of(context)
+                                  .deleteNoteMessage(note),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.of(context).pop(false),
+                                child: Text(
+                                  AppLocalizations.of(context).cancel,
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.of(context).pop(true),
+                                child: Text(
+                                  AppLocalizations.of(context).delete,
+                                ),
+                              ),
+                            ],
                           ),
                         );
+                        if (!(result ?? false)) return;
+                        bloc.process(NoteRemoved(note));
                       },
-                      trailing: IconButton(
-                        icon: const Icon(PhosphorIconsLight.trash),
-                        onPressed: () async {
-                          final bloc = context.read<WorldBloc>();
-                          final result = await showDialog<bool>(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: Text(
-                                AppLocalizations.of(context).deleteNote,
-                              ),
-                              content: Text(
-                                AppLocalizations.of(context)
-                                    .deleteNoteMessage(note),
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.of(context).pop(false),
-                                  child: Text(
-                                    AppLocalizations.of(context).cancel,
-                                  ),
-                                ),
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.of(context).pop(true),
-                                  child: Text(
-                                    AppLocalizations.of(context).delete,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                          if (!(result ?? false)) return;
-                          bloc.process(NoteRemoved(note));
-                        },
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
+                    ),
+                  );
+                },
+              );
+            },
           ),
-          const SizedBox(height: 8),
-          SizedBox(
-            height: 48,
-            child: ElevatedButton.icon(
-              icon: const Icon(PhosphorIconsLight.plus),
-              label: Text(LeapLocalizations.of(context).create),
-              onPressed: () {
-                final bloc = context.read<WorldBloc>();
-                showDialog(
-                  context: context,
-                  builder: (context) => BlocProvider.value(
-                    value: bloc,
-                    child: const GameNoteDialog(),
-                  ),
-                );
-              },
-            ),
+        ),
+        const SizedBox(height: 8),
+        SizedBox(
+          height: 48,
+          child: ElevatedButton.icon(
+            icon: const Icon(PhosphorIconsLight.plus),
+            label: Text(LeapLocalizations.of(context).create),
+            onPressed: () {
+              final bloc = context.read<WorldBloc>();
+              showDialog(
+                context: context,
+                builder: (context) => BlocProvider.value(
+                  value: bloc,
+                  child: const GameNoteDialog(),
+                ),
+              );
+            },
           ),
-        ],
+        ),
+      ],
+    );
+    return Dialog(
+      clipBehavior: Clip.antiAlias,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: 520,
+          maxHeight: MediaQuery.sizeOf(context).height - 64,
+        ),
+        child: Padding(padding: const EdgeInsets.all(16), child: content),
       ),
     );
   }

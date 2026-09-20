@@ -1,9 +1,7 @@
-import 'package:collection/collection.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:setonix/board/game.dart';
-import 'package:setonix/pages/game/multiplayer/dialog.dart';
 import 'package:setonix/pages/game/waypoint.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
 import 'package:material_leap/material_leap.dart';
@@ -20,18 +18,32 @@ import 'package:setonix/pages/game/team.dart';
 import 'package:setonix/pages/packs/dialog.dart';
 import 'package:setonix_api/setonix_api.dart';
 
-class GameDrawer extends StatelessWidget {
+class GameMenuDialog extends StatefulWidget {
   final BoardGame game;
   final Future<void> Function() onHome;
 
-  const GameDrawer({super.key, required this.game, required this.onHome});
+  const GameMenuDialog({super.key, required this.game, required this.onHome});
 
+  @override
+  State<GameMenuDialog> createState() => _GameMenuDialogState();
+}
+
+class _GameMenuDialogState extends State<GameMenuDialog> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
 
-    return Drawer(
-      child: Center(
+    return Dialog(
+      backgroundColor: scheme.surfaceContainerHigh,
+      insetPadding: const EdgeInsets.all(24),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+      clipBehavior: Clip.antiAlias,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: 520,
+          maxHeight: MediaQuery.sizeOf(context).height - 64,
+        ),
         child: ListView(
           shrinkWrap: true,
           children: [
@@ -41,62 +53,62 @@ class GameDrawer extends StatelessWidget {
                   previous.metadata != current.metadata,
               builder: (context, state) {
                 final metadata = state.metadata;
-                return Card.filled(
-                  clipBehavior: Clip.antiAlias,
-                  child: InkWell(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(
-                            metadata.name,
-                            textAlign: TextAlign.center,
-                            style: theme.textTheme.headlineSmall,
-                          ),
-                          if (metadata.description.isNotEmpty)
-                            Text(metadata.description, maxLines: 5),
-                        ],
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 20, 12, 12),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              metadata.name,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: theme.textTheme.headlineSmall?.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            if (metadata.description.isNotEmpty) ...[
+                              const SizedBox(height: 2),
+                              Text(
+                                metadata.description,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  color: scheme.onSurfaceVariant,
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
                       ),
-                    ),
-                    onTap: () {
-                      final bloc = context.read<WorldBloc>();
-                      showLeapBottomSheet(
-                        context: context,
-                        titleBuilder: (context) => Text(metadata.name),
-                        actionsBuilder: (context) => [
-                          IconButton(
-                            icon: const Icon(PhosphorIconsLight.pencil),
-                            tooltip: AppLocalizations.of(context).editInfo,
-                            onPressed: () async {
-                              final newInfo = await showDialog<FileMetadata>(
-                                context: context,
-                                builder: (context) => BlocProvider.value(
-                                  value: bloc,
-                                  child: EditInfoDialog(value: metadata),
-                                ),
-                              );
-                              if (newInfo == null) return;
-                              bloc.process(
-                                MetadataChanged(
-                                  newInfo.copyWith(type: metadata.type),
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                        childrenBuilder: (context) => [
-                          BlocBuilder<WorldBloc, ClientWorldState>(
-                            bloc: bloc,
-                            buildWhen: (previous, current) =>
-                                previous.metadata != current.metadata,
-                            builder: (context, state) =>
-                                Text(state.metadata.description),
-                          ),
-                        ],
-                      );
-                    },
+                      IconButton(
+                        tooltip: AppLocalizations.of(context).editInfo,
+                        icon: const Icon(PhosphorIconsLight.pencilSimple),
+                        onPressed: () async {
+                          final bloc = context.read<WorldBloc>();
+                          final newInfo = await showDialog<FileMetadata>(
+                            context: context,
+                            builder: (context) => BlocProvider.value(
+                              value: bloc,
+                              child: EditInfoDialog(value: metadata),
+                            ),
+                          );
+                          if (newInfo == null) return;
+                          bloc.process(
+                            MetadataChanged(
+                              newInfo.copyWith(type: metadata.type),
+                            ),
+                          );
+                        },
+                      ),
+                      IconButton(
+                        tooltip: AppLocalizations.of(context).close,
+                        icon: const Icon(PhosphorIconsLight.x),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                    ],
                   ),
                 );
               },
@@ -122,39 +134,51 @@ class GameDrawer extends StatelessWidget {
                     return FutureBuilder<String>(
                       future: address,
                       builder: (context, snapshot) {
-                        return Card.filled(
-                          clipBehavior: Clip.antiAlias,
-                          child: InkWell(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  Text(
-                                    AppLocalizations.of(context).address,
-                                    textAlign: TextAlign.center,
-                                    style: theme.textTheme.headlineSmall,
-                                  ),
-                                  if (snapshot.hasData)
-                                    Text(snapshot.data!, maxLines: 5),
-                                ],
+                        if (!snapshot.hasData) {
+                          return const SizedBox.shrink();
+                        }
+                        return Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 24),
+                          padding: const EdgeInsets.only(left: 14),
+                          decoration: BoxDecoration(
+                            color: scheme.surfaceContainerHighest,
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                PhosphorIconsLight.broadcast,
+                                size: 18,
+                                color: scheme.onSurfaceVariant,
                               ),
-                            ),
-                            onTap: () {
-                              if (snapshot.hasData) {
-                                Clipboard.setData(
-                                  ClipboardData(text: snapshot.data!),
-                                );
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      LeapLocalizations.of(context).copyMessage,
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  snapshot.data!,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: theme.textTheme.bodySmall,
+                                ),
+                              ),
+                              IconButton(
+                                tooltip: LeapLocalizations.of(context)
+                                    .copyMessage,
+                                icon: const Icon(PhosphorIconsLight.copy),
+                                onPressed: () {
+                                  Clipboard.setData(
+                                    ClipboardData(text: snapshot.data!),
+                                  );
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        LeapLocalizations.of(context)
+                                            .copyMessage,
+                                      ),
                                     ),
-                                  ),
-                                );
-                              }
-                            },
+                                  );
+                                },
+                              ),
+                            ],
                           ),
                         );
                       },
@@ -163,371 +187,209 @@ class GameDrawer extends StatelessWidget {
                 );
               },
             ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(PhosphorIconsLight.arrowLeft),
-              title: Text(MaterialLocalizations.of(context).backButtonTooltip),
-              onTap: () => Scaffold.of(context).closeDrawer(),
-            ),
-            BlocBuilder<WorldBloc, ClientWorldState>(
-              buildWhen: (previous, current) =>
-                  previous.switchCellOnMove != current.switchCellOnMove,
-              builder: (context, state) {
-                return SwitchListTile(
-                  value: state.switchCellOnMove,
-                  title: Text(AppLocalizations.of(context).switchCellOnMove),
-                  secondary: const Icon(PhosphorIconsLight.selection),
-                  onChanged: (value) {
-                    context.read<WorldBloc>().process(
-                      SwitchCellOnMoveChanged(value),
-                    );
-                  },
-                );
-              },
-            ),
-            BlocBuilder<WorldBloc, ClientWorldState>(
-              buildWhen: (previous, current) =>
-                  previous.showWaypoints != current.showWaypoints,
-              builder: (context, state) {
-                return Padding(
-                  padding: EdgeInsets.only(right: 24),
-                  child: AdvancedSwitchListTile(
-                    title: Text(AppLocalizations.of(context).waypoints),
-                    leading: const Icon(PhosphorIconsLight.mapPin),
-                    value: state.showWaypoints,
+            const SizedBox(height: 16),
+            ...[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: FilledButton.icon(
+                  onPressed: () => Navigator.of(context).pop(),
+                  icon: const Icon(PhosphorIconsLight.play),
+                  label: Text(
+                    MaterialLocalizations.of(context).backButtonTooltip,
+                  ),
+                  style: FilledButton.styleFrom(
+                    minimumSize: const Size.fromHeight(52),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              BlocBuilder<WorldBloc, ClientWorldState>(
+                buildWhen: (previous, current) =>
+                    previous.switchCellOnMove != current.switchCellOnMove,
+                builder: (context, state) => _TableMenuCard(
+                  emphasized: true,
+                  child: SwitchListTile(
+                    value: state.switchCellOnMove,
+                    title: Text(
+                      AppLocalizations.of(context).switchCellOnMove,
+                      style: const TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    secondary: const Icon(PhosphorIconsLight.selectionPlus),
                     onChanged: (value) => context.read<WorldBloc>().process(
-                      WaypointVisibilityChanged(value),
+                      SwitchCellOnMoveChanged(value),
                     ),
-                    onTap: () => _showWaypointsDialog(context),
                   ),
-                );
-              },
-            ),
-            BlocBuilder<SettingsCubit, SetonixSettings>(
-              buildWhen: (previous, current) => previous.zoom != current.zoom,
-              builder: (context, state) => ListTile(
-                leading: const Icon(PhosphorIconsLight.magnifyingGlass),
-                title: Text(AppLocalizations.of(context).zoom),
-                subtitle: Text('${(state.zoom * 100).toStringAsFixed(0)}%'),
-                onTap: () {
-                  final settingsCubit = context.read<SettingsCubit>();
-                  showLeapBottomSheet(
-                    context: context,
-                    titleBuilder: (context) =>
-                        Text(AppLocalizations.of(context).zoom),
-                    childrenBuilder: (context) => [
-                      ExactSlider(
-                        value: state.zoom * 100,
-                        onChangeEnd: (value) =>
-                            settingsCubit.resetZoom(value / 100),
-                        min: 40,
-                        max: 200,
-                        fractionDigits: 0,
-                      ),
-                    ],
-                  );
-                },
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      icon: const Icon(PhosphorIconsLight.minus),
-                      tooltip: AppLocalizations.of(context).zoomOut,
-                      onPressed: () => context.read<SettingsCubit>().zoomOut(),
-                    ),
-                    IconButton(
-                      icon: const Icon(PhosphorIconsLight.plus),
-                      tooltip: AppLocalizations.of(context).zoomIn,
-                      onPressed: () => context.read<SettingsCubit>().zoomIn(),
-                    ),
-                    IconButton(
-                      icon: const Icon(PhosphorIconsLight.clockClockwise),
-                      tooltip: AppLocalizations.of(context).resetZoom,
-                      onPressed: () =>
-                          context.read<SettingsCubit>().resetZoom(),
-                    ),
-                  ],
                 ),
               ),
-            ),
-            BlocBuilder<MultiplayerCubit, MultiplayerState>(
-              builder: (context, state) {
-                if (state.isClient) return SizedBox.shrink();
-                return ListTile(
-                  leading: const Icon(PhosphorIconsLight.package),
-                  title: Text(AppLocalizations.of(context).packs),
-                  onTap: () {
-                    final bloc = context.read<WorldBloc>();
-                    showDialog(
-                      builder: (context) => PacksDialog(bloc: bloc),
-                      context: context,
+              Padding(
+                padding: const EdgeInsets.fromLTRB(24, 12, 24, 8),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final buttonWidth = (constraints.maxWidth - 10) / 2;
+                    final isClient = context
+                        .read<WorldBloc>()
+                        .state
+                        .multiplayer
+                        .isClient;
+                    return Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      children: [
+                        _GameMenuOption(
+                          width: buttonWidth,
+                          icon: PhosphorIconsLight.gridFour,
+                          label: AppLocalizations.of(context).table,
+                          onPressed: () {
+                            final state = context.read<WorldBloc>().state;
+                            _showTableDialog(context, state);
+                          },
+                        ),
+                        _GameMenuOption(
+                          width: buttonWidth,
+                          icon: PhosphorIconsLight.mapPin,
+                          label: AppLocalizations.of(context).waypoints,
+                          onPressed: () => _showWaypointsDialog(context),
+                        ),
+                        _GameMenuOption(
+                          width: buttonWidth,
+                          icon: PhosphorIconsLight.magnifyingGlass,
+                          label: AppLocalizations.of(context).zoom,
+                          onPressed: () => _showZoomSheet(context),
+                        ),
+                        _GameMenuOption(
+                          width: buttonWidth,
+                          icon: PhosphorIconsLight.usersThree,
+                          label: AppLocalizations.of(context).teams,
+                          onPressed: () => _showTeamsDialog(context),
+                        ),
+                        _GameMenuOption(
+                          width: isClient ? constraints.maxWidth : buttonWidth,
+                          icon: PhosphorIconsLight.gear,
+                          label: AppLocalizations.of(context).settings,
+                          onPressed: () => openSettings(context),
+                        ),
+                        if (!isClient)
+                          _GameMenuOption(
+                            width: buttonWidth,
+                            icon: PhosphorIconsLight.slidersHorizontal,
+                            label: AppLocalizations.of(context).advancedOptions,
+                            onPressed: () => _showAdvancedOptions(context),
+                          ),
+                      ],
                     );
                   },
-                );
-              },
-            ),
-            BlocBuilder<WorldBloc, ClientWorldState>(
-              buildWhen: (previous, current) =>
-                  previous.tableName != current.tableName,
-              builder: (context, state) => ListTile(
-                leading: const Icon(PhosphorIconsLight.gridFour),
-                title: Text(AppLocalizations.of(context).table),
-                subtitle: Text(
-                  state.tableName.isEmpty
-                      ? AppLocalizations.of(context).defaultTable
-                      : state.tableName,
                 ),
-                onTap: () => _showTableDialog(context, state),
               ),
-            ),
-            BlocBuilder<WorldBloc, ClientWorldState>(
-              buildWhen: (previous, current) =>
-                  previous.table.background != current.table.background,
-              builder: (context, state) {
-                final bloc = context.read<WorldBloc>();
-                final assetManager = state.assetManager;
-                final background = state.table.background;
-                return ListTile(
-                  leading: const Icon(PhosphorIconsLight.image),
-                  title: Text(AppLocalizations.of(context).background),
-                  subtitle: background == null
-                      ? null
-                      : Text(
-                          assetManager
-                              .getTranslations(background.namespace)
-                              .getBackgroundTranslation(background.id)
-                              .name,
-                        ),
-                  onTap: () => showLeapBottomSheet(
-                    context: context,
-                    titleBuilder: (context) =>
-                        Text(AppLocalizations.of(context).background),
-                    childrenBuilder: (context) => bloc.state.packs
-                        .expand((e) => e.value.getBackgroundItems(e.key))
-                        .sorted(
-                          (a, b) => b.item.priority.compareTo(a.item.priority),
-                        )
-                        .map((entry) {
-                          final translation = assetManager
-                              .getTranslations(entry.namespace)
-                              .getBackgroundTranslation(entry.id);
-                          return ListTile(
-                            title: Text(translation.name),
-                            subtitle: translation.description == null
-                                ? null
-                                : Text(translation.description!),
-                            onTap: () {
-                              bloc.process(BackgroundChanged(entry.location));
-                              Navigator.of(context).pop();
-                            },
-                            selected: background == entry.location,
-                          );
-                        })
-                        .toList(),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(24, 0, 24, 20),
+                child: ElevatedButton.icon(
+                  onPressed: widget.onHome,
+                  icon: const Icon(PhosphorIconsLight.door),
+                  label: Text(AppLocalizations.of(context).home),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: scheme.error,
+                    minimumSize: const Size.fromHeight(48),
                   ),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(PhosphorIconsLight.flag),
-              title: Text(AppLocalizations.of(context).teams),
-              onTap: () {
-                final bloc = context.read<WorldBloc>();
-                showLeapBottomSheet(
-                  context: context,
-                  titleBuilder: (context) =>
-                      Text(AppLocalizations.of(context).teams),
-                  actionsBuilder: (context) => [
-                    IconButton(
-                      icon: const Icon(PhosphorIconsLight.plusCircle),
-                      onPressed: () => showDialog(
-                        context: context,
-                        builder: (context) => BlocProvider.value(
-                          value: bloc,
-                          child: const TeamDialog(),
-                        ),
-                      ),
-                    ),
-                  ],
-                  childrenBuilder: (context) => [
-                    BlocBuilder<WorldBloc, ClientWorldState>(
-                      buildWhen: (previous, current) =>
-                          previous.info.teams != current.info.teams ||
-                          previous.teamMembers != current.teamMembers,
-                      bloc: bloc,
-                      builder: (context, state) {
-                        if (state.info.teams.isEmpty) {
-                          return Center(
-                            child: Text(AppLocalizations.of(context).noTeams),
-                          );
-                        }
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: state.info.teams.entries.map((entry) {
-                            final name = entry.key;
-                            final team = entry.value;
-                            final color = team.color;
-                            final selected =
-                                state.teamMembers[name]?.contains(state.id) ??
-                                false;
-                            return ListTile(
-                              title: Text(entry.key),
-                              leading: ColorButton(
-                                color: color?.color ?? Colors.transparent,
-                                size: 24,
-                              ),
-                              selected: selected,
-                              trailing: MenuAnchor(
-                                builder: defaultMenuButton(),
-                                menuChildren: [
-                                  MenuItemButton(
-                                    leadingIcon: const Icon(
-                                      PhosphorIconsLight.pencil,
-                                    ),
-                                    child: Text(
-                                      AppLocalizations.of(context).edit,
-                                    ),
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) =>
-                                            BlocProvider.value(
-                                              value: bloc,
-                                              child: TeamDialog(
-                                                team: name,
-                                                data: team,
-                                              ),
-                                            ),
-                                      );
-                                    },
-                                  ),
-                                  MenuItemButton(
-                                    leadingIcon: const Icon(
-                                      PhosphorIconsLight.trash,
-                                    ),
-                                    child: Text(
-                                      AppLocalizations.of(context).delete,
-                                    ),
-                                    onPressed: () {
-                                      bloc.process(TeamRemoved(name));
-                                    },
-                                  ),
-                                ],
-                              ),
-                              onTap: () {
-                                if (selected) {
-                                  bloc.process(TeamLeaveRequest(name));
-                                } else {
-                                  bloc.process(TeamJoinRequest(name));
-                                }
-                              },
-                            );
-                          }).toList(),
-                        );
-                      },
-                    ),
-                  ],
-                );
-              },
-            ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(PhosphorIconsLight.users),
-              title: Text(AppLocalizations.of(context).multiplayer),
-              onTap: () {
-                Scaffold.of(context).closeDrawer();
-                final multiplayer = context.read<MultiplayerCubit>();
-                final world = context.read<WorldBloc>();
-                showDialog(
-                  context: context,
-                  builder: (context) => MultiBlocProvider(
-                    providers: [
-                      BlocProvider.value(value: multiplayer),
-                      BlocProvider.value(value: world),
-                    ],
-                    child: const MultiplayerDialog(),
-                  ),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(PhosphorIconsLight.chat),
-              title: Text(AppLocalizations.of(context).chat),
-              onTap: () {
-                context.read<WorldBloc>().process(
-                  DrawerViewChanged(DrawerView.chat),
-                );
-                Scaffold.of(context).openEndDrawer();
-              },
-            ),
-            ListTile(
-              leading: const Icon(PhosphorIconsLight.file),
-              title: Text(AppLocalizations.of(context).notes),
-              onTap: () {
-                context.read<WorldBloc>().process(
-                  DrawerViewChanged(DrawerView.notes),
-                );
-                Scaffold.of(context).openEndDrawer();
-              },
-            ),
-            ListTile(
-              leading: const Icon(PhosphorIconsLight.fileArchive),
-              title: Text(AppLocalizations.of(context).saveAsTemplate),
-              onTap: () async {
-                final bloc = context.read<WorldBloc>();
-                String name = '';
-                final result = await showDialog<bool>(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text(AppLocalizations.of(context).saveAsTemplate),
-                    content: TextField(
-                      decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context).name,
-                        hintText: AppLocalizations.of(context).enterName,
-                        filled: true,
-                      ),
-                      onChanged: (value) => name = value,
-                      onSubmitted: (value) => Navigator.of(context).pop(true),
-                      autofocus: true,
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: Text(AppLocalizations.of(context).cancel),
-                      ),
-                      ElevatedButton(
-                        onPressed: () => Navigator.of(context).pop(true),
-                        child: Text(AppLocalizations.of(context).save),
-                      ),
-                    ],
-                  ),
-                );
-                if (!(result ?? false)) return;
-                final state = bloc.state;
-                var data = state.world.save();
-                data = data.setMetadata(
-                  data.getMetadataOrDefault().copyWith(
-                    name: name,
-                    type: SetonixFileType.template,
-                  ),
-                );
-                state.fileSystem.templateSystem.createFile(name, data);
-              },
-            ),
-            ListTile(
-              leading: const Icon(PhosphorIconsLight.gear),
-              title: Text(AppLocalizations.of(context).settings),
-              onTap: () => openSettings(context),
-            ),
-            ListTile(
-              leading: const Icon(PhosphorIconsLight.door),
-              title: Text(AppLocalizations.of(context).home),
-              onTap: onHome,
-            ),
+                ),
+              ),
+            ],
           ],
         ),
       ),
     );
+  }
+
+  void _showZoomSheet(BuildContext context) {
+    final settingsCubit = context.read<SettingsCubit>();
+    showLeapBottomSheet(
+      context: context,
+      titleBuilder: (context) => Text(AppLocalizations.of(context).zoom),
+      childrenBuilder: (context) => [
+        BlocBuilder<SettingsCubit, SetonixSettings>(
+          bloc: settingsCubit,
+          buildWhen: (previous, current) => previous.zoom != current.zoom,
+          builder: (context, state) => Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: ExactSlider(
+              value: state.zoom * 100,
+              onChangeEnd: (value) => settingsCubit.resetZoom(value / 100),
+              min: 40,
+              max: 200,
+              fractionDigits: 0,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _showAdvancedOptions(BuildContext context) {
+    final bloc = context.read<WorldBloc>();
+    showLeapBottomSheet(
+      context: context,
+      titleBuilder: (context) =>
+          Text(AppLocalizations.of(context).advancedOptions),
+      childrenBuilder: (context) => [
+        ListTile(
+          leading: const Icon(PhosphorIconsLight.package),
+          title: Text(AppLocalizations.of(context).packs),
+          trailing: const Icon(PhosphorIconsLight.caretRight),
+          onTap: () => showDialog<void>(
+            context: context,
+            builder: (context) => PacksDialog(bloc: bloc),
+          ),
+        ),
+        ListTile(
+          leading: const Icon(PhosphorIconsLight.fileArchive),
+          title: Text(AppLocalizations.of(context).saveAsTemplate),
+          trailing: const Icon(PhosphorIconsLight.caretRight),
+          onTap: () => _saveAsTemplate(context, bloc),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _saveAsTemplate(BuildContext context, WorldBloc bloc) async {
+    String name = '';
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(AppLocalizations.of(context).saveAsTemplate),
+        content: TextField(
+          decoration: InputDecoration(
+            labelText: AppLocalizations.of(context).name,
+            hintText: AppLocalizations.of(context).enterName,
+            filled: true,
+          ),
+          autofocus: true,
+          onChanged: (value) => name = value,
+          onSubmitted: (_) => Navigator.of(context).pop(true),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(AppLocalizations.of(context).cancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(AppLocalizations.of(context).save),
+          ),
+        ],
+      ),
+    );
+    if (!(result ?? false) || name.trim().isEmpty) return;
+    final state = bloc.state;
+    var data = state.world.save();
+    data = data.setMetadata(
+      data.getMetadataOrDefault().copyWith(
+        name: name.trim(),
+        type: SetonixFileType.template,
+      ),
+    );
+    state.fileSystem.templateSystem.createFile(name.trim(), data);
   }
 
   void _showTableDialog(BuildContext context, ClientWorldState state) {
@@ -685,8 +547,7 @@ class GameDrawer extends StatelessWidget {
           trailing: button,
           onTap: () {
             Navigator.of(ctx).pop();
-            game.teleport(waypoint.position);
-            Scaffold.of(context).closeDrawer();
+            widget.game.teleport(waypoint.position);
           },
         ),
         menuChildren: [
@@ -718,6 +579,19 @@ class GameDrawer extends StatelessWidget {
       context: context,
       titleBuilder: (context) => Text(AppLocalizations.of(context).waypoints),
       childrenBuilder: (context) => [
+        BlocBuilder<WorldBloc, ClientWorldState>(
+          bloc: bloc,
+          buildWhen: (previous, current) =>
+              previous.showWaypoints != current.showWaypoints,
+          builder: (context, state) => SwitchListTile(
+            value: state.showWaypoints,
+            title: Text(AppLocalizations.of(context).waypoints),
+            secondary: const Icon(PhosphorIconsLight.mapPin),
+            onChanged: (value) =>
+                bloc.process(WaypointVisibilityChanged(value)),
+          ),
+        ),
+        const Divider(),
         StatefulBuilder(
           builder: (context, setLocalState) {
             return BlocBuilder<WorldBloc, ClientWorldState>(
@@ -785,6 +659,133 @@ class GameDrawer extends StatelessWidget {
           },
         ),
       ],
+    );
+  }
+
+  void _showTeamsDialog(BuildContext context) {
+    final bloc = context.read<WorldBloc>();
+    showLeapBottomSheet(
+      context: context,
+      titleBuilder: (context) => Text(AppLocalizations.of(context).teams),
+      actionsBuilder: (context) => [
+        IconButton(
+          icon: const Icon(PhosphorIconsLight.plusCircle),
+          onPressed: () => showDialog(
+            context: context,
+            builder: (context) =>
+                BlocProvider.value(value: bloc, child: const TeamDialog()),
+          ),
+        ),
+      ],
+      childrenBuilder: (context) => [
+        BlocBuilder<WorldBloc, ClientWorldState>(
+          bloc: bloc,
+          buildWhen: (previous, current) =>
+              previous.info.teams != current.info.teams ||
+              previous.teamMembers != current.teamMembers,
+          builder: (context, state) {
+            if (state.info.teams.isEmpty) {
+              return Center(child: Text(AppLocalizations.of(context).noTeams));
+            }
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: state.info.teams.entries.map((entry) {
+                final name = entry.key;
+                final team = entry.value;
+                final selected =
+                    state.teamMembers[name]?.contains(state.id) ?? false;
+                return ListTile(
+                  title: Text(name),
+                  leading: ColorButton(
+                    color: team.color?.color ?? Colors.transparent,
+                    size: 24,
+                  ),
+                  selected: selected,
+                  trailing: MenuAnchor(
+                    builder: defaultMenuButton(),
+                    menuChildren: [
+                      MenuItemButton(
+                        leadingIcon: const Icon(PhosphorIconsLight.pencil),
+                        child: Text(AppLocalizations.of(context).edit),
+                        onPressed: () => showDialog(
+                          context: context,
+                          builder: (context) => BlocProvider.value(
+                            value: bloc,
+                            child: TeamDialog(team: name, data: team),
+                          ),
+                        ),
+                      ),
+                      MenuItemButton(
+                        leadingIcon: const Icon(PhosphorIconsLight.trash),
+                        child: Text(AppLocalizations.of(context).delete),
+                        onPressed: () => bloc.process(TeamRemoved(name)),
+                      ),
+                    ],
+                  ),
+                  onTap: () => bloc.process(
+                    selected ? TeamLeaveRequest(name) : TeamJoinRequest(name),
+                  ),
+                );
+              }).toList(),
+            );
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class _GameMenuOption extends StatelessWidget {
+  final double width;
+  final IconData icon;
+  final String label;
+  final VoidCallback onPressed;
+
+  const _GameMenuOption({
+    required this.width,
+    required this.icon,
+    required this.label,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: width,
+      height: 60,
+      child: FilledButton.tonalIcon(
+        onPressed: onPressed,
+        icon: Icon(icon),
+        label: Text(label, textAlign: TextAlign.center),
+        style: FilledButton.styleFrom(
+          alignment: Alignment.centerLeft,
+          padding: const EdgeInsets.symmetric(horizontal: 18),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TableMenuCard extends StatelessWidget {
+  final Widget child;
+  final bool emphasized;
+
+  const _TableMenuCard({required this.child, this.emphasized = false});
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 3),
+      child: Card.filled(
+        margin: EdgeInsets.zero,
+        clipBehavior: Clip.antiAlias,
+        color: emphasized ? scheme.primaryContainer : null,
+        child: child,
+      ),
     );
   }
 }

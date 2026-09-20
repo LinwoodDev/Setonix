@@ -19,6 +19,7 @@ import 'package:setonix_api/setonix_api.dart';
 class BoardGame extends FlameGame
     with ScrollCallbacks, KeyboardEvents, HasCollisionDetection, ScaleDetector {
   final VoidCallback onEscape;
+  final VoidCallback onChat;
   final ContextMenuController contextMenuController;
   late final Sprite selectionSprite, blankSprite;
   late final GameHand _hand;
@@ -33,6 +34,7 @@ class BoardGame extends FlameGame
     required this.bloc,
     required this.contextMenuController,
     required this.onEscape,
+    required this.onChat,
     required this.settingsCubit,
   });
 
@@ -169,6 +171,9 @@ class BoardGame extends FlameGame
         handled = true;
       case LogicalKeyboardKey.tab:
         if (event is KeyDownEvent) bloc.add(HandChanged.toggle());
+        handled = true;
+      case LogicalKeyboardKey.keyT:
+        if (event is KeyDownEvent) onChat();
         handled = true;
       case LogicalKeyboardKey.shiftLeft:
         if (event is KeyDownEvent) _isShifting = true;
