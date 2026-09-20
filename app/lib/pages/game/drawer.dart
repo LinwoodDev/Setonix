@@ -399,6 +399,11 @@ class _GameMenuDialogState extends State<GameMenuDialog> {
       titleBuilder: (context) => Text(AppLocalizations.of(context).table),
       actionsBuilder: (context) => [
         IconButton(
+          icon: const Icon(PhosphorIconsLight.pencil),
+          tooltip: AppLocalizations.of(context).edit,
+          onPressed: () => _showTableBoundsDialog(context, bloc),
+        ),
+        IconButton(
           icon: const Icon(PhosphorIconsLight.arrowsLeftRight),
           tooltip: AppLocalizations.of(context).switchTable,
           onPressed: () async {
@@ -471,9 +476,7 @@ class _GameMenuDialogState extends State<GameMenuDialog> {
                             final result = await showDialog<bool>(
                               context: context,
                               builder: (context) => AlertDialog(
-                                title: Text(
-                                  AppLocalizations.of(context).background,
-                                ),
+                                title: Text(AppLocalizations.of(context).table),
                                 content: TextFormField(
                                   decoration: InputDecoration(
                                     labelText: AppLocalizations.of(context)
@@ -531,6 +534,93 @@ class _GameMenuDialogState extends State<GameMenuDialog> {
         ),
       ],
     );
+  }
+
+  Future<void> _showTableBoundsDialog(
+    BuildContext context,
+    WorldBloc bloc,
+  ) async {
+    final table = bloc.state.table;
+    VectorDefinition? minCell = table.minCell;
+    VectorDefinition? maxCell = table.maxCell;
+    final minController = TextEditingController(
+      text: minCell?.toDisplayString(),
+    );
+    final maxController = TextEditingController(
+      text: maxCell?.toDisplayString(),
+    );
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(AppLocalizations.of(context).table),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: minController,
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context).minCell,
+                helperText: '(x, y)',
+                filled: true,
+              ),
+              onChanged: (value) {
+                final parsed = _parseCell(value);
+                if (value.trim().isEmpty || parsed != null) {
+                  minCell = parsed;
+                }
+              },
+            ),
+            const SizedBox(height: 8),
+            TextField(
+              controller: maxController,
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context).maxCell,
+                helperText: '(x, y)',
+                filled: true,
+              ),
+              onChanged: (value) {
+                final parsed = _parseCell(value);
+                if (value.trim().isEmpty || parsed != null) {
+                  maxCell = parsed;
+                }
+              },
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(AppLocalizations.of(context).cancel),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(AppLocalizations.of(context).save),
+          ),
+        ],
+      ),
+    );
+    minController.dispose();
+    maxController.dispose();
+    if (!(result ?? false)) return;
+    bloc.process(
+      TableBoundsChanged(
+        bloc.state.tableName,
+        minCell: minCell,
+        maxCell: maxCell,
+      ),
+    );
+  }
+
+  VectorDefinition? _parseCell(String value) {
+    final trimmed = value.trim();
+    if (trimmed.isEmpty) return null;
+    try {
+      return VectorDefinition.fromDisplay(trimmed);
+    } on FormatException {
+      return null;
+    } on RangeError {
+      return null;
+    }
   }
 
   void _showWaypointsDialog(BuildContext context) {

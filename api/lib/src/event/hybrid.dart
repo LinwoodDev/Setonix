@@ -22,6 +22,15 @@ final class BackgroundChanged extends HybridWorldEvent
 }
 
 @MappableClass()
+final class TableBoundsChanged extends HybridWorldEvent
+    with TableBoundsChangedMappable {
+  final String table;
+  final VectorDefinition? minCell, maxCell;
+
+  TableBoundsChanged(this.table, {this.minCell, this.maxCell});
+}
+
+@MappableClass()
 final class ObjectsSpawned extends HybridWorldEvent
     with ObjectsSpawnedMappable {
   final String table;

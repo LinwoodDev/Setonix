@@ -410,6 +410,26 @@ class _ModeTableEditorDialogState extends State<_ModeTableEditorDialog> {
             onChanged: (val) => _id = val,
           ),
           const SizedBox(height: 8),
+          TextFormField(
+            decoration: InputDecoration(
+              labelText: AppLocalizations.of(context).minCell,
+              helperText: '(x, y)',
+              filled: true,
+            ),
+            initialValue: _table.minCell?.toDisplayString(),
+            onChanged: (value) => _updateCellBound(value, min: true),
+          ),
+          const SizedBox(height: 8),
+          TextFormField(
+            decoration: InputDecoration(
+              labelText: AppLocalizations.of(context).maxCell,
+              helperText: '(x, y)',
+              filled: true,
+            ),
+            initialValue: _table.maxCell?.toDisplayString(),
+            onChanged: (value) => _updateCellBound(value, min: false),
+          ),
+          const SizedBox(height: 8),
           BlocBuilder<EditorCubit, SetonixData>(
             builder: (context, state) {
               final backgrounds = state.getBackgrounds().toList();
@@ -456,5 +476,29 @@ class _ModeTableEditorDialogState extends State<_ModeTableEditorDialog> {
         ),
       ],
     );
+  }
+
+  void _updateCellBound(String value, {required bool min}) {
+    final trimmed = value.trim();
+    if (trimmed.isEmpty) {
+      setState(() {
+        _table = min
+            ? _table.copyWith(minCell: null)
+            : _table.copyWith(maxCell: null);
+      });
+      return;
+    }
+    try {
+      final cell = VectorDefinition.fromDisplay(trimmed);
+      setState(() {
+        _table = min
+            ? _table.copyWith(minCell: cell)
+            : _table.copyWith(maxCell: cell);
+      });
+    } on FormatException {
+      // Keep the last valid bound until the coordinate input is complete.
+    } on RangeError {
+      // Keep the last valid bound until the coordinate input is complete.
+    }
   }
 }

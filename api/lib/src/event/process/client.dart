@@ -21,6 +21,21 @@ bool _isPlausibleBanExpiry(DateTime? expiresAt) {
   return expiresAt.isAfter(now) && !expiresAt.isAfter(now.add(_maxBanDuration));
 }
 
+bool _containsCell(WorldState state, String table, VectorDefinition cell) =>
+    state.getTableOrDefault(table).containsCell(cell);
+
+bool _hasTable(WorldState state, String table) =>
+    table == state.tableName || state.data.getTable(table) != null;
+
+bool _canMerge(WorldState state, CellMergeStrategyChanged event) {
+  final table = state.getTableOrDefault(event.cell.table);
+  final strategy = event.strategy;
+  if (strategy is! LayoutCellMergeStrategy) {
+    return table.containsCell(event.cell.position);
+  }
+  return table.canMerge(event.cell.position, strategy.direction, event.span);
+}
+
 bool isValidClientEvent(
   WorldEvent event,
   Channel channel,
@@ -36,28 +51,37 @@ bool isValidClientEvent(
     _isReasonableIdentifier(event.team) &&
         state.info.teams.containsKey(event.team),
   CellRollRequest() =>
-    event.object?.inRange(
-          0,
-          state
-                  .getTableOrDefault(event.cell.table)
-                  .getCell(event.cell.position)
-                  .objects
-                  .length -
-              1,
-        ) ??
-        true,
+    _containsCell(state, event.cell.table, event.cell.position) &&
+        (event.object?.inRange(
+              0,
+              state
+                      .getTableOrDefault(event.cell.table)
+                      .getCell(event.cell.position)
+                      .objects
+                      .length -
+                  1,
+            ) ??
+            true),
   ShuffleCellRequest() =>
-    state
-        .getTableOrDefault(event.cell.table)
-        .cells
-        .containsKey(event.cell.position),
-  ObjectsSpawned() => event.objects.values.expand((e) => e).every((e) {
-    final figure = assetManager.getFigure(e.asset);
-    return figure != null &&
-        (e.variation == null || figure.variations.containsKey(e.variation));
-  }),
+    _containsCell(state, event.cell.table, event.cell.position) &&
+        state
+            .getTableOrDefault(event.cell.table)
+            .cells
+            .containsKey(event.cell.position),
+  ObjectsSpawned() =>
+    event.objects.keys.every(
+          (cell) => _containsCell(state, event.table, cell),
+        ) &&
+        event.objects.values.expand((e) => e).every((e) {
+          final figure = assetManager.getFigure(e.asset);
+          return figure != null &&
+              (e.variation == null ||
+                  figure.variations.containsKey(e.variation));
+        }),
   ObjectsMoved() =>
-    event.from != event.to &&
+    _containsCell(state, event.table, event.from) &&
+        _containsCell(state, event.table, event.to) &&
+        event.from != event.to &&
         event.objects.every(
           (e) => e.inRange(
             0,
@@ -70,7 +94,19 @@ bool isValidClientEvent(
           ),
         ),
   CellHideChanged() =>
-    event.object?.inRange(
+    _containsCell(state, event.cell.table, event.cell.position) &&
+        (event.object?.inRange(
+              0,
+              state
+                      .getTableOrDefault(event.cell.table)
+                      .getCell(event.cell.position)
+                      .objects
+                      .length -
+                  1,
+            ) ??
+            true),
+  ObjectIndexChanged() =>
+    event.index.inRange(
           0,
           state
                   .getTableOrDefault(event.cell.table)
@@ -78,17 +114,10 @@ bool isValidClientEvent(
                   .objects
                   .length -
               1,
-        ) ??
-        true,
-  ObjectIndexChanged() => event.index.inRange(
-    0,
-    state
-            .getTableOrDefault(event.cell.table)
-            .getCell(event.cell.position)
-            .objects
-            .length -
-        1,
-  ),
+        ) &&
+        _containsCell(state, event.cell.table, event.cell.position),
+  CellMergeStrategyChanged() => _canMerge(state, event),
+  TableBoundsChanged() => _hasTable(state, event.table),
   TeamRemoved() => state.info.teams.containsKey(event.team),
   PacksChangeRequest() =>
     (channel == kAuthorityChannel || allowManagementRequests) &&
@@ -123,9 +152,14 @@ bool isValidClientEvent(
   BoardsSpawnRequest() =>
     _isReasonableIdentifier(event.table) &&
         event.assets.length <= _maxBoardsPerRequest &&
-        event.assets.values.expand((e) => e).length <= _maxBoardsPerRequest,
+        event.assets.values.expand((e) => e).length <= _maxBoardsPerRequest &&
+        event.assets.keys.every(
+          (cell) => _containsCell(state, event.table, cell),
+        ),
   BoardMoveRequest() =>
     _isReasonableIdentifier(event.table) &&
+        _containsCell(state, event.table, event.from) &&
+        _containsCell(state, event.table, event.to) &&
         event.from != event.to &&
         event.index.inRange(
           0,

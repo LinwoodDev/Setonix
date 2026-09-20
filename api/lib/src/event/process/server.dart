@@ -3,6 +3,21 @@ import 'package:dart_leap/dart_leap.dart';
 import 'package:networker/networker.dart';
 import 'package:setonix_api/setonix_api.dart';
 
+bool _containsCell(WorldState state, String table, VectorDefinition cell) =>
+    state.getTableOrDefault(table).containsCell(cell);
+
+bool _hasTable(WorldState state, String table) =>
+    table == state.tableName || state.data.getTable(table) != null;
+
+bool _canMerge(WorldState state, CellMergeStrategyChanged event) {
+  final table = state.getTableOrDefault(event.cell.table);
+  final strategy = event.strategy;
+  if (strategy is! LayoutCellMergeStrategy) {
+    return table.containsCell(event.cell.position);
+  }
+  return table.canMerge(event.cell.position, strategy.direction, event.span);
+}
+
 bool isValidServerEvent(ServerWorldEvent event, WorldState state) =>
     switch (event) {
       WorldInitialized() =>
@@ -14,19 +29,23 @@ bool isValidServerEvent(ServerWorldEvent event, WorldState state) =>
       TeamJoined() => state.info.teams.containsKey(event.team),
       TeamLeft() => state.info.teams.containsKey(event.team),
       GameRolesChanged() => event.roles.every((role) => role.isNotEmpty),
-      CellShuffled() => event.positions.every(
-        (e) => e.inRange(
-          0,
-          state
-                  .getTableOrDefault(event.cell.table)
-                  .getCell(event.cell.position)
-                  .objects
-                  .length -
-              1,
-        ),
-      ),
+      CellShuffled() =>
+        _containsCell(state, event.cell.table, event.cell.position) &&
+            event.positions.every(
+              (e) => e.inRange(
+                0,
+                state
+                        .getTableOrDefault(event.cell.table)
+                        .getCell(event.cell.position)
+                        .objects
+                        .length -
+                    1,
+              ),
+            ),
       ObjectsMoved() =>
-        event.from != event.to &&
+        _containsCell(state, event.table, event.from) &&
+            _containsCell(state, event.table, event.to) &&
+            event.from != event.to &&
             event.objects.every(
               (e) => e.inRange(
                 0,
@@ -39,7 +58,19 @@ bool isValidServerEvent(ServerWorldEvent event, WorldState state) =>
               ),
             ),
       CellHideChanged() =>
-        event.object?.inRange(
+        _containsCell(state, event.cell.table, event.cell.position) &&
+            (event.object?.inRange(
+                  0,
+                  state
+                          .getTableOrDefault(event.cell.table)
+                          .getCell(event.cell.position)
+                          .objects
+                          .length -
+                      1,
+                ) ??
+                true),
+      ObjectIndexChanged() =>
+        event.index.inRange(
               0,
               state
                       .getTableOrDefault(event.cell.table)
@@ -47,19 +78,27 @@ bool isValidServerEvent(ServerWorldEvent event, WorldState state) =>
                       .objects
                       .length -
                   1,
-            ) ??
-            true,
-      ObjectIndexChanged() => event.index.inRange(
-        0,
-        state
-                .getTableOrDefault(event.cell.table)
-                .getCell(event.cell.position)
-                .objects
-                .length -
-            1,
-      ),
+            ) &&
+            _containsCell(state, event.cell.table, event.cell.position),
       CellMergeStrategyChanged() =>
-        event.span > 0 && event.span <= GameTable.maxMergeSpan,
+        event.span > 0 &&
+            event.span <= GameTable.maxMergeSpan &&
+            _canMerge(state, event),
+      TableBoundsChanged() => _hasTable(state, event.table),
+      ObjectsChanged() => _containsCell(
+        state,
+        event.cell.table,
+        event.cell.position,
+      ),
+      ObjectsSpawned() => event.objects.keys.every(
+        (cell) => _containsCell(state, event.table, cell),
+      ),
+      BoardTilesSpawned() => event.tiles.keys.every(
+        (cell) => _containsCell(state, event.table, cell),
+      ),
+      BoardTilesChanged() => event.tiles.keys.every(
+        (cell) => _containsCell(state, event.table, cell),
+      ),
       DialogOpened() => event.dialog.isValid(),
       _ => true,
     };
@@ -214,6 +253,14 @@ ServerProcessed processServerEvent(
     case BackgroundChanged():
       return ServerProcessed(
         state.copyWith.table(background: event.background),
+      );
+    case TableBoundsChanged():
+      return ServerProcessed(
+        state.mapTableOrDefault(
+          event.table,
+          (table) =>
+              table.copyWith(minCell: event.minCell, maxCell: event.maxCell),
+        ),
       );
     case ObjectsSpawned():
       return ServerProcessed(

@@ -271,6 +271,8 @@
   "createTable": "Create Table",
   "editTable": "Edit Table",
   "tableId": "Table ID",
+  "minCell": "Minimum cell",
+  "maxCell": "Maximum cell",
   "notSet": "Not set",
   "category": "Category",
   "figure": "Figure",

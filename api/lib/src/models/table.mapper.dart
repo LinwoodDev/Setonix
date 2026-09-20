@@ -47,17 +47,33 @@ class GameTableMapper extends ClassMapperBase<GameTable> {
     _$background,
     opt: true,
   );
+  static VectorDefinition? _$minCell(GameTable v) => v.minCell;
+  static const Field<GameTable, VectorDefinition> _f$minCell = Field(
+    'minCell',
+    _$minCell,
+    opt: true,
+  );
+  static VectorDefinition? _$maxCell(GameTable v) => v.maxCell;
+  static const Field<GameTable, VectorDefinition> _f$maxCell = Field(
+    'maxCell',
+    _$maxCell,
+    opt: true,
+  );
 
   @override
   final MappableFields<GameTable> fields = const {
     #cellsBox: _f$cellsBox,
     #background: _f$background,
+    #minCell: _f$minCell,
+    #maxCell: _f$maxCell,
   };
 
   static GameTable _instantiate(DecodingData data) {
     return GameTable(
       cellsBox: data.dec(_f$cellsBox),
       background: data.dec(_f$background),
+      minCell: data.dec(_f$minCell),
+      maxCell: data.dec(_f$maxCell),
     );
   }
 
@@ -131,9 +147,13 @@ abstract class GameTableCopyWith<$R, $In extends GameTable, $Out>
   >
   get cellsBox;
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get background;
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>? get minCell;
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>? get maxCell;
   $R call({
     IgnoreEqualityBox<Map<VectorDefinition, TableCell>>? cellsBox,
     ItemLocation? background,
+    VectorDefinition? minCell,
+    VectorDefinition? maxCell,
   });
   GameTableCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -159,19 +179,31 @@ class _GameTableCopyWithImpl<$R, $Out>
   ItemLocationCopyWith<$R, ItemLocation, ItemLocation>? get background =>
       $value.background?.copyWith.$chain((v) => call(background: v));
   @override
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>?
+  get minCell => $value.minCell?.copyWith.$chain((v) => call(minCell: v));
+  @override
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>?
+  get maxCell => $value.maxCell?.copyWith.$chain((v) => call(maxCell: v));
+  @override
   $R call({
     IgnoreEqualityBox<Map<VectorDefinition, TableCell>>? cellsBox,
     Object? background = $none,
+    Object? minCell = $none,
+    Object? maxCell = $none,
   }) => $apply(
     FieldCopyWithData({
       if (cellsBox != null) #cellsBox: cellsBox,
       if (background != $none) #background: background,
+      if (minCell != $none) #minCell: minCell,
+      if (maxCell != $none) #maxCell: maxCell,
     }),
   );
   @override
   GameTable $make(CopyWithData data) => GameTable(
     cellsBox: data.get(#cellsBox, or: $value.cellsBox),
     background: data.get(#background, or: $value.background),
+    minCell: data.get(#minCell, or: $value.minCell),
+    maxCell: data.get(#maxCell, or: $value.maxCell),
   );
 
   @override

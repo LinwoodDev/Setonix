@@ -5777,6 +5777,7 @@ class HybridWorldEventMapper extends SubClassMapperBase<HybridWorldEvent> {
       WorldEventMapper.ensureInitialized().addSubMapper(_instance!);
       CellSwitchedMapper.ensureInitialized();
       BackgroundChangedMapper.ensureInitialized();
+      TableBoundsChangedMapper.ensureInitialized();
       ObjectsSpawnedMapper.ensureInitialized();
       ObjectsMovedMapper.ensureInitialized();
       CellHideChangedMapper.ensureInitialized();
@@ -6160,6 +6161,188 @@ class _BackgroundChangedCopyWithImpl<$R, $Out>
   BackgroundChangedCopyWith<$R2, BackgroundChanged, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   ) => _BackgroundChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+/// @nodoc
+class TableBoundsChangedMapper extends SubClassMapperBase<TableBoundsChanged> {
+  TableBoundsChangedMapper._();
+
+  static TableBoundsChangedMapper? _instance;
+  static TableBoundsChangedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = TableBoundsChangedMapper._());
+      HybridWorldEventMapper.ensureInitialized().addSubMapper(_instance!);
+      VectorDefinitionMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'TableBoundsChanged';
+
+  static String _$table(TableBoundsChanged v) => v.table;
+  static const Field<TableBoundsChanged, String> _f$table = Field(
+    'table',
+    _$table,
+  );
+  static VectorDefinition? _$minCell(TableBoundsChanged v) => v.minCell;
+  static const Field<TableBoundsChanged, VectorDefinition> _f$minCell = Field(
+    'minCell',
+    _$minCell,
+    opt: true,
+  );
+  static VectorDefinition? _$maxCell(TableBoundsChanged v) => v.maxCell;
+  static const Field<TableBoundsChanged, VectorDefinition> _f$maxCell = Field(
+    'maxCell',
+    _$maxCell,
+    opt: true,
+  );
+
+  @override
+  final MappableFields<TableBoundsChanged> fields = const {
+    #table: _f$table,
+    #minCell: _f$minCell,
+    #maxCell: _f$maxCell,
+  };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'TableBoundsChanged';
+  @override
+  late final ClassMapperBase superMapper =
+      HybridWorldEventMapper.ensureInitialized();
+
+  static TableBoundsChanged _instantiate(DecodingData data) {
+    return TableBoundsChanged(
+      data.dec(_f$table),
+      minCell: data.dec(_f$minCell),
+      maxCell: data.dec(_f$maxCell),
+    );
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static TableBoundsChanged fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<TableBoundsChanged>(map);
+  }
+
+  static TableBoundsChanged fromJson(String json) {
+    return ensureInitialized().decodeJson<TableBoundsChanged>(json);
+  }
+}
+
+/// @nodoc
+mixin TableBoundsChangedMappable {
+  String toJson() {
+    return TableBoundsChangedMapper.ensureInitialized()
+        .encodeJson<TableBoundsChanged>(this as TableBoundsChanged);
+  }
+
+  Map<String, dynamic> toMap() {
+    return TableBoundsChangedMapper.ensureInitialized()
+        .encodeMap<TableBoundsChanged>(this as TableBoundsChanged);
+  }
+
+  TableBoundsChangedCopyWith<
+    TableBoundsChanged,
+    TableBoundsChanged,
+    TableBoundsChanged
+  >
+  get copyWith =>
+      _TableBoundsChangedCopyWithImpl<TableBoundsChanged, TableBoundsChanged>(
+        this as TableBoundsChanged,
+        $identity,
+        $identity,
+      );
+  @override
+  String toString() {
+    return TableBoundsChangedMapper.ensureInitialized().stringifyValue(
+      this as TableBoundsChanged,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return TableBoundsChangedMapper.ensureInitialized().equalsValue(
+      this as TableBoundsChanged,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return TableBoundsChangedMapper.ensureInitialized().hashValue(
+      this as TableBoundsChanged,
+    );
+  }
+}
+
+/// @nodoc
+extension TableBoundsChangedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, TableBoundsChanged, $Out> {
+  TableBoundsChangedCopyWith<$R, TableBoundsChanged, $Out>
+  get $asTableBoundsChanged => $base.as(
+    (v, t, t2) => _TableBoundsChangedCopyWithImpl<$R, $Out>(v, t, t2),
+  );
+}
+
+/// @nodoc
+abstract class TableBoundsChangedCopyWith<
+  $R,
+  $In extends TableBoundsChanged,
+  $Out
+>
+    implements HybridWorldEventCopyWith<$R, $In, $Out> {
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>? get minCell;
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>? get maxCell;
+  @override
+  $R call({
+    String? table,
+    VectorDefinition? minCell,
+    VectorDefinition? maxCell,
+  });
+  TableBoundsChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+/// @nodoc
+class _TableBoundsChangedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, TableBoundsChanged, $Out>
+    implements TableBoundsChangedCopyWith<$R, TableBoundsChanged, $Out> {
+  _TableBoundsChangedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<TableBoundsChanged> $mapper =
+      TableBoundsChangedMapper.ensureInitialized();
+  @override
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>?
+  get minCell => $value.minCell?.copyWith.$chain((v) => call(minCell: v));
+  @override
+  VectorDefinitionCopyWith<$R, VectorDefinition, VectorDefinition>?
+  get maxCell => $value.maxCell?.copyWith.$chain((v) => call(maxCell: v));
+  @override
+  $R call({String? table, Object? minCell = $none, Object? maxCell = $none}) =>
+      $apply(
+        FieldCopyWithData({
+          if (table != null) #table: table,
+          if (minCell != $none) #minCell: minCell,
+          if (maxCell != $none) #maxCell: maxCell,
+        }),
+      );
+  @override
+  TableBoundsChanged $make(CopyWithData data) => TableBoundsChanged(
+    data.get(#table, or: $value.table),
+    minCell: data.get(#minCell, or: $value.minCell),
+    maxCell: data.get(#maxCell, or: $value.maxCell),
+  );
+
+  @override
+  TableBoundsChangedCopyWith<$R2, TableBoundsChanged, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _TableBoundsChangedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 /// @nodoc
