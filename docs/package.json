@@ -25,7 +25,7 @@
     "react-dom": "^19.3.0",
     "remark-gemoji": "^8.0.0",
     "remark-heading-id": "^1.0.1",
-    "typescript": "^6.0.3"
+    "typescript": "^7.0.2"
   },
   "packageManager": "pnpm@12.8.1",
   "devDependencies": {
