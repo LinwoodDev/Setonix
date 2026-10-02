@@ -67,6 +67,25 @@ flutter pub get
 flutter run
 ```
 
+The repository contains five Dart packages: `app` (Flutter client), `api`
+(shared models and protocol), `plugin` (Dart/Rust bridge), `server` (game
+server), and `tools` (generation and release scripts). `docs` and `servers`
+are separate Astro projects, each with its own pnpm manifest and lockfile.
+
+Use the Flutter version in `app/pubspec.yaml`, the Rust toolchain pinned at
+the repository root, and each website's pinned `packageManager` version.
+Generate the core pack from the repository root before running the client:
+
+```bash
+dart pub get -C tools
+dart run tools/generate.dart
+```
+
+CI checks formatting, strict analysis, generated files, Flutter tests in
+`app`, Dart tests in `api` and `server`, and the Rust plugin. When changing
+models, run `dart run build_runner build` in each affected package and
+format its generated files before committing.
+
 All subdirectories are documented in the `app/README.md` file.
 
 Fork the project and create a pull request to add your code to the `develop` branch.

@@ -1,70 +1,81 @@
-name: Dart
+name: Dart quality
 
 on: [push, pull_request]
 
+permissions:
+  contents: read
+
+concurrency:
+  group: dart-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
-    runs-on: ubuntu-24.04
-    continue-on-error: true
+    runs-on: ubuntu-26.04
+    timeout-minutes: 30
     strategy:
+      fail-fast: false
       matrix:
         projects: [app, api, plugin, server, tools]
     defaults:
       run:
         working-directory: ${{ matrix.projects }}
     steps:
-      - name: ⬆️ Checkout
+      - name: Checkout
         uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
           cache: true
-      - uses: actions/checkout@v7
-      - name: Print Dart SDK version
+      - name: Setup Rust
+        if: matrix.projects == 'app' || matrix.projects == 'plugin' || matrix.projects == 'server'
+        uses: actions-rust-lang/setup-rust-toolchain@v2
+      - name: Install native build tools
+        if: matrix.projects == 'app' || matrix.projects == 'plugin' || matrix.projects == 'server'
         run: |
-          dart --version
-          flutter --version
-      - name: Run generate
-        working-directory: ./
-        run: |
-          cd tools
-          dart pub get
-          cd ..
-          dart run tools/generate.dart
+          sudo apt-get update
+          sudo apt-get install -y clang libclang-dev
       - name: Install dependencies
+        run: flutter pub get
+      - name: Generate core pack
+        if: matrix.projects == 'app' || matrix.projects == 'server'
+        working-directory: .
         run: |
-          flutter pub get
-      - name: Run flutter gen-l10n
+          dart pub get -C tools
+          dart run tools/generate.dart
+      - name: Generate localizations
         if: matrix.projects == 'app'
         run: |
           flutter gen-l10n
           dart format lib/src/generated
-      # Uncomment this step to verify the use of 'dart format' on each commit.
       - name: Verify formatting
         run: dart format --output=none --set-exit-if-changed .
-      # Consider passing '--fatal-infos' for slightly stricter analysis.
       - name: Analyze project source
-        run: |
-          flutter analyze --fatal-infos
-      - name: Build flutter_rust_bridge bindings
+        run: flutter analyze --fatal-infos
+      - name: Generate Rust bridge bindings
         if: matrix.projects == 'plugin'
         run: |
           cargo install flutter_rust_bridge_codegen@2.13.0 --locked
           flutter_rust_bridge_codegen generate
-      - name: Run build_runner
-        if: matrix.projects == 'api' || matrix.projects == 'app'
-        run: dart run build_runner build --delete-conflicting-outputs
-      - name: Run format for generated files
+      - name: Generate models
+        if: matrix.projects != 'tools'
+        run: dart run build_runner build
+      - name: Format generated files
+        if: matrix.projects != 'tools'
         run: dart format .
-      - name: Run cargo fmt for Rust code
+      - name: Verify Rust formatting
         if: matrix.projects == 'plugin'
-        run: |
-          cd rust
-          cargo fmt --all
-      - name: Test for git changes
+        run: cargo fmt --manifest-path rust/Cargo.toml --all
+      - name: Verify generated files are current
         run: git diff --exit-code
-      # Your project will need to have tests in test/ and a dependency on
-      # package:test for this step to succeed. Note that Flutter projects will
-      # want to change this to 'flutter test'.
-      # - name: Run tests
-      #   run: flutter test
+      - name: Run Flutter tests
+        if: matrix.projects == 'app'
+        run: flutter test
+      - name: Run Dart tests
+        if: matrix.projects == 'api' || matrix.projects == 'server'
+        run: dart test
+      - name: Run Rust tests
+        if: matrix.projects == 'plugin'
+        run: cargo test --manifest-path rust/Cargo.toml --locked

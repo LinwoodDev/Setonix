@@ -133,10 +133,10 @@ packages:
     dependency: transitive
     description:
       name: built_collection
-      sha256: "376e3dd27b51ea877c28d525560790aee2e6fbb5f20e2f85d5081027d94e2100"
+      sha256: "44922ecebd8e3d0cef743dadd3b54df4e87e2a4c52a29465a1872aa9e192caa8"
       url: "https://pub.dev"
     source: hosted
-    version: "5.1.1"
+    version: "5.1.2"
   built_value:
     dependency: transitive
     description:
@@ -245,10 +245,10 @@ packages:
     dependency: transitive
     description:
       name: cupertino_ui
-      sha256: c6747018d37d32feeeb858a1d7043831cb541460ebe1a890a995cdb8df8ea5a5
+      sha256: c23816577a1280cff409e989541767887011f8f1d8c1863a794ed308af46f2a9
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0"
+    version: "1.1.1"
   dart_leap:
     dependency: transitive
     description:
@@ -286,18 +286,18 @@ packages:
     dependency: transitive
     description:
       name: dbus
-      sha256: a48d5da28e89bd02196e80d81ed8d7954923d00a0f4a68cc20b575038f023383
+      sha256: f7db8504e715b835f5ebe5fe74604ccd961d504c73389a5d8e81bafc2e2f3612
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.15"
+    version: "0.8.0"
   device_info_plus:
     dependency: "direct main"
     description:
       name: device_info_plus
-      sha256: "0891702f96b2e465fe567b7ec448380e6b1c14f60af552a8536d9f583b6b8442"
+      sha256: ade1c36f8355d6284c98e4a47992ea263887ed3d1acb281e37635dd45f04c4aa
       url: "https://pub.dev"
     source: hosted
-    version: "13.2.0"
+    version: "13.3.0"
   device_info_plus_platform_interface:
     dependency: transitive
     description:
@@ -358,18 +358,18 @@ packages:
     dependency: transitive
     description:
       name: file_picker_darwin
-      sha256: deb3ff69d58656b885c85bc1627f09ecb79860f272a5e7577149582ede4dce5d
+      sha256: "51aef9f4c80449c736e7cc02198675fda73689f0bd45a84da642cfeab0250d46"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.0"
+    version: "2.1.2"
   file_picker_linux:
     dependency: transitive
     description:
       name: file_picker_linux
-      sha256: e7db600f50672ce5ebbe422ac0906e0f3d2a476188cc93e7126afee12bf08063
+      sha256: "9c870771500c758eb46506c98532c3ee60e6e51d0a62dcde24a849ef213ea5ce"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.0"
+    version: "2.0.1"
   file_picker_platform_interface:
     dependency: transitive
     description:
@@ -546,10 +546,10 @@ packages:
     dependency: transitive
     description:
       name: get_it
-      sha256: "568d62f0e68666fb5d95519743b3c24a34c7f19d834b0658c46e26d778461f66"
+      sha256: "2b5c6b077aad30bba9782178baff6076a2044141f1d5f2f15b43bca3fbe74874"
       url: "https://pub.dev"
     source: hosted
-    version: "9.2.1"
+    version: "9.3.0"
   glob:
     dependency: transitive
     description:
@@ -562,10 +562,10 @@ packages:
     dependency: "direct main"
     description:
       name: go_router
-      sha256: "008ab21d89d0de8ccd79586838f7533f126c2d894f50bf25f2947888d3c225b5"
+      sha256: "530dcbb298dc7c319aea9e3b7c580a61effb2abee2c93825d2dd8d5af0e230f1"
       url: "https://pub.dev"
     source: hosted
-    version: "18.0.1"
+    version: "18.0.2"
   graphs:
     dependency: transitive
     description:
@@ -650,10 +650,10 @@ packages:
     dependency: transitive
     description:
       name: jni
-      sha256: f038e58b4dc2c9037f50e233175086337e0b305e356d28211bf55f21c504cbd3
+      sha256: "6b9ca0602fef0230e83149afbe3f9f8227e94f2bbe84a1da4f14d699742f402d"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.3"
+    version: "1.1.0"
   jni_flutter:
     dependency: transitive
     description:
@@ -722,8 +722,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/lw_file_system"
-      ref: "53bd5c8cf9e6f43015838608540158698a9f114e"
-      resolved-ref: "53bd5c8cf9e6f43015838608540158698a9f114e"
+      ref: dcccf14111b0305bd1c5051a0e5ae0ed78af4439
+      resolved-ref: dcccf14111b0305bd1c5051a0e5ae0ed78af4439
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "1.0.0"
@@ -740,8 +740,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/lw_sysapi"
-      ref: cbf5d0ceea356d657457147912fe4c79280f7cd2
-      resolved-ref: cbf5d0ceea356d657457147912fe4c79280f7cd2
+      ref: dcccf14111b0305bd1c5051a0e5ae0ed78af4439
+      resolved-ref: dcccf14111b0305bd1c5051a0e5ae0ed78af4439
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "0.0.1"
@@ -781,8 +781,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/material_leap"
-      ref: af154328e0c246a4f155a4dfe50958ae5e5ab106
-      resolved-ref: af154328e0c246a4f155a4dfe50958ae5e5ab106
+      ref: dcccf14111b0305bd1c5051a0e5ae0ed78af4439
+      resolved-ref: dcccf14111b0305bd1c5051a0e5ae0ed78af4439
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "0.0.1"
@@ -790,10 +790,10 @@ packages:
     dependency: "direct main"
     description:
       name: material_ui
-      sha256: "6d056d60ce745335fcf1c726a4fc46a481a62229f202b65dbc2db5edbbabc7e2"
+      sha256: "32d98f11cf5942a095a8c3e01b03e4de3b17941437713dcf36b1088fb62e23d2"
       url: "https://pub.dev"
     source: hosted
-    version: "1.3.0"
+    version: "1.5.0"
   meta:
     dependency: transitive
     description:
@@ -838,10 +838,10 @@ packages:
     dependency: "direct main"
     description:
       name: network_info_plus
-      sha256: "096a700e2321507e2e587487a442b9baa7ba6cd4e70e3cc1ebbb8327d2632c2d"
+      sha256: "1092fa12c72e72578ae1e43eea1ffc0883f82ee0e0e24e725531168a564c52e7"
       url: "https://pub.dev"
     source: hosted
-    version: "8.2.1"
+    version: "8.2.2"
   network_info_plus_platform_interface:
     dependency: transitive
     description:
@@ -854,8 +854,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/networker/networker"
-      ref: "4e2219e6b447edbd793a692116e41362ea0954c9"
-      resolved-ref: "4e2219e6b447edbd793a692116e41362ea0954c9"
+      ref: f7ba7bc32a37ffb5e8b5f63a3b1fbbb32e567c28
+      resolved-ref: f7ba7bc32a37ffb5e8b5f63a3b1fbbb32e567c28
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "1.0.0"
@@ -863,8 +863,8 @@ packages:
     dependency: transitive
     description:
       path: "packages/networker/networker_crypto"
-      ref: db4a5c69a6928031155add4b42374be584b8e24a
-      resolved-ref: db4a5c69a6928031155add4b42374be584b8e24a
+      ref: da60928e30f783a68e2daa48911f76b67c730c09
+      resolved-ref: da60928e30f783a68e2daa48911f76b67c730c09
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "1.0.0"
@@ -872,8 +872,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/networker/networker_socket"
-      ref: db4a5c69a6928031155add4b42374be584b8e24a
-      resolved-ref: db4a5c69a6928031155add4b42374be584b8e24a
+      ref: da60928e30f783a68e2daa48911f76b67c730c09
+      resolved-ref: da60928e30f783a68e2daa48911f76b67c730c09
       url: "https://github.com/LinwoodDev/dart_pkgs.git"
     source: git
     version: "1.0.0"
@@ -881,18 +881,18 @@ packages:
     dependency: transitive
     description:
       name: nm
-      sha256: "2c9aae4127bdc8993206464fcc063611e0e36e72018696cd9631023a31b24254"
+      sha256: "2ae480aa3379716b8bb58dfebb168e2919394c92b629efaaa0baaa5d140786e6"
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.0"
+    version: "0.6.0"
   objective_c:
     dependency: transitive
     description:
       name: objective_c
-      sha256: ad56fd53a78ff6b1472fa59ff2a4e8b8ccabafc586fc263a1dfad0b99b5553e3
+      sha256: "5c80c2ad6e2c0397de5db38c6d653e69616a3397e13aa7633bf39eb668f2041b"
       url: "https://pub.dev"
     source: hosted
-    version: "9.6.0"
+    version: "9.6.2"
   ordered_set:
     dependency: transitive
     description:
@@ -913,10 +913,10 @@ packages:
     dependency: "direct main"
     description:
       name: package_info_plus
-      sha256: "127e1751e37ffb2ff4658beeaca77bad0c27bf5f932bd3a501c2296926d4b481"
+      sha256: "73ef2cd5c11a7548f9b7f6fc2a4f6113de2e64aa2a70de63feede95548822908"
       url: "https://pub.dev"
     source: hosted
-    version: "10.2.1"
+    version: "10.2.2"
   package_info_plus_platform_interface:
     dependency: transitive
     description:
@@ -993,10 +993,10 @@ packages:
     dependency: transitive
     description:
       name: petitparser
-      sha256: "91bd59303e9f769f108f8df05e371341b15d59e995e6806aefab827b58336675"
+      sha256: "2f1564aadb14215e478563b5406cb80729d022158c01dc50c96013c2f7eb4790"
       url: "https://pub.dev"
     source: hosted
-    version: "7.0.2"
+    version: "7.1.0"
   phosphor_flutter:
     dependency: "direct main"
     description:
@@ -1138,10 +1138,10 @@ packages:
     dependency: transitive
     description:
       name: sembast
-      sha256: "7a836961af5e1aefd2498bc08501737cbea75b90019d5fd6f705cb28ec9ef526"
+      sha256: a976f04d492b82b06c74b3c654795ca5bbf9b670468081a339f6035f121359a3
       url: "https://pub.dev"
     source: hosted
-    version: "3.8.10"
+    version: "3.8.11"
   setonix_api:
     dependency: "direct main"
     description:
@@ -1160,10 +1160,10 @@ packages:
     dependency: transitive
     description:
       name: share_plus
-      sha256: "34f00f9becd2743c1fb05363d624f9f70d37f7ccdcdda47450bc0b8c9d327b8c"
+      sha256: db40767f130189d53f3ae8a6393c217ff4a492da1baff718a9873679c0c00224
       url: "https://pub.dev"
     source: hosted
-    version: "13.3.0"
+    version: "13.3.1"
   share_plus_platform_interface:
     dependency: transitive
     description:
@@ -1301,8 +1301,8 @@ packages:
     dependency: "direct main"
     description:
       path: api
-      ref: "1fa4d5cdbe9dfe2145bf4f9052190a1f6c584e43"
-      resolved-ref: "1fa4d5cdbe9dfe2145bf4f9052190a1f6c584e43"
+      ref: "7ac51e6e369070cb0dbabe16364bef4ec52bda35"
+      resolved-ref: "7ac51e6e369070cb0dbabe16364bef4ec52bda35"
       url: "https://github.com/LinwoodDev/Swamp.git"
     source: git
     version: "0.1.1"
@@ -1454,10 +1454,10 @@ packages:
     dependency: transitive
     description:
       name: vector_math
-      sha256: f36f9f3be64c6198714492bb455c11056e33e2f85d9a0b676a48301e44fdcf47
+      sha256: "92b9910f66ed1057fd4da7b040ae7c74cafacf885bdc81be496928d5049b032d"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.2"
+    version: "2.4.3"
   visibility_detector:
     dependency: transitive
     description:

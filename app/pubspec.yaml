@@ -35,81 +35,81 @@ dependencies:
   material_leap:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: af154328e0c246a4f155a4dfe50958ae5e5ab106
+      ref: dcccf14111b0305bd1c5051a0e5ae0ed78af4439
       path: packages/material_leap
   flex_color_scheme: ^9.0.0
-  flutter_svg: ^2.2.0
-  window_manager: ^0.5.0
-  go_router: ^18.0.1
+  flutter_svg: ^2.3.0
+  window_manager: ^0.5.2
+  go_router: ^18.0.2
   # Database
-  shared_preferences: ^2.3.1
+  shared_preferences: ^2.5.5
   # Generation
-  barcode: ^2.2.7
+  barcode: ^2.2.9
   # Internal
-  flutter_bloc: ^9.0.0
+  flutter_bloc: ^9.1.1
   rxdart: ^0.28.0
-  collection: ^1.18.0
-  flame_bloc: ^1.12.14
-  flame: ">=1.38.0 <1.39.0"
+  collection: ^1.19.1
+  flame_bloc: ^1.12.24
+  flame: ^1.38.2
   # Networking
-  http: ^1.2.1
-  web_socket_channel: ^3.0.0
+  http: ^1.6.0
+  web_socket_channel: ^3.0.3
   networker:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 4e2219e6b447edbd793a692116e41362ea0954c9
+      ref: f7ba7bc32a37ffb5e8b5f63a3b1fbbb32e567c28
       path: packages/networker/networker
   networker_socket:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: db4a5c69a6928031155add4b42374be584b8e24a
+      ref: da60928e30f783a68e2daa48911f76b67c730c09
       path: packages/networker/networker_socket
   swamp_api:
     git:
       url: https://github.com/LinwoodDev/Swamp.git
-      ref: 1fa4d5cdbe9dfe2145bf4f9052190a1f6c584e43
+      ref: 7ac51e6e369070cb0dbabe16364bef4ec52bda35
       path: api
   # System Information
   dynamic_color: ^2.1.0
-  device_info_plus: ^13.1.0
-  package_info_plus: ^10.1.0
-  path_provider: ^2.1.4
-  url_launcher: ^6.2.6
+  device_info_plus: ^13.3.0
+  package_info_plus: ^10.2.2
+  path_provider: ^2.1.6
+  url_launcher: ^6.3.2
   flutter_secure_storage: ^11.2.0
-  file_picker: ^13.0.0
+  file_picker: ^13.1.0
   lw_file_system:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: 53bd5c8cf9e6f43015838608540158698a9f114e
+      ref: dcccf14111b0305bd1c5051a0e5ae0ed78af4439
       path: packages/lw_file_system
   lw_sysapi:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: cbf5d0ceea356d657457147912fe4c79280f7cd2
+      ref: dcccf14111b0305bd1c5051a0e5ae0ed78af4439
       path: packages/lw_sysapi
   setonix_api:
     path: ../api
   # Serialization
-  dart_mappable: ^4.2.2
-  archive: ^4.0.2
+  dart_mappable: ^4.10.0
+  archive: ^4.3.0
   markdown_widget: ^2.3.2+8
-  markdown: ^7.2.2
+  markdown: ^7.3.1
   bloc_concurrency: ^0.3.0
-  hooks: ^2.0.2
-  idb_shim: ^2.6.1+7
+  hooks: ^2.2.0
+  idb_shim: ^2.9.9
   setonix_plugin:
     path: ../plugin
   cryptography_plus: ^3.0.0
-  cryptography_flutter_plus: ^3.0.0
-  network_info_plus: ^8.1.0
-  material_ui: ^1.3.0
+  cryptography_flutter_plus: ^3.2.0
+  network_info_plus: ^8.2.2
+  material_ui: ^1.5.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner: ^2.4.9
+  build_runner: ^2.16.1
   flutter_lints: ^6.0.0
-  dart_mappable_builder: ^4.2.3
-  msix: ^3.16.10
+  dart_mappable_builder: ^4.10.0
+  msix: ^3.18.0
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter.

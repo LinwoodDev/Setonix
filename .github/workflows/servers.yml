@@ -5,10 +5,19 @@ on:
       - develop
     paths:
       - 'servers/**'
+      - '.github/workflows/servers.yml'
 name: Deploy Server List
+permissions:
+  contents: read
+
+concurrency:
+  group: servers-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-servers:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     defaults:
       run:
         working-directory: servers
@@ -17,9 +26,9 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up pnpm and Node.js
-        uses: pnpm/setup@v2.1.0
+        uses: pnpm/setup@v3.0.0
         with:
-          working-directory: docs
+          working-directory: servers
           runtime: node@26
           cache: true
           require-lockfile: true

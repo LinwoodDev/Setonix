@@ -1,4 +1,5 @@
 import { defineConfig } from "astro/config";
+import { unified } from "@astrojs/markdown-remark";
 import starlight from "@astrojs/starlight";
 import linwoodStarlight from "@linwooddev/starlight-style";
 import react from "@astrojs/react";
@@ -11,7 +12,7 @@ import manifest from "./webmanifest.json";
 export default defineConfig({
   site: "https://setonix.world",
   markdown: {
-    remarkPlugins: [remarkHeadingID, remarkGemoji],
+    processor: unified({ remarkPlugins: [remarkHeadingID, remarkGemoji] }),
   },
   integrations: [
     starlight({

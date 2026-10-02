@@ -26,7 +26,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up pnpm and Node.js
-        uses: pnpm/setup@v2.1.0
+        uses: pnpm/setup@v3.0.0
         with:
           working-directory: docs
           runtime: node@26
@@ -48,7 +48,8 @@ jobs:
           chmod 600 known_hosts
           rsync -avz --delete -e "ssh -i sftp_key -o UserKnownHostsFile=known_hosts" dist/ $SFTP_USERNAME@$SFTP_HOST:/var/www/www.setonix
   build-doc-api:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
+    timeout-minutes: 30
     defaults:
       run:
         working-directory: server

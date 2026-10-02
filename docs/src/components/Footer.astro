@@ -1,7 +1,8 @@
 ---
-import type { Props } from "@astrojs/starlight/props";
+import type { ComponentProps } from "astro/types";
 import StarlightFooter from "@astrojs/starlight/components/Footer.astro";
 import { Image } from "astro:assets";
+type Props = ComponentProps<typeof StarlightFooter>;
 ---
 
 <StarlightFooter {...Astro.props}>

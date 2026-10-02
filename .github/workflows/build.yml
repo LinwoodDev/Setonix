@@ -16,8 +16,16 @@ permissions:
   contents: read
 
 concurrency:
-  group: build-${{ github.ref }}
-  cancel-in-progress: true
+  group: build-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' || github.ref_type == 'branch' }}
+
+env:
+  # Stable branches and version tags use production branding; PRs use nightly.
+  BUILD_FLAVOR: >-
+    ${{ (github.ref == 'refs/heads/main' ||
+         github.ref == 'refs/tags/stable' ||
+         (startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, '-')))
+        && 'production' || 'nightly' }}
 
 jobs:
   build-apk:
@@ -25,6 +33,7 @@ jobs:
       run:
         working-directory: app
     runs-on: ubuntu-26.04
+    timeout-minutes: 90
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v7
@@ -34,7 +43,7 @@ jobs:
           java-version: "21"
           distribution: "temurin"
       - name: 🦀 Setup Rust
-        uses: actions-rust-lang/setup-rust-toolchain@v1
+        uses: actions-rust-lang/setup-rust-toolchain@v2
       - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
@@ -59,25 +68,30 @@ jobs:
           if [[ -n "$KEY_JKS" ]] ; then echo "$KEY_JKS" | base64 --decode > key.jks  ; fi
       #- run: flutter test
       - name: 🏭 Build nightly
-        if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.release.prerelease) }}
+        if: ${{ env.BUILD_FLAVOR == 'nightly' }}
         run: |
           flutter build apk -v --release --flavor nightly
           cp build/app/outputs/flutter-apk/app-nightly-release.apk linwood-setonix-android.apk
       - name: 🏭 Build nightly (legacy packaging)
-        if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.release.prerelease) }}
+        if: ${{ env.BUILD_FLAVOR == 'nightly' }}
         run: |
           USE_LEGACY_PACKAGING=true flutter build apk -v --release --flavor nightly
           cp build/app/outputs/flutter-apk/app-nightly-release.apk linwood-setonix-android-legacy.apk
       - name: 🏭 Build production
-        if: ${{ github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease) }}
+        if: ${{ env.BUILD_FLAVOR == 'production' }}
         run: |
           flutter build apk -v --release --flavor production
           cp build/app/outputs/flutter-apk/app-production-release.apk linwood-setonix-android.apk
       - name: 🏭 Build production (legacy packaging)
-        if: ${{ github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease) }}
+        if: ${{ env.BUILD_FLAVOR == 'production' }}
         run: |
           USE_LEGACY_PACKAGING=true flutter build apk -v --release --flavor production
           cp build/app/outputs/flutter-apk/app-production-release.apk linwood-setonix-android-legacy.apk
+      - name: Check universal APKs for 16 KB page support
+        working-directory: .
+        run: |
+          dart run tools/check_android_page_sizes.dart \
+            app/linwood-setonix-android.apk app/linwood-setonix-android-legacy.apk
       - name: Archive
         uses: actions/upload-artifact@v7
         with:
@@ -89,40 +103,54 @@ jobs:
           name: apk-build-legacy
           path: app/linwood-setonix-android-legacy.apk
       - name: 🏭 Build architecture nightly
-        if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.release.prerelease) }}
+        if: ${{ env.BUILD_FLAVOR == 'nightly' }}
         run: |
           flutter build apk -v --release --target-platform android-arm,android-arm64,android-x64 --split-per-abi --flavor nightly
           cp build/app/outputs/flutter-apk/app-armeabi-v7a-nightly-release.apk linwood-setonix-android-arm.apk
           cp build/app/outputs/flutter-apk/app-arm64-v8a-nightly-release.apk linwood-setonix-android-arm64.apk
           cp build/app/outputs/flutter-apk/app-x86_64-nightly-release.apk linwood-setonix-android-x86_64.apk
       - name: 🏭 Build architecture nightly (legacy packaging)
-        if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.release.prerelease) }}
+        if: ${{ env.BUILD_FLAVOR == 'nightly' }}
         run: |
           USE_LEGACY_PACKAGING=true flutter build apk -v --release --target-platform android-arm,android-arm64,android-x64 --split-per-abi --flavor nightly
           cp build/app/outputs/flutter-apk/app-armeabi-v7a-nightly-release.apk linwood-setonix-android-arm-legacy.apk
           cp build/app/outputs/flutter-apk/app-arm64-v8a-nightly-release.apk linwood-setonix-android-arm64-legacy.apk
           cp build/app/outputs/flutter-apk/app-x86_64-nightly-release.apk linwood-setonix-android-x86_64-legacy.apk
       - name: 🏭 Build architecture production
-        if: ${{ github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease) }}
+        if: ${{ env.BUILD_FLAVOR == 'production' }}
         run: |
           flutter build apk -v --release --target-platform android-arm,android-arm64,android-x64 --split-per-abi --flavor production
           cp build/app/outputs/flutter-apk/app-armeabi-v7a-production-release.apk linwood-setonix-android-arm.apk
           cp build/app/outputs/flutter-apk/app-arm64-v8a-production-release.apk linwood-setonix-android-arm64.apk
           cp build/app/outputs/flutter-apk/app-x86_64-production-release.apk linwood-setonix-android-x86_64.apk
       - name: 🏭 Build architecture production (legacy packaging)
-        if: ${{ github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease) }}
+        if: ${{ env.BUILD_FLAVOR == 'production' }}
         run: |
           USE_LEGACY_PACKAGING=true flutter build apk -v --release --target-platform android-arm,android-arm64,android-x64 --split-per-abi --flavor production
           cp build/app/outputs/flutter-apk/app-armeabi-v7a-production-release.apk linwood-setonix-android-arm-legacy.apk
           cp build/app/outputs/flutter-apk/app-arm64-v8a-production-release.apk linwood-setonix-android-arm64-legacy.apk
           cp build/app/outputs/flutter-apk/app-x86_64-production-release.apk linwood-setonix-android-x86_64-legacy.apk
+      - name: Check split APKs for 16 KB page support
+        working-directory: .
+        run: |
+          dart run tools/check_android_page_sizes.dart \
+            app/linwood-setonix-android-arm.apk app/linwood-setonix-android-arm-legacy.apk \
+            app/linwood-setonix-android-arm64.apk app/linwood-setonix-android-arm64-legacy.apk \
+            app/linwood-setonix-android-x86_64.apk app/linwood-setonix-android-x86_64-legacy.apk
+      - name: Build Play bundle
+        run: flutter build appbundle -v --release --flavor "$BUILD_FLAVOR"
+      - name: Check Play bundle for 16 KB page support
+        working-directory: .
+        run: |
+          dart run tools/check_android_page_sizes.dart \
+            "app/build/app/outputs/bundle/${BUILD_FLAVOR}Release/app-${BUILD_FLAVOR}-release.aab"
       - name: 📊 Analyze nightly Android arm64 size
-        if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.release.prerelease) }}
+        if: ${{ env.BUILD_FLAVOR == 'nightly' }}
         run: |
           flutter build apk -v --release --flavor nightly --target-platform android-arm64 --split-per-abi --analyze-size --code-size-directory=build/size-analysis/android-arm64-nightly
           cp "$HOME"/.flutter-devtools/apk-code-size-analysis_*.json build/size-analysis/android-arm64-nightly/
       - name: 📊 Analyze production Android arm64 size
-        if: ${{ github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease) }}
+        if: ${{ env.BUILD_FLAVOR == 'production' }}
         run: |
           flutter build apk -v --release --flavor production --target-platform android-arm64 --split-per-abi --analyze-size --code-size-directory=build/size-analysis/android-arm64-production
           cp "$HOME"/.flutter-devtools/apk-code-size-analysis_*.json build/size-analysis/android-arm64-production/
@@ -183,11 +211,10 @@ jobs:
             name: arm64
             dir: arm64
     runs-on: ${{ matrix.arch.image }}
+    timeout-minutes: 90
     defaults:
       run:
         working-directory: app
-    env:
-      BUILD_FLAVOR: ${{ (github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease)) && 'production' || 'nightly' }}
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v7
@@ -196,7 +223,7 @@ jobs:
           choco install yq
           choco install innosetup
       - name: 🦀 Setup Rust
-        uses: actions-rust-lang/setup-rust-toolchain@v1
+        uses: actions-rust-lang/setup-rust-toolchain@v2
       - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
@@ -216,12 +243,14 @@ jobs:
           dart pub get
           cd ..
           dart run tools/generate.dart
+      - name: Apply native branding
+        run: dart run ../tools/apply_branding.dart ${{ env.BUILD_FLAVOR }} windows
       - name: 🏭 Build nightly
-        if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.release.prerelease) }}
+        if: ${{ env.BUILD_FLAVOR == 'nightly' }}
         run: |
           flutter build windows -v --release --flavor nightly
       - name: 🏭 Build production
-        if: ${{ github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease) }}
+        if: ${{ env.BUILD_FLAVOR == 'production' }}
         run: |
           flutter build windows -v --release --flavor production
       - name: 📊 Analyze Windows x86_64 size
@@ -261,16 +290,15 @@ jobs:
   build-msix:
     name: build-msix
     runs-on: windows-2025
+    timeout-minutes: 90
     defaults:
       run:
         working-directory: app
-    env:
-      BUILD_FLAVOR: ${{ (github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease)) && 'production' || 'nightly' }}
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v7
       - name: 🦀 Setup Rust
-        uses: actions-rust-lang/setup-rust-toolchain@v1
+        uses: actions-rust-lang/setup-rust-toolchain@v2
       - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
@@ -285,6 +313,8 @@ jobs:
           dart pub get
           cd ..
           dart run tools/generate.dart
+      - name: Apply native branding
+        run: dart run ../tools/apply_branding.dart ${{ env.BUILD_FLAVOR }} windows
       - name: 🏭 Build MSIX
         shell: pwsh
         run: |
@@ -313,16 +343,13 @@ jobs:
             appimage: aarch64
             gdk_pixbuf_dev: libgdk-pixbuf2.0-dev
     runs-on: ${{ matrix.arch.image }}
+    timeout-minutes: 90
     defaults:
       run:
         working-directory: app
-    env:
-      BUILD_FLAVOR: ${{ (github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease)) && 'production' || 'nightly' }}
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v7
-      - name: Setup Rust
-        uses: actions-rust-lang/setup-rust-toolchain@v1
       - name: Get dependencies
         run: |
           sudo apt-get update
@@ -348,7 +375,7 @@ jobs:
             libjsoncpp-dev \
             rpm
       - name: 🦀 Setup Rust
-        uses: actions-rust-lang/setup-rust-toolchain@v1
+        uses: actions-rust-lang/setup-rust-toolchain@v2
       - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
@@ -370,12 +397,14 @@ jobs:
           dart pub get
           cd ..
           dart run tools/generate.dart
+      - name: Apply native branding
+        run: dart run ../tools/apply_branding.dart ${{ env.BUILD_FLAVOR }} linux
       - name: 🏭 Build nightly
-        if: ${{ github.ref != 'refs/tags/stable' && (github.event_name != 'release' || github.event.release.prerelease) }}
+        if: ${{ env.BUILD_FLAVOR == 'nightly' }}
         run: |
           flutter build linux -v --release --flavor nightly
       - name: 🏭 Build production
-        if: ${{ github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease) }}
+        if: ${{ env.BUILD_FLAVOR == 'production' }}
         run: |
           flutter build linux -v --release --flavor production
       - name: 📊 Analyze Linux x86_64 size
@@ -417,7 +446,7 @@ jobs:
           ln -s usr/share/icons/hicolor/256x256/apps/dev.linwood.setonix.png AppDir/dev.linwood.setonix.png
           # Build AppImage
           UPDATE_INFO="gh-releases-zsync|LinwoodDev|setonix|stable|linwood-setonix-linux-${{ matrix.arch.name }}.AppImage.zsync"
-          if [[ "${{ github.ref }}" == "refs/tags/nightly" ]]; then
+          if [[ "$BUILD_FLAVOR" == "nightly" ]]; then
             UPDATE_INFO="gh-releases-zsync|LinwoodDev|setonix|nightly|linwood-setonix-linux-${{ matrix.arch.name }}.AppImage.zsync"
           fi
           ./appimagetool.AppImage -u "$UPDATE_INFO" AppDir linwood-setonix-linux-${{ matrix.arch.name }}.AppImage
@@ -478,8 +507,7 @@ jobs:
             dir: arm64
             appimage: aarch64
     runs-on: ${{ matrix.arch.image }}
-    env:
-      BUILD_FLAVOR: ${{ (github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease)) && 'production' || 'nightly' }}
+    timeout-minutes: 90
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v7
@@ -487,6 +515,14 @@ jobs:
         run: |
           mkdir -p snap
           cp app/snapcraft.yaml snap/snapcraft.yaml
+      - name: Apply Snap nightly branding
+        if: ${{ env.BUILD_FLAVOR == 'nightly' }}
+        run: |
+          sed -i "s/title: 'Linwood Setonix'/title: 'Linwood Setonix Nightly'/" snap/snapcraft.yaml
+          sed -i 's@flutter build linux --release --verbose --target lib/main.dart@flutter build linux --release --verbose --target lib/main.dart --flavor nightly@' snap/snapcraft.yaml
+          sed -i 's@build/linux/\*/release/bundle@build/linux/*/nightly/release/bundle@' snap/snapcraft.yaml
+          sed -i 's/Name=Linwood Setonix/Name=Linwood Setonix Nightly/' app/linux/debian/usr/share/applications/dev.linwood.setonix.desktop
+          sed -i 's@<name>Linwood Setonix</name>@<name>Linwood Setonix Nightly</name>@' app/linux/debian/usr/share/metainfo/dev.linwood.setonix.appdata.xml
       - uses: snapcore/action-build@v1
         id: build
       - uses: snapcore/action-publish@v1
@@ -504,16 +540,15 @@ jobs:
           path: ${{ steps.build.outputs.snap }}
   build-macos:
     runs-on: macos-26
+    timeout-minutes: 90
     defaults:
       run:
         working-directory: app
-    env:
-      BUILD_FLAVOR: ${{ (github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease)) && 'production' || 'nightly' }}
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v7
       - name: 🦀 Setup Rust
-        uses: actions-rust-lang/setup-rust-toolchain@v1
+        uses: actions-rust-lang/setup-rust-toolchain@v2
       - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
@@ -533,6 +568,8 @@ jobs:
           dart pub get
           cd ..
           dart run tools/generate.dart
+      - name: Apply native branding
+        run: dart run ../tools/apply_branding.dart ${{ env.BUILD_FLAVOR }} macos
       - name: 🏭 Build
         run: |
           flutter build macos -v --release --dart-define=flavor=${{ env.BUILD_FLAVOR }}
@@ -566,16 +603,15 @@ jobs:
   build-ipa:
     name: build-ipa (iOS)
     runs-on: macos-26
+    timeout-minutes: 90
     defaults:
       run:
         working-directory: app
-    env:
-      BUILD_FLAVOR: ${{ (github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease)) && 'production' || 'nightly' }}
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v7
       - name: 🦀 Setup Rust
-        uses: actions-rust-lang/setup-rust-toolchain@v1
+        uses: actions-rust-lang/setup-rust-toolchain@v2
       - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
@@ -590,6 +626,8 @@ jobs:
           dart pub get
           cd ..
           dart run tools/generate.dart
+      - name: Apply native branding
+        run: dart run ../tools/apply_branding.dart ${{ env.BUILD_FLAVOR }} ios
       - name: 🏭 Build
         run: |
           flutter build ios --release --no-codesign -v --dart-define=flavor=${{ env.BUILD_FLAVOR }}
@@ -636,6 +674,7 @@ jobs:
             dir: macos_arm64
             rust: libsetonix_plugin.dylib
     runs-on: ${{ matrix.os.name }}
+    timeout-minutes: 90
     steps:
       - name: ⬆️ Checkout
         uses: actions/checkout@v7
@@ -645,6 +684,8 @@ jobs:
       - name: Install tree
         if: ${{ matrix.os.name == 'macos-latest' }}
         run: brew install tree
+      - name: Setup Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v2
       - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
@@ -733,6 +774,7 @@ jobs:
   #         tags: linwooddev/setonix:${{ env.tag }}
   deploy:
     runs-on: ubuntu-26.04
+    timeout-minutes: 90
     if: github.event_name != 'pull_request'
     permissions:
       contents: write
@@ -904,7 +946,7 @@ jobs:
 
           echo "SHA256 hashes for files starting with 'linwood-setonix' saved to $output_file"
       - name: 🚀 Deploy stable
-        if: ${{ github.ref == 'refs/tags/stable' || (github.event_name == 'release' && !github.event.release.prerelease) }}
+        if: ${{ env.BUILD_FLAVOR == 'production' }}
         uses: softprops/action-gh-release@v3
         continue-on-error: true
         with:
@@ -1026,6 +1068,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   deploy-to-play-store:
     runs-on: ubuntu-26.04
+    timeout-minutes: 90
     if: ${{ startsWith(github.ref, 'refs/tags/') }}
     defaults:
       run:
@@ -1075,7 +1118,7 @@ jobs:
       - name: Setup Fastlane
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "4.0.6"
+          ruby-version: "4.0.7"
           bundler-cache: true
           working-directory: app/android
       - name: 🚀 Deploy to Play Store
