@@ -22,7 +22,7 @@ tokio = { version = "1", features = ["sync"] }
 mlua = { version = "=0.12.1", features = ["luau", "send", "async", "anyhow", "serialize", "userdata-wrappers"] }
 
 [target.'cfg(not(target_os = "emscripten"))'.dependencies]
-flutter_rust_bridge = "=2.13.0"
+flutter_rust_bridge = "=2.14.0-beta.2"
 
 [build-dependencies]
 cc = "1"

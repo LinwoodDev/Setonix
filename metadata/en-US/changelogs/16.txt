@@ -7,5 +7,6 @@
 * Add restrictions for table size
 * Add scripting on web
 * Fix table renaming shows background dialog title
+* Fix 16kb page size on Android
 
 Read more here: https://linwood.dev/setonix/0.9.1
