@@ -8,5 +8,6 @@
 * Add scripting on web
 * Fix table renaming shows background dialog title
 * Fix 16kb page size on Android
+* Improve classic theme colors
 
 Read more here: https://linwood.dev/setonix/0.9.1

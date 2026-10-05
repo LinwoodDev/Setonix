@@ -210,9 +210,12 @@ class _GameMenuDialogState extends State<GameMenuDialog> {
                 buildWhen: (previous, current) =>
                     previous.switchCellOnMove != current.switchCellOnMove,
                 builder: (context, state) => _TableMenuCard(
-                  emphasized: true,
                   child: SwitchListTile(
                     value: state.switchCellOnMove,
+                    activeTrackColor: scheme.primary,
+                    activeThumbColor: scheme.onPrimary,
+                    inactiveTrackColor: scheme.surfaceContainerHighest,
+                    inactiveThumbColor: scheme.onSurfaceVariant,
                     title: Text(
                       AppLocalizations.of(context).switchCellOnMove,
                       style: const TextStyle(fontWeight: FontWeight.w600),
@@ -285,13 +288,16 @@ class _GameMenuDialogState extends State<GameMenuDialog> {
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(24, 0, 24, 20),
-                child: ElevatedButton.icon(
+                child: OutlinedButton.icon(
                   onPressed: widget.onHome,
                   icon: const Icon(PhosphorIconsLight.door),
                   label: Text(AppLocalizations.of(context).home),
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: scheme.error,
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: scheme.onSurface,
                     minimumSize: const Size.fromHeight(48),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
                   ),
                 ),
               ),
@@ -861,19 +867,16 @@ class _GameMenuOption extends StatelessWidget {
 
 class _TableMenuCard extends StatelessWidget {
   final Widget child;
-  final bool emphasized;
 
-  const _TableMenuCard({required this.child, this.emphasized = false});
+  const _TableMenuCard({required this.child});
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 3),
       child: Card.filled(
         margin: EdgeInsets.zero,
         clipBehavior: Clip.antiAlias,
-        color: emphasized ? scheme.primaryContainer : null,
         child: child,
       ),
     );

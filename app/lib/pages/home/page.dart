@@ -263,8 +263,8 @@ class _SidebarButton extends StatelessWidget {
       leading: Icon(selected ? icon.fill : icon.light),
       onTap: onTap,
       selected: selected,
-      selectedColor: scheme.onSurface,
-      selectedTileColor: scheme.primaryContainer.withAlpha(200),
+      selectedColor: scheme.onPrimaryContainer,
+      selectedTileColor: scheme.primaryContainer,
       shape: const BeveledRectangleBorder(
         borderRadius: BorderRadius.only(
           topRight: Radius.circular(16),

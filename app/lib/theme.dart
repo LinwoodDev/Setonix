@@ -1,8 +1,8 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:material_ui/material_ui.dart';
 
-const kClassicThemePrimary = Color(0xFFFBAC11);
-const kClassicThemeSecondary = Color(0xFF35EF53);
+const kClassicThemePrimary = Color(0xFF347DA7);
+const kClassicThemeSecondary = Color(0xFFF2C38B);
 const kClassicTheme = FlexSchemeColor(
   primary: kClassicThemePrimary,
   secondary: kClassicThemeSecondary,
@@ -26,10 +26,15 @@ ThemeData getThemeData(
 ]) {
   final color = getFlexThemeColor(name, dark);
   final override = overridden != null && name.isEmpty;
+  final classic = !override && identical(color, kClassicTheme);
   if (dark) {
     return FlexThemeData.dark(
       colors: override ? null : color,
       colorScheme: override ? overridden : null,
+      onPrimary: classic ? Colors.white : null,
+      onPrimaryContainer: classic ? Colors.white : null,
+      onSecondary: classic ? Colors.black : null,
+      onSecondaryContainer: classic ? Colors.black : null,
       useMaterial3: true,
       appBarElevation: 2,
       fontFamily: 'Comfortaa',
@@ -41,6 +46,10 @@ ThemeData getThemeData(
   return FlexThemeData.light(
     colors: override ? null : color,
     colorScheme: override ? overridden : null,
+    onPrimary: classic ? Colors.white : null,
+    onPrimaryContainer: classic ? Colors.white : null,
+    onSecondary: classic ? Colors.black : null,
+    onSecondaryContainer: classic ? Colors.black : null,
     useMaterial3: true,
     appBarElevation: 0.5,
     fontFamily: 'Comfortaa',
