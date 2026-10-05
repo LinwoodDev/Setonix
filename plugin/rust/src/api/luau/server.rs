@@ -13,13 +13,9 @@ impl LuaUserData for LuauServerUserData {
                 println!("Processing event from Luau plugin: {:?}", event_name);
                 let serialized_event = serde_json::to_string(&event).unwrap();
                 let process_event = this.0.process_event.clone();
-                flutter_rust_bridge::spawn(async move {
-                    if let Err(err) = process_event(serialized_event, force).await {
-                        eprintln!("Error processing event: {:?}", err);
-                    }
-                })
-                .await
-                .map_err(anyhow::Error::from)?;
+                process_event(serialized_event, force)
+                    .await
+                    .map_err(LuaError::external)?;
                 Ok(())
             },
         );
@@ -32,13 +28,9 @@ impl LuaUserData for LuauServerUserData {
                     "Sending event from Luau plugin to target {:?}: {:?}",
                     target, serialized_event
                 );
-                flutter_rust_bridge::spawn(async move {
-                    if let Err(err) = send_event(serialized_event, target).await {
-                        eprintln!("Error processing event: {:?}", err);
-                    }
-                })
-                .await
-                .map_err(anyhow::Error::from)?;
+                send_event(serialized_event, target)
+                    .await
+                    .map_err(LuaError::external)?;
                 Ok(())
             },
         );

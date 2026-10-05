@@ -20,7 +20,7 @@ impl LuaUserData for LuauStateUserData {
             let name = field.to_string();
             fields.add_field_method_get(name.clone(), move |lua, this: &LuauStateUserData| {
                 let callback = this.0.state_field_access.clone();
-                let result = block_on(callback(field.clone()));
+                let result = block_on(callback(field));
                 let result = serde_json::from_str::<Value>(&result).unwrap();
                 let serialized = lua.to_value(&result).unwrap();
                 Ok(serialized)

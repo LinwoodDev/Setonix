@@ -1,6 +1,9 @@
 use std::{collections::HashSet, sync::Arc};
 
+#[cfg(not(target_os = "emscripten"))]
 use flutter_rust_bridge::{DartFnFuture, frb};
+#[cfg(target_os = "emscripten")]
+pub type DartFnFuture<T> = std::pin::Pin<Box<dyn std::future::Future<Output = T> + Send + 'static>>;
 use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value};
 
@@ -34,7 +37,7 @@ pub struct PluginCallback {
 }
 
 impl PluginCallback {
-    #[frb(sync)]
+    #[cfg_attr(not(target_os = "emscripten"), frb(sync))]
     pub fn new(
         on_print: impl Fn(String) -> DartFnFuture<()> + 'static + Send + Sync,
         process_event: impl Fn(String, Option<bool>) -> DartFnFuture<anyhow::Result<()>>
@@ -51,13 +54,13 @@ impl PluginCallback {
         storage_write: impl Fn(String) -> DartFnFuture<()> + 'static + Send + Sync,
     ) -> Self {
         Self {
-            on_print: Arc::new(Box::new(on_print)),
-            process_event: Arc::new(Box::new(process_event)),
-            send_event: Arc::new(Box::new(send_event)),
-            state_field_access: Arc::new(Box::new(state_field_access)),
-            table_access: Arc::new(Box::new(table_access)),
-            storage_read: Arc::new(Box::new(storage_read)),
-            storage_write: Arc::new(Box::new(storage_write)),
+            on_print: Arc::new(on_print),
+            process_event: Arc::new(process_event),
+            send_event: Arc::new(send_event),
+            state_field_access: Arc::new(state_field_access),
+            table_access: Arc::new(table_access),
+            storage_read: Arc::new(storage_read),
+            storage_write: Arc::new(storage_write),
         }
     }
 }
@@ -122,15 +125,15 @@ pub struct EventResult {
 
 impl EventResult {
     pub(crate) fn build(details: EventDetails, previous: Option<EventDetails>) -> Self {
-        let server_event =
-            if previous.map_or(false, |prev| prev.server_event != details.server_event) {
-                serde_json::to_string(&details.server_event).ok()
-            } else {
-                None
-            };
+        let server_event = if previous.is_some_and(|prev| prev.server_event != details.server_event)
+        {
+            serde_json::to_string(&details.server_event).ok()
+        } else {
+            None
+        };
         Self {
             target: details.target,
-            server_event: server_event,
+            server_event,
             needs_update: details.needs_update,
             cancelled: details.cancelled,
             scheduled_events: details.scheduled_events,

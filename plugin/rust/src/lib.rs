@@ -1,2 +1,7 @@
 pub mod api;
-mod frb_generated; /* AUTO INJECTED BY flutter_rust_bridge. This line may not be accurate, and you can change it according to your needs. */
+
+#[cfg(not(target_os = "emscripten"))]
+mod frb_generated;
+
+#[cfg(target_os = "emscripten")]
+pub mod web;

@@ -33,6 +33,7 @@
 .pub-cache/
 .pub/
 /build/
+/web/pkg/
 /lib/src/generated
 
 # Exceptions to above rules.

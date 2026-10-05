@@ -5,7 +5,6 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:networker/networker.dart';
 import 'package:setonix_api/setonix_api.dart';
 import 'package:setonix_plugin/setonix_plugin.dart';
-import 'package:setonix_plugin/src/rust/frb_generated.dart';
 
 typedef PluginProcessCallback = void Function(String, WorldEvent, [bool force]);
 typedef PluginSendEventCallback = void Function(
@@ -55,7 +54,8 @@ final class PluginSystem {
     ItemLocation? location,
     String? storageKey,
   }) {
-    if (!_nativeEnabled) throw Exception('Native not enabled');
+    if (!isPluginSystemInitialized)
+      throw StateError('Plugin system not initialized');
     return registerPlugin(
       name,
       (pluginServer) => RustSetonixPlugin.build(
@@ -119,8 +119,6 @@ final class PluginSystem {
       );
     }
   }
-
-  bool get _nativeEnabled => RustLib.instance.initialized;
 
   Iterable<String> get plugins => _plugins.keys;
 
@@ -294,9 +292,13 @@ final class RustSetonixPlugin extends SetonixPlugin {
     final plugin = builder(callback);
     final instance = RustSetonixPlugin._(server, plugin);
     instance.eventSystem.on<WorldEvent>((e) async {
+      final serializedEvent = e.clientEvent.toJson();
+      // Runtime class names are minified in release web builds. The wire
+      // discriminator is the stable event name that Lua subscribes to.
+      final eventType = (jsonDecode(serializedEvent) as Map)['type'] as String;
       final result = await instance.plugin.runEvent(
-        eventType: e.clientEvent.runtimeType.toString(),
-        event: e.clientEvent.toJson(),
+        eventType: eventType,
+        event: serializedEvent,
         serverEvent: e.serverEvent?.toJson(),
         target: e.target,
         source: e.source,
@@ -318,7 +320,12 @@ final class RustSetonixPlugin extends SetonixPlugin {
         }).nonNulls,
       );
     });
-    await instance.plugin.run();
+    try {
+      await instance.plugin.run();
+    } catch (_) {
+      instance.dispose();
+      rethrow;
+    }
     return instance;
   }
 
@@ -351,6 +358,9 @@ final class RustSetonixPlugin extends SetonixPlugin {
   @override
   void dispose() {
     super.dispose();
+    if (plugin is LuauPlugin) {
+      (plugin as LuauPlugin).dispose();
+    }
     if (plugin is RustOpaqueInterface) {
       (plugin as RustOpaqueInterface).dispose();
     }

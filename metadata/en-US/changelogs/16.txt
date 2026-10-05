@@ -5,6 +5,7 @@
   * Move notes and multiplayer options to scaffold actions
   * Move advanced game options to edit dialog
 * Add restrictions for table size
+* Add scripting on web
 * Fix table renaming shows background dialog title
 
 Read more here: https://linwood.dev/setonix/0.9.1

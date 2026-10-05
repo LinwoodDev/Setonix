@@ -5,7 +5,6 @@
 
 import 'api/luau.dart';
 import 'api/plugin.dart';
-import 'api/simple.dart';
 
 import 'dart:async';
 import 'dart:convert';
@@ -69,7 +68,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.13.0';
 
   @override
-  int get rustContentHash => 1407750444;
+  int get rustContentHash => -1472691767;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -106,11 +105,6 @@ abstract class RustLibApi extends BaseApi {
     required FutureOr<String> Function(String?) tableAccess,
     required FutureOr<String> Function() storageRead,
     required FutureOr<void> Function(String) storageWrite,
-  });
-
-  Future<int> crateApiSimpleSimpleAdderTwinNormal({
-    required int a,
-    required int b,
   });
 
   RustArcIncrementStrongCountFnType
@@ -343,41 +337,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           "storageRead",
           "storageWrite",
         ],
-      );
-
-  @override
-  Future<int> crateApiSimpleSimpleAdderTwinNormal({
-    required int a,
-    required int b,
-  }) {
-    return handler.executeNormal(
-      NormalTask(
-        callFfi: (port_) {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_i_32(a, serializer);
-          sse_encode_i_32(b, serializer);
-          pdeCallFfi(
-            generalizedFrbRustBinding,
-            serializer,
-            funcId: 7,
-            port: port_,
-          );
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_i_32,
-          decodeErrorData: null,
-        ),
-        constMeta: kCrateApiSimpleSimpleAdderTwinNormalConstMeta,
-        argValues: [a, b],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kCrateApiSimpleSimpleAdderTwinNormalConstMeta =>
-      const TaskConstMeta(
-        debugName: "simple_adder_twin_normal",
-        argNames: ["a", "b"],
       );
 
   Future<void> Function(int, dynamic)

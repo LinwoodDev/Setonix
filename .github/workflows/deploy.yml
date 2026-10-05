@@ -105,10 +105,10 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y clang
-          rustup toolchain install nightly
-          rustup +nightly component add rust-src
-          rustup +nightly target add wasm32-unknown-unknown
-          cargo install wasm-pack --locked
+          rustup target add wasm32-unknown-emscripten
+          git clone --depth 1 --branch 6.0.11 https://github.com/emscripten-core/emsdk.git "$RUNNER_TEMP/emsdk"
+          "$RUNNER_TEMP/emsdk/emsdk" install 6.0.11
+          "$RUNNER_TEMP/emsdk/emsdk" activate 6.0.11
       - name: Get Git Commit Hash
         run: echo "GIT_HASH=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
       - name: Set flavor
@@ -122,13 +122,11 @@ jobs:
           echo "SETONIX_FLAVOR=stable" >> $GITHUB_ENV
           echo "WEB_DIR=web" >> $GITHUB_ENV
       - name: Build plugin WASM bundle
-        run: dart run flutter_rust_bridge build-web --rust-root ../plugin/rust --output web --release
+        run: |
+          source "$RUNNER_TEMP/emsdk/emsdk_env.sh"
+          bash ../plugin/web/build.sh
       - name: Build
         run: flutter build web --wasm --release --no-web-resources-cdn --dart-define=flavor=$SETONIX_FLAVOR --dart-define=version=$GIT_HASH
-      - name: Copy plugin WASM bundle
-        run: |
-          mkdir -p build/web/pkg
-          cp -R ../plugin/rust/web/pkg/* build/web/pkg/
       - name: Deploy to SFTP
         if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main'
         env:

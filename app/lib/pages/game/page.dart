@@ -385,7 +385,7 @@ class _GamePageState extends State<GamePage>
                           previous.world.gameState != current.world.gameState,
                       builder: (context, state) {
                         final showPluginSystemNote =
-                            (kIsWeb || !isPluginSystemInitialized) &&
+                            !isPluginSystemInitialized &&
                             !state.multiplayer.isClient &&
                             state.world.info.gameMode != null;
                         return Center(
@@ -540,9 +540,7 @@ class _GamePageState extends State<GamePage>
                                                 const SizedBox(width: 8),
                                                 Flexible(
                                                   child: Text(
-                                                    kIsWeb
-                                                        ? 'Scripted game mode unavailable on web.'
-                                                        : 'Scripted game mode unavailable: plugin system failed to load.',
+                                                    'Scripted game mode unavailable: plugin system failed to load.',
                                                     style: Theme.of(context)
                                                         .textTheme
                                                         .bodySmall

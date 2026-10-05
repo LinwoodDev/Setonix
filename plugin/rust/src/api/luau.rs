@@ -2,6 +2,7 @@ use event::*;
 use std::sync::Arc;
 use tokio::sync::Mutex;
 
+#[cfg(not(target_os = "emscripten"))]
 use flutter_rust_bridge::frb;
 use futures::executor::block_on;
 use mlua::prelude::*;
@@ -66,7 +67,7 @@ pub struct LuauPlugin {
 }
 
 #[derive(Clone)]
-#[frb(ignore)]
+#[cfg_attr(not(target_os = "emscripten"), frb(ignore))]
 struct LuaEventDetails(Arc<std::sync::Mutex<EventDetails>>);
 
 impl LuaUserData for LuaEventDetails {
@@ -160,12 +161,16 @@ impl RustPlugin for LuauPlugin {
                 details.into_lua(&engine).unwrap(),
             )
         };
-        {
-            let engine = self.event_system.lock().await;
-            engine
-                .run_event_handler(&event_type, (event, lua_value))
+        // Handlers may connect or disconnect while running; release the registry lock first.
+        let handlers = self.event_system.lock().await.handlers(&event_type);
+        for handler in handlers {
+            if let Err(error) = handler
+                .call_async::<()>((event.clone(), lua_value.clone()))
                 .await
-        };
+            {
+                eprintln!("Failed to call handler for '{event_type}': {error}");
+            }
+        }
         let result = details.0.lock().unwrap().clone();
         EventResult::build(result, Some(old))
     }
@@ -183,7 +188,7 @@ impl RustPlugin for LuauPlugin {
 }
 
 impl LuauPlugin {
-    #[frb(sync)]
+    #[cfg_attr(not(target_os = "emscripten"), frb(sync))]
     pub fn new(code: String, callback: PluginCallback) -> LuauPlugin {
         let engine = Lua::new();
         engine.sandbox(true).unwrap();

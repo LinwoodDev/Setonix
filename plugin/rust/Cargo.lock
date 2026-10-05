@@ -791,6 +791,7 @@ name = "setonix_plugin"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "cc",
  "flutter_rust_bridge",
  "futures",
  "mlua",

@@ -1,25 +1,28 @@
 use std::{collections::HashMap, sync::Arc};
 
+#[cfg(not(target_os = "emscripten"))]
 use flutter_rust_bridge::frb;
 use mlua::prelude::*;
 use tokio::sync::Mutex;
 
 #[derive(Default)]
-#[frb(ignore)]
+#[cfg_attr(not(target_os = "emscripten"), frb(ignore))]
 pub(crate) struct LuauEventSystem {
     event_handlers: HashMap<String, Vec<(u64, LuaFunction)>>,
     next_id: u64,
 }
 
 impl LuauEventSystem {
-    pub(crate) async fn run_event_handler(&self, event: &str, args: impl IntoLuaMulti + Clone) {
-        if let Some(handlers) = self.event_handlers.get(event) {
-            for (_, handler) in handlers {
-                if let Err(err) = handler.call_async::<()>(args.clone()).await {
-                    eprintln!("Failed to call handler for '{}': {}", event, err);
-                }
-            }
-        }
+    pub(crate) fn handlers(&self, event: &str) -> Vec<LuaFunction> {
+        self.event_handlers
+            .get(event)
+            .map(|handlers| {
+                handlers
+                    .iter()
+                    .map(|(_, handler)| handler.clone())
+                    .collect()
+            })
+            .unwrap_or_default()
     }
 }
 

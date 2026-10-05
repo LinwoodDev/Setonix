@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui' as ui;
 
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -61,14 +62,34 @@ class BoardGame extends FlameGame
     );
     provider.addAll([camera, world]);
     camera.viewfinder.zoom = settingsCubit.state.zoom;
-    selectionSprite = await Sprite.load('selection.png');
-    blankSprite = await Sprite.load('blank.png');
+    // These UI sprites are drawn locally so board loading does not depend on
+    // image files that are absent from the application bundle.
+    selectionSprite = await _createUiSprite(selection: true);
+    blankSprite = await _createUiSprite(selection: false);
     _hand = GameHand();
     camera.viewport.add(_hand);
     camera.moveTo(camera.viewport.virtualSize * 0.5);
     grid = BoardGrid(cellSize: Vector2.all(128));
     world.add(grid);
     _updateLocale();
+  }
+
+  Future<Sprite> _createUiSprite({required bool selection}) async {
+    final recorder = ui.PictureRecorder();
+    final canvas = ui.Canvas(recorder);
+    if (selection) {
+      canvas.drawRect(
+        const ui.Rect.fromLTWH(2, 2, 32, 32),
+        ui.Paint()
+          ..color = const ui.Color(0xFFFFFFFF)
+          ..style = ui.PaintingStyle.stroke
+          ..strokeWidth = 4,
+      );
+    }
+    final picture = recorder.endRecording();
+    final image = await picture.toImage(36, 36);
+    picture.dispose();
+    return Sprite(image);
   }
 
   @override
