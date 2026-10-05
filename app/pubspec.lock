@@ -618,10 +618,10 @@ packages:
     dependency: "direct main"
     description:
       name: idb_shim
-      sha256: "6a478bf0928fa954512f2a1e7e56f09e2fb2e3e7d183eb051a59b5d6b39ec16f"
+      sha256: "1495b1bca25088ab05be682ba32532e62f1559b7cd781141c96130b7654ac9f7"
       url: "https://pub.dev"
     source: hosted
-    version: "2.9.9"
+    version: "2.9.10"
   image:
     dependency: transitive
     description:
