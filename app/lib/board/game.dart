@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui' as ui;
 
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -14,6 +13,7 @@ import 'package:setonix/bloc/world/local.dart';
 import 'package:setonix/bloc/world/state.dart';
 import 'package:setonix/board/grid.dart';
 import 'package:setonix/board/hand/view.dart';
+import 'package:setonix/board/ui_image.dart';
 import 'package:setonix/helpers/vector.dart';
 import 'package:setonix_api/setonix_api.dart';
 
@@ -74,23 +74,8 @@ class BoardGame extends FlameGame
     _updateLocale();
   }
 
-  Future<Sprite> _createUiSprite({required bool selection}) async {
-    final recorder = ui.PictureRecorder();
-    final canvas = ui.Canvas(recorder);
-    if (selection) {
-      canvas.drawRect(
-        const ui.Rect.fromLTWH(2, 2, 32, 32),
-        ui.Paint()
-          ..color = const ui.Color(0xFFFFFFFF)
-          ..style = ui.PaintingStyle.stroke
-          ..strokeWidth = 4,
-      );
-    }
-    final picture = recorder.endRecording();
-    final image = await picture.toImage(36, 36);
-    picture.dispose();
-    return Sprite(image);
-  }
+  Future<Sprite> _createUiSprite({required bool selection}) async =>
+      Sprite(await createBoardUiImage(selection: selection));
 
   @override
   void onAttach() {
