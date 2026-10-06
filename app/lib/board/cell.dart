@@ -16,7 +16,7 @@ import 'package:material_leap/material_leap.dart';
 import 'package:setonix/bloc/world/bloc.dart';
 import 'package:setonix/bloc/world/local.dart';
 import 'package:setonix/bloc/world/state.dart';
-import 'package:setonix/board/background.dart';
+import 'package:setonix/board/card_layout.dart';
 import 'package:setonix/board/game.dart';
 import 'package:setonix/board/grid.dart';
 import 'package:setonix/board/hand/item.dart';
@@ -40,9 +40,9 @@ class GameCell extends PositionComponent
         ScrollCallbacks {
   late final NineTileBoxComponent _selectionComponent;
   TextElementComponent? _waypointComponent;
-  GameBoardBackground? _backgroundComponent;
   late final BoardGrid grid;
   List<Effect>? _effects;
+  bool _rendering = false;
 
   GameCell({super.size, super.position});
 
@@ -59,8 +59,8 @@ class GameCell extends PositionComponent
       _selectionComponent.addAll(effects);
       _effects = null;
     }
-    if (isMounted) {
-      _updateTop();
+    if (isMounted && !_rendering) {
+      unawaited(_refreshTop());
     }
   }
 
@@ -128,8 +128,6 @@ class GameCell extends PositionComponent
   void onLoad() {
     super.onLoad();
     grid = findParent<BoardGrid>()!;
-    _backgroundComponent = GameBoardBackground(size: size);
-    add(_backgroundComponent!);
     _selectionComponent = NineTileBoxComponent(
       nineTileBox: NineTileBox(game.selectionSprite, tileSize: 12),
       size: size,
@@ -250,6 +248,17 @@ class GameCell extends PositionComponent
 
   int? _currentSpan;
 
+  Future<void> _refreshTop() async {
+    // Sprite loading yields. Finish one projection before replacing it so an
+    // older hand cannot append stale sprites after a more recent update.
+    _rendering = true;
+    try {
+      await _updateTop();
+    } finally {
+      _rendering = false;
+    }
+  }
+
   Future<void> _updateTop() async {
     final state = bloc.state;
     final cellDefinition = toDefinition();
@@ -263,7 +272,6 @@ class GameCell extends PositionComponent
       if (_currentVisible) {
         _currentVisible = false;
         size = Vector2.zero();
-        _backgroundComponent?.size = Vector2.zero();
         _selectionComponent.size = Vector2.zero();
         removeWhere((e) => e is _GameCellObjectComponent);
         removeWhere((e) => e is _GameCellTileComponent);
@@ -290,7 +298,6 @@ class GameCell extends PositionComponent
       }
       if (size != s) {
         size = s;
-        _backgroundComponent?.size = s;
         _selectionComponent.size = s;
         priority = 100;
       }
@@ -298,7 +305,6 @@ class GameCell extends PositionComponent
       _currentVisible = true;
       if (size != grid.cellSize) {
         size = grid.cellSize;
-        _backgroundComponent?.size = size;
         _selectionComponent.size = size;
         priority = 0;
       }
@@ -427,30 +433,16 @@ class GameCell extends PositionComponent
         case DistributeCellMergeStrategy(
           fillVariableSpace: final fillVariableSpace,
         ):
-          final count = displayObjects.length;
-          if (count == 1) {
-            x = size.x / 2;
-            y = size.y / 2;
-          } else {
-            var factor = i / (count - 1);
-            // Center factor to -0.5 ... 0.5 range
-            factor -= 0.5;
-            if (reverse) factor = -factor;
-
-            if (fillVariableSpace) {
-              factor *= 2; // -1 to 1
-            } else {
-              factor = (i - (count - 1) / 2.0) * 0.4;
-            }
-
-            if (direction == CellMergeDirection.vertical) {
-              x = size.x / 2;
-              y = size.y / 2 + (size.y - grid.cellSize.y) / 2 * factor;
-            } else {
-              x = size.x / 2 + (size.x - grid.cellSize.x) / 2 * factor;
-              y = size.y / 2;
-            }
-          }
+          final vertical = direction == CellMergeDirection.vertical;
+          final positions = distributeCardPositions(
+            extent: vertical ? size.y : size.x,
+            cardExtent: vertical ? grid.cellSize.y : grid.cellSize.x,
+            count: displayObjects.length,
+            fillVariableSpace: fillVariableSpace,
+            reverse: reverse,
+          );
+          x = vertical ? size.x / 2 : positions[i];
+          y = vertical ? positions[i] : size.y / 2;
         default:
           x = size.x / 2;
           y = size.y / 2;

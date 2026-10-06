@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -12,6 +13,7 @@ import 'package:setonix/bloc/world/bloc.dart';
 import 'package:setonix/bloc/world/local.dart';
 import 'package:setonix/bloc/world/state.dart';
 import 'package:setonix/board/grid.dart';
+import 'package:setonix/board/camera_bounds.dart';
 import 'package:setonix/board/hand/view.dart';
 import 'package:setonix/board/ui_image.dart';
 import 'package:setonix/helpers/vector.dart';
@@ -144,18 +146,45 @@ class BoardGame extends FlameGame
 
   @override
   void onScroll(ScrollEvent event) {
-    camera.viewfinder.zoom += event.scrollDelta.y.sign * zoomPerScrollUnit;
+    camera.viewfinder.zoom =
+        (camera.viewfinder.zoom + event.scrollDelta.y.sign * zoomPerScrollUnit)
+            .clamp(0.4, 2.0);
   }
 
   Vector2 _currentCameraVelocity = Vector2.zero();
 
+  Rect? get boardBounds {
+    final table = bloc.state.table;
+    if (!table.isRestricted) return null;
+    final minimum = table.minCell!;
+    final maximum = table.maxCell!;
+    return Rect.fromLTRB(
+      math.min(minimum.x, maximum.x) * grid.cellSize.x,
+      math.min(minimum.y, maximum.y) * grid.cellSize.y,
+      (math.max(minimum.x, maximum.x) + 1) * grid.cellSize.x,
+      (math.max(minimum.y, maximum.y) + 1) * grid.cellSize.y,
+    );
+  }
+
   @override
   void update(double dt) {
-    super.update(dt);
-
     if (!_currentCameraVelocity.isZero()) {
       final zoom = camera.viewfinder.zoom;
       camera.moveBy(_currentCameraVelocity * dt * 500 / zoom);
+    }
+    super.update(dt);
+    final bounds = boardBounds;
+    if (bounds != null) {
+      final visible = camera.visibleWorldRect;
+      final position = camera.viewfinder.position;
+      final constrained = constrainBoardCamera(
+        bounds,
+        visible.size,
+        Offset(position.x, position.y),
+      );
+      // moveTo() installs an effect and cancels pending pan/zoom movement.
+      // Clamp the position after those effects have been applied instead.
+      position.setValues(constrained.dx, constrained.dy);
     }
   }
 

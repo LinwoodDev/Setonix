@@ -1,8 +1,8 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:markdown_widget/markdown_widget.dart';
+import 'package:setonix/pages/game/note_content.dart';
+import 'package:setonix/bloc/world/state.dart';
 import 'package:setonix/src/generated/i18n/app_localizations.dart';
-import 'package:markdown/markdown.dart' as md;
 import 'package:material_leap/material_leap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:setonix/bloc/world/bloc.dart';
@@ -19,7 +19,7 @@ class GameNoteDialog extends StatefulWidget {
 
 class _GameNoteDialogState extends State<GameNoteDialog> {
   late final WorldBloc _bloc;
-  bool _editing = true, _expanded = false;
+  bool _editing = true, _expanded = false, _hasDraft = false;
   final TextEditingController _nameController = TextEditingController(),
       _contentController = TextEditingController();
 
@@ -61,12 +61,16 @@ class _GameNoteDialogState extends State<GameNoteDialog> {
         IconButton(
           icon: const Icon(PhosphorIconsLight.pencil),
           tooltip: _editing
-              ? AppLocalizations.of(context).enterEditMode
-              : AppLocalizations.of(context).exitEditMode,
+              ? AppLocalizations.of(context).exitEditMode
+              : AppLocalizations.of(context).enterEditMode,
           isSelected: _editing,
           selectedIcon: const Icon(PhosphorIconsLight.monitor),
           onPressed: () {
             setState(() {
+              if (!_editing && !_hasDraft && widget.note != null) {
+                _contentController.text =
+                    _bloc.state.data.getNote(widget.note!) ?? '';
+              }
               _editing = !_editing;
             });
           },
@@ -88,16 +92,17 @@ class _GameNoteDialogState extends State<GameNoteDialog> {
           label: Text(AppLocalizations.of(context).cancel),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        ElevatedButton.icon(
-          icon: const Icon(PhosphorIconsLight.floppyDisk),
-          label: Text(AppLocalizations.of(context).save),
-          onPressed: () {
-            _bloc.process(
-              NoteChanged(_nameController.text, _contentController.text),
-            );
-            Navigator.of(context).pop();
-          },
-        ),
+        if (_editing)
+          ElevatedButton.icon(
+            icon: const Icon(PhosphorIconsLight.floppyDisk),
+            label: Text(AppLocalizations.of(context).save),
+            onPressed: () {
+              _bloc.process(
+                NoteChanged(_nameController.text, _contentController.text),
+              );
+              Navigator.of(context).pop();
+            },
+          ),
       ],
       constraints: BoxConstraints(
         maxWidth: _expanded ? LeapBreakpoints.large : LeapBreakpoints.medium,
@@ -109,27 +114,20 @@ class _GameNoteDialogState extends State<GameNoteDialog> {
               maxLines: 50,
               autofocus: widget.note != null,
               controller: _contentController,
+              onChanged: (_) => _hasDraft = true,
               decoration: InputDecoration(
                 hintText: AppLocalizations.of(context).content,
                 border: const OutlineInputBorder(),
               ),
             )
-          : ListenableBuilder(
-              listenable: _contentController,
-              builder: (context, _) => ConstrainedBox(
+          : BlocBuilder<WorldBloc, ClientWorldState>(
+              buildWhen: (previous, current) => previous.data != current.data,
+              builder: (context, state) => ConstrainedBox(
                 constraints: BoxConstraints(minHeight: _expanded ? 400 : 200),
-                child: MarkdownWidget(
-                  markdownGenerator: MarkdownGenerator(
-                    extensionSet: md.ExtensionSet(
-                      md.ExtensionSet.gitHubWeb.blockSyntaxes,
-                      <md.InlineSyntax>[
-                        md.EmojiSyntax(),
-                        ...md.ExtensionSet.gitHubWeb.inlineSyntaxes,
-                      ],
-                    ),
-                  ),
-                  shrinkWrap: true,
-                  data: _contentController.text,
+                child: GameNoteContent(
+                  content: widget.note == null || _hasDraft
+                      ? _contentController.text
+                      : state.data.getNote(widget.note!) ?? '',
                 ),
               ),
             ),

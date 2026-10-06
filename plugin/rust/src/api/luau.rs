@@ -18,6 +18,13 @@ pub mod server;
 pub mod state;
 pub mod storage;
 
+// Optional JSON fields should behave like ordinary absent fields in Luau.
+// mlua's default null userdata is truthy and breaks checks such as `if minCell`.
+pub(crate) const LUA_SERIALIZE_OPTIONS: mlua::serde::SerializeOptions =
+    mlua::serde::SerializeOptions::new()
+        .serialize_none_to_null(false)
+        .serialize_unit_to_null(false);
+
 const HIGH_LEVEL_API_PRELUDE: &str = include_str!("luau/prelude.luau");
 
 impl PluginCallback {
@@ -48,6 +55,7 @@ fn construct_raw_api(
 ) -> LuaResult<LuaTable> {
     let raw_api = engine.create_table()?;
 
+    raw_api.set("ArrayMetatable", engine.array_metatable())?;
     raw_api.set("Events", LuauEventSystemUserData(Arc::clone(&event_system)))?;
     raw_api.set("events", LuauEventSystemUserData(event_system))?;
     raw_api.set("State", LuauStateUserData(callback.clone()))?;
@@ -99,7 +107,7 @@ impl LuaUserData for LuaEventDetails {
                 .lock()
                 .map_err(|_| mlua::Error::RuntimeError("Lock poisoned".to_string()))?;
             let value = lua
-                .to_value(&guard.server_event)
+                .to_value_with(&guard.server_event, LUA_SERIALIZE_OPTIONS)
                 .map_err(mlua::Error::external)?;
             Ok(value)
         });
@@ -157,7 +165,7 @@ impl RustPlugin for LuauPlugin {
             let details = details.clone();
             let engine = self.engine.lock().await;
             (
-                engine.to_value(&event).unwrap(),
+                engine.to_value_with(&event, LUA_SERIALIZE_OPTIONS).unwrap(),
                 details.into_lua(&engine).unwrap(),
             )
         };

@@ -14,7 +14,7 @@ class GameBoardBackground extends PositionComponent
   bool _isDirty = true;
   late final BoardGrid grid;
 
-  GameBoardBackground({super.size});
+  GameBoardBackground({super.size, super.priority});
 
   @override
   void onLoad() {

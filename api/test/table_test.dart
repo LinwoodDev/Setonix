@@ -34,6 +34,13 @@ void main() {
     );
   });
 
+  test('saved cells retain their polymorphic layout', () {
+    const strategy = DistributeCellMergeStrategy(maxCards: 52);
+    final cell = TableCell(merge: strategy);
+    final decoded = TableCellMapper.fromJson(cell.toJson());
+    expect(decoded.merge, strategy);
+  });
+
   test('serializes table bounds', () {
     final decoded = GameTableMapper.fromJson(table.toJson());
 

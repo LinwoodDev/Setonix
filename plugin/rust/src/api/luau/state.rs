@@ -22,7 +22,9 @@ impl LuaUserData for LuauStateUserData {
                 let callback = this.0.state_field_access.clone();
                 let result = block_on(callback(field));
                 let result = serde_json::from_str::<Value>(&result).unwrap();
-                let serialized = lua.to_value(&result).unwrap();
+                let serialized = lua
+                    .to_value_with(&result, super::LUA_SERIALIZE_OPTIONS)
+                    .unwrap();
                 Ok(serialized)
             });
         }
@@ -31,7 +33,9 @@ impl LuaUserData for LuauStateUserData {
             let namespace = parse_json_string(block_on(callback(StateFieldAccess::Namespace)));
             let game = parse_json_string(block_on(callback(StateFieldAccess::Game)));
             let plugin_id = format!("{}:{}", namespace, game);
-            let serialized = lua.to_value(&plugin_id).unwrap();
+            let serialized = lua
+                .to_value_with(&plugin_id, super::LUA_SERIALIZE_OPTIONS)
+                .unwrap();
             Ok(serialized)
         });
     }
@@ -43,7 +47,9 @@ impl LuaUserData for LuauStateUserData {
                 let callback = this.0.table_access.clone();
                 let result = block_on(callback(table_name));
                 let result = serde_json::from_str::<Value>(&result).unwrap();
-                let serialized = lua.to_value(&result).unwrap();
+                let serialized = lua
+                    .to_value_with(&result, super::LUA_SERIALIZE_OPTIONS)
+                    .unwrap();
                 Ok(serialized)
             },
         );

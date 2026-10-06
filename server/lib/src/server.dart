@@ -576,7 +576,7 @@ final class SetonixServer {
     log('${info.address} ($user) left the game', level: LogLevel.info);
     final world = getUserWorld(user);
     if (!_closing) {
-      world?.eventSystem.runLeaveCallback(event.$1, event.$2);
+      world?.pluginSystem.runLeaveCallback(event.$1, event.$2);
       if (world != null && world.state.getGameRoles(user).isNotEmpty) {
         unawaited(
           sendEvent(GameRolesChanged(user), worldName: world.worldName),

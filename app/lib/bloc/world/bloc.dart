@@ -37,11 +37,31 @@ class _WorldServerInterfaceImpl implements ServerInterface {
     PlayableWorldEvent event, {
     Channel target = kAnyChannel,
     required String plugin,
-  }) => bloc._processEvent(
-    NetworkerPacket(event, target),
-    allowServerEvents: true,
-    triggerPlugin: false,
-  );
+  }) async {
+    if (event is TableBoundsChanged ||
+        event is CellMergeStrategyChanged ||
+        event is ObjectsChanged) {
+      // Trusted script output is applied in the server event queue. Validating
+      // against the current state here races earlier queued output (for
+      // example, expanding table bounds before laying out a new hand).
+      final multiplayer = bloc.state.multiplayer;
+      if (multiplayer.isConnected) {
+        multiplayer.sendServerPackets([
+          NetworkerPacket(event as ServerWorldEvent, target),
+        ]);
+      } else if (target == kAnyChannel ||
+          target == kAuthorityChannel ||
+          target == bloc.state.world.id) {
+        bloc.add(event);
+      }
+      return;
+    }
+    await bloc._processEvent(
+      NetworkerPacket(event, target),
+      allowServerEvents: true,
+      triggerPlugin: false,
+    );
+  }
 
   @override
   void print(String message, [String? plugin]) {
@@ -52,7 +72,8 @@ class _WorldServerInterfaceImpl implements ServerInterface {
   WorldState get state => bloc.state.world;
 
   @override
-  List<int> get players => bloc.state.multiplayer.clients.toList();
+  List<int> get players =>
+      {kAuthorityChannel, ...bloc.state.multiplayer.clients}.toList();
 
   @override
   String getScriptState(String plugin) => bloc._scriptStates[plugin] ?? '{}';
@@ -105,6 +126,9 @@ class WorldBloc extends Bloc<PlayableWorldEvent, ClientWorldState> {
       ..inits.listen((e) {
         if (e.$1 == kAnyChannel) return;
         _processEvent(NetworkerPacket(null, e.$1));
+      })
+      ..leaves.listen((e) {
+        pluginSystem.runLeaveCallback(e.$1, e.$2);
       })
       ..serverEvents.listen(_processEvent);
 

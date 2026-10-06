@@ -35,7 +35,7 @@ class BoardTile with BoardTileMappable {
 @MappableEnum()
 enum CellMergeDirection { horizontal, vertical }
 
-@MappableClass()
+@MappableClass(discriminatorKey: 'type')
 sealed class CellMergeStrategy with CellMergeStrategyMappable {
   final CellMergeDirection direction;
   const CellMergeStrategy({this.direction = CellMergeDirection.vertical});
@@ -48,7 +48,7 @@ final class MergedCellStrategy extends CellMergeStrategy
     : super(direction: direction);
 }
 
-@MappableClass()
+@MappableClass(discriminatorKey: 'type')
 sealed class LayoutCellMergeStrategy extends CellMergeStrategy
     with LayoutCellMergeStrategyMappable {
   final bool reverse;

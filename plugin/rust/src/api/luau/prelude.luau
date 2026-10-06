@@ -109,7 +109,7 @@ local function create_namespace(methods)
 end
 
 local function copy_array(values)
-  local copy = {}
+  local copy = setmetatable({}, get_runtime().ArrayMetatable)
   for index, value in ipairs(values or {}) do
     copy[index] = value
   end
@@ -138,7 +138,7 @@ local function parse_vector_string(str)
 end
 
 local function normalize_toolbar(toolbar)
-  local actions = {}
+  local actions = copy_array()
   for _, action in ipairs((toolbar and toolbar.actions) or {}) do
     table.insert(actions, {
       id = action.id,
@@ -162,8 +162,8 @@ local function normalize_global_cell(position_or_x, y, table_name)
 end
 
 local function build_index_list(count)
-  local indices = {}
-  for index = 0, math.max((count or 1) - 1, 0) do
+  local indices = copy_array()
+  for index = 0, (count or 1) - 1 do
     table.insert(indices, index)
   end
   return indices
@@ -222,6 +222,10 @@ local EventAliases = {
   joined = "UserJoined",
   user_join = "UserJoined",
   user_joined = "UserJoined",
+  player_leave = "UserLeft",
+  player_left = "UserLeft",
+  user_leave = "UserLeft",
+  user_left = "UserLeft",
   team_join_request = "TeamJoinRequest",
   team_leave_request = "TeamLeaveRequest",
   cell_roll_request = "CellRollRequest",
@@ -234,6 +238,7 @@ local EventAliases = {
   action = "ToolbarActionRequest",
   cell_switched = "CellSwitched",
   background_changed = "BackgroundChanged",
+  table_bounds_changed = "TableBoundsChanged",
   objects_moved = "ObjectsMoved",
   objects_spawned = "ObjectsSpawned",
   objects_removed = "ObjectsRemoved",
@@ -349,12 +354,12 @@ end
 
 local function normalize_object_list(objects)
   if objects == nil then
-    return {}
+    return copy_array()
   end
   if objects.asset ~= nil then
-    return { objects }
+    return copy_array({ objects })
   end
-  return objects
+  return copy_array(objects)
 end
 
 local function split_arguments(input)
@@ -469,6 +474,34 @@ function TableMethods:cells()
   return self:raw().cells or {}
 end
 
+function TableMethods:bounds()
+  local raw = self:raw()
+  if raw.minCell == nil or raw.maxCell == nil then
+    return nil, nil
+  end
+  return normalize_position(raw.minCell, nil, self.name), normalize_position(raw.maxCell, nil, self.name)
+end
+
+function TableMethods:contains(position_or_x, y)
+  local position = normalize_position(position_or_x, y, self.name)
+  if position.table ~= self.name then
+    return false
+  end
+  local minimum, maximum = self:bounds()
+  return minimum == nil or (
+    position.x >= math.min(minimum.x, maximum.x) and position.x <= math.max(minimum.x, maximum.x)
+    and position.y >= math.min(minimum.y, maximum.y) and position.y <= math.max(minimum.y, maximum.y)
+  )
+end
+
+function TableMethods:setBounds(minimum, maximum, target)
+  return Setonix.send(Setonix.server.events.tableBoundsChanged(self.name, minimum, maximum), target)
+end
+
+function TableMethods:clearBounds(target)
+  return self:setBounds(nil, nil, target)
+end
+
 function TableMethods:position(x, y)
   return create_position(self.name, x, y)
 end
@@ -549,6 +582,14 @@ function CellMethods:spawn(objects, target)
       [self:key()] = normalize_object_list(objects),
     },
   }, target)
+end
+
+function CellMethods:setObjects(objects, target)
+  return Setonix.send(Setonix.server.events.objectsChanged(self, normalize_object_list(objects)), target)
+end
+
+function CellMethods:layout(strategy, span, target)
+  return Setonix.send(Setonix.server.events.mergeStrategyChanged(self, strategy, span), target)
 end
 
 function CellMethods:spawnObject(asset, options, target)
@@ -749,6 +790,12 @@ function CollectionMethods.copy(values)
   return copy_array(values)
 end
 
+function CollectionMethods.sorted(values, comparator)
+  local sorted = copy_array(values)
+  table.sort(sorted, comparator)
+  return sorted
+end
+
 function CollectionMethods.shuffle(values)
   local shuffled = copy_array(values)
   for index = #shuffled, 2, -1 do
@@ -795,11 +842,23 @@ function ScoringMethods.bestTotal(items, resolver, max_score)
   return best_under or lowest_over or 0
 end
 
+local NoteMethods = {}
+
+function NoteMethods.set(name, content, target)
+  return Setonix.send(Setonix.server.events.noteChanged(name, content), target)
+end
+
+function NoteMethods.remove(name, target)
+  return Setonix.send(Setonix.server.events.noteRemoved(name), target)
+end
+
 Setonix = {
   raw = runtime,
+  channels = { all = 0, authority = 1 },
   world = create_namespace(WorldMethods),
   state = create_namespace(StateMethods),
   storage = create_namespace(StorageMethods),
+  notes = create_namespace(NoteMethods),
   collections = create_namespace(CollectionMethods),
   scoring = create_namespace(ScoringMethods),
 }
@@ -988,9 +1047,28 @@ Setonix.server = {
 Setonix.server.events = {
   cellSwitched = function(cell, selected, teleport)
     return create_event("CellSwitched", {
-      cell = normalize_position(cell):toGlobal(),
+      cell = normalize_position(cell):key(),
       selected = selected ~= false,
       teleport = teleport == true,
+    })
+  end,
+  tableBoundsChanged = function(table_name, minimum, maximum)
+    if (minimum == nil) ~= (maximum == nil) then
+      error("Table bounds require both a minimum and a maximum, or neither", 2)
+    end
+    local min_cell = minimum and normalize_position(minimum, nil, table_name)
+    local max_cell = maximum and normalize_position(maximum, nil, table_name)
+    for _, cell in ipairs({ min_cell, max_cell }) do
+      if type(cell.x) ~= "number" or type(cell.y) ~= "number"
+        or cell.x ~= math.floor(cell.x) or cell.y ~= math.floor(cell.y)
+        or math.abs(cell.x) == math.huge or math.abs(cell.y) == math.huge then
+        error("Table bounds must use finite integer coordinates", 2)
+      end
+    end
+    return create_event("TableBoundsChanged", {
+      table = table_name,
+      minCell = min_cell and min_cell:key(),
+      maxCell = max_cell and max_cell:key(),
     })
   end,
   backgroundChanged = function(background)
@@ -1096,7 +1174,7 @@ Setonix.server.events = {
   objectsChanged = function(cell, objects)
     return create_event("ObjectsChanged", {
       cell = normalize_global_cell(cell),
-      objects = objects or {},
+      objects = normalize_object_list(objects),
     })
   end,
   cellShuffled = function(cell, positions)

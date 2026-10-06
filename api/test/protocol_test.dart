@@ -2,6 +2,30 @@ import 'package:setonix_api/setonix_api.dart';
 import 'package:test/test.dart';
 
 void main() {
+  test(
+    'object replacements redact hidden cards without changing server state',
+    () {
+      final hidden = GameObject(
+        ItemLocation('core', 'cards'),
+        variation: 'heart-ace',
+        hidden: true,
+      );
+      final visible = GameObject(
+        ItemLocation('core', 'cards'),
+        variation: 'club-7',
+      );
+      final event = ObjectsChanged(GlobalVectorDefinition('', 0, 0), [
+        hidden,
+        visible,
+      ]);
+      final protected = protectServerEvent(event) as ObjectsChanged;
+
+      expect(protected.objects.first.variation, isNull);
+      expect(protected.objects.last.variation, 'club-7');
+      expect(event.objects.first.variation, 'heart-ace');
+    },
+  );
+
   group('Setonix protocol', () {
     test('adds and replaces the protocol query parameter', () {
       final address = Uri.parse('wss://example.com/game?world=main');

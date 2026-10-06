@@ -5,6 +5,8 @@
   * Move notes and multiplayer options to scaffold actions
   * Move advanced game options to edit dialog
 * Add restrictions for table size
+* Improve blackjack with configurable rules, saved rounds, live notes, and better card layouts
+* Improve scripting helpers and fix board rendering, camera bounds, and hidden-card handling
 * Add scripting on web
 * Fix table renaming shows background dialog title
 * Fix 16kb page size on Android

@@ -32,7 +32,8 @@ impl LuaUserData for LuauStorageUserData {
                 Some(key) => values.get(&key).cloned().unwrap_or(Value::Null),
                 None => Value::Object(values),
             };
-            lua.to_value(&value).map_err(mlua::Error::external)
+            lua.to_value_with(&value, super::LUA_SERIALIZE_OPTIONS)
+                .map_err(mlua::Error::external)
         });
 
         methods.add_method("Set", |lua, this, (key, value): (String, LuaValue)| {

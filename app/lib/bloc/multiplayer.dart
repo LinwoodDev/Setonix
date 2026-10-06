@@ -138,6 +138,10 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
 
   Stream<(Channel, ConnectionInfo)> get inits => _initController.stream;
 
+  final StreamController<(Channel, ConnectionInfo)> _leaveController =
+      StreamController.broadcast();
+  Stream<(Channel, ConnectionInfo)> get leaves => _leaveController.stream;
+
   FatalServerEventError? _fatalError;
   final Map<Channel, Timer> _authenticationTimers = {};
   final AuthenticationRateLimiter _authenticationRateLimiter =
@@ -407,6 +411,7 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
     (Channel, ConnectionInfo) event,
     MultiplayerConnectedState connectedState,
   ) {
+    _leaveController.add(event);
     _authenticationTimers.remove(event.$1)?.cancel();
     connectedState.challengeManager?.removeChallenge(event.$1);
     connectedState.userManager.removeUser(event.$1);

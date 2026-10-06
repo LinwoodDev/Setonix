@@ -42,7 +42,7 @@ class _GameNotesDialogState extends State<GameNotesDialog> {
           child: BlocBuilder<WorldBloc, ClientWorldState>(
             buildWhen: (previous, current) => previous.data != current.data,
             builder: (context, state) {
-              final notes = state.data.getNotes().toList();
+              final notes = state.data.getNotes().toList()..sort();
               return ListView.builder(
                 itemCount: notes.length,
                 itemBuilder: (context, index) {

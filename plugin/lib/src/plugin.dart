@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -232,6 +233,7 @@ class SetonixPlugin {
 
 final class RustSetonixPlugin extends SetonixPlugin {
   final RustPlugin plugin;
+  StreamSubscription<UserLeaveCallback>? _leaveSubscription;
 
   RustSetonixPlugin._(super.server, this.plugin);
 
@@ -244,24 +246,16 @@ final class RustSetonixPlugin extends SetonixPlugin {
   }) async {
     final callback = PluginCallback(
       onPrint: onPrint ?? (s) {},
-      processEvent: (eventSerizalized, force) async {
-        try {
-          final event = WorldEventMapper.fromJson(eventSerizalized);
-          await server.process(event, force: force ?? false);
-        } catch (e) {
-          print("Error processing event from plugin: $e");
-        }
+      processEvent: (serializedEvent, force) async {
+        final event = WorldEventMapper.fromJson(serializedEvent);
+        await server.process(event, force: force ?? false);
       },
-      sendEvent: (eventSerizalized, target) async {
-        try {
-          final event = WorldEventMapper.fromJson(eventSerizalized);
-          if (event is! PlayableWorldEvent) {
-            throw Exception("Event is not PlayableWorldEvent");
-          }
-          await server.sendEvent(event, target: target ?? kAnyChannel);
-        } catch (e) {
-          print("Error sending event from plugin: $e");
+      sendEvent: (serializedEvent, target) async {
+        final event = WorldEventMapper.fromJson(serializedEvent);
+        if (event is! PlayableWorldEvent) {
+          throw StateError("Event is not PlayableWorldEvent");
         }
+        await server.sendEvent(event, target: target ?? kAnyChannel);
       },
       stateFieldAccess: (field) {
         final state = server.state;
@@ -320,6 +314,17 @@ final class RustSetonixPlugin extends SetonixPlugin {
         }).nonNulls,
       );
     });
+    instance._leaveSubscription = instance.eventSystem.leave.listen((
+      event,
+    ) async {
+      await instance.plugin.runEvent(
+        eventType: 'UserLeft',
+        event: jsonEncode({'type': 'UserLeft', 'channel': event.channel}),
+        source: event.channel,
+        target: kAnyChannel,
+        cancelled: false,
+      );
+    });
     try {
       await instance.plugin.run();
     } catch (_) {
@@ -357,6 +362,8 @@ final class RustSetonixPlugin extends SetonixPlugin {
 
   @override
   void dispose() {
+    unawaited(_leaveSubscription?.cancel());
+    _leaveSubscription = null;
     super.dispose();
     if (plugin is LuauPlugin) {
       (plugin as LuauPlugin).dispose();

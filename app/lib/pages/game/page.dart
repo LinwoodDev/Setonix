@@ -22,6 +22,7 @@ import 'package:setonix/pages/game/error.dart';
 import 'package:setonix/pages/game/filter.dart';
 import 'package:setonix/pages/game/multiplayer/dialog.dart';
 import 'package:setonix/pages/game/notes.dart';
+import 'package:setonix/pages/game/notes_panel.dart';
 import 'package:setonix/services/file_system.dart';
 import 'package:setonix/services/network.dart';
 import 'package:setonix_api/setonix_api.dart';
@@ -54,6 +55,7 @@ class _GamePageState extends State<GamePage>
   Future<void>? _closeFuture;
   bool _allowPop = false;
   bool _chatOpen = false;
+  bool _notesOpen = true;
   final ContextMenuController _contextMenuController = ContextMenuController();
   final FocusNode _focusNode = FocusNode();
   final GlobalKey<ScaffoldState> _gameScaffoldKey = GlobalKey();
@@ -153,6 +155,29 @@ class _GamePageState extends State<GamePage>
       context: context,
       builder: (context) =>
           BlocProvider.value(value: world, child: const GameNotesDialog()),
+    );
+  }
+
+  void _toggleNotes(BuildContext context) {
+    if (MediaQuery.sizeOf(context).width >= 900) {
+      setState(() => _notesOpen = !_notesOpen);
+      return;
+    }
+    final world = context.read<WorldBloc>();
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (sheetContext) => BlocProvider.value(
+        value: world,
+        child: SizedBox(
+          height: MediaQuery.sizeOf(sheetContext).height * 0.7,
+          child: GameNotesPanel(
+            onClose: () => Navigator.of(sheetContext).pop(),
+            onManage: () => _openNotes(context),
+          ),
+        ),
+      ),
     );
   }
 
@@ -365,7 +390,7 @@ class _GamePageState extends State<GamePage>
                           icon: const PhosphorIcon(PhosphorIconsLight.users),
                         ),
                         IconButton(
-                          onPressed: () => _openNotes(context),
+                          onPressed: () => _toggleNotes(context),
                           tooltip: AppLocalizations.of(context).notes,
                           icon: const PhosphorIcon(PhosphorIconsLight.file),
                         ),
@@ -382,186 +407,219 @@ class _GamePageState extends State<GamePage>
                     ),
                     body: BlocBuilder<WorldBloc, ClientWorldState>(
                       buildWhen: (previous, current) =>
-                          previous.world.gameState != current.world.gameState,
+                          previous.world.gameState != current.world.gameState ||
+                          previous.data != current.data,
                       builder: (context, state) {
                         final showPluginSystemNote =
                             !isPluginSystemInitialized &&
                             !state.multiplayer.isClient &&
                             state.world.info.gameMode != null;
-                        return Center(
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              if (state.world.gameState ==
-                                  GameState.configuration)
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                        return Row(
+                          children: [
+                            Expanded(
+                              child: Center(
+                                child: Stack(
+                                  alignment: Alignment.center,
                                   children: [
-                                    CircularProgressIndicator(),
-                                    const SizedBox(height: 16),
-                                    Text(
-                                      AppLocalizations.of(context)
-                                          .configuringGame,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium,
-                                    ),
-                                  ],
-                                )
-                              else
-                                GameWidget(
-                                  game: game,
-                                  focusNode: _focusNode,
-                                  initialActiveOverlays: ['dialogs', 'filter'],
-                                  overlayBuilderMap: {
-                                    'dialogs': (context, game) =>
-                                        GameDialogOverlay(),
-                                    'filter': (context, game) =>
-                                        GameFilterView(),
-                                  },
-                                ),
-                              if (state.world.gameState !=
-                                  GameState.configuration)
-                                Positioned(
-                                  top: 12,
-                                  left: 64,
-                                  right: 64,
-                                  child: Center(
-                                    child: BlocBuilder<WorldBloc, ClientWorldState>(
-                                      buildWhen: (previous, current) =>
-                                          previous.world.toolbar.actions !=
-                                          current.world.toolbar.actions,
-                                      builder: (context, state) {
-                                        final actions =
-                                            state.world.toolbar.actions;
-                                        if (actions.isEmpty) {
-                                          return const SizedBox.shrink();
-                                        }
-                                        return Material(
-                                          elevation: 4,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .surfaceContainerHigh
-                                              .withValues(alpha: 0.94),
-                                          borderRadius: BorderRadius.circular(
-                                            14,
+                                    if (state.world.gameState ==
+                                        GameState.configuration)
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          CircularProgressIndicator(),
+                                          const SizedBox(height: 16),
+                                          Text(
+                                            AppLocalizations.of(context)
+                                                .configuringGame,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium,
                                           ),
-                                          clipBehavior: Clip.antiAlias,
-                                          child: SingleChildScrollView(
-                                            scrollDirection: Axis.horizontal,
-                                            padding: const EdgeInsets.all(6),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: actions
-                                                  .map(
-                                                    (action) => Padding(
-                                                      padding:
-                                                          const EdgeInsets.symmetric(
-                                                            horizontal: 3,
+                                        ],
+                                      )
+                                    else
+                                      GameWidget(
+                                        game: game,
+                                        focusNode: _focusNode,
+                                        initialActiveOverlays: [
+                                          'dialogs',
+                                          'filter',
+                                        ],
+                                        overlayBuilderMap: {
+                                          'dialogs': (context, game) =>
+                                              GameDialogOverlay(),
+                                          'filter': (context, game) =>
+                                              GameFilterView(),
+                                        },
+                                      ),
+                                    if (state.world.gameState !=
+                                        GameState.configuration)
+                                      Positioned(
+                                        top: 12,
+                                        left: 64,
+                                        right: 64,
+                                        child: Center(
+                                          child: BlocBuilder<WorldBloc, ClientWorldState>(
+                                            buildWhen: (previous, current) =>
+                                                previous
+                                                    .world
+                                                    .toolbar
+                                                    .actions !=
+                                                current.world.toolbar.actions,
+                                            builder: (context, state) {
+                                              final actions =
+                                                  state.world.toolbar.actions;
+                                              if (actions.isEmpty) {
+                                                return const SizedBox.shrink();
+                                              }
+                                              return Material(
+                                                elevation: 4,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .surfaceContainerHigh
+                                                    .withValues(alpha: 0.94),
+                                                borderRadius:
+                                                    BorderRadius.circular(14),
+                                                clipBehavior: Clip.antiAlias,
+                                                child: SingleChildScrollView(
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  padding: const EdgeInsets.all(
+                                                    6,
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: actions
+                                                        .map(
+                                                          (action) => Padding(
+                                                            padding:
+                                                                const EdgeInsets.symmetric(
+                                                                  horizontal: 3,
+                                                                ),
+                                                            child: FilledButton.tonal(
+                                                              onPressed:
+                                                                  action.enabled
+                                                                  ? () => context
+                                                                        .read<
+                                                                          WorldBloc
+                                                                        >()
+                                                                        .process(
+                                                                          ToolbarActionRequest(
+                                                                            action.id,
+                                                                          ),
+                                                                        )
+                                                                  : null,
+                                                              child: Text(
+                                                                action.label,
+                                                              ),
+                                                            ),
                                                           ),
-                                                      child: FilledButton.tonal(
-                                                        onPressed:
-                                                            action.enabled
-                                                            ? () => context
-                                                                  .read<
-                                                                    WorldBloc
-                                                                  >()
-                                                                  .process(
-                                                                    ToolbarActionRequest(
-                                                                      action.id,
-                                                                    ),
-                                                                  )
-                                                            : null,
-                                                        child: Text(
-                                                          action.label,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  )
-                                                  .toList(),
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              if (state.world.gameState !=
-                                  GameState.configuration)
-                                GameChatOverlay(
-                                  open: _chatOpen,
-                                  handVisible: state.showHand,
-                                  onClose: () {
-                                    if (_chatOpen) _toggleChat();
-                                  },
-                                ),
-                              if (showPluginSystemNote)
-                                Positioned(
-                                  left: 16,
-                                  right: 16,
-                                  top: 16,
-                                  child: SafeArea(
-                                    child: Align(
-                                      alignment: Alignment.topCenter,
-                                      child: ConstrainedBox(
-                                        constraints: const BoxConstraints(
-                                          maxWidth: 560,
-                                        ),
-                                        child: DecoratedBox(
-                                          decoration: BoxDecoration(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .surfaceContainerHigh,
-                                            borderRadius: BorderRadius.circular(
-                                              8,
-                                            ),
-                                            border: Border.all(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .outlineVariant,
-                                            ),
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 12,
-                                              vertical: 10,
-                                            ),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                PhosphorIcon(
-                                                  PhosphorIconsLight.info,
-                                                  size: 18,
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .onSurfaceVariant,
-                                                ),
-                                                const SizedBox(width: 8),
-                                                Flexible(
-                                                  child: Text(
-                                                    'Scripted game mode unavailable: plugin system failed to load.',
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .bodySmall
-                                                        ?.copyWith(
-                                                          color: Theme.of(context)
-                                                              .colorScheme
-                                                              .onSurfaceVariant,
-                                                        ),
+                                                        )
+                                                        .toList(),
                                                   ),
                                                 ),
-                                              ],
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    if (state.world.gameState !=
+                                        GameState.configuration)
+                                      GameChatOverlay(
+                                        open: _chatOpen,
+                                        handVisible: state.showHand,
+                                        onClose: () {
+                                          if (_chatOpen) _toggleChat();
+                                        },
+                                      ),
+                                    if (showPluginSystemNote)
+                                      Positioned(
+                                        left: 16,
+                                        right: 16,
+                                        top: 16,
+                                        child: SafeArea(
+                                          child: Align(
+                                            alignment: Alignment.topCenter,
+                                            child: ConstrainedBox(
+                                              constraints: const BoxConstraints(
+                                                maxWidth: 560,
+                                              ),
+                                              child: DecoratedBox(
+                                                decoration: BoxDecoration(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .surfaceContainerHigh,
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  border: Border.all(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .outlineVariant,
+                                                  ),
+                                                ),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.symmetric(
+                                                        horizontal: 12,
+                                                        vertical: 10,
+                                                      ),
+                                                  child: Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      PhosphorIcon(
+                                                        PhosphorIconsLight.info,
+                                                        size: 18,
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .onSurfaceVariant,
+                                                      ),
+                                                      const SizedBox(width: 8),
+                                                      Flexible(
+                                                        child: Text(
+                                                          'Scripted game mode unavailable: plugin system failed to load.',
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .bodySmall
+                                                                  ?.copyWith(
+                                                                    color: Theme.of(
+                                                                      context,
+                                                                    ).colorScheme.onSurfaceVariant,
+                                                                  ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ),
+                                    AuthGameView(),
+                                  ],
                                 ),
-                              AuthGameView(),
-                            ],
-                          ),
+                              ),
+                            ),
+                            if (_notesOpen &&
+                                MediaQuery.sizeOf(context).width >= 900 &&
+                                state.data.getNotes().isNotEmpty &&
+                                state.world.gameState !=
+                                    GameState.configuration)
+                              SizedBox(
+                                width: 320,
+                                child: GameNotesPanel(
+                                  onClose: () =>
+                                      setState(() => _notesOpen = false),
+                                  onManage: () => _openNotes(context),
+                                ),
+                              ),
+                          ],
                         );
                       },
                     ),

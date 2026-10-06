@@ -9,8 +9,6 @@ impl LuaUserData for LuauServerUserData {
         methods.add_async_method(
             "Process",
             async |_, this, (event, force): (LuaTable, Option<bool>)| {
-                let event_name = event.get::<String>("type");
-                println!("Processing event from Luau plugin: {:?}", event_name);
                 let serialized_event = serde_json::to_string(&event).unwrap();
                 let process_event = this.0.process_event.clone();
                 process_event(serialized_event, force)
@@ -24,10 +22,6 @@ impl LuaUserData for LuauServerUserData {
             async |_, this, (event, target): (LuaTable, Option<Channel>)| {
                 let serialized_event = serde_json::to_string(&event).unwrap();
                 let send_event = this.0.send_event.clone();
-                println!(
-                    "Sending event from Luau plugin to target {:?}: {:?}",
-                    target, serialized_event
-                );
                 send_event(serialized_event, target)
                     .await
                     .map_err(LuaError::external)?;

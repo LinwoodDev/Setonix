@@ -204,8 +204,17 @@ HybridWorldEvent _hybridProtectPacket(HybridWorldEvent event) =>
       _ => event,
     };
 
-ServerWorldEvent protectServerEvent(ServerWorldEvent event) =>
-    event is HybridWorldEvent ? _hybridProtectPacket(event) : event;
+ServerWorldEvent protectServerEvent(ServerWorldEvent event) => switch (event) {
+  HybridWorldEvent() => _hybridProtectPacket(event),
+  ObjectsChanged() => event.copyWith(
+    objects: event.objects
+        .map(
+          (object) => object.hidden ? object.copyWith(variation: null) : object,
+        )
+        .toList(),
+  ),
+  _ => event,
+};
 
 class UpdateServerResponse extends ServerResponse {
   final NetworkerPacket<ServerWorldEvent>? main;

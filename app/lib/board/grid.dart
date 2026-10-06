@@ -4,6 +4,7 @@ import 'package:flame_bloc/flame_bloc.dart';
 import 'package:setonix/bloc/world/bloc.dart';
 import 'package:setonix/bloc/world/state.dart';
 import 'package:setonix/board/cell.dart';
+import 'package:setonix/board/background.dart';
 import 'package:setonix/board/game.dart';
 import 'package:setonix/helpers/vector.dart';
 
@@ -15,8 +16,16 @@ class BoardGrid extends PositionComponent
   static const _padding = 3.0;
   Rect? _lastViewport;
   bool _forceUpdate = false;
+  late final GameBoardBackground _background;
 
   BoardGrid({required this.cellSize});
+
+  @override
+  void onLoad() {
+    super.onLoad();
+    _background = GameBoardBackground(priority: -1);
+    add(_background);
+  }
 
   @override
   bool listenWhen(ClientWorldState previousState, ClientWorldState newState) {
@@ -32,12 +41,14 @@ class BoardGrid extends PositionComponent
   Rect get viewport {
     final Rect viewport = game.camera.visibleWorldRect;
     final currentSize = cellSize;
-    return Rect.fromLTRB(
+    final padded = Rect.fromLTRB(
       (viewport.left / currentSize.x - _padding).floor() * currentSize.x,
       (viewport.top / currentSize.y - _padding).floor() * currentSize.y,
       (viewport.right / currentSize.x + _padding).ceil() * currentSize.x,
       (viewport.bottom / currentSize.y + _padding).ceil() * currentSize.y,
     );
+    final bounds = game.boardBounds;
+    return bounds == null ? padded : padded.intersect(bounds);
   }
 
   bool shouldReset() {
@@ -53,10 +64,12 @@ class BoardGrid extends PositionComponent
     _forceUpdate = false;
     final viewport = this.viewport;
     final currentSize = cellSize;
+    _background.position.setValues(viewport.left, viewport.top);
+    _background.size.setValues(viewport.width, viewport.height);
     // Remove components that are out of the viewport
     removeAll(
       children.where((element) {
-        if (element is! PositionComponent) return false;
+        if (element is! GameCell) return false;
         final Rect bounds = element.toRect();
         return !bounds.overlaps(viewport);
       }),

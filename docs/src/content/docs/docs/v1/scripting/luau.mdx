@@ -138,6 +138,10 @@ Inside the handler:
 - `event.command` contains the matched command name
 - `event.arguments` contains whitespace-split arguments
 
+`user_left` (also `player_left`, `player_leave`, and `user_leave`) runs when a player disconnects. `event.player.id` and `event.source` identify the departing player. This lifecycle notification does not contain a board update to cancel or schedule; send any cleanup updates directly through the server helpers.
+
+`Setonix.channels.authority` is the local host channel and `Setonix.channels.all` is the broadcast target. `Setonix.players.all()` includes the local player in offline and peer-hosted games.
+
 ## Players
 
 ```lua
@@ -182,8 +186,27 @@ Table methods:
 - `tableRef:getCell(positionOrX, y)`
 - `tableRef:cells()`
 - `tableRef:position(x, y)`
+- `tableRef:bounds()` — returns minimum and maximum positions, or two `nil` values for an unrestricted table
+- `tableRef:contains(positionOrX, y)` — checks the inclusive bounds and table name
+- `tableRef:setBounds(minimum, maximum, target)` — restricts the canvas to two integer cell coordinates
+- `tableRef:clearBounds(target)` — removes the restriction
 - `tableRef:spawn(positionOrX, y, objects, target)`
 - `tableRef:spawnObject(positionOrX, y, asset, options, target)`
+
+```lua
+local board = Setonix.tables.current()
+board:setBounds({ x = 0, y = 0 }, { x = 5, y = 3 })
+board:cell(0, 1):layout({
+  type = "DistributeCellMergeStrategy",
+  direction = "horizontal",
+  maxCards = 52,
+}, 6)
+board:cell(0, 1):setObjects({}) -- replace the entire hand, including clearing it
+```
+
+Bounds include both corners and accept reversed corners. Both corners must be supplied together; use `clearBounds()` to return to the sandbox. The client limits grid rendering and camera movement to the configured table. Restrictions are saved with the world. Restore previous bounds and layouts in `world_closing` if they belong only to your mode.
+
+Outbound board updates are queued in order. Keep authoritative game progress in Lua state rather than reading a cell immediately after sending its update. This also makes it possible to restore the same round from persistent storage.
 
 State helpers:
 
@@ -197,7 +220,7 @@ State helpers:
 
 ## Persistent Storage
 
-Each Luau plugin gets a private JSON-backed storage object saved with the world. Values must be JSON-compatible: strings, numbers, booleans, arrays, and plain tables.
+Each Luau plugin gets a private JSON-backed storage object saved with the world. Missing values and optional JSON `null` fields are represented as `nil` in Luau; `Setonix.storage.get(key, default)` returns the default for a missing value. Values must be JSON-compatible: strings, numbers, booleans, arrays, and plain tables.
 
 ```lua
 local visits = Setonix.storage.update("visits", function(value)
@@ -236,6 +259,8 @@ Cell methods:
 - `cell:countObjects()`
 - `cell:hasObjects()`
 - `cell:spawn(objects, target)`
+- `cell:setObjects(objects, target)` — replaces the cell's complete object list
+- `cell:layout(strategy, span, target)` — sets a merge layout; use `nil` to remove it
 - `cell:spawnObject(asset, options, target)`
 - `cell:remove(objects, target)`
 - `cell:clear(target)`
@@ -259,7 +284,8 @@ end, 21)
 
 Available helpers:
 
-- `Setonix.collections.copy(values)`
+- `Setonix.collections.copy(values)` — copies a sequence and preserves its JSON array type, even when empty
+- `Setonix.collections.sorted(values, comparator)` — returns a sorted copy without changing the input
 - `Setonix.collections.shuffle(values)`
 - `Setonix.scoring.bestTotal(items, resolverOrMap, maxScore)`
 
@@ -286,6 +312,9 @@ Available helpers:
 - `Setonix.server.broadcast(message, author)`
 - `Setonix.server.setToolbar(toolbar, target)`
 - `Setonix.server.toolbarAction(id, label, enabled)`
+- `Setonix.server.events.tableBoundsChanged(tableName, minimum, maximum)`
+- `Setonix.server.events.objectsChanged(cell, objects)`
+- `Setonix.server.events.mergeStrategyChanged(cell, strategy, span)`
 - `Setonix.server.events.*` builders for hybrid and server events such as `objectsMoved`, `objectsRemoved`, `cellHideChanged`, `message`, `toolbarUpdated`, `dialogsClosed`, and more
 
 The flat aliases `Setonix.send`, `Setonix.process`, `Setonix.message`, `Setonix.broadcast`, `Setonix.setToolbar`, and `Setonix.toolbarAction` remain available too.
@@ -348,3 +377,16 @@ Raw access points:
 - `Setonix.raw.events`
 - `Setonix.raw.state`
 - `Setonix.raw.server`
+
+## Live notes
+
+Notes are shared Markdown documents saved with the world. Players can follow a note beside the board while scripts update it. Use them for scoreboards, turn reminders, or rules:
+
+```lua
+Setonix.notes.set("Scoreboard", "# Round 1\n\n**Player 1** is playing.")
+Setonix.notes.remove("Scoreboard")
+```
+
+Both methods accept an optional target channel. The standard event builders are also available as `Setonix.server.events.noteChanged(name, content)` and `noteRemoved(name)`. When a script manages a note, it can cancel `note_changed` and `note_removed` requests for that name. Keep secret information out of shared notes.
+
+For card layouts, `fillVariableSpace = false` keeps cards centered with spacing of at most one cell. Longer hands compress to fit their merged span; `reverse` reverses either layout.

@@ -564,7 +564,11 @@ class CellMergeStrategyMapper extends ClassMapperBase<CellMergeStrategy> {
   };
 
   static CellMergeStrategy _instantiate(DecodingData data) {
-    throw MapperException.missingConstructor('CellMergeStrategy');
+    throw MapperException.missingSubclass(
+      'CellMergeStrategy',
+      'type',
+      '${data.value['type']}',
+    );
   }
 
   @override
@@ -605,14 +609,14 @@ abstract class CellMergeStrategyCopyWith<
 }
 
 /// @nodoc
-class MergedCellStrategyMapper extends ClassMapperBase<MergedCellStrategy> {
+class MergedCellStrategyMapper extends SubClassMapperBase<MergedCellStrategy> {
   MergedCellStrategyMapper._();
 
   static MergedCellStrategyMapper? _instance;
   static MergedCellStrategyMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = MergedCellStrategyMapper._());
-      CellMergeStrategyMapper.ensureInitialized();
+      CellMergeStrategyMapper.ensureInitialized().addSubMapper(_instance!);
       CellMergeDirectionMapper.ensureInitialized();
     }
     return _instance!;
@@ -629,6 +633,14 @@ class MergedCellStrategyMapper extends ClassMapperBase<MergedCellStrategy> {
   final MappableFields<MergedCellStrategy> fields = const {
     #direction: _f$direction,
   };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'MergedCellStrategy';
+  @override
+  late final ClassMapperBase superMapper =
+      CellMergeStrategyMapper.ensureInitialized();
 
   static MergedCellStrategy _instantiate(DecodingData data) {
     return MergedCellStrategy(data.dec(_f$direction));
@@ -739,7 +751,7 @@ class _MergedCellStrategyCopyWithImpl<$R, $Out>
 
 /// @nodoc
 class LayoutCellMergeStrategyMapper
-    extends ClassMapperBase<LayoutCellMergeStrategy> {
+    extends SubClassMapperBase<LayoutCellMergeStrategy> {
   LayoutCellMergeStrategyMapper._();
 
   static LayoutCellMergeStrategyMapper? _instance;
@@ -748,7 +760,7 @@ class LayoutCellMergeStrategyMapper
       MapperContainer.globals.use(
         _instance = LayoutCellMergeStrategyMapper._(),
       );
-      CellMergeStrategyMapper.ensureInitialized();
+      CellMergeStrategyMapper.ensureInitialized().addSubMapper(_instance!);
       StackedCellMergeStrategyMapper.ensureInitialized();
       DistributeCellMergeStrategyMapper.ensureInitialized();
       CellMergeDirectionMapper.ensureInitialized();
@@ -782,8 +794,20 @@ class LayoutCellMergeStrategyMapper
     #reverse: _f$reverse,
   };
 
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'LayoutCellMergeStrategy';
+  @override
+  late final ClassMapperBase superMapper =
+      CellMergeStrategyMapper.ensureInitialized();
+
   static LayoutCellMergeStrategy _instantiate(DecodingData data) {
-    throw MapperException.missingConstructor('LayoutCellMergeStrategy');
+    throw MapperException.missingSubclass(
+      'LayoutCellMergeStrategy',
+      'type',
+      '${data.value['type']}',
+    );
   }
 
   @override
@@ -826,7 +850,7 @@ abstract class LayoutCellMergeStrategyCopyWith<
 
 /// @nodoc
 class StackedCellMergeStrategyMapper
-    extends ClassMapperBase<StackedCellMergeStrategy> {
+    extends SubClassMapperBase<StackedCellMergeStrategy> {
   StackedCellMergeStrategyMapper._();
 
   static StackedCellMergeStrategyMapper? _instance;
@@ -835,7 +859,9 @@ class StackedCellMergeStrategyMapper
       MapperContainer.globals.use(
         _instance = StackedCellMergeStrategyMapper._(),
       );
-      LayoutCellMergeStrategyMapper.ensureInitialized();
+      LayoutCellMergeStrategyMapper.ensureInitialized().addSubMapper(
+        _instance!,
+      );
       CellMergeDirectionMapper.ensureInitialized();
     }
     return _instance!;
@@ -871,6 +897,14 @@ class StackedCellMergeStrategyMapper
     #reverse: _f$reverse,
     #direction: _f$direction,
   };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'StackedCellMergeStrategy';
+  @override
+  late final ClassMapperBase superMapper =
+      LayoutCellMergeStrategyMapper.ensureInitialized();
 
   static StackedCellMergeStrategy _instantiate(DecodingData data) {
     return StackedCellMergeStrategy(
@@ -1004,7 +1038,7 @@ class _StackedCellMergeStrategyCopyWithImpl<$R, $Out>
 
 /// @nodoc
 class DistributeCellMergeStrategyMapper
-    extends ClassMapperBase<DistributeCellMergeStrategy> {
+    extends SubClassMapperBase<DistributeCellMergeStrategy> {
   DistributeCellMergeStrategyMapper._();
 
   static DistributeCellMergeStrategyMapper? _instance;
@@ -1013,7 +1047,9 @@ class DistributeCellMergeStrategyMapper
       MapperContainer.globals.use(
         _instance = DistributeCellMergeStrategyMapper._(),
       );
-      LayoutCellMergeStrategyMapper.ensureInitialized();
+      LayoutCellMergeStrategyMapper.ensureInitialized().addSubMapper(
+        _instance!,
+      );
       CellMergeDirectionMapper.ensureInitialized();
     }
     return _instance!;
@@ -1057,6 +1093,14 @@ class DistributeCellMergeStrategyMapper
     #reverse: _f$reverse,
     #direction: _f$direction,
   };
+
+  @override
+  final String discriminatorKey = 'type';
+  @override
+  final dynamic discriminatorValue = 'DistributeCellMergeStrategy';
+  @override
+  late final ClassMapperBase superMapper =
+      LayoutCellMergeStrategyMapper.ensureInitialized();
 
   static DistributeCellMergeStrategy _instantiate(DecodingData data) {
     return DistributeCellMergeStrategy(
