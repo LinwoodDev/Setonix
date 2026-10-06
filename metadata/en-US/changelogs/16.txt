@@ -10,5 +10,6 @@
 * Fix 16kb page size on Android
 * Fix game board rendering in Firefox
 * Improve classic theme colors
+* Restore offline web loading with an app-managed service worker
 
 Read more here: https://linwood.dev/setonix/0.9.1

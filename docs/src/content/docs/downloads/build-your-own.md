@@ -9,7 +9,8 @@ title: "Build your own"
 5. Use the flutter tool to compile the application in `app`
    * `flutter build apk`
    * `flutter build appbundle`
-   * `dart run flutter_rust_bridge build-web --rust-root ../plugin/rust --output web --release` and then `flutter build web`
+   * `bash ../plugin/web/build.sh` (with emsdk activated) and then `flutter build web --wasm --release --no-web-resources-cdn`, then
+     `dart pub get -C ../tools` and `dart run ../tools/build_web_service_worker.dart` to enable offline loading
    * `flutter build linux`
    * `flutter build windows`
    * `flutter build ios --release --no-codesign`\
