@@ -139,6 +139,12 @@ class GameInfoMapper extends ClassMapperBase<GameInfo> {
     opt: true,
     def: const [],
   );
+  static String? _$homeNote(GameInfo v) => v.homeNote;
+  static const Field<GameInfo, String> _f$homeNote = Field(
+    'homeNote',
+    _$homeNote,
+    opt: true,
+  );
 
   @override
   final MappableFields<GameInfo> fields = const {
@@ -146,6 +152,7 @@ class GameInfoMapper extends ClassMapperBase<GameInfo> {
     #packs: _f$packs,
     #gameMode: _f$gameMode,
     #waypoints: _f$waypoints,
+    #homeNote: _f$homeNote,
   };
 
   static GameInfo _instantiate(DecodingData data) {
@@ -154,6 +161,7 @@ class GameInfoMapper extends ClassMapperBase<GameInfo> {
       packs: data.dec(_f$packs),
       gameMode: data.dec(_f$gameMode),
       waypoints: data.dec(_f$waypoints),
+      homeNote: data.dec(_f$homeNote),
     );
   }
 
@@ -228,6 +236,7 @@ abstract class GameInfoCopyWith<$R, $In extends GameInfo, $Out>
     List<String>? packs,
     ItemLocation? gameMode,
     List<Waypoint>? waypoints,
+    String? homeNote,
   });
   GameInfoCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -271,12 +280,14 @@ class _GameInfoCopyWithImpl<$R, $Out>
     List<String>? packs,
     Object? gameMode = $none,
     List<Waypoint>? waypoints,
+    Object? homeNote = $none,
   }) => $apply(
     FieldCopyWithData({
       if (teams != null) #teams: teams,
       if (packs != null) #packs: packs,
       if (gameMode != $none) #gameMode: gameMode,
       if (waypoints != null) #waypoints: waypoints,
+      if (homeNote != $none) #homeNote: homeNote,
     }),
   );
   @override
@@ -285,6 +296,7 @@ class _GameInfoCopyWithImpl<$R, $Out>
     packs: data.get(#packs, or: $value.packs),
     gameMode: data.get(#gameMode, or: $value.gameMode),
     waypoints: data.get(#waypoints, or: $value.waypoints),
+    homeNote: data.get(#homeNote, or: $value.homeNote),
   );
 
   @override

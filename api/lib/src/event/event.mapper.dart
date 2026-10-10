@@ -8115,11 +8115,18 @@ class NoteChangedMapper extends SubClassMapperBase<NoteChanged> {
     'content',
     _$content,
   );
+  static bool? _$homePage(NoteChanged v) => v.homePage;
+  static const Field<NoteChanged, bool> _f$homePage = Field(
+    'homePage',
+    _$homePage,
+    opt: true,
+  );
 
   @override
   final MappableFields<NoteChanged> fields = const {
     #name: _f$name,
     #content: _f$content,
+    #homePage: _f$homePage,
   };
 
   @override
@@ -8131,7 +8138,11 @@ class NoteChangedMapper extends SubClassMapperBase<NoteChanged> {
       HybridWorldEventMapper.ensureInitialized();
 
   static NoteChanged _instantiate(DecodingData data) {
-    return NoteChanged(data.dec(_f$name), data.dec(_f$content));
+    return NoteChanged(
+      data.dec(_f$name),
+      data.dec(_f$content),
+      homePage: data.dec(_f$homePage),
+    );
   }
 
   @override
@@ -8198,7 +8209,7 @@ extension NoteChangedValueCopy<$R, $Out>
 abstract class NoteChangedCopyWith<$R, $In extends NoteChanged, $Out>
     implements HybridWorldEventCopyWith<$R, $In, $Out> {
   @override
-  $R call({String? name, String? content});
+  $R call({String? name, String? content, bool? homePage});
   NoteChangedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -8212,16 +8223,18 @@ class _NoteChangedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<NoteChanged> $mapper =
       NoteChangedMapper.ensureInitialized();
   @override
-  $R call({String? name, String? content}) => $apply(
+  $R call({String? name, String? content, Object? homePage = $none}) => $apply(
     FieldCopyWithData({
       if (name != null) #name: name,
       if (content != null) #content: content,
+      if (homePage != $none) #homePage: homePage,
     }),
   );
   @override
   NoteChanged $make(CopyWithData data) => NoteChanged(
     data.get(#name, or: $value.name),
     data.get(#content, or: $value.content),
+    homePage: data.get(#homePage, or: $value.homePage),
   );
 
   @override

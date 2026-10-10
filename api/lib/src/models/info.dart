@@ -11,12 +11,14 @@ class GameInfo with GameInfoMappable {
   final List<String> packs;
   final ItemLocation? gameMode;
   final List<Waypoint> waypoints;
+  final String? homeNote;
 
   const GameInfo({
     this.teams = const {},
     this.packs = const [],
     this.gameMode,
     this.waypoints = const [],
+    this.homeNote,
   });
 }
 

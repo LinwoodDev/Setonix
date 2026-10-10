@@ -15,10 +15,12 @@ final class ToolbarAction with ToolbarActionMappable {
   final String id;
   final String label;
   final bool enabled;
+  final bool showInToolbar;
 
   const ToolbarAction({
     required this.id,
     required this.label,
     this.enabled = true,
+    this.showInToolbar = true,
   });
 }

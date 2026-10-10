@@ -101,25 +101,15 @@ local function render()
 end
 
 local function updateToolbar(id)
-  local seat = findSeat(id)
   local active = Round.phase == "playing" and currentSeat() and currentSeat().id == id
   local betweenRounds = Round.phase ~= "playing"
-  local status = "Round " .. Round.number .. " · " .. (Round.rules == "dealer" and "Dealer" or "Competition")
-  if seat ~= nil then
-    status = "Hand: " .. score(seat.hand) .. " · " .. (seat.result or seat.status)
-  elseif not betweenRounds then
-    status = "Spectating · join next round"
-  end
   Setonix.player(id):setToolbar({
     editable = false,
     actions = {
-      Setonix.server.toolbarAction("blackjack_status", status, false),
       Setonix.server.toolbarAction("blackjack_start", Round.phase == "finished" and "Next round" or "Deal", betweenRounds),
       Setonix.server.toolbarAction("blackjack_hit", "Hit", active and #Round.deck > 0),
       Setonix.server.toolbarAction("blackjack_stand", "Stand", active),
-      Setonix.server.toolbarAction("blackjack_scores", "Scores"),
-      Setonix.server.toolbarAction("blackjack_rules", "Rules: " .. Round.rules, betweenRounds and id == Round.host),
-      Setonix.server.toolbarAction("blackjack_help", "Help"),
+      Setonix.server.toolbarAction("blackjack_rules", "Switch rules", betweenRounds and id == Round.host, false),
     },
   })
 end
@@ -138,6 +128,12 @@ local function updateNotes()
     table.insert(lines, "Choose **Hit** or **Stand**.")
   else
     table.insert(lines, "Round complete. Choose **Next round** to play again.")
+  end
+  table.insert(lines, "")
+  if Round.phase == "playing" then
+    table.insert(lines, "[Hit](action:blackjack_hit) [Stand](action:blackjack_stand)")
+  else
+    table.insert(lines, "[" .. (Round.phase == "finished" and "Next round" or "Deal") .. "](action:blackjack_start)")
   end
   if Round.rules == "dealer" and #Round.dealer > 0 then
     local hidden = Round.phase == "playing"
@@ -163,6 +159,8 @@ local function updateNotes()
     or "The highest hand at or below 21 wins. Ties share the win.")
   table.insert(lines, "")
   table.insert(lines, "The host can switch rules between rounds. Late arrivals join the next round.")
+  table.insert(lines, "")
+  table.insert(lines, "[Switch rules](action:blackjack_rules)")
   Setonix.notes.set(ScoreNote, table.concat(lines, "\n"))
 end
 

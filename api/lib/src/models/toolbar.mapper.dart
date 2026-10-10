@@ -190,12 +190,20 @@ class ToolbarActionMapper extends ClassMapperBase<ToolbarAction> {
     opt: true,
     def: true,
   );
+  static bool _$showInToolbar(ToolbarAction v) => v.showInToolbar;
+  static const Field<ToolbarAction, bool> _f$showInToolbar = Field(
+    'showInToolbar',
+    _$showInToolbar,
+    opt: true,
+    def: true,
+  );
 
   @override
   final MappableFields<ToolbarAction> fields = const {
     #id: _f$id,
     #label: _f$label,
     #enabled: _f$enabled,
+    #showInToolbar: _f$showInToolbar,
   };
 
   static ToolbarAction _instantiate(DecodingData data) {
@@ -203,6 +211,7 @@ class ToolbarActionMapper extends ClassMapperBase<ToolbarAction> {
       id: data.dec(_f$id),
       label: data.dec(_f$label),
       enabled: data.dec(_f$enabled),
+      showInToolbar: data.dec(_f$showInToolbar),
     );
   }
 
@@ -271,7 +280,7 @@ extension ToolbarActionValueCopy<$R, $Out>
 /// @nodoc
 abstract class ToolbarActionCopyWith<$R, $In extends ToolbarAction, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call({String? id, String? label, bool? enabled});
+  $R call({String? id, String? label, bool? enabled, bool? showInToolbar});
   ToolbarActionCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -285,18 +294,21 @@ class _ToolbarActionCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ToolbarAction> $mapper =
       ToolbarActionMapper.ensureInitialized();
   @override
-  $R call({String? id, String? label, bool? enabled}) => $apply(
-    FieldCopyWithData({
-      if (id != null) #id: id,
-      if (label != null) #label: label,
-      if (enabled != null) #enabled: enabled,
-    }),
-  );
+  $R call({String? id, String? label, bool? enabled, bool? showInToolbar}) =>
+      $apply(
+        FieldCopyWithData({
+          if (id != null) #id: id,
+          if (label != null) #label: label,
+          if (enabled != null) #enabled: enabled,
+          if (showInToolbar != null) #showInToolbar: showInToolbar,
+        }),
+      );
   @override
   ToolbarAction $make(CopyWithData data) => ToolbarAction(
     id: data.get(#id, or: $value.id),
     label: data.get(#label, or: $value.label),
     enabled: data.get(#enabled, or: $value.enabled),
+    showInToolbar: data.get(#showInToolbar, or: $value.showInToolbar),
   );
 
   @override

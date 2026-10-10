@@ -41,6 +41,20 @@ void main() {
     addTearDown(game.dispose);
     var note = game.state.data.getNote('Blackjack')!;
     expect(note, contains('Player 1'));
+    expect(note, contains('[Hit](action:blackjack_hit)'));
+    expect(note, contains('[Stand](action:blackjack_stand)'));
+    expect(note, contains('[Switch rules](action:blackjack_rules)'));
+    final toolbar = game.toolbars[1]!;
+    expect(toolbar.editable, isFalse);
+    expect(toolbar.actions.where((a) => a.showInToolbar).map((a) => a.id), [
+      'blackjack_start',
+      'blackjack_hit',
+      'blackjack_stand',
+    ]);
+    expect(
+      toolbar.actions.firstWhere((a) => a.id == 'blackjack_rules').enabled,
+      isFalse,
+    );
     expect(note, contains('**Dealer:** 6 + hidden card'));
     expect(note, isNot(contains('**Dealer:** 11')));
     await game.command(1, '/stand');
@@ -48,6 +62,7 @@ void main() {
     await game.command(2, '/stand');
     note = game.state.data.getNote('Blackjack')!;
     expect(note, contains('Round complete'));
+    expect(note, contains('[Next round](action:blackjack_start)'));
     expect(note, contains('**Dealer:** 17'));
     expect(note, isNot(contains('hidden card')));
     expect(await game.event(NoteChanged('Blackjack', 'changed'), 1), isTrue);

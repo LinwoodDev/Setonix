@@ -22,6 +22,7 @@ import 'package:setonix/pages/game/error.dart';
 import 'package:setonix/pages/game/filter.dart';
 import 'package:setonix/pages/game/multiplayer/dialog.dart';
 import 'package:setonix/pages/game/notes.dart';
+import 'package:setonix/pages/game/note_content.dart';
 import 'package:setonix/pages/game/notes_panel.dart';
 import 'package:setonix/services/file_system.dart';
 import 'package:setonix/services/network.dart';
@@ -56,9 +57,11 @@ class _GamePageState extends State<GamePage>
   bool _allowPop = false;
   bool _chatOpen = false;
   bool _notesOpen = true;
+  BoardGame? _game;
   final ContextMenuController _contextMenuController = ContextMenuController();
   final FocusNode _focusNode = FocusNode();
   final GlobalKey<ScaffoldState> _gameScaffoldKey = GlobalKey();
+  final GlobalKey _notesReaderKey = GlobalKey();
 
   String? _trimmedOrNull(String? value) {
     final trimmed = value?.trim();
@@ -158,28 +161,7 @@ class _GamePageState extends State<GamePage>
     );
   }
 
-  void _toggleNotes(BuildContext context) {
-    if (MediaQuery.sizeOf(context).width >= 900) {
-      setState(() => _notesOpen = !_notesOpen);
-      return;
-    }
-    final world = context.read<WorldBloc>();
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      useSafeArea: true,
-      builder: (sheetContext) => BlocProvider.value(
-        value: world,
-        child: SizedBox(
-          height: MediaQuery.sizeOf(sheetContext).height * 0.7,
-          child: GameNotesPanel(
-            onClose: () => Navigator.of(sheetContext).pop(),
-            onManage: () => _openNotes(context),
-          ),
-        ),
-      ),
-    );
-  }
+  void _toggleNotes() => setState(() => _notesOpen = !_notesOpen);
 
   void _toggleChat() {
     setState(() => _chatOpen = !_chatOpen);
@@ -309,9 +291,11 @@ class _GamePageState extends State<GamePage>
                       current is MultiplayerConnectingState,
               builder: (context, state) {
                 if (state is MultiplayerConnectingState) {
+                  _game = null;
                   return const Center(child: CircularProgressIndicator());
                 }
                 if (state is MultiplayerDisconnectedState) {
+                  _game = null;
                   return GameErrorView(
                     state: state,
                     onReconnect: () async => (await _bloc)?.$1.reconnect(),
@@ -319,7 +303,7 @@ class _GamePageState extends State<GamePage>
                   );
                 }
                 late final BoardGame game;
-                game = BoardGame(
+                game = _game ??= BoardGame(
                   bloc: context.read<WorldBloc>(),
                   settingsCubit: context.read<SettingsCubit>(),
                   contextMenuController: _contextMenuController,
@@ -390,9 +374,13 @@ class _GamePageState extends State<GamePage>
                           icon: const PhosphorIcon(PhosphorIconsLight.users),
                         ),
                         IconButton(
-                          onPressed: () => _toggleNotes(context),
+                          onPressed: _toggleNotes,
+                          isSelected: _notesOpen,
                           tooltip: AppLocalizations.of(context).notes,
                           icon: const PhosphorIcon(PhosphorIconsLight.file),
+                          selectedIcon: const PhosphorIcon(
+                            PhosphorIconsFill.file,
+                          ),
                         ),
                         IconButton(
                           onPressed: _toggleChat,
@@ -408,13 +396,19 @@ class _GamePageState extends State<GamePage>
                     body: BlocBuilder<WorldBloc, ClientWorldState>(
                       buildWhen: (previous, current) =>
                           previous.world.gameState != current.world.gameState ||
-                          previous.data != current.data,
+                          previous.data != current.data ||
+                          previous.info.homeNote != current.info.homeNote ||
+                          previous.world.toolbar != current.world.toolbar,
                       builder: (context, state) {
                         final showPluginSystemNote =
                             !isPluginSystemInitialized &&
                             !state.multiplayer.isClient &&
                             state.world.info.gameMode != null;
-                        return Row(
+                        final showNotesSheet =
+                            _notesOpen &&
+                            MediaQuery.sizeOf(context).width < 900 &&
+                            state.world.gameState != GameState.configuration;
+                        final content = Row(
                           children: [
                             Expanded(
                               child: Center(
@@ -470,8 +464,15 @@ class _GamePageState extends State<GamePage>
                                                     .actions !=
                                                 current.world.toolbar.actions,
                                             builder: (context, state) {
-                                              final actions =
-                                                  state.world.toolbar.actions;
+                                              final actions = state
+                                                  .world
+                                                  .toolbar
+                                                  .actions
+                                                  .where(
+                                                    (action) =>
+                                                        action.showInToolbar,
+                                                  )
+                                                  .toList();
                                               if (actions.isEmpty) {
                                                 return const SizedBox.shrink();
                                               }
@@ -608,12 +609,42 @@ class _GamePageState extends State<GamePage>
                             ),
                             if (_notesOpen &&
                                 MediaQuery.sizeOf(context).width >= 900 &&
-                                state.data.getNotes().isNotEmpty &&
                                 state.world.gameState !=
                                     GameState.configuration)
                               SizedBox(
                                 width: 320,
                                 child: GameNotesPanel(
+                                  readerKey: _notesReaderKey,
+                                  onClose: () =>
+                                      setState(() => _notesOpen = false),
+                                  onManage: () => _openNotes(context),
+                                ),
+                              ),
+                          ],
+                        );
+                        return Stack(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                bottom: showNotesSheet
+                                    ? GameNotesSheet.collapsedHeight +
+                                          MediaQuery.paddingOf(context).bottom
+                                    : 0,
+                              ),
+                              child: content,
+                            ),
+                            if (showNotesSheet)
+                              Positioned.fill(
+                                child: GameNotesSheet(
+                                  readerKey: _notesReaderKey,
+                                  data: state.data,
+                                  homeNote: state.info.homeNote,
+                                  editable: state.world.toolbar.editable,
+                                  actions: state.world.toolbar.actions,
+                                  onAction: (id) => processNoteAction(
+                                    context.read<WorldBloc>(),
+                                    id,
+                                  ),
                                   onClose: () =>
                                       setState(() => _notesOpen = false),
                                   onManage: () => _openNotes(context),

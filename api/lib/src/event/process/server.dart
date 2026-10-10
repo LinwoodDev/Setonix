@@ -529,11 +529,23 @@ ServerProcessed processServerEvent(
       );
     case NoteChanged():
       return ServerProcessed(
-        state.copyWith(data: state.data.setNote(event.name, event.content)),
+        state.copyWith(
+          data: state.data.setNote(event.name, event.content),
+          info: event.homePage == true
+              ? state.info.copyWith(homeNote: event.name)
+              : event.homePage == false && state.info.homeNote == event.name
+              ? state.info.copyWith(homeNote: null)
+              : state.info,
+        ),
       );
     case NoteRemoved():
       return ServerProcessed(
-        state.copyWith(data: state.data.removeNote(event.name)),
+        state.copyWith(
+          data: state.data.removeNote(event.name),
+          info: state.info.homeNote == event.name
+              ? state.info.copyWith(homeNote: null)
+              : state.info,
+        ),
       );
     case BoardTilesSpawned():
       return ServerProcessed(

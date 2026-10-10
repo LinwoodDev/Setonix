@@ -144,6 +144,7 @@ local function normalize_toolbar(toolbar)
       id = action.id,
       label = action.label,
       enabled = action.enabled ~= false,
+      showInToolbar = action.showInToolbar ~= false,
     })
   end
   return {
@@ -940,11 +941,12 @@ function Setonix.broadcast(message, author)
   return Setonix.message(message, nil, author)
 end
 
-function Setonix.toolbarAction(id, label, enabled)
+function Setonix.toolbarAction(id, label, enabled, showInToolbar)
   return {
     id = id,
     label = label,
     enabled = enabled ~= false,
+    showInToolbar = showInToolbar ~= false,
   }
 end
 

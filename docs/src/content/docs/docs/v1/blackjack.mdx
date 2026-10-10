@@ -3,22 +3,22 @@ title: Blackjack
 description: Play the built-in blackjack mode with player competition or dealer rules.
 ---
 
-Select **Blackjack** as the world’s game mode, then choose **Deal**. Every participant receives two cards. The deck is at the top left; the dealer’s hand sits beside it in dealer mode. Each player has a numbered row below the deck. The toolbar shows your score and whether it is your turn.
+Select **Blackjack** as the world’s game mode, then choose **Deal**. Every participant receives two cards. The deck is at the top left; the dealer’s hand sits beside it in dealer mode. Each player has a numbered row below the deck. The toolbar contains the main round controls; the Blackjack note shows scores and whose turn it is.
 
 Choose **Hit** to draw another card or **Stand** to keep your hand. Aces count as 1 or 11, face cards as 10, and other cards as their number. Reaching 21 or going over it ends your turn automatically. You can also drag the deck’s top card to your own hand during your turn.
 
-The host’s **Rules** button switches between two formats between rounds:
+The **Switch rules** button inside the Blackjack note lets the host switch between two formats between rounds:
 
 - **Competitive** (default): players compete for the highest score at or below 21. Equal best scores share the win. If everybody busts, nobody wins.
 - **Dealer**: each player competes against the dealer. The dealer hides their second card until the player turns finish, then draws until reaching 17 and stands on soft 17. A two-card blackjack beats a 21 made with more cards. Equal totals push; a dealer blackjack pushes another blackjack and beats other hands. If the dealer starts with blackjack, the round ends immediately.
 
 The local player is the host for offline or peer-hosted play. On a dedicated server, the first connected player controls the rules. If that player disconnects, control passes to the next connected player.
 
-**Notes** opens a live reader beside the board on wide screens, or a bottom sheet on small screens. The **Blackjack** note shows the current turn, every player’s score and result, and the rules. It updates as cards are drawn; the dealer’s hole card remains hidden. **Scores** also lists everybody’s hand, row and result in chat. **Help** explains the rules. Results and cards remain visible until someone chooses **Next round**. The mode uses points; there are no bets, payouts, splitting, doubling or insurance.
+Notes are enabled by default, with a live reader beside the board on wide screens and a persistent bottom sheet on small screens. Swipe or tap the sheet’s handle to expand it; turn off **Notes** to remove it. The **Blackjack** note shows the current turn, every player’s score and result, and the rules. It updates as cards are drawn; the dealer’s hole card remains hidden. The note also contains Deal / Next round, Hit, Stand and Switch rules buttons, enabled according to your turn and host permissions. The `/scores` and `/help` chat commands remain available. Results and cards remain visible until someone chooses **Next round**. The mode uses points; there are no bets, payouts, splitting, doubling or insurance.
 
 Players joining during a round spectate until the next deal. Disconnected players forfeit their hands and the turn advances. The shuffled deck, player hands, dealer hand, current turn and chosen rules survive saving and script reloads. Old saves from the previous blackjack implementation begin a fresh round.
 
-The mode restricts the table and camera to the playing area and disables sandbox card editing. Leaving the mode restores the previous table bounds and enables the sandbox toolbar.
+The mode restricts the table and camera to the playing area and disables sandbox card and note editing. Leaving the mode restores the previous table bounds and enables the sandbox toolbar.
 
 You can use slash or exclamation-mark commands instead of toolbar buttons:
 

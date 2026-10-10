@@ -138,7 +138,7 @@ export type SetonixServer = {
 	message: (message: string, target: any?, author: any?) -> any,
 	broadcast: (message: string, author: any?) -> any,
 	setToolbar: (toolbar: any, target: any?) -> any,
-	toolbarAction: (id: string, label: string, enabled: boolean?) -> any,
+	toolbarAction: (id: string, label: string, enabled: boolean?, showInToolbar: boolean?) -> any,
 	events: SetonixServerEvents,
 }
 
@@ -201,7 +201,7 @@ export type SetonixDef = {
 	log: (message: string) -> (),
 	message: (message: string, target: any?, author: any?) -> any,
 	broadcast: (message: string, author: any?) -> any,
-	toolbarAction: (id: string, label: string, enabled: boolean?) -> any,
+	toolbarAction: (id: string, label: string, enabled: boolean?, showInToolbar: boolean?) -> any,
 	setToolbar: (toolbar: any, target: any?) -> any,
 	moveObjects: (from_cell: any, to_cell: any, objects: any, target: any?) -> any,
 	on: (event_name: string, handler: (event: any) -> any) -> any,

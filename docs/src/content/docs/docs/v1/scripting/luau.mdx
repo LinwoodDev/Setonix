@@ -311,13 +311,42 @@ Available helpers:
 - `Setonix.server.message(message, target, author)`
 - `Setonix.server.broadcast(message, author)`
 - `Setonix.server.setToolbar(toolbar, target)`
-- `Setonix.server.toolbarAction(id, label, enabled)`
+- `Setonix.server.toolbarAction(id, label, enabled, showInToolbar)`
 - `Setonix.server.events.tableBoundsChanged(tableName, minimum, maximum)`
 - `Setonix.server.events.objectsChanged(cell, objects)`
 - `Setonix.server.events.mergeStrategyChanged(cell, strategy, span)`
 - `Setonix.server.events.*` builders for hybrid and server events such as `objectsMoved`, `objectsRemoved`, `cellHideChanged`, `message`, `toolbarUpdated`, `dialogsClosed`, and more
 
 The flat aliases `Setonix.send`, `Setonix.process`, `Setonix.message`, `Setonix.broadcast`, `Setonix.setToolbar`, and `Setonix.toolbarAction` remain available too.
+
+## Interactive notes
+
+Notes support Markdown links to other notes and buttons for game actions:
+
+```markdown
+[Read the rules](note:Rules)
+[Open turn guide](note:Turn%20guide)
+[Draw a card](action:draw)
+```
+
+A `note:` link opens the named note in the current reader. Encode spaces as `%20`. Set a note’s **Home page** property in the editor to choose the default note for the game.
+
+An `action:` link renders a Material 3 button. Its identifier must match an action in the current player’s toolbar, and it stays disabled if that action is missing or disabled. Clicking sends the same `ToolbarActionRequest` as a toolbar button, so scripts must enforce turn and permission checks in their action handler.
+
+Use `showInToolbar = false` to expose an action only inside notes:
+
+```lua
+Setonix.player(id):setToolbar({
+  editable = false,
+  actions = {
+    Setonix.server.toolbarAction("draw", "Draw", isPlayersTurn),
+    Setonix.server.toolbarAction("switch_rules", "Switch rules", isHost, false),
+  },
+})
+Setonix.notes.set("Rules", "[Switch rules](action:switch_rules)")
+```
+
+Both `enabled` and `showInToolbar` default to `true`. Note action buttons remain usable when `editable` is false; that flag disables sandbox editing and note mutations.
 
 ## Requests
 
