@@ -73,8 +73,14 @@ jobs:
       - name: Run Flutter tests
         if: matrix.projects == 'app'
         run: flutter test
+      - name: Build native plugin for server tests
+        if: matrix.projects == 'server'
+        working-directory: plugin/rust
+        run: cargo build --release --locked
       - name: Run Dart tests
         if: matrix.projects == 'api' || matrix.projects == 'server'
+        env:
+          FRB_DART_LOAD_EXTERNAL_LIBRARY_NATIVE_LIB_DIR: ${{ github.workspace }}/plugin/rust/target/release
         run: dart test
       - name: Run Rust tests
         if: matrix.projects == 'plugin'
