@@ -19,7 +19,7 @@ serde = { version = "1.0", features = ["derive"] }
 strum = { version = "0.28", features = ["derive"] }
 tokio = { version = "1", features = ["sync"] }
 
-mlua = { version = "=0.12.1", features = ["luau", "send", "async", "anyhow", "serialize", "userdata-wrappers"] }
+mlua = { version = "=0.12.2", features = ["luau", "send", "async", "anyhow", "serialize", "userdata-wrappers"] }
 
 [target.'cfg(not(target_os = "emscripten"))'.dependencies]
 flutter_rust_bridge = "=2.14.0-beta.2"
@@ -27,7 +27,7 @@ flutter_rust_bridge = "=2.14.0-beta.2"
 [target.'cfg(target_os = "ios")'.dependencies]
 # backtrace 0.3.76 (via flutter_rust_bridge) still uses the iOS dyld
 # bindings removed in libc 0.2.190. Keep these until backtrace is updated.
-libc = "=0.2.189"
+libc = "=0.2.190"
 
 [build-dependencies]
 cc = "1"
