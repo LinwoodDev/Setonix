@@ -13,5 +13,8 @@
 * Fix game board rendering in Firefox
 * Improve classic theme colors
 * Restore offline web loading with an app-managed service worker
+* Open newly created worlds automatically
+* Simplify home header and add a Games shortcut beside recent games
+* Remove duplicate Games heading and improve game card titles
 
 Read more here: https://linwood.dev/setonix/0.9.1

@@ -113,26 +113,38 @@ class _RecentHomeViewState extends State<RecentHomeView> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Row(
+                OverflowBar(
+                  alignment: MainAxisAlignment.spaceBetween,
+                  overflowAlignment: OverflowBarAlignment.end,
+                  spacing: 12,
+                  overflowSpacing: 4,
                   children: [
-                    const Icon(PhosphorIconsLight.clockCounterClockwise),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(PhosphorIconsLight.clockCounterClockwise),
+                        const SizedBox(width: 12),
+                        Flexible(
+                          child: Text(
                             AppLocalizations.of(context).recentGames,
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
-                          Text(
-                            AppLocalizations.of(context).recentGamesDescription,
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
+                    ),
+                    IconButton(
+                      onPressed: () => context.go('/games'),
+                      tooltip: AppLocalizations.of(context).games,
+                      icon: const Icon(PhosphorIconsLight.folderOpen),
                     ),
                   ],
+                ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(start: 36),
+                  child: Text(
+                    AppLocalizations.of(context).recentGamesDescription,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
                 ),
                 const SizedBox(height: 16),
                 if (state.recentGames.isEmpty)

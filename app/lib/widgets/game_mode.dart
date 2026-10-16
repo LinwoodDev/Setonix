@@ -148,7 +148,7 @@ class GameModeTile extends StatelessWidget {
               padding: const EdgeInsets.only(
                 left: 12,
                 right: 12,
-                top: 8,
+                top: 12,
                 bottom: 0,
               ),
               child: Column(
@@ -160,7 +160,7 @@ class GameModeTile extends StatelessWidget {
                     label,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: TextTheme.of(context).titleMedium,
+                    style: TextTheme.of(context).titleLarge,
                   ),
                   if (subtitle != null) ...[
                     Text(

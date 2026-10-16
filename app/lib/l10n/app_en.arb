@@ -344,6 +344,7 @@
   "pleaseLink": "Please link your account to the server using the provided link.",
   "singleplayer": "Singleplayer",
   "recentGames": "Recent games",
+  "savedGamesDescription": "Choose a game mode to view its saved games.",
   "noRecentGames": "There are no recent games available",
   "homeActionPrompt": "What would you like to do?",
   "homeSingleplayerDescription": "Open a saved table or create a new one.",

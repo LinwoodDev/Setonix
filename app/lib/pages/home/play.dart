@@ -213,9 +213,7 @@ class _ModePickerView extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(4, 4, 4, 20),
                 child: _GamesHeader(
-                  title: AppLocalizations.of(context).games,
-                  subtitle: AppLocalizations.of(context)
-                      .homeSingleplayerDescription,
+                  subtitle: AppLocalizations.of(context).savedGamesDescription,
                   actions: [
                     OutlinedButton.icon(
                       onPressed: onCreate,
@@ -356,13 +354,14 @@ class _ModeGamesView extends StatelessWidget {
 }
 
 class _GamesHeader extends StatelessWidget {
-  final String title, subtitle;
+  final String? title;
+  final String subtitle;
   final IconData? icon;
   final Widget? leading;
   final List<Widget> actions;
 
   const _GamesHeader({
-    required this.title,
+    this.title,
     required this.subtitle,
     this.icon,
     this.leading,
@@ -386,8 +385,10 @@ class _GamesHeader extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: theme.textTheme.headlineSmall),
-                  const SizedBox(height: 4),
+                  if (title != null) ...[
+                    Text(title!, style: theme.textTheme.headlineSmall),
+                    const SizedBox(height: 4),
+                  ],
                   Text(subtitle, style: theme.textTheme.bodyMedium),
                 ],
               ),
