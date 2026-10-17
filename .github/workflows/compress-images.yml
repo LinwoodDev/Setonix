@@ -4,7 +4,8 @@ name: Compress Images
 on:
   workflow_dispatch:
   schedule:
-    - cron: '00 23 * * 0'
+    - cron: "00 23 * * 0"
+
 permissions:
   contents: write
   pull-requests: write
@@ -23,7 +24,7 @@ jobs:
         uses: actions/checkout@v7
       - name: Compress Images
         id: calibre
-        uses: calibreapp/image-actions@c3752f0cc46d3f73677f20c7bfe20ed4601ba2a3 # main
+        uses: calibreapp/image-actions@main
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           compressOnly: true
