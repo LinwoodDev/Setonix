@@ -1,7 +1,14 @@
 # Setonix Server
 
 This is the standalone server part of the Setonix game.
-Read more [here](../README.md).
+Read the [setup guide](https://setonix.world/docs/v1/server/),
+[configuration reference](https://setonix.world/docs/v1/server/configuration/),
+[console commands](https://setonix.world/docs/v1/server/commands/), and
+[roles and permissions](https://setonix.world/docs/v1/server/permissions/).
+
+The executable binds to `127.0.0.1:28006` by default. Saved worlds are under
+`worlds/`, content packs under `packs/`, and local users in `setonix.db`.
+See the configuration reference for current CLI autosave behavior and TLS setup.
 
 ## Use as a library
 
@@ -12,7 +19,7 @@ Put the following in your `pubspec.yaml`:
 dependencies:
   setonix_server:
     git:
-      url: git://github.com/LinwoodDev/Setonix.git
+      url: https://github.com/LinwoodDev/Setonix.git
       ref: <last commit or tag>
       path: server
 ```
@@ -136,6 +143,7 @@ The server console exposes the following runtime management commands:
 
 ```text
 players [world]
+name <user> <name...>
 bans
 ban <user> [minutes] [reason...]
 unban <user>

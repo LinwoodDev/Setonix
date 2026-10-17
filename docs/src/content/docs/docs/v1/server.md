@@ -1,54 +1,71 @@
 ---
-title: Server
+title: Dedicated server
+description: Run a persistent Setonix host, configure secure connections, and extend it with Dart.
 ---
 
-Servers can easily be started by running the executable in the console. The server listens only on `127.0.0.1:28006` by default, which is suitable for secure local testing.
-You can find all available options by running the executable with the `--help` flag.
+The dedicated server hosts worlds independently of a player's app. Download a server build from the [project releases](https://github.com/LinwoodDev/Setonix/releases), unpack it, and run the executable from the directory where you want its data stored. The examples below call the executable `server`; use the filename included in your build.
 
-## Directory
+```sh
+./server --help
+./server
+```
 
-When starting the server, it will create a directory called `packs` in the current working directory. This directory will contain all the packs that are loaded into the server.
-There should be a core pack already installed in the directory. This pack contains all the default cards, boards, and dice.
-Put your custom packs in this directory to load them into the server.
+The default bind is `127.0.0.1:28006`, suitable for local testing. In the app, add `ws://127.0.0.1:28006`, select **Play**, and choose an account if requested. Use matching client and server builds with compatible protocol versions.
+
+## Server directory
+
+| Path | Contents |
+| --- | --- |
+| `config.json` | Server configuration; created on first start |
+| `packs/` | Content packs, including the bundled core pack |
+| `worlds/` | Saved worlds as `.stnx` archives |
+| `scripts/` | Additional server scripts with the `.lua` extension |
+| `setonix.db` | Local registered users, roles, whitelist entries, and bans |
+| `certs/server.crt`, `certs/server.key` | Optional certificate and private key for direct TLS |
+
+Add custom pack archives to `packs/` before starting the server. Mode scripts live inside their packs; loose server scripts go in `scripts/`. World files use the same archive format as singleplayer games. Back up `worlds/`, packs, configuration, and the user database together while the server is stopped.
+
+Use `worlds`, `packs`, `modes`, and `scripts` in the terminal to inspect what was loaded. Use `save` to save all worlds and `stop` for an orderly shutdown. See the [console command reference](/docs/v1/server/commands/) and [server lists and thumbnails](/docs/v1/server/directory/).
 
 ## Secure server setup
 
-For local play, start the server without additional options and connect to `ws://127.0.0.1:28006`. Account authentication over plaintext WebSockets is accepted only on loopback.
+For local play, connect to `ws://127.0.0.1:28006`. Account authentication over plaintext WebSockets is accepted only on loopback.
 
-For a directly exposed public server, create a `certs` directory in the current working directory and provide the certificate as `server.crt` and its private key as `server.key`. If `--host` is the exact address players use, it automatically becomes the authentication identity:
+For a directly exposed public server, provide `certs/server.crt` and `certs/server.key`. If `--host` is the exact address players use, it becomes the authentication identity:
 
-```bash
-server --host play.example.com
+```sh
+./server --host play.example.com
 ```
 
-For Docker, wildcard binds, NAT, or a reverse proxy, specify the public address once:
+For a wildcard bind, NAT, container, or reverse proxy, specify the public address:
 
-```bash
-server --host 0.0.0.0 --public-address wss://play.example.com:28006
+```sh
+./server --host 0.0.0.0 --public-address wss://play.example.com:28006
 ```
 
-The same value can be stored as `publicAddress` in `config.json` or provided as `SETONIX_PUBLIC_ADDRESS`. When no certificate is installed locally, a `wss://` public address means TLS must terminate at a trusted reverse proxy. Protect the connection between that proxy and the Setonix server.
+Use the actual public port, including `443` if that is where the proxy accepts clients. The value can also be stored as `publicAddress` in `config.json`. When no certificate is installed locally, a `wss://` public address requires TLS to terminate at a trusted reverse proxy. Configure WebSocket forwarding and protect the proxy-to-server connection.
 
-The server refuses public plaintext account authentication. Use loopback for local development.
+Authentication uses short-lived, connection-bound Ed25519 challenges containing the canonical origin, protocol version, timestamps, channel, and nonce. The server rejects public plaintext account authentication, closes unauthenticated connections after 45 seconds, and closes a connection after three failed attempts. Clients sign only over WSS, loopback, or secure end-to-end encrypted Swamp rooms. TLS certificates remain responsible for hostname validation.
 
-Authentication uses a short-lived, connection-bound Ed25519 transcript containing the canonical server origin, protocol version, timestamps, channel, and random nonce. Unauthenticated connections time out after 45 seconds, and three failed attempts close the connection.
+See [accounts](/docs/v1/accounts/) for the player's workflow and [configuration](/docs/v1/server/configuration/) for all server options.
 
-Clients only sign authentication challenges over WSS, local loopback, or secure end-to-end encrypted Swamp rooms. The signed challenge is bound to the fixed public server address, similar to a passkey RP ID, so a challenge relayed through another domain is rejected before signing. The certificate remains responsible for normal TLS hostname validation; Setonix does not parse or duplicate its hostname rules.
+## Worlds and game modes
 
-The world will be saved in the current working directory in a file called `world.stnx`. This file will contain all the data of the world, including the packs that are loaded into the server. This file is compatible with the single player world file.
+The server loads `.stnx` saves from `worlds/`. Use `--game-mode core:blackjack` to select the mode for a new default world. Existing saves keep their saved state. `modes` lists available identifiers.
 
-## Library
+`worlds` lists loaded names and their player counts. Commands such as `save`, `players`, `scripts`, and `reset` accept a world argument. Use the names printed by `worlds` when administering a session.
 
-The server software can also be used as a library. This allows you to create custom server software with your own logic. The server software is written in Dart.
+Multi-world support is incomplete: the executable accepts `--multi-world` and loads the world directory, but connected users are currently assigned to the default world. Do not rely on a URL path to select an independent play session.
 
-To create a new project with the server software, you can use the following command:
+`reset <World> <Mode>` replaces that world's contents. Save a backup before using it. `reset <World> sandbox` returns it to a blank sandbox.
 
-```bash
-dart create server
-cd server
-```
+## Roles and users
 
-Now go to the `pubspec.yaml` file and add the following dependency:
+The default account role is `player`. To give an authenticated user administrative controls, enter `role add @Name owner` in the server terminal. Use `players` to inspect names, IDs, fingerprints, and roles. See [permissions](/docs/v1/server/permissions/) for multiple roles, priorities, bans, and whitelists.
+
+## Dart library
+
+The server can also be embedded in a Dart application. Add the `setonix_server` package from this repository, selecting a release tag compatible with your client:
 
 ```yaml
 dependencies:
@@ -56,67 +73,19 @@ dependencies:
     git:
       url: https://github.com/LinwoodDev/Setonix.git
       path: server
-      ref: <version>
+      ref: <release-tag>
 ```
-
-Replace `<version>` with the version you want to use (for example `v0.1.0`). It's recommended to use the latest version.
-
-Now go to the `bin/main.dart` file and add the following code:
 
 ```dart
 import 'package:setonix_server/setonix_server.dart';
 
-Future<void> main(List<String> arguments) {
-  return runServer(arguments);
-}
-```
-
-Now you can run the server software with the following command:
-
-```bash
-dart run
-```
-
-You will have the same setup as the server software, but you can now customize it to your needs.
-
-### Customization
-
-To further customize the server software, you can pass an `onLoad` function to the `runServer` function. This function will be called when the server loads. You can use this function to add custom logic to the server software.
-
-```dart
-import 'package:setonix_server/setonix_server.dart';
-
-Future<void> main(List<String> arguments) {
-  return runServer(arguments, onLoad);
-}
+Future<void> main(List<String> arguments) => runServer(arguments, onLoad);
 
 Future<void> onLoad(SetonixServer server) async {
-  print("on load was called");
-  // Add your custom code here
-  bool toggleCancel = false;
-  // Put the event you want to listen to in the brackets
-  server.eventSystem.on<ObjectsMoved>((e) {
-    print("Listener was called, cancel: $toggleCancel");
-    // Cancel the event every second time and duplicate the objects instead
-    if (toggleCancel) {
-      final event = e.clientEvent;
-      final table = e.getTableOrDefault(event.table);
-      final cell = table.getCell(event.from);
-      final objects = List<GameObject>.from(table.getCell(event.to).objects);
-      for (final index in event.objects) {
-        final object = cell.objects[index];
-        objects.add(object);
-      }
-      // Send the event to all clients
-      e.sendEvent(ObjectsSpawned(e.clientEvent.table, {event.to: objects}));
-      // Cancel the event
-      e.cancel();
-    }
-    toggleCancel = !toggleCancel;
-  });
+  server.log('Custom server loaded');
 }
 ```
 
-See the [API documentation](https://api.setonix.world/) for more information about the server software.
+Use `onLoad` for custom startup logic and `server.eventSystem` for event handlers. Handlers can inspect requests, cancel an event, and send replacement or scheduled events. For detailed types, see the [API reference](https://api.setonix.world/) and [server examples](https://github.com/LinwoodDev/Setonix/tree/develop/server/example). Pack-level rules can usually use [Luau](/docs/v1/scripting/luau/) instead.
 
-There are examples, you can find [here](https://github.com/LinwoodDev/Setonix/blob/develop/server/example).
+Hosting the browser app is a separate deployment; see [web app self-hosting](/downloads/selfhosting/).

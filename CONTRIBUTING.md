@@ -6,12 +6,12 @@ If you have any questions, please contact me at [contact@linwood.dev](mailto:con
 
 There is a matrix server for this project [here](https://linwood.dev/matrix) and a discord server [here](https://discord.linwood.dev).
 
-Please follow the [Code of Conduct](https://setonix.world/code-of-conduct).
+Please follow the [Code of Conduct](https://setonix.world/community/code-of-conduct/).
 
 ## Give feedback
 
 The best way to give feedback is to open an issue on GitHub.
-Please report any bug you find [here](https://github.com/LinwoodDev/Qeck/issues/new?assignees=CodeDoctorDE&labels=bug%2Ctriage&template=bug_report.yml&title=%5BBug%5D%3A+).
+Please report any bug you find [here](https://github.com/LinwoodDev/Setonix/issues/new?assignees=CodeDoctorDE&labels=bug%2Ctriage&template=bug_report.yml&title=%5BBug%5D%3A+).
 
 If you have a feature that you would like to see added, please open an issue [here](https://github.com/LinwoodDev/Setonix/issues/new?assignees=CodeDoctorDE&labels=enhancement%2Ctriage&template=feature_request.yml&title=%5BFeature+request%5D%3A+).
 
@@ -20,7 +20,7 @@ If you have a feature that you would like to see added, please open an issue [he
 Nightly builds are not production ready and need to be tested.
 Please report any bugs in the github issues section.
 
-Read more about it [here](https://setonix.world/nightly).
+Read more about it [here](https://setonix.world/community/nightly/).
 
 ## Write documentation
 
@@ -37,14 +37,14 @@ pnpm install
 pnpm start
 ```
 
-All stable documentation can be found in the `versioned_docs` folder.
+Feature guides live in `docs/src/content/docs/docs/v1/`. Register new pages in the sidebar in `docs/astro.config.mjs`, link related guides, and run `pnpm build` from `docs` before submitting changes. See `docs/README.md` for the documentation workflow.
 
 Fork the project and create a pull request to add your documentation to the `develop` branch.
 
 ## Translate
 
 Crowdin is a service that allows you to translate the documentation and the app.
-Click [here](https://translate.linwood.dev/qeck) to see the project and start translating.
+Ask in the [Setonix community](https://setonix.world/community/) about current translation work.
 If you have a new language to add, please contact me.
 
 ## Code
@@ -86,7 +86,7 @@ CI checks formatting, strict analysis, generated files, Flutter tests in
 models, run `dart run build_runner build` in each affected package and
 format its generated files before committing.
 
-All subdirectories are documented in the `app/README.md` file.
+The package overview above describes the repository layout. User-facing feature guides are in `docs/src/content/docs/docs/v1/`.
 
 Fork the project and create a pull request to add your code to the `develop` branch.
 

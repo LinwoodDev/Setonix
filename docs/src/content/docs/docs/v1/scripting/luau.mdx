@@ -7,6 +7,14 @@ Setonix Luau plugins now get a high-level `Setonix` runtime object that wraps th
 
 The raw bridge is published as `SetonixRaw` and is also available through `Setonix.raw` when you need direct access, but the old standalone `State`, `Events`, and `Server` globals are no longer part of the public scripting surface.
 
+## Run a script
+
+Put source in `scripts/<filename>.lua` or `.luau` inside a pack, then reference that exact filename from a mode's `script` field. Install the pack and create a game with that mode to run it. See [game modes and scripts](/docs/v1/packs/modes/) for the complete setup.
+
+Luau runs on the local host in singleplayer and app-hosted games, and on the dedicated server in multiplayer. Native and web builds share the runtime API; self-hosted web builds must include the [browser runtime](/downloads/selfhosting/). Additional dedicated-server scripts can be placed in its `scripts/` directory with the `.lua` extension.
+
+The [type declarations](https://github.com/LinwoodDev/Setonix/blob/develop/plugin/definitions/setonix.d.luau) complement this guide. [Blackjack](/docs/v1/blackjack/) is a complete built-in example.
+
 ## Quick Start
 
 ```lua

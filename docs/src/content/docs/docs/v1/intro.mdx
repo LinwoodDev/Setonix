@@ -1,29 +1,49 @@
 ---
 title: Introduction
+description: Create your first table and find your way around Setonix.
 ---
 
-![Banner](/img/banner.png)
+import { LinkCard, CardGrid, Steps } from '@astrojs/starlight/components';
 
----
+Setonix is a free, open source tabletop sandbox. Arrange cards, dice, chips, and boards, agree on your own rules, or choose a game mode that runs the rules for you. Play on your own, host friends, or join a dedicated server.
 
-> Welcome to Setonix, the opensource table sandbox game.
+## Your first game
 
-Setonix is a game table sandbox that is aiming for unified experience across all platforms. It provides simple UI with powerful customization.
+<Steps>
 
-## Getting started
+1. **Open Setonix.** [Download the app](/downloads/) or open the [web app](https://web.setonix.world). Local games do not need an account.
+2. **Open Games.** Select a game mode to see its saved games, or choose **Sandbox** for unrestricted play. Use **Create** to start a new game.
+3. **Choose a starting point.** The home screen’s **Create** action offers modes and saved templates under **Start**, and packs and a background under **Custom**. Creating from a selected mode goes straight to that mode’s setup. The core pack includes playing cards, dice, chips, chess pieces, and a chessboard.
+4. **Name the game.** Give it a non-empty name and an optional description, then create it. Select a saved game to reopen it later.
+5. **Set up the table.** Open the object library with the **+** button or **Tab**, then drag a deck, figure, or board onto a cell. Select a cell to see and move its contents.
 
-> You can use the sidebar to navigate quickly through the wiki.
+</Steps>
 
-To start working on the game you have two options:
+## Pick how to play
 
-1. [Downloads](/downloads) the game version that is appropriate for your platform (Setonix can run on most mobile, desktop, and web platforms).
-2. Use [web version](https://web.setonix.world) if you cannot find your platform or if you don't want to install it on it.
+| Starting point | What happens |
+| --- | --- |
+| Custom sandbox | You arrange the pieces and follow your own rules. |
+| Chess | A prepared chessboard and pieces; players enforce legal moves and turns themselves. |
+| Blackjack | Scripted dealing, turns, scoring, and competitive or dealer rules. See the [Blackjack guide](/docs/v1/blackjack/). |
+| Template | A copy of a table you previously prepared, ready for another session. |
+| Multiplayer | A shared world hosted by another app or a dedicated server. |
 
-> Once you open the game, continue reading.
+Modes can restrict editing and provide their own toolbar, notes, and actions. If a control is unavailable, check the mode's rules and your server permissions.
 
-## Docs are in working
+## Find your way around
 
-The game is very new. I'm currently mainly focussing on developing the game.
-Feel free to create a pull request on github to expand the docs.
+The game menu contains **Table**, **Waypoints**, **Zoom**, **Teams**, and **Settings**. Hosts also have **Advanced options** for packs and saving templates. The toolbar opens the library, chat, notes, and multiplayer controls; a scripted mode may replace sandbox controls with its own actions.
 
-If you have questions, don't hestitate to visit [the discord server](https://linwood.dev/discord), [the matrix server](https://linwood.dev/matrix) or [the github discussion page](https://github.com/LinwoodDev/Setonix/discussions).
+Local games save automatically as you play and when you leave. Export a game before moving it to another device. Browser saves belong to that browser's local storage; clearing site data can remove them.
+
+## Explore the features
+
+<CardGrid>
+  <LinkCard title="Play at the table" description="Controls, objects, shuffling, dice, and card layouts." href="/docs/v1/playing/" />
+  <LinkCard title="Manage your games" description="Saves, imports, exports, templates, and game modes." href="/docs/v1/worlds/" />
+  <LinkCard title="Play together" description="Join friends, host a session, and manage accounts." href="/docs/v1/multiplayer/" />
+  <LinkCard title="Make your own pack" description="Create artwork, decks, boards, and scripted modes." href="/docs/v1/packs/overview/" />
+</CardGrid>
+
+Use the sidebar or search to find [tables and waypoints](/docs/v1/tables/), [teams and visibility](/docs/v1/teams/), [notes and chat](/docs/v1/notes/), [settings](/docs/v1/settings/), and [server administration](/docs/v1/server/). For help, visit the [community](/community/) or [troubleshooting](/docs/v1/troubleshooting/).

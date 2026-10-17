@@ -1,51 +1,67 @@
 ---
 title: Packs
+description: Install content packs, enable them in worlds, and understand the archive layout.
 ---
 
-There is one built-in core pack with basic cards, a dice and chips. See `app/pack` for reference. For creating your own pack, mirror the setup, change to your liking and create a zip directory (make sure there is no extra folder in there). Change the file extension to `.stnx` and you are ready to share it.
-To import it, open the app and go to `Packs`. Then click on the import button in the top right corner.
+import { LinkCard, CardGrid, FileTree } from '@astrojs/starlight/components';
 
-You can find the code for the core pack [here](https://github.com/LinwoodDev/Setonix/blob/develop/app/pack).
+Packs provide figures, cards, dice, decks, boards, backgrounds, translations, and game modes. The built-in **core** pack includes the standard playing pieces and the Chess and Blackjack modes.
 
-## Pack Structure
+## Install and enable packs
 
-import { FileTree } from '@astrojs/starlight/components';
+Open **Library** from the home screen and use **Import** to install a `.stnx` pack. The **Installed** tab shows pack details and lets you export or remove an installation. Search by its name or identifier.
+
+For a local or hosted world, open **Game menu → Advanced options → Packs**. Add an installed pack to the game, remove a pack, or reorder the active packs in the **Game** tab. Installing a pack makes it available on the device; enabling it makes it available to that world. Connected clients cannot change the host's pack configuration from this dialog.
+
+If a multiplayer server requests a missing pack, use its offered downloads or ask the host for the exact archive, then reconnect. The download must match the requested identifier.
+
+## Create a pack
+
+Use the [built-in editor](/docs/v1/packs/editor/) or create the archive yourself. A pack is a ZIP archive with the `.stnx` extension. Put its contents directly at the archive root, without an extra enclosing folder. The [core pack source](https://github.com/LinwoodDev/Setonix/tree/develop/app/pack) is a complete example.
 
 <FileTree>
 
-- backgrounds
-  - cards.json
-  - grid.json
-- boards
-  - chess.json
-- decks
-  - chess.json
-  - chips.json
-  - dices.json
-  - doko.json
-  - doko9.json
-  - full.json
-  - poker.json
-  - skat.json
-- figures
-  - cards.json
-  - chess_black.json
-  - chess_white.json
-  - chips.json
-  - d6.json
-- textures
-  - backgrounds
-    - cards.png
-    - grid.png
-  - boards
-    - chess.png
-  - figures
-    - cards.png
-    - chess.png
-    - chips.png
-    - d6.png
-- translations
-  - en.json
 - pack.json
+- figures/
+  - token.json
+- decks/
+  - starter.json
+- boards/
+  - board.json
+- backgrounds/
+  - felt.json
+- textures/
+  - figures/
+    - token.png
+  - boards/
+    - board.png
+  - backgrounds/
+    - felt.png
+- translations/
+  - en.json
+- modes/
+  - example.json
+- scripts/
+  - example.luau
 
 </FileTree>
+
+Only include the content your pack needs. Asset IDs are the definition filenames without `.json`; script references include their filename extension. Texture references are relative to `textures/`, while a mode's preview path is relative to the archive root.
+
+## Identifiers and references
+
+Setonix computes a pack identifier from the archive's SHA-256 hash, encoded as URL-safe Base64. The core pack also has the reserved namespace `core`. Do not add an `id` field to `pack.json` to choose an identity.
+
+References use `namespace:item`, for example `core:cards` or `core:chess`. Pack-local definitions can use local item names where the format resolves them in the containing pack. A new archive has a new identity, even when its display name and version are unchanged. Share the same exported file with every player.
+
+## Authoring reference
+
+<CardGrid>
+  <LinkCard title="Pack editor" description="Create, install, and export a pack in the app." href="/docs/v1/packs/editor/" />
+  <LinkCard title="Metadata" description="pack.json fields and file types." href="/docs/v1/packs/meta/" />
+  <LinkCard title="Figures and textures" description="Sprite regions, card backs, variations, and dice." href="/docs/v1/packs/figures/" />
+  <LinkCard title="Decks" description="Place groups of figures and boards." href="/docs/v1/packs/decks/" />
+  <LinkCard title="Boards and backgrounds" description="Tiled boards and table surfaces." href="/docs/v1/packs/boards/" />
+  <LinkCard title="Modes and scripts" description="Starting tables, teams, and Luau rules." href="/docs/v1/packs/modes/" />
+  <LinkCard title="Translations" description="Localized content names and descriptions." href="/docs/v1/packs/translations/" />
+</CardGrid>

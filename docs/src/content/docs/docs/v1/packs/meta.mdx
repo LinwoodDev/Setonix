@@ -1,23 +1,34 @@
 ---
-title: Packs Meta
+title: Pack metadata
+description: Describe packs, games, templates, and account archives in pack.json.
 ---
 
-This is a required file for a pack. It contains metadata about the pack. The file is in JSON format and contains the following fields:
+`pack.json` at the archive root describes the file. The same metadata model is used for packs, games, templates, and account backups.
 
-- `name`: The name of the pack.
-- `description`: A description of the pack.
-- `author`: The author of the pack.
-- `version`: The version of the pack.
-- `id`: The id of the pack. This is required to save the pack in the world file.
-
-## Example
+| Field | Type | Default | Meaning |
+| --- | --- | --- | --- |
+| `type` | string | `"pack"` | `pack`, `game`, `template`, or `accounts` |
+| `name` | string | `""` | Display name |
+| `description` | string | `""` | Human-readable description |
+| `author` | string | `""` | Author or organization |
+| `version` | string | `""` | Content version label |
+| `dependencies` | string array | `[]` | Dependency identifiers |
+| `fileVersion` | integer | `0` | Archive format version |
 
 ```json title="pack.json"
 {
-  "name": "Core pack",
-  "description": "Official general pack",
-  "author": "Linwood",
+  "type": "pack",
+  "name": "My tabletop pack",
+  "description": "Cards and pieces for our weekly game",
+  "author": "Example author",
   "version": "1.0.0",
-  "id": "abc"
+  "dependencies": [],
+  "fileVersion": 0
 }
 ```
+
+The `version` label describes your content; it does not replace the archive format version or network protocol version. Keep `fileVersion` at the supported format value when authoring a pack.
+
+There is no user-selected `id` field. The pack identifier comes from the archive's bytes. Changing content or repacking the ZIP changes that identity. See [identifiers and references](/docs/v1/packs/overview/#identifiers-and-references).
+
+Dependencies are metadata, not a package-manager command: distribute required packs and ensure they are enabled in the world. Use [translations](/docs/v1/packs/translations/) for localized item names; metadata describes the archive as a whole.

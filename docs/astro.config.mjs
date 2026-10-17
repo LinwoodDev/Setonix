@@ -18,9 +18,7 @@ export default defineConfig({
     starlight({
       plugins: [linwoodStarlight()],
       title: "Linwood Setonix",
-      customCss: [
-        "./src/styles/custom.scss",
-      ],
+      customCss: ["./src/styles/custom.scss"],
       social: [
         {
           icon: "mastodon",
@@ -58,26 +56,125 @@ export default defineConfig({
           items: [
             {
               label: "Introduction",
-              link: "/docs/v1/intro",
+              link: "/docs/v1/intro/"
             },
             {
-              label: "Packs",
+              label: "Playing",
+              items: [
+                {
+                  label: "Games and templates",
+                  link: "/docs/v1/worlds/"
+                },
+                {
+                  label: "Playing at the table",
+                  link: "/docs/v1/playing/"
+                },
+                {
+                  label: "Tables and waypoints",
+                  link: "/docs/v1/tables/"
+                },
+                {
+                  label: "Teams and visibility",
+                  link: "/docs/v1/teams/"
+                },
+                {
+                  label: "Notes, chat, and dialogs",
+                  link: "/docs/v1/notes/"
+                },
+                {
+                  label: "Blackjack",
+                  link: "/docs/v1/blackjack/"
+                }
+              ]
+            },
+            {
+              label: "Multiplayer",
+              items: [
+                {
+                  label: "Joining and hosting",
+                  link: "/docs/v1/multiplayer/"
+                },
+                {
+                  label: "Accounts and backups",
+                  link: "/docs/v1/accounts/"
+                }
+              ]
+            },
+            {
+              label: "Settings",
+              link: "/docs/v1/settings/"
+            },
+            {
+              label: "Creating packs",
               items: [
                 {
                   label: "Overview",
-                  link: "/docs/v1/packs/overview",
+                  link: "/docs/v1/packs/overview/"
+                },
+                {
+                  label: "Pack editor",
+                  link: "/docs/v1/packs/editor/"
                 },
                 {
                   label: "Metadata",
-                  link: "/docs/v1/packs/meta",
+                  link: "/docs/v1/packs/meta/"
                 },
-              ],
+                {
+                  label: "Figures and textures",
+                  link: "/docs/v1/packs/figures/"
+                },
+                {
+                  label: "Decks",
+                  link: "/docs/v1/packs/decks/"
+                },
+                {
+                  label: "Boards and backgrounds",
+                  link: "/docs/v1/packs/boards/"
+                },
+                {
+                  label: "Game modes and scripts",
+                  link: "/docs/v1/packs/modes/"
+                },
+                {
+                  label: "Translations",
+                  link: "/docs/v1/packs/translations/"
+                }
+              ]
             },
             {
-              label: "Server",
-              link: "/docs/v1/server",
+              label: "Luau scripting API",
+              link: "/docs/v1/scripting/luau/"
             },
-          ],
+            {
+              label: "Dedicated server",
+              items: [
+                {
+                  label: "Setup",
+                  link: "/docs/v1/server/"
+                },
+                {
+                  label: "Configuration",
+                  link: "/docs/v1/server/configuration/"
+                },
+                {
+                  label: "Console commands",
+                  link: "/docs/v1/server/commands/"
+                },
+                {
+                  label: "Roles and permissions",
+                  link: "/docs/v1/server/permissions/"
+                },
+                {
+                  label: "Server lists and thumbnails",
+                  link: "/docs/v1/server/directory/"
+                }
+              ]
+            },
+            {
+              label: "Troubleshooting",
+              link: "/docs/v1/troubleshooting/"
+            }
+          ]
         },
         {
           label: "Downloads",
@@ -130,7 +227,7 @@ export default defineConfig({
       workbox: {
         skipWaiting: true,
         clientsClaim: true,
-        navigateFallback: "/404",
+        navigateFallback: "/404.html",
         ignoreURLParametersMatching: [/./],
         globPatterns: [
           "**/*.{html,js,css,png,svg,json,ttf,pf_fragment,pf_index,pf_meta,pagefind,wasm}",

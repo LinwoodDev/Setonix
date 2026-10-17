@@ -1,44 +1,26 @@
-# Setonix Documentation
+# Setonix documentation
 
-[![Built with Starlight](https://astro.badg.es/v2/built-with-starlight/tiny.svg)](https://starlight.astro.build)
+The public website and feature documentation use Astro, Starlight, and the Linwood style plugin. Source content lives in `src/content/docs/`; the landing page is `src/content/docs/index.mdx` and the v1 guides are in `src/content/docs/docs/v1/`.
 
-## 🚀 Project Structure
+## Develop and build
 
-Inside of your Astro + Starlight project, you'll see the following folders and files:
+Run these commands in `docs/` using the Node and pnpm versions supported by `package.json`:
 
-```
-.
-├── public/
-├── src/
-│   ├── assets/
-│   ├── content/
-│   │   ├── docs/
-│   │   └── config.ts
-│   └── env.d.ts
-├── astro.config.mjs
-├── package.json
-└── tsconfig.json
+```sh
+pnpm install
+pnpm dev
+pnpm build
+pnpm preview
 ```
 
-Starlight looks for `.md` or `.mdx` files in the `src/content/docs/` directory. Each file is exposed as a route based on its file name.
+`pnpm build` runs Astro diagnostics and builds the static site into `dist/`, including Pagefind search and the documentation service worker. `pnpm preview` serves that build locally.
 
-Images can be added to `src/assets/` and embedded in Markdown with a relative link.
+## Update the docs
 
-Static assets, like favicons, can be placed in the `public/` directory.
+- Add a Markdown or MDX page with `title` and `description` frontmatter.
+- Register new guides in the sidebar in `astro.config.mjs` and link related pages.
+- Keep user-facing behavior aligned with the Flutter UI, API models, server commands, and Luau definitions. Explain sandbox behavior, mode rules, and platform limitations explicitly.
+- Store landing-page screenshots in `src/assets/img/homepage/`. The shared `Landing.astro` layout and `LandingFeature.astro` component from `@linwooddev/starlight-style` provide the landing styles, alternating responsive image/copy sections, and optional theme variants. Keep only site colors in `src/styles/custom.scss`.
+- Check `pnpm build`, local links, and the landing page in light/dark themes at desktop and mobile widths before sharing changes.
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                | Action                                           |
-| :--------------------- | :----------------------------------------------- |
-| `pnpm install`         | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Check out [Starlight’s docs](https://starlight.astro.build/), read [the Astro documentation](https://docs.astro.build), or jump into the [Astro Discord server](https://astro.build/chat).
+`downloads/selfhosting.md` describes hosting the game app; it is separate from deploying this documentation site.

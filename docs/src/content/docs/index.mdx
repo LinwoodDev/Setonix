@@ -1,44 +1,103 @@
 ---
 title: Linwood Setonix
-description: 🃏 Powerful, customizable, cross-platform, opensource table sandbox game 🃏
+description: Bring cards, dice, boards, and friends to a free, open source tabletop sandbox.
 template: splash
 hero:
-  tagline: 🃏 Powerful, customizable, cross-platform, opensource table sandbox game 🃏
+  tagline: A tabletop sandbox for your next game night. Bring out the cards, roll the dice, and make room for one more player.
   image:
     file: /public/img/logo.svg
   actions:
-    - text: Download
+    - text: Download Setonix
       link: /downloads/
-      icon: right-arrow
+      icon: download
       variant: primary
-    - text: Getting started
-      link: /docs/v1/intro/
-      icon: external
-    - text: Web App
+    - text: Play in your browser
       link: https://web.setonix.world
       icon: rocket
-    - text: Blog
-      link: https://linwood.dev/setonix
-      icon: external
+      variant: secondary
+    - text: Learn the essentials
+      link: /docs/v1/intro/
+      icon: open-book
       variant: secondary
 ---
-import { LinkCard, Card, CardGrid } from '@astrojs/starlight/components';
 
-## Principles
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+import Landing from '@linwooddev/starlight-style/components/Landing.astro';
+import LandingFeature from '@linwooddev/starlight-style/components/LandingFeature.astro';
+import chess from '../../assets/img/homepage/chess.png';
+import packs from '../../assets/img/homepage/packs.png';
 
-<CardGrid stagger>
-	<Card title="Cross platform" icon="laptop">
-		You can use the app on your phone, tablet, laptop, or desktop. The app is available on Linux, Android, and Windows. You can also use the app on the web.
-	</Card>
-	<Card title="Multiplayer and offline" icon="puzzle">
-		Play games with your friends or alone. You can also play offline. The app is designed to work without an internet connection even in multiplayer mode.
-	</Card>
-	<Card title="Customizable" icon="pencil">
-		Create custom cards, boards, and dice. You can also create custom rules with lua (coming soon). Configure everything inside the app.
-	</Card>
-	<Card title="Sandbox" icon="open-book">
-		The app is a sandbox game. No predefined rules are implemented yet. You can play without rules or load custom rules from a pack.
-	</Card>
+<Landing>
+
+<ul class="landing-principles" aria-label="Setonix at a glance">
+  <li>Free & open source</li>
+  <li>Play offline</li>
+  <li>Desktop, mobile & web</li>
+  <li>Made to be customized</li>
+</ul>
+
+<LandingFeature image={chess} alt="A complete chess setup on a patterned Setonix table, with black and white pieces ready to play">
+
+  ## A whole game night in one table
+
+  Set up a chessboard, deal a favorite card game, or invent something new. Move pieces, shuffle stacks, flip cards, and roll dice in a sandbox that gives you room to play your way.
+
+  Keep a good setup as a template and come back to your saved games whenever you like.
+
+  [Get your first table ready →](/docs/v1/intro/)
+
+</LandingFeature>
+
+<LandingFeature image={packs} reverse alt="The Setonix pack library showing the core pack and its customizable content">
+
+  ## Make the pieces. Make the game.
+
+  Create custom cards, dice, boards, and backgrounds in the pack editor. Bundle a starting setup, translate its labels, and add Luau scripts for your own turns, actions, and scoring.
+
+  Export a pack and share the same pieces with everyone at the table.
+
+  [Create your own pack →](/docs/v1/packs/overview/)
+
+</LandingFeature>
+
+<div class="landing-heading">
+
+## Pull up a chair, wherever you are
+
+Play on your phone, tablet, or computer. Setonix runs on Android, Windows, Linux, macOS, and the web, with an iOS preview available too.
+
+</div>
+
+<CardGrid>
+  <Card title="A table of your own" icon="laptop">
+    Play local games offline and keep your saves on your device. Export a world to take it with you, or save a template for the next session.
+  </Card>
+  <Card title="Better with friends" icon="comment">
+    Host a shared table from a native app, join a LAN game, or run a dedicated server. Teams and private cells make room for hidden hands.
+  </Card>
+  <Card title="A helping hand with the rules" icon="open-book">
+    The built-in <a href="/docs/v1/blackjack/">Blackjack mode</a> handles dealing, turns, and scores. Live notes keep rules and game actions beside the board.
+  </Card>
+  <Card title="Built in the open" icon="code-branch">
+    Free software under the AGPL-3.0 license. Explore the source, build your own client or server, and help shape what comes next.
+  </Card>
 </CardGrid>
 
-<LinkCard title="Download today" href="/downloads/" />
+<div class="landing-heading">
+
+## Your next game starts here
+
+Pick a platform, try a table, or build something worth sharing.
+
+</div>
+
+<CardGrid>
+  <LinkCard class="landing-action" title="Download Setonix" description="Find the app for your phone, tablet, or computer." href="/downloads/" />
+  <LinkCard title="Play in your browser" description="Open a local game without installing an app." href="https://web.setonix.world" />
+  <LinkCard title="Explore the documentation" description="Learn the controls, host friends, and create custom packs." href="/docs/v1/intro/" />
+  <LinkCard title="Follow the project" description="Read release news and stories from development." href="https://linwood.dev/setonix" />
+</CardGrid>
+
+<p class="landing-community">Made for people who like to play and people who like to make. <a href="/community/">Join the Setonix community →</a></p>
+
+</Landing>
