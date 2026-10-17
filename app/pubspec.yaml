@@ -44,7 +44,11 @@ dependencies:
   # Database
   shared_preferences: ^2.5.5
   # Generation
-  barcode: ^2.2.9
+  barcode:
+    git:
+      url: https://github.com/CodeDoctorDE/dart_barcode.git
+      ref: 2963366e1c22df033e9674e801a0ca0a18ec6cfd
+      path: barcode
   # Internal
   flutter_bloc: ^9.1.1
   rxdart: ^0.28.0

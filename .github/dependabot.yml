@@ -4,6 +4,12 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 1
+    groups:
+      github-actions:
+        patterns: ['*']
   - package-ecosystem: pub
     directories:
       - /app
@@ -13,6 +19,9 @@ updates:
       - /tools
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 1
     groups:
       dart:
         patterns: ['*']
@@ -22,6 +31,9 @@ updates:
       - /servers
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 1
     groups:
       javascript:
         patterns: ['*']
@@ -29,6 +41,9 @@ updates:
     directory: /plugin/rust
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 1
     groups:
       rust:
         patterns: ['*']
@@ -36,3 +51,9 @@ updates:
     directory: /app/android
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 1
+    groups:
+      ruby:
+        patterns: ['*']
