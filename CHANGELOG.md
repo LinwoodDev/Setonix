@@ -2,6 +2,29 @@
 
 <!--ENTER CHANGELOG HERE-->
 
+## 0.9.1 (2026-10-21)
+
+* Rework game view
+  * Show game actions as button row
+  * Change game drawer to a dialog
+  * Change chat screen to an overlay
+  * Move notes and multiplayer options to scaffold actions
+  * Move advanced game options to edit dialog
+* Add restrictions for table size
+* Improve blackjack with configurable rules, saved rounds, live notes, and better card layouts
+* Improve scripting helpers and fix board rendering, camera bounds, and hidden-card handling
+* Add scripting on web
+* Fix table renaming shows background dialog title
+* Fix 16kb page size on Android
+* Fix game board rendering in Firefox
+* Improve classic theme colors
+* Restore offline web loading with an app-managed service worker
+* Open newly created worlds automatically
+* Simplify home header and add a Games shortcut beside recent games
+* Remove duplicate Games heading and improve game card titles
+
+Read more here: https://linwood.dev/setonix/0.9.1
+
 ## 0.9.0 (2026-09-01)
 
 * Add protocol versions

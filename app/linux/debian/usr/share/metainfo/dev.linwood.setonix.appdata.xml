@@ -41,6 +41,23 @@
 	</description>
 	<launchable type="desktop-id">dev.linwood.setonix.desktop</launchable>
 	<releases>
+		<release version="0.9.1" type="stable" date="2026-10-21">
+			<description>
+				<ul>
+					<li>Rework game view</li>
+					<li>Add restrictions for table size</li>
+					<li>Improve blackjack with configurable rules, saved rounds, live notes, and better card layouts</li>
+					<li>Improve scripting helpers and fix board rendering, camera bounds, and hidden-card handling</li>
+					<li>Add scripting on web</li>
+					<li>Fix table renaming shows background dialog title</li>
+					<li>Fix 16kb page size on Android</li>
+					<li>Fix game board rendering in Firefox</li>
+					<li>Improve classic theme colors</li>
+					<li>Restore offline web loading with an app-managed service worker</li>
+				</ul>
+			</description>
+			<url type="details">https://github.com/LinwoodDev/Setonix/releases/tag/v0.9.1</url>
+		</release>
 		<release version="0.9.0" date="2026-09-01" />
 		<release version="0.8.1" date="2026-06-20" />
 		<release version="0.8.0" date="2026-06-15" />
