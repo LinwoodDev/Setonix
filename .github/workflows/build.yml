@@ -48,6 +48,8 @@ jobs:
           distribution: "temurin"
       - name: 🦀 Setup Rust
         uses: actions-rust-lang/setup-rust-toolchain@v2
+        with:
+          rust-src-dir: plugin/rust
       - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
@@ -211,9 +213,13 @@ jobs:
           choco install innosetup
       - name: 🦀 Setup Rust
         uses: actions-rust-lang/setup-rust-toolchain@v2
+        with:
+          rust-src-dir: plugin/rust
       - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
+          # Bootstrap the pinned Git tag when no native ARM64 SDK archive exists.
+          channel: ${{ runner.arch == 'ARM64' && runner.os != 'macOS' && 'master' || 'stable' }}
           cache: true
           pub-cache-path: ${{ github.workspace }}/.offline-build/windows/pub-cache
       - name: Get build helper dependencies
@@ -286,6 +292,8 @@ jobs:
         shell: bash
       - name: 🦀 Setup Rust
         uses: actions-rust-lang/setup-rust-toolchain@v2
+        with:
+          rust-src-dir: plugin/rust
       - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
@@ -364,9 +372,13 @@ jobs:
             rpm
       - name: 🦀 Setup Rust
         uses: actions-rust-lang/setup-rust-toolchain@v2
+        with:
+          rust-src-dir: plugin/rust
       - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
+          # Bootstrap the pinned Git tag when no native ARM64 SDK archive exists.
+          channel: ${{ runner.arch == 'ARM64' && runner.os != 'macOS' && 'master' || 'stable' }}
           cache: true
           pub-cache-path: ${{ github.workspace }}/.offline-build/linux/pub-cache
       - name: Get build helper dependencies
@@ -543,6 +555,8 @@ jobs:
         shell: bash
       - name: 🦀 Setup Rust
         uses: actions-rust-lang/setup-rust-toolchain@v2
+        with:
+          rust-src-dir: plugin/rust
       - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
@@ -607,6 +621,8 @@ jobs:
         shell: bash
       - name: 🦀 Setup Rust
         uses: actions-rust-lang/setup-rust-toolchain@v2
+        with:
+          rust-src-dir: plugin/rust
       - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
@@ -676,9 +692,13 @@ jobs:
         shell: bash
       - name: Setup Rust
         uses: actions-rust-lang/setup-rust-toolchain@v2
+        with:
+          rust-src-dir: plugin/rust
       - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
+          # Bootstrap the pinned Git tag when no native ARM64 SDK archive exists.
+          channel: ${{ runner.arch == 'ARM64' && runner.os != 'macOS' && 'master' || 'stable' }}
           cache: true
           pub-cache-path: ${{ github.workspace }}/.offline-build/server/pub-cache
       - name: Get build helper dependencies

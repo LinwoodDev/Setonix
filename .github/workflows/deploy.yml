@@ -88,6 +88,8 @@ jobs:
         with:
           persist-credentials: false
       - uses: actions-rust-lang/setup-rust-toolchain@v2
+        with:
+          rust-src-dir: plugin/rust
       - uses: subosito/flutter-action@v2.23.0
         with:
           flutter-version-file: app/pubspec.yaml
