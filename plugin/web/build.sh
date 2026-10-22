@@ -3,6 +3,9 @@ set -euo pipefail
 cd "$(dirname "$0")"
 output="${1:-../../app/web/pkg}"
 command -v emcc >/dev/null || { echo 'Activate emsdk before building the web plugin.' >&2; exit 1; }
+# Rust treats cold-cache progress on stderr as a linker warning.
+# Suppress Emscripten progress logs; compiler diagnostics stay enabled.
+export EMCC_LOGGING=0
 # Cargo also builds the library target alongside the browser executable.
 # Luau's C++ objects must support both the library and executable link modes.
 export LUAU_CXXFLAGS="${LUAU_CXXFLAGS:-} -fPIC"
