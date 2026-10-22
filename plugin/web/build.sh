@@ -6,8 +6,12 @@ command -v emcc >/dev/null || { echo 'Activate emsdk before building the web plu
 # Cargo also builds the library target alongside the browser executable.
 # Luau's C++ objects must support both the library and executable link modes.
 export LUAU_CXXFLAGS="${LUAU_CXXFLAGS:-} -fPIC"
-export RUSTFLAGS="${RUSTFLAGS:-} -C link-arg=-sDEFAULT_TO_CXX -C link-arg=-fwasm-exceptions"
+if [[ -v CARGO_ENCODED_RUSTFLAGS ]]; then
+  export CARGO_ENCODED_RUSTFLAGS+=$'\x1f-C\x1flink-arg=-sDEFAULT_TO_CXX\x1f-C\x1flink-arg=-fwasm-exceptions'
+else
+  export RUSTFLAGS="${RUSTFLAGS:-} -C link-arg=-sDEFAULT_TO_CXX -C link-arg=-fwasm-exceptions"
+fi
 cargo build --manifest-path ../rust/Cargo.toml --locked --release --target wasm32-unknown-emscripten --features web-runtime --bin setonix_luau
 mkdir -p "$output"
-cp ../rust/target/wasm32-unknown-emscripten/release/setonix_luau.{js,wasm} "$output/"
+cp "${CARGO_TARGET_DIR:-../rust/target}/wasm32-unknown-emscripten/release/"setonix_luau.{js,wasm} "$output/"
 cp runtime.js "$output/setonix_luau_runtime.js"

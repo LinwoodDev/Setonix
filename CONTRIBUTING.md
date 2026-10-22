@@ -90,7 +90,28 @@ The package overview above describes the repository layout. User-facing feature 
 
 Fork the project and create a pull request to add your code to the `develop` branch.
 
+## Build and release checks
+
+The existing build workflow uses shared helpers from dart_pkgs/packages/generate_leap.
+From the repository root, prepare inputs once, then build without network access
+or compare two clean builds:
+
+```bash
+dart pub get -C tools --enforce-lockfile
+dart tools/build_offline.dart prepare --platform windows --flavor production --unsigned
+dart tools/build_offline.dart build --platform windows
+dart tools/build_offline.dart verify --platform windows
+```
+
+The same commands support android, linux, macos, ios, web and server on their
+required hosts. Reports are written under .offline-build/<platform>/reproducibility.
+Comparisons cover raw artifacts and portable archives; signing and store installers
+need separate validation. Android APK comparison with F-Droid also requires a
+published release built from the same inputs. The packaging recipe belongs in
+the fdroiddata GitLab merge request, linked to [the existing request](https://gitlab.com/fdroid/rfp/-/issues/2915).
+
 ## Windows development
+
 
 This repository contains symbolic links, including the Rust toolchain file used by the Setonix plugin. On Windows, Git may check out symbolic links as plain text files when symbolic link support is disabled. This can cause the Flutter Windows build to fail because `plugin/rust/rust-toolchain.toml` is read as link text instead of as a real symbolic link.
 

@@ -2,8 +2,6 @@
 
 <!--ENTER CHANGELOG HERE-->
 
-* Fix CocoaPods failing with a non-UTF-8 locale in iOS and macOS CI builds
-
 ## 0.9.1 (2026-10-21)
 
 * Rework game view

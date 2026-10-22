@@ -2,6 +2,11 @@
 cmake_minimum_required(VERSION 3.10)
 project(runner LANGUAGES CXX)
 
+if(DEFINED ENV{SOURCE_DATE_EPOCH})
+  get_filename_component(SETONIX_SOURCE_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../.." ABSOLUTE)
+  add_compile_options("-ffile-prefix-map=${SETONIX_SOURCE_ROOT}=/setonix")
+endif()
+
 # The name of the executable created for the application. Change this to change
 # the on-disk name of your application.
 set(BINARY_NAME "setonix")
