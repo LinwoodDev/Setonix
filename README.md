@@ -38,7 +38,7 @@ Setonix is a table sandbox game where you can decide how to play. Spawn cards ev
 - **Games and templates:** Save and resume worlds, import and export `.stnx` files, and reuse a prepared setup as a template.
 - **Tables and teams:** Organize multiple tables, restrict playing areas, bookmark waypoints, and use team-private cells for hidden hands.
 - **Notes and chat:** Keep Markdown rules and live game actions beside the board, link between notes, and chat with other players.
-- **Game modes:** Play a prepared Chess setup or scripted Blackjack with competitive and dealer rules. Add custom Luau rules on native platforms, the web, and dedicated servers.
+- **Game modes:** Play scripted Chess with legal moves and special rules, or Blackjack with competitive and dealer rules. Add custom Luau rules on native platforms, the web, and dedicated servers.
 - **Multiplayer:** Host from a native app through WebSockets or Swamp, join LAN games, or run a dedicated server with roles, moderation, and persistent bans.
 - **Local identities:** Authenticate with public-key accounts and move identities between devices using passphrase-encrypted backups.
 - **Custom packs:** Create figures, textures, decks, boards, backgrounds, translations, and modes in shareable content packs.

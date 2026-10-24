@@ -1026,6 +1026,30 @@ Setonix.events = {
   on = Setonix.on,
   listen = Setonix.listen,
   action = Setonix.onAction,
+  -- A shared lock can serialize several commands/actions across async callbacks.
+  guard = function(handler, lock)
+    lock = lock or {}
+    return function(event)
+      event:cancel()
+      if lock.busy then
+        event:reply("Please wait for the current action to finish.")
+        return
+      end
+      lock.busy = true
+      local ok, failure = pcall(handler, event)
+      lock.busy = false
+      if not ok then error(failure, 0) end
+    end
+  end,
+  block = function(names, predicate)
+    local subscriptions = {}
+    for _, name in ipairs(names) do
+      table.insert(subscriptions, Setonix.on(name, function(event)
+        if predicate == nil or predicate(event) then event:cancel() end
+      end))
+    end
+    return subscriptions
+  end,
 }
 
 Setonix.commands = {

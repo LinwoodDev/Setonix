@@ -54,6 +54,7 @@ final class PluginSystem {
     String code, {
     ItemLocation? location,
     String? storageKey,
+    String? legacyStorageKey,
   }) {
     if (!isPluginSystemInitialized)
       throw StateError('Plugin system not initialized');
@@ -65,6 +66,7 @@ final class PluginSystem {
         onPrint: (e) => server.print(e, name),
         location: location ?? ItemLocation.fromString(name),
         storageKey: storageKey ?? name,
+        legacyStorageKey: legacyStorageKey,
       ),
     );
   }
@@ -87,7 +89,8 @@ final class PluginSystem {
         name,
         data,
         location: location,
-        storageKey: location.namespace,
+        storageKey: location.toString(),
+        legacyStorageKey: location.namespace,
       );
     } catch (error, stackTrace) {
       Error.throwWithStackTrace(
@@ -243,6 +246,7 @@ final class RustSetonixPlugin extends SetonixPlugin {
     void Function(String)? onPrint,
     ItemLocation? location,
     String storageKey = '',
+    String? legacyStorageKey,
   }) async {
     final callback = PluginCallback(
       onPrint: onPrint ?? (s) {},
@@ -280,8 +284,29 @@ final class RustSetonixPlugin extends SetonixPlugin {
         final table = server.state.data.getTable(tableName ?? '');
         return table?.toJson() ?? "{}";
       },
-      storageRead: () => server.getScriptState(storageKey),
-      storageWrite: (state) => server.setScriptState(storageKey, state),
+      storageRead: () {
+        final stored = server.getScriptState(storageKey);
+        if (legacyStorageKey == null) return stored;
+        final decoded = jsonDecode(stored);
+        if (decoded is Map &&
+            decoded['format'] == 'setonix.script-storage.v1') {
+          return jsonEncode(decoded['values']);
+        }
+        // Old worlds stored all scripts in a pack together. Seed each script
+        // independently, keeping the legacy data available to the other scripts.
+        return stored != '{}'
+            ? stored
+            : server.getScriptState(legacyStorageKey);
+      },
+      storageWrite: (state) => server.setScriptState(
+        storageKey,
+        legacyStorageKey == null
+            ? state
+            : jsonEncode({
+                'format': 'setonix.script-storage.v1',
+                'values': jsonDecode(state),
+              }),
+      ),
     );
     final plugin = builder(callback);
     final instance = RustSetonixPlugin._(server, plugin);

@@ -8,7 +8,7 @@ local ScoreNote = "Blackjack"
 local MaxScore = 21
 local HandWidth = 6
 local Round
-local Busy = false
+local ActionLock = {}
 local Departed = {}
 local TableRef
 local DeckCell
@@ -402,22 +402,12 @@ local function reconcile(excluded)
 end
 
 local function action(handler)
-  return function(event)
-    event:cancel()
-    if Busy then
-      reply(event.source, "Please wait for the current action to finish.")
-      return
-    end
-    Busy = true
-    local ok, failure = pcall(function()
-      reconcile()
-      handler(event)
-      reconcile()
-      refresh()
-    end)
-    Busy = false
-    if not ok then error(failure) end
-  end
+  return Setonix.events.guard(function(event)
+    reconcile()
+    handler(event)
+    reconcile()
+    refresh()
+  end, ActionLock)
 end
 
 for name, handler in pairs({
@@ -457,20 +447,14 @@ Setonix.events.on("objects_moved", action(function(event)
   hit(event.source)
 end))
 
-for _, name in ipairs({
+Setonix.events.block({
   "objects_spawned", "objects_removed", "cell_hide_changed", "object_index_changed",
   "shuffle_cell_request", "cell_roll_request", "boards_spawn_request",
   "board_remove_request", "board_move_request", "merge_strategy_changed",
   "table_bounds_changed", "table_removed", "table_renamed", "background_changed",
-}) do
-  Setonix.events.on(name, function(event) event:cancel() end)
-end
+})
 
-for _, name in ipairs({"note_changed", "note_removed"}) do
-  Setonix.events.on(name, function(event)
-    if event.name == ScoreNote then event:cancel() end
-  end)
-end
+Setonix.events.block({"note_changed", "note_removed"}, function(event) return event.name == ScoreNote end)
 
 Setonix.events.on("user_joined", function(event)
   Departed[event.player.id] = nil
@@ -484,14 +468,14 @@ end)
 
 Setonix.events.on("user_left", function(event)
   Departed[event.player.id] = true
-  if Busy then return end
-  Busy = true
+  if ActionLock.busy then return end
+  ActionLock.busy = true
   local ok, failure = pcall(function()
     reconcile(event.player.id)
     render()
     refresh(event.player.id)
   end)
-  Busy = false
+  ActionLock.busy = false
   if not ok then error(failure) end
 end)
 

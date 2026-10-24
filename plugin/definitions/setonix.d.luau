@@ -100,6 +100,8 @@ export type SetonixEvents = {
 	on: (event_name: string, handler: (event: any) -> any) -> any,
 	listen: (event_name: string, handler: (event: any) -> any) -> any,
 	action: (action_id: string, handler: (event: any) -> any) -> any,
+	guard: (handler: (event: any) -> any, lock: any?) -> (event: any) -> any,
+	block: (names: {string}, predicate: ((event: any) -> boolean)?) -> {any},
 }
 
 export type SetonixCommands = {

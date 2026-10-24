@@ -1,0 +1,29 @@
+---
+title: Chess
+description: Play the built-in Luau chess mode locally or with friends.
+---
+
+Select **Chess** as the world's game mode. White moves first. Drag one piece to its destination, or enter `/move e2e4` in chat. The Chess note shows seats, the current turn, check, recent moves, and game controls.
+
+A game created with one local participant uses hot-seat play: that player controls both colors. With multiple participants, the first two take White and Black. Later arrivals spectate and can choose **Join White** or **Join Black** when a seat becomes free. When a second participant joins a hot-seat game, Black becomes available. Disconnecting releases a seat and pauses moves until both seats are occupied; the position is preserved. Seats use the current connection identifiers, so a reconnecting player may need to claim an open seat.
+
+The mode validates piece movement, captures, blocked paths, pins, and king safety. Castling requires the original rights, an unobstructed path, and safe king squares. En passant is available only on the next move. Promoting a pawn pauses play until its player chooses **Queen**, **Rook**, **Bishop**, or **Knight**. A command such as `/move e7e8n` includes that choice directly.
+
+Checkmate and stalemate end the game. Threefold repetition and 50 moves by each side without a pawn move or capture require a **Claim draw** action; `/claim e2e4` claims based on an intended legal move without playing it. Fivefold repetition and 75 such moves end the game automatically, with checkmate taking precedence. Repetition accounts for the side to move, castling rights and legal en passant captures. These distinctions follow the [FIDE Laws of Chess](https://handbook.fide.com/chapter/E012023), articles 9.2, 9.3 and 9.6.
+
+Standard insufficient-material cases are detected: kings alone, a lone bishop or knight against a king, or positions containing only kings and bishops all on the same square color. Other dead positions, including blocked pawn arrangements, require players to agree to a draw. There are no clocks or computer opponents.
+
+Choose **Offer draw** to propose a draw and the same control as the opponent to accept it. An opponent's move declines the offer. **Resign** ends the game in the opponent's favor, except that an opponent with a bare king receives a draw. After a game, both seated players choose **Rematch** to reset the pieces; one choice suffices in hot-seat play.
+
+| Command | Action |
+| --- | --- |
+| `/move e2e4` or `/move e2 e4` | Play a move |
+| `/move e7e8q` | Promote to a queen (`r`, `b`, `n` also work) |
+| `/white`, `/black` | Claim an open seat |
+| `/draw` | Offer or accept a draw |
+| `/claim` or `/claim e2e4` | Claim repetition or the fifty-move rule |
+| `/resign` | Resign your game |
+| `/rematch` | Vote to start another game |
+| `/chess` | Show controls |
+
+Exclamation-mark commands work too. Spectators cannot move, resign, accept draws or reset games. The mode disables sandbox editing and protects its note. Saving and reloading preserves the position, turn, castling rights, en passant, draw history, pending promotion and result. Leaving the mode restores the previous table bounds and enables the sandbox toolbar.

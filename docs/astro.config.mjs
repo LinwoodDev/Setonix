@@ -82,6 +82,10 @@ export default defineConfig({
                   link: "/docs/v1/notes/"
                 },
                 {
+                  label: "Chess",
+                  link: "/docs/v1/chess/"
+                },
+                {
                   label: "Blackjack",
                   link: "/docs/v1/blackjack/"
                 }

@@ -276,7 +276,7 @@ class WorldBloc extends Bloc<PlayableWorldEvent, WorldState>
           worldName: worldName,
         );
         if (!force) {
-          await server.defaultWorld.pluginSystem.fire(event);
+          await pluginSystem.fire(event);
           if (event.cancelled) return;
           server.log(
             'Processing event by ${event.source}: ${limitOutput(event.clientEvent)}, answered with ${limitOutput(event.serverEvent)}',
