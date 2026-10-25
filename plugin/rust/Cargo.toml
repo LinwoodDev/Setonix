@@ -20,7 +20,7 @@ flutter_rust_bridge = "=2.14.0-beta.2"
 [target.'cfg(target_os = "ios")'.dependencies]
 # backtrace 0.3.76 (via flutter_rust_bridge) still uses the iOS dyld
 # bindings removed in libc 0.2.190. Keep these until backtrace is updated.
-libc = "=0.2.189"
+libc = "=0.2.191"
 
 [profile.release]
 # Native output can otherwise depend on how many CPU cores Cargo uses.
