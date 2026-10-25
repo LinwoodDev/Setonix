@@ -121,13 +121,61 @@ void main() {
       expect(router.routeInformationProvider.value.uri.path, '/');
 
       // Storage may choose a different key when the name already exists.
-      fileSystem.worldSystem.savedPath.complete('New world (1)');
+      fileSystem.worldSystem.savedPath.complete('/New world (1)');
       await tester.pumpAndSettle();
       expect(find.text('Opened: New world (1)'), findsOneWidget);
+      expect(
+        router.routeInformationProvider.value.uri.path,
+        '/game/New%20world%20(1)',
+      );
       expect(find.byType(CreateDialog), findsNothing);
       expect(tester.takeException(), isNull);
     });
   }
+
+  testWidgets('recent saved paths produce game URLs that survive reload', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({});
+    final settings = SettingsCubit(await SharedPreferences.getInstance());
+    addTearDown(settings.close);
+    await settings.addRecentGame('/Saved game', Uri.file('/Saved game'));
+    final fileSystem = _FileSystem();
+
+    GoRouter createRouter({String? initialLocation}) => GoRouter(
+      initialLocation: initialLocation,
+      routes: [
+        GoRoute(
+          path: '/',
+          builder: (context, state) => const Scaffold(body: RecentHomeView()),
+        ),
+        GoRoute(
+          name: 'game',
+          path: '/game/:name',
+          builder: (context, state) =>
+              Scaffold(body: Text('Opened: ${state.pathParameters['name']}')),
+        ),
+      ],
+    );
+
+    final router = createRouter();
+    addTearDown(router.dispose);
+    await tester.pumpWidget(
+      BlocProvider.value(value: settings, child: app(router, fileSystem)),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(GameModeTile));
+    await tester.pumpAndSettle();
+    final location = router.routeInformationProvider.value.uri;
+    expect(location.path, '/game/Saved%20game');
+
+    final reloaded = createRouter(initialLocation: location.toString());
+    addTearDown(reloaded.dispose);
+    await tester.pumpWidget(app(reloaded, fileSystem));
+    await tester.pumpAndSettle();
+    expect(find.text('Opened: Saved game'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
 
   for (final width in [390.0, 1200.0]) {
     testWidgets('saved games are reachable from home at width $width', (

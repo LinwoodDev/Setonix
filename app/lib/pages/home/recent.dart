@@ -92,7 +92,9 @@ class _RecentHomeViewState extends State<RecentHomeView> {
   void _openRecent(BuildContext context, RecentGameEntry entry) {
     GoRouter.of(context).goNamed(
       'game',
-      pathParameters: {'name': entry.name},
+      pathParameters: {
+        'name': AssetLocation(path: entry.name).pathWithoutLeadingSlash,
+      },
       queryParameters: {
         if (entry.isMultiplayer) 'address': entry.location.toString(),
       },

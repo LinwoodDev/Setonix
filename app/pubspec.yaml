@@ -35,7 +35,7 @@ dependencies:
   material_leap:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: dcccf14111b0305bd1c5051a0e5ae0ed78af4439
+      ref: 24c9a64f187aa396493a4953c80bd3fdb77ff6b9
       path: packages/material_leap
   flex_color_scheme: ^9.0.0
   flutter_svg: ^2.3.0
@@ -84,12 +84,12 @@ dependencies:
   lw_file_system:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: dcccf14111b0305bd1c5051a0e5ae0ed78af4439
+      ref: 2753082c8afa984d0e0e8471fa1489b8447a0b38
       path: packages/lw_file_system
   lw_sysapi:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs.git
-      ref: dcccf14111b0305bd1c5051a0e5ae0ed78af4439
+      ref: 7e0ac44874622aee5c6041f34603ac5d5bed058c
       path: packages/lw_sysapi
   setonix_api:
     path: ../api

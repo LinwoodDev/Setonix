@@ -339,7 +339,12 @@ class _CreateDialogState extends State<CreateDialog>
               if (context.mounted) {
                 final router = GoRouter.of(context);
                 Navigator.of(context).pop(true);
-                router.goNamed('game', pathParameters: {'name': path});
+                router.goNamed(
+                  'game',
+                  pathParameters: {
+                    'name': AssetLocation(path: path).pathWithoutLeadingSlash,
+                  },
+                );
               }
             },
             label: Text(LeapLocalizations.of(context).create),

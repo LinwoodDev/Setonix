@@ -633,9 +633,34 @@ jobs:
           dart pub get -C ../tools --enforce-lockfile
       - name: Apply native branding
         run: dart run ../tools/apply_branding.dart ${{ env.BUILD_FLAVOR }} ios
+      - name: Verify iOS Rust linking
+        working-directory: plugin/rust
+        run: |
+          export SDKROOT="$(xcrun --sdk iphoneos --show-sdk-path)"
+          export IPHONEOS_DEPLOYMENT_TARGET="$(awk '$1 == "IPHONEOS_DEPLOYMENT_TARGET" { gsub(/;/, "", $3); print $3; exit }' ../../app/ios/Runner.xcodeproj/project.pbxproj)"
+          cargo build --locked --release --target aarch64-apple-ios --lib
       - name: 🏭 Build
         run: |
           dart ../tools/build_offline.dart prepare --platform ios --flavor "$BUILD_FLAVOR" --unsigned
+      - name: Show iOS native build errors
+        if: failure()
+        run: |
+          if [ -d .dart_tool/hooks_runner ]; then
+            find .dart_tool/hooks_runner -type f \( \
+              -path '*/setonix_plugin/*/stderr.txt' -o \
+              -path '*/setonix_plugin/*/stdout.txt' \
+            \) -print -exec cat {} \;
+          fi
+      - name: Archive iOS native build logs
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ios-native-build-logs
+          path: |
+            app/.dart_tool/hooks_runner/setonix_plugin/**/stderr.txt
+            app/.dart_tool/hooks_runner/setonix_plugin/**/stdout.txt
+          include-hidden-files: true
+          if-no-files-found: ignore
       - name: Packing IPA
         run: |
           dart ../tools/reproducible.dart build/ios/iphoneos/Runner.app build/ios/iphoneos/linwood-setonix-ios.ipa Payload/Runner.app
@@ -1036,7 +1061,7 @@ jobs:
       - name: Setup Fastlane
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "4.0.7"
+          ruby-version: "4.0.9"
           bundler-cache: true
           working-directory: app/android
       - name: 🚀 Deploy to Play Store

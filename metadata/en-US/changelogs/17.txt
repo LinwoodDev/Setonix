@@ -4,5 +4,7 @@
 * Fix script storage isolation and dedicated-server event routing between worlds
 * Migrate the web plugin from Emscripten to wasm32-unknown-unknown
 * Upgrade to Flutter 3.47.8
+* Update dependencies and build tools
+* Fix game URLs for newly created and recent saved games
 
 Read more here: https://linwood.dev/setonix/0.9.2
