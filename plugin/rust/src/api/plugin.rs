@@ -1,19 +1,15 @@
-use std::{collections::HashSet, sync::Arc};
+use std::{
+    collections::{HashMap, HashSet},
+    sync::Arc,
+};
 
-#[cfg(not(target_os = "emscripten"))]
 use flutter_rust_bridge::{DartFnFuture, frb};
-#[cfg(target_os = "emscripten")]
-pub type DartFnFuture<T> = std::pin::Pin<Box<dyn std::future::Future<Output = T> + Send + 'static>>;
 use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value};
 
-pub type DartCallback<T> = Arc<dyn Fn(T) -> DartFnFuture<()> + Send + Sync>;
-// see https://github.com/rust-lang/lang-team/blob/master/src/design_notes/variadic_generics.md
-// for more information on variadic generics
 pub type DartCallback2<T, U> = Arc<dyn Fn(T, U) -> DartFnFuture<anyhow::Result<()>> + Send + Sync>;
-pub type DartAccess<T, R> = Arc<dyn Fn(T) -> DartFnFuture<R> + Send + Sync>;
 
-#[derive(strum::Display, strum::EnumIter, Clone, Copy)]
+#[derive(strum::Display, strum::EnumIter, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum StateFieldAccess {
     TableName,
     Tables,
@@ -25,21 +21,32 @@ pub enum StateFieldAccess {
     Game,
 }
 
+/// Ordered side effects produced by synchronous Lua callbacks.
+pub struct PluginEffect {
+    pub method: String,
+    pub value: String,
+}
+
+#[derive(Default)]
+#[frb(ignore)]
+struct HostState {
+    fields: HashMap<StateFieldAccess, String>,
+    tables: HashMap<String, String>,
+    current_table: String,
+    storage: String,
+    effects: Vec<PluginEffect>,
+}
+
 #[derive(Clone)]
 pub struct PluginCallback {
-    pub(crate) on_print: DartCallback<String>,
     pub(crate) process_event: DartCallback2<String, Option<bool>>,
     pub(crate) send_event: DartCallback2<String, Option<Channel>>,
-    pub(crate) state_field_access: DartAccess<StateFieldAccess, String>,
-    pub(crate) table_access: DartAccess<Option<String>, String>,
-    pub(crate) storage_read: Arc<dyn Fn() -> DartFnFuture<String> + Send + Sync>,
-    pub(crate) storage_write: DartCallback<String>,
+    host: Arc<std::sync::Mutex<HostState>>,
 }
 
 impl PluginCallback {
-    #[cfg_attr(not(target_os = "emscripten"), frb(sync))]
+    #[frb(sync)]
     pub fn new(
-        on_print: impl Fn(String) -> DartFnFuture<()> + 'static + Send + Sync,
         process_event: impl Fn(String, Option<bool>) -> DartFnFuture<anyhow::Result<()>>
         + 'static
         + Send
@@ -48,20 +55,77 @@ impl PluginCallback {
         + 'static
         + Send
         + Sync,
-        state_field_access: impl Fn(StateFieldAccess) -> DartFnFuture<String> + 'static + Send + Sync,
-        table_access: impl Fn(Option<String>) -> DartFnFuture<String> + 'static + Send + Sync,
-        storage_read: impl Fn() -> DartFnFuture<String> + 'static + Send + Sync,
-        storage_write: impl Fn(String) -> DartFnFuture<()> + 'static + Send + Sync,
     ) -> Self {
         Self {
-            on_print: Arc::new(on_print),
             process_event: Arc::new(process_event),
             send_event: Arc::new(send_event),
-            state_field_access: Arc::new(state_field_access),
-            table_access: Arc::new(table_access),
-            storage_read: Arc::new(storage_read),
-            storage_write: Arc::new(storage_write),
+            host: Arc::new(std::sync::Mutex::new(HostState::default())),
         }
+    }
+
+    /// Refresh synchronous getters before Lua runs and after asynchronous host calls.
+    #[frb(sync)]
+    pub fn set_snapshot(
+        &self,
+        fields: HashMap<StateFieldAccess, String>,
+        tables: HashMap<String, String>,
+        current_table: String,
+        storage: String,
+    ) {
+        let mut host = self.host.lock().unwrap();
+        host.fields = fields;
+        host.tables = tables;
+        host.current_table = current_table;
+        host.storage = storage;
+    }
+
+    #[frb(sync)]
+    pub fn take_effects(&self) -> Vec<PluginEffect> {
+        std::mem::take(&mut self.host.lock().unwrap().effects)
+    }
+}
+
+impl PluginCallback {
+    pub(crate) fn on_print(&self, value: String) {
+        self.host.lock().unwrap().effects.push(PluginEffect {
+            method: "onPrint".into(),
+            value,
+        });
+    }
+
+    pub(crate) fn state_field_access(&self, field: StateFieldAccess) -> String {
+        self.host
+            .lock()
+            .unwrap()
+            .fields
+            .get(&field)
+            .cloned()
+            .unwrap_or_else(|| "null".into())
+    }
+
+    pub(crate) fn table_access(&self, name: Option<String>) -> String {
+        let host = self.host.lock().unwrap();
+        match name {
+            Some(name) => host
+                .tables
+                .get(&name)
+                .cloned()
+                .unwrap_or_else(|| "{}".into()),
+            None => host.current_table.clone(),
+        }
+    }
+
+    pub(crate) fn storage_read(&self) -> String {
+        self.host.lock().unwrap().storage.clone()
+    }
+
+    pub(crate) fn storage_write(&self, value: String) {
+        let mut host = self.host.lock().unwrap();
+        host.storage = value.clone();
+        host.effects.push(PluginEffect {
+            method: "storageWrite".into(),
+            value,
+        });
     }
 }
 

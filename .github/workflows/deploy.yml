@@ -102,10 +102,13 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y clang
-          rustup target add wasm32-unknown-emscripten
-          git clone --depth 1 --branch 6.0.11 https://github.com/emscripten-core/emsdk.git "$RUNNER_TEMP/emsdk"
-          "$RUNNER_TEMP/emsdk/emsdk" install 6.0.11
-          "$RUNNER_TEMP/emsdk/emsdk" activate 6.0.11
+          rustup target add wasm32-unknown-unknown
+          curl -fL --retry 3 https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-34/wasi-sdk-34.0-x86_64-linux.tar.gz \
+            | tar -xz -C "$RUNNER_TEMP"
+          echo "WASI_SDK_PATH=$RUNNER_TEMP/wasi-sdk-34.0-x86_64-linux" >> "$GITHUB_ENV"
+          curl -fL --retry 3 https://github.com/wasm-bindgen/wasm-bindgen/releases/download/0.2.129/wasm-bindgen-0.2.129-x86_64-unknown-linux-musl.tar.gz \
+            | tar -xz -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/wasm-bindgen-0.2.129-x86_64-unknown-linux-musl" >> "$GITHUB_PATH"
       - name: Get Git Commit Hash
         run: echo "GIT_HASH=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
       - name: Set flavor
@@ -120,7 +123,6 @@ jobs:
           echo "WEB_DIR=web" >> $GITHUB_ENV
       - name: Build
         run: |
-          source "$RUNNER_TEMP/emsdk/emsdk_env.sh"
           dart ../tools/build_offline.dart prepare --platform web --flavor "$SETONIX_FLAVOR" --dart-define=version="$GIT_HASH"
       - name: Deploy to SFTP
         if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main'

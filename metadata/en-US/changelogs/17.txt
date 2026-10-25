@@ -2,6 +2,7 @@
 * Add scripted chess with legal moves, special moves, saved games, and local or multiplayer play
 * Add shared action guards and event blockers for game scripts
 * Fix script storage isolation and dedicated-server event routing between worlds
-* Upgrade to flutter 3.47.8
+* Migrate the web plugin from Emscripten to wasm32-unknown-unknown
+* Upgrade to Flutter 3.47.8
 
 Read more here: https://linwood.dev/setonix/0.9.2

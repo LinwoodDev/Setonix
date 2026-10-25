@@ -2,7 +2,7 @@ import 'dart:async';
 
 import '../rust/api/plugin.dart' show StateFieldAccess;
 
-/// Callbacks shared by the native and browser Luau transports.
+/// Callbacks used by the shared Luau runtime.
 class PluginCallback {
   final FutureOr<void> Function(String) onPrint;
   final FutureOr<void> Function(String, bool?) processEvent;

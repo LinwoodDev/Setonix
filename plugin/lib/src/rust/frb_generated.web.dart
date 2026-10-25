@@ -54,8 +54,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
-  FutureOr<void> Function(String)
-  dco_decode_DartFn_Inputs_String_Output_unit_AnyhowException(dynamic raw);
+  PluginCallback
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
+    dynamic raw,
+  );
 
   @protected
   FutureOr<void> Function(String, bool?)
@@ -70,23 +72,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
-  FutureOr<String> Function()
-  dco_decode_DartFn_Inputs__Output_String_AnyhowException(dynamic raw);
-
-  @protected
-  FutureOr<String> Function(String?)
-  dco_decode_DartFn_Inputs_opt_String_Output_String_AnyhowException(
-    dynamic raw,
-  );
-
-  @protected
-  FutureOr<String> Function(StateFieldAccess)
-  dco_decode_DartFn_Inputs_state_field_access_Output_String_AnyhowException(
-    dynamic raw,
-  );
-
-  @protected
   Object dco_decode_DartOpaque(dynamic raw);
+
+  @protected
+  Map<String, String> dco_decode_Map_String_String_None(dynamic raw);
+
+  @protected
+  Map<StateFieldAccess, String> dco_decode_Map_state_field_access_String_None(
+    dynamic raw,
+  );
 
   @protected
   LuauPlugin
@@ -131,13 +125,23 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   PlatformInt64 dco_decode_isize(dynamic raw);
 
   @protected
+  List<PluginEffect> dco_decode_list_plugin_effect(dynamic raw);
+
+  @protected
   Int16List dco_decode_list_prim_i_16_strict(dynamic raw);
 
   @protected
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw);
 
   @protected
+  List<(StateFieldAccess, String)>
+  dco_decode_list_record_state_field_access_string(dynamic raw);
+
+  @protected
   List<(String, int)> dco_decode_list_record_string_i_16(dynamic raw);
+
+  @protected
+  List<(String, String)> dco_decode_list_record_string_string(dynamic raw);
 
   @protected
   Set<int>? dco_decode_opt_Set_i_16_None(dynamic raw);
@@ -152,7 +156,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   int? dco_decode_opt_box_autoadd_i_16(dynamic raw);
 
   @protected
+  PluginEffect dco_decode_plugin_effect(dynamic raw);
+
+  @protected
+  (StateFieldAccess, String) dco_decode_record_state_field_access_string(
+    dynamic raw,
+  );
+
+  @protected
   (String, int) dco_decode_record_string_i_16(dynamic raw);
+
+  @protected
+  (String, String) dco_decode_record_string_string(dynamic raw);
 
   @protected
   StateFieldAccess dco_decode_state_field_access(dynamic raw);
@@ -188,7 +203,23 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  PluginCallback
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   Object sse_decode_DartOpaque(SseDeserializer deserializer);
+
+  @protected
+  Map<String, String> sse_decode_Map_String_String_None(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  Map<StateFieldAccess, String> sse_decode_Map_state_field_access_String_None(
+    SseDeserializer deserializer,
+  );
 
   @protected
   LuauPlugin
@@ -230,13 +261,29 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   PlatformInt64 sse_decode_isize(SseDeserializer deserializer);
 
   @protected
+  List<PluginEffect> sse_decode_list_plugin_effect(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   Int16List sse_decode_list_prim_i_16_strict(SseDeserializer deserializer);
 
   @protected
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer);
 
   @protected
+  List<(StateFieldAccess, String)>
+  sse_decode_list_record_state_field_access_string(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   List<(String, int)> sse_decode_list_record_string_i_16(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  List<(String, String)> sse_decode_list_record_string_string(
     SseDeserializer deserializer,
   );
 
@@ -253,7 +300,20 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   int? sse_decode_opt_box_autoadd_i_16(SseDeserializer deserializer);
 
   @protected
+  PluginEffect sse_decode_plugin_effect(SseDeserializer deserializer);
+
+  @protected
+  (StateFieldAccess, String) sse_decode_record_state_field_access_string(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   (String, int) sse_decode_record_string_i_16(SseDeserializer deserializer);
+
+  @protected
+  (String, String) sse_decode_record_string_string(
+    SseDeserializer deserializer,
+  );
 
   @protected
   StateFieldAccess sse_decode_state_field_access(SseDeserializer deserializer);
@@ -295,8 +355,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
-  void sse_encode_DartFn_Inputs_String_Output_unit_AnyhowException(
-    FutureOr<void> Function(String) self,
+  void
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCallback(
+    PluginCallback self,
     SseSerializer serializer,
   );
 
@@ -315,26 +376,19 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
-  void sse_encode_DartFn_Inputs__Output_String_AnyhowException(
-    FutureOr<String> Function() self,
-    SseSerializer serializer,
-  );
-
-  @protected
-  void sse_encode_DartFn_Inputs_opt_String_Output_String_AnyhowException(
-    FutureOr<String> Function(String?) self,
-    SseSerializer serializer,
-  );
-
-  @protected
-  void
-  sse_encode_DartFn_Inputs_state_field_access_Output_String_AnyhowException(
-    FutureOr<String> Function(StateFieldAccess) self,
-    SseSerializer serializer,
-  );
-
-  @protected
   void sse_encode_DartOpaque(Object self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_Map_String_String_None(
+    Map<String, String> self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_Map_state_field_access_String_None(
+    Map<StateFieldAccess, String> self,
+    SseSerializer serializer,
+  );
 
   @protected
   void
@@ -378,6 +432,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_isize(PlatformInt64 self, SseSerializer serializer);
 
   @protected
+  void sse_encode_list_plugin_effect(
+    List<PluginEffect> self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_list_prim_i_16_strict(
     Int16List self,
     SseSerializer serializer,
@@ -390,8 +450,20 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_list_record_state_field_access_string(
+    List<(StateFieldAccess, String)> self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_list_record_string_i_16(
     List<(String, int)> self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_list_record_string_string(
+    List<(String, String)> self,
     SseSerializer serializer,
   );
 
@@ -408,8 +480,23 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_opt_box_autoadd_i_16(int? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_plugin_effect(PluginEffect self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_record_state_field_access_string(
+    (StateFieldAccess, String) self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_record_string_i_16(
     (String, int) self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_record_string_string(
+    (String, String) self,
     SseSerializer serializer,
   );
 

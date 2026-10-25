@@ -1,4 +1,3 @@
-use futures::executor::block_on;
 use mlua::prelude::*;
 use serde_json::Value;
 use strum::IntoEnumIterator;
@@ -19,8 +18,7 @@ impl LuaUserData for LuauStateUserData {
         for field in StateFieldAccess::iter() {
             let name = field.to_string();
             fields.add_field_method_get(name.clone(), move |lua, this: &LuauStateUserData| {
-                let callback = this.0.state_field_access.clone();
-                let result = block_on(callback(field));
+                let result = this.0.state_field_access(field);
                 let result = serde_json::from_str::<Value>(&result).unwrap();
                 let serialized = lua
                     .to_value_with(&result, super::LUA_SERIALIZE_OPTIONS)
@@ -29,9 +27,9 @@ impl LuaUserData for LuauStateUserData {
             });
         }
         fields.add_field_method_get("PluginId", move |lua, this: &LuauStateUserData| {
-            let callback = this.0.state_field_access.clone();
-            let namespace = parse_json_string(block_on(callback(StateFieldAccess::Namespace)));
-            let game = parse_json_string(block_on(callback(StateFieldAccess::Game)));
+            let namespace =
+                parse_json_string(this.0.state_field_access(StateFieldAccess::Namespace));
+            let game = parse_json_string(this.0.state_field_access(StateFieldAccess::Game));
             let plugin_id = format!("{}:{}", namespace, game);
             let serialized = lua
                 .to_value_with(&plugin_id, super::LUA_SERIALIZE_OPTIONS)
@@ -44,8 +42,7 @@ impl LuaUserData for LuauStateUserData {
         methods.add_method(
             "GetTable",
             |lua, this: &LuauStateUserData, table_name: Option<String>| {
-                let callback = this.0.table_access.clone();
-                let result = block_on(callback(table_name));
+                let result = this.0.table_access(table_name);
                 let result = serde_json::from_str::<Value>(&result).unwrap();
                 let serialized = lua
                     .to_value_with(&result, super::LUA_SERIALIZE_OPTIONS)

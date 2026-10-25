@@ -2,9 +2,7 @@ use event::*;
 use std::sync::Arc;
 use tokio::sync::Mutex;
 
-#[cfg(not(target_os = "emscripten"))]
 use flutter_rust_bridge::frb;
-use futures::executor::block_on;
 use mlua::prelude::*;
 use state::LuauStateUserData;
 use storage::LuauStorageUserData;
@@ -29,9 +27,9 @@ const HIGH_LEVEL_API_PRELUDE: &str = include_str!("luau/prelude.luau");
 
 impl PluginCallback {
     fn construct_on_print(&self, engine: &Lua) -> LuaResult<LuaFunction> {
-        let on_print = self.on_print.clone();
+        let callback = self.clone();
         engine.create_function(move |_, s: String| {
-            block_on(on_print(s));
+            callback.on_print(s);
             Ok(())
         })
     }
@@ -75,7 +73,7 @@ pub struct LuauPlugin {
 }
 
 #[derive(Clone)]
-#[cfg_attr(not(target_os = "emscripten"), frb(ignore))]
+#[frb(ignore)]
 struct LuaEventDetails(Arc<std::sync::Mutex<EventDetails>>);
 
 impl LuaUserData for LuaEventDetails {
@@ -196,8 +194,8 @@ impl RustPlugin for LuauPlugin {
 }
 
 impl LuauPlugin {
-    #[cfg_attr(not(target_os = "emscripten"), frb(sync))]
-    pub fn new(code: String, callback: PluginCallback) -> LuauPlugin {
+    #[frb(sync)]
+    pub fn new(code: String, callback: &PluginCallback) -> LuauPlugin {
         let engine = Lua::new();
         engine.sandbox(true).unwrap();
         callback.construct_globals(&engine).unwrap();

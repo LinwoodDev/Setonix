@@ -24,7 +24,7 @@ class _SetonixBuild extends FlutterBuild {
   RustBuild get rust => RustBuild(
     crate: Directory('${root.path}/plugin/rust'),
     sourceRoot: root,
-    targets: {...super.rustTargets, 'web': 'wasm32-unknown-emscripten'},
+    targets: {...super.rustTargets, 'web': 'wasm32-unknown-unknown'},
   );
   @override
   List<String> get platforms => [...super.platforms, 'server'];
@@ -61,17 +61,31 @@ class _SetonixBuild extends FlutterBuild {
     'rust-toolchain.toml',
     'tools/generate.dart',
     'tools/build_web_service_worker.dart',
-    if (platform == 'web') ...['plugin/web/build.sh', 'plugin/web/runtime.js'],
+    if (platform == 'web') 'plugin/web/build.sh',
     if (platform == 'server') ...['server/pubspec.yaml', 'server/pubspec.lock'],
   ];
 
   @override
   Future<void> checkTools(Map<String, String> env) async {
     if (platform != 'web') return;
-    final version = await command('emcc', ['--version'], env, capture: true);
-    if (!RegExp(r'\b6\.0\.11\b').hasMatch(version.split('\n').first)) {
+    final sdk = env['WASI_SDK_PATH'];
+    final version = sdk == null ? null : File('$sdk/VERSION');
+    if (version == null ||
+        !version.existsSync() ||
+        version.readAsLinesSync().first != '34.0') {
       throw StateError(
-        'Activate Emscripten 6.0.11 before preparing/building web.',
+        'Set WASI_SDK_PATH to WASI SDK 34.0 before preparing/building web.',
+      );
+    }
+    final bindings = await command(
+      env['WASM_BINDGEN'] ?? 'wasm-bindgen',
+      ['--version'],
+      env,
+      capture: true,
+    );
+    if (bindings.trim() != 'wasm-bindgen 0.2.129') {
+      throw StateError(
+        'Install wasm-bindgen-cli 0.2.129, matching Cargo.lock.',
       );
     }
   }

@@ -1,4 +1,3 @@
-use futures::executor::block_on;
 use mlua::prelude::*;
 use serde_json::{Map, Value};
 
@@ -8,8 +7,7 @@ pub(crate) struct LuauStorageUserData(pub(crate) PluginCallback);
 
 impl LuauStorageUserData {
     fn read(&self) -> LuaResult<Map<String, Value>> {
-        let read = self.0.storage_read.clone();
-        let raw = block_on(read());
+        let raw = self.0.storage_read();
         match serde_json::from_str::<Value>(&raw).map_err(mlua::Error::external)? {
             Value::Object(values) => Ok(values),
             _ => Ok(Map::new()),
@@ -17,9 +15,8 @@ impl LuauStorageUserData {
     }
 
     fn write(&self, values: Map<String, Value>) -> LuaResult<()> {
-        let write = self.0.storage_write.clone();
         let raw = serde_json::to_string(&values).map_err(mlua::Error::external)?;
-        block_on(write(raw));
+        self.0.storage_write(raw);
         Ok(())
     }
 }

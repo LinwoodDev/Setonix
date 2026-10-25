@@ -33,6 +33,6 @@ Run the command appropriate for your target from `app/`:
 
 Build desktop and Apple targets on a supported host OS with its required toolchain. iOS distribution needs a suitable signing or sideloading workflow. Outputs are under `app/build/`.
 
-For the browser build, also compile the Emscripten Luau runtime and generate offline assets. Follow [web app self-hosting](/downloads/selfhosting/) rather than running a plain Flutter web build.
+For the browser build, also compile the Luau Wasm runtime and generate offline assets. Follow [web app self-hosting](/downloads/selfhosting/) for the complete build steps.
 
 To run during development, use `flutter run` after preparing the repository. For the separate Dart game server, see [server documentation](/docs/v1/server/) and the server package's source.

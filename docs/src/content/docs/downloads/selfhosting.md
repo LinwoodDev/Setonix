@@ -7,14 +7,15 @@ This guide hosts the Setonix browser client. To host multiplayer worlds, use the
 
 ## Build the client
 
-Use the Flutter version specified in `app/pubspec.yaml`, the repository's pinned Rust toolchain, and the Emscripten version specified in `plugin/web/README.md`. Activate the Emscripten SDK before building the Luau runtime.
+Use Flutter as specified in `app/pubspec.yaml` and the Rust toolchain pinned in `rust-toolchain.toml`. Install the WASI SDK and matching wasm-bindgen-cli following the [web runtime build instructions](https://github.com/LinwoodDev/Setonix/blob/develop/plugin/web/README.md). Set `WASI_SDK_PATH` to the extracted SDK directory before building the Luau runtime.
 
 Run from the repository root:
 
 ```sh
 dart pub get -C tools
 dart run tools/generate.dart
-rustup target add wasm32-unknown-emscripten
+rustup target add wasm32-unknown-unknown
+export WASI_SDK_PATH=/absolute/path/to/wasi-sdk
 bash plugin/web/build.sh
 cd app
 flutter pub get
@@ -22,7 +23,7 @@ flutter build web --wasm --release --no-web-resources-cdn
 dart run ../tools/build_web_service_worker.dart
 ```
 
-The runtime step creates the JavaScript loader, Wasm module, and callback adapter under `app/web/pkg/`. The Flutter build copies these into `app/build/web/pkg/`. Include them in the deployment so local scripted modes such as Blackjack can run.
+The runtime step creates the Wasm module and generated flutter_rust_bridge JavaScript loader under `app/web/pkg/`. The Flutter build copies these into `app/build/web/pkg/`. Include them in the deployment so local scripted modes such as Blackjack can run.
 
 The final command generates the app's offline service worker. It is separate from the service worker used by this documentation website.
 

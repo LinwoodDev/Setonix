@@ -7,29 +7,30 @@ import '../frb_generated.dart';
 
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-// These functions are ignored because they are not marked as `pub`: `build`, `get`, `new`, `schedule_event`
-// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `EventDetails`, `StateFieldAccessIter`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `iter`, `len`, `next_back`, `next`, `nth`, `size_hint`
+// These functions are ignored because they are not marked as `pub`: `build`, `get`, `new`, `on_print`, `schedule_event`, `state_field_access`, `storage_read`, `storage_write`, `table_access`
+// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `EventDetails`, `HostState`, `StateFieldAccessIter`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_fields_are_eq`, `clone`, `clone`, `clone`, `clone`, `eq`, `fmt`, `fmt`, `hash`, `iter`, `len`, `next_back`, `next`, `nth`, `size_hint`
+// These functions are ignored (category: IgnoreBecauseOwnerTyShouldIgnore): `default`
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<PluginCallback>>
 abstract class PluginCallback implements RustOpaqueInterface {
   factory PluginCallback({
-    required FutureOr<void> Function(String) onPrint,
     required FutureOr<void> Function(String, bool?) processEvent,
     required FutureOr<void> Function(String, int?) sendEvent,
-    required FutureOr<String> Function(StateFieldAccess) stateFieldAccess,
-    required FutureOr<String> Function(String?) tableAccess,
-    required FutureOr<String> Function() storageRead,
-    required FutureOr<void> Function(String) storageWrite,
   }) => RustLib.instance.api.crateApiPluginPluginCallbackNew(
-    onPrint: onPrint,
     processEvent: processEvent,
     sendEvent: sendEvent,
-    stateFieldAccess: stateFieldAccess,
-    tableAccess: tableAccess,
-    storageRead: storageRead,
-    storageWrite: storageWrite,
   );
+
+  /// Refresh synchronous getters before Lua runs and after asynchronous host calls.
+  void setSnapshot({
+    required Map<StateFieldAccess, String> fields,
+    required Map<String, String> tables,
+    required String currentTable,
+    required String storage,
+  });
+
+  List<PluginEffect> takeEffects();
 }
 
 abstract class RustPlugin {
@@ -78,6 +79,25 @@ class EventResult {
           needsUpdate == other.needsUpdate &&
           cancelled == other.cancelled &&
           scheduledEvents == other.scheduledEvents;
+}
+
+/// Ordered side effects produced by synchronous Lua callbacks.
+class PluginEffect {
+  final String method;
+  final String value;
+
+  const PluginEffect({required this.method, required this.value});
+
+  @override
+  int get hashCode => method.hashCode ^ value.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PluginEffect &&
+          runtimeType == other.runtimeType &&
+          method == other.method &&
+          value == other.value;
 }
 
 enum StateFieldAccess {

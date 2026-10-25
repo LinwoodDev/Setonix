@@ -1,12 +1,11 @@
 use std::{collections::HashMap, sync::Arc};
 
-#[cfg(not(target_os = "emscripten"))]
 use flutter_rust_bridge::frb;
 use mlua::prelude::*;
 use tokio::sync::Mutex;
 
 #[derive(Default)]
-#[cfg_attr(not(target_os = "emscripten"), frb(ignore))]
+#[frb(ignore)]
 pub(crate) struct LuauEventSystem {
     event_handlers: HashMap<String, Vec<(u64, LuaFunction)>>,
     next_id: u64,

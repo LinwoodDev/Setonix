@@ -1,8 +1,6 @@
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-import 'src/runtime/native.dart'
-    if (dart.library.js_interop) 'src/runtime/web.dart'
-    as platform;
+import 'src/rust/frb_generated.dart';
 
 export 'src/rust/api/plugin.dart'
     show EventResult, RustPlugin, StateFieldAccess;
@@ -15,12 +13,12 @@ bool get isPluginSystemInitialized => _isInitialized;
 
 Future<void> initPluginSystem({ExternalLibrary? externalLibrary}) async {
   if (_isInitialized) return;
-  await platform.initialize(externalLibrary: externalLibrary);
+  await RustLib.init(externalLibrary: externalLibrary);
   _isInitialized = true;
 }
 
 void disposePluginSystem() {
   if (!_isInitialized) return;
   _isInitialized = false;
-  platform.disposeSystem();
+  RustLib.dispose();
 }
