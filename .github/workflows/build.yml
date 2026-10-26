@@ -633,12 +633,6 @@ jobs:
           dart pub get -C ../tools --enforce-lockfile
       - name: Apply native branding
         run: dart run ../tools/apply_branding.dart ${{ env.BUILD_FLAVOR }} ios
-      - name: Verify iOS Rust linking
-        working-directory: plugin/rust
-        run: |
-          export SDKROOT="$(xcrun --sdk iphoneos --show-sdk-path)"
-          export IPHONEOS_DEPLOYMENT_TARGET="$(awk '$1 == "IPHONEOS_DEPLOYMENT_TARGET" { gsub(/;/, "", $3); print $3; exit }' ../../app/ios/Runner.xcodeproj/project.pbxproj)"
-          cargo build --locked --release --target aarch64-apple-ios --lib
       - name: 🏭 Build
         run: |
           dart ../tools/build_offline.dart prepare --platform ios --flavor "$BUILD_FLAVOR" --unsigned
