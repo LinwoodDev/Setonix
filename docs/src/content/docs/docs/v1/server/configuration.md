@@ -12,6 +12,7 @@ The server reads `config.json` from its working directory and merges it with Dar
 | `host` | `"127.0.0.1"` | Bind address |
 | `port` | `28006` | WebSocket/status port |
 | `publicAddress` | `""` | Canonical address used for authentication |
+| `trustedProxies` | `[]` | Proxy IP addresses or CIDR networks allowed to supply `X-Forwarded-For` |
 | `description` | `"A server for Setonix."` | Text shown in server lists |
 | `thumbnail` | `""` | Image path, absolute or relative to the server directory |
 | `autosave` | `true` | Save changes automatically |
@@ -42,6 +43,7 @@ The executable currently supplies `autosave: false`, `maxPlayers: 10`, and `mult
 | `--max-players <number>` | `-m` | Player limit |
 | `--multi-world` | `-w` | Set the multi-world option; routing is incomplete |
 | `--public-address <url>` | | Canonical public URL |
+| `--trusted-proxy <ip-or-cidr>` | | Trust a reverse proxy; repeat or separate entries with commas |
 | `--game-mode <namespace:id>` | `-g` | Initial mode |
 | `--autosave <value>` | `-a` | Current parser requires a value and enables autosave when the option is present |
 
@@ -57,7 +59,15 @@ For public access, configure TLS and the public origin as described in [server s
 
 The `SETONIX_*` names are read using Dart's `String.fromEnvironment`, `bool.fromEnvironment`, and `int.fromEnvironment`. These are compilation/environment declarations, not ordinary process environment variables read through `Platform.environment`.
 
-Available names are `SETONIX_HOST`, `SETONIX_PORT`, `SETONIX_WORLD_FILE`, `SETONIX_AUTOSAVE`, `SETONIX_MULTI_WORLD`, `SETONIX_MAX_PLAYERS`, `SETONIX_DESCRIPTION`, `SETONIX_THUMBNAIL`, `SETONIX_GUEST_PREFIX`, `SETONIX_WHITELIST_ENABLED`, `SETONIX_ACCOUNT_REQUIRED`, `SETONIX_PUBLIC_ADDRESS`, `SETONIX_API_ENDPOINT`, `SETONIX_ENDPOINT_SECRET`, and `SETONIX_GAME_MODE`. Use `config.json` or CLI options to configure a downloaded executable.
+Available names are `SETONIX_HOST`, `SETONIX_PORT`, `SETONIX_WORLD_FILE`, `SETONIX_AUTOSAVE`, `SETONIX_MULTI_WORLD`, `SETONIX_MAX_PLAYERS`, `SETONIX_DESCRIPTION`, `SETONIX_THUMBNAIL`, `SETONIX_GUEST_PREFIX`, `SETONIX_WHITELIST_ENABLED`, `SETONIX_ACCOUNT_REQUIRED`, `SETONIX_PUBLIC_ADDRESS`, `SETONIX_TRUSTED_PROXIES`, `SETONIX_API_ENDPOINT`, `SETONIX_ENDPOINT_SECRET`, and `SETONIX_GAME_MODE`. `SETONIX_TRUSTED_PROXIES` is a comma-separated list of IP addresses or CIDR networks; an empty value disables proxy trust. Use `config.json` or CLI options to configure a downloaded executable.
+
+## Trusted reverse proxies
+
+No proxies are trusted by default. Set `trustedProxies` to the source IP addresses or CIDR networks of your proxies, for example `["127.0.0.1", "::1"]` for nginx on the same machine. IPv4 and IPv6 are supported; hostnames and wildcards are rejected. Invalid entries prevent startup. Lists supplied by environment declarations or CLI replace earlier lists.
+
+For WebSocket connections from a trusted peer, the server reads `X-Forwarded-For` from right to left, skips trusted proxy hops, and uses the first untrusted address as the client IP. This address is used for logs, player listings, plugins, and authentication rate limits. Headers from untrusted peers are ignored. Missing or malformed forwarding headers fall back to the socket peer address.
+
+Trust only proxies you control, and configure them to overwrite forwarding headers or append the actual connecting client's address. Keep the backend listener on loopback or restrict access to it. `trustedProxies` controls forwarded IP handling; it does not restrict connections to the listener or enable TLS. Authentication continues to use the configured `publicAddress`, so set it to the public `wss://` URL when TLS terminates at the proxy. See the [nginx example](/docs/v1/server/#nginx-reverse-proxy).
 
 ## Roles and registration services
 

@@ -74,6 +74,9 @@ class ConfigManager {
   String get publicAddress =>
       _mergedConfig.publicAddress ?? SetonixConfig.defaultPublicAddress;
 
+  List<String> get trustedProxies =>
+      _mergedConfig.trustedProxies ?? SetonixConfig.defaultTrustedProxies;
+
   String get apiEndpoint =>
       _mergedConfig.apiEndpoint ?? SetonixConfig.defaultApiEndpoint;
 

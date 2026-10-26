@@ -10,6 +10,12 @@ The executable binds to `127.0.0.1:28006` by default. Saved worlds are under
 `worlds/`, content packs under `packs/`, and local users in `setonix.db`.
 See the configuration reference for current CLI autosave behavior and TLS setup.
 
+To run behind nginx on the same machine, set `publicAddress` to your public
+`wss://` URL and `trustedProxies` to `["127.0.0.1"]`, or pass
+`--public-address wss://play.example.com:443 --trusted-proxy 127.0.0.1`.
+Forwarded client IPs are accepted only from configured proxy IPs or CIDR networks.
+See the [nginx configuration example](https://setonix.world/docs/v1/server/#nginx-reverse-proxy).
+
 ## Use as a library
 
 You can use the server as a library in your own project.

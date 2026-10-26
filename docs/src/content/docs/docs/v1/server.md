@@ -49,6 +49,55 @@ Authentication uses short-lived, connection-bound Ed25519 challenges containing 
 
 See [accounts](/docs/v1/accounts/) for the player's workflow and [configuration](/docs/v1/server/configuration/) for all server options.
 
+### nginx reverse proxy
+
+For nginx on the same machine, keep Setonix bound to loopback and add these fields to `config.json`:
+
+```json
+{
+  "host": "127.0.0.1",
+  "port": 28006,
+  "publicAddress": "wss://play.example.com:443",
+  "trustedProxies": ["127.0.0.1"]
+}
+```
+
+The equivalent CLI options are `--host 127.0.0.1 --port 28006 --public-address wss://play.example.com:443 --trusted-proxy 127.0.0.1`. TLS terminates at nginx; the backend does not need certificates in `certs/` for this setup.
+
+Place the following inside nginx's `http` context, replacing the domain and certificate paths with your own:
+
+```nginx
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    '' close;
+}
+
+server {
+    listen 443 ssl;
+    server_name play.example.com;
+
+    ssl_certificate /etc/letsencrypt/live/play.example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/play.example.com/privkey.pem;
+
+    location / {
+        proxy_pass http://127.0.0.1:28006;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_read_timeout 3600s;
+        proxy_send_timeout 3600s;
+    }
+}
+```
+
+This forwards both WebSockets and HTTP status/thumbnail requests, preserving paths and query parameters. The example overwrites `X-Forwarded-For` with nginx's connecting client address. For multiple proxies, configure each hop to append the actual peer address and list every trusted proxy in `trustedProxies`. Only those addresses may supply client IPs for logging and authentication rate limits. The authentication origin remains the explicit `publicAddress`.
+
+To preserve an existing proxy chain, use `proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;` instead. This appends nginx's connecting peer to the existing comma-separated list. Setonix checks that list from right to left through the trusted proxies. `proxy_set_header X-Real-IP $remote_addr;` sends a single address for backends that use that header; Setonix uses `X-Forwarded-For`, so `X-Real-IP` is optional and is not read.
+
+Check nginx configuration with `nginx -t`, then reload nginx and connect using `wss://play.example.com:443`. See nginx's [WebSocket proxying guide](https://nginx.org/en/docs/http/websocket.html) for upgrade headers and idle timeouts.
+
 ## Worlds and game modes
 
 The server loads `.stnx` saves from `worlds/`. Use `--game-mode core:blackjack` to select the mode for a new default world. Existing saves keep their saved state. `modes` lists available identifiers.

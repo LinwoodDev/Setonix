@@ -41,6 +41,9 @@ final class SetonixConfig with SetonixConfigMappable {
   final String? publicAddress;
   static const String defaultPublicAddress = '';
   static const String envPublicAddress = 'SETONIX_PUBLIC_ADDRESS';
+  final List<String>? trustedProxies;
+  static const List<String> defaultTrustedProxies = [];
+  static const String envTrustedProxies = 'SETONIX_TRUSTED_PROXIES';
   final String? apiEndpoint;
   static const String defaultApiEndpoint = "";
   static const String envApiEndpoint = 'SETONIX_API_ENDPOINT';
@@ -65,6 +68,7 @@ final class SetonixConfig with SetonixConfigMappable {
     this.whitelistEnabled,
     this.accountRequired,
     this.publicAddress,
+    this.trustedProxies,
     this.apiEndpoint,
     this.endpointSecret,
     this.gameMode,
@@ -84,6 +88,7 @@ final class SetonixConfig with SetonixConfigMappable {
     whitelistEnabled: defaultWhitelistEnabled,
     accountRequired: defaultAccountRequired,
     publicAddress: defaultPublicAddress,
+    trustedProxies: defaultTrustedProxies,
     apiEndpoint: defaultApiEndpoint,
     endpointSecret: defaultEndpointSecret,
     gameMode: defaultGameMode,
@@ -143,6 +148,14 @@ final class SetonixConfig with SetonixConfigMappable {
               defaultValue: defaultPublicAddress,
             )
           : null,
+      trustedProxies: bool.hasEnvironment(envTrustedProxies)
+          ? const String.fromEnvironment(envTrustedProxies).trim().isEmpty
+                ? <String>[]
+                : const String.fromEnvironment(envTrustedProxies)
+                      .split(',')
+                      .map((value) => value.trim())
+                      .toList()
+          : null,
       apiEndpoint: bool.hasEnvironment(envApiEndpoint)
           ? String.fromEnvironment(
               envApiEndpoint,
@@ -174,6 +187,7 @@ final class SetonixConfig with SetonixConfigMappable {
     guestPrefix: other.guestPrefix ?? guestPrefix,
     accountRequired: other.accountRequired ?? accountRequired,
     publicAddress: other.publicAddress ?? publicAddress,
+    trustedProxies: other.trustedProxies ?? trustedProxies,
     whitelistEnabled: other.whitelistEnabled ?? whitelistEnabled,
     apiEndpoint: other.apiEndpoint ?? apiEndpoint,
     endpointSecret: other.endpointSecret ?? endpointSecret,

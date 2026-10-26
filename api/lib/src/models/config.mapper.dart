@@ -96,6 +96,12 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
     _$publicAddress,
     opt: true,
   );
+  static List<String>? _$trustedProxies(SetonixConfig v) => v.trustedProxies;
+  static const Field<SetonixConfig, List<String>> _f$trustedProxies = Field(
+    'trustedProxies',
+    _$trustedProxies,
+    opt: true,
+  );
   static String? _$apiEndpoint(SetonixConfig v) => v.apiEndpoint;
   static const Field<SetonixConfig, String> _f$apiEndpoint = Field(
     'apiEndpoint',
@@ -133,6 +139,7 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
     #whitelistEnabled: _f$whitelistEnabled,
     #accountRequired: _f$accountRequired,
     #publicAddress: _f$publicAddress,
+    #trustedProxies: _f$trustedProxies,
     #apiEndpoint: _f$apiEndpoint,
     #endpointSecret: _f$endpointSecret,
     #gameMode: _f$gameMode,
@@ -153,6 +160,7 @@ class SetonixConfigMapper extends ClassMapperBase<SetonixConfig> {
       whitelistEnabled: data.dec(_f$whitelistEnabled),
       accountRequired: data.dec(_f$accountRequired),
       publicAddress: data.dec(_f$publicAddress),
+      trustedProxies: data.dec(_f$trustedProxies),
       apiEndpoint: data.dec(_f$apiEndpoint),
       endpointSecret: data.dec(_f$endpointSecret),
       gameMode: data.dec(_f$gameMode),
@@ -225,6 +233,8 @@ extension SetonixConfigValueCopy<$R, $Out>
 /// @nodoc
 abstract class SetonixConfigCopyWith<$R, $In extends SetonixConfig, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>?
+  get trustedProxies;
   MapCopyWith<
     $R,
     String,
@@ -245,6 +255,7 @@ abstract class SetonixConfigCopyWith<$R, $In extends SetonixConfig, $Out>
     bool? whitelistEnabled,
     bool? accountRequired,
     String? publicAddress,
+    List<String>? trustedProxies,
     String? apiEndpoint,
     String? endpointSecret,
     String? gameMode,
@@ -262,6 +273,15 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
   @override
   late final ClassMapperBase<SetonixConfig> $mapper =
       SetonixConfigMapper.ensureInitialized();
+  @override
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>?
+  get trustedProxies => $value.trustedProxies != null
+      ? ListCopyWith(
+          $value.trustedProxies!,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(trustedProxies: v),
+        )
+      : null;
   @override
   MapCopyWith<
     $R,
@@ -290,6 +310,7 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
     Object? whitelistEnabled = $none,
     Object? accountRequired = $none,
     Object? publicAddress = $none,
+    Object? trustedProxies = $none,
     Object? apiEndpoint = $none,
     Object? endpointSecret = $none,
     Object? gameMode = $none,
@@ -308,6 +329,7 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
       if (whitelistEnabled != $none) #whitelistEnabled: whitelistEnabled,
       if (accountRequired != $none) #accountRequired: accountRequired,
       if (publicAddress != $none) #publicAddress: publicAddress,
+      if (trustedProxies != $none) #trustedProxies: trustedProxies,
       if (apiEndpoint != $none) #apiEndpoint: apiEndpoint,
       if (endpointSecret != $none) #endpointSecret: endpointSecret,
       if (gameMode != $none) #gameMode: gameMode,
@@ -328,6 +350,7 @@ class _SetonixConfigCopyWithImpl<$R, $Out>
     whitelistEnabled: data.get(#whitelistEnabled, or: $value.whitelistEnabled),
     accountRequired: data.get(#accountRequired, or: $value.accountRequired),
     publicAddress: data.get(#publicAddress, or: $value.publicAddress),
+    trustedProxies: data.get(#trustedProxies, or: $value.trustedProxies),
     apiEndpoint: data.get(#apiEndpoint, or: $value.apiEndpoint),
     endpointSecret: data.get(#endpointSecret, or: $value.endpointSecret),
     gameMode: data.get(#gameMode, or: $value.gameMode),

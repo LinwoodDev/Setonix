@@ -76,6 +76,12 @@ ArgParser buildParser() {
       'game-mode',
       abbr: 'g',
       help: 'The game mode to load. Otherwise it is a sandbox.',
+    )
+    ..addMultiOption(
+      'trusted-proxy',
+      help:
+          'Trust X-Forwarded-For from this proxy IP address or CIDR network. '
+          'May be repeated or comma-separated. No proxies are trusted by default.',
     );
 }
 
@@ -147,6 +153,9 @@ Future<void> runServer(List<String> arguments, [ServerLoader? onLoad]) async {
         maxPlayers: maxPlayers,
         multiWorld: multiWorld,
         publicAddress: results['public-address'] as String?,
+        trustedProxies: results.wasParsed('trusted-proxy')
+            ? results['trusted-proxy'] as List<String>
+            : null,
         gameMode: gameMode,
       ),
     );

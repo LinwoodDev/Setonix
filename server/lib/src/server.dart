@@ -11,6 +11,7 @@ import 'package:setonix_server/src/asset.dart';
 import 'package:setonix_server/src/authorization.dart';
 import 'package:setonix_server/src/bloc.dart';
 import 'package:setonix_server/src/config.dart';
+import 'package:setonix_server/src/proxy.dart';
 import 'package:setonix_server/src/programs/kick.dart';
 import 'package:setonix_server/src/programs/ban.dart';
 import 'package:setonix_server/src/programs/bans.dart';
@@ -353,6 +354,7 @@ final class SetonixServer {
   }
 
   Future<void> init({bool verbose = false}) async {
+    final trustedProxies = TrustedProxies(configManager.trustedProxies);
     if (verbose) {
       consoler.minLogLevel = LogLevel.verbose;
     }
@@ -425,9 +427,11 @@ final class SetonixServer {
         );
       }
     }
-    final server = _server = NetworkerSocketServer(
+    final server = _server = TrustedProxySocketServer(
       bindAddress,
       configManager.port,
+      trustedProxies: trustedProxies,
+      overrideStatusCode: false,
       securityContext: securityContext,
       filterConnections: buildFilterConnections(
         loadProperty: (request) async =>
