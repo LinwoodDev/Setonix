@@ -182,53 +182,70 @@ void main() {
       );
     });
 
-    test('consumes a successful challenge and rejects replay', () async {
-      final challenges = ChallengeManager(serverId: 'server');
-      final users = UserManager();
-      final state = WorldState(data: SetonixData.empty());
-      final initial = await processClientEvent(
-        null,
-        7,
-        state,
-        assetManager: _EmptyAssetManager(),
-        challengeManager: challenges,
-        userManager: users,
-      );
-      final request =
-          (initial as UpdateServerResponse).main!.data
-              as AuthenticatedRequested;
-      final proof = await AuthenticateRequest.build(
-        request,
-        account,
-        7,
-        request.serverId,
-      );
+    test(
+      'authenticates with the assigned channel and rejects replay',
+      () async {
+        final challenges = ChallengeManager(serverId: 'server');
+        final users = UserManager();
+        final state = WorldState(data: SetonixData.empty());
+        final initial = await processClientEvent(
+          null,
+          7,
+          state,
+          assetManager: _EmptyAssetManager(),
+          challengeManager: challenges,
+          userManager: users,
+        );
+        final request =
+            (initial as UpdateServerResponse).main!.data
+                as AuthenticatedRequested;
+        final authenticating = processServerEvent(
+          request,
+          WorldState(data: SetonixData.empty()),
+          signature: const [],
+        ).state!;
+        final proof = await AuthenticateRequest.build(
+          authenticating.authRequest!,
+          account,
+          authenticating.id,
+          request.serverId,
+        );
 
-      final accepted = await processClientEvent(
-        proof,
-        7,
-        state,
-        assetManager: _EmptyAssetManager(),
-        challengeManager: challenges,
-        userManager: users,
-      );
-      final replayed = await processClientEvent(
-        proof,
-        7,
-        state,
-        assetManager: _EmptyAssetManager(),
-        challengeManager: challenges,
-        userManager: users,
-      );
+        final accepted = await processClientEvent(
+          proof,
+          7,
+          state,
+          assetManager: _EmptyAssetManager(),
+          challengeManager: challenges,
+          userManager: users,
+        );
+        final replayed = await processClientEvent(
+          proof,
+          7,
+          state,
+          assetManager: _EmptyAssetManager(),
+          challengeManager: challenges,
+          userManager: users,
+        );
 
-      expect(accepted, isA<UpdateServerResponse>());
-      expect(users.getUser(7)?.fingerprint, account.getFingerprint());
-      expect(replayed, isA<KickServerResponse>());
-      expect(
-        (replayed as KickServerResponse).message.reason,
-        KickReason.challengeFailed,
-      );
-    });
+        expect(accepted, isA<UpdateServerResponse>());
+        final initialized =
+            (accepted as UpdateServerResponse).main!.data as WorldInitialized;
+        final authenticated = processServerEvent(
+          initialized,
+          authenticating,
+          signature: const [],
+        ).state!;
+        expect(authenticated.id, 7);
+        expect(authenticated.authRequest, isNull);
+        expect(users.getUser(7)?.fingerprint, account.getFingerprint());
+        expect(replayed, isA<KickServerResponse>());
+        expect(
+          (replayed as KickServerResponse).message.reason,
+          KickReason.challengeFailed,
+        );
+      },
+    );
   });
 }
 

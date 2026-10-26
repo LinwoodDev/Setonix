@@ -608,7 +608,11 @@ ServerProcessed processServerEvent(
     case ServerStateUpdated():
       return ServerProcessed(state.copyWith(serverState: event.state));
     case AuthenticatedRequested():
-      return ServerProcessed(state.copyWith(authRequest: event));
+      // The challenge assigns the channel before WorldInitialized is received.
+      // AuthenticateRequest.build validates it against state.id on account selection.
+      return ServerProcessed(
+        state.copyWith(authRequest: event, id: event.channel),
+      );
     case WaypointChanged():
       var info = state.info;
       final team = event.team;
