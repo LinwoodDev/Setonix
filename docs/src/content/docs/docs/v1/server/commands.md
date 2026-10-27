@@ -5,10 +5,19 @@ description: Reference for every dedicated-server console command.
 
 Enter these commands in the server terminal, without a slash. Square brackets indicate optional arguments; angle brackets indicate values to replace. In-game `/commands` are registered by game modes and are separate.
 
+Commands and subcommands ignore case: `HELP` and `help` behave alike. Player
+names, identifiers and message text keep their case. Quote values containing
+spaces with single or double quotes; unmatched quotes produce a usage error.
+
+Use `help` (or `?`) for a categorized overview, `help roles permission add` for
+a specific subcommand, or `players --help` for options and examples. Interactive
+ANSI terminals support history with ↑/↓, cursor editing and Tab completion.
+
 ## Inspect and control the server
 
 | Command | Effect |
 | --- | --- |
+| `status [--json]` | Show uptime, address, players, worlds, packs and configuration; JSON uses stable field names |
 | `worlds` | List loaded worlds, players, and modes |
 | `packs` | List loaded pack namespaces and archive checksums |
 | `modes` | List available game mode identifiers |
@@ -20,6 +29,9 @@ Enter these commands in the server terminal, without a slash. Square brackets in
 | `stop` | Close connections, save, and stop the server |
 
 `reset` discards the current setup. Keep a backup before using it. Supply the world first, even when you only want to select a mode; use `worlds` and `modes` to find valid names.
+
+`players`, `save` and `scripts` also accept `--world <World>` (`-w`) instead of
+a positional world argument. For example, `players --world "My World"`.
 
 ## Manage players
 

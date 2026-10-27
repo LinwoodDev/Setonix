@@ -14,12 +14,11 @@ class KickProgram extends AsyncServerProgram {
   @override
   Future<void> runAsync(String label, List<String> args) async {
     if (args.isEmpty || args.length > 3) {
-      server.log("Wrong usage, use ${getUsage()}", level: LogLevel.error);
-      return;
+      throw const CommandUsageException();
     }
     final arg = await server.userManager.getUserIdByReference(args[0]);
     if (arg == null) {
-      server.log("ID should be a number", level: LogLevel.error);
+      server.log("User not found: ${args.first}", level: LogLevel.error);
       return;
     }
     KickMessage? reason;
@@ -30,9 +29,9 @@ class KickProgram extends AsyncServerProgram {
     }
     final result = server.kick(arg, reason);
     if (result) {
-      server.log("$arg successfully kicked.", level: LogLevel.info);
+      server.log("Player #$arg kicked.", level: LogLevel.info);
     } else {
-      server.log("$arg could not be kicked.", level: LogLevel.error);
+      server.log("Player #$arg could not be kicked.", level: LogLevel.error);
     }
   }
 }

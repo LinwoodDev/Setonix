@@ -15,8 +15,7 @@ class WhitelistProgram extends AsyncServerProgram {
   @override
   Future<void> runAsync(String label, List<String> args) async {
     if (args.length != 2) {
-      server.log("Wrong usage, use ${getUsage()}", level: LogLevel.error);
-      return;
+      throw const CommandUsageException();
     }
     final action = args[0].toLowerCase();
     final user = await server.userManager.getUserByReference(args[1]);
@@ -27,7 +26,7 @@ class WhitelistProgram extends AsyncServerProgram {
     final fingerprint = user.fingerprint;
     if (fingerprint == null) {
       server.log(
-        "User $user does not have a fingerprint. Cannot add to whitelist.",
+        "User ${user.name} has no fingerprint.",
         level: LogLevel.error,
       );
       return;
@@ -40,12 +39,12 @@ class WhitelistProgram extends AsyncServerProgram {
       );
       if (result != true) {
         server.log(
-          "Failed to add user $user to whitelist",
+          "Failed to add ${user.name} to the whitelist.",
           level: LogLevel.error,
         );
         return;
       }
-      server.log("User $user added to whitelist", level: LogLevel.info);
+      server.log("Added ${user.name} to the whitelist.", level: LogLevel.info);
     } else if (action == 'remove') {
       final result = await server.userManager.service?.updateUser(
         fingerprint,
@@ -53,17 +52,17 @@ class WhitelistProgram extends AsyncServerProgram {
       );
       if (result != true) {
         server.log(
-          "Failed to remove user $user from whitelist",
+          "Failed to remove ${user.name} from the whitelist.",
           level: LogLevel.error,
         );
         return;
       }
-      server.log("User $user removed from whitelist", level: LogLevel.info);
-    } else {
       server.log(
-        "Unknown action: $action. Use 'add' or 'remove'.",
-        level: LogLevel.error,
+        "Removed ${user.name} from the whitelist.",
+        level: LogLevel.info,
       );
+    } else {
+      throw const CommandUsageException();
     }
   }
 }

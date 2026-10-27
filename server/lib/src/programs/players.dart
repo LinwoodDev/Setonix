@@ -3,38 +3,39 @@ import 'package:setonix_server/src/server.dart';
 
 class PlayersProgram extends ConsoleProgram {
   final SetonixServer server;
-
   PlayersProgram(this.server);
-
   @override
-  String getDescription() => "Show all connected players";
-
+  String getDescription() => 'List connected players.';
   @override
-  String getUsage() => '[<World>]';
-
+  String getUsage() => '[World]';
   @override
   void run(String label, List<String> args) {
-    if (args.length > 1) {
-      server.log('Wrong usage, use ${getUsage()}', level: LogLevel.error);
-      return;
+    if (args.length > 1) throw const CommandUsageException();
+    final world = args.firstOrNull;
+    if (world != null && server.getWorld(world) == null) {
+      throw CommandFailure("Unknown world: $world");
     }
-    final worldName = args.firstOrNull;
-    if (worldName != null && server.getWorld(worldName) == null) {
-      server.log('Unknown world: $worldName', level: LogLevel.error);
-      return;
-    }
-    print("-----");
-    final players = server.userManager.getUsers().where(
-      (player) =>
-          worldName == null || server.getUserWorldName(player.key) == worldName,
+    final players = server.userManager
+        .getUsers()
+        .where(
+          (player) =>
+              world == null || server.getUserWorldName(player.key) == world,
+        )
+        .toList();
+    server.log("${players.length} connected player(s).");
+    server.consoler.table(
+      ["ID", "Name", "World", "Roles", "Address", "Fingerprint"],
+      [
+        for (final player in players)
+          [
+            '#${player.key}',
+            '@${player.value.name}',
+            server.getUserWorldName(player.key),
+            player.value.roles.join(', '),
+            server.players[player.key]?.address,
+            player.value.fingerprint ?? "guest",
+          ],
+      ],
     );
-    print("${players.length} player(s) connected.");
-    for (final player in players) {
-      final connectionInfo = server.players[player.key];
-      print(
-        "${connectionInfo?.address} | #${player.key} | @${player.value.name} | ${player.value.roles.join(', ')} | *${player.value.fingerprint ?? 'No Fingerprint'}",
-      );
-    }
-    print("-----");
   }
 }

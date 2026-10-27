@@ -5,6 +5,7 @@ export 'package:setonix_api/setonix_api.dart';
 export 'package:setonix_plugin/setonix_plugin.dart';
 
 export 'src/asset.dart';
+export 'src/console/modules.dart';
 export 'src/authorization.dart';
 export 'src/bloc.dart';
 export 'src/main.dart';

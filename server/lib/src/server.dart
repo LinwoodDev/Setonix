@@ -3,6 +3,9 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:consoler/consoler.dart';
+
+import 'console/modules.dart';
+
 import 'package:networker/networker.dart';
 import 'package:networker_socket/server.dart';
 import 'package:setonix_api/setonix_api.dart';
@@ -12,23 +15,7 @@ import 'package:setonix_server/src/authorization.dart';
 import 'package:setonix_server/src/bloc.dart';
 import 'package:setonix_server/src/config.dart';
 import 'package:setonix_server/src/proxy.dart';
-import 'package:setonix_server/src/programs/kick.dart';
-import 'package:setonix_server/src/programs/ban.dart';
-import 'package:setonix_server/src/programs/bans.dart';
-import 'package:setonix_server/src/programs/modes.dart';
-import 'package:setonix_server/src/programs/name.dart';
-import 'package:setonix_server/src/programs/packs.dart';
-import 'package:setonix_server/src/programs/players.dart';
-import 'package:setonix_server/src/programs/reset.dart';
-import 'package:setonix_server/src/programs/role.dart';
-import 'package:setonix_server/src/programs/roles.dart';
-import 'package:setonix_server/src/programs/save.dart';
-import 'package:setonix_server/src/programs/say.dart';
-import 'package:setonix_server/src/programs/scripts.dart';
-import 'package:setonix_server/src/programs/stop.dart';
 import 'package:setonix_plugin/setonix_plugin.dart';
-import 'package:setonix_server/src/programs/whitelist.dart';
-import 'package:setonix_server/src/programs/worlds.dart';
 import 'package:setonix_server/src/services/user/file.dart';
 import 'package:setonix_server/src/services/user/remote.dart';
 import 'package:path/path.dart' as p;
@@ -105,6 +92,9 @@ final class SetonixServer {
   NetworkerPipe<dynamic, WorldEvent>? _pipe;
   Future<void>? _closeFuture;
   bool _closing = false;
+  final Stopwatch _uptime = Stopwatch();
+
+  Duration get uptime => _uptime.elapsed;
 
   bool get isClosing => _closing;
 
@@ -254,6 +244,7 @@ final class SetonixServer {
     String? worldFile,
     SetonixConfig argsConfig = const SetonixConfig(),
     String? rootPath,
+    ConsoleOutput? consoleOutput,
   }) async {
     String rootDirectory = rootPath ?? Directory.current.path;
     if (rootPath == null && Platform.script.scheme == 'file') {
@@ -265,9 +256,9 @@ final class SetonixServer {
 
     final assetManager = ServerAssetManager();
     final consoler = Consoler(
-      defaultProgramConfig: DefaultProgramConfiguration(
-        description: "Setonix server",
-      ),
+      description: 'Setonix server',
+      ignoreCase: true,
+      output: consoleOutput,
     );
     await _runStaticLogZone(
       consoler,
@@ -466,27 +457,17 @@ final class SetonixServer {
       );
     await _server?.init();
 
-    consoler.registerPrograms({
-      'stop': StopProgram(this),
-      'save': SaveProgram(this),
-      'packs': PacksProgram(this),
-      'players': PlayersProgram(this),
-      'say': SayProgram(this),
-      'reset': ResetProgram(this),
-      'role': RoleProgram(this),
-      'roles': RolesProgram(this),
-      'kick': KickProgram(this),
-      'ban': BanProgram(this, banned: true),
-      'unban': BanProgram(this, banned: false),
-      'bans': BansProgram(this),
-      'whitelist': WhitelistProgram(this),
-      'worlds': WorldsProgram(this),
-      'modes': ModesProgram(this),
-      'name': NameProgram(this),
-      'scripts': ScriptsProgram(this),
-      null: UnknownProgram(),
-    });
+    for (final module in <ConsoleModule>[
+      ServerModule(this),
+      WorldModule(this),
+      ModerationModule(this),
+      RolesModule(this),
+      ContentModule(this),
+    ]) {
+      await consoler.install(module);
+    }
     await loadWorlds();
+    _uptime.start();
   }
 
   static Future<InternetAddress> _resolveBindAddress(String host) async {
@@ -517,8 +498,9 @@ final class SetonixServer {
       );
 
   Future<void> run() async {
-    consoler.run();
     log('Server running on ${_server?.address}', level: LogLevel.info);
+    log(consoler.messages.ready(consoler.description));
+    consoler.run();
     await _server?.onClosed.isEmpty;
   }
 
@@ -666,6 +648,7 @@ final class SetonixServer {
     }
     _authenticationTimers.clear();
     _authenticationRateLimiter.clear();
+    _uptime.stop();
     log('Closing...', level: LogLevel.info);
     final networkServer = _server;
     _server = null;
@@ -689,7 +672,7 @@ final class SetonixServer {
       await world.close();
     }
     await userManager.service?.close();
-    consoler.dispose();
+    await consoler.dispose();
   }
 
   void process(WorldEvent event, [bool force = true]) {

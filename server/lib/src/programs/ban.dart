@@ -18,8 +18,7 @@ class BanProgram extends AsyncServerProgram {
   @override
   Future<void> runAsync(String label, List<String> args) async {
     if (args.isEmpty || (!banned && args.length != 1)) {
-      server.log('Wrong usage, use ${getUsage()}', level: LogLevel.error);
-      return;
+      throw const CommandUsageException();
     }
     final channel = await server.userManager.getUserIdByReference(args.first);
     final minutes = args.length > 1 ? int.tryParse(args[1]) : null;
@@ -38,7 +37,7 @@ class BanProgram extends AsyncServerProgram {
     );
     if (!changed) {
       server.log(
-        'User not found or has no fingerprint: ${args.first}',
+        "User not found or has no fingerprint: ${args.first}",
         level: LogLevel.error,
       );
       return;
@@ -51,7 +50,7 @@ class BanProgram extends AsyncServerProgram {
     }
     await server.broadcastAllServerStates();
     server.log(
-      '${banned ? 'Banned' : 'Unbanned'} ${args.first}',
+      (banned ? "Banned ${args.first}." : "Unbanned ${args.first}."),
       level: LogLevel.info,
     );
   }

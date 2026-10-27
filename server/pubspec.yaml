@@ -23,7 +23,7 @@ dependencies:
   consoler:
     git:
       url: https://github.com/LinwoodDev/dart_pkgs
-      ref: dcccf14111b0305bd1c5051a0e5ae0ed78af4439
+      ref: 28bc458102838c47ae3ab0eaf4ffb00e7498cfde
       path: packages/consoler
   path: ^1.9.1
   setonix_api:

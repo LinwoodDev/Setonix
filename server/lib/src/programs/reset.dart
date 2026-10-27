@@ -15,13 +15,12 @@ class ResetProgram extends AsyncServerProgram {
   @override
   Future<void> runAsync(String label, List<String> args) async {
     if (args.length > 2) {
-      server.log("Wrong usage, use ${getUsage()}", level: LogLevel.error);
-      return;
+      throw const CommandUsageException();
     }
     final worldName = args.elementAtOrNull(0) ?? defaultWorldName;
     final world = server.getWorld(worldName);
     if (world == null) {
-      server.log('Unknown world: $worldName', level: LogLevel.error);
+      server.log("Unknown world: $worldName", level: LogLevel.error);
       return;
     }
     final modeName = args.elementAtOrNull(1);
@@ -29,12 +28,12 @@ class ResetProgram extends AsyncServerProgram {
     if (modeName != null && modeName != 'sandbox') {
       mode = ItemLocation.fromString(modeName);
       if (server.assetManager.getModeItem(mode) == null) {
-        server.log('Unknown game mode: $modeName', level: LogLevel.error);
+        server.log("Unknown game mode: $modeName", level: LogLevel.error);
         return;
       }
     }
-    server.log('Resetting world $worldName...', level: LogLevel.info);
+    server.log("Resetting world $worldName…", level: LogLevel.info);
     await world.resetWorld(mode);
-    server.log('World $worldName reset successfully.', level: LogLevel.info);
+    server.log("World $worldName reset successfully.", level: LogLevel.info);
   }
 }

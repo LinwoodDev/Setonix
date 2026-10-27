@@ -15,8 +15,7 @@ class RoleProgram extends AsyncServerProgram {
   @override
   Future<void> runAsync(String label, List<String> args) async {
     if (args.length < 2) {
-      server.log('Wrong usage, use ${getUsage()}', level: LogLevel.error);
-      return;
+      throw const CommandUsageException();
     }
     final operations = {'list', 'add', 'remove', 'set'};
     final operation = operations.contains(args.first) ? args.first : 'set';
@@ -29,16 +28,15 @@ class RoleProgram extends AsyncServerProgram {
         : args.skip(2).toSet();
     final user = await server.userManager.getUserByReference(userReference);
     if (user == null) {
-      server.log('User not found: $userReference', level: LogLevel.error);
+      server.log("User not found: $userReference", level: LogLevel.error);
       return;
     }
     if (operation == 'list') {
       if (args.length != 2) {
-        server.log('Wrong usage, use ${getUsage()}', level: LogLevel.error);
-        return;
+        throw const CommandUsageException();
       }
       server.log(
-        '$userReference roles: ${user.roles.join(', ')}',
+        "$userReference roles: ${user.roles.join(', ')}",
         level: LogLevel.info,
       );
       return;
@@ -47,7 +45,7 @@ class RoleProgram extends AsyncServerProgram {
         requestedRoles.any(
           (role) => !server.configManager.serverRoles.containsKey(role),
         )) {
-      server.log('Unknown or missing role.', level: LogLevel.error);
+      server.log("Unknown or missing role.", level: LogLevel.error);
       return;
     }
     var roles = Set<String>.from(user.roles);
@@ -57,7 +55,7 @@ class RoleProgram extends AsyncServerProgram {
       case 'remove':
         if (requestedRoles.contains(kDefaultServerRole)) {
           server.log(
-            'The default role $kDefaultServerRole cannot be removed.',
+            "The default role $kDefaultServerRole cannot be removed.",
             level: LogLevel.error,
           );
           return;
@@ -70,7 +68,7 @@ class RoleProgram extends AsyncServerProgram {
     if (!await server.userManager.changeRoles(userReference, roles)) return;
     await server.broadcastAllServerStates();
     server.log(
-      'Changed $userReference roles to ${roles.join(', ')}',
+      "Changed $userReference roles to ${roles.join(', ')}.",
       level: LogLevel.info,
     );
   }

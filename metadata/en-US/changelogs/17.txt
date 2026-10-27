@@ -8,5 +8,7 @@
 * Update dependencies and build tools
 * Fix game URLs for newly created and recent saved games
 * Fix multiplayer account authentication before the world is initialized
+* Improve server console with case-insensitive commands, detailed help, history, tab completion, and cleaner output
+* Add server status with JSON output and world filters for console commands
 
 Read more here: https://linwood.dev/setonix/0.9.2

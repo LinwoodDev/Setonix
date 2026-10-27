@@ -4,29 +4,23 @@ import 'package:setonix_server/src/server.dart';
 
 class PacksProgram extends ConsoleProgram {
   final SetonixServer server;
-
   PacksProgram(this.server);
-
   @override
-  String getDescription() => "Show all loaded packs";
-
+  String getDescription() => 'List loaded content packs.';
   @override
   void run(String label, List<String> args) {
-    if (args.isNotEmpty) {
-      server.log('Wrong usage, use packs', level: LogLevel.error);
-      return;
-    }
-    print("-----");
+    if (args.isNotEmpty) throw const CommandUsageException();
     final packs = server.assetManager.packs.toList();
-    print("Loaded ${packs.length} pack(s).");
-    for (final pack in packs) {
-      final checksum = pack.value.identifier;
-      if (pack.key == kCorePackId) {
-        print("| Core pack ($checksum)");
-      } else {
-        print("> ${pack.key} ($checksum)");
-      }
-    }
-    print("-----");
+    server.log("${packs.length} loaded pack(s).");
+    server.consoler.table(
+      ["Pack", "Fingerprint"],
+      [
+        for (final pack in packs)
+          [
+            pack.key == kCorePackId ? "Core pack" : pack.key,
+            pack.value.identifier,
+          ],
+      ],
+    );
   }
 }

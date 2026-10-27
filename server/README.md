@@ -145,10 +145,18 @@ example above, add this to `translations/en.json` in the `blackjack` pack:
 
 ## Console commands
 
+Command and subcommand names ignore case; argument values keep their original spelling.
+
+Use `help`, `?`, `help roles permission add`, or `players --help` for generated
+help, examples and options. ANSI terminals support history, cursor editing and
+Tab completion; incoming logs preserve the current input. Pipes receive plain
+text without prompts or terminal escape sequences.
+
 The server console exposes the following runtime management commands:
 
 ```text
-players [world]
+status [--json]
+players [world] [--world <world>]
 name <user> <name...>
 bans
 ban <user> [minutes] [reason...]
@@ -169,3 +177,18 @@ stop
 
 User references may use a channel (`#2`), name (`@Player`), fingerprint
 (`*fingerprint`), or the unprefixed forms accepted by the individual command.
+
+## Console modules
+
+Commands are organized into ServerModule, WorldModule, ModerationModule,
+RolesModule and ContentModule. Embedded servers can install custom ConsoleModule
+instances through `server.consoler.install(module)` and execute commands with
+`await server.consoler.execute(line)`.
+
+`players`, `save` and `scripts` accept `--world` / `-w` as an alternative to
+the positional world argument. `status --json` uses stable field names for
+automation. Console output is English for now.
+
+The new Consoler offers colors through `server.consoler.colors` and customizable
+built-in text through `server.consoler.messages`. No translation integration is
+configured by Setonix.
