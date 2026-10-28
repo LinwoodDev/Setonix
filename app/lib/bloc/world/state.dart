@@ -44,6 +44,10 @@ final class ClientWorldState with ClientWorldStateMappable {
 
   SetonixFileSystem get fileSystem => assetManager.fileSystem;
 
+  bool get canManageWorld =>
+      !multiplayer.isClient ||
+      world.serverState.permissions.contains(ServerPermission.manageWorld);
+
   Iterable<MapEntry<String, SetonixData>> get packs =>
       assetManager.packs.where((e) => world.info.packs.contains(e.key));
 

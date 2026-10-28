@@ -174,12 +174,15 @@ class _InstalledPacksViewState extends State<_InstalledPacksView> {
               ? BlocBuilder<WorldBloc, ClientWorldState>(
                   bloc: widget.bloc,
                   buildWhen: (previous, current) =>
-                      previous.info.packs != current.info.packs,
+                      previous.info.packs != current.info.packs ||
+                      previous.canManageWorld != current.canManageWorld,
                   builder: (context, state) {
                     return IconButton.outlined(
                       icon: const Icon(PhosphorIconsLight.plus),
                       tooltip: AppLocalizations.of(context).addPack,
-                      onPressed: state.info.packs.contains(key)
+                      onPressed:
+                          !state.canManageWorld ||
+                              state.info.packs.contains(key)
                           ? null
                           : () {
                               final packs = [

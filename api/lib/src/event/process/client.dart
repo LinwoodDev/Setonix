@@ -397,11 +397,11 @@ Future<ServerResponse?> processClientEvent(
         kAnyChannel,
       );
     case PacksChangeRequest():
+      final packs = event.packs.where(assetManager.hasPack).toSet();
       return UpdateServerResponse.builder(
         WorldInitialized(
-          info: state.info.copyWith(
-            packs: event.packs.where((e) => assetManager.hasPack(e)).toList(),
-          ),
+          info: state.info.copyWith(packs: packs.toList()),
+          packsSignature: assetManager.createSignature(packs).values.toList(),
         ),
       );
     case MessageRequest():
@@ -519,8 +519,14 @@ Future<ServerResponse?> processClientEvent(
     case ModeChangeRequest():
       final location = event.location;
       final mode = location == null ? null : assetManager.getModeItem(location);
+      final initialized = WorldInitialized.fromMode(mode, state);
       return UpdateServerResponse.builder(
-        WorldInitialized.fromMode(mode, state),
+        initialized.copyWith(
+          packsSignature: assetManager
+              .createSignature(initialized.info!.packs.toSet())
+              .values
+              .toList(),
+        ),
         kAnyChannel,
       );
     case AuthenticateRequest():

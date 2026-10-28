@@ -45,14 +45,14 @@ class SetonixData extends ArchiveData<SetonixData> {
     PackItem<GameMode>? mode, {
     Set<String> packs = const {},
   }) {
-    if (mode == null) return SetonixData.empty();
     var data = SetonixData.empty().setInfo(
       GameInfo(
-        packs: {...packs, mode.namespace}.toList(),
-        gameMode: mode.location,
-        teams: mode.item.teams,
+        packs: {...packs, ?mode?.namespace}.toList(),
+        gameMode: mode?.location,
+        teams: mode?.item.teams ?? {},
       ),
     );
+    if (mode == null) return data;
     for (final entry in mode.item.tables.entries) {
       data = data.setTable(entry.value, entry.key);
     }

@@ -163,7 +163,15 @@ ServerProcessed processServerEvent(
   WorldState state, {
   required List<SignatureMetadata> signature,
 }) {
-  if (!isValidServerEvent(event, state)) return ServerProcessed(null);
+  if (!isValidServerEvent(event, state)) {
+    if (event is WorldInitialized) {
+      throw InvalidPacksError(
+        signature: event.packsSignature ?? [],
+        expected: signature,
+      );
+    }
+    return ServerProcessed(null);
+  }
   switch (event) {
     case WorldInitialized():
       final serverSignature = event.packsSignature;

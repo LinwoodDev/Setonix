@@ -111,9 +111,13 @@ final class SetonixServer {
       ));
 
   SetonixData _buildDefaultWorld() {
-    final location = configManager.gameMode;
+    var location = configManager.gameMode;
     PackItem<GameMode>? gameMode;
     if (location != null) {
+      location = ItemLocation(
+        assetManager.getPackIdOrDefault(location.namespace),
+        location.id,
+      );
       gameMode = assetManager
           .getPack(location.namespace)
           ?.getModeItem(location.id, location.namespace);

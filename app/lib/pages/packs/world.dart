@@ -11,7 +11,8 @@ class _WorldPacksView extends StatelessWidget {
     return BlocBuilder<WorldBloc, ClientWorldState>(
       bloc: bloc,
       buildWhen: (previous, current) =>
-          previous.info.packs != current.info.packs,
+          previous.info.packs != current.info.packs ||
+          previous.canManageWorld != current.canManageWorld,
       builder: (context, state) {
         final loadedPacks = state.assetManager.packs.toList();
         final worldPacks = loadedPacks
@@ -37,14 +38,19 @@ class _WorldPacksView extends StatelessWidget {
               leading: IconButton.outlined(
                 icon: const Icon(PhosphorIconsLight.minus),
                 tooltip: AppLocalizations.of(context).removePack,
-                onPressed: () {
-                  final packs = List<String>.from(state.info.packs)..remove(id);
-                  bloc.process(PacksChangeRequest(packs));
-                },
+                onPressed: !state.canManageWorld
+                    ? null
+                    : () {
+                        final packs = List<String>.from(state.info.packs)
+                          ..remove(id);
+                        bloc.process(PacksChangeRequest(packs));
+                      },
               ),
             );
           },
+          buildDefaultDragHandles: state.canManageWorld,
           onReorderItem: (int oldIndex, int newIndex) {
+            if (!state.canManageWorld) return;
             final packs = List<String>.from(state.info.packs);
             final pack = packs.removeAt(oldIndex);
             packs.insert(newIndex, pack);

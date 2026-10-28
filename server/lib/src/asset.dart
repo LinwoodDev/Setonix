@@ -16,6 +16,7 @@ final class ServerDataMetadata with ServerDataMetadataMappable {
 
 class ServerAssetManager extends AssetManager {
   final Map<String, SetonixData> _packs = {};
+  final Map<String, String> _packIds = {};
   final Map<String, ServerDataMetadata> _metadata = {};
 
   static const _stnxExtension = 'stnx';
@@ -30,6 +31,9 @@ class ServerAssetManager extends AssetManager {
     String rootPath = '.',
   }) async {
     _packs.clear();
+    _packIds.clear();
+    _metadata.clear();
+    final metadataByName = <String, ServerDataMetadata>{};
     final directory = Directory(p.join(rootPath, 'packs'));
     if (!await directory.exists()) {
       await directory.create();
@@ -56,14 +60,19 @@ class ServerAssetManager extends AssetManager {
         if (name.isEmpty) name = kCorePackId;
         if (extension == _stnxExtension) {
           final data = SetonixData.fromData(await file.readAsBytes());
-          _packs[name] = data;
+          final id = name == kCorePackId ? kCorePackId : data.identifier;
+          _packs[id] = data;
+          _packIds[name] = id;
         } else {
           final metadata = ServerDataMetadataMapper.fromJson(
             await file.readAsString(),
           );
-          _metadata[name] = metadata;
+          metadataByName[name] = metadata;
         }
       }
+    }
+    for (final entry in metadataByName.entries) {
+      _metadata[getPackIdOrDefault(entry.key)] = entry.value;
     }
     final coreIncluded = _packs.containsKey(kCorePackId);
     console.print(
@@ -89,14 +98,9 @@ class ServerAssetManager extends AssetManager {
   @override
   List<String>? getDownloadUrls(String id) => _metadata[id]?.downloadUrls;
 
-  Iterable<String> getPackIds() => _packs.entries.map(
-    (e) => e.key == kCorePackId ? kCorePackId : e.value.identifier,
-  );
+  Iterable<String> getPackIds() => _packs.keys;
 
-  String? getPackId(String name) {
-    if (name == kCorePackId) return kCorePackId;
-    return _packs[name]?.identifier;
-  }
+  String? getPackId(String name) => _packIds[name];
 
   String getPackIdOrDefault(String name) => getPackId(name) ?? name;
 }

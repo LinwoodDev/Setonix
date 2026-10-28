@@ -14,13 +14,17 @@ class PacksProgram extends ConsoleProgram {
     server.log("${packs.length} loaded pack(s).");
     server.consoler.table(
       ["Pack", "Fingerprint"],
-      [
-        for (final pack in packs)
-          [
-            pack.key == kCorePackId ? "Core pack" : pack.key,
-            pack.value.identifier,
-          ],
-      ],
+      packs.map((pack) {
+        final name = pack.value.getMetadataOrDefault().name;
+        return [
+          pack.key == kCorePackId
+              ? "Core pack"
+              : name.isEmpty
+              ? pack.key
+              : name,
+          pack.value.identifier,
+        ];
+      }).toList(),
     );
   }
 }

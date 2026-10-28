@@ -33,6 +33,15 @@ class _GameMenuDialogState extends State<GameMenuDialog> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
+    final isClient = context.select<MultiplayerCubit, bool>(
+      (cubit) => cubit.state.isClient,
+    );
+    final hasManageWorldPermission = context.select<WorldBloc, bool>(
+      (bloc) => bloc.state.world.serverState.permissions.contains(
+        ServerPermission.manageWorld,
+      ),
+    );
+    final canManageWorld = !isClient || hasManageWorldPermission;
 
     return Dialog(
       backgroundColor: scheme.surfaceContainerHigh,
@@ -232,11 +241,6 @@ class _GameMenuDialogState extends State<GameMenuDialog> {
                 child: LayoutBuilder(
                   builder: (context, constraints) {
                     final buttonWidth = (constraints.maxWidth - 10) / 2;
-                    final isClient = context
-                        .read<WorldBloc>()
-                        .state
-                        .multiplayer
-                        .isClient;
                     return Wrap(
                       spacing: 10,
                       runSpacing: 10,
@@ -269,12 +273,14 @@ class _GameMenuDialogState extends State<GameMenuDialog> {
                           onPressed: () => _showTeamsDialog(context),
                         ),
                         _GameMenuOption(
-                          width: isClient ? constraints.maxWidth : buttonWidth,
+                          width: canManageWorld
+                              ? buttonWidth
+                              : constraints.maxWidth,
                           icon: PhosphorIconsLight.gear,
                           label: AppLocalizations.of(context).settings,
                           onPressed: () => openSettings(context),
                         ),
-                        if (!isClient)
+                        if (canManageWorld)
                           _GameMenuOption(
                             width: buttonWidth,
                             icon: PhosphorIconsLight.slidersHorizontal,
@@ -340,6 +346,12 @@ class _GameMenuDialogState extends State<GameMenuDialog> {
           Text(AppLocalizations.of(context).advancedOptions),
       childrenBuilder: (context) => [
         ListTile(
+          leading: const Icon(PhosphorIconsLight.image),
+          title: Text(AppLocalizations.of(context).background),
+          trailing: const Icon(PhosphorIconsLight.caretRight),
+          onTap: () => _showBackgroundPicker(context, bloc),
+        ),
+        ListTile(
           leading: const Icon(PhosphorIconsLight.package),
           title: Text(AppLocalizations.of(context).packs),
           trailing: const Icon(PhosphorIconsLight.caretRight),
@@ -353,6 +365,43 @@ class _GameMenuDialogState extends State<GameMenuDialog> {
           title: Text(AppLocalizations.of(context).saveAsTemplate),
           trailing: const Icon(PhosphorIconsLight.caretRight),
           onTap: () => _saveAsTemplate(context, bloc),
+        ),
+      ],
+    );
+  }
+
+  void _showBackgroundPicker(BuildContext context, WorldBloc bloc) {
+    showLeapBottomSheet(
+      context: context,
+      titleBuilder: (context) => Text(AppLocalizations.of(context).background),
+      childrenBuilder: (context) => [
+        BlocBuilder<WorldBloc, ClientWorldState>(
+          bloc: bloc,
+          builder: (context, state) => Column(
+            children: state.packs
+                .expand((pack) => pack.value.getBackgroundItems(pack.key))
+                .map((background) {
+                  final translation = state.assetManager
+                      .getTranslations(background.namespace)
+                      .getBackgroundTranslation(background.id);
+                  return ListTile(
+                    title: Text(translation.name),
+                    subtitle: translation.description == null
+                        ? null
+                        : Text(translation.description!),
+                    selected: state.table.background == background.location,
+                    onTap: state.canManageWorld
+                        ? () {
+                            bloc.process(
+                              BackgroundChanged(background.location),
+                            );
+                            Navigator.of(context).pop();
+                          }
+                        : null,
+                  );
+                })
+                .toList(),
+          ),
         ),
       ],
     );

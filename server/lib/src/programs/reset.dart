@@ -27,6 +27,10 @@ class ResetProgram extends AsyncServerProgram {
     ItemLocation? mode;
     if (modeName != null && modeName != 'sandbox') {
       mode = ItemLocation.fromString(modeName);
+      mode = ItemLocation(
+        server.assetManager.getPackIdOrDefault(mode.namespace),
+        mode.id,
+      );
       if (server.assetManager.getModeItem(mode) == null) {
         server.log("Unknown game mode: $modeName", level: LogLevel.error);
         return;
