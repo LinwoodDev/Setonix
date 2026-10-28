@@ -122,6 +122,11 @@ final class MultiplayerConnectedState extends MultiplayerState
 
 class MultiplayerCubit extends Cubit<MultiplayerState> {
   final NetworkService networkService;
+  final Duration connectionTimeout;
+  NetworkerBase? _clientConnection;
+  StreamSubscription<void>? _clientClosedSubscription;
+  (Uri, ConnectionTechnology)? _lastConnection;
+  int _connectionAttempt = 0;
   final StreamController<PlayableWorldEvent> _eventController =
       StreamController.broadcast();
 
@@ -147,7 +152,10 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
   final AuthenticationRateLimiter _authenticationRateLimiter =
       AuthenticationRateLimiter();
 
-  MultiplayerCubit(this.networkService) : super(MultiplayerDisabledState());
+  MultiplayerCubit(
+    this.networkService, {
+    this.connectionTimeout = kTimeoutDelay,
+  }) : super(MultiplayerDisabledState());
 
   bool get isConnected => state.isConnected;
   bool get isClient => state.isClient;
@@ -226,18 +234,41 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
   }
 
   Future<void> disconnect([bool emit = true]) async {
+    _connectionAttempt++;
     final state = this.state;
-    if (state is! MultiplayerConnectedState) return;
+    await _closeClientConnection();
     for (final timer in _authenticationTimers.values) {
       timer.cancel();
     }
     _authenticationTimers.clear();
     _authenticationRateLimiter.clear();
-    await state.networker.close();
-    networkService.cancelServerInfo();
-    if (emit && state.isServer) {
-      this.emit(MultiplayerDisabledState());
+    if (state is MultiplayerConnectedState && state.isServer) {
+      await state.networker.close();
+      networkService.cancelServerInfo();
     }
+    if (emit && !isClosed) {
+      if (state is MultiplayerConnectedState && state.isServer) {
+        this.emit(MultiplayerDisabledState());
+      } else if (state is MultiplayerConnectedState ||
+          state is MultiplayerConnectingState) {
+        this.emit(
+          MultiplayerDisconnectedState(
+            oldState: state is MultiplayerConnectedState ? state : null,
+            error: _fatalError,
+          ),
+        );
+      }
+    }
+    _fatalError = null;
+  }
+
+  Future<void> _closeClientConnection() async {
+    final connection = _clientConnection;
+    _clientConnection = null;
+    final subscription = _clientClosedSubscription;
+    _clientClosedSubscription = null;
+    await subscription?.cancel();
+    await connection?.close();
   }
 
   Cipher _buildCipher() => AesGcm.with256bits();
@@ -256,58 +287,85 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
         ConnectionTechnology.swamp => connectSwamp(uri),
       };
 
-  Future<void> connectSwamp(Uri address) async {
+  Future<void> connectSwamp(Uri address) =>
+      _connectClient(address, ConnectionTechnology.swamp);
+
+  Future<void> connectSocket(Uri address) =>
+      _connectClient(address, ConnectionTechnology.webSocket);
+
+  Future<void> _connectClient(
+    Uri address,
+    ConnectionTechnology technology,
+  ) async {
+    final attempt = ++_connectionAttempt;
+    _lastConnection = (address, technology);
+    bool isCurrent() => !isClosed && attempt == _connectionAttempt;
+    NetworkerBase? connection;
+    MultiplayerConnectedState? connectedState;
     try {
       emit(MultiplayerConnectingState());
-      final connection = await _createSwamp(address);
-      final serverIdentity = await _swampAuthenticationOrigin(connection);
-      final state = await _addNetworker(
-        connection,
+      _fatalError = null;
+      await _closeClientConnection();
+      if (!isCurrent()) return;
+      String? serverIdentity;
+      if (technology == ConnectionTechnology.webSocket) {
+        final property = await networkService
+            .fetchRequiredInfo(address)
+            .timeout(connectionTimeout);
+        if (!isCurrent()) return;
+        final versionedAddress = addSetonixProtocolVersion(
+          address,
+          version: property.requireProtocol(),
+        );
+        connection = NetworkerSocketClient(versionedAddress);
+        serverIdentity = trustedAuthenticationOrigin(versionedAddress);
+      } else {
+        final swamp = await _createSwamp(address);
+        connection = swamp;
+        serverIdentity = await _swampAuthenticationOrigin(swamp);
+      }
+      if (!isCurrent()) {
+        await connection.close();
+        return;
+      }
+      final client = connection;
+      _clientConnection = client;
+      connectedState = await _addNetworker(
+        client,
         serverIdentity: serverIdentity,
       );
-      connection.onClosed.listen((_) {
-        if (isClosed) return;
-        emit(MultiplayerDisconnectedState(oldState: state, error: _fatalError));
-        _fatalError = null;
-      }, onError: (e) => emit(MultiplayerDisconnectedState(error: e)));
-      await connection.init();
-      emit(state);
-    } catch (e) {
-      emit(MultiplayerDisconnectedState(error: e));
-    }
-  }
-
-  Future<void> connectSocket(Uri address) async {
-    try {
-      emit(MultiplayerConnectingState());
-      final property = await networkService.fetchRequiredInfo(address);
-      final protocolVersion = property.requireProtocol();
-      final versionedAddress = addSetonixProtocolVersion(
-        address,
-        version: protocolVersion,
-      );
-      final client = NetworkerSocketClient(versionedAddress);
-      final serverIdentity = trustedAuthenticationOrigin(versionedAddress);
-      final state = await _addNetworker(client, serverIdentity: serverIdentity);
-      client.onClosed.listen((_) {
-        if (isClosed) return;
-        final closeReason = client.closeReason;
+      if (!isCurrent()) return;
+      void onDisconnected([Object? error]) {
+        if (!isCurrent() || !identical(_clientConnection, client)) return;
+        final closeReason = client is NetworkerSocketClient
+            ? client.closeReason
+            : null;
         emit(
           MultiplayerDisconnectedState(
-            oldState: state,
+            oldState: connectedState,
             error:
                 _fatalError ??
+                error ??
                 (closeReason == null
                     ? null
                     : KickMessage.fromString(closeReason)),
           ),
         );
         _fatalError = null;
-      }, onError: (e) => emit(MultiplayerDisconnectedState(error: e)));
-      await client.init();
-      emit(state);
+      }
+
+      _clientClosedSubscription = client.onClosed.listen(
+        (_) => onDisconnected(),
+        onError: (Object error) => onDisconnected(error),
+      );
+      await Future<void>.sync(client.init).timeout(connectionTimeout);
+      if (isCurrent() && state is MultiplayerConnectingState && client.isOpen) {
+        emit(connectedState);
+      }
     } catch (e) {
-      emit(MultiplayerDisconnectedState(error: e));
+      if (!isCurrent()) return;
+      emit(MultiplayerDisconnectedState(oldState: connectedState, error: e));
+      await _closeClientConnection();
     }
   }
 
@@ -389,17 +447,10 @@ class MultiplayerCubit extends Cubit<MultiplayerState> {
   }
 
   Future<void> reconnect() async {
-    try {
-      final state = this.state;
-      if (state is! MultiplayerDisconnectedState) return;
-      final oldState = state.oldState;
-      if (oldState == null) return;
-      emit(MultiplayerConnectingState());
-      await oldState.networker.init();
-      emit(oldState);
-    } catch (e) {
-      emit(MultiplayerDisconnectedState(error: e));
-    }
+    if (state is! MultiplayerDisconnectedState) return;
+    final connection = _lastConnection;
+    if (connection == null) return;
+    await connect(connection.$1, connection.$2);
   }
 
   Future<void> raiseError(FatalServerEventError e) async {

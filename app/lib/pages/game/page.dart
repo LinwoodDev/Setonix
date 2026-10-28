@@ -109,15 +109,24 @@ class _GamePageState extends State<GamePage>
       unawaited(windowManager.setPreventClose(true));
     }
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
       setState(() {
-        _bloc = _loadTable();
+        // The FutureBuilder subscribes on the next frame. Mark errors handled
+        // immediately so an invalid address cannot escape before that frame.
+        _bloc = _loadTable()..ignore();
       });
     });
   }
 
   Future<void> _closeBlocs() {
     return _closeFuture ??= () async {
-      final bloc = await _bloc;
+      Blocs? bloc;
+      try {
+        bloc = await _bloc;
+      } catch (_) {
+        // Initialization releases its blocs before reporting the error.
+        return;
+      }
       if (bloc == null) return;
       await bloc.$2.close();
       await bloc.$1.close();
@@ -204,8 +213,11 @@ class _GamePageState extends State<GamePage>
   }
 
   Future<Blocs> _initBloc([SetonixData? data]) async {
-    final cubit = MultiplayerCubit(context.read<NetworkService>());
     final address = widget.address;
+    final uri = address == null
+        ? null
+        : buildServerAddress(Uri.parse(address.trim()), widget.secure);
+    final cubit = MultiplayerCubit(context.read<NetworkService>());
     final world = WorldBloc(
       multiplayer: cubit,
       fileSystem: context.read<SetonixFileSystem>(),
@@ -215,18 +227,23 @@ class _GamePageState extends State<GamePage>
       gameState: address == null ? GameState.play : GameState.configuration,
     );
     final name = world.state.name;
-    final uri = address != null ? Uri.parse(address) : null;
     if (name != null) {
       context.read<SettingsCubit>().addRecentGame(name, uri ?? Uri.file(name));
     }
-    await world.state.assetManager.loadPacks();
-    if (uri != null) {
-      await world.init(localPlayer: false);
-      cubit.connect(buildServerAddress(uri, widget.secure));
-    } else {
-      await world.init();
+    try {
+      await world.state.assetManager.loadPacks();
+      if (uri != null) {
+        await world.init(localPlayer: false);
+        unawaited(cubit.connect(uri));
+      } else {
+        await world.init();
+      }
+      return (cubit, world);
+    } catch (_) {
+      await world.close();
+      await cubit.close();
+      rethrow;
     }
-    return (cubit, world);
   }
 
   Future<Blocs> _loadTable() async {
@@ -248,7 +265,13 @@ class _GamePageState extends State<GamePage>
     super.didChangeDependencies();
 
     final nextColorScheme = Theme.of(context).colorScheme;
-    final bloc = await _bloc;
+    Blocs? bloc;
+    try {
+      bloc = await _bloc;
+    } catch (_) {
+      return;
+    }
+    if (!mounted) return;
     if (nextColorScheme != bloc?.$2.state.colorScheme) {
       bloc?.$2.process(ColorSchemeChanged(nextColorScheme));
     }
@@ -271,6 +294,16 @@ class _GamePageState extends State<GamePage>
     return FutureBuilder<Blocs>(
       future: _bloc,
       builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return GameErrorView(
+            state: MultiplayerDisconnectedState(error: snapshot.error),
+            onReconnect: () => setState(() {
+              _closeFuture = null;
+              _bloc = _loadTable()..ignore();
+            }),
+            onHome: _goHome,
+          );
+        }
         if (!snapshot.hasData) {
           return const Center(child: CircularProgressIndicator());
         }

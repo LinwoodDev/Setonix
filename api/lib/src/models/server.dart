@@ -94,12 +94,13 @@ final class BrowsedGameServer extends ListGameServer
 }
 
 Uri buildServerAddress(Uri uri, bool secure, {bool webSockets = true}) {
-  // handle plain host without scheme: treat single-segment path as host
-  if (uri.host.isEmpty && uri.pathSegments.length == 1) {
-    uri = uri.replace(
-      host: uri.pathSegments.first,
-      pathSegments: uri.pathSegments.skip(1).toList(),
-    );
+  // Uri.parse treats host:port as a scheme and a path. Parse it as an
+  // authority so ports, paths and query parameters keep their meaning.
+  if (!uri.hasAuthority) {
+    uri = Uri.parse('//${uri.toString()}');
+  }
+  if (uri.host.isEmpty) {
+    throw const FormatException('A server address must include a host.');
   }
   uri = uri.replace(scheme: (webSockets ? 'ws' : 'http') + (secure ? 's' : ''));
   if (!uri.hasPort) {

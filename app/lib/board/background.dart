@@ -45,7 +45,19 @@ class GameBoardBackground extends PositionComponent
   @override
   void render(Canvas canvas) {
     final sprite = _sprite;
-    if (sprite != null) {
+    if (sprite == null) {
+      final colors = bloc.state.colorScheme;
+      canvas.drawRect(size.toRect(), Paint()..color = colors.surfaceContainer);
+      final gridPaint = Paint()
+        ..color = colors.outlineVariant
+        ..strokeWidth = 1;
+      for (var x = 0.0; x <= size.x; x += grid.cellSize.x) {
+        canvas.drawLine(Offset(x, 0), Offset(x, size.y), gridPaint);
+      }
+      for (var y = 0.0; y <= size.y; y += grid.cellSize.y) {
+        canvas.drawLine(Offset(0, y), Offset(size.x, y), gridPaint);
+      }
+    } else {
       paintImage(
         canvas: canvas,
         rect: size.toRect(),
