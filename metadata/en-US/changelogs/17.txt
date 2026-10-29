@@ -13,5 +13,10 @@
 * Fix black boards in multiplayer worlds without backgrounds
 * Fix server addresses with ports, reconnects, and connection error handling
 * Add subtle primary backgrounds to highlighted servers
+* Fix server-list URL prompts, validation, and saved addresses
+* Fix editing and deleting saved servers after searching and hide these actions for discovered servers
+* Keep public server listings visible during local updates and close discovery streams on disposal
+* Fix overflowing server titles on mobile
+* Trim redundant server regression tests
 
 Read more here: https://linwood.dev/setonix/0.9.2

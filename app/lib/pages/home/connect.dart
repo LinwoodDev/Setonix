@@ -171,7 +171,7 @@ class _ServersViewState extends State<ServersView> {
   final Map<GameServer, Future<Uint8List?>> _thumbnails = {};
 
   bool _isMobileOpen = false;
-  (GameServer, int)? _selected;
+  GameServer? _selected;
   String _search = '';
 
   @override
@@ -202,9 +202,19 @@ class _ServersViewState extends State<ServersView> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(server.display, style: Theme.of(context).textTheme.titleLarge),
+        Text(
+          server.display,
+          style: Theme.of(context).textTheme.titleLarge,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
         if (server is ListGameServer && server.name.isNotEmpty)
-          Text(server.address, style: Theme.of(context).textTheme.titleMedium),
+          Text(
+            server.address,
+            style: Theme.of(context).textTheme.titleMedium,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
       ],
     );
   }
@@ -320,6 +330,7 @@ class _ServersViewState extends State<ServersView> {
           previous.showConnectYour != current.showConnectYour ||
           previous.showConnectBrowse != current.showConnectBrowse,
       buildWhen: (previous, current) =>
+          previous.servers != current.servers ||
           previous.showConnectYour != current.showConnectYour ||
           previous.showConnectBrowse != current.showConnectBrowse,
       listener: (context, state) => _refreshServers(state),
@@ -354,11 +365,14 @@ class _ServersViewState extends State<ServersView> {
                   .toList();
               final isMobile =
                   MediaQuery.sizeOf(context).width < LeapBreakpoints.medium;
-              final property = allServers.containsKey(_selected?.$1)
-                  ? (allServers[_selected?.$1] ?? const GameProperty())
+              final property = allServers.containsKey(_selected)
+                  ? (allServers[_selected] ?? const GameProperty())
                   : null;
-              final server = _selected?.$1 ?? ListGameServer(address: '');
+              final server = _selected ?? ListGameServer(address: '');
               Widget buildPlayButton(GameServer target) {
+                final savedIndex = target is ListGameServer
+                    ? settings.servers.indexOf(target)
+                    : -1;
                 return SizedBox(
                   height: 48,
                   child: Row(
@@ -376,68 +390,71 @@ class _ServersViewState extends State<ServersView> {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 8),
-                      Row(
-                        children: [
-                          IconButton.outlined(
-                            icon: const Icon(PhosphorIconsLight.pencil),
-                            tooltip: AppLocalizations.of(context).edit,
-                            onPressed: () {
-                              if (target is! ListGameServer) return;
-                              showDialog<bool>(
+                      if (target is ListGameServer && savedIndex >= 0) ...[
+                        const SizedBox(width: 8),
+                        Row(
+                          children: [
+                            IconButton.outlined(
+                              icon: const Icon(PhosphorIconsLight.pencil),
+                              tooltip: AppLocalizations.of(context).edit,
+                              onPressed: () {
+                                showDialog<bool>(
+                                  context: context,
+                                  builder: (context) => ConnectEditDialog(
+                                    initialValue: target,
+                                    index: savedIndex,
+                                  ),
+                                );
+                              },
+                            ),
+                            const SizedBox(width: 8),
+                            IconButton.outlined(
+                              icon: const Icon(PhosphorIconsLight.trash),
+                              tooltip: AppLocalizations.of(context).delete,
+                              onPressed: () => showDialog(
                                 context: context,
-                                builder: (context) => ConnectEditDialog(
-                                  initialValue: target,
-                                  index: _selected!.$2,
-                                ),
-                              );
-                            },
-                          ),
-                          const SizedBox(width: 8),
-                          IconButton.outlined(
-                            icon: const Icon(PhosphorIconsLight.trash),
-                            tooltip: AppLocalizations.of(context).delete,
-                            onPressed: () => showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: Text(
-                                  AppLocalizations.of(context).deleteServer,
-                                ),
-                                content: Text(
-                                  AppLocalizations.of(context)
-                                      .deleteServerMessage,
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(),
-                                    child: Text(
-                                      AppLocalizations.of(context).cancel,
-                                    ),
+                                builder: (context) => AlertDialog(
+                                  title: Text(
+                                    AppLocalizations.of(context).deleteServer,
                                   ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      if (_selected != null) {
-                                        context
-                                            .read<SettingsCubit>()
-                                            .removeServer(_selected!.$2);
-                                      }
-                                      Navigator.of(context).pop();
-                                      if (_isMobileOpen) {
+                                  content: Text(
+                                    AppLocalizations.of(context)
+                                        .deleteServerMessage,
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(),
+                                      child: Text(
+                                        AppLocalizations.of(context).cancel,
+                                      ),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        final cubit = context
+                                            .read<SettingsCubit>();
+                                        final index = cubit.state.servers
+                                            .indexOf(target);
+                                        if (index >= 0) {
+                                          cubit.removeServer(index);
+                                        }
                                         Navigator.of(context).pop();
-                                      }
-                                      _selected = null;
-                                    },
-                                    child: Text(
-                                      AppLocalizations.of(context).delete,
+                                        if (_isMobileOpen) {
+                                          Navigator.of(context).pop();
+                                        }
+                                        setState(() => _selected = null);
+                                      },
+                                      child: Text(
+                                        AppLocalizations.of(context).delete,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
+                          ],
+                        ),
+                      ],
                     ],
                   ),
                 );
@@ -494,7 +511,7 @@ class _ServersViewState extends State<ServersView> {
                                 ),
                                 onTap: () {
                                   setState(() {
-                                    _selected = (current, index);
+                                    _selected = current;
                                     _isMobileOpen = isMobile;
                                   });
                                   if (isMobile) {

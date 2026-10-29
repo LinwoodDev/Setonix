@@ -15,6 +15,7 @@ const kBroadcastDelay = Duration(seconds: 1);
 class NetworkService {
   final SettingsCubit settingsCubit;
   RawDatagramSocket? _server;
+  StreamSubscription<List<(GameServer, LanProperty?)>>? _discoverySubscription;
 
   final BehaviorSubject<List<(GameServer, LanProperty?)>> _servers =
       BehaviorSubject.seeded([]);
@@ -30,14 +31,15 @@ class NetworkService {
         ))..broadcastEnabled = true;
       } catch (_) {}
     }
-    _fetchServers().listen((event) {
+    _discoverySubscription = _fetchServers().listen((event) {
       _servers.add(event);
     });
   }
 
   void dispose() {
-    if (kIsWeb) return;
     _server?.close();
+    unawaited(_discoverySubscription?.cancel());
+    unawaited(_servers.close());
   }
 
   Stream<List<(GameServer, LanProperty?)>> _fetchServers({
@@ -306,7 +308,10 @@ class NetworkService {
     yield returned;
     fetchLocal() async* {
       await for (final event in _servers) {
-        returned.removeWhere((key, value) => !event.any((e) => e.$1 == key));
+        returned.removeWhere(
+          (key, value) =>
+              key is! BrowsedGameServer && !event.any((e) => e.$1 == key),
+        );
         for (final (server, _) in event) {
           returned[server] = const GameProperty();
         }
