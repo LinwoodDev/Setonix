@@ -12,5 +12,6 @@
 * Add server status with JSON output and world filters for console commands
 * Fix black boards in multiplayer worlds without backgrounds
 * Fix server addresses with ports, reconnects, and connection error handling
+* Add subtle primary backgrounds to highlighted servers
 
 Read more here: https://linwood.dev/setonix/0.9.2

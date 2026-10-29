@@ -462,7 +462,13 @@ class _ServersViewState extends State<ServersView> {
                               final highlighted =
                                   current is ListGameServer &&
                                   current.highlighted;
+                              final highlightColor = highlighted
+                                  ? ColorScheme.of(context).primary
+                                        .withValues(alpha: 0.08)
+                                  : null;
                               return ListTile(
+                                tileColor: highlightColor,
+                                selectedTileColor: highlightColor,
                                 title: Text(
                                   current.display,
                                   style: TextStyle(
