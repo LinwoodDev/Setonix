@@ -2,6 +2,31 @@
 
 <!--ENTER CHANGELOG HERE-->
 
+## 0.9.2 (2026-11-02)
+
+* Add reproducable and offline build
+* Add scripted chess with legal moves, special moves, saved games, and local or multiplayer play
+* Add shared action guards and event blockers for game scripts
+* Add proxy support on server
+* Fix script storage isolation and dedicated-server event routing between worlds
+* Migrate the web plugin from Emscripten to wasm32-unknown-unknown
+* Upgrade to Flutter 3.47.8
+* Update dependencies and build tools
+* Fix game URLs for newly created and recent saved games
+* Fix multiplayer account authentication before the world is initialized
+* Improve server console with case-insensitive commands, detailed help, history, tab completion, and cleaner output
+* Add server status with JSON output and world filters for console commands
+* Fix black boards in multiplayer worlds without backgrounds
+* Fix server addresses with ports, reconnects, and connection error handling
+* Add subtle primary backgrounds to highlighted servers
+* Fix server-list URL prompts, validation, and saved addresses
+* Fix editing and deleting saved servers after searching and hide these actions for discovered servers
+* Keep public server listings visible during local updates and close discovery streams on disposal
+* Fix overflowing server titles on mobile
+* Trim redundant server regression tests
+
+Read more here: https://linwood.dev/setonix/0.9.2
+
 ## 0.9.1 (2026-10-21)
 
 * Rework game view

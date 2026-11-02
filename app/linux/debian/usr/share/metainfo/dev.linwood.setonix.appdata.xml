@@ -41,6 +41,23 @@
 	</description>
 	<launchable type="desktop-id">dev.linwood.setonix.desktop</launchable>
 	<releases>
+		<release version="0.9.2" type="stable" date="2026-11-02">
+			<description>
+				<ul>
+					<li>Add reproducable and offline build</li>
+					<li>Add scripted chess with legal moves, special moves, saved games, and local or multiplayer play</li>
+					<li>Add shared action guards and event blockers for game scripts</li>
+					<li>Add proxy support on server</li>
+					<li>Fix script storage isolation and dedicated-server event routing between worlds</li>
+					<li>Migrate the web plugin from Emscripten to wasm32-unknown-unknown</li>
+					<li>Upgrade to Flutter 3.47.8</li>
+					<li>Update dependencies and build tools</li>
+					<li>Fix game URLs for newly created and recent saved games</li>
+					<li>Fix multiplayer account authentication before the world is initialized</li>
+				</ul>
+			</description>
+			<url type="details">https://github.com/LinwoodDev/Setonix/releases/tag/v0.9.2</url>
+		</release>
 		<release version="0.9.1" type="stable" date="2026-10-21">
 			<description>
 				<ul>
