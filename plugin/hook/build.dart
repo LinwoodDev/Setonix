@@ -26,5 +26,32 @@ void main(List<String> args) async {
               '${input.config.code.iOS.targetVersion}.0',
       },
     ).run(input: input, output: output);
+
+    if (input.config.buildCodeAssets &&
+        input.config.code.targetOS == OS.android) {
+      // Luau links against the NDK's shared C++ runtime. RustBuilder only
+      // bundles the Rust library, so declare its runtime dependency as well.
+      final config = input.config.code;
+      final triple = switch (config.targetArchitecture) {
+        Architecture.arm => 'arm-linux-androideabi',
+        Architecture.arm64 => 'aarch64-linux-android',
+        Architecture.x64 => 'x86_64-linux-android',
+        _ => throw UnsupportedError(
+          'Unsupported Android architecture: ${config.targetArchitecture}',
+        ),
+      };
+      final runtime = config.cCompiler!.compiler.resolve(
+        '../sysroot/usr/lib/$triple/libc++_shared.so',
+      );
+      output.assets.code.add(
+        CodeAsset(
+          package: input.packageName,
+          name: 'libc++_shared.so',
+          linkMode: DynamicLoadingBundled(),
+          file: runtime,
+        ),
+      );
+      output.dependencies.add(runtime);
+    }
   });
 }

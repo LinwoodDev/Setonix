@@ -83,9 +83,9 @@ class _SetonixBuild extends FlutterBuild {
       env,
       capture: true,
     );
-    if (bindings.trim() != 'wasm-bindgen 0.2.129') {
+    if (bindings.trim() != 'wasm-bindgen 0.2.130') {
       throw StateError(
-        'Install wasm-bindgen-cli 0.2.129, matching Cargo.lock.',
+        'Install wasm-bindgen-cli 0.2.130, matching Cargo.lock.',
       );
     }
   }

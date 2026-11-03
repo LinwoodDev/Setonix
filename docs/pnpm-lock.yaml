@@ -170,23 +170,23 @@ importers:
         specifier: ^0.9.12
         version: 0.9.12(@emnapi/runtime@1.11.3)(prettier@3.9.10)(typescript@6.0.3)
       '@astrojs/markdown-remark':
-        specifier: ^7.3.4
-        version: 7.3.4
+        specifier: ^7.3.5
+        version: 7.3.5
       '@astrojs/react':
-        specifier: ^7.1.1
-        version: 7.1.1(@types/node@24.19.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1)
+        specifier: ^7.1.2
+        version: 7.1.2(@types/node@24.19.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1)
       '@astrojs/starlight':
-        specifier: ^0.42.7
-        version: 0.42.7(@astrojs/markdown-remark@7.3.4)(astro@7.4.2(@astrojs/markdown-remark@7.3.4)(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1))(typescript@6.0.3)
+        specifier: ^0.42.8
+        version: 0.42.8(@astrojs/markdown-remark@7.3.5)(astro@7.4.5(@astrojs/markdown-remark@7.3.5)(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1))(typescript@6.0.3)
       '@fontsource-variable/inter':
         specifier: ^5.3.0
         version: 5.3.0
       '@linwooddev/starlight-style':
-        specifier: github:LinwoodDev/style#1afa5de7dc830468dcc1c7a499a4c9568254ead6&path:/packages/starlight
-        version: https://codeload.github.com/LinwoodDev/style/tar.gz/1afa5de7dc830468dcc1c7a499a4c9568254ead6#path:/packages/starlight(@astrojs/starlight@0.42.7(@astrojs/markdown-remark@7.3.4)(astro@7.4.2(@astrojs/markdown-remark@7.3.4)(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1))(typescript@6.0.3))(@fontsource-variable/inter@5.3.0)(@linwooddev/style@https://codeload.github.com/LinwoodDev/style/tar.gz/1afa5de7dc830468dcc1c7a499a4c9568254ead6#path:/packages/web)(astro@7.4.2(@astrojs/markdown-remark@7.3.4)(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1))
+        specifier: github:LinwoodDev/style#de5749c966ee2761072116cc587ed26f570fb003&path:/packages/starlight
+        version: https://codeload.github.com/LinwoodDev/style/tar.gz/de5749c966ee2761072116cc587ed26f570fb003#path:/packages/starlight(@astrojs/starlight@0.42.8(@astrojs/markdown-remark@7.3.5)(astro@7.4.5(@astrojs/markdown-remark@7.3.5)(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1))(typescript@6.0.3))(@fontsource-variable/inter@5.3.0)(@linwooddev/style@https://codeload.github.com/LinwoodDev/style/tar.gz/de5749c966ee2761072116cc587ed26f570fb003#path:/packages/web)(astro@7.4.5(@astrojs/markdown-remark@7.3.5)(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1))
       '@linwooddev/style':
-        specifier: github:LinwoodDev/style#1afa5de7dc830468dcc1c7a499a4c9568254ead6&path:/packages/web
-        version: https://codeload.github.com/LinwoodDev/style/tar.gz/1afa5de7dc830468dcc1c7a499a4c9568254ead6#path:/packages/web
+        specifier: github:LinwoodDev/style#de5749c966ee2761072116cc587ed26f570fb003&path:/packages/web
+        version: https://codeload.github.com/LinwoodDev/style/tar.gz/de5749c966ee2761072116cc587ed26f570fb003#path:/packages/web
       '@phosphor-icons/react':
         specifier: ^2.1.10
         version: 2.1.10(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
@@ -197,8 +197,8 @@ importers:
         specifier: ^19.3.0
         version: 19.3.0(@types/react@19.3.0)
       astro:
-        specifier: ^7.4.2
-        version: 7.4.2(@astrojs/markdown-remark@7.3.4)(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1)
+        specifier: ^7.4.5
+        version: 7.4.5(@astrojs/markdown-remark@7.3.5)(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1)
       react:
         specifier: ^19.3.1
         version: 19.3.1
@@ -217,16 +217,16 @@ importers:
     devDependencies:
       '@vite-pwa/astro':
         specifier: github:CodeDoctorDE/vite-pwa-astro#a54ef9843b39b34820300a0bd5d08879563f6f04
-        version: https://codeload.github.com/CodeDoctorDE/vite-pwa-astro/tar.gz/a54ef9843b39b34820300a0bd5d08879563f6f04(astro@7.4.2(@astrojs/markdown-remark@7.3.4)(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1))(vite-plugin-pwa@2.0.0(vite@8.3.5(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1))(workbox-build@7.4.1)(workbox-window@7.4.1))
+        version: https://codeload.github.com/CodeDoctorDE/vite-pwa-astro/tar.gz/a54ef9843b39b34820300a0bd5d08879563f6f04(astro@7.4.5(@astrojs/markdown-remark@7.3.5)(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1))(vite-plugin-pwa@2.0.0(vite@8.3.5(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1))(workbox-build@7.4.1)(workbox-window@7.4.1))
       sass:
-        specifier: ^1.106.1
-        version: 1.106.1
+        specifier: ^1.107.1
+        version: 1.107.1
       sharp:
         specifier: ^0.35.5
         version: 0.35.5(@types/node@24.19.2)
       vite-plugin-pwa:
         specifier: ^2.0.0
-        version: 2.0.0(vite@8.3.5(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1))(workbox-build@7.4.1)(workbox-window@7.4.1)
+        version: 2.0.0(vite@8.3.5(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1))(workbox-build@7.4.1)(workbox-window@7.4.1)
       workbox-build:
         specifier: ^7.4.1
         version: 7.4.1
@@ -338,11 +338,14 @@ packages:
       prettier-plugin-astro:
         optional: true
 
-  '@astrojs/markdown-remark@7.3.4':
-    resolution: {integrity: sha512-AB8S4EQKSryzH624iMDtvC+1AD5nSPzYpCXxc7e1H5ydXhv9B5Td2QfCPA0JyEwqsJpsIsPlW0iOqiy1imdqYw==}
+  '@astrojs/markdown-remark@7.3.5':
+    resolution: {integrity: sha512-Xk0gvOMEpBul2zj5jZXS5WH2Gng/6dW7c3WWLXgip+LZGpY64frwTvBChznMtpnNIqVgFXSsu44RYrISojcodQ==}
 
   '@astrojs/markdown-satteri@0.4.5':
     resolution: {integrity: sha512-0IeGdoFbv0f+442KJhYS44Wg8F3MuHmRsxIEYuFyqkjRubc6dPBFZ7azor5t4AeXLQoT5A5h9HyViKpd70Dl9w==}
+
+  '@astrojs/markdown-satteri@0.4.6':
+    resolution: {integrity: sha512-6biKp2lEAYycF3jhv91br+Otyf4EgDFkF1oRL9ks0u/m/YRGmI7XkGQ2MgaM35DslT03f7NtozKtlqfBNkp6bw==}
 
   '@astrojs/mdx@8.1.1':
     resolution: {integrity: sha512-jEJUJsO2KqmKfBXaKeDHDCCj+Kerj1Fj+XndHznF9wxahvs+1onYCBeKmieM28N2+uA6mW57DOQQw5YaDLdBnA==}
@@ -359,8 +362,12 @@ packages:
     resolution: {integrity: sha512-sXlAXJX6t4QfuLg+CuCDzpg7NoxWcyb4paFprgtFppLeisCBmh935h+tJ5CWXfsXEoW2IDy/ihbRMtiu28Chjw==}
     engines: {node: '>=22.23.4'}
 
-  '@astrojs/react@7.1.1':
-    resolution: {integrity: sha512-jHan8UuXzFEbzcmsjCRrepm9Xc5XRz+Jt57MjfE568tbOEoDKVzeMuHf9YO0Y4hHwROX8iJmLzaiT3Yr5W0UbQ==}
+  '@astrojs/prism@4.1.2':
+    resolution: {integrity: sha512-jMrUEpFDarDO1KWPvVc9eSa8DSfwBlwEOHwX+8zvZQpiqXRGDxFnOXHsYqV6DP7w+0qIgTr98gS1GdQlm8ypWg==}
+    engines: {node: '>=22.23.4'}
+
+  '@astrojs/react@7.1.2':
+    resolution: {integrity: sha512-lHzxxZdei/SXf1tShY0M0zWkbDs4FA79qnNPIDMYD0Bz5m6iY1bmRRVTQ+EEFsnFWefFoPX5A+NK3Nn8Ywdltw==}
     engines: {node: '>=22.23.4'}
     peerDependencies:
       '@types/react': ^17.0.50 || ^18.0.21 || ^19.0.0
@@ -375,8 +382,8 @@ packages:
   '@astrojs/sitemap@3.7.4':
     resolution: {integrity: sha512-LbKNC24bdUWcQf/pThB6qLlSqHojxGjZDURIzFocY8rlWnAn2t74nnhnK6S5x0NHriHoAduLEpVjRykmeGiVvA==}
 
-  '@astrojs/starlight@0.42.7':
-    resolution: {integrity: sha512-mlbit5iRjLx5eIcLf84Q2CwkrrsEgZrQwKKBK+vRf+ZGiSrwy1UGdT1hUfAIaHrMfcvkDpL+gw3aua7HobiKFg==}
+  '@astrojs/starlight@0.42.8':
+    resolution: {integrity: sha512-BGP8bmTbdky4OFCV9BNWZedLuzONyUtz754q+hie+li/2TQ5XJ6nvfO8fhRhIMcCpUEsA5Ynf4qTTFf/ft/3Pg==}
     peerDependencies:
       '@astrojs/markdown-remark': ^7.3.0
       astro: ^7.2.10
@@ -384,8 +391,8 @@ packages:
       '@astrojs/markdown-remark':
         optional: true
 
-  '@astrojs/telemetry@3.4.1':
-    resolution: {integrity: sha512-SMkvMsGOpM0FMAoT5pzhgI3LZC0JSPWf7Evwop+fZ3N6UkusPM7lI+sOJjMNI5OJrVoiei1/AGo1cY7sikTc5A==}
+  '@astrojs/telemetry@3.4.2':
+    resolution: {integrity: sha512-2JOMRUxJrBSfiVDfeKLv1wBmvSIx1Y6u2YEO8awZ9qSq3u/rNAiUyFdOYi8dHv91kHrmYEQX7pRDw0J4xyj3UA==}
     engines: {node: '>=22.23.4'}
 
   '@astrojs/yaml2ts@0.2.4':
@@ -1196,17 +1203,17 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@linwooddev/starlight-style@https://codeload.github.com/LinwoodDev/style/tar.gz/1afa5de7dc830468dcc1c7a499a4c9568254ead6#path:/packages/starlight':
-    resolution: {gitHosted: true, integrity: sha512-gqQTySf3R1BBM9rQSrQmZAi8YXjoVkTEynzFe5wd9NqyKutIM/tWDl21dGmU7vE4bbxFmw3mdkTDXbQxjrzrIA==, path: /packages/starlight, tarball: https://codeload.github.com/LinwoodDev/style/tar.gz/1afa5de7dc830468dcc1c7a499a4c9568254ead6}
+  '@linwooddev/starlight-style@https://codeload.github.com/LinwoodDev/style/tar.gz/de5749c966ee2761072116cc587ed26f570fb003#path:/packages/starlight':
+    resolution: {gitHosted: true, integrity: sha512-XskxTS276CsYejI0epDHKon1BwY/DXoL6xy+UZq7I5KBZGyIHA5+0WiL7bMGdIgv3r9a29ExhUnoo82/NRAAGQ==, path: /packages/starlight, tarball: https://codeload.github.com/LinwoodDev/style/tar.gz/de5749c966ee2761072116cc587ed26f570fb003}
     version: 0.0.1
     peerDependencies:
-      '@astrojs/starlight': ^0.41.10
+      '@astrojs/starlight': ^0.41.10 || ^0.42.0
       '@fontsource-variable/inter': ^5.3.0
       '@linwooddev/style': ^0.4.3
       astro: ^7.2.9
 
-  '@linwooddev/style@https://codeload.github.com/LinwoodDev/style/tar.gz/1afa5de7dc830468dcc1c7a499a4c9568254ead6#path:/packages/web':
-    resolution: {gitHosted: true, integrity: sha512-gqQTySf3R1BBM9rQSrQmZAi8YXjoVkTEynzFe5wd9NqyKutIM/tWDl21dGmU7vE4bbxFmw3mdkTDXbQxjrzrIA==, path: /packages/web, tarball: https://codeload.github.com/LinwoodDev/style/tar.gz/1afa5de7dc830468dcc1c7a499a4c9568254ead6}
+  '@linwooddev/style@https://codeload.github.com/LinwoodDev/style/tar.gz/de5749c966ee2761072116cc587ed26f570fb003#path:/packages/web':
+    resolution: {gitHosted: true, integrity: sha512-XskxTS276CsYejI0epDHKon1BwY/DXoL6xy+UZq7I5KBZGyIHA5+0WiL7bMGdIgv3r9a29ExhUnoo82/NRAAGQ==, path: /packages/web, tarball: https://codeload.github.com/LinwoodDev/style/tar.gz/de5749c966ee2761072116cc587ed26f570fb003}
     version: 0.4.3
 
   '@mdx-js/mdx@3.1.1':
@@ -1887,8 +1894,8 @@ packages:
     peerDependencies:
       astro: ^4.0.0-beta || ^5.0.0-beta || ^3.3.0 || ^6.0.0-beta || ^7.0.0
 
-  astro@7.4.2:
-    resolution: {integrity: sha512-FAH4cdDlFaVnQGjazLTEIC5vJqGlo5XANc1wIbzQHIqAjJTll/RWTUs+SPNW1JdezG4YGxMZllaE5A41T2kzhA==}
+  astro@7.4.5:
+    resolution: {integrity: sha512-n5lET11/qnrOWn4wNpXxD9g2VKkTIa162hHgrkMPChMQC5q/xh2lY2OerK5mpsEAFCNmXsYA7NISE+9Uo7Cxxg==}
     engines: {node: '>=22.23.4', npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
     peerDependencies:
@@ -2025,6 +2032,10 @@ packages:
   commander@11.1.0:
     resolution: {integrity: sha512-yPVavfyCcRhmorC7rWlkHn15b4wDVgVmBA7kV4QVBsF7kv/9TKJAbAXVTxvTnwP8HHKjRCJDClKbciiYS7p0DQ==}
     engines: {node: '>=16'}
+
+  commander@15.0.0:
+    resolution: {integrity: sha512-z67u4ZhzCL/Tydu1lJARtEZYWbWaN7oYLHbsuzocr6y4N6WZAagG3RQ4FW61V1/0+jImpj293XfrcYnd1qxtPg==}
+    engines: {node: '>=22.12.0'}
 
   commander@2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
@@ -2721,6 +2732,10 @@ packages:
     resolution: {integrity: sha512-p/nXbhSEcu3pZRdkW1OfJhpsVtW1gd4Wa1fnQc9YLiTfAjn0312eMKimbdIQzuZl9aa9xUGaRlP9T/CJE/ditQ==}
     engines: {node: '>=0.10.0'}
 
+  katex@0.19.1:
+    resolution: {integrity: sha512-jG8uKntjSEcm2EpQOh0XturpPuuC9r3Sq5HLHdsFdWZT27E672SF19QEi+of0/YeOy15lDgRhKvr5614uRrEfA==}
+    hasBin: true
+
   kleur@4.1.5:
     resolution: {integrity: sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==}
     engines: {node: '>=6'}
@@ -3356,8 +3371,8 @@ packages:
     resolution: {integrity: sha512-x/+Cz4YrimQxQccJf5mKEbIa1NzeCRNI5Ecl/ekmlYaampdNLPalVyIcCZNNH3MvmqBugV5TMYZXv0ljslUlaw==}
     engines: {node: '>= 0.4'}
 
-  sass@1.106.1:
-    resolution: {integrity: sha512-kD+Gi66vycZcbJt+42NC4z4PXNMcCajVrJPhqoKKXy5cOBMmJQt052CxIBcRjwYXeImHYOpu/ydWWGZQIenl7A==}
+  sass@1.107.1:
+    resolution: {integrity: sha512-aJ1/LvxOOb04YhmiBjzZn3jVwdHKol+OVhoMV6fFl02fF9T3i+5Mg9l/CnzqtM+NX5Jn5o3lAbs/ZJivTCLHfQ==}
     engines: {node: '>=20.19.0'}
     hasBin: true
 
@@ -4192,10 +4207,10 @@ snapshots:
       - '@emnapi/runtime'
       - typescript
 
-  '@astrojs/markdown-remark@7.3.4':
+  '@astrojs/markdown-remark@7.3.5':
     dependencies:
       '@astrojs/internal-helpers': 0.13.0
-      '@astrojs/prism': 4.1.1
+      '@astrojs/prism': 4.1.2
       '@mdx-js/mdx': 3.1.1
       acorn: 8.19.0
       estree-util-visit: 2.0.0
@@ -4226,30 +4241,41 @@ snapshots:
       github-slugger: 2.0.0
       satteri: 0.10.5
 
-  '@astrojs/mdx@8.1.1(@astrojs/markdown-remark@7.3.4)(@astrojs/markdown-satteri@0.4.5)(astro@7.4.2(@astrojs/markdown-remark@7.3.4)(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1))':
+  '@astrojs/markdown-satteri@0.4.6':
+    dependencies:
+      '@astrojs/internal-helpers': 0.13.0
+      '@astrojs/prism': 4.1.2
+      github-slugger: 2.0.0
+      satteri: 0.10.5
+
+  '@astrojs/mdx@8.1.1(@astrojs/markdown-remark@7.3.5)(@astrojs/markdown-satteri@0.4.5)(astro@7.4.5(@astrojs/markdown-remark@7.3.5)(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1))':
     dependencies:
       '@astrojs/internal-helpers': 0.13.0
       '@astrojs/markdown-satteri': 0.4.5
-      astro: 7.4.2(@astrojs/markdown-remark@7.3.4)(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1)
+      astro: 7.4.5(@astrojs/markdown-remark@7.3.5)(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1)
       es-module-lexer: 3.0.4
     optionalDependencies:
-      '@astrojs/markdown-remark': 7.3.4
+      '@astrojs/markdown-remark': 7.3.5
 
   '@astrojs/prism@4.1.1':
     dependencies:
       prismjs: 1.30.0
 
-  '@astrojs/react@7.1.1(@types/node@24.19.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1)':
+  '@astrojs/prism@4.1.2':
+    dependencies:
+      prismjs: 1.30.0
+
+  '@astrojs/react@7.1.2(@types/node@24.19.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1)':
     dependencies:
       '@astrojs/internal-helpers': 0.13.0
       '@types/react': 19.3.0
       '@types/react-dom': 19.3.0(@types/react@19.3.0)
-      '@vitejs/plugin-react': 6.1.2(vite@8.3.5(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1))
+      '@vitejs/plugin-react': 6.1.2(vite@8.3.5(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1))
       devalue: 6.0.3
       react: 19.3.1
       react-dom: 19.3.1(react@19.3.1)
       ultrahtml: 1.7.0
-      vite: 8.3.5(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1)
+      vite: 8.3.5(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1)
     transitivePeerDependencies:
       - '@rolldown/plugin-babel'
       - '@types/node'
@@ -4271,17 +4297,17 @@ snapshots:
       sitemap: 9.0.1
       zod: 4.6.7
 
-  '@astrojs/starlight@0.42.7(@astrojs/markdown-remark@7.3.4)(astro@7.4.2(@astrojs/markdown-remark@7.3.4)(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1))(typescript@6.0.3)':
+  '@astrojs/starlight@0.42.8(@astrojs/markdown-remark@7.3.5)(astro@7.4.5(@astrojs/markdown-remark@7.3.5)(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1))(typescript@6.0.3)':
     dependencies:
       '@astrojs/markdown-satteri': 0.4.5
-      '@astrojs/mdx': 8.1.1(@astrojs/markdown-remark@7.3.4)(@astrojs/markdown-satteri@0.4.5)(astro@7.4.2(@astrojs/markdown-remark@7.3.4)(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1))
+      '@astrojs/mdx': 8.1.1(@astrojs/markdown-remark@7.3.5)(@astrojs/markdown-satteri@0.4.5)(astro@7.4.5(@astrojs/markdown-remark@7.3.5)(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1))
       '@astrojs/sitemap': 3.7.4
       '@pagefind/default-ui': 1.5.2
       '@types/hast': 3.0.5
       '@types/js-yaml': 4.0.9
       '@types/mdast': 4.0.4
-      astro: 7.4.2(@astrojs/markdown-remark@7.3.4)(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1)
-      astro-expressive-code: 0.44.3(astro@7.4.2(@astrojs/markdown-remark@7.3.4)(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1))
+      astro: 7.4.5(@astrojs/markdown-remark@7.3.5)(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1)
+      astro-expressive-code: 0.44.3(astro@7.4.5(@astrojs/markdown-remark@7.3.5)(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1))
       bcp-47: 2.1.2
       hast-util-format: 1.1.0
       hast-util-select: 6.0.4
@@ -4303,12 +4329,12 @@ snapshots:
       unist-util-visit: 5.2.0
       vfile: 6.0.3
     optionalDependencies:
-      '@astrojs/markdown-remark': 7.3.4
+      '@astrojs/markdown-remark': 7.3.5
     transitivePeerDependencies:
       - supports-color
       - typescript
 
-  '@astrojs/telemetry@3.4.1':
+  '@astrojs/telemetry@3.4.2':
     dependencies:
       ci-info: 4.4.0
       dset: 3.1.4
@@ -5242,15 +5268,17 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.6.0
 
-  '@linwooddev/starlight-style@https://codeload.github.com/LinwoodDev/style/tar.gz/1afa5de7dc830468dcc1c7a499a4c9568254ead6#path:/packages/starlight(@astrojs/starlight@0.42.7(@astrojs/markdown-remark@7.3.4)(astro@7.4.2(@astrojs/markdown-remark@7.3.4)(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1))(typescript@6.0.3))(@fontsource-variable/inter@5.3.0)(@linwooddev/style@https://codeload.github.com/LinwoodDev/style/tar.gz/1afa5de7dc830468dcc1c7a499a4c9568254ead6#path:/packages/web)(astro@7.4.2(@astrojs/markdown-remark@7.3.4)(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1))':
+  '@linwooddev/starlight-style@https://codeload.github.com/LinwoodDev/style/tar.gz/de5749c966ee2761072116cc587ed26f570fb003#path:/packages/starlight(@astrojs/starlight@0.42.8(@astrojs/markdown-remark@7.3.5)(astro@7.4.5(@astrojs/markdown-remark@7.3.5)(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1))(typescript@6.0.3))(@fontsource-variable/inter@5.3.0)(@linwooddev/style@https://codeload.github.com/LinwoodDev/style/tar.gz/de5749c966ee2761072116cc587ed26f570fb003#path:/packages/web)(astro@7.4.5(@astrojs/markdown-remark@7.3.5)(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1))':
     dependencies:
-      '@astrojs/starlight': 0.42.7(@astrojs/markdown-remark@7.3.4)(astro@7.4.2(@astrojs/markdown-remark@7.3.4)(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1))(typescript@6.0.3)
+      '@astrojs/markdown-satteri': 0.4.6
+      '@astrojs/starlight': 0.42.8(@astrojs/markdown-remark@7.3.5)(astro@7.4.5(@astrojs/markdown-remark@7.3.5)(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1))(typescript@6.0.3)
       '@fontsource-variable/inter': 5.3.0
-      '@linwooddev/style': https://codeload.github.com/LinwoodDev/style/tar.gz/1afa5de7dc830468dcc1c7a499a4c9568254ead6#path:/packages/web
-      astro: 7.4.2(@astrojs/markdown-remark@7.3.4)(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1)
+      '@linwooddev/style': https://codeload.github.com/LinwoodDev/style/tar.gz/de5749c966ee2761072116cc587ed26f570fb003#path:/packages/web
+      astro: 7.4.5(@astrojs/markdown-remark@7.3.5)(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1)
+      katex: 0.19.1
       ultrahtml: 1.7.0
 
-  '@linwooddev/style@https://codeload.github.com/LinwoodDev/style/tar.gz/1afa5de7dc830468dcc1c7a499a4c9568254ead6#path:/packages/web': {}
+  '@linwooddev/style@https://codeload.github.com/LinwoodDev/style/tar.gz/de5749c966ee2761072116cc587ed26f570fb003#path:/packages/web': {}
 
   '@mdx-js/mdx@3.1.1':
     dependencies:
@@ -5664,15 +5692,15 @@ snapshots:
 
   '@ungap/structured-clone@1.4.0': {}
 
-  '@vite-pwa/astro@https://codeload.github.com/CodeDoctorDE/vite-pwa-astro/tar.gz/a54ef9843b39b34820300a0bd5d08879563f6f04(astro@7.4.2(@astrojs/markdown-remark@7.3.4)(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1))(vite-plugin-pwa@2.0.0(vite@8.3.5(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1))(workbox-build@7.4.1)(workbox-window@7.4.1))':
+  '@vite-pwa/astro@https://codeload.github.com/CodeDoctorDE/vite-pwa-astro/tar.gz/a54ef9843b39b34820300a0bd5d08879563f6f04(astro@7.4.5(@astrojs/markdown-remark@7.3.5)(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1))(vite-plugin-pwa@2.0.0(vite@8.3.5(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1))(workbox-build@7.4.1)(workbox-window@7.4.1))':
     dependencies:
-      astro: 7.4.2(@astrojs/markdown-remark@7.3.4)(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1)
-      vite-plugin-pwa: 2.0.0(vite@8.3.5(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1))(workbox-build@7.4.1)(workbox-window@7.4.1)
+      astro: 7.4.5(@astrojs/markdown-remark@7.3.5)(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1)
+      vite-plugin-pwa: 2.0.0(vite@8.3.5(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1))(workbox-build@7.4.1)(workbox-window@7.4.1)
 
-  '@vitejs/plugin-react@6.1.2(vite@8.3.5(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1))':
+  '@vitejs/plugin-react@6.1.2(vite@8.3.5(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1))':
     dependencies:
       '@rolldown/pluginutils': 1.0.1
-      vite: 8.3.5(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1)
+      vite: 8.3.5(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1)
 
   '@volar/kit@2.4.30(typescript@6.0.3)':
     dependencies:
@@ -5790,18 +5818,18 @@ snapshots:
 
   astring@1.9.0: {}
 
-  astro-expressive-code@0.44.3(astro@7.4.2(@astrojs/markdown-remark@7.3.4)(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1)):
+  astro-expressive-code@0.44.3(astro@7.4.5(@astrojs/markdown-remark@7.3.5)(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1)):
     dependencies:
-      astro: 7.4.2(@astrojs/markdown-remark@7.3.4)(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1)
+      astro: 7.4.5(@astrojs/markdown-remark@7.3.5)(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1)
       rehype-expressive-code: 0.44.3
       url-extras: 0.1.0
 
-  astro@7.4.2(@astrojs/markdown-remark@7.3.4)(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1):
+  astro@7.4.5(@astrojs/markdown-remark@7.3.5)(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1):
     dependencies:
       '@astrojs/compiler-rs': 0.5.2
       '@astrojs/internal-helpers': 0.13.0
-      '@astrojs/markdown-satteri': 0.4.5
-      '@astrojs/telemetry': 3.4.1
+      '@astrojs/markdown-satteri': 0.4.6
+      '@astrojs/telemetry': 3.4.2
       '@capsizecss/unpack': 4.0.1
       '@clack/prompts': 1.8.1
       '@oslojs/encoding': 1.1.0
@@ -5845,13 +5873,13 @@ snapshots:
       unifont: 1.0.3
       unstorage: 1.17.6
       verkit: 0.5.0
-      vite: 8.3.5(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1)
-      vitefu: 1.1.3(vite@8.3.5(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1))
+      vite: 8.3.5(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1)
+      vitefu: 1.1.3(vite@8.3.5(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1))
       xxhash-wasm: 1.1.0
       yargs-parser: 22.0.0
       zod: 4.6.7
     optionalDependencies:
-      '@astrojs/markdown-remark': 7.3.4
+      '@astrojs/markdown-remark': 7.3.5
       sharp: 0.35.5(@types/node@24.19.2)
     transitivePeerDependencies:
       - '@azure/app-configuration'
@@ -6006,6 +6034,8 @@ snapshots:
   comma-separated-tokens@2.0.3: {}
 
   commander@11.1.0: {}
+
+  commander@15.0.0: {}
 
   commander@2.20.3: {}
 
@@ -6874,6 +6904,10 @@ snapshots:
       graceful-fs: 4.2.11
 
   jsonpointer@5.0.1: {}
+
+  katex@0.19.1:
+    dependencies:
+      commander: 15.0.0
 
   kleur@4.1.5: {}
 
@@ -7899,7 +7933,7 @@ snapshots:
       es-errors: 1.3.0
       is-regex: 1.2.1
 
-  sass@1.106.1:
+  sass@1.107.1:
     dependencies:
       chokidar: 5.0.0
       immutable: 5.1.9
@@ -8383,18 +8417,18 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
 
-  vite-plugin-pwa@2.0.0(vite@8.3.5(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1))(workbox-build@7.4.1)(workbox-window@7.4.1):
+  vite-plugin-pwa@2.0.0(vite@8.3.5(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1))(workbox-build@7.4.1)(workbox-window@7.4.1):
     dependencies:
       debug: 4.4.3
       pretty-bytes: 6.1.1
       tinyglobby: 0.2.17
-      vite: 8.3.5(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1)
+      vite: 8.3.5(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1)
       workbox-build: 7.4.1
       workbox-window: 7.4.1
     transitivePeerDependencies:
       - supports-color
 
-  vite@8.3.5(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1):
+  vite@8.3.5(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1):
     dependencies:
       lightningcss: 1.33.0
       picomatch: 4.0.7
@@ -8404,13 +8438,13 @@ snapshots:
     optionalDependencies:
       '@types/node': 24.19.2
       fsevents: 2.3.3
-      sass: 1.106.1
+      sass: 1.107.1
       terser: 5.51.2
       yaml: 2.9.1
 
-  vitefu@1.1.3(vite@8.3.5(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1)):
+  vitefu@1.1.3(vite@8.3.5(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1)):
     optionalDependencies:
-      vite: 8.3.5(@types/node@24.19.2)(sass@1.106.1)(terser@5.51.2)(yaml@2.9.1)
+      vite: 8.3.5(@types/node@24.19.2)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1)
 
   volar-service-css@0.0.71(@volar/language-service@2.4.30(typescript@6.0.3)):
     dependencies:

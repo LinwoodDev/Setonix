@@ -24,6 +24,6 @@ dependencies:
   hooks: ^2.2.0
   code_assets: ^2.1.0
 dev_dependencies:
-  build_runner: ^2.16.1
+  build_runner: ^2.16.2
   dart_mappable_builder: ^4.10.0
   ffigen: ^23.0.0

@@ -1,0 +1,4 @@
+* Fix Lua plugins failing to load on Android because the shared C++ runtime was missing
+* Update dependencies and build tools
+
+Read more here: https://linwood.dev/setonix/0.9.3

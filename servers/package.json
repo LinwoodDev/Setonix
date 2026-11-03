@@ -13,6 +13,6 @@
     "@astrojs/node": "^11.1.9",
     "@cacheable/node-cache": "^3.1.1",
     "@linwooddev/style": "^0.4.3",
-    "astro": "^7.4.2"
+    "astro": "^7.4.5"
   }
 }

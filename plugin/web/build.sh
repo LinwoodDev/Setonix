@@ -3,7 +3,7 @@ set -euo pipefail
 cd "$(dirname "$0")"
 output="${1:-../../app/web/pkg}"
 wasm_bindgen="${WASM_BINDGEN:-wasm-bindgen}"
-[[ "$("$wasm_bindgen" --version)" == 'wasm-bindgen 0.2.129' ]] || { echo 'wasm-bindgen-cli 0.2.129 is required (matching Cargo.lock).' >&2; exit 1; }
+[[ "$("$wasm_bindgen" --version)" == 'wasm-bindgen 0.2.130' ]] || { echo 'wasm-bindgen-cli 0.2.130 is required (matching Cargo.lock).' >&2; exit 1; }
 : "${WASI_SDK_PATH:?Set WASI_SDK_PATH to WASI SDK 34.0}"
 [[ "$(head -n 1 "$WASI_SDK_PATH/VERSION")" == 34.0 ]] || { echo 'WASI SDK 34.0 is required.' >&2; exit 1; }
 sysroot="$WASI_SDK_PATH/share/wasi-sysroot/lib/wasm32-wasip1"

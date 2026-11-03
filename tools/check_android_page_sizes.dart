@@ -143,6 +143,17 @@ List<String> checkBundleConfig(Uint8List bytes) {
     if (match == null) continue;
     nativeCount++;
     final abi = match[1]!;
+    // Luau's Rust library needs the shared NDK C++ runtime on every ABI,
+    // including 32-bit builds which do not need the alignment check below.
+    if (header.filename.endsWith('/libsetonix_plugin.so')) {
+      final runtime = header.filename.replaceFirst(
+        RegExp(r'libsetonix_plugin\.so$'),
+        'libc++_shared.so',
+      );
+      if (archive.find(runtime) == null) {
+        errors.add('${header.filename}: missing required $runtime');
+      }
+    }
     // 16 KB devices use arm64-v8a or x86_64, not 32-bit ABIs.
     if (!_machines.containsKey(abi)) continue;
     checked++;
