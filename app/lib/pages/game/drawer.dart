@@ -901,7 +901,7 @@ class _GameMenuOption extends StatelessWidget {
       child: FilledButton.tonalIcon(
         onPressed: onPressed,
         icon: Icon(icon),
-        label: Text(label, textAlign: TextAlign.center),
+        label: Text(label, textAlign: TextAlign.left),
         style: FilledButton.styleFrom(
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.symmetric(horizontal: 18),
