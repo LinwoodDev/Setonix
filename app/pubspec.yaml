@@ -95,7 +95,7 @@ dependencies:
     path: ../api
   # Serialization
   dart_mappable: ^4.10.0
-  archive: ^4.6.0
+  archive: ^4.7.1
   markdown_widget: ^2.3.2+8
   markdown: ^7.3.1
   bloc_concurrency: ^0.3.0
@@ -110,7 +110,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner: ^2.16.2
+  build_runner: ^2.17.1
   flutter_lints: ^6.0.0
   dart_mappable_builder: ^4.10.0
   msix: ^3.18.0
