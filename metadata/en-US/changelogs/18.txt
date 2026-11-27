@@ -1,4 +1,5 @@
 * Fix Lua plugins failing to load on Android because the shared C++ runtime was missing
 * Fix advanced options text alignment in the pause menu
+* Upgrade to flutter 3.50
 
 Read more here: https://linwood.dev/setonix/0.9.3

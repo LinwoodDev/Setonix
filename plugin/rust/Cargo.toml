@@ -14,7 +14,7 @@ strum = { version = "0.28", features = ["derive"] }
 tokio = { version = "1", features = ["sync"] }
 
 # Includes upstream's wasm32-unknown-unknown/Luau support, not yet released.
-mlua = { git = "https://github.com/CodeDoctorDE/mlua.git", rev = "ff96ed786295cae96f43ef1372bd22be0fbf7866", features = ["luau", "send", "async", "anyhow", "serde", "userdata-wrappers"] }
+mlua = { version = "0.12", features = ["luau", "send", "async", "anyhow", "serde", "userdata-wrappers"] }
 flutter_rust_bridge = "=2.14.0-beta.2"
 
 [profile.release]

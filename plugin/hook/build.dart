@@ -23,7 +23,7 @@ void main(List<String> args) async {
         if (input.config.buildCodeAssets &&
             input.config.code.targetOS == OS.iOS)
           'IPHONEOS_DEPLOYMENT_TARGET':
-              '${input.config.code.iOS.targetVersion}.0',
+              '${input.config.code.iOS.deploymentVersion.major}.0',
       },
     ).run(input: input, output: output);
 

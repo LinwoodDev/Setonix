@@ -10,11 +10,11 @@ import device_info_plus
 import dynamic_color
 import file_picker_darwin
 import flutter_secure_storage_darwin
-import lw_sysapi
 import network_info_plus
 import package_info_plus
 import screen_retriever_macos
 import share_plus
+import lw_sysapi
 import shared_preferences_foundation
 import url_launcher_macos
 import window_manager
@@ -25,11 +25,11 @@ func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   DynamicColorPlugin.register(with: registry.registrar(forPlugin: "DynamicColorPlugin"))
   FilePickerPlugin.register(with: registry.registrar(forPlugin: "FilePickerPlugin"))
   FlutterSecureStorageDarwinPlugin.register(with: registry.registrar(forPlugin: "FlutterSecureStorageDarwinPlugin"))
-  SwiftLwSysapiPlugin.register(with: registry.registrar(forPlugin: "SwiftLwSysapiPlugin"))
   NetworkInfoPlusPlugin.register(with: registry.registrar(forPlugin: "NetworkInfoPlusPlugin"))
   FPPPackageInfoPlusPlugin.register(with: registry.registrar(forPlugin: "FPPPackageInfoPlusPlugin"))
   ScreenRetrieverMacosPlugin.register(with: registry.registrar(forPlugin: "ScreenRetrieverMacosPlugin"))
   SharePlusMacosPlugin.register(with: registry.registrar(forPlugin: "SharePlusMacosPlugin"))
+  SwiftLwSysapiPlugin.register(with: registry.registrar(forPlugin: "SwiftLwSysapiPlugin"))
   SharedPreferencesPlugin.register(with: registry.registrar(forPlugin: "SharedPreferencesPlugin"))
   UrlLauncherPlugin.register(with: registry.registrar(forPlugin: "UrlLauncherPlugin"))
   WindowManagerPlugin.register(with: registry.registrar(forPlugin: "WindowManagerPlugin"))

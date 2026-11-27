@@ -19,7 +19,7 @@ export WASI_SDK_PATH=/absolute/path/to/wasi-sdk
 bash plugin/web/build.sh
 cd app
 flutter pub get
-flutter build web --wasm --release --no-web-resources-cdn
+flutter build web --wasm --no-deprecated-js-interop --release --no-web-resources-cdn
 dart run ../tools/build_web_service_worker.dart
 ```
 

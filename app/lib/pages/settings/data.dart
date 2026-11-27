@@ -69,10 +69,12 @@ class DataSettingsPage extends StatelessWidget {
                               : null,
                           onTap: () async {
                             try {
-                              final selectedDir =
-                                  await FilePicker.getDirectoryPath();
-                              if (selectedDir != null) {
-                                changePath(selectedDir);
+                              // The local file system requires a filesystem
+                              // path. On Android pickDirectory returns a content URI.
+                              // ignore: deprecated_member_use
+                              final path = await FilePicker.getDirectoryPath();
+                              if (path != null) {
+                                changePath(path);
                               }
                             } catch (e) {
                               if (context.mounted) {

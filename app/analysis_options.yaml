@@ -13,6 +13,7 @@ analyzer:
     - "**/*.g.dart"
     - "**/*.freezed.dart"
     - "**/*.mapper.dart"
+    - "lib/src/generated/i18n/**"
     - "build/**"
     - "lib/src/rust/*.dart"
     - "lib/src/rust/**/*.dart"

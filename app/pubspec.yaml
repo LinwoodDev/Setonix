@@ -15,8 +15,8 @@ version: 0.9.3+18
 publish_to: none
 
 environment:
-  sdk: ">=3.13.0 <4.0.0"
-  flutter: 3.47.9
+  sdk: ">=3.14.0 <4.0.0"
+  flutter: 3.50.1
 
 dependencies:
   flutter:
@@ -28,6 +28,7 @@ dependencies:
   intl: any
   flutter_localized_locales: ^2.0.5
   # UI
+  cupertino_icons: ^1.0.9
   phosphor_flutter:
     git:
       url: https://github.com/CodeDoctorDE/phosphor-flutter.git
@@ -95,7 +96,7 @@ dependencies:
     path: ../api
   # Serialization
   dart_mappable: ^4.10.0
-  archive: ^4.6.0
+  archive: ^4.7.1
   markdown_widget: ^2.3.2+8
   markdown: ^7.3.1
   bloc_concurrency: ^0.3.0

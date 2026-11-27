@@ -12,4 +12,13 @@ if ('serviceWorker' in navigator && window.isSecureContext) {
   });
 }
 
-_flutter.loader.load();
+_flutter.loader.load({
+  config: {
+    wasmAllowList: {
+      blink: true,
+      webkit: true,
+      // CanvasKit avoids Skwasm's GPU readback for presentation in Firefox.
+      gecko: false,
+    },
+  },
+});
